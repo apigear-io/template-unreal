@@ -104,7 +104,8 @@ public:
 	void Unsubscribe(const TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>& Subscriber);
 
 private:
-	UPROPERTY()
+	void CleanUpSubscribers();
+
 	TArray<TScriptInterface<ITbSame2SameStruct1InterfaceBPSubscriberInterface>> BPSubscribers;
 	FRWLock BPSubscribersLock;
 	TArray<TWeakInterfacePtr<ITbSame2SameStruct1InterfaceSubscriberInterface>> Subscribers;

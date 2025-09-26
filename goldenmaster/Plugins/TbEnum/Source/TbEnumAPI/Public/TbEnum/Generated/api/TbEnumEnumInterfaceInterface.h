@@ -191,7 +191,8 @@ public:
 	void Unsubscribe(const TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>& Subscriber);
 
 private:
-	UPROPERTY()
+	void CleanUpSubscribers();
+
 	TArray<TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>> BPSubscribers;
 	FRWLock BPSubscribersLock;
 	TArray<TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>> Subscribers;

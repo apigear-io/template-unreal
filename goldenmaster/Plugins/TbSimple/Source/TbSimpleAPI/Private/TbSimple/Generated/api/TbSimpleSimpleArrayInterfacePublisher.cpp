@@ -2,6 +2,7 @@
 #include "TbSimple/Generated/api/TbSimpleSimpleArrayInterfaceInterface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigBoolSignal(const TArray<bool>& ParamBool)
 {
@@ -20,10 +21,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigBoolSignal(const TArray
 				Iface->OnSigBoolSignal(ParamBool);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -40,10 +37,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigBoolSignal(const TArray
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, ParamBool);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -62,16 +55,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigBoolSignal(const TArray
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, ParamBool);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigIntSignal(const TArray<int32>& ParamInt)
@@ -91,10 +79,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigIntSignal(const TArray<
 				Iface->OnSigIntSignal(ParamInt);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -111,10 +95,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigIntSignal(const TArray<
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -133,16 +113,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigIntSignal(const TArray<
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt32Signal(const TArray<int32>& ParamInt32)
@@ -162,10 +137,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt32Signal(const TArra
 				Iface->OnSigInt32Signal(ParamInt32);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -182,10 +153,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt32Signal(const TArra
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigInt32Signal(Obj, ParamInt32);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -204,16 +171,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt32Signal(const TArra
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigInt32Signal(Obj, ParamInt32);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt64Signal(const TArray<int64>& ParamInt64)
@@ -233,10 +195,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt64Signal(const TArra
 				Iface->OnSigInt64Signal(ParamInt64);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -253,10 +211,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt64Signal(const TArra
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigInt64Signal(Obj, ParamInt64);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -275,16 +229,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigInt64Signal(const TArra
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigInt64Signal(Obj, ParamInt64);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloatSignal(const TArray<float>& ParamFloat)
@@ -304,10 +253,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloatSignal(const TArra
 				Iface->OnSigFloatSignal(ParamFloat);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -324,10 +269,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloatSignal(const TArra
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -346,16 +287,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloatSignal(const TArra
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat32Signal(const TArray<float>& ParamFloa32)
@@ -375,10 +311,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat32Signal(const TAr
 				Iface->OnSigFloat32Signal(ParamFloa32);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -395,10 +327,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat32Signal(const TAr
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigFloat32Signal(Obj, ParamFloa32);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -417,16 +345,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat32Signal(const TAr
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigFloat32Signal(Obj, ParamFloa32);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat64Signal(const TArray<double>& ParamFloat64)
@@ -446,10 +369,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat64Signal(const TAr
 				Iface->OnSigFloat64Signal(ParamFloat64);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -466,10 +385,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat64Signal(const TAr
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigFloat64Signal(Obj, ParamFloat64);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -488,16 +403,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigFloat64Signal(const TAr
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigFloat64Signal(Obj, ParamFloat64);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigStringSignal(const TArray<FString>& ParamString)
@@ -517,10 +427,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigStringSignal(const TArr
 				Iface->OnSigStringSignal(ParamString);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -537,10 +443,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigStringSignal(const TArr
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -559,16 +461,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastSigStringSignal(const TArr
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropBoolChanged(UPARAM(DisplayName = "PropBool") const TArray<bool>& InPropBool)
@@ -588,10 +485,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropBoolChanged(UPARAM(Dis
 				Iface->OnPropBoolChanged(InPropBool);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -608,10 +501,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropBoolChanged(UPARAM(Dis
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, InPropBool);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -630,16 +519,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropBoolChanged(UPARAM(Dis
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, InPropBool);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropIntChanged(UPARAM(DisplayName = "PropInt") const TArray<int32>& InPropInt)
@@ -659,10 +543,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropIntChanged(UPARAM(Disp
 				Iface->OnPropIntChanged(InPropInt);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -679,10 +559,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropIntChanged(UPARAM(Disp
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -701,16 +577,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropIntChanged(UPARAM(Disp
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt32Changed(UPARAM(DisplayName = "PropInt32") const TArray<int32>& InPropInt32)
@@ -730,10 +601,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt32Changed(UPARAM(Di
 				Iface->OnPropInt32Changed(InPropInt32);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -750,10 +617,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt32Changed(UPARAM(Di
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropInt32Changed(Obj, InPropInt32);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -772,16 +635,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt32Changed(UPARAM(Di
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropInt32Changed(Obj, InPropInt32);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt64Changed(UPARAM(DisplayName = "PropInt64") const TArray<int64>& InPropInt64)
@@ -801,10 +659,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt64Changed(UPARAM(Di
 				Iface->OnPropInt64Changed(InPropInt64);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -821,10 +675,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt64Changed(UPARAM(Di
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropInt64Changed(Obj, InPropInt64);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -843,16 +693,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropInt64Changed(UPARAM(Di
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropInt64Changed(Obj, InPropInt64);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloatChanged(UPARAM(DisplayName = "PropFloat") const TArray<float>& InPropFloat)
@@ -872,10 +717,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Di
 				Iface->OnPropFloatChanged(InPropFloat);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -892,10 +733,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Di
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -914,16 +751,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Di
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat32Changed(UPARAM(DisplayName = "PropFloat32") const TArray<float>& InPropFloat32)
@@ -943,10 +775,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat32Changed(UPARAM(
 				Iface->OnPropFloat32Changed(InPropFloat32);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -963,10 +791,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat32Changed(UPARAM(
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropFloat32Changed(Obj, InPropFloat32);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -985,16 +809,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat32Changed(UPARAM(
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropFloat32Changed(Obj, InPropFloat32);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat64Changed(UPARAM(DisplayName = "PropFloat64") const TArray<double>& InPropFloat64)
@@ -1014,10 +833,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat64Changed(UPARAM(
 				Iface->OnPropFloat64Changed(InPropFloat64);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -1034,10 +849,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat64Changed(UPARAM(
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropFloat64Changed(Obj, InPropFloat64);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -1056,16 +867,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropFloat64Changed(UPARAM(
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropFloat64Changed(Obj, InPropFloat64);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropStringChanged(UPARAM(DisplayName = "PropString") const TArray<FString>& InPropString)
@@ -1085,10 +891,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropStringChanged(UPARAM(D
 				Iface->OnPropStringChanged(InPropString);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -1105,10 +907,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropStringChanged(UPARAM(D
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -1127,16 +925,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropStringChanged(UPARAM(D
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropReadOnlyStringChanged(UPARAM(DisplayName = "PropReadOnlyString") const FString& InPropReadOnlyString)
@@ -1156,10 +949,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropReadOnlyStringChanged(
 				Iface->OnPropReadOnlyStringChanged(InPropReadOnlyString);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -1176,10 +965,6 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropReadOnlyStringChanged(
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropReadOnlyStringChanged(Obj, InPropReadOnlyString);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -1198,16 +983,11 @@ void UTbSimpleSimpleArrayInterfacePublisher::BroadcastPropReadOnlyStringChanged(
 				{
 					ITbSimpleSimpleArrayInterfaceBPSubscriberInterface::Execute_OnPropReadOnlyStringChanged(Obj, InPropReadOnlyString);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSimpleSimpleArrayInterfacePublisher::Subscribe(const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber)
@@ -1244,4 +1024,30 @@ void UTbSimpleSimpleArrayInterfacePublisher::Unsubscribe(const TWeakInterfacePtr
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void UTbSimpleSimpleArrayInterfacePublisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbSimpleSimpleArrayInterfaceBPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }

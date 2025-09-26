@@ -2,6 +2,7 @@
 #include "TbSame1/Generated/api/TbSame1SameStruct2InterfaceInterface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 void UTbSame1SameStruct2InterfacePublisher::BroadcastSig1Signal(const FTbSame1Struct1& Param1)
 {
@@ -20,10 +21,6 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastSig1Signal(const FTbSame1St
 				Iface->OnSig1Signal(Param1);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSame1SameStruct2InterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -40,10 +37,6 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastSig1Signal(const FTbSame1St
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSame1SameStruct2InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -62,16 +55,11 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastSig1Signal(const FTbSame1St
 				{
 					ITbSame1SameStruct2InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSame1SameStruct2InterfacePublisher::BroadcastSig2Signal(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
@@ -91,10 +79,6 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastSig2Signal(const FTbSame1St
 				Iface->OnSig2Signal(Param1, Param2);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSame1SameStruct2InterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -111,10 +95,6 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastSig2Signal(const FTbSame1St
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSame1SameStruct2InterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param1, Param2);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -133,16 +113,11 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastSig2Signal(const FTbSame1St
 				{
 					ITbSame1SameStruct2InterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param1, Param2);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSame1SameStruct2InterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") const FTbSame1Struct2& InProp1)
@@ -162,10 +137,6 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastProp1Changed(UPARAM(Display
 				Iface->OnProp1Changed(InProp1);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSame1SameStruct2InterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -182,10 +153,6 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastProp1Changed(UPARAM(Display
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSame1SameStruct2InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -204,16 +171,11 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastProp1Changed(UPARAM(Display
 				{
 					ITbSame1SameStruct2InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSame1SameStruct2InterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayName = "Prop2") const FTbSame1Struct2& InProp2)
@@ -233,10 +195,6 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastProp2Changed(UPARAM(Display
 				Iface->OnProp2Changed(InProp2);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbSame1SameStruct2InterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -253,10 +211,6 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastProp2Changed(UPARAM(Display
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbSame1SameStruct2InterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -275,16 +229,11 @@ void UTbSame1SameStruct2InterfacePublisher::BroadcastProp2Changed(UPARAM(Display
 				{
 					ITbSame1SameStruct2InterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbSame1SameStruct2InterfacePublisher::Subscribe(const TScriptInterface<ITbSame1SameStruct2InterfaceBPSubscriberInterface>& Subscriber)
@@ -321,4 +270,30 @@ void UTbSame1SameStruct2InterfacePublisher::Unsubscribe(const TWeakInterfacePtr<
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void UTbSame1SameStruct2InterfacePublisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<ITbSame1SameStruct2InterfaceSubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbSame1SameStruct2InterfaceBPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }

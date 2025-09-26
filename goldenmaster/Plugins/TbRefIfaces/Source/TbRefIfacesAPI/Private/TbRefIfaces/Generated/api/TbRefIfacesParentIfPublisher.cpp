@@ -4,6 +4,7 @@
 #include "TbRefIfaces/Generated/api/TbRefIfacesParentIfInterface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
@@ -22,10 +23,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalSignal(const TScriptIn
 				Iface->OnLocalIfSignalSignal(Param);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
@@ -42,10 +39,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalSignal(const TScriptIn
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfSignalSignal(Obj, Param);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -64,16 +57,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalSignal(const TScriptIn
 				{
 					ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfSignalSignal(Obj, Param);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
@@ -93,10 +81,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalListSignal(const TArra
 				Iface->OnLocalIfSignalListSignal(Param);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
@@ -113,10 +97,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalListSignal(const TArra
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfSignalListSignal(Obj, Param);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -135,16 +115,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfSignalListSignal(const TArra
 				{
 					ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfSignalListSignal(Obj, Param);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
@@ -164,10 +139,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalSignal(const TScrip
 				Iface->OnImportedIfSignalSignal(Param);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
@@ -184,10 +155,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalSignal(const TScrip
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfSignalSignal(Obj, Param);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -206,16 +173,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalSignal(const TScrip
 				{
 					ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfSignalSignal(Obj, Param);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
@@ -235,10 +197,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalListSignal(const TA
 				Iface->OnImportedIfSignalListSignal(Param);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
@@ -255,10 +213,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalListSignal(const TA
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfSignalListSignal(Obj, Param);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -277,16 +231,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfSignalListSignal(const TA
 				{
 					ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfSignalListSignal(Obj, Param);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbRefIfacesParentIfPublisher::BroadcastLocalIfChanged(UPARAM(DisplayName = "LocalIf") const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
@@ -306,10 +255,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfChanged(UPARAM(DisplayName =
 				Iface->OnLocalIfChanged(InLocalIf);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
@@ -326,10 +271,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfChanged(UPARAM(DisplayName =
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfChanged(Obj, InLocalIf);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -348,16 +289,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfChanged(UPARAM(DisplayName =
 				{
 					ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfChanged(Obj, InLocalIf);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbRefIfacesParentIfPublisher::BroadcastLocalIfListChanged(UPARAM(DisplayName = "LocalIfList") const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
@@ -377,10 +313,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfListChanged(UPARAM(DisplayNa
 				Iface->OnLocalIfListChanged(InLocalIfList);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
@@ -397,10 +329,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfListChanged(UPARAM(DisplayNa
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfListChanged(Obj, InLocalIfList);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -419,16 +347,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastLocalIfListChanged(UPARAM(DisplayNa
 				{
 					ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnLocalIfListChanged(Obj, InLocalIfList);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbRefIfacesParentIfPublisher::BroadcastImportedIfChanged(UPARAM(DisplayName = "ImportedIf") const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
@@ -448,10 +371,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfChanged(UPARAM(DisplayNam
 				Iface->OnImportedIfChanged(InImportedIf);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
@@ -468,10 +387,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfChanged(UPARAM(DisplayNam
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfChanged(Obj, InImportedIf);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -490,16 +405,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfChanged(UPARAM(DisplayNam
 				{
 					ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfChanged(Obj, InImportedIf);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbRefIfacesParentIfPublisher::BroadcastImportedIfListChanged(UPARAM(DisplayName = "ImportedIfList") const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
@@ -519,10 +429,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfListChanged(UPARAM(Displa
 				Iface->OnImportedIfListChanged(InImportedIfList);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>> BPSubscribersCopy;
@@ -539,10 +445,6 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfListChanged(UPARAM(Displa
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfListChanged(Obj, InImportedIfList);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -561,16 +463,11 @@ void UTbRefIfacesParentIfPublisher::BroadcastImportedIfListChanged(UPARAM(Displa
 				{
 					ITbRefIfacesParentIfBPSubscriberInterface::Execute_OnImportedIfListChanged(Obj, InImportedIfList);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTbRefIfacesParentIfPublisher::Subscribe(const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber)
@@ -607,4 +504,30 @@ void UTbRefIfacesParentIfPublisher::Unsubscribe(const TWeakInterfacePtr<ITbRefIf
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void UTbRefIfacesParentIfPublisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbRefIfacesParentIfBPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }

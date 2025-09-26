@@ -2,6 +2,7 @@
 #include "Testbed2/Generated/api/Testbed2ManyParamInterfaceInterface.h"
 #include "Async/Async.h"
 #include "Async/TaskGraphInterfaces.h"
+#include "Runtime/Launch/Resources/Version.h"
 
 void UTestbed2ManyParamInterfacePublisher::BroadcastSig1Signal(int32 Param1)
 {
@@ -20,10 +21,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig1Signal(int32 Param1)
 				Iface->OnSig1Signal(Param1);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -40,10 +37,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig1Signal(int32 Param1)
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -62,16 +55,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig1Signal(int32 Param1)
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTestbed2ManyParamInterfacePublisher::BroadcastSig2Signal(int32 Param1, int32 Param2)
@@ -91,10 +79,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig2Signal(int32 Param1, int
 				Iface->OnSig2Signal(Param1, Param2);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -111,10 +95,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig2Signal(int32 Param1, int
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param1, Param2);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -133,16 +113,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig2Signal(int32 Param1, int
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param1, Param2);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTestbed2ManyParamInterfacePublisher::BroadcastSig3Signal(int32 Param1, int32 Param2, int32 Param3)
@@ -162,10 +137,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig3Signal(int32 Param1, int
 				Iface->OnSig3Signal(Param1, Param2, Param3);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -182,10 +153,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig3Signal(int32 Param1, int
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig3Signal(Obj, Param1, Param2, Param3);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -204,16 +171,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig3Signal(int32 Param1, int
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig3Signal(Obj, Param1, Param2, Param3);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTestbed2ManyParamInterfacePublisher::BroadcastSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
@@ -233,10 +195,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig4Signal(int32 Param1, int
 				Iface->OnSig4Signal(Param1, Param2, Param3, Param4);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -253,10 +211,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig4Signal(int32 Param1, int
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig4Signal(Obj, Param1, Param2, Param3, Param4);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -275,16 +229,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig4Signal(int32 Param1, int
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnSig4Signal(Obj, Param1, Param2, Param3, Param4);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTestbed2ManyParamInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayName = "Prop1") int32 InProp1)
@@ -304,10 +253,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayN
 				Iface->OnProp1Changed(InProp1);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -324,10 +269,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayN
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -346,16 +287,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayN
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTestbed2ManyParamInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayName = "Prop2") int32 InProp2)
@@ -375,10 +311,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayN
 				Iface->OnProp2Changed(InProp2);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -395,10 +327,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayN
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -417,16 +345,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayN
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTestbed2ManyParamInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayName = "Prop3") int32 InProp3)
@@ -446,10 +369,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayN
 				Iface->OnProp3Changed(InProp3);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -466,10 +385,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayN
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp3Changed(Obj, InProp3);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -488,16 +403,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayN
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp3Changed(Obj, InProp3);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTestbed2ManyParamInterfacePublisher::BroadcastProp4Changed(UPARAM(DisplayName = "Prop4") int32 InProp4)
@@ -517,10 +427,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp4Changed(UPARAM(DisplayN
 				Iface->OnProp4Changed(InProp4);
 			}
 		}
-		else
-		{
-			Unsubscribe(Subscriber);
-		}
 	}
 
 	TArray<TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>> BPSubscribersCopy;
@@ -537,10 +443,6 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp4Changed(UPARAM(DisplayN
 			if (UObject* Obj = Subscriber.GetObject())
 			{
 				ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp4Changed(Obj, InProp4);
-			}
-			else
-			{
-				Unsubscribe(Subscriber);
 			}
 		}
 	}
@@ -559,16 +461,11 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp4Changed(UPARAM(DisplayN
 				{
 					ITestbed2ManyParamInterfaceBPSubscriberInterface::Execute_OnProp4Changed(Obj, InProp4);
 				}
-				else
-				{
-					if (WeakPtr.IsValid())
-					{
-						WeakPtr.Get()->Unsubscribe(Subscriber);
-					}
-				}
 			}
 		});
 	}
+
+	CleanUpSubscribers();
 }
 
 void UTestbed2ManyParamInterfacePublisher::Subscribe(const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber)
@@ -605,4 +502,30 @@ void UTestbed2ManyParamInterfacePublisher::Unsubscribe(const TWeakInterfacePtr<I
 {
 	FWriteScopeLock WriteLock(SubscribersLock);
 	Subscribers.Remove(Subscriber);
+}
+
+void UTestbed2ManyParamInterfacePublisher::CleanUpSubscribers()
+{
+#if (ENGINE_MAJOR_VERSION >= 5)
+	EAllowShrinking AllowShrinking = EAllowShrinking::No;
+#else
+	bool AllowShrinking = false;
+#endif
+
+	{
+		FWriteScopeLock WriteLock(SubscribersLock);
+		Subscribers.RemoveAllSwap([](const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber)
+			{
+			return !Subscriber.IsValid();
+		},
+			AllowShrinking);
+	}
+	{
+		FWriteScopeLock WriteLock(BPSubscribersLock);
+		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber)
+			{
+			return Subscriber.GetObject() == nullptr;
+		},
+			AllowShrinking);
+	}
 }

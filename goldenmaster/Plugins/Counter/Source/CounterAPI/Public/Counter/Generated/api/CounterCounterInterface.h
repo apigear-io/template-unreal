@@ -146,7 +146,8 @@ public:
 	void Unsubscribe(const TWeakInterfacePtr<ICounterCounterSubscriberInterface>& Subscriber);
 
 private:
-	UPROPERTY()
+	void CleanUpSubscribers();
+
 	TArray<TScriptInterface<ICounterCounterBPSubscriberInterface>> BPSubscribers;
 	FRWLock BPSubscribersLock;
 	TArray<TWeakInterfacePtr<ICounterCounterSubscriberInterface>> Subscribers;

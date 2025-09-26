@@ -220,7 +220,8 @@ public:
 	void Unsubscribe(const TWeakInterfacePtr<ITestbed1StructArrayInterfaceSubscriberInterface>& Subscriber);
 
 private:
-	UPROPERTY()
+	void CleanUpSubscribers();
+
 	TArray<TScriptInterface<ITestbed1StructArrayInterfaceBPSubscriberInterface>> BPSubscribers;
 	FRWLock BPSubscribersLock;
 	TArray<TWeakInterfacePtr<ITestbed1StructArrayInterfaceSubscriberInterface>> Subscribers;
