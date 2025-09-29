@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+#include "Async/Future.h"
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
@@ -143,6 +144,7 @@ public:
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
+	virtual TFuture<FTestbed2NestedStruct1> Func1Async(const FTestbed2NestedStruct1& Param1) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations")
 	virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) = 0;
 

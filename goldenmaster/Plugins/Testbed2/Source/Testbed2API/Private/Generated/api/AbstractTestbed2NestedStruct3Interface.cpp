@@ -140,6 +140,15 @@ void UAbstractTestbed2NestedStruct3Interface::Func1Async(UObject* WorldContextOb
 	}
 }
 
+TFuture<FTestbed2NestedStruct1> UAbstractTestbed2NestedStruct3Interface::Func1Async(const FTestbed2NestedStruct1& Param1)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, this]()
+		{
+		return Func1(Param1);
+	});
+}
+
 void UAbstractTestbed2NestedStruct3Interface::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -175,6 +184,15 @@ void UAbstractTestbed2NestedStruct3Interface::Func2Async(UObject* WorldContextOb
 	}
 }
 
+TFuture<FTestbed2NestedStruct1> UAbstractTestbed2NestedStruct3Interface::Func2Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, Param2, this]()
+		{
+		return Func2(Param1, Param2);
+	});
+}
+
 void UAbstractTestbed2NestedStruct3Interface::Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -208,6 +226,15 @@ void UAbstractTestbed2NestedStruct3Interface::Func3Async(UObject* WorldContextOb
 			});
 		}
 	}
+}
+
+TFuture<FTestbed2NestedStruct1> UAbstractTestbed2NestedStruct3Interface::Func3Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, Param2, Param3, this]()
+		{
+		return Func3(Param1, Param2, Param3);
+	});
 }
 
 void UAbstractTestbed2NestedStruct3Interface::Initialize(FSubsystemCollectionBase& Collection)

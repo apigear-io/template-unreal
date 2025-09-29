@@ -160,6 +160,15 @@ void UAbstractTestbed1StructArray2Interface::FuncBoolAsync(UObject* WorldContext
 	}
 }
 
+TFuture<TArray<FTestbed1StructBool>> UAbstractTestbed1StructArray2Interface::FuncBoolAsync(const FTestbed1StructBoolWithArray& ParamBool)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamBool, this]()
+		{
+		return FuncBool(ParamBool);
+	});
+}
+
 void UAbstractTestbed1StructArray2Interface::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructInt>& Result, const FTestbed1StructIntWithArray& ParamInt)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -193,6 +202,15 @@ void UAbstractTestbed1StructArray2Interface::FuncIntAsync(UObject* WorldContextO
 			});
 		}
 	}
+}
+
+TFuture<TArray<FTestbed1StructInt>> UAbstractTestbed1StructArray2Interface::FuncIntAsync(const FTestbed1StructIntWithArray& ParamInt)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamInt, this]()
+		{
+		return FuncInt(ParamInt);
+	});
 }
 
 void UAbstractTestbed1StructArray2Interface::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructFloat>& Result, const FTestbed1StructFloatWithArray& ParamFloat)
@@ -230,6 +248,15 @@ void UAbstractTestbed1StructArray2Interface::FuncFloatAsync(UObject* WorldContex
 	}
 }
 
+TFuture<TArray<FTestbed1StructFloat>> UAbstractTestbed1StructArray2Interface::FuncFloatAsync(const FTestbed1StructFloatWithArray& ParamFloat)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamFloat, this]()
+		{
+		return FuncFloat(ParamFloat);
+	});
+}
+
 void UAbstractTestbed1StructArray2Interface::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructString>& Result, const FTestbed1StructStringWithArray& ParamString)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -265,6 +292,15 @@ void UAbstractTestbed1StructArray2Interface::FuncStringAsync(UObject* WorldConte
 	}
 }
 
+TFuture<TArray<FTestbed1StructString>> UAbstractTestbed1StructArray2Interface::FuncStringAsync(const FTestbed1StructStringWithArray& ParamString)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamString, this]()
+		{
+		return FuncString(ParamString);
+	});
+}
+
 void UAbstractTestbed1StructArray2Interface::FuncEnumAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<ETestbed1Enum0>& Result, const FTestbed1StructEnumWithArray& ParamEnum)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -298,6 +334,15 @@ void UAbstractTestbed1StructArray2Interface::FuncEnumAsync(UObject* WorldContext
 			});
 		}
 	}
+}
+
+TFuture<TArray<ETestbed1Enum0>> UAbstractTestbed1StructArray2Interface::FuncEnumAsync(const FTestbed1StructEnumWithArray& ParamEnum)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamEnum, this]()
+		{
+		return FuncEnum(ParamEnum);
+	});
 }
 
 void UAbstractTestbed1StructArray2Interface::Initialize(FSubsystemCollectionBase& Collection)

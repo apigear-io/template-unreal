@@ -154,6 +154,25 @@ void {{$Class}}ImplSpec::Define()
 		);
 	});
 
+{{- if not .Return.IsVoid }}
+
+	LatentIt("Operation.{{ Camel .Name }}Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<{{ueReturn "" .Return}}> Future = ImplFixture->GetImplementation()->{{Camel .Name}}Async(
+			{{- range $i, $e := .Params -}}
+			{{ if $i }}, {{end}}{{ueDefault "" .}}
+			{{- end -}}
+		);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const {{ueReturn "" .Return}}& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+{{- end }}
+
 {{- end }}
 
 {{- range .Interface.Signals }}

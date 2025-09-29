@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+#include "Async/Future.h"
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
@@ -349,41 +350,49 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) = 0;
+	virtual TFuture<bool> FuncBoolAsync(bool bParamBool) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
 	virtual bool FuncBool(bool bParamBool) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) = 0;
+	virtual TFuture<int32> FuncIntAsync(int32 ParamInt) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
 	virtual int32 FuncInt(int32 ParamInt) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncInt32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt32) = 0;
+	virtual TFuture<int32> FuncInt32Async(int32 ParamInt32) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
 	virtual int32 FuncInt32(int32 ParamInt32) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncInt64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int64& Result, int64 ParamInt64) = 0;
+	virtual TFuture<int64> FuncInt64Async(int64 ParamInt64) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
 	virtual int64 FuncInt64(int64 ParamInt64) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) = 0;
+	virtual TFuture<float> FuncFloatAsync(float ParamFloat) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
 	virtual float FuncFloat(float ParamFloat) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncFloat32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat32) = 0;
+	virtual TFuture<float> FuncFloat32Async(float ParamFloat32) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
 	virtual float FuncFloat32(float ParamFloat32) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncFloat64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, double& Result, double ParamFloat) = 0;
+	virtual TFuture<double> FuncFloat64Async(double ParamFloat) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
 	virtual double FuncFloat64(double ParamFloat) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) = 0;
+	virtual TFuture<FString> FuncStringAsync(const FString& ParamString) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
 	virtual FString FuncString(const FString& ParamString) = 0;
 

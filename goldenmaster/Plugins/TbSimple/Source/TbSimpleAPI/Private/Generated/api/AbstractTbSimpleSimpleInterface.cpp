@@ -190,6 +190,15 @@ void UAbstractTbSimpleSimpleInterface::FuncBoolAsync(UObject* WorldContextObject
 	}
 }
 
+TFuture<bool> UAbstractTbSimpleSimpleInterface::FuncBoolAsync(bool bParamBool)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[bParamBool, this]()
+		{
+		return FuncBool(bParamBool);
+	});
+}
+
 void UAbstractTbSimpleSimpleInterface::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -223,6 +232,15 @@ void UAbstractTbSimpleSimpleInterface::FuncIntAsync(UObject* WorldContextObject,
 			});
 		}
 	}
+}
+
+TFuture<int32> UAbstractTbSimpleSimpleInterface::FuncIntAsync(int32 ParamInt)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamInt, this]()
+		{
+		return FuncInt(ParamInt);
+	});
 }
 
 void UAbstractTbSimpleSimpleInterface::FuncInt32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt32)
@@ -260,6 +278,15 @@ void UAbstractTbSimpleSimpleInterface::FuncInt32Async(UObject* WorldContextObjec
 	}
 }
 
+TFuture<int32> UAbstractTbSimpleSimpleInterface::FuncInt32Async(int32 ParamInt32)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamInt32, this]()
+		{
+		return FuncInt32(ParamInt32);
+	});
+}
+
 void UAbstractTbSimpleSimpleInterface::FuncInt64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int64& Result, int64 ParamInt64)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -293,6 +320,15 @@ void UAbstractTbSimpleSimpleInterface::FuncInt64Async(UObject* WorldContextObjec
 			});
 		}
 	}
+}
+
+TFuture<int64> UAbstractTbSimpleSimpleInterface::FuncInt64Async(int64 ParamInt64)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamInt64, this]()
+		{
+		return FuncInt64(ParamInt64);
+	});
 }
 
 void UAbstractTbSimpleSimpleInterface::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat)
@@ -330,6 +366,15 @@ void UAbstractTbSimpleSimpleInterface::FuncFloatAsync(UObject* WorldContextObjec
 	}
 }
 
+TFuture<float> UAbstractTbSimpleSimpleInterface::FuncFloatAsync(float ParamFloat)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamFloat, this]()
+		{
+		return FuncFloat(ParamFloat);
+	});
+}
+
 void UAbstractTbSimpleSimpleInterface::FuncFloat32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat32)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -363,6 +408,15 @@ void UAbstractTbSimpleSimpleInterface::FuncFloat32Async(UObject* WorldContextObj
 			});
 		}
 	}
+}
+
+TFuture<float> UAbstractTbSimpleSimpleInterface::FuncFloat32Async(float ParamFloat32)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamFloat32, this]()
+		{
+		return FuncFloat32(ParamFloat32);
+	});
 }
 
 void UAbstractTbSimpleSimpleInterface::FuncFloat64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, double& Result, double ParamFloat)
@@ -400,6 +454,15 @@ void UAbstractTbSimpleSimpleInterface::FuncFloat64Async(UObject* WorldContextObj
 	}
 }
 
+TFuture<double> UAbstractTbSimpleSimpleInterface::FuncFloat64Async(double ParamFloat)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamFloat, this]()
+		{
+		return FuncFloat64(ParamFloat);
+	});
+}
+
 void UAbstractTbSimpleSimpleInterface::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -433,6 +496,15 @@ void UAbstractTbSimpleSimpleInterface::FuncStringAsync(UObject* WorldContextObje
 			});
 		}
 	}
+}
+
+TFuture<FString> UAbstractTbSimpleSimpleInterface::FuncStringAsync(const FString& ParamString)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamString, this]()
+		{
+		return FuncString(ParamString);
+	});
 }
 
 void UAbstractTbSimpleSimpleInterface::Initialize(FSubsystemCollectionBase& Collection)

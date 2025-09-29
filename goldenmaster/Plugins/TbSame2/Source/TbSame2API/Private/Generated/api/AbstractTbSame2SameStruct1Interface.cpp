@@ -120,6 +120,15 @@ void UAbstractTbSame2SameStruct1Interface::Func1Async(UObject* WorldContextObjec
 	}
 }
 
+TFuture<FTbSame2Struct1> UAbstractTbSame2SameStruct1Interface::Func1Async(const FTbSame2Struct1& Param1)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, this]()
+		{
+		return Func1(Param1);
+	});
+}
+
 void UAbstractTbSame2SameStruct1Interface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);

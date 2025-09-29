@@ -225,10 +225,34 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->Func1(0);
 	});
 
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<int32> Future = ImplFixture->GetImplementation()->Func1Async(0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.Func2", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Func2(0, 0);
+	});
+
+	LatentIt("Operation.Func2Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<int32> Future = ImplFixture->GetImplementation()->Func2Async(0, 0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	It("Operation.Func3", [this]()
@@ -237,10 +261,34 @@ void UTestbed2ManyParamInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->Func3(0, 0, 0);
 	});
 
+	LatentIt("Operation.Func3Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<int32> Future = ImplFixture->GetImplementation()->Func3Async(0, 0, 0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.Func4", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Func4(0, 0, 0, 0);
+	});
+
+	LatentIt("Operation.Func4Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<int32> Future = ImplFixture->GetImplementation()->Func4Async(0, 0, 0, 0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

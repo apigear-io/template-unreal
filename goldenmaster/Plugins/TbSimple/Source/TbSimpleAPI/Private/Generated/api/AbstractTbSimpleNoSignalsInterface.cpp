@@ -130,6 +130,15 @@ void UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync(UObject* WorldContextObj
 	}
 }
 
+TFuture<bool> UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync(bool bParamBool)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[bParamBool, this]()
+		{
+		return FuncBool(bParamBool);
+	});
+}
+
 void UAbstractTbSimpleNoSignalsInterface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);

@@ -403,10 +403,34 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->FuncBool(false);
 	});
 
+	LatentIt("Operation.FuncBoolAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<bool> Future = ImplFixture->GetImplementation()->FuncBoolAsync(false);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const bool& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.FuncInt", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncInt(0);
+	});
+
+	LatentIt("Operation.FuncIntAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<int32> Future = ImplFixture->GetImplementation()->FuncIntAsync(0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	It("Operation.FuncInt32", [this]()
@@ -415,10 +439,34 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->FuncInt32(0);
 	});
 
+	LatentIt("Operation.FuncInt32Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<int32> Future = ImplFixture->GetImplementation()->FuncInt32Async(0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.FuncInt64", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncInt64(0LL);
+	});
+
+	LatentIt("Operation.FuncInt64Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<int64> Future = ImplFixture->GetImplementation()->FuncInt64Async(0LL);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int64& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	It("Operation.FuncFloat", [this]()
@@ -427,10 +475,34 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->FuncFloat(0.0f);
 	});
 
+	LatentIt("Operation.FuncFloatAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<float> Future = ImplFixture->GetImplementation()->FuncFloatAsync(0.0f);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const float& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.FuncFloat32", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncFloat32(0.0f);
+	});
+
+	LatentIt("Operation.FuncFloat32Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<float> Future = ImplFixture->GetImplementation()->FuncFloat32Async(0.0f);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const float& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	It("Operation.FuncFloat64", [this]()
@@ -439,10 +511,34 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->FuncFloat64(0.0);
 	});
 
+	LatentIt("Operation.FuncFloat64Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<double> Future = ImplFixture->GetImplementation()->FuncFloat64Async(0.0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const double& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.FuncString", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncString(FString());
+	});
+
+	LatentIt("Operation.FuncStringAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FString> Future = ImplFixture->GetImplementation()->FuncStringAsync(FString());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FString& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

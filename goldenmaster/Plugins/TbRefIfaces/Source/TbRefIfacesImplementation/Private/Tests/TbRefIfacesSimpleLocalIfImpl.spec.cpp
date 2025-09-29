@@ -97,6 +97,18 @@ void UTbRefIfacesSimpleLocalIfImplSpec::Define()
 		ImplFixture->GetImplementation()->IntMethod(0);
 	});
 
+	LatentIt("Operation.IntMethodAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<int32> Future = ImplFixture->GetImplementation()->IntMethodAsync(0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	LatentIt("Signal.IntSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbRefIfacesSimpleLocalIfPublisher* TbRefIfacesSimpleLocalIfPublisher = ImplFixture->GetImplementation()->_GetPublisher();

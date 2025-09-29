@@ -96,6 +96,18 @@ void UTbSame1SameEnum1InterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->Func1(ETbSame1Enum1::TS1E1_Value1);
 	});
 
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<ETbSame1Enum1> Future = ImplFixture->GetImplementation()->Func1Async(ETbSame1Enum1::TS1E1_Value1);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbSame1Enum1& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTbSame1SameEnum1InterfacePublisher* TbSame1SameEnum1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();

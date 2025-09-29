@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+#include "Async/Future.h"
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
@@ -172,11 +173,13 @@ public:
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1) = 0;
+	virtual TFuture<FTbSame1Struct1> Func1Async(const FTbSame1Struct1& Param1) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface|Operations")
 	virtual FTbSame1Struct1 Func1(const FTbSame1Struct1& Param1) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame1Struct1& Result, const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) = 0;
+	virtual TFuture<FTbSame1Struct1> Func2Async(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameStruct2Interface|Operations")
 	virtual FTbSame1Struct1 Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2) = 0;
 

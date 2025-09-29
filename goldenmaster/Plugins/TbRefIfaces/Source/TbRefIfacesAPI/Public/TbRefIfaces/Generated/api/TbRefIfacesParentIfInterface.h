@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+#include "Async/Future.h"
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
@@ -232,21 +233,25 @@ public:
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void LocalIfMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Result, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) = 0;
+	virtual TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodAsync(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations")
 	virtual TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void LocalIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Result, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) = 0;
+	virtual TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> LocalIfMethodListAsync(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations")
 	virtual TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void ImportedIfMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TScriptInterface<ITbIfaceimportEmptyIfInterface>& Result, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) = 0;
+	virtual TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodAsync(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations")
 	virtual TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void ImportedIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Result, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) = 0;
+	virtual TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> ImportedIfMethodListAsync(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|Operations")
 	virtual TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) = 0;
 

@@ -110,6 +110,15 @@ void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync(UObject* WorldContext
 	}
 }
 
+TFuture<bool> UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync(bool bParamBool)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[bParamBool, this]()
+		{
+		return FuncBool(bParamBool);
+	});
+}
+
 void UAbstractTbSimpleNoPropertiesInterface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);

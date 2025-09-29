@@ -225,10 +225,34 @@ void UTestbed1StructInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->FuncBool(FTestbed1StructBool());
 	});
 
+	LatentIt("Operation.FuncBoolAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FTestbed1StructBool> Future = ImplFixture->GetImplementation()->FuncBoolAsync(FTestbed1StructBool());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed1StructBool& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.FuncInt", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncInt(FTestbed1StructInt());
+	});
+
+	LatentIt("Operation.FuncIntAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FTestbed1StructInt> Future = ImplFixture->GetImplementation()->FuncIntAsync(FTestbed1StructInt());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed1StructInt& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	It("Operation.FuncFloat", [this]()
@@ -237,10 +261,34 @@ void UTestbed1StructInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->FuncFloat(FTestbed1StructFloat());
 	});
 
+	LatentIt("Operation.FuncFloatAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FTestbed1StructFloat> Future = ImplFixture->GetImplementation()->FuncFloatAsync(FTestbed1StructFloat());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed1StructFloat& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.FuncString", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncString(FTestbed1StructString());
+	});
+
+	LatentIt("Operation.FuncStringAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FTestbed1StructString> Future = ImplFixture->GetImplementation()->FuncStringAsync(FTestbed1StructString());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed1StructString& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

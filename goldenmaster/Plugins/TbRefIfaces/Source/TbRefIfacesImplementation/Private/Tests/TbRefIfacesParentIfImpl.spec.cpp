@@ -82,10 +82,34 @@ void UTbRefIfacesParentIfImplSpec::Define()
 		ImplFixture->GetImplementation()->LocalIfMethod(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
 	});
 
+	LatentIt("Operation.LocalIfMethodAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Future = ImplFixture->GetImplementation()->LocalIfMethodAsync(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.LocalIfMethodList", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->LocalIfMethodList(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+	});
+
+	LatentIt("Operation.LocalIfMethodListAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Future = ImplFixture->GetImplementation()->LocalIfMethodListAsync(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	It("Operation.ImportedIfMethod", [this]()
@@ -94,10 +118,34 @@ void UTbRefIfacesParentIfImplSpec::Define()
 		ImplFixture->GetImplementation()->ImportedIfMethod(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
 	});
 
+	LatentIt("Operation.ImportedIfMethodAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Future = ImplFixture->GetImplementation()->ImportedIfMethodAsync(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.ImportedIfMethodList", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->ImportedIfMethodList(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+	});
+
+	LatentIt("Operation.ImportedIfMethodListAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Future = ImplFixture->GetImplementation()->ImportedIfMethodListAsync(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	LatentIt("Signal.LocalIfSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

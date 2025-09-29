@@ -150,6 +150,15 @@ void UAbstractTestbed1StructInterface::FuncBoolAsync(UObject* WorldContextObject
 	}
 }
 
+TFuture<FTestbed1StructBool> UAbstractTestbed1StructInterface::FuncBoolAsync(const FTestbed1StructBool& ParamBool)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamBool, this]()
+		{
+		return FuncBool(ParamBool);
+	});
+}
+
 void UAbstractTestbed1StructInterface::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructInt& Result, const FTestbed1StructInt& ParamInt)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -183,6 +192,15 @@ void UAbstractTestbed1StructInterface::FuncIntAsync(UObject* WorldContextObject,
 			});
 		}
 	}
+}
+
+TFuture<FTestbed1StructInt> UAbstractTestbed1StructInterface::FuncIntAsync(const FTestbed1StructInt& ParamInt)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamInt, this]()
+		{
+		return FuncInt(ParamInt);
+	});
 }
 
 void UAbstractTestbed1StructInterface::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat)
@@ -220,6 +238,15 @@ void UAbstractTestbed1StructInterface::FuncFloatAsync(UObject* WorldContextObjec
 	}
 }
 
+TFuture<FTestbed1StructFloat> UAbstractTestbed1StructInterface::FuncFloatAsync(const FTestbed1StructFloat& ParamFloat)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamFloat, this]()
+		{
+		return FuncFloat(ParamFloat);
+	});
+}
+
 void UAbstractTestbed1StructInterface::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -253,6 +280,15 @@ void UAbstractTestbed1StructInterface::FuncStringAsync(UObject* WorldContextObje
 			});
 		}
 	}
+}
+
+TFuture<FTestbed1StructString> UAbstractTestbed1StructInterface::FuncStringAsync(const FTestbed1StructString& ParamString)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamString, this]()
+		{
+		return FuncString(ParamString);
+	});
 }
 
 void UAbstractTestbed1StructInterface::Initialize(FSubsystemCollectionBase& Collection)

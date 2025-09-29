@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+#include "Async/Future.h"
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
@@ -143,6 +144,7 @@ public:
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void IntMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param) = 0;
+	virtual TFuture<int32> IntMethodAsync(int32 Param) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Operations")
 	virtual int32 IntMethod(int32 Param) = 0;
 

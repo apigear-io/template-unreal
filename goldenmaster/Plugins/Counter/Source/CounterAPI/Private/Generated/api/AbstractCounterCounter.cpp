@@ -150,6 +150,15 @@ void UAbstractCounterCounter::IncrementAsync(UObject* WorldContextObject, FLaten
 	}
 }
 
+TFuture<FVector> UAbstractCounterCounter::IncrementAsync(const FVector& Vec)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Vec, this]()
+		{
+		return Increment(Vec);
+	});
+}
+
 void UAbstractCounterCounter::IncrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -183,6 +192,15 @@ void UAbstractCounterCounter::IncrementArrayAsync(UObject* WorldContextObject, F
 			});
 		}
 	}
+}
+
+TFuture<TArray<FVector>> UAbstractCounterCounter::IncrementArrayAsync(const TArray<FVector>& Vec)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Vec, this]()
+		{
+		return IncrementArray(Vec);
+	});
 }
 
 void UAbstractCounterCounter::DecrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FCustomTypesVector3D& Result, const FCustomTypesVector3D& Vec)
@@ -220,6 +238,15 @@ void UAbstractCounterCounter::DecrementAsync(UObject* WorldContextObject, FLaten
 	}
 }
 
+TFuture<FCustomTypesVector3D> UAbstractCounterCounter::DecrementAsync(const FCustomTypesVector3D& Vec)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Vec, this]()
+		{
+		return Decrement(Vec);
+	});
+}
+
 void UAbstractCounterCounter::DecrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FCustomTypesVector3D>& Result, const TArray<FCustomTypesVector3D>& Vec)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -253,6 +280,15 @@ void UAbstractCounterCounter::DecrementArrayAsync(UObject* WorldContextObject, F
 			});
 		}
 	}
+}
+
+TFuture<TArray<FCustomTypesVector3D>> UAbstractCounterCounter::DecrementArrayAsync(const TArray<FCustomTypesVector3D>& Vec)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Vec, this]()
+		{
+		return DecrementArray(Vec);
+	});
 }
 
 void UAbstractCounterCounter::Initialize(FSubsystemCollectionBase& Collection)

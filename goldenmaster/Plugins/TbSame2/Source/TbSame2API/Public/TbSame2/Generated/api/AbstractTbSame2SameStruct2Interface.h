@@ -42,9 +42,11 @@ public:
 
 	// methods
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1) override;
+	virtual TFuture<FTbSame2Struct1> Func1Async(const FTbSame2Struct1& Param1) override;
 	virtual FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override PURE_VIRTUAL(UAbstractTbSame2SameStruct2Interface::Func1, return FTbSame2Struct1(););
 
 	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
+	virtual TFuture<FTbSame2Struct1> Func2Async(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
 	virtual FTbSame2Struct1 Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override PURE_VIRTUAL(UAbstractTbSame2SameStruct2Interface::Func2, return FTbSame2Struct1(););
 
 	// properties

@@ -150,6 +150,15 @@ void UAbstractTbEnumEnumInterface::Func0Async(UObject* WorldContextObject, FLate
 	}
 }
 
+TFuture<ETbEnumEnum0> UAbstractTbEnumEnumInterface::Func0Async(ETbEnumEnum0 Param0)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param0, this]()
+		{
+		return Func0(Param0);
+	});
+}
+
 void UAbstractTbEnumEnumInterface::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, ETbEnumEnum1 Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -183,6 +192,15 @@ void UAbstractTbEnumEnumInterface::Func1Async(UObject* WorldContextObject, FLate
 			});
 		}
 	}
+}
+
+TFuture<ETbEnumEnum1> UAbstractTbEnumEnumInterface::Func1Async(ETbEnumEnum1 Param1)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, this]()
+		{
+		return Func1(Param1);
+	});
 }
 
 void UAbstractTbEnumEnumInterface::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, ETbEnumEnum2 Param2)
@@ -220,6 +238,15 @@ void UAbstractTbEnumEnumInterface::Func2Async(UObject* WorldContextObject, FLate
 	}
 }
 
+TFuture<ETbEnumEnum2> UAbstractTbEnumEnumInterface::Func2Async(ETbEnumEnum2 Param2)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param2, this]()
+		{
+		return Func2(Param2);
+	});
+}
+
 void UAbstractTbEnumEnumInterface::Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -253,6 +280,15 @@ void UAbstractTbEnumEnumInterface::Func3Async(UObject* WorldContextObject, FLate
 			});
 		}
 	}
+}
+
+TFuture<ETbEnumEnum3> UAbstractTbEnumEnumInterface::Func3Async(ETbEnumEnum3 Param3)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param3, this]()
+		{
+		return Func3(Param3);
+	});
 }
 
 void UAbstractTbEnumEnumInterface::Initialize(FSubsystemCollectionBase& Collection)

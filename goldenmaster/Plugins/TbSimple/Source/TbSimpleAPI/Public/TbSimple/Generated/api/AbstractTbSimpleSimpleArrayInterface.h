@@ -42,27 +42,35 @@ public:
 
 	// methods
 	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<bool>& Result, const TArray<bool>& ParamBool) override;
+	virtual TFuture<TArray<bool>> FuncBoolAsync(const TArray<bool>& ParamBool) override;
 	virtual TArray<bool> FuncBool(const TArray<bool>& ParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncBool, return TArray<bool>(););
 
 	virtual void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt) override;
+	virtual TFuture<TArray<int32>> FuncIntAsync(const TArray<int32>& ParamInt) override;
 	virtual TArray<int32> FuncInt(const TArray<int32>& ParamInt) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncInt, return TArray<int32>(););
 
 	virtual void FuncInt32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt32) override;
+	virtual TFuture<TArray<int32>> FuncInt32Async(const TArray<int32>& ParamInt32) override;
 	virtual TArray<int32> FuncInt32(const TArray<int32>& ParamInt32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncInt32, return TArray<int32>(););
 
 	virtual void FuncInt64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int64>& Result, const TArray<int64>& ParamInt64) override;
+	virtual TFuture<TArray<int64>> FuncInt64Async(const TArray<int64>& ParamInt64) override;
 	virtual TArray<int64> FuncInt64(const TArray<int64>& ParamInt64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncInt64, return TArray<int64>(););
 
 	virtual void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat) override;
+	virtual TFuture<TArray<float>> FuncFloatAsync(const TArray<float>& ParamFloat) override;
 	virtual TArray<float> FuncFloat(const TArray<float>& ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncFloat, return TArray<float>(););
 
 	virtual void FuncFloat32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat32) override;
+	virtual TFuture<TArray<float>> FuncFloat32Async(const TArray<float>& ParamFloat32) override;
 	virtual TArray<float> FuncFloat32(const TArray<float>& ParamFloat32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncFloat32, return TArray<float>(););
 
 	virtual void FuncFloat64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<double>& Result, const TArray<double>& ParamFloat) override;
+	virtual TFuture<TArray<double>> FuncFloat64Async(const TArray<double>& ParamFloat) override;
 	virtual TArray<double> FuncFloat64(const TArray<double>& ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncFloat64, return TArray<double>(););
 
 	virtual void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString) override;
+	virtual TFuture<TArray<FString>> FuncStringAsync(const TArray<FString>& ParamString) override;
 	virtual TArray<FString> FuncString(const TArray<FString>& ParamString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::FuncString, return TArray<FString>(););
 
 	// properties

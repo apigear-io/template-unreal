@@ -44,27 +44,35 @@ public:
 	virtual void FuncNoReturnValue(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncNoReturnValue, return;);
 
 	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
+	virtual TFuture<bool> FuncBoolAsync(bool bParamBool) override;
 	virtual bool FuncBool(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncBool, return false;);
 
 	virtual void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt) override;
+	virtual TFuture<int32> FuncIntAsync(int32 ParamInt) override;
 	virtual int32 FuncInt(int32 ParamInt) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncInt, return 0;);
 
 	virtual void FuncInt32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 ParamInt32) override;
+	virtual TFuture<int32> FuncInt32Async(int32 ParamInt32) override;
 	virtual int32 FuncInt32(int32 ParamInt32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncInt32, return 0;);
 
 	virtual void FuncInt64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int64& Result, int64 ParamInt64) override;
+	virtual TFuture<int64> FuncInt64Async(int64 ParamInt64) override;
 	virtual int64 FuncInt64(int64 ParamInt64) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncInt64, return 0LL;);
 
 	virtual void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat) override;
+	virtual TFuture<float> FuncFloatAsync(float ParamFloat) override;
 	virtual float FuncFloat(float ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncFloat, return 0.0f;);
 
 	virtual void FuncFloat32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, float& Result, float ParamFloat32) override;
+	virtual TFuture<float> FuncFloat32Async(float ParamFloat32) override;
 	virtual float FuncFloat32(float ParamFloat32) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncFloat32, return 0.0f;);
 
 	virtual void FuncFloat64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, double& Result, double ParamFloat) override;
+	virtual TFuture<double> FuncFloat64Async(double ParamFloat) override;
 	virtual double FuncFloat64(double ParamFloat) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncFloat64, return 0.0;);
 
 	virtual void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FString& Result, const FString& ParamString) override;
+	virtual TFuture<FString> FuncStringAsync(const FString& ParamString) override;
 	virtual FString FuncString(const FString& ParamString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncString, return FString(););
 
 	// properties

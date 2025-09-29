@@ -139,10 +139,34 @@ void UTbSame1SameStruct2InterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->Func1(FTbSame1Struct1());
 	});
 
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FTbSame1Struct1> Future = ImplFixture->GetImplementation()->Func1Async(FTbSame1Struct1());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTbSame1Struct1& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.Func2", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Func2(FTbSame1Struct1(), FTbSame1Struct2());
+	});
+
+	LatentIt("Operation.Func2Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FTbSame1Struct1> Future = ImplFixture->GetImplementation()->Func2Async(FTbSame1Struct1(), FTbSame1Struct2());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTbSame1Struct1& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

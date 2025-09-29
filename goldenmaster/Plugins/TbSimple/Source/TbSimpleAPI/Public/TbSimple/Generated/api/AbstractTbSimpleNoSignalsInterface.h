@@ -44,6 +44,7 @@ public:
 	virtual void FuncVoid() override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::FuncVoid, return;);
 
 	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
+	virtual TFuture<bool> FuncBoolAsync(bool bParamBool) override;
 	virtual bool FuncBool(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleNoSignalsInterface::FuncBool, return false;);
 
 	// properties

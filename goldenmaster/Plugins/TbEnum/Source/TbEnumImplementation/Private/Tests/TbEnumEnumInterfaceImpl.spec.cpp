@@ -225,10 +225,34 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->Func0(ETbEnumEnum0::TEE0_Value0);
 	});
 
+	LatentIt("Operation.Func0Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<ETbEnumEnum0> Future = ImplFixture->GetImplementation()->Func0Async(ETbEnumEnum0::TEE0_Value0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbEnumEnum0& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.Func1", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Func1(ETbEnumEnum1::TEE1_Value1);
+	});
+
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<ETbEnumEnum1> Future = ImplFixture->GetImplementation()->Func1Async(ETbEnumEnum1::TEE1_Value1);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbEnumEnum1& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	It("Operation.Func2", [this]()
@@ -237,10 +261,34 @@ void UTbEnumEnumInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->Func2(ETbEnumEnum2::TEE2_Value2);
 	});
 
+	LatentIt("Operation.Func2Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<ETbEnumEnum2> Future = ImplFixture->GetImplementation()->Func2Async(ETbEnumEnum2::TEE2_Value2);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbEnumEnum2& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.Func3", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Func3(ETbEnumEnum3::TEE3_Value3);
+	});
+
+	LatentIt("Operation.Func3Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<ETbEnumEnum3> Future = ImplFixture->GetImplementation()->Func3Async(ETbEnumEnum3::TEE3_Value3);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbEnumEnum3& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	LatentIt("Signal.Sig0", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

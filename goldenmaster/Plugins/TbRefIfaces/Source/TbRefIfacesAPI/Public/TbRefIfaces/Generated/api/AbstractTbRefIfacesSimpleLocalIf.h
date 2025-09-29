@@ -42,6 +42,7 @@ public:
 
 	// methods
 	virtual void IntMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param) override;
+	virtual TFuture<int32> IntMethodAsync(int32 Param) override;
 	virtual int32 IntMethod(int32 Param) override PURE_VIRTUAL(UAbstractTbRefIfacesSimpleLocalIf::IntMethod, return 0;);
 
 	// properties

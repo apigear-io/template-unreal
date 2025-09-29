@@ -42,18 +42,23 @@ public:
 
 	// methods
 	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructBool>& Result, const FTestbed1StructBoolWithArray& ParamBool) override;
+	virtual TFuture<TArray<FTestbed1StructBool>> FuncBoolAsync(const FTestbed1StructBoolWithArray& ParamBool) override;
 	virtual TArray<FTestbed1StructBool> FuncBool(const FTestbed1StructBoolWithArray& ParamBool) override PURE_VIRTUAL(UAbstractTestbed1StructArray2Interface::FuncBool, return TArray<FTestbed1StructBool>(););
 
 	virtual void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructInt>& Result, const FTestbed1StructIntWithArray& ParamInt) override;
+	virtual TFuture<TArray<FTestbed1StructInt>> FuncIntAsync(const FTestbed1StructIntWithArray& ParamInt) override;
 	virtual TArray<FTestbed1StructInt> FuncInt(const FTestbed1StructIntWithArray& ParamInt) override PURE_VIRTUAL(UAbstractTestbed1StructArray2Interface::FuncInt, return TArray<FTestbed1StructInt>(););
 
 	virtual void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructFloat>& Result, const FTestbed1StructFloatWithArray& ParamFloat) override;
+	virtual TFuture<TArray<FTestbed1StructFloat>> FuncFloatAsync(const FTestbed1StructFloatWithArray& ParamFloat) override;
 	virtual TArray<FTestbed1StructFloat> FuncFloat(const FTestbed1StructFloatWithArray& ParamFloat) override PURE_VIRTUAL(UAbstractTestbed1StructArray2Interface::FuncFloat, return TArray<FTestbed1StructFloat>(););
 
 	virtual void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructString>& Result, const FTestbed1StructStringWithArray& ParamString) override;
+	virtual TFuture<TArray<FTestbed1StructString>> FuncStringAsync(const FTestbed1StructStringWithArray& ParamString) override;
 	virtual TArray<FTestbed1StructString> FuncString(const FTestbed1StructStringWithArray& ParamString) override PURE_VIRTUAL(UAbstractTestbed1StructArray2Interface::FuncString, return TArray<FTestbed1StructString>(););
 
 	virtual void FuncEnumAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<ETestbed1Enum0>& Result, const FTestbed1StructEnumWithArray& ParamEnum) override;
+	virtual TFuture<TArray<ETestbed1Enum0>> FuncEnumAsync(const FTestbed1StructEnumWithArray& ParamEnum) override;
 	virtual TArray<ETestbed1Enum0> FuncEnum(const FTestbed1StructEnumWithArray& ParamEnum) override PURE_VIRTUAL(UAbstractTestbed1StructArray2Interface::FuncEnum, return TArray<ETestbed1Enum0>(););
 
 	// properties

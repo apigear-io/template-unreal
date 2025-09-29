@@ -42,15 +42,19 @@ public:
 
 	// methods
 	virtual void LocalIfMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Result, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
+	virtual TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodAsync(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
 	virtual TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::LocalIfMethod, return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>(););
 
 	virtual void LocalIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Result, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
+	virtual TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> LocalIfMethodListAsync(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
 	virtual TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::LocalIfMethodList, return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(););
 
 	virtual void ImportedIfMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TScriptInterface<ITbIfaceimportEmptyIfInterface>& Result, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
+	virtual TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodAsync(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
 	virtual TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::ImportedIfMethod, return TScriptInterface<ITbIfaceimportEmptyIfInterface>(););
 
 	virtual void ImportedIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Result, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
+	virtual TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> ImportedIfMethodListAsync(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
 	virtual TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::ImportedIfMethodList, return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(););
 
 	// properties

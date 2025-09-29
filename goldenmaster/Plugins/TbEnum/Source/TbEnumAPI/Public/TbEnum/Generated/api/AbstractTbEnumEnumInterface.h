@@ -42,15 +42,19 @@ public:
 
 	// methods
 	virtual void Func0Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0) override;
+	virtual TFuture<ETbEnumEnum0> Func0Async(ETbEnumEnum0 Param0) override;
 	virtual ETbEnumEnum0 Func0(ETbEnumEnum0 Param0) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func0, return ETbEnumEnum0::TEE0_Value0;);
 
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, ETbEnumEnum1 Param1) override;
+	virtual TFuture<ETbEnumEnum1> Func1Async(ETbEnumEnum1 Param1) override;
 	virtual ETbEnumEnum1 Func1(ETbEnumEnum1 Param1) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func1, return ETbEnumEnum1::TEE1_Value1;);
 
 	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, ETbEnumEnum2 Param2) override;
+	virtual TFuture<ETbEnumEnum2> Func2Async(ETbEnumEnum2 Param2) override;
 	virtual ETbEnumEnum2 Func2(ETbEnumEnum2 Param2) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func2, return ETbEnumEnum2::TEE2_Value2;);
 
 	virtual void Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3) override;
+	virtual TFuture<ETbEnumEnum3> Func3Async(ETbEnumEnum3 Param3) override;
 	virtual ETbEnumEnum3 Func3(ETbEnumEnum3 Param3) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::Func3, return ETbEnumEnum3::TEE3_Value3;);
 
 	// properties

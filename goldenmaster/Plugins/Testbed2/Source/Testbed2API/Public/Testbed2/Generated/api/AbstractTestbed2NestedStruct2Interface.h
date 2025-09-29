@@ -42,9 +42,11 @@ public:
 
 	// methods
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
+	virtual TFuture<FTestbed2NestedStruct1> Func1Async(const FTestbed2NestedStruct1& Param1) override;
 	virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::Func1, return FTestbed2NestedStruct1(););
 
 	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+	virtual TFuture<FTestbed2NestedStruct1> Func2Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
 	virtual FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::Func2, return FTestbed2NestedStruct1(););
 
 	// properties

@@ -130,6 +130,15 @@ void UAbstractTbSame2SameEnum2Interface::Func1Async(UObject* WorldContextObject,
 	}
 }
 
+TFuture<ETbSame2Enum1> UAbstractTbSame2SameEnum2Interface::Func1Async(ETbSame2Enum1 Param1)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, this]()
+		{
+		return Func1(Param1);
+	});
+}
+
 void UAbstractTbSame2SameEnum2Interface::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame2Enum1& Result, ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -163,6 +172,15 @@ void UAbstractTbSame2SameEnum2Interface::Func2Async(UObject* WorldContextObject,
 			});
 		}
 	}
+}
+
+TFuture<ETbSame2Enum1> UAbstractTbSame2SameEnum2Interface::Func2Async(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, Param2, this]()
+		{
+		return Func2(Param1, Param2);
+	});
 }
 
 void UAbstractTbSame2SameEnum2Interface::Initialize(FSubsystemCollectionBase& Collection)
