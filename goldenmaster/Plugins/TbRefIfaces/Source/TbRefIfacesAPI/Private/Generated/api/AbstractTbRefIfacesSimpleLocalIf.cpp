@@ -120,6 +120,15 @@ void UAbstractTbRefIfacesSimpleLocalIf::IntMethodAsync(UObject* WorldContextObje
 	}
 }
 
+TFuture<int32> UAbstractTbRefIfacesSimpleLocalIf::IntMethodAsync(int32 Param)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param, this]()
+		{
+		return IntMethod(Param);
+	});
+}
+
 void UAbstractTbRefIfacesSimpleLocalIf::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);

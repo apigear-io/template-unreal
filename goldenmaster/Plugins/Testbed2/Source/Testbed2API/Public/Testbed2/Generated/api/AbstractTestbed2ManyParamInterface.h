@@ -42,15 +42,19 @@ public:
 
 	// methods
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1) override;
+	virtual TFuture<int32> Func1Async(int32 Param1) override;
 	virtual int32 Func1(int32 Param1) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func1, return 0;);
 
 	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2) override;
+	virtual TFuture<int32> Func2Async(int32 Param1, int32 Param2) override;
 	virtual int32 Func2(int32 Param1, int32 Param2) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func2, return 0;);
 
 	virtual void Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3) override;
+	virtual TFuture<int32> Func3Async(int32 Param1, int32 Param2, int32 Param3) override;
 	virtual int32 Func3(int32 Param1, int32 Param2, int32 Param3) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func3, return 0;);
 
 	virtual void Func4Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
+	virtual TFuture<int32> Func4Async(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 	virtual int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::Func4, return 0;);
 
 	// properties

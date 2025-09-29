@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+#include "Async/Future.h"
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
@@ -230,21 +231,25 @@ public:
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructBool& Result, const FTestbed1StructBool& ParamBool) = 0;
+	virtual TFuture<FTestbed1StructBool> FuncBoolAsync(const FTestbed1StructBool& ParamBool) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Operations")
 	virtual FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructInt& Result, const FTestbed1StructInt& ParamInt) = 0;
+	virtual TFuture<FTestbed1StructInt> FuncIntAsync(const FTestbed1StructInt& ParamInt) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Operations")
 	virtual FTestbed1StructInt FuncInt(const FTestbed1StructInt& ParamInt) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructFloat& Result, const FTestbed1StructFloat& ParamFloat) = 0;
+	virtual TFuture<FTestbed1StructFloat> FuncFloatAsync(const FTestbed1StructFloat& ParamFloat) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Operations")
 	virtual FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed1StructString& Result, const FTestbed1StructString& ParamString) = 0;
+	virtual TFuture<FTestbed1StructString> FuncStringAsync(const FTestbed1StructString& ParamString) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface|Operations")
 	virtual FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) = 0;
 

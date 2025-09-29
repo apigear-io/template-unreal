@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+#include "Async/Future.h"
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
@@ -230,21 +231,25 @@ public:
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void Func0Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum0& Result, ETbEnumEnum0 Param0) = 0;
+	virtual TFuture<ETbEnumEnum0> Func0Async(ETbEnumEnum0 Param0) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Operations")
 	virtual ETbEnumEnum0 Func0(ETbEnumEnum0 Param0) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum1& Result, ETbEnumEnum1 Param1) = 0;
+	virtual TFuture<ETbEnumEnum1> Func1Async(ETbEnumEnum1 Param1) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Operations")
 	virtual ETbEnumEnum1 Func1(ETbEnumEnum1 Param1) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum2& Result, ETbEnumEnum2 Param2) = 0;
+	virtual TFuture<ETbEnumEnum2> Func2Async(ETbEnumEnum2 Param2) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Operations")
 	virtual ETbEnumEnum2 Func2(ETbEnumEnum2 Param2) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbEnumEnum3& Result, ETbEnumEnum3 Param3) = 0;
+	virtual TFuture<ETbEnumEnum3> Func3Async(ETbEnumEnum3 Param3) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface|Operations")
 	virtual ETbEnumEnum3 Func3(ETbEnumEnum3 Param3) = 0;
 

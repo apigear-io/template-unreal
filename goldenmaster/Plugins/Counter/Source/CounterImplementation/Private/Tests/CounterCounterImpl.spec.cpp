@@ -155,10 +155,34 @@ void UCounterCounterImplSpec::Define()
 		ImplFixture->GetImplementation()->Increment(FVector(0.f, 0.f, 0.f));
 	});
 
+	LatentIt("Operation.IncrementAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FVector> Future = ImplFixture->GetImplementation()->IncrementAsync(FVector(0.f, 0.f, 0.f));
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FVector& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.IncrementArray", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->IncrementArray(TArray<FVector>());
+	});
+
+	LatentIt("Operation.IncrementArrayAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TArray<FVector>> Future = ImplFixture->GetImplementation()->IncrementArrayAsync(TArray<FVector>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FVector>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	It("Operation.Decrement", [this]()
@@ -167,10 +191,34 @@ void UCounterCounterImplSpec::Define()
 		ImplFixture->GetImplementation()->Decrement(FCustomTypesVector3D());
 	});
 
+	LatentIt("Operation.DecrementAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FCustomTypesVector3D> Future = ImplFixture->GetImplementation()->DecrementAsync(FCustomTypesVector3D());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FCustomTypesVector3D& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.DecrementArray", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->DecrementArray(TArray<FCustomTypesVector3D>());
+	});
+
+	LatentIt("Operation.DecrementArrayAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TArray<FCustomTypesVector3D>> Future = ImplFixture->GetImplementation()->DecrementArrayAsync(TArray<FCustomTypesVector3D>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FCustomTypesVector3D>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	LatentIt("Signal.ValueChanged", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

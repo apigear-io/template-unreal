@@ -146,6 +146,15 @@ void {{$abstractclass}}::{{Camel .Name}}Async(UObject* WorldContextObject, FLate
 		}
 	}
 }
+
+TFuture<{{ueReturn "" .Return}}> {{$abstractclass}}::{{Camel .Name}}Async({{ueParams "" .Params}})
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[{{range .Params}}{{ueVar "" .}}, {{ end }}this]()
+		{
+		return {{Camel .Name}}({{ueVars "" .Params}});
+	});
+}
 {{- nl }}
 {{- end }}
 {{- end }}

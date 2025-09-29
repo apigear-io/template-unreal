@@ -150,6 +150,15 @@ void UAbstractTbRefIfacesParentIf::LocalIfMethodAsync(UObject* WorldContextObjec
 	}
 }
 
+TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UAbstractTbRefIfacesParentIf::LocalIfMethodAsync(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param, this]()
+		{
+		return LocalIfMethod(Param);
+	});
+}
+
 void UAbstractTbRefIfacesParentIf::LocalIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Result, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -183,6 +192,15 @@ void UAbstractTbRefIfacesParentIf::LocalIfMethodListAsync(UObject* WorldContextO
 			});
 		}
 	}
+}
+
+TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> UAbstractTbRefIfacesParentIf::LocalIfMethodListAsync(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param, this]()
+		{
+		return LocalIfMethodList(Param);
+	});
 }
 
 void UAbstractTbRefIfacesParentIf::ImportedIfMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TScriptInterface<ITbIfaceimportEmptyIfInterface>& Result, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
@@ -220,6 +238,15 @@ void UAbstractTbRefIfacesParentIf::ImportedIfMethodAsync(UObject* WorldContextOb
 	}
 }
 
+TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UAbstractTbRefIfacesParentIf::ImportedIfMethodAsync(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param, this]()
+		{
+		return ImportedIfMethod(Param);
+	});
+}
+
 void UAbstractTbRefIfacesParentIf::ImportedIfMethodListAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Result, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -253,6 +280,15 @@ void UAbstractTbRefIfacesParentIf::ImportedIfMethodListAsync(UObject* WorldConte
 			});
 		}
 	}
+}
+
+TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> UAbstractTbRefIfacesParentIf::ImportedIfMethodListAsync(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param, this]()
+		{
+		return ImportedIfMethodList(Param);
+	});
 }
 
 void UAbstractTbRefIfacesParentIf::Initialize(FSubsystemCollectionBase& Collection)

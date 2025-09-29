@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+#include "Async/Future.h"
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
@@ -244,26 +245,31 @@ public:
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructBool>& Result, const FTestbed1StructBoolWithArray& ParamBool) = 0;
+	virtual TFuture<TArray<FTestbed1StructBool>> FuncBoolAsync(const FTestbed1StructBoolWithArray& ParamBool) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations")
 	virtual TArray<FTestbed1StructBool> FuncBool(const FTestbed1StructBoolWithArray& ParamBool) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructInt>& Result, const FTestbed1StructIntWithArray& ParamInt) = 0;
+	virtual TFuture<TArray<FTestbed1StructInt>> FuncIntAsync(const FTestbed1StructIntWithArray& ParamInt) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations")
 	virtual TArray<FTestbed1StructInt> FuncInt(const FTestbed1StructIntWithArray& ParamInt) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructFloat>& Result, const FTestbed1StructFloatWithArray& ParamFloat) = 0;
+	virtual TFuture<TArray<FTestbed1StructFloat>> FuncFloatAsync(const FTestbed1StructFloatWithArray& ParamFloat) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations")
 	virtual TArray<FTestbed1StructFloat> FuncFloat(const FTestbed1StructFloatWithArray& ParamFloat) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FTestbed1StructString>& Result, const FTestbed1StructStringWithArray& ParamString) = 0;
+	virtual TFuture<TArray<FTestbed1StructString>> FuncStringAsync(const FTestbed1StructStringWithArray& ParamString) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations")
 	virtual TArray<FTestbed1StructString> FuncString(const FTestbed1StructStringWithArray& ParamString) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void FuncEnumAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<ETestbed1Enum0>& Result, const FTestbed1StructEnumWithArray& ParamEnum) = 0;
+	virtual TFuture<TArray<ETestbed1Enum0>> FuncEnumAsync(const FTestbed1StructEnumWithArray& ParamEnum) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface|Operations")
 	virtual TArray<ETestbed1Enum0> FuncEnum(const FTestbed1StructEnumWithArray& ParamEnum) = 0;
 

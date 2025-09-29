@@ -139,10 +139,34 @@ void UTbSame2SameEnum2InterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->Func1(ETbSame2Enum1::TS2E1_Value1);
 	});
 
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<ETbSame2Enum1> Future = ImplFixture->GetImplementation()->Func1Async(ETbSame2Enum1::TS2E1_Value1);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbSame2Enum1& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.Func2", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->Func2(ETbSame2Enum1::TS2E1_Value1, ETbSame2Enum2::TS2E2_Value1);
+	});
+
+	LatentIt("Operation.Func2Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<ETbSame2Enum1> Future = ImplFixture->GetImplementation()->Func2Async(ETbSame2Enum1::TS2E1_Value1, ETbSame2Enum2::TS2E2_Value1);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbSame2Enum1& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

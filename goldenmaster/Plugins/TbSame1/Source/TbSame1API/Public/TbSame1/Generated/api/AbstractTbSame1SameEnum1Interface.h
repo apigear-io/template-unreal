@@ -42,6 +42,7 @@ public:
 
 	// methods
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, ETbSame1Enum1& Result, ETbSame1Enum1 Param1) override;
+	virtual TFuture<ETbSame1Enum1> Func1Async(ETbSame1Enum1 Param1) override;
 	virtual ETbSame1Enum1 Func1(ETbSame1Enum1 Param1) override PURE_VIRTUAL(UAbstractTbSame1SameEnum1Interface::Func1, return ETbSame1Enum1::TS1E1_Value1;);
 
 	// properties

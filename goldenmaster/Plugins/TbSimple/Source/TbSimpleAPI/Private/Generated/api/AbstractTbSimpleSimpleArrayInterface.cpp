@@ -195,6 +195,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync(UObject* WorldContextO
 	}
 }
 
+TFuture<TArray<bool>> UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync(const TArray<bool>& ParamBool)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamBool, this]()
+		{
+		return FuncBool(ParamBool);
+	});
+}
+
 void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -228,6 +237,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync(UObject* WorldContextOb
 			});
 		}
 	}
+}
+
+TFuture<TArray<int32>> UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync(const TArray<int32>& ParamInt)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamInt, this]()
+		{
+		return FuncInt(ParamInt);
+	});
 }
 
 void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int32>& Result, const TArray<int32>& ParamInt32)
@@ -265,6 +283,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async(UObject* WorldContext
 	}
 }
 
+TFuture<TArray<int32>> UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async(const TArray<int32>& ParamInt32)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamInt32, this]()
+		{
+		return FuncInt32(ParamInt32);
+	});
+}
+
 void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<int64>& Result, const TArray<int64>& ParamInt64)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -298,6 +325,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async(UObject* WorldContext
 			});
 		}
 	}
+}
+
+TFuture<TArray<int64>> UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async(const TArray<int64>& ParamInt64)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamInt64, this]()
+		{
+		return FuncInt64(ParamInt64);
+	});
 }
 
 void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat)
@@ -335,6 +371,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync(UObject* WorldContext
 	}
 }
 
+TFuture<TArray<float>> UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync(const TArray<float>& ParamFloat)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamFloat, this]()
+		{
+		return FuncFloat(ParamFloat);
+	});
+}
+
 void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<float>& Result, const TArray<float>& ParamFloat32)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -368,6 +413,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async(UObject* WorldConte
 			});
 		}
 	}
+}
+
+TFuture<TArray<float>> UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async(const TArray<float>& ParamFloat32)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamFloat32, this]()
+		{
+		return FuncFloat32(ParamFloat32);
+	});
 }
 
 void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<double>& Result, const TArray<double>& ParamFloat)
@@ -405,6 +459,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async(UObject* WorldConte
 	}
 }
 
+TFuture<TArray<double>> UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async(const TArray<double>& ParamFloat)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamFloat, this]()
+		{
+		return FuncFloat64(ParamFloat);
+	});
+}
+
 void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FString>& Result, const TArray<FString>& ParamString)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -438,6 +501,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync(UObject* WorldContex
 			});
 		}
 	}
+}
+
+TFuture<TArray<FString>> UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync(const TArray<FString>& ParamString)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamString, this]()
+		{
+		return FuncString(ParamString);
+	});
 }
 
 void UAbstractTbSimpleSimpleArrayInterface::Initialize(FSubsystemCollectionBase& Collection)

@@ -150,6 +150,15 @@ void UAbstractTestbed2ManyParamInterface::Func1Async(UObject* WorldContextObject
 	}
 }
 
+TFuture<int32> UAbstractTestbed2ManyParamInterface::Func1Async(int32 Param1)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, this]()
+		{
+		return Func1(Param1);
+	});
+}
+
 void UAbstractTestbed2ManyParamInterface::Func2Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -183,6 +192,15 @@ void UAbstractTestbed2ManyParamInterface::Func2Async(UObject* WorldContextObject
 			});
 		}
 	}
+}
+
+TFuture<int32> UAbstractTestbed2ManyParamInterface::Func2Async(int32 Param1, int32 Param2)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, Param2, this]()
+		{
+		return Func2(Param1, Param2);
+	});
 }
 
 void UAbstractTestbed2ManyParamInterface::Func3Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3)
@@ -220,6 +238,15 @@ void UAbstractTestbed2ManyParamInterface::Func3Async(UObject* WorldContextObject
 	}
 }
 
+TFuture<int32> UAbstractTestbed2ManyParamInterface::Func3Async(int32 Param1, int32 Param2, int32 Param3)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, Param2, Param3, this]()
+		{
+		return Func3(Param1, Param2, Param3);
+	});
+}
+
 void UAbstractTestbed2ManyParamInterface::Func4Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
@@ -253,6 +280,15 @@ void UAbstractTestbed2ManyParamInterface::Func4Async(UObject* WorldContextObject
 			});
 		}
 	}
+}
+
+TFuture<int32> UAbstractTestbed2ManyParamInterface::Func4Async(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, Param2, Param3, Param4, this]()
+		{
+		return Func4(Param1, Param2, Param3, Param4);
+	});
 }
 
 void UAbstractTestbed2ManyParamInterface::Initialize(FSubsystemCollectionBase& Collection)

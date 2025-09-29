@@ -120,6 +120,15 @@ void UAbstractTestbed2NestedStruct1Interface::Func1Async(UObject* WorldContextOb
 	}
 }
 
+TFuture<FTestbed2NestedStruct1> UAbstractTestbed2NestedStruct1Interface::Func1Async(const FTestbed2NestedStruct1& Param1)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, this]()
+		{
+		return Func1(Param1);
+	});
+}
+
 void UAbstractTestbed2NestedStruct1Interface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);

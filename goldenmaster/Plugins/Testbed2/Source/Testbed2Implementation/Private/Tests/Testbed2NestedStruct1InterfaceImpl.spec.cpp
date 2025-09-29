@@ -96,6 +96,18 @@ void UTestbed2NestedStruct1InterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->Func1(FTestbed2NestedStruct1());
 	});
 
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FTestbed2NestedStruct1> Future = ImplFixture->GetImplementation()->Func1Async(FTestbed2NestedStruct1());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed2NestedStruct1& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		UTestbed2NestedStruct1InterfacePublisher* Testbed2NestedStruct1InterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();

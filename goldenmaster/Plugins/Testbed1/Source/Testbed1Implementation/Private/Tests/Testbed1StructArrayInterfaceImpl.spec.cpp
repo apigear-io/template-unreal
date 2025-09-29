@@ -268,10 +268,34 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->FuncBool(TArray<FTestbed1StructBool>());
 	});
 
+	LatentIt("Operation.FuncBoolAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TArray<FTestbed1StructBool>> Future = ImplFixture->GetImplementation()->FuncBoolAsync(TArray<FTestbed1StructBool>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FTestbed1StructBool>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.FuncInt", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncInt(TArray<FTestbed1StructInt>());
+	});
+
+	LatentIt("Operation.FuncIntAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TArray<FTestbed1StructInt>> Future = ImplFixture->GetImplementation()->FuncIntAsync(TArray<FTestbed1StructInt>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FTestbed1StructInt>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	It("Operation.FuncFloat", [this]()
@@ -280,16 +304,52 @@ void UTestbed1StructArrayInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->FuncFloat(TArray<FTestbed1StructFloat>());
 	});
 
+	LatentIt("Operation.FuncFloatAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TArray<FTestbed1StructFloat>> Future = ImplFixture->GetImplementation()->FuncFloatAsync(TArray<FTestbed1StructFloat>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FTestbed1StructFloat>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.FuncString", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncString(TArray<FTestbed1StructString>());
 	});
 
+	LatentIt("Operation.FuncStringAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TArray<FTestbed1StructString>> Future = ImplFixture->GetImplementation()->FuncStringAsync(TArray<FTestbed1StructString>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FTestbed1StructString>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.FuncEnum", [this]()
 		{
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncEnum(TArray<ETestbed1Enum0>());
+	});
+
+	LatentIt("Operation.FuncEnumAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<TArray<ETestbed1Enum0>> Future = ImplFixture->GetImplementation()->FuncEnumAsync(TArray<ETestbed1Enum0>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<ETestbed1Enum0>& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)

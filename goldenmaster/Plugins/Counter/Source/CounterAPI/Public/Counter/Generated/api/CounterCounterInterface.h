@@ -15,6 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+#include "Async/Future.h"
 #include "Engine/LatentActionManager.h"
 #include "UObject/Interface.h"
 #include "Misc/ScopeRWLock.h"
@@ -185,21 +186,25 @@ public:
 	// methods
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void IncrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec) = 0;
+	virtual TFuture<FVector> IncrementAsync(const FVector& Vec) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
 	virtual FVector Increment(const FVector& Vec) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void IncrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec) = 0;
+	virtual TFuture<TArray<FVector>> IncrementArrayAsync(const TArray<FVector>& Vec) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
 	virtual TArray<FVector> IncrementArray(const TArray<FVector>& Vec) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void DecrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FCustomTypesVector3D& Result, const FCustomTypesVector3D& Vec) = 0;
+	virtual TFuture<FCustomTypesVector3D> DecrementAsync(const FCustomTypesVector3D& Vec) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
 	virtual FCustomTypesVector3D Decrement(const FCustomTypesVector3D& Vec) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void DecrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FCustomTypesVector3D>& Result, const TArray<FCustomTypesVector3D>& Vec) = 0;
+	virtual TFuture<TArray<FCustomTypesVector3D>> DecrementArrayAsync(const TArray<FCustomTypesVector3D>& Vec) = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|Operations")
 	virtual TArray<FCustomTypesVector3D> DecrementArray(const TArray<FCustomTypesVector3D>& Vec) = 0;
 

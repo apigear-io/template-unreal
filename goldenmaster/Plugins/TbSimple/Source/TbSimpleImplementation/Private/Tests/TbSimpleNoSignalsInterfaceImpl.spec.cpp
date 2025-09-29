@@ -144,6 +144,18 @@ void UTbSimpleNoSignalsInterfaceImplSpec::Define()
 		// Do implement test here
 		ImplFixture->GetImplementation()->FuncBool(false);
 	});
+
+	LatentIt("Operation.FuncBoolAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<bool> Future = ImplFixture->GetImplementation()->FuncBoolAsync(false);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const bool& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
 }
 
 #endif // WITH_DEV_AUTOMATION_TESTS

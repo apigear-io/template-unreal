@@ -55,6 +55,7 @@ public:
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override PURE_VIRTUAL({{ $abstractclass}}::{{Camel .Name}}, return;);
 {{- else }}
 	virtual void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) override;
+	virtual TFuture<{{ueReturn "" .Return}}> {{Camel .Name}}Async({{ueParams "" .Params}}) override;
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override PURE_VIRTUAL({{ $abstractclass}}::{{Camel .Name}}, return {{ueDefault "" .Return}};);
 {{- end }}
 {{ else }}

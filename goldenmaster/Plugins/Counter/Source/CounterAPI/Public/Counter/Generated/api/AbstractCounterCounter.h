@@ -42,15 +42,19 @@ public:
 
 	// methods
 	virtual void IncrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FVector& Result, const FVector& Vec) override;
+	virtual TFuture<FVector> IncrementAsync(const FVector& Vec) override;
 	virtual FVector Increment(const FVector& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::Increment, return FVector(0.f, 0.f, 0.f););
 
 	virtual void IncrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FVector>& Result, const TArray<FVector>& Vec) override;
+	virtual TFuture<TArray<FVector>> IncrementArrayAsync(const TArray<FVector>& Vec) override;
 	virtual TArray<FVector> IncrementArray(const TArray<FVector>& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::IncrementArray, return TArray<FVector>(););
 
 	virtual void DecrementAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FCustomTypesVector3D& Result, const FCustomTypesVector3D& Vec) override;
+	virtual TFuture<FCustomTypesVector3D> DecrementAsync(const FCustomTypesVector3D& Vec) override;
 	virtual FCustomTypesVector3D Decrement(const FCustomTypesVector3D& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::Decrement, return FCustomTypesVector3D(););
 
 	virtual void DecrementArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, TArray<FCustomTypesVector3D>& Result, const TArray<FCustomTypesVector3D>& Vec) override;
+	virtual TFuture<TArray<FCustomTypesVector3D>> DecrementArrayAsync(const TArray<FCustomTypesVector3D>& Vec) override;
 	virtual TArray<FCustomTypesVector3D> DecrementArray(const TArray<FCustomTypesVector3D>& Vec) override PURE_VIRTUAL(UAbstractCounterCounter::DecrementArray, return TArray<FCustomTypesVector3D>(););
 
 	// properties

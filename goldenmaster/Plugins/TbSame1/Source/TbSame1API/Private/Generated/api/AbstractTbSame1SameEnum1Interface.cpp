@@ -120,6 +120,15 @@ void UAbstractTbSame1SameEnum1Interface::Func1Async(UObject* WorldContextObject,
 	}
 }
 
+TFuture<ETbSame1Enum1> UAbstractTbSame1SameEnum1Interface::Func1Async(ETbSame1Enum1 Param1)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, this]()
+		{
+		return Func1(Param1);
+	});
+}
+
 void UAbstractTbSame1SameEnum1Interface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);
