@@ -98,7 +98,7 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
 
 {{- else if .IsPrimitive }}
     jsize len{{snake .Name}} = env->GetArrayLength({{snake .Name}}_value);
-    {{$structName}}.{{$cppFieldName}}.Reserve(len{{snake .Name}});
+    {{$structName}}.{{$cppFieldName}}.AddUninitialized(len{{snake .Name}});
     env->Get{{jniToEnvNameType .}}ArrayRegion({{snake .Name}}_value, 0,  len{{snake .Name}}, {{- if (eq .KindType "int64") -}}
         reinterpret_cast<jlong*>({{$structName}}.{{$cppFieldName}}.GetData()));
         {{- else -}}
