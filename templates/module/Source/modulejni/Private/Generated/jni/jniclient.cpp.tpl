@@ -426,10 +426,10 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed(JNIEnv* En
     {{- $hasLocalVar := or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
     {{- $local_value :=  printf "local_%s" (snake .Name) }}
 
-    AsyncTask(ENamedThreads::GameThread, [{{- if $hasLocalVar }}{{$local_value}}{{- else}}{{$javaPropName}}{{- end}}]()
+    AsyncTask(ENamedThreads::GameThread, [{{- if $hasLocalVar }}p{{$local_value -}} = MoveTemp({{$local_value -}}){{- else}}{{$javaPropName}}{{- end}}]()
     {
     {{- if $hasLocalVar }}
-        g{{$Class}}On{{Camel .Name}}Changed({{$local_value}});
+        g{{$Class}}On{{Camel .Name}}Changed(p{{$local_value}});
     {{- else}}
         g{{$Class}}On{{Camel .Name}}Changed({{$javaPropName}});
     {{- end}}
@@ -455,7 +455,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jcla
     AsyncTask(ENamedThreads::GameThread, [{{- range $idx, $p := .Params -}}
             {{- if $idx}}, {{ end -}}
             {{- $local_value :=  printf "local_%s" (snake .Name) -}}
-            {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} {{$local_value -}}
+            {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} p{{$local_value -}} = MoveTemp({{$local_value -}})
             {{- else }} {{.Name}}
             {{- end -}}
         {{- end -}}]()
@@ -468,7 +468,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jcla
             g{{$Class}}Handle->_GetSignals()->Broadcast{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
             {{- if $idx}}, {{ end -}}
             {{- $local_value :=  printf "local_%s" (snake .Name) -}}
-            {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} {{$local_value -}}
+            {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} p{{$local_value -}}
             {{- else }} {{ .Name}}
             {{- end -}}
         {{- end -}});
@@ -530,9 +530,9 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 {{- end }}
 
     FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, {{if $hasLocalVar}}cpp_{{end}}result]()
+    AsyncTask(ENamedThreads::GameThread, [guid, {{if $hasLocalVar}}local_result = MoveTemp(cpp_result){{else}}result{{end}}]()
     {
-        g{{$Class}}methodHelper.FulfillPromise(guid, {{if $hasLocalVar}}cpp_{{end}}result);
+        g{{$Class}}methodHelper.FulfillPromise(guid, {{if $hasLocalVar}}local_{{end}}result);
     });
     {{ else }}
     FGuid::Parse(callIdString, guid);
