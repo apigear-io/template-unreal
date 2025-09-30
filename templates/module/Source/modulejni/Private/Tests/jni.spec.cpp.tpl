@@ -308,7 +308,7 @@ void {{$Class}}JniSpec::Define()
 		{{- else }}
 		TestValue = {{ ueTestValue "" . }};
 		{{- end }}
-		auto service = ImplFixture->GetGameInstance()->GetSubsystem<U{{$DisplayName}}Implementation>();
+		auto service = ImplFixture->GetLocalImplementation();
 		service->Set{{Camel .Name}}(TestValue);
 	});
 	{{- end }}
