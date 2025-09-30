@@ -85,7 +85,7 @@
     {{- else if .IsPrimitive }}
     {{ jniToReturnType . }} l_java{{Camel .Name}}Array = ({{ jniToReturnType . }}){{$javaPropName}};
     jsize len{{snake .Name}} = Env->GetArrayLength(l_java{{Camel .Name}}Array);
-    {{$local_value}}.Reserve(len{{snake .Name}});
+    {{$local_value}}.AddUninitialized(len{{snake .Name}});
     Env->Get{{jniToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0,  len{{snake .Name}}, {{- if (eq .KindType "int64") -}}
         reinterpret_cast<jlong*>({{$local_value}}.GetData()));
         {{- else -}}
