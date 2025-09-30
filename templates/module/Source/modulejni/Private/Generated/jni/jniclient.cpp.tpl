@@ -496,7 +496,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
     {{- else if (eq .Return.KindType "bool")}}
     jbooleanArray localArray = (jbooleanArray)result;
     jsize len = Env->GetArrayLength(localArray);
-    cpp_result.Reserve(len);
+    cpp_result.AddUninitialized(len);
     TArray<jboolean> Temp;
     Temp.SetNumUninitialized(len);
     Env->GetBooleanArrayRegion(localArray, 0, len, Temp.GetData());
@@ -508,7 +508,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
     {{- else if .Return.IsPrimitive }}
     {{ jniToReturnType .Return }} localArray = ({{ jniToReturnType .Return }})result;
     jsize len = Env->GetArrayLength(localArray);
-    cpp_result.Reserve(len);
+    cpp_result.AddUninitialized(len);
     Env->Get{{jniToEnvNameType .Return}}ArrayRegion(result, 0,  len, {{- if (eq .Return.KindType "int64") -}}
         reinterpret_cast<jlong*>(cpp_result.GetData()));
         {{- else -}}
