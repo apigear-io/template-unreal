@@ -479,13 +479,13 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}(JNIEnv* Env, j
     {{- $hasLocalVar := or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }}
     {{- $local_value :=  printf "local_%s" (snake .Name) }}
 
-    AsyncTask(ENamedThreads::GameThread, [{{- if $hasLocalVar }}{{$local_value}}{{- else}}{{$javaPropName}}{{- end}}]()
+    AsyncTask(ENamedThreads::GameThread, [{{- if $hasLocalVar }}p{{$local_value -}} = MoveTemp({{$local_value -}}){{- else}}{{$javaPropName}}{{- end}}]()
     {
         auto service = g{{$Class}}Handle->getBackendService();
         if (service != nullptr)
         {
         {{- if $hasLocalVar }}
-            service->Set{{Camel .Name}}({{$local_value}});
+            service->Set{{Camel .Name}}(p{{$local_value}});
         {{- else}}
             service->Set{{Camel .Name}}({{$javaPropName}});
         {{- end}}
