@@ -20,42 +20,55 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
+template <typename TAsyncResult>
 class FTbEnumEnumInterfaceLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
 	int32 OutputLink;
 	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
+	TAtomic<bool> bCancelled{false};
+	TFuture<TAsyncResult> Future;
+	TAsyncResult* OutPtr;
 
 public:
-	FTbEnumEnumInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbEnumEnumInterfaceLatentAction(const FLatentActionInfo& LatentInfo,
+		TFuture<TAsyncResult>&& InFuture,
+		TAsyncResult& ResultReference)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
+		, Future(MoveTemp(InFuture))
+		, OutPtr(&ResultReference)
 	{
 	}
 
 	void Cancel()
 	{
-		bInProgress = false;
+		bCancelled.Store(true);
 	}
 
-	virtual void UpdateOperation(FLatentResponse& Response) override
+	void UpdateOperation(FLatentResponse& Response) override
 	{
-		if (bInProgress == false)
+		if (bCancelled.Load())
 		{
+			Response.DoneIf(true);
+			return;
+		}
+
+		if (Future.IsReady())
+		{
+			*OutPtr = Future.Get();
 			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
 		}
 	}
 
-	virtual void NotifyObjectDestroyed()
+	void NotifyObjectDestroyed() override
 	{
 		Cancel();
 	}
 
-	virtual void NotifyActionAborted()
+	void NotifyActionAborted() override
 	{
 		Cancel();
 	}
@@ -120,7 +133,7 @@ void UAbstractTbEnumEnumInterface::Func0Async(UObject* WorldContextObject, FLate
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbEnumEnumInterfaceLatentAction<ETbEnumEnum0>* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction<ETbEnumEnum0>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -129,24 +142,9 @@ void UAbstractTbEnumEnumInterface::Func0Async(UObject* WorldContextObject, FLate
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
+		TFuture<ETbEnumEnum0> Future = Func0Async(Param0);
+		FTbEnumEnumInterfaceLatentAction<ETbEnumEnum0>* CompletionAction = new FTbEnumEnumInterfaceLatentAction<ETbEnumEnum0>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = Func0(Param0);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Param0, this, &Result, CompletionAction]()
-				{
-				Result = Func0(Param0);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -164,7 +162,7 @@ void UAbstractTbEnumEnumInterface::Func1Async(UObject* WorldContextObject, FLate
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbEnumEnumInterfaceLatentAction<ETbEnumEnum1>* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction<ETbEnumEnum1>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -173,24 +171,9 @@ void UAbstractTbEnumEnumInterface::Func1Async(UObject* WorldContextObject, FLate
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
+		TFuture<ETbEnumEnum1> Future = Func1Async(Param1);
+		FTbEnumEnumInterfaceLatentAction<ETbEnumEnum1>* CompletionAction = new FTbEnumEnumInterfaceLatentAction<ETbEnumEnum1>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = Func1(Param1);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Param1, this, &Result, CompletionAction]()
-				{
-				Result = Func1(Param1);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -208,7 +191,7 @@ void UAbstractTbEnumEnumInterface::Func2Async(UObject* WorldContextObject, FLate
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbEnumEnumInterfaceLatentAction<ETbEnumEnum2>* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction<ETbEnumEnum2>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -217,24 +200,9 @@ void UAbstractTbEnumEnumInterface::Func2Async(UObject* WorldContextObject, FLate
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
+		TFuture<ETbEnumEnum2> Future = Func2Async(Param2);
+		FTbEnumEnumInterfaceLatentAction<ETbEnumEnum2>* CompletionAction = new FTbEnumEnumInterfaceLatentAction<ETbEnumEnum2>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = Func2(Param2);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Param2, this, &Result, CompletionAction]()
-				{
-				Result = Func2(Param2);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -252,7 +220,7 @@ void UAbstractTbEnumEnumInterface::Func3Async(UObject* WorldContextObject, FLate
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbEnumEnumInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbEnumEnumInterfaceLatentAction<ETbEnumEnum3>* oldRequest = LatentActionManager.FindExistingAction<FTbEnumEnumInterfaceLatentAction<ETbEnumEnum3>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -261,24 +229,9 @@ void UAbstractTbEnumEnumInterface::Func3Async(UObject* WorldContextObject, FLate
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbEnumEnumInterfaceLatentAction* CompletionAction = new FTbEnumEnumInterfaceLatentAction(LatentInfo);
+		TFuture<ETbEnumEnum3> Future = Func3Async(Param3);
+		FTbEnumEnumInterfaceLatentAction<ETbEnumEnum3>* CompletionAction = new FTbEnumEnumInterfaceLatentAction<ETbEnumEnum3>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = Func3(Param3);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Param3, this, &Result, CompletionAction]()
-				{
-				Result = Func3(Param3);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 

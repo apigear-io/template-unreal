@@ -20,42 +20,55 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
+template <typename TAsyncResult>
 class FTbNamesNamEsLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
 	int32 OutputLink;
 	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
+	TAtomic<bool> bCancelled{false};
+	TFuture<TAsyncResult> Future;
+	TAsyncResult* OutPtr;
 
 public:
-	FTbNamesNamEsLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbNamesNamEsLatentAction(const FLatentActionInfo& LatentInfo,
+		TFuture<TAsyncResult>&& InFuture,
+		TAsyncResult& ResultReference)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
+		, Future(MoveTemp(InFuture))
+		, OutPtr(&ResultReference)
 	{
 	}
 
 	void Cancel()
 	{
-		bInProgress = false;
+		bCancelled.Store(true);
 	}
 
-	virtual void UpdateOperation(FLatentResponse& Response) override
+	void UpdateOperation(FLatentResponse& Response) override
 	{
-		if (bInProgress == false)
+		if (bCancelled.Load())
 		{
+			Response.DoneIf(true);
+			return;
+		}
+
+		if (Future.IsReady())
+		{
+			*OutPtr = Future.Get();
 			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
 		}
 	}
 
-	virtual void NotifyObjectDestroyed()
+	void NotifyObjectDestroyed() override
 	{
 		Cancel();
 	}
 
-	virtual void NotifyActionAborted()
+	void NotifyActionAborted() override
 	{
 		Cancel();
 	}

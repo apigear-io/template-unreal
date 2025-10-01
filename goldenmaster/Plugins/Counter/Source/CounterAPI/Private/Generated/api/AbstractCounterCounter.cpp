@@ -20,42 +20,55 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
+template <typename TAsyncResult>
 class FCounterCounterLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
 	int32 OutputLink;
 	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
+	TAtomic<bool> bCancelled{false};
+	TFuture<TAsyncResult> Future;
+	TAsyncResult* OutPtr;
 
 public:
-	FCounterCounterLatentAction(const FLatentActionInfo& LatentInfo)
+	FCounterCounterLatentAction(const FLatentActionInfo& LatentInfo,
+		TFuture<TAsyncResult>&& InFuture,
+		TAsyncResult& ResultReference)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
+		, Future(MoveTemp(InFuture))
+		, OutPtr(&ResultReference)
 	{
 	}
 
 	void Cancel()
 	{
-		bInProgress = false;
+		bCancelled.Store(true);
 	}
 
-	virtual void UpdateOperation(FLatentResponse& Response) override
+	void UpdateOperation(FLatentResponse& Response) override
 	{
-		if (bInProgress == false)
+		if (bCancelled.Load())
 		{
+			Response.DoneIf(true);
+			return;
+		}
+
+		if (Future.IsReady())
+		{
+			*OutPtr = Future.Get();
 			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
 		}
 	}
 
-	virtual void NotifyObjectDestroyed()
+	void NotifyObjectDestroyed() override
 	{
 		Cancel();
 	}
 
-	virtual void NotifyActionAborted()
+	void NotifyActionAborted() override
 	{
 		Cancel();
 	}
@@ -120,7 +133,7 @@ void UAbstractCounterCounter::IncrementAsync(UObject* WorldContextObject, FLaten
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FCounterCounterLatentAction* oldRequest = LatentActionManager.FindExistingAction<FCounterCounterLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FCounterCounterLatentAction<FVector>* oldRequest = LatentActionManager.FindExistingAction<FCounterCounterLatentAction<FVector>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -129,24 +142,9 @@ void UAbstractCounterCounter::IncrementAsync(UObject* WorldContextObject, FLaten
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FCounterCounterLatentAction* CompletionAction = new FCounterCounterLatentAction(LatentInfo);
+		TFuture<FVector> Future = IncrementAsync(Vec);
+		FCounterCounterLatentAction<FVector>* CompletionAction = new FCounterCounterLatentAction<FVector>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = Increment(Vec);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Vec, this, &Result, CompletionAction]()
-				{
-				Result = Increment(Vec);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -164,7 +162,7 @@ void UAbstractCounterCounter::IncrementArrayAsync(UObject* WorldContextObject, F
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FCounterCounterLatentAction* oldRequest = LatentActionManager.FindExistingAction<FCounterCounterLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FCounterCounterLatentAction<TArray<FVector>>* oldRequest = LatentActionManager.FindExistingAction<FCounterCounterLatentAction<TArray<FVector>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -173,24 +171,9 @@ void UAbstractCounterCounter::IncrementArrayAsync(UObject* WorldContextObject, F
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FCounterCounterLatentAction* CompletionAction = new FCounterCounterLatentAction(LatentInfo);
+		TFuture<TArray<FVector>> Future = IncrementArrayAsync(Vec);
+		FCounterCounterLatentAction<TArray<FVector>>* CompletionAction = new FCounterCounterLatentAction<TArray<FVector>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = IncrementArray(Vec);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Vec, this, &Result, CompletionAction]()
-				{
-				Result = IncrementArray(Vec);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -208,7 +191,7 @@ void UAbstractCounterCounter::DecrementAsync(UObject* WorldContextObject, FLaten
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FCounterCounterLatentAction* oldRequest = LatentActionManager.FindExistingAction<FCounterCounterLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FCounterCounterLatentAction<FCustomTypesVector3D>* oldRequest = LatentActionManager.FindExistingAction<FCounterCounterLatentAction<FCustomTypesVector3D>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -217,24 +200,9 @@ void UAbstractCounterCounter::DecrementAsync(UObject* WorldContextObject, FLaten
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FCounterCounterLatentAction* CompletionAction = new FCounterCounterLatentAction(LatentInfo);
+		TFuture<FCustomTypesVector3D> Future = DecrementAsync(Vec);
+		FCounterCounterLatentAction<FCustomTypesVector3D>* CompletionAction = new FCounterCounterLatentAction<FCustomTypesVector3D>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = Decrement(Vec);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Vec, this, &Result, CompletionAction]()
-				{
-				Result = Decrement(Vec);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -252,7 +220,7 @@ void UAbstractCounterCounter::DecrementArrayAsync(UObject* WorldContextObject, F
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FCounterCounterLatentAction* oldRequest = LatentActionManager.FindExistingAction<FCounterCounterLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FCounterCounterLatentAction<TArray<FCustomTypesVector3D>>* oldRequest = LatentActionManager.FindExistingAction<FCounterCounterLatentAction<TArray<FCustomTypesVector3D>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -261,24 +229,9 @@ void UAbstractCounterCounter::DecrementArrayAsync(UObject* WorldContextObject, F
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FCounterCounterLatentAction* CompletionAction = new FCounterCounterLatentAction(LatentInfo);
+		TFuture<TArray<FCustomTypesVector3D>> Future = DecrementArrayAsync(Vec);
+		FCounterCounterLatentAction<TArray<FCustomTypesVector3D>>* CompletionAction = new FCounterCounterLatentAction<TArray<FCustomTypesVector3D>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = DecrementArray(Vec);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Vec, this, &Result, CompletionAction]()
-				{
-				Result = DecrementArray(Vec);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 

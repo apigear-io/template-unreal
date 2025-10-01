@@ -20,42 +20,55 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
+template <typename TAsyncResult>
 class FTbRefIfacesParentIfLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
 	int32 OutputLink;
 	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
+	TAtomic<bool> bCancelled{false};
+	TFuture<TAsyncResult> Future;
+	TAsyncResult* OutPtr;
 
 public:
-	FTbRefIfacesParentIfLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbRefIfacesParentIfLatentAction(const FLatentActionInfo& LatentInfo,
+		TFuture<TAsyncResult>&& InFuture,
+		TAsyncResult& ResultReference)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
+		, Future(MoveTemp(InFuture))
+		, OutPtr(&ResultReference)
 	{
 	}
 
 	void Cancel()
 	{
-		bInProgress = false;
+		bCancelled.Store(true);
 	}
 
-	virtual void UpdateOperation(FLatentResponse& Response) override
+	void UpdateOperation(FLatentResponse& Response) override
 	{
-		if (bInProgress == false)
+		if (bCancelled.Load())
 		{
+			Response.DoneIf(true);
+			return;
+		}
+
+		if (Future.IsReady())
+		{
+			*OutPtr = Future.Get();
 			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
 		}
 	}
 
-	virtual void NotifyObjectDestroyed()
+	void NotifyObjectDestroyed() override
 	{
 		Cancel();
 	}
 
-	virtual void NotifyActionAborted()
+	void NotifyActionAborted() override
 	{
 		Cancel();
 	}
@@ -120,7 +133,7 @@ void UAbstractTbRefIfacesParentIf::LocalIfMethodAsync(UObject* WorldContextObjec
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbRefIfacesParentIfLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbRefIfacesParentIfLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbRefIfacesParentIfLatentAction<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>* oldRequest = LatentActionManager.FindExistingAction<FTbRefIfacesParentIfLatentAction<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -129,24 +142,9 @@ void UAbstractTbRefIfacesParentIf::LocalIfMethodAsync(UObject* WorldContextObjec
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbRefIfacesParentIfLatentAction* CompletionAction = new FTbRefIfacesParentIfLatentAction(LatentInfo);
+		TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Future = LocalIfMethodAsync(Param);
+		FTbRefIfacesParentIfLatentAction<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>* CompletionAction = new FTbRefIfacesParentIfLatentAction<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = LocalIfMethod(Param);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Param, this, &Result, CompletionAction]()
-				{
-				Result = LocalIfMethod(Param);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -164,7 +162,7 @@ void UAbstractTbRefIfacesParentIf::LocalIfMethodListAsync(UObject* WorldContextO
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbRefIfacesParentIfLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbRefIfacesParentIfLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbRefIfacesParentIfLatentAction<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>* oldRequest = LatentActionManager.FindExistingAction<FTbRefIfacesParentIfLatentAction<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -173,24 +171,9 @@ void UAbstractTbRefIfacesParentIf::LocalIfMethodListAsync(UObject* WorldContextO
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbRefIfacesParentIfLatentAction* CompletionAction = new FTbRefIfacesParentIfLatentAction(LatentInfo);
+		TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Future = LocalIfMethodListAsync(Param);
+		FTbRefIfacesParentIfLatentAction<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>* CompletionAction = new FTbRefIfacesParentIfLatentAction<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = LocalIfMethodList(Param);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Param, this, &Result, CompletionAction]()
-				{
-				Result = LocalIfMethodList(Param);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -208,7 +191,7 @@ void UAbstractTbRefIfacesParentIf::ImportedIfMethodAsync(UObject* WorldContextOb
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbRefIfacesParentIfLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbRefIfacesParentIfLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbRefIfacesParentIfLatentAction<TScriptInterface<ITbIfaceimportEmptyIfInterface>>* oldRequest = LatentActionManager.FindExistingAction<FTbRefIfacesParentIfLatentAction<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -217,24 +200,9 @@ void UAbstractTbRefIfacesParentIf::ImportedIfMethodAsync(UObject* WorldContextOb
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbRefIfacesParentIfLatentAction* CompletionAction = new FTbRefIfacesParentIfLatentAction(LatentInfo);
+		TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Future = ImportedIfMethodAsync(Param);
+		FTbRefIfacesParentIfLatentAction<TScriptInterface<ITbIfaceimportEmptyIfInterface>>* CompletionAction = new FTbRefIfacesParentIfLatentAction<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = ImportedIfMethod(Param);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Param, this, &Result, CompletionAction]()
-				{
-				Result = ImportedIfMethod(Param);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -252,7 +220,7 @@ void UAbstractTbRefIfacesParentIf::ImportedIfMethodListAsync(UObject* WorldConte
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbRefIfacesParentIfLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbRefIfacesParentIfLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbRefIfacesParentIfLatentAction<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>* oldRequest = LatentActionManager.FindExistingAction<FTbRefIfacesParentIfLatentAction<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -261,24 +229,9 @@ void UAbstractTbRefIfacesParentIf::ImportedIfMethodListAsync(UObject* WorldConte
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbRefIfacesParentIfLatentAction* CompletionAction = new FTbRefIfacesParentIfLatentAction(LatentInfo);
+		TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Future = ImportedIfMethodListAsync(Param);
+		FTbRefIfacesParentIfLatentAction<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>* CompletionAction = new FTbRefIfacesParentIfLatentAction<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = ImportedIfMethodList(Param);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Param, this, &Result, CompletionAction]()
-				{
-				Result = ImportedIfMethodList(Param);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 

@@ -20,42 +20,55 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
+template <typename TAsyncResult>
 class FTbSimpleSimpleArrayInterfaceLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
 	int32 OutputLink;
 	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
+	TAtomic<bool> bCancelled{false};
+	TFuture<TAsyncResult> Future;
+	TAsyncResult* OutPtr;
 
 public:
-	FTbSimpleSimpleArrayInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTbSimpleSimpleArrayInterfaceLatentAction(const FLatentActionInfo& LatentInfo,
+		TFuture<TAsyncResult>&& InFuture,
+		TAsyncResult& ResultReference)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
+		, Future(MoveTemp(InFuture))
+		, OutPtr(&ResultReference)
 	{
 	}
 
 	void Cancel()
 	{
-		bInProgress = false;
+		bCancelled.Store(true);
 	}
 
-	virtual void UpdateOperation(FLatentResponse& Response) override
+	void UpdateOperation(FLatentResponse& Response) override
 	{
-		if (bInProgress == false)
+		if (bCancelled.Load())
 		{
+			Response.DoneIf(true);
+			return;
+		}
+
+		if (Future.IsReady())
+		{
+			*OutPtr = Future.Get();
 			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
 		}
 	}
 
-	virtual void NotifyObjectDestroyed()
+	void NotifyObjectDestroyed() override
 	{
 		Cancel();
 	}
 
-	virtual void NotifyActionAborted()
+	void NotifyActionAborted() override
 	{
 		Cancel();
 	}
@@ -165,7 +178,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync(UObject* WorldContextO
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<bool>>* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction<TArray<bool>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -174,24 +187,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync(UObject* WorldContextO
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		TFuture<TArray<bool>> Future = FuncBoolAsync(ParamBool);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<bool>>* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction<TArray<bool>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncBool(ParamBool);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamBool, this, &Result, CompletionAction]()
-				{
-				Result = FuncBool(ParamBool);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -209,7 +207,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync(UObject* WorldContextOb
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int32>>* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int32>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -218,24 +216,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync(UObject* WorldContextOb
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		TFuture<TArray<int32>> Future = FuncIntAsync(ParamInt);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int32>>* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int32>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncInt(ParamInt);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamInt, this, &Result, CompletionAction]()
-				{
-				Result = FuncInt(ParamInt);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -253,7 +236,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async(UObject* WorldContext
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int32>>* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int32>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -262,24 +245,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async(UObject* WorldContext
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		TFuture<TArray<int32>> Future = FuncInt32Async(ParamInt32);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int32>>* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int32>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncInt32(ParamInt32);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamInt32, this, &Result, CompletionAction]()
-				{
-				Result = FuncInt32(ParamInt32);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -297,7 +265,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async(UObject* WorldContext
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int64>>* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int64>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -306,24 +274,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async(UObject* WorldContext
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		TFuture<TArray<int64>> Future = FuncInt64Async(ParamInt64);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int64>>* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction<TArray<int64>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncInt64(ParamInt64);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamInt64, this, &Result, CompletionAction]()
-				{
-				Result = FuncInt64(ParamInt64);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -341,7 +294,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync(UObject* WorldContext
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<float>>* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction<TArray<float>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -350,24 +303,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync(UObject* WorldContext
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		TFuture<TArray<float>> Future = FuncFloatAsync(ParamFloat);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<float>>* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction<TArray<float>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncFloat(ParamFloat);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamFloat, this, &Result, CompletionAction]()
-				{
-				Result = FuncFloat(ParamFloat);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -385,7 +323,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async(UObject* WorldConte
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<float>>* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction<TArray<float>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -394,24 +332,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async(UObject* WorldConte
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		TFuture<TArray<float>> Future = FuncFloat32Async(ParamFloat32);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<float>>* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction<TArray<float>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncFloat32(ParamFloat32);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamFloat32, this, &Result, CompletionAction]()
-				{
-				Result = FuncFloat32(ParamFloat32);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -429,7 +352,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async(UObject* WorldConte
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<double>>* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction<TArray<double>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -438,24 +361,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async(UObject* WorldConte
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		TFuture<TArray<double>> Future = FuncFloat64Async(ParamFloat);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<double>>* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction<TArray<double>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncFloat64(ParamFloat);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamFloat, this, &Result, CompletionAction]()
-				{
-				Result = FuncFloat64(ParamFloat);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -473,7 +381,7 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync(UObject* WorldContex
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTbSimpleSimpleArrayInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<FString>>* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleArrayInterfaceLatentAction<TArray<FString>>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -482,24 +390,9 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync(UObject* WorldContex
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTbSimpleSimpleArrayInterfaceLatentAction* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction(LatentInfo);
+		TFuture<TArray<FString>> Future = FuncStringAsync(ParamString);
+		FTbSimpleSimpleArrayInterfaceLatentAction<TArray<FString>>* CompletionAction = new FTbSimpleSimpleArrayInterfaceLatentAction<TArray<FString>>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncString(ParamString);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamString, this, &Result, CompletionAction]()
-				{
-				Result = FuncString(ParamString);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
