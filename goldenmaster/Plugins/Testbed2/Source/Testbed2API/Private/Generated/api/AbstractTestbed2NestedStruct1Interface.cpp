@@ -20,42 +20,55 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
+template <typename TAsyncResult>
 class FTestbed2NestedStruct1InterfaceLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
 	int32 OutputLink;
 	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
+	TAtomic<bool> bCancelled{false};
+	TFuture<TAsyncResult> Future;
+	TAsyncResult* OutPtr;
 
 public:
-	FTestbed2NestedStruct1InterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTestbed2NestedStruct1InterfaceLatentAction(const FLatentActionInfo& LatentInfo,
+		TFuture<TAsyncResult>&& InFuture,
+		TAsyncResult& ResultReference)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
+		, Future(MoveTemp(InFuture))
+		, OutPtr(&ResultReference)
 	{
 	}
 
 	void Cancel()
 	{
-		bInProgress = false;
+		bCancelled.Store(true);
 	}
 
-	virtual void UpdateOperation(FLatentResponse& Response) override
+	void UpdateOperation(FLatentResponse& Response) override
 	{
-		if (bInProgress == false)
+		if (bCancelled.Load())
 		{
+			Response.DoneIf(true);
+			return;
+		}
+
+		if (Future.IsReady())
+		{
+			*OutPtr = Future.Get();
 			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
 		}
 	}
 
-	virtual void NotifyObjectDestroyed()
+	void NotifyObjectDestroyed() override
 	{
 		Cancel();
 	}
 
-	virtual void NotifyActionAborted()
+	void NotifyActionAborted() override
 	{
 		Cancel();
 	}
@@ -90,7 +103,7 @@ void UAbstractTestbed2NestedStruct1Interface::Func1Async(UObject* WorldContextOb
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed2NestedStruct1InterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct1InterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -99,24 +112,9 @@ void UAbstractTestbed2NestedStruct1Interface::Func1Async(UObject* WorldContextOb
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed2NestedStruct1InterfaceLatentAction* CompletionAction = new FTestbed2NestedStruct1InterfaceLatentAction(LatentInfo);
+		TFuture<FTestbed2NestedStruct1> Future = Func1Async(Param1);
+		FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>* CompletionAction = new FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = Func1(Param1);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[Param1, this, &Result, CompletionAction]()
-				{
-				Result = Func1(Param1);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 

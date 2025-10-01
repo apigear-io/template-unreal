@@ -20,42 +20,55 @@ limitations under the License.
 #include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
+template <typename TAsyncResult>
 class FTestbed1StructInterfaceLatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
 	int32 OutputLink;
 	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
+	TAtomic<bool> bCancelled{false};
+	TFuture<TAsyncResult> Future;
+	TAsyncResult* OutPtr;
 
 public:
-	FTestbed1StructInterfaceLatentAction(const FLatentActionInfo& LatentInfo)
+	FTestbed1StructInterfaceLatentAction(const FLatentActionInfo& LatentInfo,
+		TFuture<TAsyncResult>&& InFuture,
+		TAsyncResult& ResultReference)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
+		, Future(MoveTemp(InFuture))
+		, OutPtr(&ResultReference)
 	{
 	}
 
 	void Cancel()
 	{
-		bInProgress = false;
+		bCancelled.Store(true);
 	}
 
-	virtual void UpdateOperation(FLatentResponse& Response) override
+	void UpdateOperation(FLatentResponse& Response) override
 	{
-		if (bInProgress == false)
+		if (bCancelled.Load())
 		{
+			Response.DoneIf(true);
+			return;
+		}
+
+		if (Future.IsReady())
+		{
+			*OutPtr = Future.Get();
 			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
 		}
 	}
 
-	virtual void NotifyObjectDestroyed()
+	void NotifyObjectDestroyed() override
 	{
 		Cancel();
 	}
 
-	virtual void NotifyActionAborted()
+	void NotifyActionAborted() override
 	{
 		Cancel();
 	}
@@ -120,7 +133,7 @@ void UAbstractTestbed1StructInterface::FuncBoolAsync(UObject* WorldContextObject
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed1StructInterfaceLatentAction<FTestbed1StructBool>* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction<FTestbed1StructBool>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -129,24 +142,9 @@ void UAbstractTestbed1StructInterface::FuncBoolAsync(UObject* WorldContextObject
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
+		TFuture<FTestbed1StructBool> Future = FuncBoolAsync(ParamBool);
+		FTestbed1StructInterfaceLatentAction<FTestbed1StructBool>* CompletionAction = new FTestbed1StructInterfaceLatentAction<FTestbed1StructBool>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncBool(ParamBool);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamBool, this, &Result, CompletionAction]()
-				{
-				Result = FuncBool(ParamBool);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -164,7 +162,7 @@ void UAbstractTestbed1StructInterface::FuncIntAsync(UObject* WorldContextObject,
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed1StructInterfaceLatentAction<FTestbed1StructInt>* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction<FTestbed1StructInt>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -173,24 +171,9 @@ void UAbstractTestbed1StructInterface::FuncIntAsync(UObject* WorldContextObject,
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
+		TFuture<FTestbed1StructInt> Future = FuncIntAsync(ParamInt);
+		FTestbed1StructInterfaceLatentAction<FTestbed1StructInt>* CompletionAction = new FTestbed1StructInterfaceLatentAction<FTestbed1StructInt>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncInt(ParamInt);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamInt, this, &Result, CompletionAction]()
-				{
-				Result = FuncInt(ParamInt);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -208,7 +191,7 @@ void UAbstractTestbed1StructInterface::FuncFloatAsync(UObject* WorldContextObjec
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed1StructInterfaceLatentAction<FTestbed1StructFloat>* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction<FTestbed1StructFloat>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -217,24 +200,9 @@ void UAbstractTestbed1StructInterface::FuncFloatAsync(UObject* WorldContextObjec
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
+		TFuture<FTestbed1StructFloat> Future = FuncFloatAsync(ParamFloat);
+		FTestbed1StructInterfaceLatentAction<FTestbed1StructFloat>* CompletionAction = new FTestbed1StructInterfaceLatentAction<FTestbed1StructFloat>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncFloat(ParamFloat);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamFloat, this, &Result, CompletionAction]()
-				{
-				Result = FuncFloat(ParamFloat);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
@@ -252,7 +220,7 @@ void UAbstractTestbed1StructInterface::FuncStringAsync(UObject* WorldContextObje
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		FTestbed1StructInterfaceLatentAction* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		FTestbed1StructInterfaceLatentAction<FTestbed1StructString>* oldRequest = LatentActionManager.FindExistingAction<FTestbed1StructInterfaceLatentAction<FTestbed1StructString>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -261,24 +229,9 @@ void UAbstractTestbed1StructInterface::FuncStringAsync(UObject* WorldContextObje
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		FTestbed1StructInterfaceLatentAction* CompletionAction = new FTestbed1StructInterfaceLatentAction(LatentInfo);
+		TFuture<FTestbed1StructString> Future = FuncStringAsync(ParamString);
+		FTestbed1StructInterfaceLatentAction<FTestbed1StructString>* CompletionAction = new FTestbed1StructInterfaceLatentAction<FTestbed1StructString>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = FuncString(ParamString);
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[ParamString, this, &Result, CompletionAction]()
-				{
-				Result = FuncString(ParamString);
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 

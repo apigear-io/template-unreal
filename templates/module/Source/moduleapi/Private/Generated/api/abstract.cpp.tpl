@@ -29,42 +29,55 @@ limitations under the License.
 {{- $abstractclass := printf "UAbstract%s" $Class }}
 
 {{- if .Operations}}{{ nl }}
+template <typename TAsyncResult>
 class F{{$Iface}}LatentAction : public FPendingLatentAction
 {
 private:
 	FName ExecutionFunction;
 	int32 OutputLink;
 	FWeakObjectPtr CallbackTarget;
-	bool bInProgress;
+	TAtomic<bool> bCancelled{false};
+	TFuture<TAsyncResult> Future;
+	TAsyncResult* OutPtr;
 
 public:
-	F{{$Iface}}LatentAction(const FLatentActionInfo& LatentInfo)
+	F{{$Iface}}LatentAction(const FLatentActionInfo& LatentInfo,
+		TFuture<TAsyncResult>&& InFuture,
+		TAsyncResult& ResultReference)
 		: ExecutionFunction(LatentInfo.ExecutionFunction)
 		, OutputLink(LatentInfo.Linkage)
 		, CallbackTarget(LatentInfo.CallbackTarget)
-		, bInProgress(true)
+		, Future(MoveTemp(InFuture))
+		, OutPtr(&ResultReference)
 	{
 	}
 
 	void Cancel()
 	{
-		bInProgress = false;
+		bCancelled.Store(true);
 	}
 
-	virtual void UpdateOperation(FLatentResponse& Response) override
+	void UpdateOperation(FLatentResponse& Response) override
 	{
-		if (bInProgress == false)
+		if (bCancelled.Load())
 		{
+			Response.DoneIf(true);
+			return;
+		}
+
+		if (Future.IsReady())
+		{
+			*OutPtr = Future.Get();
 			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
 		}
 	}
 
-	virtual void NotifyObjectDestroyed()
+	void NotifyObjectDestroyed() override
 	{
 		Cancel();
 	}
 
-	virtual void NotifyActionAborted()
+	void NotifyActionAborted() override
 	{
 		Cancel();
 	}
@@ -117,7 +130,7 @@ void {{$abstractclass}}::{{Camel .Name}}Async(UObject* WorldContextObject, FLate
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
 		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
-		F{{$Iface}}LatentAction* oldRequest = LatentActionManager.FindExistingAction<F{{$Iface}}LatentAction>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+		F{{$Iface}}LatentAction<{{ueReturn "" .Return}}>* oldRequest = LatentActionManager.FindExistingAction<F{{$Iface}}LatentAction<{{ueReturn "" .Return}}>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
 
 		if (oldRequest != nullptr)
 		{
@@ -126,24 +139,9 @@ void {{$abstractclass}}::{{Camel .Name}}Async(UObject* WorldContextObject, FLate
 			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
-		F{{$Iface}}LatentAction* CompletionAction = new F{{$Iface}}LatentAction(LatentInfo);
+		TFuture<{{ueReturn "" .Return}}> Future = {{Camel .Name}}Async({{ueVars "" .Params}});
+		F{{$Iface}}LatentAction<{{ueReturn "" .Return}}>* CompletionAction = new F{{$Iface}}LatentAction<{{ueReturn "" .Return}}>(LatentInfo, MoveTemp(Future), Result);
 		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
-
-		// If this class is a BP based implementation it has to be running within the game thread - we cannot fork
-		if (this->GetClass()->IsInBlueprint())
-		{
-			Result = {{Camel .Name}}({{ueVars "" .Params}});
-			CompletionAction->Cancel();
-		}
-		else
-		{
-			Async(EAsyncExecution::ThreadPool,
-				[{{range .Params}}{{ueVar "" .}}, {{ end }}this, &Result, CompletionAction]()
-				{
-				Result = {{Camel .Name}}({{ueVars "" .Params}});
-				CompletionAction->Cancel();
-			});
-		}
 	}
 }
 
