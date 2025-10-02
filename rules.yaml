@@ -502,10 +502,6 @@ features:
           - source: "module/Source/modulejni/android/buildsystem/dependencies.gradle"
             target: "android/buildsystem/dependencies.gradle"
             raw: true
-          - source: "module/Source/modulejni/Private/Generated/jni/javaservicestarter.cpp.tpl"
-            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Jni/{{Camel .Module.Name}}JavaServiceStarter.cpp"
-          - source: "module/Source/modulejni/Private/Generated/jni/javaservicestarter.h.tpl"
-            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Jni/{{Camel .Module.Name}}JavaServiceStarter.h"
           - source: "module/Source/modulejni/Private/Generated/jni/datajavaconverter.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Jni/{{Camel .Module.Name}}DataJavaConverter.cpp"
           - source: "module/Source/modulejni/Public/Generated/jni/datajavaconverter.h.tpl"
