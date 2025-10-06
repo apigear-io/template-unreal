@@ -58,7 +58,7 @@ public class {{$ModuleName}}MsgBus : ModuleRules
 				"Core",
 				"CoreUObject",
 				"Engine",
-{{- if .Features.api }}
+{{- if .Features.stubs }}
 				"{{Camel .Module.Name}}Implementation",
 {{- end }}
 {{- range $idx, $elem := .Module.Imports }}
