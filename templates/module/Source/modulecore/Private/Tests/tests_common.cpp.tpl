@@ -15,7 +15,7 @@
 {{- range .Fields }}
 	{{- if .IsArray }}
 	{{- if and (not .IsPrimitive) (not (eq .KindType "enum")) }}
-	{{- $type := printf "F%s%s" $ModuleName (Camel .Type) }}
+	{{- $type := printf "F%s%s" $ModuleName .Type }}
 	TestValue.{{.Name}} = createTest{{$type}}Array();
 	{{- else }}
 	TestValue.{{.Name}}.Add({{ ueTestValue "" . }});
