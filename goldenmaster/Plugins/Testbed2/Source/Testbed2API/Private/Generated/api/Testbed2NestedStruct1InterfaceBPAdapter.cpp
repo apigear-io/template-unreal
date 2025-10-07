@@ -1,0 +1,143 @@
+/**
+Copyright 2024 ApiGear UG
+Copyright 2024 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#include "Testbed2/Generated/api/Testbed2NestedStruct1InterfaceBPAdapter.h"
+#include "Async/Async.h"
+#include "Engine/Engine.h"
+#include "Engine/LatentActionManager.h"
+#include "LatentActions.h"
+
+template <typename TAsyncResult>
+class FTestbed2NestedStruct1InterfaceLatentAction : public FPendingLatentAction
+{
+private:
+	FName ExecutionFunction;
+	int32 OutputLink;
+	FWeakObjectPtr CallbackTarget;
+	TAtomic<bool> bCancelled{false};
+	TFuture<TAsyncResult> Future;
+	TAsyncResult* OutPtr;
+
+public:
+	FTestbed2NestedStruct1InterfaceLatentAction(const FLatentActionInfo& LatentInfo,
+		TFuture<TAsyncResult>&& InFuture,
+		TAsyncResult& ResultReference)
+		: ExecutionFunction(LatentInfo.ExecutionFunction)
+		, OutputLink(LatentInfo.Linkage)
+		, CallbackTarget(LatentInfo.CallbackTarget)
+		, Future(MoveTemp(InFuture))
+		, OutPtr(&ResultReference)
+	{
+	}
+
+	void Cancel()
+	{
+		bCancelled.Store(true);
+	}
+
+	void UpdateOperation(FLatentResponse& Response) override
+	{
+		if (bCancelled.Load())
+		{
+			Response.DoneIf(true);
+			return;
+		}
+
+		if (Future.IsReady())
+		{
+			*OutPtr = Future.Get();
+			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
+		}
+	}
+
+	void NotifyObjectDestroyed() override
+	{
+		Cancel();
+	}
+
+	void NotifyActionAborted() override
+	{
+		Cancel();
+	}
+};
+
+void UTestbed2NestedStruct1InterfaceBPAdapter::Initialize(TScriptInterface<ITestbed2NestedStruct1InterfaceBPInterface> InTarget)
+{
+	Target = InTarget;
+}
+
+UTestbed2NestedStruct1InterfacePublisher* UTestbed2NestedStruct1InterfaceBPAdapter::_GetPublisher()
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		return ITestbed2NestedStruct1InterfaceBPInterface::Execute__GetPublisher(Obj);
+	}
+	return nullptr;
+}
+
+void UTestbed2NestedStruct1InterfaceBPAdapter::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		TFuture<FTestbed2NestedStruct1> Future = Func1Async(Param1);
+		FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>* CompletionAction = new FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>(LatentInfo, MoveTemp(Future), Result);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+	}
+}
+
+TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct1InterfaceBPAdapter::Func1Async(const FTestbed2NestedStruct1& Param1)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, this]()
+		{
+		return Func1(Param1);
+	});
+}
+
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceBPAdapter::Func1(const FTestbed2NestedStruct1& Param1)
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		return ITestbed2NestedStruct1InterfaceBPInterface::Execute_Func1(Obj, Param1);
+	}
+	return FTestbed2NestedStruct1();
+}
+
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceBPAdapter::GetProp1() const
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		return ITestbed2NestedStruct1InterfaceBPInterface::Execute_GetProp1(Obj);
+	}
+	return FTestbed2NestedStruct1();
+}
+void UTestbed2NestedStruct1InterfaceBPAdapter::SetProp1(const FTestbed2NestedStruct1& InProp1)
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		ITestbed2NestedStruct1InterfaceBPInterface::Execute_SetProp1(Obj, InProp1);
+	}
+}
