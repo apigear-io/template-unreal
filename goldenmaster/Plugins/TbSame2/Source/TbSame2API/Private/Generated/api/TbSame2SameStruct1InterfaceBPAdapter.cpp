@@ -1,0 +1,88 @@
+/**
+Copyright 2024 ApiGear UG
+Copyright 2024 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#include "TbSame2/Generated/api/TbSame2SameStruct1InterfaceBPAdapter.h"
+#include "TbSame2SameStruct1InterfaceLatentAction.h"
+#include "Async/Async.h"
+#include "Engine/Engine.h"
+
+void UTbSame2SameStruct1InterfaceBPAdapter::Initialize(TScriptInterface<ITbSame2SameStruct1InterfaceBPInterface> InTarget)
+{
+	Target = InTarget;
+}
+
+UTbSame2SameStruct1InterfacePublisher* UTbSame2SameStruct1InterfaceBPAdapter::_GetPublisher()
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		return ITbSame2SameStruct1InterfaceBPInterface::Execute__GetPublisher(Obj);
+	}
+	return nullptr;
+}
+
+void UTbSame2SameStruct1InterfaceBPAdapter::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbSame2Struct1& Result, const FTbSame2Struct1& Param1)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbSame2SameStruct1InterfaceLatentAction<FTbSame2Struct1>* oldRequest = LatentActionManager.FindExistingAction<FTbSame2SameStruct1InterfaceLatentAction<FTbSame2Struct1>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		TFuture<FTbSame2Struct1> Future = Func1Async(Param1);
+		FTbSame2SameStruct1InterfaceLatentAction<FTbSame2Struct1>* CompletionAction = new FTbSame2SameStruct1InterfaceLatentAction<FTbSame2Struct1>(LatentInfo, MoveTemp(Future), Result);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+	}
+}
+
+TFuture<FTbSame2Struct1> UTbSame2SameStruct1InterfaceBPAdapter::Func1Async(const FTbSame2Struct1& Param1)
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[Param1, this]()
+		{
+		return Func1(Param1);
+	});
+}
+
+FTbSame2Struct1 UTbSame2SameStruct1InterfaceBPAdapter::Func1(const FTbSame2Struct1& Param1)
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		return ITbSame2SameStruct1InterfaceBPInterface::Execute_Func1(Obj, Param1);
+	}
+	return FTbSame2Struct1();
+}
+
+FTbSame2Struct1 UTbSame2SameStruct1InterfaceBPAdapter::GetProp1() const
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		return ITbSame2SameStruct1InterfaceBPInterface::Execute_GetProp1(Obj);
+	}
+	return FTbSame2Struct1();
+}
+void UTbSame2SameStruct1InterfaceBPAdapter::SetProp1(const FTbSame2Struct1& InProp1)
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		ITbSame2SameStruct1InterfaceBPInterface::Execute_SetProp1(Obj, InProp1);
+	}
+}

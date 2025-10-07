@@ -38,6 +38,13 @@ class TBIFACEIMPORTAPI_API ITbIfaceimportEmptyIfBPInterface
 	GENERATED_BODY()
 
 public:
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbIfaceimport|EmptyIf")
+	UTbIfaceimportEmptyIfPublisher* _GetPublisher();
+	virtual UTbIfaceimportEmptyIfPublisher* _GetPublisher_Implementation() = 0;
+
 	// methods
 
 	// properties
