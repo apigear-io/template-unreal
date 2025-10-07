@@ -39,6 +39,10 @@ features:
             target: "Private/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
           - source: "module/Source/moduleapi/Private/Generated/api/latentaction.h.tpl"
             target: "Private/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}LatentAction.h"
+          - source: "module/Source/moduleapi/Public/module/Generated/api/bpadapter.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}BPAdapter.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/bpadapter.cpp.tpl"
+            target: "Private/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}BPAdapter.cpp"
   - name: apigear_olinkproto
     scopes:
       - match: system

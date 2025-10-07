@@ -38,6 +38,13 @@ class TBSIMPLEAPI_API ITbSimpleEmptyInterfaceBPInterface
 	GENERATED_BODY()
 
 public:
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|EmptyInterface")
+	UTbSimpleEmptyInterfacePublisher* _GetPublisher();
+	virtual UTbSimpleEmptyInterfacePublisher* _GetPublisher_Implementation() = 0;
+
 	// methods
 
 	// properties
