@@ -15,64 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimple/Generated/api/AbstractTbSimpleVoidInterface.h"
+#include "TbSimpleVoidInterfaceLatentAction.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
-#include "Engine/LatentActionManager.h"
-#include "LatentActions.h"
-
-template <typename TAsyncResult>
-class FTbSimpleVoidInterfaceLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	TAtomic<bool> bCancelled{false};
-	TFuture<TAsyncResult> Future;
-	TAsyncResult* OutPtr;
-
-public:
-	FTbSimpleVoidInterfaceLatentAction(const FLatentActionInfo& LatentInfo,
-		TFuture<TAsyncResult>&& InFuture,
-		TAsyncResult& ResultReference)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, Future(MoveTemp(InFuture))
-		, OutPtr(&ResultReference)
-	{
-	}
-
-	void Cancel()
-	{
-		bCancelled.Store(true);
-	}
-
-	void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bCancelled.Load())
-		{
-			Response.DoneIf(true);
-			return;
-		}
-
-		if (Future.IsReady())
-		{
-			*OutPtr = Future.Get();
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	void NotifyObjectDestroyed() override
-	{
-		Cancel();
-	}
-
-	void NotifyActionAborted() override
-	{
-		Cancel();
-	}
-};
 
 UAbstractTbSimpleVoidInterface::UAbstractTbSimpleVoidInterface()
 {
