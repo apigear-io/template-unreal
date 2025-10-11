@@ -37,6 +37,8 @@ features:
             target: "Public/{{Camel .Module.Name}}/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.h"
           - source: "module/Source/moduleapi/Private/Generated/api/abstract.cpp.tpl"
             target: "Private/Generated/api/Abstract{{Camel .Module.Name}}{{Camel .Interface.Name}}.cpp"
+          - source: "module/Source/moduleapi/Private/Generated/api/latentaction.h.tpl"
+            target: "Private/Generated/api/{{Camel .Module.Name}}{{Camel .Interface.Name}}LatentAction.h"
   - name: apigear_olinkproto
     scopes:
       - match: system
