@@ -47,9 +47,6 @@ public:
 	virtual UTbRefIfacesSimpleLocalIfPublisher* _GetPublisher_Implementation() = 0;
 
 	// methods
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void IntMethodAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param);
-	virtual void IntMethodAsync_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, int32& Result, int32 Param) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Operations")
 	int32 IntMethod(int32 Param);
 	virtual int32 IntMethod_Implementation(int32 Param) = 0;
