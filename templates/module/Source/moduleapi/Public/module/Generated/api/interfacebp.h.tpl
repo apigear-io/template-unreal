@@ -51,15 +51,13 @@ class {{ $API_MACRO }} {{ $class}}
 	GENERATED_BODY()
 
 public:
-{{- if or (len .Properties) (len .Signals) }}
 	/// Provides access to the object which holds all the delegates
 	/// this is needed since we cannot declare delegates on an UInterface
 	/// @return object with signals for property state changes or standalone signals
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}")
 	U{{$CppClass}}Publisher* _GetPublisher();
 	virtual U{{$CppClass}}Publisher* _GetPublisher_Implementation() = 0;
-	{{- nl }}
-{{- end}}
+
 	// methods
 {{- range $i, $e := .Operations }}
 {{- if .Return.IsVoid }}
@@ -67,9 +65,6 @@ public:
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
 {{- else }}
-	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}});
-	virtual void {{Camel .Name}}Async_Implementation(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) = 0;
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "{{$Category}}|Operations")
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}});
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}_Implementation({{ueParams "" .Params}}) = 0;
