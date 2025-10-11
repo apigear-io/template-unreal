@@ -15,10 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSimple/Generated/api/AbstractTbSimpleEmptyInterface.h"
+#include "TbSimpleEmptyInterfaceLatentAction.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
-#include "Engine/LatentActionManager.h"
-#include "LatentActions.h"
 
 UAbstractTbSimpleEmptyInterface::UAbstractTbSimpleEmptyInterface()
 {

@@ -15,64 +15,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #include "TbSame2/Generated/api/AbstractTbSame2SameStruct2Interface.h"
+#include "TbSame2SameStruct2InterfaceLatentAction.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
-#include "Engine/LatentActionManager.h"
-#include "LatentActions.h"
-
-template <typename TAsyncResult>
-class FTbSame2SameStruct2InterfaceLatentAction : public FPendingLatentAction
-{
-private:
-	FName ExecutionFunction;
-	int32 OutputLink;
-	FWeakObjectPtr CallbackTarget;
-	TAtomic<bool> bCancelled{false};
-	TFuture<TAsyncResult> Future;
-	TAsyncResult* OutPtr;
-
-public:
-	FTbSame2SameStruct2InterfaceLatentAction(const FLatentActionInfo& LatentInfo,
-		TFuture<TAsyncResult>&& InFuture,
-		TAsyncResult& ResultReference)
-		: ExecutionFunction(LatentInfo.ExecutionFunction)
-		, OutputLink(LatentInfo.Linkage)
-		, CallbackTarget(LatentInfo.CallbackTarget)
-		, Future(MoveTemp(InFuture))
-		, OutPtr(&ResultReference)
-	{
-	}
-
-	void Cancel()
-	{
-		bCancelled.Store(true);
-	}
-
-	void UpdateOperation(FLatentResponse& Response) override
-	{
-		if (bCancelled.Load())
-		{
-			Response.DoneIf(true);
-			return;
-		}
-
-		if (Future.IsReady())
-		{
-			*OutPtr = Future.Get();
-			Response.FinishAndTriggerIf(true, ExecutionFunction, OutputLink, CallbackTarget);
-		}
-	}
-
-	void NotifyObjectDestroyed() override
-	{
-		Cancel();
-	}
-
-	void NotifyActionAborted() override
-	{
-		Cancel();
-	}
-};
 
 UAbstractTbSame2SameStruct2Interface::UAbstractTbSame2SameStruct2Interface()
 {
