@@ -75,5 +75,5 @@ mkdir -p "$ProjectTarget_path/Plugins/{{Camel .Name}}" && cp -rf "$script_path/{
 if [ $? -ne 0 ]; then exit 1; fi;
 {{ end }}
 
-buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.{{ if .Features.olink -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}"
+buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.{{ if .Features.olink_tests -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}"
 if [ $buildresult -ne 0 ]; then exit 1; fi;
