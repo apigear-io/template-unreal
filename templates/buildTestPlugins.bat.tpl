@@ -73,6 +73,17 @@ xcopy /E /Y "%script_path%\{{ Camel .Name}}" "%{{ Camel .Name}}PluginTarget_path
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 {{ end }}
 
+{{ if .Features.jni -}}
+
+@REM copy android plugins to blank project for build and functional testing
+set androidTarget_path=%ProjectTarget_path%\android
+echo android from "%script_path%\..\android" to "%androidTarget_path%\"
+mkdir %androidTarget_path%
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+xcopy /E /Y "%script_path%\..\android" "%androidTarget_path%\"  >nul
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+{{ end }}
+
 @REM run build and tests
 call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.{{ if .Features.olink_tests -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}{{ if .Features.jni_tests -}}+.Jni.{{ end }}"
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
