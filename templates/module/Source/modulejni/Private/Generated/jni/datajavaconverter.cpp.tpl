@@ -101,8 +101,6 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
     {
         {{$structName}}.{{$cppFieldName}}.Add(Temp[i] == JNI_TRUE);
     }
-    env->DeleteLocalRef({{snake .Name}}_value);
-
 {{- else if .IsPrimitive }}
     jsize len{{snake .Name}} = env->GetArrayLength({{snake .Name}}_value);
     {{$structName}}.{{$cppFieldName}}.AddUninitialized(len{{snake .Name}});
@@ -159,7 +157,7 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
     }
 }
 
-{{- $in_cppStructName := printf "out_%s" (snake .Name)}}
+{{- $in_cppStructName := printf "in_%s" (snake .Name)}}
 {{- $api_package_name := printf "%s_api" (camel $moduleName) }}
 {{- $packageName := printf "%s/%s_api" (camel $moduleName) (camel $moduleName)}}
 {{- $javaClassTypeName := Camel .Name}}
