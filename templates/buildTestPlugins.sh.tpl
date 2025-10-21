@@ -75,5 +75,11 @@ mkdir -p "$ProjectTarget_path/Plugins/{{Camel .Name}}" && cp -rf "$script_path/{
 if [ $? -ne 0 ]; then exit 1; fi;
 {{ end }}
 
+{{ if .Features.jni -}}
+# copy android plugin to blank project for build and functional testing
+mkdir -p "$ProjectTarget_path/../android" && cp -rf "$script_path/android" "$ProjectTarget_path/android/" 1>&-
+if [ $? -ne 0 ]; then exit 1; fi;
+{{ end }}
+
 buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.{{ if .Features.olink -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}{{ if .Features.jni_tests -}}+.Jni.{{ end }}"
 if [ $buildresult -ne 0 ]; then exit 1; fi;
