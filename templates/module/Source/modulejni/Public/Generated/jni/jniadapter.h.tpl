@@ -36,7 +36,7 @@ DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}_JNI, Log, All);
  * takes an object of the type I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
  */
 UCLASS(BlueprintType)
-class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem
+class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}SubscriberInterface
 {
 	GENERATED_BODY()
 public:
@@ -67,25 +67,16 @@ private:
 #endif
 
 	// signals
-{{- range $i, $e := .Interface.Signals }}
-{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
-	void On{{Camel .Name}}({{ueParams "" .Params}});
-{{- end }}
+	{{- range $i, $e := .Interface.Signals }}
+	{{- if $i }}{{nl}}{{ end }}
+	void On{{Camel .Name}}Signal({{ueParams "" .Params}}) override;
+	{{- end }}
+
 {{- if len .Interface.Properties }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}
-{{- if $i }}{{nl}}{{ end }}
-	UFUNCTION(Category = "{{$Category}}", BlueprintInternalUseOnly)
-	void On{{Camel .Name}}Changed({{ueParam "" .}});
+	void On{{Camel .Name}}Changed({{ueParam "" .}}) override;
 {{- end }}
 
-	// delegate handles
-{{- range .Interface.Properties }}
-	FDelegateHandle On{{Camel .Name}}ChangedHandle;
-{{- end }}
-{{- range .Interface.Signals }}
-	FDelegateHandle On{{Camel .Name}}SignalHandle;
-{{- end }}
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "{{$Category}}")

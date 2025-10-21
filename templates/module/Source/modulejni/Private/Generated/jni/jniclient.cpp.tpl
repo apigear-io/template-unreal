@@ -174,7 +174,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	g{{$Class}}On{{Camel .Name}}Changed = [this]({{ueParam "In" . }})
     {
          {{ueVar "" .}} = {{ueVar "In" .}};
-         _GetSignals()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+         _GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
     };
 	{{- end}}
 
@@ -465,7 +465,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jcla
                 UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}: JNI SERVICE ADAPTER NOT FOUND "));
                 return;
             }
-            g{{$Class}}Handle->_GetSignals()->Broadcast{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
+            g{{$Class}}Handle->_GetPublisher()->Broadcast{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
             {{- if $idx}}, {{ end -}}
             {{- $local_value :=  printf "local_%s" (snake .Name) -}}
             {{- if or  .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .))  ) }} p{{$local_value -}}
