@@ -108,8 +108,8 @@ void {{$Class}}JniSpec::Define()
 		{{ueType "" .}} TestValue = {{ueDefault "" .}}; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->Get{{Camel .Name}}(), TestValue);
 
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetClient()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetClient()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
 			{
 			{{ueType "" .}} TestValue = {{ueDefault "" .}};
 			// use different test value
@@ -166,11 +166,11 @@ void {{$Class}}JniSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->Get{{Camel .Name}}(), DefaultValue);
 
 		#if PLATFORM_ANDROID && USE_ANDROID_JNI
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetClient()->_GetSignals();
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetClient()->_GetPublisher();
 		#else
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetLocalImplementation()->_GetSignals();
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		#endif
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, DefaultValue, TestDone]({{ueParam "In" .}})
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, DefaultValue, TestDone]({{ueParam "In" .}})
 			{
 			{{ueType "" .}} TestValue = {{ueDefault "" .}};
 			// use different test value
@@ -231,11 +231,11 @@ void {{$Class}}JniSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->Get{{Camel .Name}}(), StartValue);
 
 		#if PLATFORM_ANDROID && USE_ANDROID_JNI
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetClient()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetClient()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
 		#else
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetLocalImplementation()->_GetSignals();
-		{{$Iface}}Signals->On{{Camel .Name}}Changed.AddLambda([this, TestDone, StartValue]({{ueParam "In" .}})
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone, StartValue]({{ueParam "In" .}})
 		#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
@@ -346,13 +346,13 @@ void {{$Class}}JniSpec::Define()
 	LatentIt("Signal.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 
-		{{$Class}}Signals* Source{{$Iface}}Signals = ImplFixture->GetLocalImplementation()->_GetSignals();
+		{{$Class}}Publisher* Source{{$Iface}}Publisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		#if PLATFORM_ANDROID && USE_ANDROID_JNI
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetClient()->_GetSignals();
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetClient()->_GetPublisher();
 		#else
-		{{$Class}}Signals* {{$Iface}}Signals = ImplFixture->GetLocalImplementation()->_GetSignals();
+		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		#endif
-		{{$Iface}}Signals->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}})
+		{{$Iface}}Publisher->On{{Camel .Name}}Signal.AddLambda([this, TestDone]({{ueParams "In" .Params}})
 			{
 			// known test value
 			{{- range $i, $e := .Params -}}
@@ -406,7 +406,7 @@ void {{$Class}}JniSpec::Define()
 		{{ ueType "" . }} {{ueVar "" .}}TestValue = {{ ueDefault "" . }};
 		{{- end }}
 		{{- end }}
-		Source{{$Iface}}Signals->Broadcast{{Camel .Name}}Signal(
+		Source{{$Iface}}Publisher->Broadcast{{Camel .Name}}Signal(
 			{{- range $i, $e := .Params -}}
 			{{- if $i }}, {{ end }}{{ueVar "" .}}TestValue
 			{{- end -}});
