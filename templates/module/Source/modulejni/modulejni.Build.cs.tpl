@@ -46,7 +46,8 @@ public class {{$ModuleName}}Jni : ModuleRules
 {{- if .Module.Imports }}, {{- end}}
 {{- range $idx, $elem := .Module.Imports }}
 {{- if $idx}}, {{ end }}
-				"{{Camel .Name}}Core"
+				"{{Camel .Name}}Core",
+				"{{Camel .Name}}Jni"
 {{- end }}
 			}
 			);
@@ -60,7 +61,9 @@ public class {{$ModuleName}}Jni : ModuleRules
 				"Engine",
 {{- if .Features.stubs }}
 				"{{Camel .Module.Name}}Core",
+		{{- if len (.Module.Interfaces) }}
 				"{{Camel .Module.Name}}Implementation",
+		{{- end }}
 {{- end }}
 {{- range $idx, $elem := .Module.Imports }}
 				"{{Camel .Name}}API",

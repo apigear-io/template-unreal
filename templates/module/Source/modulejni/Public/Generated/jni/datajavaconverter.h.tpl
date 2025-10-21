@@ -27,9 +27,11 @@ limitations under the License.
 {{- $includes = (appendList $includes $includeName) }}
 {{- end }}
 {{- end }}
+
 {{- range .Module.Imports }}
 {{- $importModuleName := Camel .Name }}
 {{- $includeName :=  printf "\"%s/Generated/api/%s_data.h\"" $importModuleName $importModuleName }}
+{{- $includeName :=  printf "\"%s/Generated/api/%s_apig.h\"" $importModuleName $importModuleName }}
 {{- $includeName :=  printf "\"%s/Generated/Jni/%sDataJavaConverter.h\"" $importModuleName $importModuleName }}
 {{- $includes = (appendList $includes $includeName) }}
 {{- end }}
@@ -37,10 +39,12 @@ limitations under the License.
 {{ range $includes }}
 #include {{ .}}
 {{- end }}
-{{ if or (len .Module.Enums) (len .Module.Structs) -}}
+{{- if or (len .Module.Enums) (len .Module.Structs) -}}
 #include "{{ $ModuleName }}/Generated/api/{{ $ModuleName }}_data.h"
-{{ end }}
-
+{{- end }}
+{{- if len .Module.Interfaces }}
+#include "{{ $ModuleName }}/Generated/api/{{ $ModuleName }}_apig.h"
+{{- end }}
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -59,6 +63,7 @@ limitations under the License.
 
 class  {{ $API_MACRO }} {{$className }}{
 public:
+
 {{- range .Module.Structs }}
 
 {{- $structType := printf "F%s%s" $ModuleName .Name }}
@@ -79,5 +84,38 @@ public:
 	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$cpp_class}}>& cppArray);
 	static jobject makeJava{{Camel .Name }}(JNIEnv* env, {{$cpp_class}} value);
 {{- end }}
+
+{{- range .Module.Interfaces }}
+
+{{- $ifType := printf "TScriptInterface<I%s%sInterface>" $ModuleName (Camel .Name) }}
+{{- $ifName := printf "out_%s" (snake .Name)}}
+
+	static void fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$ifType}} {{$ifName}});
+	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$ifType}}>& out_array);
+{{- $in_cppIfName := printf "out_%s" (snake .Name)}}
+	static jobject makeJava{{Camel .Name }}(JNIEnv* env, const {{$ifType}} {{$in_cppIfName}});
+	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$ifType}}>& cppArray);
+
+	static jobject getJavaInstance{{$ModuleName}}{{Camel .Name }}(JNIEnv* env);
+	static {{$ifType}} getCppInstance{{$ModuleName}}{{Camel .Name }}();
+{{- end }}
+
+{{- range .Module.Externs }}
+{{- $module:= $.Module }}
+{{- $ext := (ueExtern .) }}
+{{- $namespace :=  $ext.NameSpace}}
+{{- if $namespace }}
+{{- $namespace =  "%s::"}}
+{{- end }}
+{{- $exType := printf "%s%s" $namespace $ext.Name }}
+{{- $exName := printf "out_%s" (snake .Name)}}
+
+	static void fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exType}}& {{$exName}});
+	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$exType}}>& out_array);
+{{- $in_cppExName := printf "out_%s" (snake .Name)}}
+	static jobject makeJava{{Camel .Name }}(JNIEnv* env, const {{$exType}}& {{$in_cppExName}});
+	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$exType}}>& cppArray);
+{{- end }}
 };
+
 #endif
