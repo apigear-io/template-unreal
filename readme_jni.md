@@ -32,7 +32,7 @@ layers:
   - name: java
     inputs:
       - myhelloworld.module.yaml
-    output: ../relative-path-to/YourProject/Plugins/HelloWorld/Source/HelloWorldJni/android
+    output: ../relative-path-to/YourProject/android
     template: apigear-io/template-java
     features: ["api","android","stubs","jnibridge"]
 ```
