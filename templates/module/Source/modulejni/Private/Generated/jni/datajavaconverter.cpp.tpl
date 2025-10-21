@@ -563,8 +563,9 @@ jobject {{$className }}::getJavaInstance{{$ModuleName}}{{Camel .Name }}(JNIEnv* 
 
 {{- $extJava := (javaExtern .) }}
 {{- $fullJavaClassType := $extJava.Name }}
-{{- if $extJava.Package }}
-{{- $fullJavaClassType := printf "%s/%s" $ext.NameSpace $fullJavaClassType }}
+{{- $prefix := (replace ($extJava.Package) "." "/" ) }}
+{{- if ne $prefix "" }}
+{{- $fullJavaClassType = printf "%s/%s" $prefix $fullJavaClassType }}
 {{- end }}
 
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exCppType}}& {{$exName}})
