@@ -486,7 +486,7 @@ features:
       - plugin
     scopes:
       - match: module
-        prefix: "Plugins/{{Camel .Module.Name}}/"
+        prefix: "{{Camel .Module.Name}}/"
         documents:
           - source: "module/Source/modulejni/Private/modulejni.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/{{Camel .Module.Name}}Jni.cpp"
@@ -509,7 +509,7 @@ features:
           - source: "module/Source/modulejni/Public/Generated/jni/jniconnectionstatus.h.tpl"
             target: "Source/{{Camel .Module.Name}}Jni/Public/{{Camel .Module.Name}}//Generated/Jni/{{Camel .Module.Name}}JniConnectionStatus.h"
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
         documents:
           - source: "module/Source/modulejni/Public/Generated/jni/jniadapter.h.tpl"
             target: "Public/{{Camel .Module.Name}}/Generated/Jni/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniAdapter.h"
@@ -525,7 +525,7 @@ features:
       - stubs
     scopes:
       - match: interface
-        prefix: "Plugins/{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
         documents:
           - source: "module/Source/modulejni/Private/Tests/jni.spec.cpp.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}Jni.spec.cpp"
