@@ -38,15 +38,15 @@
 		{{- $impl_package_name := printf "%s_impl" (camel $moduleName) }}
 		{{- $messenger_package_name := printf "%s_android_messenger" (camel $moduleName) }}
 		{{- $api_package_name := printf "%s_api" (camel $moduleName) }}
-		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$service_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$service_package_name}}" />
-		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$client_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$client_package_name}}" />
-		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$api_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$api_package_name}}" />
-		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$messenger_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$messenger_package_name}}" />
-		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$impl_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$impl_package_name}}" />
+		<copyDir src="$S(PluginDir)/../../../../android/{{camel $moduleName}}/{{$service_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$service_package_name}}" />
+		<copyDir src="$S(PluginDir)/../../../../android/{{camel $moduleName}}/{{$client_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$client_package_name}}" />
+		<copyDir src="$S(PluginDir)/../../../../android/{{camel $moduleName}}/{{$api_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$api_package_name}}" />
+		<copyDir src="$S(PluginDir)/../../../../android/{{camel $moduleName}}/{{$messenger_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$messenger_package_name}}" />
+		<copyDir src="$S(PluginDir)/../../../../android/{{camel $moduleName}}/{{$impl_package_name}}" dst="$S(BuildDir)/JavaLibs/{{$impl_package_name}}" />
 		{{- $jniservice_name:= printf "%sjniservice" (camel $moduleName ) }}
-		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$jniservice_name}}" dst="$S(BuildDir)/src/{{$jniservice_name}}" />
+		<copyDir src="$S(PluginDir)/../../../../android/{{camel $moduleName}}/{{$jniservice_name}}" dst="$S(BuildDir)/src/{{$jniservice_name}}" />
 		{{- $jniclient_name:= printf "%sjniclient" (camel $moduleName ) }}
-		<copyDir src="$S(PluginDir)/android/{{camel $moduleName}}/{{$jniclient_name}}" dst="$S(BuildDir)/src/{{$jniclient_name}}" />
+		<copyDir src="$S(PluginDir)/../../../../android/{{camel $moduleName}}/{{$jniclient_name}}" dst="$S(BuildDir)/src/{{$jniclient_name}}" />
 	</resourceCopies>
 
 	<baseBuildGradleAdditions>
