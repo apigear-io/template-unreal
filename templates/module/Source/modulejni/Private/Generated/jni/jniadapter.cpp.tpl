@@ -242,24 +242,9 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{$If
 	// unsubscribe from old backend
 	if (BackendService != nullptr)
 	{
-{{- if or (len .Interface.Properties) (.Interface.Signals) }}
-		U{{$Iface}}Signals* BackendSignals = BackendService->_GetSignals();
-		checkf(BackendSignals, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
-{{- end }}
-{{- range .Interface.Properties }}
-		if (On{{Camel .Name}}ChangedHandle.IsValid())
-		{
-			BackendSignals->On{{Camel .Name}}Changed.Remove(On{{Camel .Name}}ChangedHandle);
-			On{{Camel .Name}}ChangedHandle.Reset();
-		}
-{{- end }}
-{{- range .Interface.Signals }}
-		if (On{{Camel .Name}}SignalHandle.IsValid())
-		{
-			BackendSignals->On{{Camel .Name}}Signal.Remove(On{{Camel .Name}}SignalHandle);
-			On{{Camel .Name}}SignalHandle.Reset();
-		}
-{{- end }}
+		U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
+		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
+		BackendPublisher->Unsubscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
@@ -268,17 +253,10 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{$If
 	// subscribe to new backend
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = InService;
-{{- if or (len .Interface.Properties) (.Interface.Signals) }}
-	U{{$Iface}}Signals* BackendSignals = BackendService->_GetSignals();
-	checkf(BackendSignals, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
-{{- end }}
+	U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
 	// connect property changed signals or simple events
-{{- range .Interface.Properties }}
-	On{{Camel .Name}}ChangedHandle = BackendSignals->On{{Camel .Name}}Changed.AddUObject(this, &{{$Class}}::On{{Camel .Name}}Changed);
-{{- end }}
-{{- range .Interface.Signals }}
-	On{{Camel .Name}}SignalHandle = BackendSignals->On{{Camel .Name}}Signal.AddUObject(this, &{{$Class}}::On{{Camel .Name}});
-{{- end }}
+	BackendPublisher->Subscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -317,7 +295,7 @@ void {{$Class}}::callJniServiceReady(bool isServiceReady)
 
 {{- range .Interface.Signals }}
 
-void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
+void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "" .Params}})
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
     UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("Notify java jni {{$Class}}::on{{Camel .Name}} "));
