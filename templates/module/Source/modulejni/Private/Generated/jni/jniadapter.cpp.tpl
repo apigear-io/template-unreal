@@ -50,7 +50,7 @@
         {{- else -}}
         {{$cppropName}}.GetData());
         {{- end }}
-        {{- else if not (eq .KindType "extern")}}
+        {{- else }}
         {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}Array(Env, {{$cppropName}});
         {{- end }}
     {{- else if (eq .KindType "string")}}
@@ -92,7 +92,7 @@
         {{$local_value}}.GetData());
         {{- end }}
     Env->DeleteLocalRef(l_java{{Camel .Name}}Array);
-    {{- else if not (eq .KindType "extern")}}
+    {{- else}}
     {{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, {{$local_value}});
     {{- end }}
 {{- else if eq .KindType "enum" }}
@@ -136,7 +136,7 @@
 {{ range $includes }}
 #include {{ .}}
 {{- end }}
-{{ if or (len .Module.Enums) (len .Module.Structs) -}}
+{{- if or (len .Module.Enums) (len .Module.Structs) -}}
 #include "{{$ModuleName}}/Generated/api/{{ $ModuleName }}_data.h"
 {{ end }}
 
@@ -334,7 +334,7 @@ void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "" .Params}})
             {{- $localName := printf "jlocal_%s" $javaPropName }}
         {{- if or ( or .IsArray  (eq .KindType "enum" ) ) }}
         Env->DeleteLocalRef({{$localName}});
-        {{- else if not ( or (eq .KindType "extern")  (ueIsStdSimpleType .)  ) }}
+        {{- else if not ( ueIsStdSimpleType .)  }}
         Env->DeleteLocalRef({{$localName}});
         {{- end }}
         {{- end }}
@@ -374,7 +374,7 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 
         {{- if and .IsArray }}
         Env->DeleteLocalRef({{$javaLocalName}});
-        {{- else if not ( or (eq .KindType "extern")  (ueIsStdSimpleType . )  ) }}
+        {{- else if not (ueIsStdSimpleType . ) }}
         Env->DeleteLocalRef({{$javaLocalName}});
         {{- end}}
         {{- else }}
@@ -453,7 +453,7 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel   
         {{- else -}}
         {{$cppropName}}.GetData());
         {{- end }}
-	{{- else if not (eq .Return.KindType "extern")}}
+	{{- else }}
         {{jniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}Array(Env, {{$cppropName}});
 	{{- end }}
         {{- else if (eq .Return.KindType "string")}}

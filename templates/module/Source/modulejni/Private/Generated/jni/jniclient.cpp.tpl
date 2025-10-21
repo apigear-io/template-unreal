@@ -72,7 +72,7 @@ limitations under the License.
         {{- else -}}
         {{$cppropName}}.GetData());
         {{- end }}
-        {{- else if not (eq .KindType "extern")}}
+        {{- else }}
         {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}Array(Env, {{$cppropName}});
         {{- end }}
     {{- else if (eq .KindType "string")}}
@@ -322,7 +322,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
         {{- $localName := printf "jlocal_%s" $javaPropName }}
     {{- if or .IsArray  (eq .KindType "enum" ) }}
         Env->DeleteLocalRef({{$localName}});
-    {{- else if not ( or (eq .KindType "extern")  (ueIsStdSimpleType .)  ) }}
+    {{- else if not ( ueIsStdSimpleType .) }}
         Env->DeleteLocalRef({{$localName}});
     {{- end }}
     {{- end }}
@@ -515,7 +515,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
         cpp_result.GetData());
         {{- end }}
     Env->DeleteLocalRef(localArray);
-    {{- else if not (eq .Return.KindType "extern")}}
+    {{- else }}
     {{$javaClassConverter}}::fill{{Camel .Return.Type }}Array(Env, result, cpp_result);
     {{- end }}
 {{- else if eq .Return.KindType "enum" }}
