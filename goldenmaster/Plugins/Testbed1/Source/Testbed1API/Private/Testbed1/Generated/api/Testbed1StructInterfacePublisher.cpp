@@ -39,7 +39,8 @@ void UTestbed1StructInterfacePublisher::BroadcastSigBoolSignal(const FTestbed1St
 
 		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigBoolSignal(Obj, ParamBool);
 			}
@@ -96,7 +97,8 @@ void UTestbed1StructInterfacePublisher::BroadcastSigIntSignal(const FTestbed1Str
 
 		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigIntSignal(Obj, ParamInt);
 			}
@@ -153,7 +155,8 @@ void UTestbed1StructInterfacePublisher::BroadcastSigFloatSignal(const FTestbed1S
 
 		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigFloatSignal(Obj, ParamFloat);
 			}
@@ -210,7 +213,8 @@ void UTestbed1StructInterfacePublisher::BroadcastSigStringSignal(const FTestbed1
 
 		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnSigStringSignal(Obj, ParamString);
 			}
@@ -266,7 +270,8 @@ void UTestbed1StructInterfacePublisher::BroadcastPropBoolChanged(UPARAM(DisplayN
 
 		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropBoolChanged(Obj, InPropBool);
 			}
@@ -321,7 +326,8 @@ void UTestbed1StructInterfacePublisher::BroadcastPropIntChanged(UPARAM(DisplayNa
 
 		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropIntChanged(Obj, InPropInt);
 			}
@@ -376,7 +382,8 @@ void UTestbed1StructInterfacePublisher::BroadcastPropFloatChanged(UPARAM(Display
 
 		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropFloatChanged(Obj, InPropFloat);
 			}
@@ -431,7 +438,8 @@ void UTestbed1StructInterfacePublisher::BroadcastPropStringChanged(UPARAM(Displa
 
 		for (const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed1StructInterfaceBPSubscriberInterface::Execute_OnPropStringChanged(Obj, InPropString);
 			}
@@ -508,7 +516,8 @@ void UTestbed1StructInterfacePublisher::CleanUpSubscribers()
 		FWriteScopeLock WriteLock(BPSubscribersLock);
 		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITestbed1StructInterfaceBPSubscriberInterface>& Subscriber)
 			{
-			return Subscriber.GetObject() == nullptr;
+			UObject* Obj = Subscriber.GetObject();
+			return !((Obj != nullptr) && IsValid(Obj));
 		},
 			AllowShrinking);
 	}

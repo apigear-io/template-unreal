@@ -39,7 +39,8 @@ void UTbSame1SameStruct1InterfacePublisher::BroadcastSig1Signal(const FTbSame1St
 
 		for (const TScriptInterface<ITbSame1SameStruct1InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbSame1SameStruct1InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
 			}
@@ -95,7 +96,8 @@ void UTbSame1SameStruct1InterfacePublisher::BroadcastProp1Changed(UPARAM(Display
 
 		for (const TScriptInterface<ITbSame1SameStruct1InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbSame1SameStruct1InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
 			}
@@ -172,7 +174,8 @@ void UTbSame1SameStruct1InterfacePublisher::CleanUpSubscribers()
 		FWriteScopeLock WriteLock(BPSubscribersLock);
 		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbSame1SameStruct1InterfaceBPSubscriberInterface>& Subscriber)
 			{
-			return Subscriber.GetObject() == nullptr;
+			UObject* Obj = Subscriber.GetObject();
+			return !((Obj != nullptr) && IsValid(Obj));
 		},
 			AllowShrinking);
 	}
