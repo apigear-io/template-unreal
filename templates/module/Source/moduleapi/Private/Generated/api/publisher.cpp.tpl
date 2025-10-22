@@ -51,7 +51,8 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Signal({{ueParams "" .Params}
 
 		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Signal(Obj{{- if (len .Params) }}, {{ end }}{{ueVars "" .Params}});
 			}
@@ -110,7 +111,8 @@ void U{{$Class}}Publisher::Broadcast{{Camel .Name}}Changed(UPARAM(DisplayName = 
 
 		for (const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				I{{$Class}}BPSubscriberInterface::Execute_On{{Camel .Name}}Changed(Obj, {{ueVar "In" .}});
 			}
@@ -188,7 +190,8 @@ void U{{$Class}}Publisher::CleanUpSubscribers()
 		FWriteScopeLock WriteLock(BPSubscribersLock);
 		BPSubscribers.RemoveAllSwap([](const TScriptInterface<I{{$Class}}BPSubscriberInterface>& Subscriber)
 			{
-			return Subscriber.GetObject() == nullptr;
+			UObject* Obj = Subscriber.GetObject();
+			return !((Obj != nullptr) && IsValid(Obj));
 		},
 			AllowShrinking);
 	}

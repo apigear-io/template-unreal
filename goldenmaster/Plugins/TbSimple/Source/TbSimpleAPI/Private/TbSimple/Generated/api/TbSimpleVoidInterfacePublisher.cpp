@@ -39,7 +39,8 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 
 		for (const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbSimpleVoidInterfaceBPSubscriberInterface::Execute_OnSigVoidSignal(Obj);
 			}
@@ -117,7 +118,8 @@ void UTbSimpleVoidInterfacePublisher::CleanUpSubscribers()
 		FWriteScopeLock WriteLock(BPSubscribersLock);
 		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber)
 			{
-			return Subscriber.GetObject() == nullptr;
+			UObject* Obj = Subscriber.GetObject();
+			return !((Obj != nullptr) && IsValid(Obj));
 		},
 			AllowShrinking);
 	}

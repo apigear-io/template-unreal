@@ -39,7 +39,8 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig0Signal(ETbEnumEnum0 Param0)
 
 		for (const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig0Signal(Obj, Param0);
 			}
@@ -96,7 +97,8 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig1Signal(ETbEnumEnum1 Param1)
 
 		for (const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
 			}
@@ -153,7 +155,8 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig2Signal(ETbEnumEnum2 Param2)
 
 		for (const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param2);
 			}
@@ -210,7 +213,8 @@ void UTbEnumEnumInterfacePublisher::BroadcastSig3Signal(ETbEnumEnum3 Param3)
 
 		for (const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnSig3Signal(Obj, Param3);
 			}
@@ -266,7 +270,8 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp0Changed(UPARAM(DisplayName = "
 
 		for (const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp0Changed(Obj, InProp0);
 			}
@@ -321,7 +326,8 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayName = "
 
 		for (const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
 			}
@@ -376,7 +382,8 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayName = "
 
 		for (const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
 			}
@@ -431,7 +438,8 @@ void UTbEnumEnumInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayName = "
 
 		for (const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbEnumEnumInterfaceBPSubscriberInterface::Execute_OnProp3Changed(Obj, InProp3);
 			}
@@ -508,7 +516,8 @@ void UTbEnumEnumInterfacePublisher::CleanUpSubscribers()
 		FWriteScopeLock WriteLock(BPSubscribersLock);
 		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbEnumEnumInterfaceBPSubscriberInterface>& Subscriber)
 			{
-			return Subscriber.GetObject() == nullptr;
+			UObject* Obj = Subscriber.GetObject();
+			return !((Obj != nullptr) && IsValid(Obj));
 		},
 			AllowShrinking);
 	}

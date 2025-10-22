@@ -39,7 +39,8 @@ void UTbNamesNamEsPublisher::BroadcastSomeSignalSignal(bool bSomeParam)
 
 		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignalSignal(Obj, bSomeParam);
 			}
@@ -96,7 +97,8 @@ void UTbNamesNamEsPublisher::BroadcastSomeSignal2Signal(bool bSomeParam)
 
 		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomeSignal2Signal(Obj, bSomeParam);
 			}
@@ -152,7 +154,8 @@ void UTbNamesNamEsPublisher::BroadcastSwitchChanged(UPARAM(DisplayName = "bSwitc
 
 		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnSwitchChanged(Obj, bInSwitch);
 			}
@@ -207,7 +210,8 @@ void UTbNamesNamEsPublisher::BroadcastSomePropertyChanged(UPARAM(DisplayName = "
 
 		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePropertyChanged(Obj, InSomeProperty);
 			}
@@ -262,7 +266,8 @@ void UTbNamesNamEsPublisher::BroadcastSomePoperty2Changed(UPARAM(DisplayName = "
 
 		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnSomePoperty2Changed(Obj, InSomePoperty2);
 			}
@@ -317,7 +322,8 @@ void UTbNamesNamEsPublisher::BroadcastEnumPropertyChanged(UPARAM(DisplayName = "
 
 		for (const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITbNamesNamEsBPSubscriberInterface::Execute_OnEnumPropertyChanged(Obj, InEnumProperty);
 			}
@@ -394,7 +400,8 @@ void UTbNamesNamEsPublisher::CleanUpSubscribers()
 		FWriteScopeLock WriteLock(BPSubscribersLock);
 		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITbNamesNamEsBPSubscriberInterface>& Subscriber)
 			{
-			return Subscriber.GetObject() == nullptr;
+			UObject* Obj = Subscriber.GetObject();
+			return !((Obj != nullptr) && IsValid(Obj));
 		},
 			AllowShrinking);
 	}

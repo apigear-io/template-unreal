@@ -39,7 +39,8 @@ void UTestbed2NestedStruct2InterfacePublisher::BroadcastSig1Signal(const FTestbe
 
 		for (const TScriptInterface<ITestbed2NestedStruct2InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed2NestedStruct2InterfaceBPSubscriberInterface::Execute_OnSig1Signal(Obj, Param1);
 			}
@@ -96,7 +97,8 @@ void UTestbed2NestedStruct2InterfacePublisher::BroadcastSig2Signal(const FTestbe
 
 		for (const TScriptInterface<ITestbed2NestedStruct2InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed2NestedStruct2InterfaceBPSubscriberInterface::Execute_OnSig2Signal(Obj, Param1, Param2);
 			}
@@ -152,7 +154,8 @@ void UTestbed2NestedStruct2InterfacePublisher::BroadcastProp1Changed(UPARAM(Disp
 
 		for (const TScriptInterface<ITestbed2NestedStruct2InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed2NestedStruct2InterfaceBPSubscriberInterface::Execute_OnProp1Changed(Obj, InProp1);
 			}
@@ -207,7 +210,8 @@ void UTestbed2NestedStruct2InterfacePublisher::BroadcastProp2Changed(UPARAM(Disp
 
 		for (const TScriptInterface<ITestbed2NestedStruct2InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
-			if (UObject* Obj = Subscriber.GetObject())
+			UObject* Obj = Subscriber.GetObject();
+			if (IsValid(Obj))
 			{
 				ITestbed2NestedStruct2InterfaceBPSubscriberInterface::Execute_OnProp2Changed(Obj, InProp2);
 			}
@@ -284,7 +288,8 @@ void UTestbed2NestedStruct2InterfacePublisher::CleanUpSubscribers()
 		FWriteScopeLock WriteLock(BPSubscribersLock);
 		BPSubscribers.RemoveAllSwap([](const TScriptInterface<ITestbed2NestedStruct2InterfaceBPSubscriberInterface>& Subscriber)
 			{
-			return Subscriber.GetObject() == nullptr;
+			UObject* Obj = Subscriber.GetObject();
+			return !((Obj != nullptr) && IsValid(Obj));
 		},
 			AllowShrinking);
 	}
