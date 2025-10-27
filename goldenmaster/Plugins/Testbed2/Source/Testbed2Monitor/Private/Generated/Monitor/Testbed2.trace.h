@@ -28,6 +28,8 @@ public:
 	static void capture_state(UObject* Object, ITestbed2NestedStruct1InterfaceInterface* obj);
 	static void trace_callSetProp1(const FTestbed2NestedStruct1& InProp1);
 	static void trace_signalSig1(const FTestbed2NestedStruct1& Param1);
+	static void trace_callFuncNoReturnValue(const FTestbed2NestedStruct1& Param1);
+	static void trace_callFuncNoParams();
 	static void trace_callFunc1(const FTestbed2NestedStruct1& Param1);
 };
 

@@ -41,4 +41,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|Testbed2|NestedStruct1Interface|Signals", DisplayName = "On Property Prop1 Changed")
 	void OnProp1Changed(UPARAM(DisplayName = "Prop1") const FTestbed2NestedStruct1& InProp1);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear Helper|Testbed2|NestedStruct1Interface|Signals", DisplayName = "Do FuncNoReturnValue")
+	void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1);
 };

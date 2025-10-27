@@ -153,6 +153,12 @@ void TbSimpleSimpleInterfaceTracer::trace_callFuncNoReturnValue(bool bParamBool)
 	Tracer::instance()->call("tb.simple/SimpleInterface#funcNoReturnValue", fields_);
 }
 
+void TbSimpleSimpleInterfaceTracer::trace_callFuncNoParams()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->call("tb.simple/SimpleInterface#funcNoParams", fields_);
+}
+
 void TbSimpleSimpleInterfaceTracer::trace_callFuncBool(bool bParamBool)
 {
 	nlohmann::json fields_;

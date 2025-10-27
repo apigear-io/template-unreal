@@ -88,7 +88,7 @@ TFuture<{{ueReturn "" .Return}}> {{$adapter}}::{{Camel .Name}}Async({{ueParams "
 {
 	if (UObject* Obj = Target.GetObject())
 	{
-		return {{$bpinterface}}::Execute_{{Camel .Name}}(Obj, {{ueVars "" .Params}});
+		return {{$bpinterface}}::Execute_{{Camel .Name}}(Obj{{if len .Params}}, {{end}}{{ueVars "" .Params}});
 	}
 	return {{ueDefault "" .Return}};
 }

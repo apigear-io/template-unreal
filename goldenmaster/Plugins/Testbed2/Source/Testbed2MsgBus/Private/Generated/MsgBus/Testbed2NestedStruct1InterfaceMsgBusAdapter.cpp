@@ -73,6 +73,8 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::_StartListening()
 		.Handling<FTestbed2NestedStruct1InterfacePingMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnPing)
 		.Handling<FTestbed2NestedStruct1InterfaceClientDisconnectMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnClientDisconnected)
 		.Handling<FTestbed2NestedStruct1InterfaceSetProp1RequestMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnSetProp1Request)
+		.Handling<FTestbed2NestedStruct1InterfaceFuncNoReturnValueRequestMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFuncNoReturnValueRequest)
+		.Handling<FTestbed2NestedStruct1InterfaceFuncNoParamsRequestMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFuncNoParamsRequest)
 		.Handling<FTestbed2NestedStruct1InterfaceFunc1RequestMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFunc1Request)
 		.Build();
 	// clang-format on
@@ -283,6 +285,27 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::_UpdateClientsConnected()
 	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
 	_ClientsConnected = NumberOfClients;
 	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFuncNoReturnValueRequest(const FTestbed2NestedStruct1InterfaceFuncNoReturnValueRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	BackendService->FuncNoReturnValue(InMessage.Param1);
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFuncNoParamsRequest(const FTestbed2NestedStruct1InterfaceFuncNoParamsRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTestbed2NestedStruct1InterfaceFuncNoParamsReplyMessage();
+	msg->ResponseId = InMessage.ResponseId;
+	msg->Result = BackendService->FuncNoParams();
+
+	if (Testbed2NestedStruct1InterfaceMsgBusEndpoint.IsValid())
+	{
+		Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceFuncNoParamsReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
 }
 
 void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFunc1Request(const FTestbed2NestedStruct1InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)

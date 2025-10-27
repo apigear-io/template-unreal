@@ -33,6 +33,8 @@ struct FTestbed2NestedStruct1InterfaceClientDisconnectMessage;
 struct FTestbed2NestedStruct1InterfaceSig1SignalMessage;
 struct FTestbed2NestedStruct1InterfaceSetProp1RequestMessage;
 struct FTestbed2NestedStruct1InterfaceProp1ChangedMessage;
+struct FTestbed2NestedStruct1InterfaceFuncNoReturnValueRequestMessage;
+struct FTestbed2NestedStruct1InterfaceFuncNoParamsRequestMessage;
 struct FTestbed2NestedStruct1InterfaceFunc1RequestMessage;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct1InterfaceClientConnectedDelegate, const FString&, ClientAddress);
@@ -98,6 +100,8 @@ private:
 	void OnServiceAnnouncementMessage(const FTestbed2NestedStruct1InterfaceServiceAnnouncementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPing(const FTestbed2NestedStruct1InterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTestbed2NestedStruct1InterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncNoReturnValueRequest(const FTestbed2NestedStruct1InterfaceFuncNoReturnValueRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncNoParamsRequest(const FTestbed2NestedStruct1InterfaceFuncNoParamsRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc1Request(const FTestbed2NestedStruct1InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSetProp1Request(const FTestbed2NestedStruct1InterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 

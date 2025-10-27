@@ -165,6 +165,26 @@ void UTestbed2NestedStruct1InterfaceMsgBusSpec::Define()
 		service->SetProp1(TestValue);
 	});
 
+	LatentIt("Operation.FuncNoReturnValue", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetImplementation()->FuncNoReturnValue(FTestbed2NestedStruct1());
+			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncNoParams", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetImplementation()->FuncNoParams();
+			TestDone.Execute();
+		});
+	});
+
 	LatentIt("Operation.Func1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here

@@ -48,6 +48,7 @@ struct FTbSimpleSimpleInterfacePropFloatChangedMessage;
 struct FTbSimpleSimpleInterfacePropFloat32ChangedMessage;
 struct FTbSimpleSimpleInterfacePropFloat64ChangedMessage;
 struct FTbSimpleSimpleInterfacePropStringChangedMessage;
+struct FTbSimpleSimpleInterfaceFuncNoParamsReplyMessage;
 struct FTbSimpleSimpleInterfaceFuncBoolReplyMessage;
 struct FTbSimpleSimpleInterfaceFuncIntReplyMessage;
 struct FTbSimpleSimpleInterfaceFuncInt32ReplyMessage;
@@ -145,6 +146,8 @@ public:
 	// operations
 	void FuncNoReturnValue(bool bParamBool) override;
 
+	bool FuncNoParams() override;
+
 	bool FuncBool(bool bParamBool) override;
 
 	int32 FuncInt(int32 ParamInt) override;
@@ -204,6 +207,7 @@ private:
 	void OnPropFloat32Changed(const FTbSimpleSimpleInterfacePropFloat32ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPropFloat64Changed(const FTbSimpleSimpleInterfacePropFloat64ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnPropStringChanged(const FTbSimpleSimpleInterfacePropStringChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncNoParamsReply(const FTbSimpleSimpleInterfaceFuncNoParamsReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncBoolReply(const FTbSimpleSimpleInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncIntReply(const FTbSimpleSimpleInterfaceFuncIntReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncInt32Reply(const FTbSimpleSimpleInterfaceFuncInt32ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

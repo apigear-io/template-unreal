@@ -406,6 +406,29 @@ void UTbSimpleSimpleInterfaceOLinkClient::FuncNoReturnValue(bool bParamBool)
 	m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetSimpleInterfaceStateFunc);
 }
 
+bool UTbSimpleSimpleInterfaceOLinkClient::FuncNoParams()
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		return false;
+	}
+	TPromise<bool> Promise;
+	Async(EAsyncExecution::ThreadPool,
+		[&Promise, this]()
+		{
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			Promise.SetValue(arg.value.get<bool>());
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoParams");
+		m_sink->GetNode()->invokeRemote(memberId, {}, GetSimpleInterfaceStateFunc);
+	});
+
+	return Promise.GetFuture().Get();
+}
+
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
 	if (!m_sink->IsReady())

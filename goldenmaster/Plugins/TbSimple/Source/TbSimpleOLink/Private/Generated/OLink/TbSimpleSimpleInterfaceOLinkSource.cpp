@@ -320,6 +320,11 @@ nlohmann::json TbSimpleSimpleInterfaceOLinkSource::olinkInvoke(const std::string
 		BackendService->FuncNoReturnValue(bParamBool);
 		return nlohmann::json{};
 	}
+	if (path == "funcNoParams")
+	{
+		bool result = BackendService->FuncNoParams();
+		return result;
+	}
 	if (path == "funcBool")
 	{
 		bool bParamBool = args.at(0).get<bool>();

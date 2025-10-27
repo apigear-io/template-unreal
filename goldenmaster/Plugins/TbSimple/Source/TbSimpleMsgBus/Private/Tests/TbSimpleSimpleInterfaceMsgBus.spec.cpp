@@ -819,6 +819,16 @@ void UTbSimpleSimpleInterfaceMsgBusSpec::Define()
 		});
 	});
 
+	LatentIt("Operation.FuncNoParams", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetImplementation()->FuncNoParams();
+			TestDone.Execute();
+		});
+	});
+
 	LatentIt("Operation.FuncBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here

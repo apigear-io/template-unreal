@@ -43,6 +43,35 @@ void UAbstractTestbed2NestedStruct1Interface::SetProp1_Private(const FTestbed2Ne
 	SetProp1(InProp1);
 };
 
+void UAbstractTestbed2NestedStruct1Interface::FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		TFuture<FTestbed2NestedStruct1> Future = FuncNoParamsAsync();
+		FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>* CompletionAction = new FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>(LatentInfo, MoveTemp(Future), Result);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+	}
+}
+
+TFuture<FTestbed2NestedStruct1> UAbstractTestbed2NestedStruct1Interface::FuncNoParamsAsync()
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[this]()
+		{
+		return FuncNoParams();
+	});
+}
+
 void UAbstractTestbed2NestedStruct1Interface::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

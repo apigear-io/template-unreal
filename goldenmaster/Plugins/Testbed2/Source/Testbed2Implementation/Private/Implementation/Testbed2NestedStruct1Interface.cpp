@@ -32,6 +32,18 @@ void UTestbed2NestedStruct1InterfaceImplementation::SetProp1(const FTestbed2Nest
 	}
 }
 
+void UTestbed2NestedStruct1InterfaceImplementation::FuncNoReturnValue(const FTestbed2NestedStruct1& Param1)
+{
+	(void)Param1;
+	// do business logic here
+}
+
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceImplementation::FuncNoParams()
+{
+	// do business logic here
+	return FTestbed2NestedStruct1();
+}
+
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceImplementation::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	(void)Param1;

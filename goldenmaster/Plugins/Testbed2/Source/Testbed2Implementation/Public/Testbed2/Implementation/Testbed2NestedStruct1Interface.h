@@ -40,5 +40,9 @@ public:
 	void _ResetProperties();
 
 	// operations
+	void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) override;
+
+	FTestbed2NestedStruct1 FuncNoParams() override;
+
 	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
 };

@@ -63,6 +63,8 @@ public:
 	// operations
 	void FuncNoReturnValue(bool bParamBool) override;
 
+	bool FuncNoParams() override;
+
 	bool FuncBool(bool bParamBool) override;
 
 	int32 FuncInt(int32 ParamInt) override;

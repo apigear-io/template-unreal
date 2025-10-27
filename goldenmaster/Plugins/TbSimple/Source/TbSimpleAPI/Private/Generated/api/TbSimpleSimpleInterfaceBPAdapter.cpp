@@ -41,6 +41,44 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncNoReturnValue(bool bParamBool)
 	}
 }
 
+void UTbSimpleSimpleInterfaceBPAdapter::FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result )
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbSimpleSimpleInterfaceLatentAction<bool>* oldRequest = LatentActionManager.FindExistingAction<FTbSimpleSimpleInterfaceLatentAction<bool>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		TFuture<bool> Future = FuncNoParamsAsync();
+		FTbSimpleSimpleInterfaceLatentAction<bool>* CompletionAction = new FTbSimpleSimpleInterfaceLatentAction<bool>(LatentInfo, MoveTemp(Future), Result);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+	}
+}
+
+TFuture<bool> UTbSimpleSimpleInterfaceBPAdapter::FuncNoParamsAsync()
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[this]()
+		{
+		return FuncNoParams();
+	});
+}
+
+bool UTbSimpleSimpleInterfaceBPAdapter::FuncNoParams()
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncNoParams(Obj);
+	}
+	return false;
+}
+
 void UTbSimpleSimpleInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

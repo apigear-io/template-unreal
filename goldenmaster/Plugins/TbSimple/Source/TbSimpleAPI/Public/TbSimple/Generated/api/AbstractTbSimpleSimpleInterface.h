@@ -43,6 +43,10 @@ public:
 	// methods
 	virtual void FuncNoReturnValue(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncNoReturnValue, return;);
 
+	virtual void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result ) override;
+	virtual TFuture<bool> FuncNoParamsAsync() override;
+	virtual bool FuncNoParams() override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncNoParams, return false;);
+
 	virtual void FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool) override;
 	virtual TFuture<bool> FuncBoolAsync(bool bParamBool) override;
 	virtual bool FuncBool(bool bParamBool) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::FuncBool, return false;);

@@ -41,6 +41,12 @@ public:
 	virtual UTestbed2NestedStruct1InterfacePublisher* _GetPublisher() override;
 
 	// methods
+	virtual void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::FuncNoReturnValue, return;);
+
+	virtual void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result ) override;
+	virtual TFuture<FTestbed2NestedStruct1> FuncNoParamsAsync() override;
+	virtual FTestbed2NestedStruct1 FuncNoParams() override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::FuncNoParams, return FTestbed2NestedStruct1(););
+
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
 	virtual TFuture<FTestbed2NestedStruct1> Func1Async(const FTestbed2NestedStruct1& Param1) override;
 	virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::Func1, return FTestbed2NestedStruct1(););

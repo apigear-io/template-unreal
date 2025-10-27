@@ -99,6 +99,7 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::_Connect()
 		.Handling<FTestbed2NestedStruct1InterfaceServiceDisconnectMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusClient::OnServiceClosedConnection)
 		.Handling<FTestbed2NestedStruct1InterfaceSig1SignalMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusClient::OnSig1)
 		.Handling<FTestbed2NestedStruct1InterfaceProp1ChangedMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusClient::OnProp1Changed)
+		.Handling<FTestbed2NestedStruct1InterfaceFuncNoParamsReplyMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusClient::OnFuncNoParamsReply)
 		.Handling<FTestbed2NestedStruct1InterfaceFunc1ReplyMessage>(this, &UTestbed2NestedStruct1InterfaceMsgBusClient::OnFunc1Reply)
 		.Build();
 	// clang-format on
@@ -338,6 +339,55 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::SetProp1(const FTestbed2Nested
 		FDateTime::MaxValue());
 	FScopeLock Lock(&(_SentData->Prop1Mutex));
 	_SentData->Prop1 = InProp1;
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusClient::FuncNoReturnValue(const FTestbed2NestedStruct1& InParam1)
+{
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
+
+		return;
+	}
+
+	auto msg = new FTestbed2NestedStruct1InterfaceFuncNoReturnValueRequestMessage();
+	msg->Param1 = InParam1;
+
+	Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceFuncNoReturnValueRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+
+	return;
+}
+
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::FuncNoParams()
+{
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
+
+		return FTestbed2NestedStruct1();
+	}
+
+	auto msg = new FTestbed2NestedStruct1InterfaceFuncNoParamsRequestMessage();
+	msg->ResponseId = FGuid::NewGuid();
+	TPromise<FTestbed2NestedStruct1> Promise;
+	StorePromise(msg->ResponseId, Promise);
+
+	Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceFuncNoParamsRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+
+	return Promise.GetFuture().Get();
+}
+
+void UTestbed2NestedStruct1InterfaceMsgBusClient::OnFuncNoParamsReply(const FTestbed2NestedStruct1InterfaceFuncNoParamsReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::Func1(const FTestbed2NestedStruct1& InParam1)

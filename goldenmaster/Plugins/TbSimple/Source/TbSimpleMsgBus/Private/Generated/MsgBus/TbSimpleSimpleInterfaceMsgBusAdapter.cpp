@@ -81,6 +81,7 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::_StartListening()
 		.Handling<FTbSimpleSimpleInterfaceSetPropFloat64RequestMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropFloat64Request)
 		.Handling<FTbSimpleSimpleInterfaceSetPropStringRequestMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropStringRequest)
 		.Handling<FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncNoReturnValueRequest)
+		.Handling<FTbSimpleSimpleInterfaceFuncNoParamsRequestMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncNoParamsRequest)
 		.Handling<FTbSimpleSimpleInterfaceFuncBoolRequestMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncBoolRequest)
 		.Handling<FTbSimpleSimpleInterfaceFuncIntRequestMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncIntRequest)
 		.Handling<FTbSimpleSimpleInterfaceFuncInt32RequestMessage>(this, &UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt32Request)
@@ -310,6 +311,22 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::_UpdateClientsConnected()
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncNoReturnValueRequest(const FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
 	BackendService->FuncNoReturnValue(InMessage.bParamBool);
+}
+
+void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncNoParamsRequest(const FTbSimpleSimpleInterfaceFuncNoParamsRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	auto msg = new FTbSimpleSimpleInterfaceFuncNoParamsReplyMessage();
+	msg->ResponseId = InMessage.ResponseId;
+	msg->Result = BackendService->FuncNoParams();
+
+	if (TbSimpleSimpleInterfaceMsgBusEndpoint.IsValid())
+	{
+		TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncNoParamsReplyMessage>(msg, EMessageFlags::Reliable,
+			nullptr,
+			TArrayBuilder<FMessageAddress>().Add(Context->GetSender()),
+			FTimespan::Zero(),
+			FDateTime::MaxValue());
+	}
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleSimpleInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
