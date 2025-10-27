@@ -16,6 +16,7 @@ limitations under the License.
 */
 #pragma once
 #include "Async/Async.h"
+#include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
 template <typename TAsyncResult>
