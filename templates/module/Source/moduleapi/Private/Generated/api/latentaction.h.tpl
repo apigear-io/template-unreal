@@ -24,6 +24,7 @@ limitations under the License.
 {{- $class := printf "U%sInterface" $Class }}
 {{- $Iface := printf "%s%s" $ModuleName (Camel .Name) }}
 #include "Async/Async.h"
+#include "Engine/LatentActionManager.h"
 #include "LatentActions.h"
 
 template <typename TAsyncResult>
