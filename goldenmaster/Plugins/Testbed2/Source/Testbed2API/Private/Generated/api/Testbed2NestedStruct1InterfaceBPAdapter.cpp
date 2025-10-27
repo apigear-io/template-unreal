@@ -26,7 +26,8 @@ void UTestbed2NestedStruct1InterfaceBPAdapter::Initialize(TScriptInterface<ITest
 
 UTestbed2NestedStruct1InterfacePublisher* UTestbed2NestedStruct1InterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct1InterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -35,7 +36,8 @@ UTestbed2NestedStruct1InterfacePublisher* UTestbed2NestedStruct1InterfaceBPAdapt
 
 void UTestbed2NestedStruct1InterfaceBPAdapter::FuncNoReturnValue(const FTestbed2NestedStruct1& Param1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct1InterfaceBPInterface::Execute_FuncNoReturnValue(Obj, Param1);
 	}
@@ -72,7 +74,8 @@ TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct1InterfaceBPAdapter::FuncNo
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceBPAdapter::FuncNoParams()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct1InterfaceBPInterface::Execute_FuncNoParams(Obj);
 	}
@@ -110,7 +113,8 @@ TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct1InterfaceBPAdapter::Func1A
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceBPAdapter::Func1(const FTestbed2NestedStruct1& Param1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct1InterfaceBPInterface::Execute_Func1(Obj, Param1);
 	}
@@ -119,7 +123,8 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceBPAdapter::Func1(const FTe
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceBPAdapter::GetProp1() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct1InterfaceBPInterface::Execute_GetProp1(Obj);
 	}
@@ -127,7 +132,8 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceBPAdapter::GetProp1() cons
 }
 void UTestbed2NestedStruct1InterfaceBPAdapter::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed2NestedStruct1InterfaceBPInterface::Execute_SetProp1(Obj, InProp1);
 	}

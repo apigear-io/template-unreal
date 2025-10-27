@@ -26,7 +26,8 @@ void UCounterCounterBPAdapter::Initialize(TScriptInterface<ICounterCounterBPInte
 
 UCounterCounterPublisher* UCounterCounterBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ICounterCounterBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<FVector> UCounterCounterBPAdapter::IncrementAsync(const FVector& Vec)
 
 FVector UCounterCounterBPAdapter::Increment(const FVector& Vec)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ICounterCounterBPInterface::Execute_Increment(Obj, Vec);
 	}
@@ -102,7 +104,8 @@ TFuture<TArray<FVector>> UCounterCounterBPAdapter::IncrementArrayAsync(const TAr
 
 TArray<FVector> UCounterCounterBPAdapter::IncrementArray(const TArray<FVector>& Vec)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ICounterCounterBPInterface::Execute_IncrementArray(Obj, Vec);
 	}
@@ -140,7 +143,8 @@ TFuture<FCustomTypesVector3D> UCounterCounterBPAdapter::DecrementAsync(const FCu
 
 FCustomTypesVector3D UCounterCounterBPAdapter::Decrement(const FCustomTypesVector3D& Vec)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ICounterCounterBPInterface::Execute_Decrement(Obj, Vec);
 	}
@@ -178,7 +182,8 @@ TFuture<TArray<FCustomTypesVector3D>> UCounterCounterBPAdapter::DecrementArrayAs
 
 TArray<FCustomTypesVector3D> UCounterCounterBPAdapter::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ICounterCounterBPInterface::Execute_DecrementArray(Obj, Vec);
 	}
@@ -187,7 +192,8 @@ TArray<FCustomTypesVector3D> UCounterCounterBPAdapter::DecrementArray(const TArr
 
 FCustomTypesVector3D UCounterCounterBPAdapter::GetVector() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ICounterCounterBPInterface::Execute_GetVector(Obj);
 	}
@@ -195,7 +201,8 @@ FCustomTypesVector3D UCounterCounterBPAdapter::GetVector() const
 }
 void UCounterCounterBPAdapter::SetVector(const FCustomTypesVector3D& InVector)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ICounterCounterBPInterface::Execute_SetVector(Obj, InVector);
 	}
@@ -203,7 +210,8 @@ void UCounterCounterBPAdapter::SetVector(const FCustomTypesVector3D& InVector)
 
 FVector UCounterCounterBPAdapter::GetExternVector() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ICounterCounterBPInterface::Execute_GetExternVector(Obj);
 	}
@@ -211,7 +219,8 @@ FVector UCounterCounterBPAdapter::GetExternVector() const
 }
 void UCounterCounterBPAdapter::SetExternVector(const FVector& InExternVector)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ICounterCounterBPInterface::Execute_SetExternVector(Obj, InExternVector);
 	}
@@ -219,7 +228,8 @@ void UCounterCounterBPAdapter::SetExternVector(const FVector& InExternVector)
 
 TArray<FCustomTypesVector3D> UCounterCounterBPAdapter::GetVectorArray() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ICounterCounterBPInterface::Execute_GetVectorArray(Obj);
 	}
@@ -227,7 +237,8 @@ TArray<FCustomTypesVector3D> UCounterCounterBPAdapter::GetVectorArray() const
 }
 void UCounterCounterBPAdapter::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ICounterCounterBPInterface::Execute_SetVectorArray(Obj, InVectorArray);
 	}
@@ -235,7 +246,8 @@ void UCounterCounterBPAdapter::SetVectorArray(const TArray<FCustomTypesVector3D>
 
 TArray<FVector> UCounterCounterBPAdapter::GetExternVectorArray() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ICounterCounterBPInterface::Execute_GetExternVectorArray(Obj);
 	}
@@ -243,7 +255,8 @@ TArray<FVector> UCounterCounterBPAdapter::GetExternVectorArray() const
 }
 void UCounterCounterBPAdapter::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ICounterCounterBPInterface::Execute_SetExternVectorArray(Obj, InExternVectorArray);
 	}

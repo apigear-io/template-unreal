@@ -26,7 +26,8 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::Initialize(TScriptInterface<ITbSimp
 
 UTbSimpleSimpleArrayInterfacePublisher* UTbSimpleSimpleArrayInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<TArray<bool>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncBoolAsync(cons
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncBool(const TArray<bool>& ParamBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_FuncBool(Obj, ParamBool);
 	}
@@ -102,7 +104,8 @@ TFuture<TArray<int32>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncIntAsync(cons
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt(const TArray<int32>& ParamInt)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_FuncInt(Obj, ParamInt);
 	}
@@ -140,7 +143,8 @@ TFuture<TArray<int32>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt32Async(co
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt32(const TArray<int32>& ParamInt32)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_FuncInt32(Obj, ParamInt32);
 	}
@@ -178,7 +182,8 @@ TFuture<TArray<int64>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt64Async(co
 
 TArray<int64> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt64(const TArray<int64>& ParamInt64)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_FuncInt64(Obj, ParamInt64);
 	}
@@ -216,7 +221,8 @@ TFuture<TArray<float>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloatAsync(co
 
 TArray<float> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat(const TArray<float>& ParamFloat)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_FuncFloat(Obj, ParamFloat);
 	}
@@ -254,7 +260,8 @@ TFuture<TArray<float>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat32Async(
 
 TArray<float> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat32(const TArray<float>& ParamFloat32)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_FuncFloat32(Obj, ParamFloat32);
 	}
@@ -292,7 +299,8 @@ TFuture<TArray<double>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat64Async
 
 TArray<double> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat64(const TArray<double>& ParamFloat)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_FuncFloat64(Obj, ParamFloat);
 	}
@@ -330,7 +338,8 @@ TFuture<TArray<FString>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncStringAsync
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncString(const TArray<FString>& ParamString)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_FuncString(Obj, ParamString);
 	}
@@ -339,7 +348,8 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncString(const TArray<
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropBool() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_GetPropBool(Obj);
 	}
@@ -347,7 +357,8 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropBool() const
 }
 void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropBool(const TArray<bool>& InPropBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleArrayInterfaceBPInterface::Execute_SetPropBool(Obj, InPropBool);
 	}
@@ -355,7 +366,8 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropBool(const TArray<bool>& InP
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropInt() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_GetPropInt(Obj);
 	}
@@ -363,7 +375,8 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropInt() const
 }
 void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropInt(const TArray<int32>& InPropInt)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleArrayInterfaceBPInterface::Execute_SetPropInt(Obj, InPropInt);
 	}
@@ -371,7 +384,8 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropInt(const TArray<int32>& InP
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropInt32() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_GetPropInt32(Obj);
 	}
@@ -379,7 +393,8 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropInt32() const
 }
 void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropInt32(const TArray<int32>& InPropInt32)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleArrayInterfaceBPInterface::Execute_SetPropInt32(Obj, InPropInt32);
 	}
@@ -387,7 +402,8 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropInt32(const TArray<int32>& I
 
 TArray<int64> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropInt64() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_GetPropInt64(Obj);
 	}
@@ -395,7 +411,8 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropInt64() const
 }
 void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropInt64(const TArray<int64>& InPropInt64)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleArrayInterfaceBPInterface::Execute_SetPropInt64(Obj, InPropInt64);
 	}
@@ -403,7 +420,8 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropInt64(const TArray<int64>& I
 
 TArray<float> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropFloat() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_GetPropFloat(Obj);
 	}
@@ -411,7 +429,8 @@ TArray<float> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropFloat() const
 }
 void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropFloat(const TArray<float>& InPropFloat)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleArrayInterfaceBPInterface::Execute_SetPropFloat(Obj, InPropFloat);
 	}
@@ -419,7 +438,8 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropFloat(const TArray<float>& I
 
 TArray<float> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropFloat32() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_GetPropFloat32(Obj);
 	}
@@ -427,7 +447,8 @@ TArray<float> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropFloat32() const
 }
 void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropFloat32(const TArray<float>& InPropFloat32)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleArrayInterfaceBPInterface::Execute_SetPropFloat32(Obj, InPropFloat32);
 	}
@@ -435,7 +456,8 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropFloat32(const TArray<float>&
 
 TArray<double> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropFloat64() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_GetPropFloat64(Obj);
 	}
@@ -443,7 +465,8 @@ TArray<double> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropFloat64() const
 }
 void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropFloat64(const TArray<double>& InPropFloat64)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleArrayInterfaceBPInterface::Execute_SetPropFloat64(Obj, InPropFloat64);
 	}
@@ -451,7 +474,8 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropFloat64(const TArray<double>
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropString() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_GetPropString(Obj);
 	}
@@ -459,7 +483,8 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropString() const
 }
 void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropString(const TArray<FString>& InPropString)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleArrayInterfaceBPInterface::Execute_SetPropString(Obj, InPropString);
 	}
@@ -467,7 +492,8 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::SetPropString(const TArray<FString>
 
 FString UTbSimpleSimpleArrayInterfaceBPAdapter::GetPropReadOnlyString() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleArrayInterfaceBPInterface::Execute_GetPropReadOnlyString(Obj);
 	}

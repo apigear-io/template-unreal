@@ -26,7 +26,8 @@ void UTestbed2ManyParamInterfaceBPAdapter::Initialize(TScriptInterface<ITestbed2
 
 UTestbed2ManyParamInterfacePublisher* UTestbed2ManyParamInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2ManyParamInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<int32> UTestbed2ManyParamInterfaceBPAdapter::Func1Async(int32 Param1)
 
 int32 UTestbed2ManyParamInterfaceBPAdapter::Func1(int32 Param1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2ManyParamInterfaceBPInterface::Execute_Func1(Obj, Param1);
 	}
@@ -102,7 +104,8 @@ TFuture<int32> UTestbed2ManyParamInterfaceBPAdapter::Func2Async(int32 Param1, in
 
 int32 UTestbed2ManyParamInterfaceBPAdapter::Func2(int32 Param1, int32 Param2)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2ManyParamInterfaceBPInterface::Execute_Func2(Obj, Param1, Param2);
 	}
@@ -140,7 +143,8 @@ TFuture<int32> UTestbed2ManyParamInterfaceBPAdapter::Func3Async(int32 Param1, in
 
 int32 UTestbed2ManyParamInterfaceBPAdapter::Func3(int32 Param1, int32 Param2, int32 Param3)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2ManyParamInterfaceBPInterface::Execute_Func3(Obj, Param1, Param2, Param3);
 	}
@@ -178,7 +182,8 @@ TFuture<int32> UTestbed2ManyParamInterfaceBPAdapter::Func4Async(int32 Param1, in
 
 int32 UTestbed2ManyParamInterfaceBPAdapter::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2ManyParamInterfaceBPInterface::Execute_Func4(Obj, Param1, Param2, Param3, Param4);
 	}
@@ -187,7 +192,8 @@ int32 UTestbed2ManyParamInterfaceBPAdapter::Func4(int32 Param1, int32 Param2, in
 
 int32 UTestbed2ManyParamInterfaceBPAdapter::GetProp1() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2ManyParamInterfaceBPInterface::Execute_GetProp1(Obj);
 	}
@@ -195,7 +201,8 @@ int32 UTestbed2ManyParamInterfaceBPAdapter::GetProp1() const
 }
 void UTestbed2ManyParamInterfaceBPAdapter::SetProp1(int32 InProp1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed2ManyParamInterfaceBPInterface::Execute_SetProp1(Obj, InProp1);
 	}
@@ -203,7 +210,8 @@ void UTestbed2ManyParamInterfaceBPAdapter::SetProp1(int32 InProp1)
 
 int32 UTestbed2ManyParamInterfaceBPAdapter::GetProp2() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2ManyParamInterfaceBPInterface::Execute_GetProp2(Obj);
 	}
@@ -211,7 +219,8 @@ int32 UTestbed2ManyParamInterfaceBPAdapter::GetProp2() const
 }
 void UTestbed2ManyParamInterfaceBPAdapter::SetProp2(int32 InProp2)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed2ManyParamInterfaceBPInterface::Execute_SetProp2(Obj, InProp2);
 	}
@@ -219,7 +228,8 @@ void UTestbed2ManyParamInterfaceBPAdapter::SetProp2(int32 InProp2)
 
 int32 UTestbed2ManyParamInterfaceBPAdapter::GetProp3() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2ManyParamInterfaceBPInterface::Execute_GetProp3(Obj);
 	}
@@ -227,7 +237,8 @@ int32 UTestbed2ManyParamInterfaceBPAdapter::GetProp3() const
 }
 void UTestbed2ManyParamInterfaceBPAdapter::SetProp3(int32 InProp3)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed2ManyParamInterfaceBPInterface::Execute_SetProp3(Obj, InProp3);
 	}
@@ -235,7 +246,8 @@ void UTestbed2ManyParamInterfaceBPAdapter::SetProp3(int32 InProp3)
 
 int32 UTestbed2ManyParamInterfaceBPAdapter::GetProp4() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2ManyParamInterfaceBPInterface::Execute_GetProp4(Obj);
 	}
@@ -243,7 +255,8 @@ int32 UTestbed2ManyParamInterfaceBPAdapter::GetProp4() const
 }
 void UTestbed2ManyParamInterfaceBPAdapter::SetProp4(int32 InProp4)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed2ManyParamInterfaceBPInterface::Execute_SetProp4(Obj, InProp4);
 	}

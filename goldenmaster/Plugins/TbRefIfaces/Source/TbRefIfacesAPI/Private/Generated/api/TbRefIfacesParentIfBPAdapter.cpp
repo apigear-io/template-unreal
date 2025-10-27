@@ -26,7 +26,8 @@ void UTbRefIfacesParentIfBPAdapter::Initialize(TScriptInterface<ITbRefIfacesPare
 
 UTbRefIfacesParentIfPublisher* UTbRefIfacesParentIfBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesParentIfBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParent
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfBPAdapter::LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesParentIfBPInterface::Execute_LocalIfMethod(Obj, Param);
 	}
@@ -102,7 +104,8 @@ TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> UTbRefIfac
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfBPAdapter::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesParentIfBPInterface::Execute_LocalIfMethodList(Obj, Param);
 	}
@@ -140,7 +143,8 @@ TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfBP
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfBPAdapter::ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesParentIfBPInterface::Execute_ImportedIfMethod(Obj, Param);
 	}
@@ -178,7 +182,8 @@ TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> UTbRefIfacesPa
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfBPAdapter::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesParentIfBPInterface::Execute_ImportedIfMethodList(Obj, Param);
 	}
@@ -187,7 +192,8 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfBPA
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfBPAdapter::GetLocalIf() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesParentIfBPInterface::Execute_GetLocalIf(Obj);
 	}
@@ -195,7 +201,8 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfBPAdapt
 }
 void UTbRefIfacesParentIfBPAdapter::SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbRefIfacesParentIfBPInterface::Execute_SetLocalIf(Obj, InLocalIf);
 	}
@@ -203,7 +210,8 @@ void UTbRefIfacesParentIfBPAdapter::SetLocalIf(const TScriptInterface<ITbRefIfac
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfBPAdapter::GetLocalIfList() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesParentIfBPInterface::Execute_GetLocalIfList(Obj);
 	}
@@ -211,7 +219,8 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 }
 void UTbRefIfacesParentIfBPAdapter::SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbRefIfacesParentIfBPInterface::Execute_SetLocalIfList(Obj, InLocalIfList);
 	}
@@ -219,7 +228,8 @@ void UTbRefIfacesParentIfBPAdapter::SetLocalIfList(const TArray<TScriptInterface
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfBPAdapter::GetImportedIf() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesParentIfBPInterface::Execute_GetImportedIf(Obj);
 	}
@@ -227,7 +237,8 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfBPAdapter::
 }
 void UTbRefIfacesParentIfBPAdapter::SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbRefIfacesParentIfBPInterface::Execute_SetImportedIf(Obj, InImportedIf);
 	}
@@ -235,7 +246,8 @@ void UTbRefIfacesParentIfBPAdapter::SetImportedIf(const TScriptInterface<ITbIfac
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfBPAdapter::GetImportedIfList() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesParentIfBPInterface::Execute_GetImportedIfList(Obj);
 	}
@@ -243,7 +255,8 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfBPA
 }
 void UTbRefIfacesParentIfBPAdapter::SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbRefIfacesParentIfBPInterface::Execute_SetImportedIfList(Obj, InImportedIfList);
 	}

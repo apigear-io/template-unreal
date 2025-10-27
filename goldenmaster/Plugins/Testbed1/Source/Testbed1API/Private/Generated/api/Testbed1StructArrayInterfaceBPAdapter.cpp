@@ -26,7 +26,8 @@ void UTestbed1StructArrayInterfaceBPAdapter::Initialize(TScriptInterface<ITestbe
 
 UTestbed1StructArrayInterfacePublisher* UTestbed1StructArrayInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<TArray<FTestbed1StructBool>> UTestbed1StructArrayInterfaceBPAdapter::Fun
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceBPAdapter::FuncBool(const TArray<FTestbed1StructBool>& ParamBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute_FuncBool(Obj, ParamBool);
 	}
@@ -102,7 +104,8 @@ TFuture<TArray<FTestbed1StructInt>> UTestbed1StructArrayInterfaceBPAdapter::Func
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceBPAdapter::FuncInt(const TArray<FTestbed1StructInt>& ParamInt)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute_FuncInt(Obj, ParamInt);
 	}
@@ -140,7 +143,8 @@ TFuture<TArray<FTestbed1StructFloat>> UTestbed1StructArrayInterfaceBPAdapter::Fu
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceBPAdapter::FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute_FuncFloat(Obj, ParamFloat);
 	}
@@ -178,7 +182,8 @@ TFuture<TArray<FTestbed1StructString>> UTestbed1StructArrayInterfaceBPAdapter::F
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceBPAdapter::FuncString(const TArray<FTestbed1StructString>& ParamString)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute_FuncString(Obj, ParamString);
 	}
@@ -216,7 +221,8 @@ TFuture<TArray<ETestbed1Enum0>> UTestbed1StructArrayInterfaceBPAdapter::FuncEnum
 
 TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceBPAdapter::FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute_FuncEnum(Obj, ParamEnum);
 	}
@@ -225,7 +231,8 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceBPAdapter::FuncEnum(const TA
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceBPAdapter::GetPropBool() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute_GetPropBool(Obj);
 	}
@@ -233,7 +240,8 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceBPAdapter::GetPropBool(
 }
 void UTestbed1StructArrayInterfaceBPAdapter::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed1StructArrayInterfaceBPInterface::Execute_SetPropBool(Obj, InPropBool);
 	}
@@ -241,7 +249,8 @@ void UTestbed1StructArrayInterfaceBPAdapter::SetPropBool(const TArray<FTestbed1S
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceBPAdapter::GetPropInt() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute_GetPropInt(Obj);
 	}
@@ -249,7 +258,8 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceBPAdapter::GetPropInt() 
 }
 void UTestbed1StructArrayInterfaceBPAdapter::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed1StructArrayInterfaceBPInterface::Execute_SetPropInt(Obj, InPropInt);
 	}
@@ -257,7 +267,8 @@ void UTestbed1StructArrayInterfaceBPAdapter::SetPropInt(const TArray<FTestbed1St
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceBPAdapter::GetPropFloat() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute_GetPropFloat(Obj);
 	}
@@ -265,7 +276,8 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceBPAdapter::GetPropFloa
 }
 void UTestbed1StructArrayInterfaceBPAdapter::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed1StructArrayInterfaceBPInterface::Execute_SetPropFloat(Obj, InPropFloat);
 	}
@@ -273,7 +285,8 @@ void UTestbed1StructArrayInterfaceBPAdapter::SetPropFloat(const TArray<FTestbed1
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceBPAdapter::GetPropString() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute_GetPropString(Obj);
 	}
@@ -281,7 +294,8 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceBPAdapter::GetPropStr
 }
 void UTestbed1StructArrayInterfaceBPAdapter::SetPropString(const TArray<FTestbed1StructString>& InPropString)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed1StructArrayInterfaceBPInterface::Execute_SetPropString(Obj, InPropString);
 	}
@@ -289,7 +303,8 @@ void UTestbed1StructArrayInterfaceBPAdapter::SetPropString(const TArray<FTestbed
 
 TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceBPAdapter::GetPropEnum() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructArrayInterfaceBPInterface::Execute_GetPropEnum(Obj);
 	}
@@ -297,7 +312,8 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceBPAdapter::GetPropEnum() con
 }
 void UTestbed1StructArrayInterfaceBPAdapter::SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed1StructArrayInterfaceBPInterface::Execute_SetPropEnum(Obj, InPropEnum);
 	}

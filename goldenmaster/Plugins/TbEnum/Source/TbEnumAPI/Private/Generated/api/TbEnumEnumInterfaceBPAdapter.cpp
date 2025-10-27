@@ -26,7 +26,8 @@ void UTbEnumEnumInterfaceBPAdapter::Initialize(TScriptInterface<ITbEnumEnumInter
 
 UTbEnumEnumInterfacePublisher* UTbEnumEnumInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbEnumEnumInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<ETbEnumEnum0> UTbEnumEnumInterfaceBPAdapter::Func0Async(ETbEnumEnum0 Par
 
 ETbEnumEnum0 UTbEnumEnumInterfaceBPAdapter::Func0(ETbEnumEnum0 Param0)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbEnumEnumInterfaceBPInterface::Execute_Func0(Obj, Param0);
 	}
@@ -102,7 +104,8 @@ TFuture<ETbEnumEnum1> UTbEnumEnumInterfaceBPAdapter::Func1Async(ETbEnumEnum1 Par
 
 ETbEnumEnum1 UTbEnumEnumInterfaceBPAdapter::Func1(ETbEnumEnum1 Param1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbEnumEnumInterfaceBPInterface::Execute_Func1(Obj, Param1);
 	}
@@ -140,7 +143,8 @@ TFuture<ETbEnumEnum2> UTbEnumEnumInterfaceBPAdapter::Func2Async(ETbEnumEnum2 Par
 
 ETbEnumEnum2 UTbEnumEnumInterfaceBPAdapter::Func2(ETbEnumEnum2 Param2)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbEnumEnumInterfaceBPInterface::Execute_Func2(Obj, Param2);
 	}
@@ -178,7 +182,8 @@ TFuture<ETbEnumEnum3> UTbEnumEnumInterfaceBPAdapter::Func3Async(ETbEnumEnum3 Par
 
 ETbEnumEnum3 UTbEnumEnumInterfaceBPAdapter::Func3(ETbEnumEnum3 Param3)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbEnumEnumInterfaceBPInterface::Execute_Func3(Obj, Param3);
 	}
@@ -187,7 +192,8 @@ ETbEnumEnum3 UTbEnumEnumInterfaceBPAdapter::Func3(ETbEnumEnum3 Param3)
 
 ETbEnumEnum0 UTbEnumEnumInterfaceBPAdapter::GetProp0() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbEnumEnumInterfaceBPInterface::Execute_GetProp0(Obj);
 	}
@@ -195,7 +201,8 @@ ETbEnumEnum0 UTbEnumEnumInterfaceBPAdapter::GetProp0() const
 }
 void UTbEnumEnumInterfaceBPAdapter::SetProp0(ETbEnumEnum0 InProp0)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbEnumEnumInterfaceBPInterface::Execute_SetProp0(Obj, InProp0);
 	}
@@ -203,7 +210,8 @@ void UTbEnumEnumInterfaceBPAdapter::SetProp0(ETbEnumEnum0 InProp0)
 
 ETbEnumEnum1 UTbEnumEnumInterfaceBPAdapter::GetProp1() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbEnumEnumInterfaceBPInterface::Execute_GetProp1(Obj);
 	}
@@ -211,7 +219,8 @@ ETbEnumEnum1 UTbEnumEnumInterfaceBPAdapter::GetProp1() const
 }
 void UTbEnumEnumInterfaceBPAdapter::SetProp1(ETbEnumEnum1 InProp1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbEnumEnumInterfaceBPInterface::Execute_SetProp1(Obj, InProp1);
 	}
@@ -219,7 +228,8 @@ void UTbEnumEnumInterfaceBPAdapter::SetProp1(ETbEnumEnum1 InProp1)
 
 ETbEnumEnum2 UTbEnumEnumInterfaceBPAdapter::GetProp2() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbEnumEnumInterfaceBPInterface::Execute_GetProp2(Obj);
 	}
@@ -227,7 +237,8 @@ ETbEnumEnum2 UTbEnumEnumInterfaceBPAdapter::GetProp2() const
 }
 void UTbEnumEnumInterfaceBPAdapter::SetProp2(ETbEnumEnum2 InProp2)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbEnumEnumInterfaceBPInterface::Execute_SetProp2(Obj, InProp2);
 	}
@@ -235,7 +246,8 @@ void UTbEnumEnumInterfaceBPAdapter::SetProp2(ETbEnumEnum2 InProp2)
 
 ETbEnumEnum3 UTbEnumEnumInterfaceBPAdapter::GetProp3() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbEnumEnumInterfaceBPInterface::Execute_GetProp3(Obj);
 	}
@@ -243,7 +255,8 @@ ETbEnumEnum3 UTbEnumEnumInterfaceBPAdapter::GetProp3() const
 }
 void UTbEnumEnumInterfaceBPAdapter::SetProp3(ETbEnumEnum3 InProp3)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbEnumEnumInterfaceBPInterface::Execute_SetProp3(Obj, InProp3);
 	}
