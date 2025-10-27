@@ -142,6 +142,15 @@ public:
 	virtual UTestbed2NestedStruct1InterfacePublisher* _GetPublisher() = 0;
 
 	// methods
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations")
+	virtual void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result ) = 0;
+	virtual TFuture<FTestbed2NestedStruct1> FuncNoParamsAsync() = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations")
+	virtual FTestbed2NestedStruct1 FuncNoParams() = 0;
+
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
 	virtual void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) = 0;
 	virtual TFuture<FTestbed2NestedStruct1> Func1Async(const FTestbed2NestedStruct1& Param1) = 0;

@@ -47,6 +47,10 @@ public:
 	void SetProp1(const FTestbed2NestedStruct1& InProp1) override;
 
 	// operations
+	void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) override;
+
+	FTestbed2NestedStruct1 FuncNoParams() override;
+
 	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
 
 private:

@@ -397,6 +397,24 @@ void UTbSimpleSimpleInterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->FuncNoReturnValue(false);
 	});
 
+	It("Operation.FuncNoParams", [this]()
+		{
+		// Do implement test here
+		ImplFixture->GetImplementation()->FuncNoParams();
+	});
+
+	LatentIt("Operation.FuncNoParamsAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<bool> Future = ImplFixture->GetImplementation()->FuncNoParamsAsync();
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const bool& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.FuncBool", [this]()
 		{
 		// Do implement test here

@@ -270,6 +270,12 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::FuncNoReturnValue(bool bParamBool
 	BackendService->FuncNoReturnValue(bParamBool);
 }
 
+bool UTbSimpleSimpleInterfaceLoggingDecorator::FuncNoParams()
+{
+	TbSimpleSimpleInterfaceTracer::trace_callFuncNoParams();
+	return BackendService->FuncNoParams();
+}
+
 bool UTbSimpleSimpleInterfaceLoggingDecorator::FuncBool(bool bParamBool)
 {
 	TbSimpleSimpleInterfaceTracer::trace_callFuncBool(bParamBool);

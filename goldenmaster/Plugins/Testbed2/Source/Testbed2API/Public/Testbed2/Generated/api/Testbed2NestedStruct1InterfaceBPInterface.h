@@ -47,6 +47,14 @@ public:
 
 	// methods
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations")
+	void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1);
+	virtual void FuncNoReturnValue_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations")
+	FTestbed2NestedStruct1 FuncNoParams();
+	virtual FTestbed2NestedStruct1 FuncNoParams_Implementation() = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations")
 	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1);
 	virtual FTestbed2NestedStruct1 Func1_Implementation(const FTestbed2NestedStruct1& Param1) = 0;
 

@@ -90,6 +90,30 @@ void UTestbed2NestedStruct1InterfaceImplSpec::Define()
 		ImplFixture->GetImplementation()->SetProp1(TestValue);
 	});
 
+	It("Operation.FuncNoReturnValue", [this]()
+		{
+		// Do implement test here
+		ImplFixture->GetImplementation()->FuncNoReturnValue(FTestbed2NestedStruct1());
+	});
+
+	It("Operation.FuncNoParams", [this]()
+		{
+		// Do implement test here
+		ImplFixture->GetImplementation()->FuncNoParams();
+	});
+
+	LatentIt("Operation.FuncNoParamsAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		TFuture<FTestbed2NestedStruct1> Future = ImplFixture->GetImplementation()->FuncNoParamsAsync();
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed2NestedStruct1& Result)
+			{
+			// Do implement test here
+			Done.Execute();
+		});
+	});
+
 	It("Operation.Func1", [this]()
 		{
 		// Do implement test here

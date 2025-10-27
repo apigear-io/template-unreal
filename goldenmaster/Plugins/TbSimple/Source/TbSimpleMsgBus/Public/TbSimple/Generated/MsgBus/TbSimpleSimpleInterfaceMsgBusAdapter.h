@@ -55,6 +55,7 @@ struct FTbSimpleSimpleInterfacePropFloat64ChangedMessage;
 struct FTbSimpleSimpleInterfaceSetPropStringRequestMessage;
 struct FTbSimpleSimpleInterfacePropStringChangedMessage;
 struct FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage;
+struct FTbSimpleSimpleInterfaceFuncNoParamsRequestMessage;
 struct FTbSimpleSimpleInterfaceFuncBoolRequestMessage;
 struct FTbSimpleSimpleInterfaceFuncIntRequestMessage;
 struct FTbSimpleSimpleInterfaceFuncInt32RequestMessage;
@@ -128,6 +129,7 @@ private:
 	void OnPing(const FTbSimpleSimpleInterfacePingMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnClientDisconnected(const FTbSimpleSimpleInterfaceClientDisconnectMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncNoReturnValueRequest(const FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncNoParamsRequest(const FTbSimpleSimpleInterfaceFuncNoParamsRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncBoolRequest(const FTbSimpleSimpleInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncIntRequest(const FTbSimpleSimpleInterfaceFuncIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFuncInt32Request(const FTbSimpleSimpleInterfaceFuncInt32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);

@@ -51,6 +51,10 @@ public:
 	virtual void FuncNoReturnValue_Implementation(bool bParamBool) = 0;
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
+	bool FuncNoParams();
+	virtual bool FuncNoParams_Implementation() = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
 	bool FuncBool(bool bParamBool);
 	virtual bool FuncBool_Implementation(bool bParamBool) = 0;
 

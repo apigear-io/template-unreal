@@ -113,6 +113,36 @@ struct FTestbed2NestedStruct1InterfaceProp1ChangedMessage
 };
 
 USTRUCT()
+struct FTestbed2NestedStruct1InterfaceFuncNoReturnValueRequestMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FTestbed2NestedStruct1 Param1 = FTestbed2NestedStruct1();
+};
+
+USTRUCT()
+struct FTestbed2NestedStruct1InterfaceFuncNoParamsRequestMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGuid ResponseId;
+};
+
+USTRUCT()
+struct FTestbed2NestedStruct1InterfaceFuncNoParamsReplyMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGuid ResponseId;
+
+	UPROPERTY()
+	FTestbed2NestedStruct1 Result = FTestbed2NestedStruct1();
+};
+
+USTRUCT()
 struct FTestbed2NestedStruct1InterfaceFunc1RequestMessage
 {
 	GENERATED_BODY()

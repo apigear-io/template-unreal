@@ -33,6 +33,7 @@ public:
 	static void trace_signalSigFloat64(double ParamFloat64);
 	static void trace_signalSigString(const FString& ParamString);
 	static void trace_callFuncNoReturnValue(bool bParamBool);
+	static void trace_callFuncNoParams();
 	static void trace_callFuncBool(bool bParamBool);
 	static void trace_callFuncInt(int32 ParamInt);
 	static void trace_callFuncInt32(int32 ParamInt32);

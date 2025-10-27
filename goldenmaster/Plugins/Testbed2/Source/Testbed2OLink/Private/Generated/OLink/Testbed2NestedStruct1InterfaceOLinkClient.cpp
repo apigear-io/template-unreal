@@ -182,6 +182,42 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::SetProp1(const FTestbed2NestedS
 	_SentData->Prop1 = InProp1;
 }
 
+void UTestbed2NestedStruct1InterfaceOLinkClient::FuncNoReturnValue(const FTestbed2NestedStruct1& Param1)
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		return;
+	}
+	ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct1InterfaceStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoReturnValue");
+	m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetNestedStruct1InterfaceStateFunc);
+}
+
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::FuncNoParams()
+{
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		return FTestbed2NestedStruct1();
+	}
+	TPromise<FTestbed2NestedStruct1> Promise;
+	Async(EAsyncExecution::ThreadPool,
+		[&Promise, this]()
+		{
+		ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+			Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>());
+		};
+		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoParams");
+		m_sink->GetNode()->invokeRemote(memberId, {}, GetNestedStruct1InterfaceStateFunc);
+	});
+
+	return Promise.GetFuture().Get();
+}
+
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	if (!m_sink->IsReady())

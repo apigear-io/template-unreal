@@ -34,6 +34,7 @@ struct FTestbed2NestedStruct1InterfacePongMessage;
 struct FTestbed2NestedStruct1InterfaceServiceDisconnectMessage;
 struct FTestbed2NestedStruct1InterfaceSig1SignalMessage;
 struct FTestbed2NestedStruct1InterfaceProp1ChangedMessage;
+struct FTestbed2NestedStruct1InterfaceFuncNoParamsReplyMessage;
 struct FTestbed2NestedStruct1InterfaceFunc1ReplyMessage;
 
 USTRUCT(BlueprintType)
@@ -101,6 +102,10 @@ public:
 	void SetProp1(const FTestbed2NestedStruct1& Prop1) override;
 
 	// operations
+	void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) override;
+
+	FTestbed2NestedStruct1 FuncNoParams() override;
+
 	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
 
 private:
@@ -132,6 +137,7 @@ private:
 	void OnServiceClosedConnection(const FTestbed2NestedStruct1InterfaceServiceDisconnectMessage& InInitMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnSig1(const FTestbed2NestedStruct1InterfaceSig1SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnProp1Changed(const FTestbed2NestedStruct1InterfaceProp1ChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
+	void OnFuncNoParamsReply(const FTestbed2NestedStruct1InterfaceFuncNoParamsReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 	void OnFunc1Reply(const FTestbed2NestedStruct1InterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data

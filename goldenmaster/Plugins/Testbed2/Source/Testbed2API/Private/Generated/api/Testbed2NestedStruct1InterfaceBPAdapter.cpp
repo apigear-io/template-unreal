@@ -33,6 +33,52 @@ UTestbed2NestedStruct1InterfacePublisher* UTestbed2NestedStruct1InterfaceBPAdapt
 	return nullptr;
 }
 
+void UTestbed2NestedStruct1InterfaceBPAdapter::FuncNoReturnValue(const FTestbed2NestedStruct1& Param1)
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		return ITestbed2NestedStruct1InterfaceBPInterface::Execute_FuncNoReturnValue(Obj, Param1);
+	}
+}
+
+void UTestbed2NestedStruct1InterfaceBPAdapter::FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result )
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>* oldRequest = LatentActionManager.FindExistingAction<FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		TFuture<FTestbed2NestedStruct1> Future = FuncNoParamsAsync();
+		FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>* CompletionAction = new FTestbed2NestedStruct1InterfaceLatentAction<FTestbed2NestedStruct1>(LatentInfo, MoveTemp(Future), Result);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+	}
+}
+
+TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct1InterfaceBPAdapter::FuncNoParamsAsync()
+{
+	return Async(EAsyncExecution::ThreadPool,
+		[this]()
+		{
+		return FuncNoParams();
+	});
+}
+
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceBPAdapter::FuncNoParams()
+{
+	if (UObject* Obj = Target.GetObject())
+	{
+		return ITestbed2NestedStruct1InterfaceBPInterface::Execute_FuncNoParams(Obj);
+	}
+	return FTestbed2NestedStruct1();
+}
+
 void UTestbed2NestedStruct1InterfaceBPAdapter::Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

@@ -332,6 +332,27 @@ struct FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage
 };
 
 USTRUCT()
+struct FTbSimpleSimpleInterfaceFuncNoParamsRequestMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGuid ResponseId;
+};
+
+USTRUCT()
+struct FTbSimpleSimpleInterfaceFuncNoParamsReplyMessage
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	FGuid ResponseId;
+
+	UPROPERTY()
+	bool Result = false;
+};
+
+USTRUCT()
 struct FTbSimpleSimpleInterfaceFuncBoolRequestMessage
 {
 	GENERATED_BODY()

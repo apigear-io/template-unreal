@@ -89,6 +89,18 @@ void UTestbed2NestedStruct1InterfaceLoggingDecorator::SetProp1(const FTestbed2Ne
 	BackendService->SetProp1(InProp1);
 }
 
+void UTestbed2NestedStruct1InterfaceLoggingDecorator::FuncNoReturnValue(const FTestbed2NestedStruct1& Param1)
+{
+	Testbed2NestedStruct1InterfaceTracer::trace_callFuncNoReturnValue(Param1);
+	BackendService->FuncNoReturnValue(Param1);
+}
+
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLoggingDecorator::FuncNoParams()
+{
+	Testbed2NestedStruct1InterfaceTracer::trace_callFuncNoParams();
+	return BackendService->FuncNoParams();
+}
+
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLoggingDecorator::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	Testbed2NestedStruct1InterfaceTracer::trace_callFunc1(Param1);

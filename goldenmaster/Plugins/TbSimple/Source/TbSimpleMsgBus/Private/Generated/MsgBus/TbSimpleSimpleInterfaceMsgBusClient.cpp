@@ -121,6 +121,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::_Connect()
 		.Handling<FTbSimpleSimpleInterfacePropFloat32ChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat32Changed)
 		.Handling<FTbSimpleSimpleInterfacePropFloat64ChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropFloat64Changed)
 		.Handling<FTbSimpleSimpleInterfacePropStringChangedMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnPropStringChanged)
+		.Handling<FTbSimpleSimpleInterfaceFuncNoParamsReplyMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnFuncNoParamsReply)
 		.Handling<FTbSimpleSimpleInterfaceFuncBoolReplyMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnFuncBoolReply)
 		.Handling<FTbSimpleSimpleInterfaceFuncIntReplyMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnFuncIntReply)
 		.Handling<FTbSimpleSimpleInterfaceFuncInt32ReplyMessage>(this, &UTbSimpleSimpleInterfaceMsgBusClient::OnFuncInt32Reply)
@@ -703,6 +704,34 @@ void UTbSimpleSimpleInterfaceMsgBusClient::FuncNoReturnValue(bool bInParamBool)
 		FDateTime::MaxValue());
 
 	return;
+}
+
+bool UTbSimpleSimpleInterfaceMsgBusClient::FuncNoParams()
+{
+	if (!_IsConnected())
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
+
+		return false;
+	}
+
+	auto msg = new FTbSimpleSimpleInterfaceFuncNoParamsRequestMessage();
+	msg->ResponseId = FGuid::NewGuid();
+	TPromise<bool> Promise;
+	StorePromise(msg->ResponseId, Promise);
+
+	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncNoParamsRequestMessage>(msg, EMessageFlags::Reliable,
+		nullptr,
+		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
+		FTimespan::Zero(),
+		FDateTime::MaxValue());
+
+	return Promise.GetFuture().Get();
+}
+
+void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncNoParamsReply(const FTbSimpleSimpleInterfaceFuncNoParamsReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
+{
+	FulfillPromise(InMessage.ResponseId, InMessage.Result);
 }
 
 bool UTbSimpleSimpleInterfaceMsgBusClient::FuncBool(bool bInParamBool)

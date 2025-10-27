@@ -132,6 +132,19 @@ void Testbed2NestedStruct1InterfaceTracer::trace_signalSig1(const FTestbed2Neste
 	Tracer::instance()->signal("testbed2/NestedStruct1Interface#sig1", fields_);
 }
 
+void Testbed2NestedStruct1InterfaceTracer::trace_callFuncNoReturnValue(const FTestbed2NestedStruct1& Param1)
+{
+	nlohmann::json fields_;
+	fields_["param1"] = Param1;
+	Tracer::instance()->call("testbed2/NestedStruct1Interface#funcNoReturnValue", fields_);
+}
+
+void Testbed2NestedStruct1InterfaceTracer::trace_callFuncNoParams()
+{
+	nlohmann::json fields_;
+	Tracer::instance()->call("testbed2/NestedStruct1Interface#funcNoParams", fields_);
+}
+
 void Testbed2NestedStruct1InterfaceTracer::trace_callFunc1(const FTestbed2NestedStruct1& Param1)
 {
 	nlohmann::json fields_;

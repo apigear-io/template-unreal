@@ -129,6 +129,12 @@ void UTbSimpleSimpleInterfaceImplementation::FuncNoReturnValue(bool bParamBool)
 	// do business logic here
 }
 
+bool UTbSimpleSimpleInterfaceImplementation::FuncNoParams()
+{
+	// do business logic here
+	return false;
+}
+
 bool UTbSimpleSimpleInterfaceImplementation::FuncBool(bool bParamBool)
 {
 	(void)bParamBool;

@@ -42,6 +42,12 @@ public:
 	UTestbed2NestedStruct1InterfacePublisher* _GetPublisher() override;
 
 	// methods
+	void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) override;
+
+	void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result ) override;
+	TFuture<FTestbed2NestedStruct1> FuncNoParamsAsync() override;
+	FTestbed2NestedStruct1 FuncNoParams() override;
+
 	void Func1Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result, const FTestbed2NestedStruct1& Param1) override;
 	TFuture<FTestbed2NestedStruct1> Func1Async(const FTestbed2NestedStruct1& Param1) override;
 	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
