@@ -26,7 +26,8 @@ void UTbSimpleNoPropertiesInterfaceBPAdapter::Initialize(TScriptInterface<ITbSim
 
 UTbSimpleNoPropertiesInterfacePublisher* UTbSimpleNoPropertiesInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoPropertiesInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -35,7 +36,8 @@ UTbSimpleNoPropertiesInterfacePublisher* UTbSimpleNoPropertiesInterfaceBPAdapter
 
 void UTbSimpleNoPropertiesInterfaceBPAdapter::FuncVoid()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoPropertiesInterfaceBPInterface::Execute_FuncVoid(Obj);
 	}
@@ -72,7 +74,8 @@ TFuture<bool> UTbSimpleNoPropertiesInterfaceBPAdapter::FuncBoolAsync(bool bParam
 
 bool UTbSimpleNoPropertiesInterfaceBPAdapter::FuncBool(bool bParamBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoPropertiesInterfaceBPInterface::Execute_FuncBool(Obj, bParamBool);
 	}

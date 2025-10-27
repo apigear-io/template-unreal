@@ -26,7 +26,8 @@ void UTbNamesNamEsBPAdapter::Initialize(TScriptInterface<ITbNamesNamEsBPInterfac
 
 UTbNamesNamEsPublisher* UTbNamesNamEsBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbNamesNamEsBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -35,7 +36,8 @@ UTbNamesNamEsPublisher* UTbNamesNamEsBPAdapter::_GetPublisher()
 
 void UTbNamesNamEsBPAdapter::SomeFunction(bool bSomeParam)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbNamesNamEsBPInterface::Execute_SomeFunction(Obj, bSomeParam);
 	}
@@ -43,7 +45,8 @@ void UTbNamesNamEsBPAdapter::SomeFunction(bool bSomeParam)
 
 void UTbNamesNamEsBPAdapter::SomeFunction2(bool bSomeParam)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbNamesNamEsBPInterface::Execute_SomeFunction2(Obj, bSomeParam);
 	}
@@ -51,7 +54,8 @@ void UTbNamesNamEsBPAdapter::SomeFunction2(bool bSomeParam)
 
 bool UTbNamesNamEsBPAdapter::GetSwitch() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbNamesNamEsBPInterface::Execute_GetSwitch(Obj);
 	}
@@ -59,7 +63,8 @@ bool UTbNamesNamEsBPAdapter::GetSwitch() const
 }
 void UTbNamesNamEsBPAdapter::SetSwitch(bool bInSwitch)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbNamesNamEsBPInterface::Execute_SetSwitch(Obj, bInSwitch);
 	}
@@ -67,7 +72,8 @@ void UTbNamesNamEsBPAdapter::SetSwitch(bool bInSwitch)
 
 int32 UTbNamesNamEsBPAdapter::GetSomeProperty() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbNamesNamEsBPInterface::Execute_GetSomeProperty(Obj);
 	}
@@ -75,7 +81,8 @@ int32 UTbNamesNamEsBPAdapter::GetSomeProperty() const
 }
 void UTbNamesNamEsBPAdapter::SetSomeProperty(int32 InSomeProperty)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbNamesNamEsBPInterface::Execute_SetSomeProperty(Obj, InSomeProperty);
 	}
@@ -83,7 +90,8 @@ void UTbNamesNamEsBPAdapter::SetSomeProperty(int32 InSomeProperty)
 
 int32 UTbNamesNamEsBPAdapter::GetSomePoperty2() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbNamesNamEsBPInterface::Execute_GetSomePoperty2(Obj);
 	}
@@ -91,7 +99,8 @@ int32 UTbNamesNamEsBPAdapter::GetSomePoperty2() const
 }
 void UTbNamesNamEsBPAdapter::SetSomePoperty2(int32 InSomePoperty2)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbNamesNamEsBPInterface::Execute_SetSomePoperty2(Obj, InSomePoperty2);
 	}
@@ -99,7 +108,8 @@ void UTbNamesNamEsBPAdapter::SetSomePoperty2(int32 InSomePoperty2)
 
 ETbNamesEnum_With_Under_scores UTbNamesNamEsBPAdapter::GetEnumProperty() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbNamesNamEsBPInterface::Execute_GetEnumProperty(Obj);
 	}
@@ -107,7 +117,8 @@ ETbNamesEnum_With_Under_scores UTbNamesNamEsBPAdapter::GetEnumProperty() const
 }
 void UTbNamesNamEsBPAdapter::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbNamesNamEsBPInterface::Execute_SetEnumProperty(Obj, InEnumProperty);
 	}

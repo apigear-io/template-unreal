@@ -26,7 +26,8 @@ void UTestbed2NestedStruct3InterfaceBPAdapter::Initialize(TScriptInterface<ITest
 
 UTestbed2NestedStruct3InterfacePublisher* UTestbed2NestedStruct3InterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct3InterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct3InterfaceBPAdapter::Func1A
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceBPAdapter::Func1(const FTestbed2NestedStruct1& Param1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct3InterfaceBPInterface::Execute_Func1(Obj, Param1);
 	}
@@ -102,7 +104,8 @@ TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct3InterfaceBPAdapter::Func2A
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceBPAdapter::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct3InterfaceBPInterface::Execute_Func2(Obj, Param1, Param2);
 	}
@@ -140,7 +143,8 @@ TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct3InterfaceBPAdapter::Func3A
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceBPAdapter::Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct3InterfaceBPInterface::Execute_Func3(Obj, Param1, Param2, Param3);
 	}
@@ -149,7 +153,8 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceBPAdapter::Func3(const FTe
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceBPAdapter::GetProp1() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct3InterfaceBPInterface::Execute_GetProp1(Obj);
 	}
@@ -157,7 +162,8 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceBPAdapter::GetProp1() cons
 }
 void UTestbed2NestedStruct3InterfaceBPAdapter::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed2NestedStruct3InterfaceBPInterface::Execute_SetProp1(Obj, InProp1);
 	}
@@ -165,7 +171,8 @@ void UTestbed2NestedStruct3InterfaceBPAdapter::SetProp1(const FTestbed2NestedStr
 
 FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceBPAdapter::GetProp2() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct3InterfaceBPInterface::Execute_GetProp2(Obj);
 	}
@@ -173,7 +180,8 @@ FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceBPAdapter::GetProp2() cons
 }
 void UTestbed2NestedStruct3InterfaceBPAdapter::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed2NestedStruct3InterfaceBPInterface::Execute_SetProp2(Obj, InProp2);
 	}
@@ -181,7 +189,8 @@ void UTestbed2NestedStruct3InterfaceBPAdapter::SetProp2(const FTestbed2NestedStr
 
 FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceBPAdapter::GetProp3() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed2NestedStruct3InterfaceBPInterface::Execute_GetProp3(Obj);
 	}
@@ -189,7 +198,8 @@ FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceBPAdapter::GetProp3() cons
 }
 void UTestbed2NestedStruct3InterfaceBPAdapter::SetProp3(const FTestbed2NestedStruct3& InProp3)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed2NestedStruct3InterfaceBPInterface::Execute_SetProp3(Obj, InProp3);
 	}

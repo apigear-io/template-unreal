@@ -26,7 +26,8 @@ void UTbSimpleVoidInterfaceBPAdapter::Initialize(TScriptInterface<ITbSimpleVoidI
 
 UTbSimpleVoidInterfacePublisher* UTbSimpleVoidInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleVoidInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -35,7 +36,8 @@ UTbSimpleVoidInterfacePublisher* UTbSimpleVoidInterfaceBPAdapter::_GetPublisher(
 
 void UTbSimpleVoidInterfaceBPAdapter::FuncVoid()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleVoidInterfaceBPInterface::Execute_FuncVoid(Obj);
 	}

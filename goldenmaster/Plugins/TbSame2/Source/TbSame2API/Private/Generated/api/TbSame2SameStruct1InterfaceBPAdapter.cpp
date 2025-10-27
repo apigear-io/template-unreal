@@ -26,7 +26,8 @@ void UTbSame2SameStruct1InterfaceBPAdapter::Initialize(TScriptInterface<ITbSame2
 
 UTbSame2SameStruct1InterfacePublisher* UTbSame2SameStruct1InterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSame2SameStruct1InterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<FTbSame2Struct1> UTbSame2SameStruct1InterfaceBPAdapter::Func1Async(const
 
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceBPAdapter::Func1(const FTbSame2Struct1& Param1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSame2SameStruct1InterfaceBPInterface::Execute_Func1(Obj, Param1);
 	}
@@ -73,7 +75,8 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceBPAdapter::Func1(const FTbSame2Struc
 
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceBPAdapter::GetProp1() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSame2SameStruct1InterfaceBPInterface::Execute_GetProp1(Obj);
 	}
@@ -81,7 +84,8 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceBPAdapter::GetProp1() const
 }
 void UTbSame2SameStruct1InterfaceBPAdapter::SetProp1(const FTbSame2Struct1& InProp1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSame2SameStruct1InterfaceBPInterface::Execute_SetProp1(Obj, InProp1);
 	}

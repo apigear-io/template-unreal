@@ -26,7 +26,8 @@ void UTestbed1StructInterfaceBPAdapter::Initialize(TScriptInterface<ITestbed1Str
 
 UTestbed1StructInterfacePublisher* UTestbed1StructInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<FTestbed1StructBool> UTestbed1StructInterfaceBPAdapter::FuncBoolAsync(co
 
 FTestbed1StructBool UTestbed1StructInterfaceBPAdapter::FuncBool(const FTestbed1StructBool& ParamBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructInterfaceBPInterface::Execute_FuncBool(Obj, ParamBool);
 	}
@@ -102,7 +104,8 @@ TFuture<FTestbed1StructInt> UTestbed1StructInterfaceBPAdapter::FuncIntAsync(cons
 
 FTestbed1StructInt UTestbed1StructInterfaceBPAdapter::FuncInt(const FTestbed1StructInt& ParamInt)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructInterfaceBPInterface::Execute_FuncInt(Obj, ParamInt);
 	}
@@ -140,7 +143,8 @@ TFuture<FTestbed1StructFloat> UTestbed1StructInterfaceBPAdapter::FuncFloatAsync(
 
 FTestbed1StructFloat UTestbed1StructInterfaceBPAdapter::FuncFloat(const FTestbed1StructFloat& ParamFloat)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructInterfaceBPInterface::Execute_FuncFloat(Obj, ParamFloat);
 	}
@@ -178,7 +182,8 @@ TFuture<FTestbed1StructString> UTestbed1StructInterfaceBPAdapter::FuncStringAsyn
 
 FTestbed1StructString UTestbed1StructInterfaceBPAdapter::FuncString(const FTestbed1StructString& ParamString)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructInterfaceBPInterface::Execute_FuncString(Obj, ParamString);
 	}
@@ -187,7 +192,8 @@ FTestbed1StructString UTestbed1StructInterfaceBPAdapter::FuncString(const FTestb
 
 FTestbed1StructBool UTestbed1StructInterfaceBPAdapter::GetPropBool() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructInterfaceBPInterface::Execute_GetPropBool(Obj);
 	}
@@ -195,7 +201,8 @@ FTestbed1StructBool UTestbed1StructInterfaceBPAdapter::GetPropBool() const
 }
 void UTestbed1StructInterfaceBPAdapter::SetPropBool(const FTestbed1StructBool& InPropBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed1StructInterfaceBPInterface::Execute_SetPropBool(Obj, InPropBool);
 	}
@@ -203,7 +210,8 @@ void UTestbed1StructInterfaceBPAdapter::SetPropBool(const FTestbed1StructBool& I
 
 FTestbed1StructInt UTestbed1StructInterfaceBPAdapter::GetPropInt() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructInterfaceBPInterface::Execute_GetPropInt(Obj);
 	}
@@ -211,7 +219,8 @@ FTestbed1StructInt UTestbed1StructInterfaceBPAdapter::GetPropInt() const
 }
 void UTestbed1StructInterfaceBPAdapter::SetPropInt(const FTestbed1StructInt& InPropInt)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed1StructInterfaceBPInterface::Execute_SetPropInt(Obj, InPropInt);
 	}
@@ -219,7 +228,8 @@ void UTestbed1StructInterfaceBPAdapter::SetPropInt(const FTestbed1StructInt& InP
 
 FTestbed1StructFloat UTestbed1StructInterfaceBPAdapter::GetPropFloat() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructInterfaceBPInterface::Execute_GetPropFloat(Obj);
 	}
@@ -227,7 +237,8 @@ FTestbed1StructFloat UTestbed1StructInterfaceBPAdapter::GetPropFloat() const
 }
 void UTestbed1StructInterfaceBPAdapter::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed1StructInterfaceBPInterface::Execute_SetPropFloat(Obj, InPropFloat);
 	}
@@ -235,7 +246,8 @@ void UTestbed1StructInterfaceBPAdapter::SetPropFloat(const FTestbed1StructFloat&
 
 FTestbed1StructString UTestbed1StructInterfaceBPAdapter::GetPropString() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITestbed1StructInterfaceBPInterface::Execute_GetPropString(Obj);
 	}
@@ -243,7 +255,8 @@ FTestbed1StructString UTestbed1StructInterfaceBPAdapter::GetPropString() const
 }
 void UTestbed1StructInterfaceBPAdapter::SetPropString(const FTestbed1StructString& InPropString)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITestbed1StructInterfaceBPInterface::Execute_SetPropString(Obj, InPropString);
 	}

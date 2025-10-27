@@ -26,7 +26,8 @@ void UTbRefIfacesSimpleLocalIfBPAdapter::Initialize(TScriptInterface<ITbRefIface
 
 UTbRefIfacesSimpleLocalIfPublisher* UTbRefIfacesSimpleLocalIfBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesSimpleLocalIfBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<int32> UTbRefIfacesSimpleLocalIfBPAdapter::IntMethodAsync(int32 Param)
 
 int32 UTbRefIfacesSimpleLocalIfBPAdapter::IntMethod(int32 Param)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesSimpleLocalIfBPInterface::Execute_IntMethod(Obj, Param);
 	}
@@ -73,7 +75,8 @@ int32 UTbRefIfacesSimpleLocalIfBPAdapter::IntMethod(int32 Param)
 
 int32 UTbRefIfacesSimpleLocalIfBPAdapter::GetIntProperty() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbRefIfacesSimpleLocalIfBPInterface::Execute_GetIntProperty(Obj);
 	}
@@ -81,7 +84,8 @@ int32 UTbRefIfacesSimpleLocalIfBPAdapter::GetIntProperty() const
 }
 void UTbRefIfacesSimpleLocalIfBPAdapter::SetIntProperty(int32 InIntProperty)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbRefIfacesSimpleLocalIfBPInterface::Execute_SetIntProperty(Obj, InIntProperty);
 	}

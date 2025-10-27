@@ -26,7 +26,8 @@ void UTbSimpleSimpleInterfaceBPAdapter::Initialize(TScriptInterface<ITbSimpleSim
 
 UTbSimpleSimpleInterfacePublisher* UTbSimpleSimpleInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -35,7 +36,8 @@ UTbSimpleSimpleInterfacePublisher* UTbSimpleSimpleInterfaceBPAdapter::_GetPublis
 
 void UTbSimpleSimpleInterfaceBPAdapter::FuncNoReturnValue(bool bParamBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncNoReturnValue(Obj, bParamBool);
 	}
@@ -72,7 +74,8 @@ TFuture<bool> UTbSimpleSimpleInterfaceBPAdapter::FuncNoParamsAsync()
 
 bool UTbSimpleSimpleInterfaceBPAdapter::FuncNoParams()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncNoParams(Obj);
 	}
@@ -110,7 +113,8 @@ TFuture<bool> UTbSimpleSimpleInterfaceBPAdapter::FuncBoolAsync(bool bParamBool)
 
 bool UTbSimpleSimpleInterfaceBPAdapter::FuncBool(bool bParamBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncBool(Obj, bParamBool);
 	}
@@ -148,7 +152,8 @@ TFuture<int32> UTbSimpleSimpleInterfaceBPAdapter::FuncIntAsync(int32 ParamInt)
 
 int32 UTbSimpleSimpleInterfaceBPAdapter::FuncInt(int32 ParamInt)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncInt(Obj, ParamInt);
 	}
@@ -186,7 +191,8 @@ TFuture<int32> UTbSimpleSimpleInterfaceBPAdapter::FuncInt32Async(int32 ParamInt3
 
 int32 UTbSimpleSimpleInterfaceBPAdapter::FuncInt32(int32 ParamInt32)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncInt32(Obj, ParamInt32);
 	}
@@ -224,7 +230,8 @@ TFuture<int64> UTbSimpleSimpleInterfaceBPAdapter::FuncInt64Async(int64 ParamInt6
 
 int64 UTbSimpleSimpleInterfaceBPAdapter::FuncInt64(int64 ParamInt64)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncInt64(Obj, ParamInt64);
 	}
@@ -262,7 +269,8 @@ TFuture<float> UTbSimpleSimpleInterfaceBPAdapter::FuncFloatAsync(float ParamFloa
 
 float UTbSimpleSimpleInterfaceBPAdapter::FuncFloat(float ParamFloat)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncFloat(Obj, ParamFloat);
 	}
@@ -300,7 +308,8 @@ TFuture<float> UTbSimpleSimpleInterfaceBPAdapter::FuncFloat32Async(float ParamFl
 
 float UTbSimpleSimpleInterfaceBPAdapter::FuncFloat32(float ParamFloat32)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncFloat32(Obj, ParamFloat32);
 	}
@@ -338,7 +347,8 @@ TFuture<double> UTbSimpleSimpleInterfaceBPAdapter::FuncFloat64Async(double Param
 
 double UTbSimpleSimpleInterfaceBPAdapter::FuncFloat64(double ParamFloat)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncFloat64(Obj, ParamFloat);
 	}
@@ -376,7 +386,8 @@ TFuture<FString> UTbSimpleSimpleInterfaceBPAdapter::FuncStringAsync(const FStrin
 
 FString UTbSimpleSimpleInterfaceBPAdapter::FuncString(const FString& ParamString)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_FuncString(Obj, ParamString);
 	}
@@ -385,7 +396,8 @@ FString UTbSimpleSimpleInterfaceBPAdapter::FuncString(const FString& ParamString
 
 bool UTbSimpleSimpleInterfaceBPAdapter::GetPropBool() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_GetPropBool(Obj);
 	}
@@ -393,7 +405,8 @@ bool UTbSimpleSimpleInterfaceBPAdapter::GetPropBool() const
 }
 void UTbSimpleSimpleInterfaceBPAdapter::SetPropBool(bool bInPropBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleInterfaceBPInterface::Execute_SetPropBool(Obj, bInPropBool);
 	}
@@ -401,7 +414,8 @@ void UTbSimpleSimpleInterfaceBPAdapter::SetPropBool(bool bInPropBool)
 
 int32 UTbSimpleSimpleInterfaceBPAdapter::GetPropInt() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_GetPropInt(Obj);
 	}
@@ -409,7 +423,8 @@ int32 UTbSimpleSimpleInterfaceBPAdapter::GetPropInt() const
 }
 void UTbSimpleSimpleInterfaceBPAdapter::SetPropInt(int32 InPropInt)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleInterfaceBPInterface::Execute_SetPropInt(Obj, InPropInt);
 	}
@@ -417,7 +432,8 @@ void UTbSimpleSimpleInterfaceBPAdapter::SetPropInt(int32 InPropInt)
 
 int32 UTbSimpleSimpleInterfaceBPAdapter::GetPropInt32() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_GetPropInt32(Obj);
 	}
@@ -425,7 +441,8 @@ int32 UTbSimpleSimpleInterfaceBPAdapter::GetPropInt32() const
 }
 void UTbSimpleSimpleInterfaceBPAdapter::SetPropInt32(int32 InPropInt32)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleInterfaceBPInterface::Execute_SetPropInt32(Obj, InPropInt32);
 	}
@@ -433,7 +450,8 @@ void UTbSimpleSimpleInterfaceBPAdapter::SetPropInt32(int32 InPropInt32)
 
 int64 UTbSimpleSimpleInterfaceBPAdapter::GetPropInt64() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_GetPropInt64(Obj);
 	}
@@ -441,7 +459,8 @@ int64 UTbSimpleSimpleInterfaceBPAdapter::GetPropInt64() const
 }
 void UTbSimpleSimpleInterfaceBPAdapter::SetPropInt64(int64 InPropInt64)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleInterfaceBPInterface::Execute_SetPropInt64(Obj, InPropInt64);
 	}
@@ -449,7 +468,8 @@ void UTbSimpleSimpleInterfaceBPAdapter::SetPropInt64(int64 InPropInt64)
 
 float UTbSimpleSimpleInterfaceBPAdapter::GetPropFloat() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_GetPropFloat(Obj);
 	}
@@ -457,7 +477,8 @@ float UTbSimpleSimpleInterfaceBPAdapter::GetPropFloat() const
 }
 void UTbSimpleSimpleInterfaceBPAdapter::SetPropFloat(float InPropFloat)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleInterfaceBPInterface::Execute_SetPropFloat(Obj, InPropFloat);
 	}
@@ -465,7 +486,8 @@ void UTbSimpleSimpleInterfaceBPAdapter::SetPropFloat(float InPropFloat)
 
 float UTbSimpleSimpleInterfaceBPAdapter::GetPropFloat32() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_GetPropFloat32(Obj);
 	}
@@ -473,7 +495,8 @@ float UTbSimpleSimpleInterfaceBPAdapter::GetPropFloat32() const
 }
 void UTbSimpleSimpleInterfaceBPAdapter::SetPropFloat32(float InPropFloat32)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleInterfaceBPInterface::Execute_SetPropFloat32(Obj, InPropFloat32);
 	}
@@ -481,7 +504,8 @@ void UTbSimpleSimpleInterfaceBPAdapter::SetPropFloat32(float InPropFloat32)
 
 double UTbSimpleSimpleInterfaceBPAdapter::GetPropFloat64() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_GetPropFloat64(Obj);
 	}
@@ -489,7 +513,8 @@ double UTbSimpleSimpleInterfaceBPAdapter::GetPropFloat64() const
 }
 void UTbSimpleSimpleInterfaceBPAdapter::SetPropFloat64(double InPropFloat64)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleInterfaceBPInterface::Execute_SetPropFloat64(Obj, InPropFloat64);
 	}
@@ -497,7 +522,8 @@ void UTbSimpleSimpleInterfaceBPAdapter::SetPropFloat64(double InPropFloat64)
 
 FString UTbSimpleSimpleInterfaceBPAdapter::GetPropString() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleSimpleInterfaceBPInterface::Execute_GetPropString(Obj);
 	}
@@ -505,7 +531,8 @@ FString UTbSimpleSimpleInterfaceBPAdapter::GetPropString() const
 }
 void UTbSimpleSimpleInterfaceBPAdapter::SetPropString(const FString& InPropString)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleSimpleInterfaceBPInterface::Execute_SetPropString(Obj, InPropString);
 	}

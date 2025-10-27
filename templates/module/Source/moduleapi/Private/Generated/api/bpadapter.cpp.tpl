@@ -36,7 +36,8 @@ void {{$adapter}}::Initialize(TScriptInterface<{{ $bpinterface }}> InTarget)
 {{- nl }}
 U{{$Class}}Publisher* {{$adapter}}::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return {{$bpinterface}}::Execute__GetPublisher(Obj);
 	}
@@ -49,7 +50,8 @@ U{{$Class}}Publisher* {{$adapter}}::_GetPublisher()
 {{- if .Return.IsVoid }}
 {{ueReturn "" .Return}} {{$adapter}}::{{Camel .Name}}({{ueParams "" .Params}})
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return {{$bpinterface}}::Execute_{{Camel .Name}}(Obj{{if len .Params}}, {{end}}{{ueVars "" .Params}});
 	}
@@ -86,7 +88,8 @@ TFuture<{{ueReturn "" .Return}}> {{$adapter}}::{{Camel .Name}}Async({{ueParams "
 
 {{ueReturn "" .Return}} {{$adapter}}::{{Camel .Name}}({{ueParams "" .Params}})
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return {{$bpinterface}}::Execute_{{Camel .Name}}(Obj{{if len .Params}}, {{end}}{{ueVars "" .Params}});
 	}
@@ -101,7 +104,8 @@ TFuture<{{ueReturn "" .Return}}> {{$adapter}}::{{Camel .Name}}Async({{ueParams "
 {{- if $i }}{{nl}}{{ end }}
 {{ueReturn "" .}} {{$adapter}}::Get{{Camel .Name}}() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return {{$bpinterface}}::Execute_Get{{Camel .Name}}(Obj);
 	}
@@ -110,7 +114,8 @@ TFuture<{{ueReturn "" .Return}}> {{$adapter}}::{{Camel .Name}}Async({{ueParams "
 {{- if not .IsReadOnly }}
 void {{$adapter}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		{{$bpinterface}}::Execute_Set{{Camel .Name}}(Obj, {{ueVar "In" .}});
 	}

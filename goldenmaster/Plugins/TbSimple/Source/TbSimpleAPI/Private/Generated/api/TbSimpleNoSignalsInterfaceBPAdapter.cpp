@@ -26,7 +26,8 @@ void UTbSimpleNoSignalsInterfaceBPAdapter::Initialize(TScriptInterface<ITbSimple
 
 UTbSimpleNoSignalsInterfacePublisher* UTbSimpleNoSignalsInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoSignalsInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -35,7 +36,8 @@ UTbSimpleNoSignalsInterfacePublisher* UTbSimpleNoSignalsInterfaceBPAdapter::_Get
 
 void UTbSimpleNoSignalsInterfaceBPAdapter::FuncVoid()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoSignalsInterfaceBPInterface::Execute_FuncVoid(Obj);
 	}
@@ -72,7 +74,8 @@ TFuture<bool> UTbSimpleNoSignalsInterfaceBPAdapter::FuncBoolAsync(bool bParamBoo
 
 bool UTbSimpleNoSignalsInterfaceBPAdapter::FuncBool(bool bParamBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoSignalsInterfaceBPInterface::Execute_FuncBool(Obj, bParamBool);
 	}
@@ -81,7 +84,8 @@ bool UTbSimpleNoSignalsInterfaceBPAdapter::FuncBool(bool bParamBool)
 
 bool UTbSimpleNoSignalsInterfaceBPAdapter::GetPropBool() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoSignalsInterfaceBPInterface::Execute_GetPropBool(Obj);
 	}
@@ -89,7 +93,8 @@ bool UTbSimpleNoSignalsInterfaceBPAdapter::GetPropBool() const
 }
 void UTbSimpleNoSignalsInterfaceBPAdapter::SetPropBool(bool bInPropBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleNoSignalsInterfaceBPInterface::Execute_SetPropBool(Obj, bInPropBool);
 	}
@@ -97,7 +102,8 @@ void UTbSimpleNoSignalsInterfaceBPAdapter::SetPropBool(bool bInPropBool)
 
 int32 UTbSimpleNoSignalsInterfaceBPAdapter::GetPropInt() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoSignalsInterfaceBPInterface::Execute_GetPropInt(Obj);
 	}
@@ -105,7 +111,8 @@ int32 UTbSimpleNoSignalsInterfaceBPAdapter::GetPropInt() const
 }
 void UTbSimpleNoSignalsInterfaceBPAdapter::SetPropInt(int32 InPropInt)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleNoSignalsInterfaceBPInterface::Execute_SetPropInt(Obj, InPropInt);
 	}

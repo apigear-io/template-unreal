@@ -26,7 +26,8 @@ void UTbSimpleEmptyInterfaceBPAdapter::Initialize(TScriptInterface<ITbSimpleEmpt
 
 UTbSimpleEmptyInterfacePublisher* UTbSimpleEmptyInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleEmptyInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}

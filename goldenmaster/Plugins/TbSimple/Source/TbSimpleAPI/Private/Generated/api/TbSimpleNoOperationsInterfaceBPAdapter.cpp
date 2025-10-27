@@ -26,7 +26,8 @@ void UTbSimpleNoOperationsInterfaceBPAdapter::Initialize(TScriptInterface<ITbSim
 
 UTbSimpleNoOperationsInterfacePublisher* UTbSimpleNoOperationsInterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoOperationsInterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -35,7 +36,8 @@ UTbSimpleNoOperationsInterfacePublisher* UTbSimpleNoOperationsInterfaceBPAdapter
 
 bool UTbSimpleNoOperationsInterfaceBPAdapter::GetPropBool() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoOperationsInterfaceBPInterface::Execute_GetPropBool(Obj);
 	}
@@ -43,7 +45,8 @@ bool UTbSimpleNoOperationsInterfaceBPAdapter::GetPropBool() const
 }
 void UTbSimpleNoOperationsInterfaceBPAdapter::SetPropBool(bool bInPropBool)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleNoOperationsInterfaceBPInterface::Execute_SetPropBool(Obj, bInPropBool);
 	}
@@ -51,7 +54,8 @@ void UTbSimpleNoOperationsInterfaceBPAdapter::SetPropBool(bool bInPropBool)
 
 int32 UTbSimpleNoOperationsInterfaceBPAdapter::GetPropInt() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSimpleNoOperationsInterfaceBPInterface::Execute_GetPropInt(Obj);
 	}
@@ -59,7 +63,8 @@ int32 UTbSimpleNoOperationsInterfaceBPAdapter::GetPropInt() const
 }
 void UTbSimpleNoOperationsInterfaceBPAdapter::SetPropInt(int32 InPropInt)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSimpleNoOperationsInterfaceBPInterface::Execute_SetPropInt(Obj, InPropInt);
 	}

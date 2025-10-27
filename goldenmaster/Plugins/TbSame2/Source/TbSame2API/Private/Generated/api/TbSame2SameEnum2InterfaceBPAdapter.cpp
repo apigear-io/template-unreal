@@ -26,7 +26,8 @@ void UTbSame2SameEnum2InterfaceBPAdapter::Initialize(TScriptInterface<ITbSame2Sa
 
 UTbSame2SameEnum2InterfacePublisher* UTbSame2SameEnum2InterfaceBPAdapter::_GetPublisher()
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSame2SameEnum2InterfaceBPInterface::Execute__GetPublisher(Obj);
 	}
@@ -64,7 +65,8 @@ TFuture<ETbSame2Enum1> UTbSame2SameEnum2InterfaceBPAdapter::Func1Async(ETbSame2E
 
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceBPAdapter::Func1(ETbSame2Enum1 Param1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSame2SameEnum2InterfaceBPInterface::Execute_Func1(Obj, Param1);
 	}
@@ -102,7 +104,8 @@ TFuture<ETbSame2Enum1> UTbSame2SameEnum2InterfaceBPAdapter::Func2Async(ETbSame2E
 
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceBPAdapter::Func2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSame2SameEnum2InterfaceBPInterface::Execute_Func2(Obj, Param1, Param2);
 	}
@@ -111,7 +114,8 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceBPAdapter::Func2(ETbSame2Enum1 Param1, E
 
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceBPAdapter::GetProp1() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSame2SameEnum2InterfaceBPInterface::Execute_GetProp1(Obj);
 	}
@@ -119,7 +123,8 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceBPAdapter::GetProp1() const
 }
 void UTbSame2SameEnum2InterfaceBPAdapter::SetProp1(ETbSame2Enum1 InProp1)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSame2SameEnum2InterfaceBPInterface::Execute_SetProp1(Obj, InProp1);
 	}
@@ -127,7 +132,8 @@ void UTbSame2SameEnum2InterfaceBPAdapter::SetProp1(ETbSame2Enum1 InProp1)
 
 ETbSame2Enum2 UTbSame2SameEnum2InterfaceBPAdapter::GetProp2() const
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		return ITbSame2SameEnum2InterfaceBPInterface::Execute_GetProp2(Obj);
 	}
@@ -135,7 +141,8 @@ ETbSame2Enum2 UTbSame2SameEnum2InterfaceBPAdapter::GetProp2() const
 }
 void UTbSame2SameEnum2InterfaceBPAdapter::SetProp2(ETbSame2Enum2 InProp2)
 {
-	if (UObject* Obj = Target.GetObject())
+	UObject* Obj = Target.GetObject();
+	if (IsValid(Obj))
 	{
 		ITbSame2SameEnum2InterfaceBPInterface::Execute_SetProp2(Obj, InProp2);
 	}
