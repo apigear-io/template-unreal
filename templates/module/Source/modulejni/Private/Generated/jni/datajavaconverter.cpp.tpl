@@ -315,7 +315,7 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, {{$cpp_class}} va
 
 {{- $ifType := printf "TScriptInterface<I%s%sInterface>" $ModuleName (Camel .Name) }}
 {{- $ifName := printf "out_%s" (snake .Name)}}
-{{- $fullJavaClassType := printf "%s/%s_api/%s" (camel $moduleName) (camel $moduleName) (Camel .Name) }}
+{{- $fullJavaClassType := printf "%s/%s_api/I%s" (camel $moduleName) (camel $moduleName) (Camel .Name) }}
 
 
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$ifType}} {{$ifName}})
