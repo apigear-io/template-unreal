@@ -146,7 +146,7 @@ public:
 	virtual void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	virtual void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result ) = 0;
+	virtual void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result) = 0;
 	virtual TFuture<FTestbed2NestedStruct1> FuncNoParamsAsync() = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Operations")
 	virtual FTestbed2NestedStruct1 FuncNoParams() = 0;

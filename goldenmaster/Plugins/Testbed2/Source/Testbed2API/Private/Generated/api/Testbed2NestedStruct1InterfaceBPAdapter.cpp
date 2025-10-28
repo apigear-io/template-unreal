@@ -43,7 +43,7 @@ void UTestbed2NestedStruct1InterfaceBPAdapter::FuncNoReturnValue(const FTestbed2
 	}
 }
 
-void UTestbed2NestedStruct1InterfaceBPAdapter::FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result )
+void UTestbed2NestedStruct1InterfaceBPAdapter::FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{

@@ -182,7 +182,7 @@ public:
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) = 0;
 {{- else }}
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	virtual void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) = 0;
+	virtual void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}}, {{end}}{{ueParams "" .Params}}) = 0;
 	virtual TFuture<{{ueReturn "" .Return}}> {{Camel .Name}}Async({{ueParams "" .Params}}) = 0;
 	UFUNCTION(BlueprintCallable, Category = "{{$Category}}|Operations")
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) = 0;

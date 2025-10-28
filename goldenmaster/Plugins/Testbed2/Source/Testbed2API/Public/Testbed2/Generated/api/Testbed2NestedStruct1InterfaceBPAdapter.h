@@ -44,7 +44,7 @@ public:
 	// methods
 	void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) override;
 
-	void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result ) override;
+	void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result) override;
 	TFuture<FTestbed2NestedStruct1> FuncNoParamsAsync() override;
 	FTestbed2NestedStruct1 FuncNoParams() override;
 

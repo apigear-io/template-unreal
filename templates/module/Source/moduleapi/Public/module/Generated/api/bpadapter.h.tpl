@@ -56,7 +56,7 @@ public:
 {{- if .Return.IsVoid }}
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
 {{- else }}
-	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}},{{end}} {{ueParams "" .Params}}) override;
+	void {{Camel .Name}}Async(UObject* WorldContextObject, FLatentActionInfo LatentInfo, {{ueReturn "" .Return}}& Result{{if len .Params}}, {{end}}{{ueParams "" .Params}}) override;
 	TFuture<{{ueReturn "" .Return}}> {{Camel .Name}}Async({{ueParams "" .Params}}) override;
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
 {{- end }}

@@ -349,7 +349,7 @@ public:
 	virtual void FuncNoReturnValue(bool bParamBool) = 0;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
-	virtual void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result ) = 0;
+	virtual void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result) = 0;
 	virtual TFuture<bool> FuncNoParamsAsync() = 0;
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|Operations")
 	virtual bool FuncNoParams() = 0;
