@@ -44,7 +44,7 @@ public:
 	// methods
 	void FuncNoReturnValue(bool bParamBool) override;
 
-	void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result ) override;
+	void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result) override;
 	TFuture<bool> FuncNoParamsAsync() override;
 	bool FuncNoParams() override;
 

@@ -43,7 +43,7 @@ public:
 	// methods
 	virtual void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::FuncNoReturnValue, return;);
 
-	virtual void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result ) override;
+	virtual void FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTestbed2NestedStruct1& Result) override;
 	virtual TFuture<FTestbed2NestedStruct1> FuncNoParamsAsync() override;
 	virtual FTestbed2NestedStruct1 FuncNoParams() override PURE_VIRTUAL(UAbstractTestbed2NestedStruct1Interface::FuncNoParams, return FTestbed2NestedStruct1(););
 

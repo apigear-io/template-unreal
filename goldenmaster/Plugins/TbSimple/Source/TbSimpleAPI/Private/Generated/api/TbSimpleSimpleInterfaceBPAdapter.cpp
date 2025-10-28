@@ -43,7 +43,7 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncNoReturnValue(bool bParamBool)
 	}
 }
 
-void UTbSimpleSimpleInterfaceBPAdapter::FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result )
+void UTbSimpleSimpleInterfaceBPAdapter::FuncNoParamsAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
 	{
