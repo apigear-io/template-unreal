@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<trace enable="true"/>
+	<init>
+		<log text="android tb.simple init"/>
+	</init>
+
+	<androidManifestUpdates>
+		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> 
+		<addPermission android:name="tbSimple.tbSimple_android_service.PERMISSION_BIND"/>
+		<addElements tag="queries">
+				<package android:name="tbSimple.tbSimple_android_service" />
+		</addElements>
+
+		<addElements tag="application"><service 
+			android:name="tbSimple.tbSimple_android_service.VoidInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="tbSimple.tbSimple_android_service.SimpleInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="tbSimple.tbSimple_android_service.SimpleArrayInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="tbSimple.tbSimple_android_service.NoPropertiesInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="tbSimple.tbSimple_android_service.NoOperationsInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="tbSimple.tbSimple_android_service.NoSignalsInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="tbSimple.tbSimple_android_service.EmptyInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service>
+		</addElements>
+
+	</androidManifestUpdates>
+
+	<resourceCopies>
+		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSimple/tbSimple_android_service" dst="$S(BuildDir)/JavaLibs/tbSimple_android_service" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSimple/tbSimple_android_client" dst="$S(BuildDir)/JavaLibs/tbSimple_android_client" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSimple/tbSimple_api" dst="$S(BuildDir)/JavaLibs/tbSimple_api" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSimple/tbSimple_android_messenger" dst="$S(BuildDir)/JavaLibs/tbSimple_android_messenger" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSimple/tbSimple_impl" dst="$S(BuildDir)/JavaLibs/tbSimple_impl" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSimple/tbSimplejniservice" dst="$S(BuildDir)/src/tbSimplejniservice" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSimple/tbSimplejniclient" dst="$S(BuildDir)/src/tbSimplejniclient" />
+	</resourceCopies>
+
+	<baseBuildGradleAdditions>
+		<addElements tag="buildscript">
+			<insertValue value="apply from: 'buildsystem/config.gradle'"/>
+			<insertValue value="apply from: 'buildsystem/dependencies.gradle'"/>
+			<insertNewline/>
+		</addElements>
+	</baseBuildGradleAdditions>
+
+	<settingsGradleAdditions>
+		<insert>
+			<![CDATA[
+      include ':tbSimple_api'
+      include ':tbSimple_impl'
+      include ':tbSimple_android_service'
+      include ':tbSimple_android_client'
+      include ':tbSimple_android_messenger'
+    ]]>
+		</insert>
+	
+	</settingsGradleAdditions>
+
+	<buildGradleAdditions>
+		<insert>
+            <![CDATA[
+                dependencies {
+                implementation project(':tbSimple_api')
+                implementation project(':tbSimple_impl')
+                implementation project(':tbSimple_android_service')
+                implementation project(':tbSimple_android_client')
+                implementation project(':tbSimple_android_messenger')
+                }
+            ]]>
+        </insert>
+		<insert>
+			<![CDATA[
+tasks.configureEach { task ->
+	if (task.name == 'assembleDebug') {
+		task.dependsOn ':tbSimple_api:assembleDebug'
+		task.dependsOn ':tbSimple_impl:assembleDebug'
+		task.dependsOn ':tbSimple_android_service:assembleDebug'
+		task.dependsOn ':tbSimple_android_client:assembleDebug'
+		task.dependsOn ':tbSimple_android_messenger:assembleDebug'
+	}
+	if (task.name == 'assembleRelease') {
+		task.dependsOn ':tbSimple_api:assembleRelease'
+		task.dependsOn ':tbSimple_impl:assembleRelease'
+		task.dependsOn ':tbSimple_android_service:assembleRelease'
+		task.dependsOn ':tbSimple_android_client:assembleRelease'
+		task.dependsOn ':tbSimple_android_messenger:assembleRelease'
+	}
+}
+
+]]>
+		</insert>
+	</buildGradleAdditions>
+
+
+	<proguardAdditions>
+		<insert>
+			-keep class tbSimple.tbSimplejniservice.VoidInterfaceJniService {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.VoidInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniclient.VoidInterfaceJniClient {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.SimpleInterfaceJniService {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.SimpleInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniclient.SimpleInterfaceJniClient {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.SimpleArrayInterfaceJniService {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.SimpleArrayInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniclient.SimpleArrayInterfaceJniClient {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.NoPropertiesInterfaceJniService {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.NoPropertiesInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniclient.NoPropertiesInterfaceJniClient {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.NoOperationsInterfaceJniService {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.NoOperationsInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniclient.NoOperationsInterfaceJniClient {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.NoSignalsInterfaceJniService {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.NoSignalsInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniclient.NoSignalsInterfaceJniClient {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.EmptyInterfaceJniService {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniservice.EmptyInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSimple.tbSimplejniclient.EmptyInterfaceJniClient {
+			public *;
+			}
+		</insert>
+	</proguardAdditions>
+
+
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+	</gameActivityClassAdditions>
+
+
+	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
+	<gameActivityOnCreateAdditions>
+		<insert>
+			<![CDATA[
+		]]>
+		</insert>
+	</gameActivityOnCreateAdditions>
+
+
+</root>
