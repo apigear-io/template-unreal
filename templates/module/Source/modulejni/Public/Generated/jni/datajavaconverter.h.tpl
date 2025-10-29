@@ -96,7 +96,6 @@ public:
 	static jobject makeJava{{Camel .Name }}(JNIEnv* env, const {{$ifType}} {{$in_cppIfName}});
 	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$ifType}}>& cppArray);
 
-	static jobject getJavaInstance{{$ModuleName}}{{Camel .Name }}(JNIEnv* env);
 	static {{$ifType}} getCppInstance{{$ModuleName}}{{Camel .Name }}();
 {{- end }}
 
