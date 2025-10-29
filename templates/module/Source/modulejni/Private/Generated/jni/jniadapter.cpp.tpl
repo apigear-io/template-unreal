@@ -51,12 +51,18 @@
         {{$cppropName}}.GetData());
         {{- end }}
         {{- else }}
+        {{- if eq .KindType "interface" }}
+        // interfaces are currently not supported. {{$javaClassConverter}} returns an array with no elements. 
+        {{- end }}
         {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}Array(Env, {{$cppropName}});
         {{- end }}
     {{- else if (eq .KindType "string")}}
         auto {{$localName}}Wrapped = FJavaHelper::ToJavaString(Env, {{$cppropName}});
         jstring {{$localName}} = static_cast<jstring>(Env->NewLocalRef(*{{$localName}}Wrapped));
     {{- else if ( or (not .IsPrimitive ) (eq .KindType "enum" ) ) }}
+        {{- if eq .KindType "interface" }}
+        // interfaces are currently not supported. {{$javaClassConverter}} returns nullptr. 
+        {{- end }}
         {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}(Env, {{$cppropName}});
     {{- end }}
 {{- end}}
@@ -93,6 +99,9 @@
         {{- end }}
     Env->DeleteLocalRef(l_java{{Camel .Name}}Array);
     {{- else}}
+    {{- if eq .KindType "interface" }}
+    // interfaces are currently not supported. {{$javaClassConverter}} does not fill the array. 
+    {{- end }}
     {{$javaClassConverter}}::fill{{Camel .Type }}Array(Env, {{$javaPropName}}, {{$local_value}});
     {{- end }}
 {{- else if eq .KindType "enum" }}
@@ -100,6 +109,9 @@
 {{- else if (eq .KindType "string")}}
     FString {{$local_value}} = FJavaHelper::FStringFromParam(Env, {{$javaPropName}});
 {{- else if not (ueIsStdSimpleType . )}}
+    {{- if eq .KindType "interface" }}
+    // interfaces are currently not supported. {{$javaClassConverter}} does not fill element. 
+    {{- end }}
     {{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
     {{$javaClassConverter}}::fill{{Camel .Type }}(Env, {{$javaPropName}}, {{$local_value}});
 {{- end }}
@@ -345,7 +357,9 @@ void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "" .Params}})
 
 
 {{- range .Interface.Properties }}
-
+{{- if eq .KindType "interface" }}
+// Interfaces as properties are currently not supported for jni. Generated for compatibility. 
+{{- end }}
 void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -454,12 +468,18 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel   
         {{$cppropName}}.GetData());
         {{- end }}
 	{{- else }}
+        {{- if eq .Return.KindType "interface" }}
+        // interfaces are currently not supported. {{$javaClassConverter}} returns empty array. 
+        {{- end }}
         {{jniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}Array(Env, {{$cppropName}});
 	{{- end }}
         {{- else if (eq .Return.KindType "string")}}
         auto {{$localName}}Wrapped = FJavaHelper::ToJavaString(Env, {{$cppropName}});
         jstring {{$localName}} = static_cast<jstring>(Env->NewLocalRef(*{{$localName}}Wrapped));
         {{- else if ( or (not (ueIsStdSimpleType .Return)) (eq .Return.KindType "enum" ) ) }}
+        {{- if eq .Return.KindType "interface" }}
+        // interfaces are currently not supported. {{$javaClassConverter}} returns nullptr. 
+        {{- end }}
         {{jniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}(Env, {{$cppropName}});
         {{- end }}
         return {{$localName}};
