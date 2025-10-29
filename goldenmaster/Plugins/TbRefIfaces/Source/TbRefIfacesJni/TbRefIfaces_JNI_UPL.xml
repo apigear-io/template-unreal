@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<trace enable="true"/>
+	<init>
+		<log text="android tb.ref_ifaces init"/>
+	</init>
+
+	<androidManifestUpdates>
+		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> 
+		<addPermission android:name="tbRefIfaces.tbRefIfaces_android_service.PERMISSION_BIND"/>
+		<addElements tag="queries">
+				<package android:name="tbRefIfaces.tbRefIfaces_android_service" />
+		</addElements>
+
+		<addElements tag="application"><service 
+			android:name="tbRefIfaces.tbRefIfaces_android_service.SimpleLocalIfServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="tbRefIfaces.tbRefIfaces_android_service.ParentIfServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service>
+		</addElements>
+
+	</androidManifestUpdates>
+
+	<resourceCopies>
+		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbRefIfaces/tbRefIfaces_android_service" dst="$S(BuildDir)/JavaLibs/tbRefIfaces_android_service" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbRefIfaces/tbRefIfaces_android_client" dst="$S(BuildDir)/JavaLibs/tbRefIfaces_android_client" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbRefIfaces/tbRefIfaces_api" dst="$S(BuildDir)/JavaLibs/tbRefIfaces_api" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbRefIfaces/tbRefIfaces_android_messenger" dst="$S(BuildDir)/JavaLibs/tbRefIfaces_android_messenger" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbRefIfaces/tbRefIfaces_impl" dst="$S(BuildDir)/JavaLibs/tbRefIfaces_impl" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbRefIfaces/tbRefIfacesjniservice" dst="$S(BuildDir)/src/tbRefIfacesjniservice" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbRefIfaces/tbRefIfacesjniclient" dst="$S(BuildDir)/src/tbRefIfacesjniclient" />
+	</resourceCopies>
+
+	<baseBuildGradleAdditions>
+		<addElements tag="buildscript">
+			<insertValue value="apply from: 'buildsystem/config.gradle'"/>
+			<insertValue value="apply from: 'buildsystem/dependencies.gradle'"/>
+			<insertNewline/>
+		</addElements>
+	</baseBuildGradleAdditions>
+
+	<settingsGradleAdditions>
+		<insert>
+			<![CDATA[
+      include ':tbRefIfaces_api'
+      include ':tbRefIfaces_impl'
+      include ':tbRefIfaces_android_service'
+      include ':tbRefIfaces_android_client'
+      include ':tbRefIfaces_android_messenger'
+    ]]>
+		</insert>
+	
+	</settingsGradleAdditions>
+
+	<buildGradleAdditions>
+		<insert>
+            <![CDATA[
+                dependencies {
+                implementation project(':tbRefIfaces_api')
+                implementation project(':tbRefIfaces_impl')
+                implementation project(':tbRefIfaces_android_service')
+                implementation project(':tbRefIfaces_android_client')
+                implementation project(':tbRefIfaces_android_messenger')
+                }
+            ]]>
+        </insert>
+		<insert>
+			<![CDATA[
+tasks.configureEach { task ->
+	if (task.name == 'assembleDebug') {
+		task.dependsOn ':tbRefIfaces_api:assembleDebug'
+		task.dependsOn ':tbRefIfaces_impl:assembleDebug'
+		task.dependsOn ':tbRefIfaces_android_service:assembleDebug'
+		task.dependsOn ':tbRefIfaces_android_client:assembleDebug'
+		task.dependsOn ':tbRefIfaces_android_messenger:assembleDebug'
+	}
+	if (task.name == 'assembleRelease') {
+		task.dependsOn ':tbRefIfaces_api:assembleRelease'
+		task.dependsOn ':tbRefIfaces_impl:assembleRelease'
+		task.dependsOn ':tbRefIfaces_android_service:assembleRelease'
+		task.dependsOn ':tbRefIfaces_android_client:assembleRelease'
+		task.dependsOn ':tbRefIfaces_android_messenger:assembleRelease'
+	}
+}
+
+]]>
+		</insert>
+	</buildGradleAdditions>
+
+
+	<proguardAdditions>
+		<insert>
+			-keep class tbRefIfaces.tbRefIfacesjniservice.SimpleLocalIfJniService {
+			public *;
+			}
+			-keep class tbRefIfaces.tbRefIfacesjniservice.SimpleLocalIfJniServiceStarter {
+			public *;
+			}
+			-keep class tbRefIfaces.tbRefIfacesjniclient.SimpleLocalIfJniClient {
+			public *;
+			}
+			-keep class tbRefIfaces.tbRefIfacesjniservice.ParentIfJniService {
+			public *;
+			}
+			-keep class tbRefIfaces.tbRefIfacesjniservice.ParentIfJniServiceStarter {
+			public *;
+			}
+			-keep class tbRefIfaces.tbRefIfacesjniclient.ParentIfJniClient {
+			public *;
+			}
+		</insert>
+	</proguardAdditions>
+
+
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+	</gameActivityClassAdditions>
+
+
+	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
+	<gameActivityOnCreateAdditions>
+		<insert>
+			<![CDATA[
+		]]>
+		</insert>
+	</gameActivityOnCreateAdditions>
+
+
+</root>
