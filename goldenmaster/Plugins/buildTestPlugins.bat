@@ -164,8 +164,17 @@ xcopy /E /Y "%script_path%\TbRefIfaces" "%TbRefIfacesPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
+@REM copy android plugins to blank project for build and functional testing
+set androidTarget_path=%ProjectTarget_path%\android
+echo android from "%script_path%\..\android" to "%androidTarget_path%\"
+mkdir %androidTarget_path%
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+xcopy /E /Y "%script_path%\..\android" "%androidTarget_path%\"  >nul
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+
+
 @REM run build and tests
-call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.+.OLink.+.MsgBus."
+call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.+.OLink.+.MsgBus.+.Jni."
 exit /b 0
 
 @REM function implementations

@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbRefIfacesJni",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbRefIfacesEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",
