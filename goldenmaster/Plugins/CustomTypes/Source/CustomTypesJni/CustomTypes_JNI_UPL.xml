@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<trace enable="true"/>
+	<init>
+		<log text="android custom_types init"/>
+	</init>
+
+	<androidManifestUpdates>
+		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> 
+		<addPermission android:name="customTypes.customTypes_android_service.PERMISSION_BIND"/>
+		<addElements tag="queries">
+				<package android:name="customTypes.customTypes_android_service" />
+		</addElements>
+
+		<addElements tag="application">
+		</addElements>
+
+	</androidManifestUpdates>
+
+	<resourceCopies>
+		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
+		<copyDir src="$S(PluginDir)/../../../../android/customTypes/customTypes_android_service" dst="$S(BuildDir)/JavaLibs/customTypes_android_service" />
+		<copyDir src="$S(PluginDir)/../../../../android/customTypes/customTypes_android_client" dst="$S(BuildDir)/JavaLibs/customTypes_android_client" />
+		<copyDir src="$S(PluginDir)/../../../../android/customTypes/customTypes_api" dst="$S(BuildDir)/JavaLibs/customTypes_api" />
+		<copyDir src="$S(PluginDir)/../../../../android/customTypes/customTypes_android_messenger" dst="$S(BuildDir)/JavaLibs/customTypes_android_messenger" />
+		<copyDir src="$S(PluginDir)/../../../../android/customTypes/customTypes_impl" dst="$S(BuildDir)/JavaLibs/customTypes_impl" />
+		<copyDir src="$S(PluginDir)/../../../../android/customTypes/customTypesjniservice" dst="$S(BuildDir)/src/customTypesjniservice" />
+		<copyDir src="$S(PluginDir)/../../../../android/customTypes/customTypesjniclient" dst="$S(BuildDir)/src/customTypesjniclient" />
+	</resourceCopies>
+
+	<baseBuildGradleAdditions>
+		<addElements tag="buildscript">
+			<insertValue value="apply from: 'buildsystem/config.gradle'"/>
+			<insertValue value="apply from: 'buildsystem/dependencies.gradle'"/>
+			<insertNewline/>
+		</addElements>
+	</baseBuildGradleAdditions>
+
+	<settingsGradleAdditions>
+		<insert>
+			<![CDATA[
+      include ':customTypes_api'
+      include ':customTypes_impl'
+      include ':customTypes_android_service'
+      include ':customTypes_android_client'
+      include ':customTypes_android_messenger'
+    ]]>
+		</insert>
+	
+	</settingsGradleAdditions>
+
+	<buildGradleAdditions>
+		<insert>
+            <![CDATA[
+                dependencies {
+                implementation project(':customTypes_api')
+                implementation project(':customTypes_impl')
+                implementation project(':customTypes_android_service')
+                implementation project(':customTypes_android_client')
+                implementation project(':customTypes_android_messenger')
+                }
+            ]]>
+        </insert>
+		<insert>
+			<![CDATA[
+tasks.configureEach { task ->
+	if (task.name == 'assembleDebug') {
+		task.dependsOn ':customTypes_api:assembleDebug'
+		task.dependsOn ':customTypes_impl:assembleDebug'
+		task.dependsOn ':customTypes_android_service:assembleDebug'
+		task.dependsOn ':customTypes_android_client:assembleDebug'
+		task.dependsOn ':customTypes_android_messenger:assembleDebug'
+	}
+	if (task.name == 'assembleRelease') {
+		task.dependsOn ':customTypes_api:assembleRelease'
+		task.dependsOn ':customTypes_impl:assembleRelease'
+		task.dependsOn ':customTypes_android_service:assembleRelease'
+		task.dependsOn ':customTypes_android_client:assembleRelease'
+		task.dependsOn ':customTypes_android_messenger:assembleRelease'
+	}
+}
+
+]]>
+		</insert>
+	</buildGradleAdditions>
+
+
+	<proguardAdditions>
+		<insert>
+		</insert>
+	</proguardAdditions>
+
+
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+	</gameActivityClassAdditions>
+
+
+	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
+	<gameActivityOnCreateAdditions>
+		<insert>
+			<![CDATA[
+		]]>
+		</insert>
+	</gameActivityOnCreateAdditions>
+
+
+</root>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<trace enable="true"/>
+	<init>
+		<log text="android tb.names init"/>
+	</init>
+
+	<androidManifestUpdates>
+		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> 
+		<addPermission android:name="tbNames.tbNames_android_service.PERMISSION_BIND"/>
+		<addElements tag="queries">
+				<package android:name="tbNames.tbNames_android_service" />
+		</addElements>
+
+		<addElements tag="application"><service 
+			android:name="tbNames.tbNames_android_service.NamEsServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service>
+		</addElements>
+
+	</androidManifestUpdates>
+
+	<resourceCopies>
+		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbNames/tbNames_android_service" dst="$S(BuildDir)/JavaLibs/tbNames_android_service" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbNames/tbNames_android_client" dst="$S(BuildDir)/JavaLibs/tbNames_android_client" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbNames/tbNames_api" dst="$S(BuildDir)/JavaLibs/tbNames_api" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbNames/tbNames_android_messenger" dst="$S(BuildDir)/JavaLibs/tbNames_android_messenger" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbNames/tbNames_impl" dst="$S(BuildDir)/JavaLibs/tbNames_impl" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbNames/tbNamesjniservice" dst="$S(BuildDir)/src/tbNamesjniservice" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbNames/tbNamesjniclient" dst="$S(BuildDir)/src/tbNamesjniclient" />
+	</resourceCopies>
+
+	<baseBuildGradleAdditions>
+		<addElements tag="buildscript">
+			<insertValue value="apply from: 'buildsystem/config.gradle'"/>
+			<insertValue value="apply from: 'buildsystem/dependencies.gradle'"/>
+			<insertNewline/>
+		</addElements>
+	</baseBuildGradleAdditions>
+
+	<settingsGradleAdditions>
+		<insert>
+			<![CDATA[
+      include ':tbNames_api'
+      include ':tbNames_impl'
+      include ':tbNames_android_service'
+      include ':tbNames_android_client'
+      include ':tbNames_android_messenger'
+    ]]>
+		</insert>
+	
+	</settingsGradleAdditions>
+
+	<buildGradleAdditions>
+		<insert>
+            <![CDATA[
+                dependencies {
+                implementation project(':tbNames_api')
+                implementation project(':tbNames_impl')
+                implementation project(':tbNames_android_service')
+                implementation project(':tbNames_android_client')
+                implementation project(':tbNames_android_messenger')
+                }
+            ]]>
+        </insert>
+		<insert>
+			<![CDATA[
+tasks.configureEach { task ->
+	if (task.name == 'assembleDebug') {
+		task.dependsOn ':tbNames_api:assembleDebug'
+		task.dependsOn ':tbNames_impl:assembleDebug'
+		task.dependsOn ':tbNames_android_service:assembleDebug'
+		task.dependsOn ':tbNames_android_client:assembleDebug'
+		task.dependsOn ':tbNames_android_messenger:assembleDebug'
+	}
+	if (task.name == 'assembleRelease') {
+		task.dependsOn ':tbNames_api:assembleRelease'
+		task.dependsOn ':tbNames_impl:assembleRelease'
+		task.dependsOn ':tbNames_android_service:assembleRelease'
+		task.dependsOn ':tbNames_android_client:assembleRelease'
+		task.dependsOn ':tbNames_android_messenger:assembleRelease'
+	}
+}
+
+]]>
+		</insert>
+	</buildGradleAdditions>
+
+
+	<proguardAdditions>
+		<insert>
+			-keep class tbNames.tbNamesjniservice.NamEsJniService {
+			public *;
+			}
+			-keep class tbNames.tbNamesjniservice.NamEsJniServiceStarter {
+			public *;
+			}
+			-keep class tbNames.tbNamesjniclient.NamEsJniClient {
+			public *;
+			}
+		</insert>
+	</proguardAdditions>
+
+
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+	</gameActivityClassAdditions>
+
+
+	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
+	<gameActivityOnCreateAdditions>
+		<insert>
+			<![CDATA[
+		]]>
+		</insert>
+	</gameActivityOnCreateAdditions>
+
+
+</root>

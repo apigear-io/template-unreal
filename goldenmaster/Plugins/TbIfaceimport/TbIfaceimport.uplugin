@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbIfaceimportJni",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbIfaceimportEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",
