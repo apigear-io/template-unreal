@@ -70,14 +70,7 @@ All the necessary queries and permissions are configured in the unreal app` Andr
 
 For most of data the translations are generated automatically.
 The only exceptions are:
-- interfaces - what can be translated is a state of the object - the properties it contains, only those data can be passed between different technologies easily. 
-               This part is generated. What is problematic is an instance of the interface. Since we operate on interfaces,not concrete objects, and there is no default ctor for them, we cannot create objects of that type.
-               We also cannot assume, that object on side to which we translate (either java or cpp side) is not nullptr and though try to serialize the fields into that. This is especially valid when the interface is used for type of a sub-field for the translated object.
-               What we do is ask for the instance of the object with a function, and this is exactly what needs to filled by user. 
-               On cpp side it is in `YourModuleNameDataJavaConverter.cpp`, function getCppInstanceYourModuleYourInterface.
-               And for the java types fill the getJavaInstanceYourInterface function, adjust the package (must be available also for unreal through gradle.additions), class name, and align the ctor function it it requires any arguments.
-               As a starting point the generated implementation used in stubs feature is used, if that feature was also selected. Make sure that java template has also stubs feature enabled.
-               Make sure that you implement here desired behavior, as new instance may not be your preferred option.
+- interfaces - this feature is currently not supported. Helper functions are generated for users to fill in custom implementation of data serialization.
 - externs - we provide a helper class with methods for translation, but as the structure of extern type is not known for ApiGear, only the function skeleton is generated.
   User responsibility is to make proper translation to and from java type.
   The file `YourModuleNameDataJavaConverter.cpp` is located in the jni module. It contains those skeleton functions extern type:  `fillYourExternName`, `makeJavaYourExternName`.
