@@ -73,12 +73,18 @@ limitations under the License.
         {{$cppropName}}.GetData());
         {{- end }}
         {{- else }}
+        {{- if eq .KindType "interface" }}
+        // interfaces are currently not supported. {{$javaClassConverter}} returns empty array. 
+        {{- end }}
         {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}Array(Env, {{$cppropName}});
         {{- end }}
     {{- else if (eq .KindType "string")}}
         auto {{$localName}}Wrapped = FJavaHelper::ToJavaString(Env, {{$cppropName}});
         jstring {{$localName}} = static_cast<jstring>(Env->NewLocalRef(*{{$localName}}Wrapped));
     {{- else if ( or (not .IsPrimitive ) (eq .KindType "enum" ) ) }}
+        {{- if eq .KindType "interface" }}
+        // interfaces are currently not supported. {{$javaClassConverter}} returns nullptr. 
+        {{- end }}
         {{jniToReturnType .}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Type }}(Env, {{$cppropName}});
     {{- end }}
 {{- end}}
@@ -412,6 +418,9 @@ bool {{$Class}}::_IsReady() const
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 {{- range .Interface.Properties }}
+    {{- if eq .KindType "interface" }}
+    // interfaces as properties are currently not supported for jni. Generated for compatibility. 
+    {{- end }}
 {{- $javaPropName := .Name}}
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed(JNIEnv* Env, jclass Clazz,{{jniJavaParam "" . }})
 {
@@ -516,6 +525,9 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
         {{- end }}
     Env->DeleteLocalRef(localArray);
     {{- else }}
+    {{- if eq .Return.KindType "interface" }}
+    // interfaces are currently not supported. {{$javaClassConverter}} does not fill the array. 
+    {{- end }}
     {{$javaClassConverter}}::fill{{Camel .Return.Type }}Array(Env, result, cpp_result);
     {{- end }}
 {{- else if eq .Return.KindType "enum" }}
@@ -524,6 +536,9 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
     FString cpp_result = FJavaHelper::FStringFromParam(Env, result);
 {{- else if not (ueIsStdSimpleType .Return )}}
     {{ueReturn "" .Return}} cpp_result = {{ ueDefault "" .Return }};
+    {{- if eq .Return.KindType "interface" }}
+    // interfaces are currently not supported. {{$javaClassConverter}} does not fill element. 
+    {{- end }}
     {{$javaClassConverter}}::fill{{Camel .Return.Type }}(Env, result,cpp_result);
 {{- else }}
 {{- $hasLocalVar = 0 }}
