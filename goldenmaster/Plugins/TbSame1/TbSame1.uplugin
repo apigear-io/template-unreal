@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbSame1Jni",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbSame1Editor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",
