@@ -1,0 +1,72 @@
+/**// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT*/
+#pragma once
+
+#include "TbSimple/Generated/api/TbSimpleNoOperationsInterfaceInterface.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include <memory>
+
+#if PLATFORM_ANDROID
+
+#include "Engine/Engine.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
+#endif
+
+
+#include "TbSimpleNoOperationsInterfaceJniAdapter.generated.h"
+
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoOperationsInterface_JNI, Log, All);
+
+
+/** @brief handles the adaption between the service implementation and the java android Service Backend
+ * takes an object of the type ITbSimpleNoOperationsInterfaceInterface
+ */
+UCLASS(BlueprintType)
+class TBSIMPLEJNI_API UTbSimpleNoOperationsInterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSimpleNoOperationsInterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	explicit UTbSimpleNoOperationsInterfaceJniAdapter();
+	virtual ~UTbSimpleNoOperationsInterfaceJniAdapter() = default;
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
+    void setBackendService(TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> InService);
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
+	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> getBackendService();
+
+private:
+
+    //helper function, wraps calling java service side
+    void callJniServiceReady(bool isServiceReady);
+
+	// helper member;
+#if PLATFORM_ANDROID
+#if USE_ANDROID_JNI
+	jclass m_javaJniServiceClass = nullptr;
+	jobject m_javaJniServiceInstance = nullptr;
+#endif
+#endif
+
+	// signals
+	void OnSigVoidSignal() override;
+
+	void OnSigBoolSignal(bool bParamBool) override;
+
+	void OnPropBoolChanged(bool bPropBool) override;
+	void OnPropIntChanged(int32 PropInt) override;
+
+
+	/** Holds the service backend, can be exchanged with different implementation during runtime */
+	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoOperationsInterface")
+	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> BackendService;
+};

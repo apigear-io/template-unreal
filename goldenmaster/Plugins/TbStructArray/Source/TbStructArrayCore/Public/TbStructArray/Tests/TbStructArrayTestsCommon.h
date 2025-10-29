@@ -40,4 +40,6 @@ FTbStructArrayMixedStruct TBSTRUCTARRAYCORE_API createTestFTbStructArrayMixedStr
 
 TArray<FTbStructArrayMixedStruct> TBSTRUCTARRAYCORE_API createTestFTbStructArrayMixedStructArray();
 
+TArray<ETbStructArrayTestEnum> TBSTRUCTARRAYCORE_API createTestFTbStructArrayTestEnumArray();
+
 #endif // WITH_DEV_AUTOMATION_TESTS

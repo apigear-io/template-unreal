@@ -103,4 +103,15 @@ TArray<FTbStructArrayMixedStruct> createTestFTbStructArrayMixedStructArray()
 	return TestValueArray;
 }
 
+TArray<ETbStructArrayTestEnum> createTestFTbStructArrayTestEnumArray()
+{
+	TArray<ETbStructArrayTestEnum> TestValueArray;
+
+	ETbStructArrayTestEnum val = ETbStructArrayTestEnum::TSATE_Value1;
+	TestValueArray.Add(val);
+	return TestValueArray;
+}
+
+
+
 #endif // WITH_DEV_AUTOMATION_TESTS

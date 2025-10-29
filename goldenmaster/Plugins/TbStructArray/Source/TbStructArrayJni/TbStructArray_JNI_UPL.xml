@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<trace enable="true"/>
+	<init>
+		<log text="android tb.struct.array init"/>
+	</init>
+
+	<androidManifestUpdates>
+		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> 
+		<addPermission android:name="tbStructArray.tbStructArray_android_service.PERMISSION_BIND"/>
+		<addElements tag="queries">
+				<package android:name="tbStructArray.tbStructArray_android_service" />
+		</addElements>
+
+		<addElements tag="application"><service 
+			android:name="tbStructArray.tbStructArray_android_service.StructArrayFieldInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service>
+		</addElements>
+
+	</androidManifestUpdates>
+
+	<resourceCopies>
+		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbStructArray/tbStructArray_android_service" dst="$S(BuildDir)/JavaLibs/tbStructArray_android_service" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbStructArray/tbStructArray_android_client" dst="$S(BuildDir)/JavaLibs/tbStructArray_android_client" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbStructArray/tbStructArray_api" dst="$S(BuildDir)/JavaLibs/tbStructArray_api" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbStructArray/tbStructArray_android_messenger" dst="$S(BuildDir)/JavaLibs/tbStructArray_android_messenger" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbStructArray/tbStructArray_impl" dst="$S(BuildDir)/JavaLibs/tbStructArray_impl" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbStructArray/tbStructArrayjniservice" dst="$S(BuildDir)/src/tbStructArrayjniservice" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbStructArray/tbStructArrayjniclient" dst="$S(BuildDir)/src/tbStructArrayjniclient" />
+	</resourceCopies>
+
+	<baseBuildGradleAdditions>
+		<addElements tag="buildscript">
+			<insertValue value="apply from: 'buildsystem/config.gradle'"/>
+			<insertValue value="apply from: 'buildsystem/dependencies.gradle'"/>
+			<insertNewline/>
+		</addElements>
+	</baseBuildGradleAdditions>
+
+	<settingsGradleAdditions>
+		<insert>
+			<![CDATA[
+      include ':tbStructArray_api'
+      include ':tbStructArray_impl'
+      include ':tbStructArray_android_service'
+      include ':tbStructArray_android_client'
+      include ':tbStructArray_android_messenger'
+    ]]>
+		</insert>
+	
+	</settingsGradleAdditions>
+
+	<buildGradleAdditions>
+		<insert>
+            <![CDATA[
+                dependencies {
+                implementation project(':tbStructArray_api')
+                implementation project(':tbStructArray_impl')
+                implementation project(':tbStructArray_android_service')
+                implementation project(':tbStructArray_android_client')
+                implementation project(':tbStructArray_android_messenger')
+                }
+            ]]>
+        </insert>
+		<insert>
+			<![CDATA[
+tasks.configureEach { task ->
+	if (task.name == 'assembleDebug') {
+		task.dependsOn ':tbStructArray_api:assembleDebug'
+		task.dependsOn ':tbStructArray_impl:assembleDebug'
+		task.dependsOn ':tbStructArray_android_service:assembleDebug'
+		task.dependsOn ':tbStructArray_android_client:assembleDebug'
+		task.dependsOn ':tbStructArray_android_messenger:assembleDebug'
+	}
+	if (task.name == 'assembleRelease') {
+		task.dependsOn ':tbStructArray_api:assembleRelease'
+		task.dependsOn ':tbStructArray_impl:assembleRelease'
+		task.dependsOn ':tbStructArray_android_service:assembleRelease'
+		task.dependsOn ':tbStructArray_android_client:assembleRelease'
+		task.dependsOn ':tbStructArray_android_messenger:assembleRelease'
+	}
+}
+
+]]>
+		</insert>
+	</buildGradleAdditions>
+
+
+	<proguardAdditions>
+		<insert>
+			-keep class tbStructArray.tbStructArrayjniservice.StructArrayFieldInterfaceJniService {
+			public *;
+			}
+			-keep class tbStructArray.tbStructArrayjniservice.StructArrayFieldInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbStructArray.tbStructArrayjniclient.StructArrayFieldInterfaceJniClient {
+			public *;
+			}
+		</insert>
+	</proguardAdditions>
+
+
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+	</gameActivityClassAdditions>
+
+
+	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
+	<gameActivityOnCreateAdditions>
+		<insert>
+			<![CDATA[
+		]]>
+		</insert>
+	</gameActivityOnCreateAdditions>
+
+
+</root>

@@ -27,4 +27,5 @@ TArray<FCustomTypesVector3D> createTestFCustomTypesVector3DArray()
 	return TestValueArray;
 }
 
+
 #endif // WITH_DEV_AUTOMATION_TESTS

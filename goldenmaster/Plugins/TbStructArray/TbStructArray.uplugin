@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbStructArrayJni",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "TbStructArrayEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",
