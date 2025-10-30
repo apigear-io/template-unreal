@@ -579,6 +579,27 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativ
         return ;
     }
 }
+JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncNoParams(JNIEnv* Env, jclass Clazz )
+{
+    UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncNoParams"));
+    if (gUTbSimpleSimpleInterfaceJniAdapterHandle == nullptr)
+    {
+        UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncNoParams: JNI SERVICE ADAPTER NOT FOUND "));
+        return false;
+    }
+
+    auto service = gUTbSimpleSimpleInterfaceJniAdapterHandle->getBackendService();
+    if (service != nullptr)
+    {
+        auto result = service->FuncNoParams();
+        return result;
+    }
+    else
+    {
+        UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("service not valid"));
+        return false;
+    }
+}
 JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncBool(JNIEnv* Env, jclass Clazz, jboolean paramBool)
 {
     UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncBool"));
