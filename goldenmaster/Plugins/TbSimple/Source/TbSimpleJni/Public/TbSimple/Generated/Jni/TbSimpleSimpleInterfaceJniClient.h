@@ -69,6 +69,7 @@ public:
 
 	// operations
 	virtual void FuncNoReturnValue(bool bParamBool) override;
+	virtual bool FuncNoParams() override;
 	virtual bool FuncBool(bool bParamBool) override;
 	virtual int32 FuncInt(int32 ParamInt) override;
 	virtual int32 FuncInt32(int32 ParamInt32) override;

@@ -1071,6 +1071,17 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		});
 	});
 
+	LatentIt("Operation.FuncNoParams", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetClient()->FuncNoParams();
+			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			TestDone.Execute();
+		});
+	});
+
 	LatentIt("Operation.FuncBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here

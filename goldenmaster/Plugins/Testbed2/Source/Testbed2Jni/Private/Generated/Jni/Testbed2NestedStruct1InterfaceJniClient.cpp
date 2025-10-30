@@ -201,6 +201,83 @@ void UTestbed2NestedStruct1InterfaceJniClient::SetProp1(const FTestbed2NestedStr
 #endif
 
 }
+void UTestbed2NestedStruct1InterfaceJniClient::FuncNoReturnValue(const FTestbed2NestedStruct1& InParam1)
+{
+    UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient:funcNoReturnValue "));
+    if (!b_isReady)
+    {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+        UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+        UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+        return;
+    }
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    if (m_javaJniClientClass == nullptr)
+    {
+        UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient:funcNoReturnValueAsync:(Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V CLASS not found"));
+        return;
+    }
+    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcNoReturnValueAsync", "(Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V");
+    if (MethodID != nullptr)
+    {
+        FGuid id = FGuid::NewGuid();
+        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+        jobject jlocal_Param1 = Testbed2DataJavaConverter::makeJavaNestedStruct1(Env, InParam1);;
+
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
+        Env->DeleteLocalRef(jlocal_Param1);
+    }
+    else
+    {
+        UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient:funcNoReturnValueAsync (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V not found"));
+    }
+#endif
+    //TODO probalby #elsif set some default on promise as a result.
+    return;
+
+}
+FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceJniClient::FuncNoParams()
+{
+    UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient:funcNoParams "));
+    if (!b_isReady)
+    {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+        UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+        UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+        return FTestbed2NestedStruct1();
+    }
+    TPromise<FTestbed2NestedStruct1> Promise;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    if (m_javaJniClientClass == nullptr)
+    {
+        UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient:funcNoParamsAsync:(Ljava/lang/String;)V CLASS not found"));
+        return FTestbed2NestedStruct1();
+    }
+    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcNoParamsAsync", "(Ljava/lang/String;)V");
+    if (MethodID != nullptr)
+    {
+        auto id = gUTestbed2NestedStruct1InterfaceJniClientmethodHelper.StorePromise(Promise);
+        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
+    }
+    else
+    {
+        UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient:funcNoParamsAsync (Ljava/lang/String;)V not found"));
+    }
+#endif
+    //TODO probalby #elsif set some default on promise as a result.
+    return Promise.GetFuture().Get();
+
+}
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceJniClient::Func1(const FTestbed2NestedStruct1& InParam1)
 {
     UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient:func1 "));
@@ -350,6 +427,31 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct1InterfaceJniClient_
             }
             gUTestbed2NestedStruct1InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal( plocal_param1);
         });
+}
+
+JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct1InterfaceJniClient_nativeOnFuncNoReturnValueResult(JNIEnv* Env, jclass Clazz, jstring callId)
+{
+    UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct1InterfaceJniClient_nativeOnFuncNoReturnValueResult"));
+    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+    FGuid guid;
+    FGuid::Parse(callIdString, guid);
+    UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct1InterfaceJniClient_nativeOnFuncNoReturnValueResult for id %s"), *(guid.ToString(EGuidFormats::Digits)));
+}
+
+JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct1InterfaceJniClient_nativeOnFuncNoParamsResult(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
+{
+    UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct1InterfaceJniClient_nativeOnFuncNoParamsResult"));
+    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+    FGuid guid;
+    FTestbed2NestedStruct1 cpp_result = FTestbed2NestedStruct1();
+    Testbed2DataJavaConverter::fillNestedStruct1(Env, result,cpp_result);
+
+    FGuid::Parse(callIdString, guid);
+    AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
+    {
+        gUTestbed2NestedStruct1InterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
+    });
+    
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct1InterfaceJniClient_nativeOnFunc1Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
