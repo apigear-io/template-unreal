@@ -228,6 +228,51 @@ void UTestbed2NestedStruct1InterfaceJniAdapter::OnProp1Changed(const FTestbed2Ne
 
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+JNI_METHOD void Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniService_nativeFuncNoReturnValue(JNIEnv* Env, jclass Clazz, jobject param1)
+{
+    UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniService_nativeFuncNoReturnValue"));
+    if (gUTestbed2NestedStruct1InterfaceJniAdapterHandle == nullptr)
+    {
+        UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniService_nativeFuncNoReturnValue: JNI SERVICE ADAPTER NOT FOUND "));
+        return ;
+    }
+    FTestbed2NestedStruct1 local_param1 = FTestbed2NestedStruct1();
+    Testbed2DataJavaConverter::fillNestedStruct1(Env, param1, local_param1);
+
+    auto service = gUTestbed2NestedStruct1InterfaceJniAdapterHandle->getBackendService();
+    if (service != nullptr)
+    {
+        service->FuncNoReturnValue( local_param1);
+        return;
+    }
+    else
+    {
+        UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Warning, TEXT("service not valid"));
+        return ;
+    }
+}
+JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniService_nativeFuncNoParams(JNIEnv* Env, jclass Clazz )
+{
+    UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniService_nativeFuncNoParams"));
+    if (gUTestbed2NestedStruct1InterfaceJniAdapterHandle == nullptr)
+    {
+        UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniService_nativeFuncNoParams: JNI SERVICE ADAPTER NOT FOUND "));
+        return nullptr;
+    }
+
+    auto service = gUTestbed2NestedStruct1InterfaceJniAdapterHandle->getBackendService();
+    if (service != nullptr)
+    {
+        auto result = service->FuncNoParams();
+        jobject jresult = Testbed2DataJavaConverter::makeJavaNestedStruct1(Env, result);
+        return jresult;
+    }
+    else
+    {
+        UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Warning, TEXT("service not valid"));
+        return nullptr;
+    }
+}
 JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniService_nativeFunc1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
     UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniService_nativeFunc1"));
