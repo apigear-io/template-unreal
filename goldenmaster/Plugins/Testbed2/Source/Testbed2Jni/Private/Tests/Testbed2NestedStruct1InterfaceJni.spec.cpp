@@ -213,6 +213,28 @@ void UTestbed2NestedStruct1InterfaceJniSpec::Define()
 		service->SetProp1(TestValue);
 	});
 
+	LatentIt("Operation.FuncNoReturnValue", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetClient()->FuncNoReturnValue(FTestbed2NestedStruct1());
+			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncNoParams", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetClient()->FuncNoParams();
+			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			TestDone.Execute();
+		});
+	});
+
 	LatentIt("Operation.Func1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
