@@ -155,19 +155,19 @@ void UTestbed1StructArray2InterfaceOLinkAdapter::setBackendService(TScriptInterf
 {
 }
 
-void UTestbed1StructArray2InterfaceOLinkAdapter::OnSigBool(const FTestbed1StructBoolWithArray& ParamBool)
+void UTestbed1StructArray2InterfaceOLinkAdapter::OnSigBoolSignal(const FTestbed1StructBoolWithArray& ParamBool)
 {
 }
 
-void UTestbed1StructArray2InterfaceOLinkAdapter::OnSigInt(const FTestbed1StructIntWithArray& ParamInt)
+void UTestbed1StructArray2InterfaceOLinkAdapter::OnSigIntSignal(const FTestbed1StructIntWithArray& ParamInt)
 {
 }
 
-void UTestbed1StructArray2InterfaceOLinkAdapter::OnSigFloat(const FTestbed1StructFloatWithArray& ParamFloat)
+void UTestbed1StructArray2InterfaceOLinkAdapter::OnSigFloatSignal(const FTestbed1StructFloatWithArray& ParamFloat)
 {
 }
 
-void UTestbed1StructArray2InterfaceOLinkAdapter::OnSigString(const FTestbed1StructStringWithArray& ParamString)
+void UTestbed1StructArray2InterfaceOLinkAdapter::OnSigStringSignal(const FTestbed1StructStringWithArray& ParamString)
 {
 }
 

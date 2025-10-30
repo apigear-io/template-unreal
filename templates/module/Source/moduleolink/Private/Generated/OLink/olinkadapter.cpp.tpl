@@ -125,7 +125,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 }
 {{- range .Interface.Signals }}
 
-void {{$Class}}::On{{Camel .Name}}({{ueParams "" .Params}})
+void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "" .Params}})
 {
 }
 {{- end }}

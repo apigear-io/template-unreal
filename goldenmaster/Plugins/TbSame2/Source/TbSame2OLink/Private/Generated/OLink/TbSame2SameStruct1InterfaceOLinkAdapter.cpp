@@ -120,7 +120,7 @@ void UTbSame2SameStruct1InterfaceOLinkAdapter::setBackendService(TScriptInterfac
 {
 }
 
-void UTbSame2SameStruct1InterfaceOLinkAdapter::OnSig1(const FTbSame2Struct1& Param1)
+void UTbSame2SameStruct1InterfaceOLinkAdapter::OnSig1Signal(const FTbSame2Struct1& Param1)
 {
 }
 

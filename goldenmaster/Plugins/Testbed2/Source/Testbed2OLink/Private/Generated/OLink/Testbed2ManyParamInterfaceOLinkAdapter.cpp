@@ -150,19 +150,19 @@ void UTestbed2ManyParamInterfaceOLinkAdapter::setBackendService(TScriptInterface
 {
 }
 
-void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig1(int32 Param1)
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig1Signal(int32 Param1)
 {
 }
 
-void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig2(int32 Param1, int32 Param2)
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig2Signal(int32 Param1, int32 Param2)
 {
 }
 
-void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig3(int32 Param1, int32 Param2, int32 Param3)
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig3Signal(int32 Param1, int32 Param2, int32 Param3)
 {
 }
 
-void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+void UTestbed2ManyParamInterfaceOLinkAdapter::OnSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 }
 

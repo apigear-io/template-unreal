@@ -130,11 +130,11 @@ void UTbSimpleNoOperationsInterfaceOLinkAdapter::setBackendService(TScriptInterf
 {
 }
 
-void UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoid()
+void UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigVoidSignal()
 {
 }
 
-void UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBool(bool bParamBool)
+void UTbSimpleNoOperationsInterfaceOLinkAdapter::OnSigBoolSignal(bool bParamBool)
 {
 }
 

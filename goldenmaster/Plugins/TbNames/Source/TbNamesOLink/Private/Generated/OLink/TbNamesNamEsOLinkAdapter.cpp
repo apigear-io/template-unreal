@@ -140,11 +140,11 @@ void UTbNamesNamEsOLinkAdapter::setBackendService(TScriptInterface<ITbNamesNamEs
 {
 }
 
-void UTbNamesNamEsOLinkAdapter::OnSomeSignal(bool bSomeParam)
+void UTbNamesNamEsOLinkAdapter::OnSomeSignalSignal(bool bSomeParam)
 {
 }
 
-void UTbNamesNamEsOLinkAdapter::OnSomeSignal2(bool bSomeParam)
+void UTbNamesNamEsOLinkAdapter::OnSomeSignal2Signal(bool bSomeParam)
 {
 }
 

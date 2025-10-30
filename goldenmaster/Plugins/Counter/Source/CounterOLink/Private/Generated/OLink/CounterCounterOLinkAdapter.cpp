@@ -135,7 +135,7 @@ void UCounterCounterOLinkAdapter::setBackendService(TScriptInterface<ICounterCou
 {
 }
 
-void UCounterCounterOLinkAdapter::OnValueChanged(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
+void UCounterCounterOLinkAdapter::OnValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
 {
 }
 

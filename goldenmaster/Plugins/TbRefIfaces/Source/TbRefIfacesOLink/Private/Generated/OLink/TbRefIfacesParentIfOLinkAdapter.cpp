@@ -150,19 +150,19 @@ void UTbRefIfacesParentIfOLinkAdapter::setBackendService(TScriptInterface<ITbRef
 {
 }
 
-void UTbRefIfacesParentIfOLinkAdapter::OnLocalIfSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
+void UTbRefIfacesParentIfOLinkAdapter::OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
 }
 
-void UTbRefIfacesParentIfOLinkAdapter::OnLocalIfSignalList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+void UTbRefIfacesParentIfOLinkAdapter::OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
 }
 
-void UTbRefIfacesParentIfOLinkAdapter::OnImportedIfSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
+void UTbRefIfacesParentIfOLinkAdapter::OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
 }
 
-void UTbRefIfacesParentIfOLinkAdapter::OnImportedIfSignalList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+void UTbRefIfacesParentIfOLinkAdapter::OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
 }
 
