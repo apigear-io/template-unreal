@@ -19,4 +19,15 @@ limitations under the License.
 #include "Misc/AutomationTest.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
+TArray<ETbNamesEnum_With_Under_scores> createTestFTbNamesEnum_With_Under_scoresArray()
+{
+	TArray<ETbNamesEnum_With_Under_scores> TestValueArray;
+
+	ETbNamesEnum_With_Under_scores val = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
+	TestValueArray.Add(val);
+	return TestValueArray;
+}
+
+
+
 #endif // WITH_DEV_AUTOMATION_TESTS
