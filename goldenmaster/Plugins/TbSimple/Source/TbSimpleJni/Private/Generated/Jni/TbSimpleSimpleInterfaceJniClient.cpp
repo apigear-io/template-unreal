@@ -595,6 +595,44 @@ void UTbSimpleSimpleInterfaceJniClient::FuncNoReturnValue(bool bInParamBool)
     return;
 
 }
+bool UTbSimpleSimpleInterfaceJniClient::FuncNoParams()
+{
+    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParams "));
+    if (!b_isReady)
+    {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+        return false;
+    }
+    TPromise<bool> Promise;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+    if (m_javaJniClientClass == nullptr)
+    {
+        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync:(Ljava/lang/String;)V CLASS not found"));
+        return false;
+    }
+    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcNoParamsAsync", "(Ljava/lang/String;)V");
+    if (MethodID != nullptr)
+    {
+        auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+
+        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
+    }
+    else
+    {
+        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync (Ljava/lang/String;)V not found"));
+    }
+#endif
+    //TODO probalby #elsif set some default on promise as a result.
+    return Promise.GetFuture().Get();
+
+}
 bool UTbSimpleSimpleInterfaceJniClient::FuncBool(bool bInParamBool)
 {
     UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBool "));
@@ -1256,6 +1294,20 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
     FGuid guid;
     FGuid::Parse(callIdString, guid);
     UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoReturnValueResult for id %s"), *(guid.ToString(EGuidFormats::Digits)));
+}
+
+JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoParamsResult(JNIEnv* Env, jclass Clazz, jboolean result, jstring callId)
+{
+    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoParamsResult"));
+    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+    FGuid guid;
+
+    FGuid::Parse(callIdString, guid);
+    AsyncTask(ENamedThreads::GameThread, [guid, result]()
+    {
+        gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+    });
+    
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncBoolResult(JNIEnv* Env, jclass Clazz, jboolean result, jstring callId)
