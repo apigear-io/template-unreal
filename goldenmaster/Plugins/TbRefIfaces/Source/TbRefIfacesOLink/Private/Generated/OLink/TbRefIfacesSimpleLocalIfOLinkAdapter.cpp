@@ -120,7 +120,7 @@ void UTbRefIfacesSimpleLocalIfOLinkAdapter::setBackendService(TScriptInterface<I
 {
 }
 
-void UTbRefIfacesSimpleLocalIfOLinkAdapter::OnIntSignal(int32 Param)
+void UTbRefIfacesSimpleLocalIfOLinkAdapter::OnIntSignalSignal(int32 Param)
 {
 }
 

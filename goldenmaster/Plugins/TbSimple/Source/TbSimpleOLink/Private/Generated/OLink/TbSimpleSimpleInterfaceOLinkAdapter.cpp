@@ -190,35 +190,35 @@ void UTbSimpleSimpleInterfaceOLinkAdapter::setBackendService(TScriptInterface<IT
 {
 }
 
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigBool(bool bParamBool)
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigBoolSignal(bool bParamBool)
 {
 }
 
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt(int32 ParamInt)
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigIntSignal(int32 ParamInt)
 {
 }
 
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt32(int32 ParamInt32)
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt32Signal(int32 ParamInt32)
 {
 }
 
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt64(int64 ParamInt64)
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigInt64Signal(int64 ParamInt64)
 {
 }
 
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat(float ParamFloat)
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloatSignal(float ParamFloat)
 {
 }
 
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat32(float ParamFloat32)
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat32Signal(float ParamFloat32)
 {
 }
 
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat64(double ParamFloat64)
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigFloat64Signal(double ParamFloat64)
 {
 }
 
-void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigString(const FString& ParamString)
+void UTbSimpleSimpleInterfaceOLinkAdapter::OnSigStringSignal(const FString& ParamString)
 {
 }
 

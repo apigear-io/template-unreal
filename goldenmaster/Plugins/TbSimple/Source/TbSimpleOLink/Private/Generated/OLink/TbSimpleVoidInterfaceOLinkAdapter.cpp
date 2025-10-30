@@ -115,7 +115,7 @@ void UTbSimpleVoidInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbS
 {
 }
 
-void UTbSimpleVoidInterfaceOLinkAdapter::OnSigVoid()
+void UTbSimpleVoidInterfaceOLinkAdapter::OnSigVoidSignal()
 {
 }
 

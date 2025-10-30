@@ -130,11 +130,11 @@ void UTbSame2SameEnum2InterfaceOLinkAdapter::setBackendService(TScriptInterface<
 {
 }
 
-void UTbSame2SameEnum2InterfaceOLinkAdapter::OnSig1(ETbSame2Enum1 Param1)
+void UTbSame2SameEnum2InterfaceOLinkAdapter::OnSig1Signal(ETbSame2Enum1 Param1)
 {
 }
 
-void UTbSame2SameEnum2InterfaceOLinkAdapter::OnSig2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
+void UTbSame2SameEnum2InterfaceOLinkAdapter::OnSig2Signal(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
 {
 }
 

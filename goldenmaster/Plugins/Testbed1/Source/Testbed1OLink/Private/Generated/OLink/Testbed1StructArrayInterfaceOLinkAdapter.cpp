@@ -160,23 +160,23 @@ void UTestbed1StructArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 {
 }
 
-void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBool(const TArray<FTestbed1StructBool>& ParamBool)
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool)
 {
 }
 
-void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigInt(const TArray<FTestbed1StructInt>& ParamInt)
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt)
 {
 }
 
-void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 }
 
-void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigString(const TArray<FTestbed1StructString>& ParamString)
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigStringSignal(const TArray<FTestbed1StructString>& ParamString)
 {
 }
 
-void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigEnum(const TArray<ETestbed1Enum0>& ParamEnum)
+void UTestbed1StructArrayInterfaceOLinkAdapter::OnSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum)
 {
 }
 

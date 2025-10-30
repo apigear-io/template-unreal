@@ -130,11 +130,11 @@ void UTestbed2NestedStruct2InterfaceOLinkAdapter::setBackendService(TScriptInter
 {
 }
 
-void UTestbed2NestedStruct2InterfaceOLinkAdapter::OnSig1(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct2InterfaceOLinkAdapter::OnSig1Signal(const FTestbed2NestedStruct1& Param1)
 {
 }
 
-void UTestbed2NestedStruct2InterfaceOLinkAdapter::OnSig2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+void UTestbed2NestedStruct2InterfaceOLinkAdapter::OnSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 }
 

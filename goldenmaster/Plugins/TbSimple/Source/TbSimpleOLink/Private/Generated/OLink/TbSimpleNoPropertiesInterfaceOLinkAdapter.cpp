@@ -120,11 +120,11 @@ void UTbSimpleNoPropertiesInterfaceOLinkAdapter::setBackendService(TScriptInterf
 {
 }
 
-void UTbSimpleNoPropertiesInterfaceOLinkAdapter::OnSigVoid()
+void UTbSimpleNoPropertiesInterfaceOLinkAdapter::OnSigVoidSignal()
 {
 }
 
-void UTbSimpleNoPropertiesInterfaceOLinkAdapter::OnSigBool(bool bParamBool)
+void UTbSimpleNoPropertiesInterfaceOLinkAdapter::OnSigBoolSignal(bool bParamBool)
 {
 }
 

@@ -195,35 +195,35 @@ void UTbSimpleSimpleArrayInterfaceOLinkAdapter::setBackendService(TScriptInterfa
 {
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBool(const TArray<bool>& ParamBool)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigBoolSignal(const TArray<bool>& ParamBool)
 {
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt(const TArray<int32>& ParamInt)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigIntSignal(const TArray<int32>& ParamInt)
 {
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32(const TArray<int32>& ParamInt32)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt32Signal(const TArray<int32>& ParamInt32)
 {
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt64(const TArray<int64>& ParamInt64)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigInt64Signal(const TArray<int64>& ParamInt64)
 {
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat(const TArray<float>& ParamFloat)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloatSignal(const TArray<float>& ParamFloat)
 {
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat32(const TArray<float>& ParamFloa32)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat32Signal(const TArray<float>& ParamFloa32)
 {
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat64(const TArray<double>& ParamFloat64)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigFloat64Signal(const TArray<double>& ParamFloat64)
 {
 }
 
-void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigString(const TArray<FString>& ParamString)
+void UTbSimpleSimpleArrayInterfaceOLinkAdapter::OnSigStringSignal(const TArray<FString>& ParamString)
 {
 }
 

@@ -150,19 +150,19 @@ void UTbEnumEnumInterfaceOLinkAdapter::setBackendService(TScriptInterface<ITbEnu
 {
 }
 
-void UTbEnumEnumInterfaceOLinkAdapter::OnSig0(ETbEnumEnum0 Param0)
+void UTbEnumEnumInterfaceOLinkAdapter::OnSig0Signal(ETbEnumEnum0 Param0)
 {
 }
 
-void UTbEnumEnumInterfaceOLinkAdapter::OnSig1(ETbEnumEnum1 Param1)
+void UTbEnumEnumInterfaceOLinkAdapter::OnSig1Signal(ETbEnumEnum1 Param1)
 {
 }
 
-void UTbEnumEnumInterfaceOLinkAdapter::OnSig2(ETbEnumEnum2 Param2)
+void UTbEnumEnumInterfaceOLinkAdapter::OnSig2Signal(ETbEnumEnum2 Param2)
 {
 }
 
-void UTbEnumEnumInterfaceOLinkAdapter::OnSig3(ETbEnumEnum3 Param3)
+void UTbEnumEnumInterfaceOLinkAdapter::OnSig3Signal(ETbEnumEnum3 Param3)
 {
 }
 
