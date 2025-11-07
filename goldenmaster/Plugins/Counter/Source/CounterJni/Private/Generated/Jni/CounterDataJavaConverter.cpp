@@ -17,10 +17,10 @@ limitations under the License.
 */
 
 #include "Counter/Generated/Jni/CounterDataJavaConverter.h"
-
 #include "CustomTypes/Generated/Jni/CustomTypesDataJavaConverter.h"
+#include "CustomTypes/Generated/api/CustomTypes_data.h"
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
-
+#include "ExternTypes/Generated/api/ExternTypes_data.h"
 #include "Counter/Implementation/CounterCounter.h"
 
 #if PLATFORM_ANDROID
@@ -34,54 +34,50 @@ limitations under the License.
 #endif
 #endif
 
-
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-
-
-
 
 void CounterDataJavaConverter::fillCounter(JNIEnv* env, jobject input, TScriptInterface<ICounterCounterInterface> out_counter)
 {
-    if (!input || !out_counter)
-    {
-        return;
-    }
-    // currently not supported, stub function generated for possible custom implementation
+	if (!input || !out_counter)
+	{
+		return;
+	}
+	// currently not supported, stub function generated for possible custom implementation
 }
 
 void CounterDataJavaConverter::fillCounterArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ICounterCounterInterface>>& out_array)
 {
-    // currently not supported, stub function generated for possible custom implementation
+	// currently not supported, stub function generated for possible custom implementation
 }
+
 jobject CounterDataJavaConverter::makeJavaCounter(JNIEnv* env, const TScriptInterface<ICounterCounterInterface> out_counter)
 {
-    if (!out_counter)
-    {
-        return nullptr;
-    }
+	if (!out_counter)
+	{
+		return nullptr;
+	}
 
-    jobject javaObjInstance = nullptr;
-    // currently not supported, stub function generated for possible custom implementation
-    return javaObjInstance;
+	jobject javaObjInstance = nullptr;
+	// currently not supported, stub function generated for possible custom implementation
+	return javaObjInstance;
 }
 
 jobjectArray CounterDataJavaConverter::makeJavaCounterArray(JNIEnv* env, const TArray<TScriptInterface<ICounterCounterInterface>>& cppArray)
 {
-    jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
-    auto arraySize = cppArray.Num();
-    jobjectArray javaArray = env->NewObjectArray( arraySize, javaClass, nullptr);
-    // currently not supported, stub function generated for possible custom implementation 
-    return javaArray;
+	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
+	auto arraySize = cppArray.Num();
+	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	// Currently not supported, stub function generated for possible custom implementation.
+	return javaArray;
 }
 
 TScriptInterface<ICounterCounterInterface> CounterDataJavaConverter::getCppInstanceCounterCounter()
 {
-    UCounterCounterImplementation* Impl = NewObject<UCounterCounterImplementation>();
-    TScriptInterface<ICounterCounterInterface> wrapped;
-    wrapped.SetObject(Impl);
-    wrapped.SetInterface(Cast<ICounterCounterInterface>(Impl));
-    return wrapped;
+	UCounterCounterImplementation* Impl = NewObject<UCounterCounterImplementation>();
+	TScriptInterface<ICounterCounterInterface> wrapped;
+	wrapped.SetObject(Impl);
+	wrapped.SetInterface(Cast<ICounterCounterInterface>(Impl));
+	return wrapped;
 }
-
 
 #endif

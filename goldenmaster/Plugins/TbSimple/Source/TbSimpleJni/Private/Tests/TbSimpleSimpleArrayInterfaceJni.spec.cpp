@@ -10,16 +10,15 @@
 #include "TbSimple/Generated/Jni/TbSimpleSimpleArrayInterfaceJniClient.h"
 #include "TbSimple/Generated/Jni/TbSimpleSimpleArrayInterfaceJniAdapter.h"
 
-
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
- #include "Android/AndroidJNI.h"
- #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
 
- #if USE_ANDROID_JNI
- #include <jni.h>
- #endif
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
 #endif
 
 // nested namespaces do not work with UE4.27 MSVC due to old C++ standard
@@ -47,14 +46,14 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetClient() != nullptr);
 
 		// set up service and adapter
-		auto service =ImplFixture->GetLocalImplementation();
+		auto service = ImplFixture->GetLocalImplementation();
 		ImplFixture->GetAdapter()->setBackendService(service);
 
 		// setup client
 		UTbSimpleSimpleArrayInterfaceJniClient* JniClient = ImplFixture->GetClient();
 		TestTrue("Check for valid Jni client", JniClient != nullptr);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		JniClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
 			{
 			if (bConnected)
@@ -62,20 +61,20 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 				TestDone.Execute();
 			}
 		});
-		//Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section. 
+		// Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section.
 		FString servicePackage = "com.goldenmaster";
 		JniClient->_bindToService(servicePackage, "TestConnectionId");
-		#else
+#else
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	AfterEach([this]()
 		{
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			UTbSimpleSimpleArrayInterfaceJniClient* JniClient =ImplFixture->GetClient();
-			#endif
-			ImplFixture.Reset();
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UTbSimpleSimpleArrayInterfaceJniClient* JniClient = ImplFixture->GetClient();
+#endif
+		ImplFixture.Reset();
 	});
 
 	It("Property.PropBool.Default", [this]()
@@ -105,9 +104,9 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		// use different test value
 		TestValue.Add(true);
 		ImplFixture->GetClient()->SetPropBool(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropBool.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -116,11 +115,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		TArray<bool> DefaultValue = TArray<bool>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropBool(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnPropBoolChanged.AddLambda([this, DefaultValue, TestDone](const TArray<bool>& InPropBool)
 			{
 			TArray<bool> TestValue = TArray<bool>();
@@ -128,12 +127,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 			TestValue.Add(true);
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropBool(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropBool(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropBool(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -146,16 +144,16 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 	LatentIt("Property.PropBool.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		TArray<bool> StartValue =  ImplFixture->GetLocalImplementation()->GetPropBool();
+		TArray<bool> StartValue = ImplFixture->GetLocalImplementation()->GetPropBool();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropBool(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<bool>& InPropBool)
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue](const TArray<bool>& InPropBool)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -170,18 +168,18 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 				TestValue.Add(true);
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropBool(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropBool(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropBool(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = TArray<bool>(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropBool(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropBool(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -226,9 +224,9 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		// use different test value
 		TestValue.Add(1);
 		ImplFixture->GetClient()->SetPropInt(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropInt.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -237,11 +235,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		TArray<int32> DefaultValue = TArray<int32>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnPropIntChanged.AddLambda([this, DefaultValue, TestDone](const TArray<int32>& InPropInt)
 			{
 			TArray<int32> TestValue = TArray<int32>();
@@ -249,12 +247,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 			TestValue.Add(1);
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropInt(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -267,16 +264,16 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 	LatentIt("Property.PropInt.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		TArray<int32> StartValue =  ImplFixture->GetLocalImplementation()->GetPropInt();
+		TArray<int32> StartValue = ImplFixture->GetLocalImplementation()->GetPropInt();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const TArray<int32>& InPropInt)
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue](const TArray<int32>& InPropInt)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -291,18 +288,18 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 				TestValue.Add(1);
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = TArray<int32>(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropInt(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropInt(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -347,9 +344,9 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		// use different test value
 		TestValue.Add(1);
 		ImplFixture->GetClient()->SetPropInt32(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropInt32.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -358,11 +355,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		TArray<int32> DefaultValue = TArray<int32>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt32(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnPropInt32Changed.AddLambda([this, DefaultValue, TestDone](const TArray<int32>& InPropInt32)
 			{
 			TArray<int32> TestValue = TArray<int32>();
@@ -370,12 +367,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 			TestValue.Add(1);
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt32(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt32(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropInt32(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -388,16 +384,16 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 	LatentIt("Property.PropInt32.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		TArray<int32> StartValue =  ImplFixture->GetLocalImplementation()->GetPropInt32();
+		TArray<int32> StartValue = ImplFixture->GetLocalImplementation()->GetPropInt32();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt32(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone](const TArray<int32>& InPropInt32)
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone, StartValue](const TArray<int32>& InPropInt32)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -412,18 +408,18 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 				TestValue.Add(1);
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt32(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt32(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt32(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = TArray<int32>(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropInt32(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropInt32(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -468,9 +464,9 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		// use different test value
 		TestValue.Add(1LL);
 		ImplFixture->GetClient()->SetPropInt64(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropInt64.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -479,11 +475,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		TArray<int64> DefaultValue = TArray<int64>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt64(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnPropInt64Changed.AddLambda([this, DefaultValue, TestDone](const TArray<int64>& InPropInt64)
 			{
 			TArray<int64> TestValue = TArray<int64>();
@@ -491,12 +487,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 			TestValue.Add(1LL);
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt64(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt64(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropInt64(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -509,16 +504,16 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 	LatentIt("Property.PropInt64.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		TArray<int64> StartValue =  ImplFixture->GetLocalImplementation()->GetPropInt64();
+		TArray<int64> StartValue = ImplFixture->GetLocalImplementation()->GetPropInt64();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt64(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone](const TArray<int64>& InPropInt64)
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone, StartValue](const TArray<int64>& InPropInt64)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -533,18 +528,18 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 				TestValue.Add(1LL);
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt64(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt64(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt64(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = TArray<int64>(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropInt64(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropInt64(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -589,9 +584,9 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		// use different test value
 		TestValue.Add(1.0f);
 		ImplFixture->GetClient()->SetPropFloat(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropFloat.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -600,11 +595,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		TArray<float> DefaultValue = TArray<float>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnPropFloatChanged.AddLambda([this, DefaultValue, TestDone](const TArray<float>& InPropFloat)
 			{
 			TArray<float> TestValue = TArray<float>();
@@ -612,12 +607,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 			TestValue.Add(1.0f);
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropFloat(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -630,16 +624,16 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 	LatentIt("Property.PropFloat.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		TArray<float> StartValue =  ImplFixture->GetLocalImplementation()->GetPropFloat();
+		TArray<float> StartValue = ImplFixture->GetLocalImplementation()->GetPropFloat();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<float>& InPropFloat)
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, StartValue](const TArray<float>& InPropFloat)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -654,18 +648,18 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 				TestValue.Add(1.0f);
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = TArray<float>(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropFloat(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropFloat(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -710,9 +704,9 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		// use different test value
 		TestValue.Add(1.0f);
 		ImplFixture->GetClient()->SetPropFloat32(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropFloat32.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -721,11 +715,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		TArray<float> DefaultValue = TArray<float>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat32(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat32Changed.AddLambda([this, DefaultValue, TestDone](const TArray<float>& InPropFloat32)
 			{
 			TArray<float> TestValue = TArray<float>();
@@ -733,12 +727,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 			TestValue.Add(1.0f);
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat32(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat32(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropFloat32(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -751,16 +744,16 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 	LatentIt("Property.PropFloat32.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		TArray<float> StartValue =  ImplFixture->GetLocalImplementation()->GetPropFloat32();
+		TArray<float> StartValue = ImplFixture->GetLocalImplementation()->GetPropFloat32();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat32(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone](const TArray<float>& InPropFloat32)
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone, StartValue](const TArray<float>& InPropFloat32)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -775,18 +768,18 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 				TestValue.Add(1.0f);
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat32(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat32(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat32(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = TArray<float>(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropFloat32(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropFloat32(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -831,9 +824,9 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		// use different test value
 		TestValue.Add(1.0);
 		ImplFixture->GetClient()->SetPropFloat64(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropFloat64.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -842,11 +835,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		TArray<double> DefaultValue = TArray<double>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat64(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat64Changed.AddLambda([this, DefaultValue, TestDone](const TArray<double>& InPropFloat64)
 			{
 			TArray<double> TestValue = TArray<double>();
@@ -854,12 +847,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 			TestValue.Add(1.0);
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat64(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat64(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropFloat64(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -872,16 +864,16 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 	LatentIt("Property.PropFloat64.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		TArray<double> StartValue =  ImplFixture->GetLocalImplementation()->GetPropFloat64();
+		TArray<double> StartValue = ImplFixture->GetLocalImplementation()->GetPropFloat64();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat64(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone](const TArray<double>& InPropFloat64)
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone, StartValue](const TArray<double>& InPropFloat64)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -896,18 +888,18 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 				TestValue.Add(1.0);
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat64(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat64(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat64(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = TArray<double>(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropFloat64(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropFloat64(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -952,9 +944,9 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		// use different test value
 		TestValue.Add(FString("xyz"));
 		ImplFixture->GetClient()->SetPropString(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropString.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -963,11 +955,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		TArray<FString> DefaultValue = TArray<FString>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropString(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnPropStringChanged.AddLambda([this, DefaultValue, TestDone](const TArray<FString>& InPropString)
 			{
 			TArray<FString> TestValue = TArray<FString>();
@@ -975,12 +967,11 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 			TestValue.Add(FString("xyz"));
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropString(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropString(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropString(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -993,16 +984,16 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 	LatentIt("Property.PropString.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		TArray<FString> StartValue =  ImplFixture->GetLocalImplementation()->GetPropString();
+		TArray<FString> StartValue = ImplFixture->GetLocalImplementation()->GetPropString();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropString(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FString>& InPropString)
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleArrayInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, StartValue](const TArray<FString>& InPropString)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -1017,18 +1008,18 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 				TestValue.Add(FString("xyz"));
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropString(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropString(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropString(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = TArray<FString>(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropString(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropString(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -1059,7 +1050,7 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncBool(TArray<bool>());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1070,7 +1061,7 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncInt(TArray<int32>());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1081,7 +1072,7 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncInt32(TArray<int32>());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1092,7 +1083,7 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncInt64(TArray<int64>());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1103,7 +1094,7 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncFloat(TArray<float>());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1114,7 +1105,7 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncFloat32(TArray<float>());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1125,7 +1116,7 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncFloat64(TArray<double>());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1136,20 +1127,19 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncString(TArray<FString>());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleArrayInterfacePublisher* SourceTbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnSigBoolSignal.AddLambda([this, TestDone](const TArray<bool>& InParamBool)
 			{
 			// known test value
@@ -1167,13 +1157,12 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleArrayInterfacePublisher* SourceTbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnSigIntSignal.AddLambda([this, TestDone](const TArray<int32>& InParamInt)
 			{
 			// known test value
@@ -1191,13 +1180,12 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigInt32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleArrayInterfacePublisher* SourceTbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnSigInt32Signal.AddLambda([this, TestDone](const TArray<int32>& InParamInt32)
 			{
 			// known test value
@@ -1215,13 +1203,12 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigInt64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleArrayInterfacePublisher* SourceTbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnSigInt64Signal.AddLambda([this, TestDone](const TArray<int64>& InParamInt64)
 			{
 			// known test value
@@ -1239,13 +1226,12 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleArrayInterfacePublisher* SourceTbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnSigFloatSignal.AddLambda([this, TestDone](const TArray<float>& InParamFloat)
 			{
 			// known test value
@@ -1263,13 +1249,12 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigFloat32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleArrayInterfacePublisher* SourceTbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnSigFloat32Signal.AddLambda([this, TestDone](const TArray<float>& InParamFloa32)
 			{
 			// known test value
@@ -1287,13 +1272,12 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigFloat64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleArrayInterfacePublisher* SourceTbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnSigFloat64Signal.AddLambda([this, TestDone](const TArray<double>& InParamFloat64)
 			{
 			// known test value
@@ -1311,13 +1295,12 @@ void UTbSimpleSimpleArrayInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleArrayInterfacePublisher* SourceTbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleArrayInterfacePublisher->OnSigStringSignal.AddLambda([this, TestDone](const TArray<FString>& InParamString)
 			{
 			// known test value

@@ -3,7 +3,6 @@
 #include "TbEnumEnumInterfaceJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbEnum/Generated/Jni/TbEnumEnumInterfaceJniClient.h"

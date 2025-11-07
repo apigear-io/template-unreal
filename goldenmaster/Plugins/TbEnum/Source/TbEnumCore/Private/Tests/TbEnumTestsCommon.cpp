@@ -16,7 +16,6 @@ TArray<ETbEnumEnum0> createTestFTbEnumEnum0Array()
 	return TestValueArray;
 }
 
-
 TArray<ETbEnumEnum1> createTestFTbEnumEnum1Array()
 {
 	TArray<ETbEnumEnum1> TestValueArray;
@@ -25,7 +24,6 @@ TArray<ETbEnumEnum1> createTestFTbEnumEnum1Array()
 	TestValueArray.Add(val);
 	return TestValueArray;
 }
-
 
 TArray<ETbEnumEnum2> createTestFTbEnumEnum2Array()
 {
@@ -36,7 +34,6 @@ TArray<ETbEnumEnum2> createTestFTbEnumEnum2Array()
 	return TestValueArray;
 }
 
-
 TArray<ETbEnumEnum3> createTestFTbEnumEnum3Array()
 {
 	TArray<ETbEnumEnum3> TestValueArray;
@@ -45,7 +42,5 @@ TArray<ETbEnumEnum3> createTestFTbEnumEnum3Array()
 	TestValueArray.Add(val);
 	return TestValueArray;
 }
-
-
 
 #endif // WITH_DEV_AUTOMATION_TESTS

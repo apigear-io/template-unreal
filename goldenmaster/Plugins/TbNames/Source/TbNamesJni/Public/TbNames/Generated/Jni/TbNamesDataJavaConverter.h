@@ -33,10 +33,9 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  TBNAMESAPI_API TbNamesDataJavaConverter{
+class TBNAMESAPI_API TbNamesDataJavaConverter
+{
 public:
-
 	static void fillEnumWithUnderScoresArray(JNIEnv* env, jobjectArray input, TArray<ETbNamesEnum_With_Under_scores>& out_array);
 	static ETbNamesEnum_With_Under_scores getEnumWithUnderScoresValue(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnumWithUnderScoresArray(JNIEnv* env, const TArray<ETbNamesEnum_With_Under_scores>& cppArray);

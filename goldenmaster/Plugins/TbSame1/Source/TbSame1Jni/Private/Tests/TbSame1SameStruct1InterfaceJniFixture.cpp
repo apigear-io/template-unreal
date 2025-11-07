@@ -3,7 +3,6 @@
 #include "TbSame1SameStruct1InterfaceJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbSame1/Generated/Jni/TbSame1SameStruct1InterfaceJniClient.h"

@@ -3,7 +3,6 @@
 #include "TbRefIfacesSimpleLocalIfJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbRefIfaces/Generated/Jni/TbRefIfacesSimpleLocalIfJniClient.h"

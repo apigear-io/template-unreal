@@ -7,7 +7,6 @@
 #include "{{$DisplayName}}JniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "{{$ModuleName}}/Generated/Jni/{{$DisplayName}}JniClient.h"

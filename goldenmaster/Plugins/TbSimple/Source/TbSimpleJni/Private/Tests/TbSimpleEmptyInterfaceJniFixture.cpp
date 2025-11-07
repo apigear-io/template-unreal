@@ -3,7 +3,6 @@
 #include "TbSimpleEmptyInterfaceJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbSimple/Generated/Jni/TbSimpleEmptyInterfaceJniClient.h"

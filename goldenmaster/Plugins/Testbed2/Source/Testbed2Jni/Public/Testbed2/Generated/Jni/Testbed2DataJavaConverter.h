@@ -33,40 +33,33 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  TESTBED2API_API Testbed2DataJavaConverter{
+class TESTBED2API_API Testbed2DataJavaConverter
+{
 public:
-
 	static void fillStruct1(JNIEnv* env, jobject input, FTestbed2Struct1& out_struct1);
 	static void fillStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct1>& out_array);
 	static jobject makeJavaStruct1(JNIEnv* env, const FTestbed2Struct1& out_struct1);
 	static jobjectArray makeJavaStruct1Array(JNIEnv* env, const TArray<FTestbed2Struct1>& cppArray);
-
 	static void fillStruct2(JNIEnv* env, jobject input, FTestbed2Struct2& out_struct2);
 	static void fillStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct2>& out_array);
 	static jobject makeJavaStruct2(JNIEnv* env, const FTestbed2Struct2& out_struct2);
 	static jobjectArray makeJavaStruct2Array(JNIEnv* env, const TArray<FTestbed2Struct2>& cppArray);
-
 	static void fillStruct3(JNIEnv* env, jobject input, FTestbed2Struct3& out_struct3);
 	static void fillStruct3Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct3>& out_array);
 	static jobject makeJavaStruct3(JNIEnv* env, const FTestbed2Struct3& out_struct3);
 	static jobjectArray makeJavaStruct3Array(JNIEnv* env, const TArray<FTestbed2Struct3>& cppArray);
-
 	static void fillStruct4(JNIEnv* env, jobject input, FTestbed2Struct4& out_struct4);
 	static void fillStruct4Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct4>& out_array);
 	static jobject makeJavaStruct4(JNIEnv* env, const FTestbed2Struct4& out_struct4);
 	static jobjectArray makeJavaStruct4Array(JNIEnv* env, const TArray<FTestbed2Struct4>& cppArray);
-
 	static void fillNestedStruct1(JNIEnv* env, jobject input, FTestbed2NestedStruct1& out_nested_struct1);
 	static void fillNestedStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2NestedStruct1>& out_array);
 	static jobject makeJavaNestedStruct1(JNIEnv* env, const FTestbed2NestedStruct1& out_nested_struct1);
 	static jobjectArray makeJavaNestedStruct1Array(JNIEnv* env, const TArray<FTestbed2NestedStruct1>& cppArray);
-
 	static void fillNestedStruct2(JNIEnv* env, jobject input, FTestbed2NestedStruct2& out_nested_struct2);
 	static void fillNestedStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2NestedStruct2>& out_array);
 	static jobject makeJavaNestedStruct2(JNIEnv* env, const FTestbed2NestedStruct2& out_nested_struct2);
 	static jobjectArray makeJavaNestedStruct2Array(JNIEnv* env, const TArray<FTestbed2NestedStruct2>& cppArray);
-
 	static void fillNestedStruct3(JNIEnv* env, jobject input, FTestbed2NestedStruct3& out_nested_struct3);
 	static void fillNestedStruct3Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2NestedStruct3>& out_array);
 	static jobject makeJavaNestedStruct3(JNIEnv* env, const FTestbed2NestedStruct3& out_nested_struct3);

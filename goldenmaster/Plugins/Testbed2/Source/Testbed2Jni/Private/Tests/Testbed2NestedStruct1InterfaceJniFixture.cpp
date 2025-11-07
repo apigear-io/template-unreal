@@ -3,7 +3,6 @@
 #include "Testbed2NestedStruct1InterfaceJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "Testbed2/Generated/Jni/Testbed2NestedStruct1InterfaceJniClient.h"

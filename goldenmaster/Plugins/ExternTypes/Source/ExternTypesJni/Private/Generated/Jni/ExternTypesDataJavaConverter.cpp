@@ -17,9 +17,7 @@ limitations under the License.
 */
 
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
-
 #include "Runtime/Core/Public/Math/Vector.h"
-
 
 #if PLATFORM_ANDROID
 
@@ -32,56 +30,55 @@ limitations under the License.
 #endif
 #endif
 
-
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-
-
 
 void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d)
 {
-    jclass cls = env->GetObjectClass(input);
+	jclass cls = env->GetObjectClass(input);
 
-    // do the serialization field by field: e.g. for int type field
-    // jfieldID jFieldId_firstField = env->GetFieldID(cls, "firstField", "I");
-    // out_my_vector3_d.FirstField = env->GetIntField(input, jFieldId_firstField);
+	// do the serialization field by field: e.g. for int type field
+	// jfieldID jFieldId_firstField = env->GetFieldID(cls, "firstField", "I");
+	// out_my_vector3_d.FirstField = env->GetIntField(input, jFieldId_firstField);
 }
 
 void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray input, TArray<FVector>& out_array)
 {
-    jsize len = env->GetArrayLength(input);
-    out_array.Reserve(len);
-    out_array.AddDefaulted(len);
-    for (jsize i = 0; i < len; ++i)
-    {
-        jobject element = env->GetObjectArrayElement(input, i);
-        fillMyVector3D(env, element, out_array[i]);
-        env->DeleteLocalRef(element);
-    }
+	jsize len = env->GetArrayLength(input);
+	out_array.Reserve(len);
+	out_array.AddDefaulted(len);
+	for (jsize i = 0; i < len; ++i)
+	{
+		jobject element = env->GetObjectArrayElement(input, i);
+		fillMyVector3D(env, element, out_array[i]);
+		env->DeleteLocalRef(element);
+	}
 }
+
 jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVector& out_my_vector3_d)
 {
-    jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
-    jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-    jobject javaObjInstance = env->NewObject(javaClass, ctor);
-    
-    // do the serialization field by field: e.g. for int type field
-    // jfieldID jFieldId_firstField = env->GetFieldID(javaClass, "jFieldId_firstField", "I");
-    // env->SetIntField(javaObjInstance, jFieldId_firstField, out_my_vector3_d.FirstField);
-    return javaObjInstance;
+	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
+	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+
+	// do the serialization field by field: e.g. for int type field
+	// jfieldID jFieldId_firstField = env->GetFieldID(javaClass, "jFieldId_firstField", "I");
+	// env->SetIntField(javaObjInstance, jFieldId_firstField, out_my_vector3_d.FirstField);
+	return javaObjInstance;
 }
 
 jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, const TArray<FVector>& cppArray)
 {
-    jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
-    auto arraySize = cppArray.Num();
-    jobjectArray javaArray = env->NewObjectArray( arraySize, javaStruct, nullptr);
-    for (jsize i = 0; i < arraySize; ++i) {
-        jobject element = makeJavaMyVector3D(env, cppArray[i]);
-        env->SetObjectArrayElement(javaArray, i, element);
-        env->DeleteLocalRef(element);
-    }
-    return javaArray;
-}
+	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	auto arraySize = cppArray.Num();
+	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
+	for (jsize i = 0; i < arraySize; ++i)
+	{
+		jobject element = makeJavaMyVector3D(env, cppArray[i]);
+		env->SetObjectArrayElement(javaArray, i, element);
+		env->DeleteLocalRef(element);
+	}
+	return javaArray;
+}
 
 #endif

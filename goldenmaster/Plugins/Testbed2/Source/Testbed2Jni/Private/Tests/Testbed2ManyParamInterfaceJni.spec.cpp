@@ -10,16 +10,15 @@
 #include "Testbed2/Generated/Jni/Testbed2ManyParamInterfaceJniClient.h"
 #include "Testbed2/Generated/Jni/Testbed2ManyParamInterfaceJniAdapter.h"
 
-
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
- #include "Android/AndroidJNI.h"
- #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
 
- #if USE_ANDROID_JNI
- #include <jni.h>
- #endif
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
 #endif
 
 // nested namespaces do not work with UE4.27 MSVC due to old C++ standard
@@ -47,14 +46,14 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetClient() != nullptr);
 
 		// set up service and adapter
-		auto service =ImplFixture->GetLocalImplementation();
+		auto service = ImplFixture->GetLocalImplementation();
 		ImplFixture->GetAdapter()->setBackendService(service);
 
 		// setup client
 		UTestbed2ManyParamInterfaceJniClient* JniClient = ImplFixture->GetClient();
 		TestTrue("Check for valid Jni client", JniClient != nullptr);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		JniClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
 			{
 			if (bConnected)
@@ -62,20 +61,20 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 				TestDone.Execute();
 			}
 		});
-		//Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section. 
+		// Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section.
 		FString servicePackage = "com.goldenmaster";
 		JniClient->_bindToService(servicePackage, "TestConnectionId");
-		#else
+#else
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	AfterEach([this]()
 		{
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			UTestbed2ManyParamInterfaceJniClient* JniClient =ImplFixture->GetClient();
-			#endif
-			ImplFixture.Reset();
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UTestbed2ManyParamInterfaceJniClient* JniClient = ImplFixture->GetClient();
+#endif
+		ImplFixture.Reset();
 	});
 
 	It("Property.Prop1.Default", [this]()
@@ -105,9 +104,9 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetClient()->SetProp1(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.Prop1.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -116,11 +115,11 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		int32 DefaultValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetProp1(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed2ManyParamInterfacePublisher->OnProp1Changed.AddLambda([this, DefaultValue, TestDone](int32 InProp1)
 			{
 			int32 TestValue = 0;
@@ -128,12 +127,11 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 			TestValue = 1;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetProp1(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp1(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetProp1(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -146,16 +144,16 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 	LatentIt("Property.Prop1.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		int32 StartValue =  ImplFixture->GetLocalImplementation()->GetProp1();
+		int32 StartValue = ImplFixture->GetLocalImplementation()->GetProp1();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetProp1(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		Testbed2ManyParamInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](int32 InProp1)
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		Testbed2ManyParamInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue](int32 InProp1)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -170,18 +168,18 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 				TestValue = 1;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp1, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetProp1(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp1(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp1(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetProp1(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetProp1(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -226,9 +224,9 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetClient()->SetProp2(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.Prop2.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -237,11 +235,11 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		int32 DefaultValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetProp2(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed2ManyParamInterfacePublisher->OnProp2Changed.AddLambda([this, DefaultValue, TestDone](int32 InProp2)
 			{
 			int32 TestValue = 0;
@@ -249,12 +247,11 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 			TestValue = 1;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetProp2(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp2(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetProp2(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -267,16 +264,16 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 	LatentIt("Property.Prop2.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		int32 StartValue =  ImplFixture->GetLocalImplementation()->GetProp2();
+		int32 StartValue = ImplFixture->GetLocalImplementation()->GetProp2();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetProp2(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		Testbed2ManyParamInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone](int32 InProp2)
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		Testbed2ManyParamInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, StartValue](int32 InProp2)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -291,18 +288,18 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 				TestValue = 1;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp2, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetProp2(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp2(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp2(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetProp2(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetProp2(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -347,9 +344,9 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetClient()->SetProp3(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.Prop3.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -358,11 +355,11 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		int32 DefaultValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetProp3(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed2ManyParamInterfacePublisher->OnProp3Changed.AddLambda([this, DefaultValue, TestDone](int32 InProp3)
 			{
 			int32 TestValue = 0;
@@ -370,12 +367,11 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 			TestValue = 1;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetProp3(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp3(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetProp3(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -388,16 +384,16 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 	LatentIt("Property.Prop3.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		int32 StartValue =  ImplFixture->GetLocalImplementation()->GetProp3();
+		int32 StartValue = ImplFixture->GetLocalImplementation()->GetProp3();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetProp3(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		Testbed2ManyParamInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone](int32 InProp3)
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		Testbed2ManyParamInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone, StartValue](int32 InProp3)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -412,18 +408,18 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 				TestValue = 1;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp3, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetProp3(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp3(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp3(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetProp3(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetProp3(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -468,9 +464,9 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetClient()->SetProp4(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.Prop4.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -479,11 +475,11 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		int32 DefaultValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetProp4(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed2ManyParamInterfacePublisher->OnProp4Changed.AddLambda([this, DefaultValue, TestDone](int32 InProp4)
 			{
 			int32 TestValue = 0;
@@ -491,12 +487,11 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 			TestValue = 1;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp4, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetProp4(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp4(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetProp4(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -509,16 +504,16 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 	LatentIt("Property.Prop4.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		int32 StartValue =  ImplFixture->GetLocalImplementation()->GetProp4();
+		int32 StartValue = ImplFixture->GetLocalImplementation()->GetProp4();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetProp4(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		Testbed2ManyParamInterfacePublisher->OnProp4Changed.AddLambda([this, TestDone](int32 InProp4)
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		Testbed2ManyParamInterfacePublisher->OnProp4Changed.AddLambda([this, TestDone, StartValue](int32 InProp4)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -533,18 +528,18 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 				TestValue = 1;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InProp4, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetProp4(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp4(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetProp4(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetProp4(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetProp4(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -568,7 +563,7 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->Func1(0);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -579,7 +574,7 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->Func2(0, 0);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -590,7 +585,7 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->Func3(0, 0, 0);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -601,20 +596,19 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->Func4(0, 0, 0, 0);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
 
 	LatentIt("Signal.Sig1", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTestbed2ManyParamInterfacePublisher* SourceTestbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed2ManyParamInterfacePublisher->OnSig1Signal.AddLambda([this, TestDone](int32 InParam1)
 			{
 			// known test value
@@ -630,13 +624,12 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 
 	LatentIt("Signal.Sig2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTestbed2ManyParamInterfacePublisher* SourceTestbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed2ManyParamInterfacePublisher->OnSig2Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2)
 			{
 			// known test value
@@ -655,13 +648,12 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 
 	LatentIt("Signal.Sig3", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTestbed2ManyParamInterfacePublisher* SourceTestbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed2ManyParamInterfacePublisher->OnSig3Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2, int32 InParam3)
 			{
 			// known test value
@@ -683,13 +675,12 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 
 	LatentIt("Signal.Sig4", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTestbed2ManyParamInterfacePublisher* SourceTestbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed2ManyParamInterfacePublisher->OnSig4Signal.AddLambda([this, TestDone](int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 			{
 			// known test value

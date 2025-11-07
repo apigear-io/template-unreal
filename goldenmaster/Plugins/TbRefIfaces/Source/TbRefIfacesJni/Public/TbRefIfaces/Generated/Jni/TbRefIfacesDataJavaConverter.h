@@ -34,10 +34,9 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  TBREFIFACESAPI_API TbRefIfacesDataJavaConverter{
+class TBREFIFACESAPI_API TbRefIfacesDataJavaConverter
+{
 public:
-
 	static void fillSimpleLocalIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if);
 	static void fillSimpleLocalIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& out_array);
 	static jobject makeJavaSimpleLocalIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if);

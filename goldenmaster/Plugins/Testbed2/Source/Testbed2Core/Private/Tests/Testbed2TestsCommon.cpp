@@ -151,7 +151,6 @@ TArray<ETestbed2Enum1> createTestFTestbed2Enum1Array()
 	return TestValueArray;
 }
 
-
 TArray<ETestbed2Enum2> createTestFTestbed2Enum2Array()
 {
 	TArray<ETestbed2Enum2> TestValueArray;
@@ -161,7 +160,6 @@ TArray<ETestbed2Enum2> createTestFTestbed2Enum2Array()
 	return TestValueArray;
 }
 
-
 TArray<ETestbed2Enum3> createTestFTestbed2Enum3Array()
 {
 	TArray<ETestbed2Enum3> TestValueArray;
@@ -170,7 +168,5 @@ TArray<ETestbed2Enum3> createTestFTestbed2Enum3Array()
 	TestValueArray.Add(val);
 	return TestValueArray;
 }
-
-
 
 #endif // WITH_DEV_AUTOMATION_TESTS

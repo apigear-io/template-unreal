@@ -33,10 +33,9 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  TBSIMPLEAPI_API TbSimpleDataJavaConverter{
+class TBSIMPLEAPI_API TbSimpleDataJavaConverter
+{
 public:
-
 	static void fillVoidInterface(JNIEnv* env, jobject input, TScriptInterface<ITbSimpleVoidInterfaceInterface> out_void_interface);
 	static void fillVoidInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSimpleVoidInterfaceInterface>>& out_array);
 	static jobject makeJavaVoidInterface(JNIEnv* env, const TScriptInterface<ITbSimpleVoidInterfaceInterface> out_void_interface);

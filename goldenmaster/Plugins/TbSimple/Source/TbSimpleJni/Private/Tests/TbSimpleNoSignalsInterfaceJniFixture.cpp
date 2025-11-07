@@ -3,7 +3,6 @@
 #include "TbSimpleNoSignalsInterfaceJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbSimple/Generated/Jni/TbSimpleNoSignalsInterfaceJniClient.h"
