@@ -28,7 +28,6 @@ limitations under the License.
 #include "Misc/DateTime.h"
 #include "HAL/Platform.h"
 
-
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -42,10 +41,9 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbSimpleNoSignalsInterface_JNI);
 
-
-namespace 
+namespace
 {
-	UTbSimpleNoSignalsInterfaceJniAdapter* gUTbSimpleNoSignalsInterfaceJniAdapterHandle = nullptr;
+UTbSimpleNoSignalsInterfaceJniAdapter* gUTbSimpleNoSignalsInterfaceJniAdapterHandle = nullptr;
 }
 UTbSimpleNoSignalsInterfaceJniAdapter::UTbSimpleNoSignalsInterfaceJniAdapter()
 {
@@ -57,26 +55,26 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 	gUTbSimpleNoSignalsInterfaceJniAdapterHandle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaJniServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService");
-    auto Env = FAndroidApplication::GetJavaEnv();
-    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniServiceStarter");
-    if (BridgeClass == nullptr)
-    {
+	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService");
+	auto Env = FAndroidApplication::GetJavaEnv();
+	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniServiceStarter");
+	if (BridgeClass == nullptr)
+	{
 		UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:start; CLASS not found"));
-        return;
-    }
+		return;
+	}
 	auto functionSignature = "(Landroid/content/Context;)LtbSimple/tbSimple_api/INoSignalsInterface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
-    if (StartMethod == nullptr)
-    {
-		UE_LOG(LogTemp, Warning, TEXT( "TbSimpleJavaServiceStarter:start; method not found"));
+	if (StartMethod == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:start; method not found"));
 		return;
-    }
-    jobject Activity = FJavaWrapper::GameActivityThis;
+	}
+	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 
-    m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
-    Env->DeleteLocalRef(localRef);
+	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
+	Env->DeleteLocalRef(localRef);
 #endif
 #endif
 }
@@ -87,33 +85,33 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::Deinitialize()
 	gUTbSimpleNoSignalsInterfaceJniAdapterHandle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaJniServiceClass = nullptr;
-    if (m_javaJniServiceInstance)
-    {
-        FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
-        m_javaJniServiceInstance = nullptr;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	m_javaJniServiceClass = nullptr;
+	if (m_javaJniServiceInstance)
+	{
+		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
+		m_javaJniServiceInstance = nullptr;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 
-    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniServiceStarter");
-    if (BridgeClass != nullptr)
-    {
-        jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
-        if (StopMethod != nullptr)
-        {
-            jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
-            FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:stop; method not found, failed to stop service"));
-            return;
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT( "TbSimpleJavaServiceStarter:stop; CLASS not found, failed to stop service"));
-    }
+	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniServiceStarter");
+	if (BridgeClass != nullptr)
+	{
+		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		if (StopMethod != nullptr)
+		{
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal's activity
+			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:stop; method not found, failed to stop service"));
+			return;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:stop; CLASS not found, failed to stop service"));
+	}
 #endif
 #endif
 	Super::Deinitialize();
@@ -149,209 +147,204 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> UTbSimpleNoSignalsInterfa
 
 void UTbSimpleNoSignalsInterfaceJniAdapter::callJniServiceReady(bool isServiceReady)
 {
-    UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("UTbSimpleNoSignalsInterfaceJniAdapter call nativeServiceReady the service function "));
-    
+	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("UTbSimpleNoSignalsInterfaceJniAdapter call nativeServiceReady the service function "));
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (!m_javaJniServiceClass || !m_javaJniServiceInstance )
-        {
-            UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:nativeServiceReady(Z)V CLASS not found"));
-            return;
-        }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:nativeServiceReady(Z)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
 
-        if (MethodID != nullptr)
-        {
-            FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
-        }
-        else
-        {
-            UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:nativeServiceReady(Z)V not found "));
-        }
-    }
-#endif 
+		if (MethodID != nullptr)
+		{
+			FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
+		}
+		else
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:nativeServiceReady(Z)V not found "));
+		}
+	}
+#endif
 }
 void UTbSimpleNoSignalsInterfaceJniAdapter::OnPropBoolChanged(bool bPropBool)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleNoSignalsInterfaceJniAdapter::OnPropBool "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService::onPropBoolChanged(Z)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleNoSignalsInterfaceJniAdapter::OnPropBool "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService::onPropBoolChanged(Z)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropBoolChanged","(Z)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:onPropBoolChanged(Z)V not found"));
-            return;
-        }
-        
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bPropBool);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropBoolChanged", "(Z)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:onPropBoolChanged(Z)V not found"));
+			return;
+		}
 
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bPropBool);
+	}
 #endif
 }
 void UTbSimpleNoSignalsInterfaceJniAdapter::OnPropIntChanged(int32 PropInt)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleNoSignalsInterfaceJniAdapter::OnPropInt "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService::onPropIntChanged(I)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleNoSignalsInterfaceJniAdapter::OnPropInt "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService::onPropIntChanged(I)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropIntChanged","(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:onPropIntChanged(I)V not found"));
-            return;
-        }
-        
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropInt);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropIntChanged", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:onPropIntChanged(I)V not found"));
+			return;
+		}
 
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropInt);
+	}
 #endif
 }
 
-
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid(JNIEnv* Env, jclass Clazz )
+JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid"));
-    if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid: JNI SERVICE ADAPTER NOT FOUND "));
-        return ;
-    }
+	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid"));
+	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        service->FuncVoid();
-        return;
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid"));
-        return ;
-    }
+	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->FuncVoid();
+		return;
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid"));
+		return;
+	}
 }
 JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool(JNIEnv* Env, jclass Clazz, jboolean paramBool)
 {
-    UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool"));
-    if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool: JNI SERVICE ADAPTER NOT FOUND "));
-        return false;
-    }
+	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool"));
+	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return false;
+	}
 
-    auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto result = service->FuncBool( paramBool);
-        return result;
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid"));
-        return false;
-    }
+	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto result = service->FuncBool(paramBool);
+		return result;
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid"));
+		return false;
+	}
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropBool(JNIEnv* Env, jclass Clazz, jboolean propBool)
 {
-    UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropBool"));
-    if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
+	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropBool"));
+	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [propBool]()
-    {
-        auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropBool(propBool);
-        }
-        else
-        {
-            UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
-        }
-    });
+	AsyncTask(ENamedThreads::GameThread, [propBool]()
+		{
+		auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetPropBool(propBool);
+		}
+		else
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
+		}
+	});
 }
 
 JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropBool(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropBool"));
-    if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
-        return false;
-    }
-    auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto bPropBool = service->GetPropBool(); 
-        return bPropBool;
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return false;
-    }
+	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropBool"));
+	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return false;
+	}
+	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto bPropBool = service->GetPropBool();
+		return bPropBool;
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return false;
+	}
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropInt(JNIEnv* Env, jclass Clazz, jint propInt)
 {
-    UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropInt"));
-    if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
+	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropInt"));
+	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [propInt]()
-    {
-        auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropInt(propInt);
-        }
-        else
-        {
-            UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
-        }
-    });
+	AsyncTask(ENamedThreads::GameThread, [propInt]()
+		{
+		auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetPropInt(propInt);
+		}
+		else
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
+		}
+	});
 }
 
 JNI_METHOD jint Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropInt(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropInt"));
-    if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
-        return 0;
-    }
-    auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto PropInt = service->GetPropInt(); 
-        return PropInt;
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return 0;
-    }
+	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropInt"));
+	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
+		return 0;
+	}
+	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto PropInt = service->GetPropInt();
+		return PropInt;
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return 0;
+	}
 }
 #endif

@@ -39,7 +39,6 @@ TArray<{{$class}}> createTest{{$class }}Array()
 	return TestValueArray;
 }
 {{ end }}
-
 {{- range .Module.Enums }}
 {{- $class := printf "E%s%s" $ModuleName .Name }}
 {{- $quickFixclass := printf "F%s%s" $ModuleName .Name }}
@@ -54,7 +53,7 @@ TArray<{{$class}}> createTest{{$quickFixclass }}Array()
 {{- end }}
 	return TestValueArray;
 }
-
-{{ end }}
-
+{{- nl}}
+{{- end }}
+{{- if and (not .Module.Enums) (not .Module.Structs)}}{{- nl}}{{end}}
 #endif // WITH_DEV_AUTOMATION_TESTS

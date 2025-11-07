@@ -31,11 +31,9 @@ limitations under the License.
 #endif
 #endif
 
-
 #include "Testbed2NestedStruct3InterfaceJniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct3Interface_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITestbed2NestedStruct3InterfaceInterface
@@ -53,25 +51,23 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
-    void setBackendService(TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> InService);
+	void setBackendService(TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct3Interface")
 	TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
-
-	// signals
 	void OnSig1Signal(const FTestbed2NestedStruct1& Param1) override;
 
 	void OnSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
@@ -81,7 +77,6 @@ private:
 	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1) override;
 	void OnProp2Changed(const FTestbed2NestedStruct2& Prop2) override;
 	void OnProp3Changed(const FTestbed2NestedStruct3& Prop3) override;
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct3Interface")

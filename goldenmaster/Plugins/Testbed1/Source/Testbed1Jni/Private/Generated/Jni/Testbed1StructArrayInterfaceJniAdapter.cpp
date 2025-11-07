@@ -29,7 +29,6 @@ limitations under the License.
 #include "HAL/Platform.h"
 #include "Testbed1/Generated/api/Testbed1_data.h"
 
-
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -43,10 +42,9 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTestbed1StructArrayInterface_JNI);
 
-
-namespace 
+namespace
 {
-	UTestbed1StructArrayInterfaceJniAdapter* gUTestbed1StructArrayInterfaceJniAdapterHandle = nullptr;
+UTestbed1StructArrayInterfaceJniAdapter* gUTestbed1StructArrayInterfaceJniAdapterHandle = nullptr;
 }
 UTestbed1StructArrayInterfaceJniAdapter::UTestbed1StructArrayInterfaceJniAdapter()
 {
@@ -58,26 +56,26 @@ void UTestbed1StructArrayInterfaceJniAdapter::Initialize(FSubsystemCollectionBas
 	gUTestbed1StructArrayInterfaceJniAdapterHandle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaJniServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniservice/StructArrayInterfaceJniService");
-    auto Env = FAndroidApplication::GetJavaEnv();
-    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniservice/StructArrayInterfaceJniServiceStarter");
-    if (BridgeClass == nullptr)
-    {
+	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniservice/StructArrayInterfaceJniService");
+	auto Env = FAndroidApplication::GetJavaEnv();
+	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniservice/StructArrayInterfaceJniServiceStarter");
+	if (BridgeClass == nullptr)
+	{
 		UE_LOG(LogTemp, Warning, TEXT("Testbed1JavaServiceStarter:start; CLASS not found"));
-        return;
-    }
+		return;
+	}
 	auto functionSignature = "(Landroid/content/Context;)Ltestbed1/testbed1_api/IStructArrayInterface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
-    if (StartMethod == nullptr)
-    {
-		UE_LOG(LogTemp, Warning, TEXT( "Testbed1JavaServiceStarter:start; method not found"));
+	if (StartMethod == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Testbed1JavaServiceStarter:start; method not found"));
 		return;
-    }
-    jobject Activity = FJavaWrapper::GameActivityThis;
+	}
+	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 
-    m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
-    Env->DeleteLocalRef(localRef);
+	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
+	Env->DeleteLocalRef(localRef);
 #endif
 #endif
 }
@@ -88,33 +86,33 @@ void UTestbed1StructArrayInterfaceJniAdapter::Deinitialize()
 	gUTestbed1StructArrayInterfaceJniAdapterHandle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaJniServiceClass = nullptr;
-    if (m_javaJniServiceInstance)
-    {
-        FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
-        m_javaJniServiceInstance = nullptr;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	m_javaJniServiceClass = nullptr;
+	if (m_javaJniServiceInstance)
+	{
+		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
+		m_javaJniServiceInstance = nullptr;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 
-    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniservice/StructArrayInterfaceJniServiceStarter");
-    if (BridgeClass != nullptr)
-    {
-        jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
-        if (StopMethod != nullptr)
-        {
-            jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
-            FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("Testbed1JavaServiceStarter:stop; method not found, failed to stop service"));
-            return;
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT( "Testbed1JavaServiceStarter:stop; CLASS not found, failed to stop service"));
-    }
+	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniservice/StructArrayInterfaceJniServiceStarter");
+	if (BridgeClass != nullptr)
+	{
+		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		if (StopMethod != nullptr)
+		{
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal's activity
+			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Testbed1JavaServiceStarter:stop; method not found, failed to stop service"));
+			return;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Testbed1JavaServiceStarter:stop; CLASS not found, failed to stop service"));
+	}
 #endif
 #endif
 	Super::Deinitialize();
@@ -150,646 +148,640 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> UTestbed1StructArrayInt
 
 void UTestbed1StructArrayInterfaceJniAdapter::callJniServiceReady(bool isServiceReady)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("UTestbed1StructArrayInterfaceJniAdapter call nativeServiceReady the service function "));
-    
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("UTestbed1StructArrayInterfaceJniAdapter call nativeServiceReady the service function "));
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (!m_javaJniServiceClass || !m_javaJniServiceInstance )
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:nativeServiceReady(Z)V CLASS not found"));
-            return;
-        }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:nativeServiceReady(Z)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
 
-        if (MethodID != nullptr)
-        {
-            FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
-        }
-        else
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:nativeServiceReady(Z)V not found "));
-        }
-    }
-#endif 
+		if (MethodID != nullptr)
+		{
+			FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:nativeServiceReady(Z)V not found "));
+		}
+	}
+#endif
 }
 
 void UTestbed1StructArrayInterfaceJniAdapter::OnSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::onSigBool "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigBool ([Ltestbed1/testbed1_api/StructBool;)V CLASS not found"));
-            return;
-        }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigBool", "([Ltestbed1/testbed1_api/StructBool;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigBool ([Ltestbed1/testbed1_api/StructBool;)V not found"));
-            return;
-        }
-        jobjectArray jlocal_ParamBool = Testbed1DataJavaConverter::makeJavaStructBoolArray(Env, ParamBool);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::onSigBool "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigBool ([Ltestbed1/testbed1_api/StructBool;)V CLASS not found"));
+			return;
+		}
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigBool", "([Ltestbed1/testbed1_api/StructBool;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigBool ([Ltestbed1/testbed1_api/StructBool;)V not found"));
+			return;
+		}
+		jobjectArray jlocal_ParamBool = Testbed1DataJavaConverter::makeJavaStructBoolArray(Env, ParamBool);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamBool);
-        Env->DeleteLocalRef(jlocal_ParamBool);
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamBool);
+		Env->DeleteLocalRef(jlocal_ParamBool);
+	}
 #endif
 }
 
 void UTestbed1StructArrayInterfaceJniAdapter::OnSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::onSigInt "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigInt ([Ltestbed1/testbed1_api/StructInt;)V CLASS not found"));
-            return;
-        }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigInt", "([Ltestbed1/testbed1_api/StructInt;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigInt ([Ltestbed1/testbed1_api/StructInt;)V not found"));
-            return;
-        }
-        jobjectArray jlocal_ParamInt = Testbed1DataJavaConverter::makeJavaStructIntArray(Env, ParamInt);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::onSigInt "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigInt ([Ltestbed1/testbed1_api/StructInt;)V CLASS not found"));
+			return;
+		}
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigInt", "([Ltestbed1/testbed1_api/StructInt;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigInt ([Ltestbed1/testbed1_api/StructInt;)V not found"));
+			return;
+		}
+		jobjectArray jlocal_ParamInt = Testbed1DataJavaConverter::makeJavaStructIntArray(Env, ParamInt);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamInt);
-        Env->DeleteLocalRef(jlocal_ParamInt);
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamInt);
+		Env->DeleteLocalRef(jlocal_ParamInt);
+	}
 #endif
 }
 
 void UTestbed1StructArrayInterfaceJniAdapter::OnSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::onSigFloat "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigFloat ([Ltestbed1/testbed1_api/StructFloat;)V CLASS not found"));
-            return;
-        }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigFloat", "([Ltestbed1/testbed1_api/StructFloat;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigFloat ([Ltestbed1/testbed1_api/StructFloat;)V not found"));
-            return;
-        }
-        jobjectArray jlocal_ParamFloat = Testbed1DataJavaConverter::makeJavaStructFloatArray(Env, ParamFloat);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::onSigFloat "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigFloat ([Ltestbed1/testbed1_api/StructFloat;)V CLASS not found"));
+			return;
+		}
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigFloat", "([Ltestbed1/testbed1_api/StructFloat;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigFloat ([Ltestbed1/testbed1_api/StructFloat;)V not found"));
+			return;
+		}
+		jobjectArray jlocal_ParamFloat = Testbed1DataJavaConverter::makeJavaStructFloatArray(Env, ParamFloat);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamFloat);
-        Env->DeleteLocalRef(jlocal_ParamFloat);
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamFloat);
+		Env->DeleteLocalRef(jlocal_ParamFloat);
+	}
 #endif
 }
 
 void UTestbed1StructArrayInterfaceJniAdapter::OnSigStringSignal(const TArray<FTestbed1StructString>& ParamString)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::onSigString "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigString ([Ltestbed1/testbed1_api/StructString;)V CLASS not found"));
-            return;
-        }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigString", "([Ltestbed1/testbed1_api/StructString;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigString ([Ltestbed1/testbed1_api/StructString;)V not found"));
-            return;
-        }
-        jobjectArray jlocal_ParamString = Testbed1DataJavaConverter::makeJavaStructStringArray(Env, ParamString);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::onSigString "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigString ([Ltestbed1/testbed1_api/StructString;)V CLASS not found"));
+			return;
+		}
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigString", "([Ltestbed1/testbed1_api/StructString;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigString ([Ltestbed1/testbed1_api/StructString;)V not found"));
+			return;
+		}
+		jobjectArray jlocal_ParamString = Testbed1DataJavaConverter::makeJavaStructStringArray(Env, ParamString);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamString);
-        Env->DeleteLocalRef(jlocal_ParamString);
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamString);
+		Env->DeleteLocalRef(jlocal_ParamString);
+	}
 #endif
 }
 
 void UTestbed1StructArrayInterfaceJniAdapter::OnSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::onSigEnum "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigEnum ([Ltestbed1/testbed1_api/Enum0;)V CLASS not found"));
-            return;
-        }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigEnum", "([Ltestbed1/testbed1_api/Enum0;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigEnum ([Ltestbed1/testbed1_api/Enum0;)V not found"));
-            return;
-        }
-        jobjectArray jlocal_ParamEnum = Testbed1DataJavaConverter::makeJavaEnum0Array(Env, ParamEnum);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::onSigEnum "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigEnum ([Ltestbed1/testbed1_api/Enum0;)V CLASS not found"));
+			return;
+		}
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigEnum", "([Ltestbed1/testbed1_api/Enum0;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onSigEnum ([Ltestbed1/testbed1_api/Enum0;)V not found"));
+			return;
+		}
+		jobjectArray jlocal_ParamEnum = Testbed1DataJavaConverter::makeJavaEnum0Array(Env, ParamEnum);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamEnum);
-        Env->DeleteLocalRef(jlocal_ParamEnum);
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamEnum);
+		Env->DeleteLocalRef(jlocal_ParamEnum);
+	}
 #endif
 }
 void UTestbed1StructArrayInterfaceJniAdapter::OnPropBoolChanged(const TArray<FTestbed1StructBool>& PropBool)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::OnPropBool "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropBoolChanged([Ltestbed1/testbed1_api/StructBool;)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::OnPropBool "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropBoolChanged([Ltestbed1/testbed1_api/StructBool;)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropBoolChanged","([Ltestbed1/testbed1_api/StructBool;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onPropBoolChanged([Ltestbed1/testbed1_api/StructBool;)V not found"));
-            return;
-        }
-        
-        jobjectArray jlocal_PropBool = Testbed1DataJavaConverter::makeJavaStructBoolArray(Env, PropBool);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropBool);
-        Env->DeleteLocalRef(jlocal_PropBool);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropBoolChanged", "([Ltestbed1/testbed1_api/StructBool;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onPropBoolChanged([Ltestbed1/testbed1_api/StructBool;)V not found"));
+			return;
+		}
 
-    }
+		jobjectArray jlocal_PropBool = Testbed1DataJavaConverter::makeJavaStructBoolArray(Env, PropBool);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropBool);
+		Env->DeleteLocalRef(jlocal_PropBool);
+	}
 #endif
 }
 void UTestbed1StructArrayInterfaceJniAdapter::OnPropIntChanged(const TArray<FTestbed1StructInt>& PropInt)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::OnPropInt "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropIntChanged([Ltestbed1/testbed1_api/StructInt;)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::OnPropInt "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropIntChanged([Ltestbed1/testbed1_api/StructInt;)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropIntChanged","([Ltestbed1/testbed1_api/StructInt;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onPropIntChanged([Ltestbed1/testbed1_api/StructInt;)V not found"));
-            return;
-        }
-        
-        jobjectArray jlocal_PropInt = Testbed1DataJavaConverter::makeJavaStructIntArray(Env, PropInt);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropInt);
-        Env->DeleteLocalRef(jlocal_PropInt);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropIntChanged", "([Ltestbed1/testbed1_api/StructInt;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onPropIntChanged([Ltestbed1/testbed1_api/StructInt;)V not found"));
+			return;
+		}
 
-    }
+		jobjectArray jlocal_PropInt = Testbed1DataJavaConverter::makeJavaStructIntArray(Env, PropInt);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropInt);
+		Env->DeleteLocalRef(jlocal_PropInt);
+	}
 #endif
 }
 void UTestbed1StructArrayInterfaceJniAdapter::OnPropFloatChanged(const TArray<FTestbed1StructFloat>& PropFloat)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::OnPropFloat "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropFloatChanged([Ltestbed1/testbed1_api/StructFloat;)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::OnPropFloat "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropFloatChanged([Ltestbed1/testbed1_api/StructFloat;)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropFloatChanged","([Ltestbed1/testbed1_api/StructFloat;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onPropFloatChanged([Ltestbed1/testbed1_api/StructFloat;)V not found"));
-            return;
-        }
-        
-        jobjectArray jlocal_PropFloat = Testbed1DataJavaConverter::makeJavaStructFloatArray(Env, PropFloat);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropFloat);
-        Env->DeleteLocalRef(jlocal_PropFloat);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropFloatChanged", "([Ltestbed1/testbed1_api/StructFloat;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onPropFloatChanged([Ltestbed1/testbed1_api/StructFloat;)V not found"));
+			return;
+		}
 
-    }
+		jobjectArray jlocal_PropFloat = Testbed1DataJavaConverter::makeJavaStructFloatArray(Env, PropFloat);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropFloat);
+		Env->DeleteLocalRef(jlocal_PropFloat);
+	}
 #endif
 }
 void UTestbed1StructArrayInterfaceJniAdapter::OnPropStringChanged(const TArray<FTestbed1StructString>& PropString)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::OnPropString "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropStringChanged([Ltestbed1/testbed1_api/StructString;)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::OnPropString "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropStringChanged([Ltestbed1/testbed1_api/StructString;)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropStringChanged","([Ltestbed1/testbed1_api/StructString;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onPropStringChanged([Ltestbed1/testbed1_api/StructString;)V not found"));
-            return;
-        }
-        
-        jobjectArray jlocal_PropString = Testbed1DataJavaConverter::makeJavaStructStringArray(Env, PropString);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropString);
-        Env->DeleteLocalRef(jlocal_PropString);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropStringChanged", "([Ltestbed1/testbed1_api/StructString;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onPropStringChanged([Ltestbed1/testbed1_api/StructString;)V not found"));
+			return;
+		}
 
-    }
+		jobjectArray jlocal_PropString = Testbed1DataJavaConverter::makeJavaStructStringArray(Env, PropString);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropString);
+		Env->DeleteLocalRef(jlocal_PropString);
+	}
 #endif
 }
 void UTestbed1StructArrayInterfaceJniAdapter::OnPropEnumChanged(const TArray<ETestbed1Enum0>& PropEnum)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::OnPropEnum "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropEnumChanged([Ltestbed1/testbed1_api/Enum0;)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Notify java jni UTestbed1StructArrayInterfaceJniAdapter::OnPropEnum "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropEnumChanged([Ltestbed1/testbed1_api/Enum0;)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropEnumChanged","([Ltestbed1/testbed1_api/Enum0;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onPropEnumChanged([Ltestbed1/testbed1_api/Enum0;)V not found"));
-            return;
-        }
-        
-        jobjectArray jlocal_PropEnum = Testbed1DataJavaConverter::makeJavaEnum0Array(Env, PropEnum);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropEnum);
-        Env->DeleteLocalRef(jlocal_PropEnum);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropEnumChanged", "([Ltestbed1/testbed1_api/Enum0;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService:onPropEnumChanged([Ltestbed1/testbed1_api/Enum0;)V not found"));
+			return;
+		}
 
-    }
+		jobjectArray jlocal_PropEnum = Testbed1DataJavaConverter::makeJavaEnum0Array(Env, PropEnum);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropEnum);
+		Env->DeleteLocalRef(jlocal_PropEnum);
+	}
 #endif
 }
-
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncBool(JNIEnv* Env, jclass Clazz, jobjectArray paramBool)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncBool"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncBool: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    TArray<FTestbed1StructBool> local_param_bool = TArray<FTestbed1StructBool>();
-    Testbed1DataJavaConverter::fillStructBoolArray(Env, paramBool, local_param_bool);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncBool"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	TArray<FTestbed1StructBool> local_param_bool = TArray<FTestbed1StructBool>();
+	Testbed1DataJavaConverter::fillStructBoolArray(Env, paramBool, local_param_bool);
 
-    auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto result = service->FuncBool( local_param_bool);
-        jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructBoolArray(Env, result);
-        return jresult;
-    }
-    else
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid"));
-        return nullptr;
-    }
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto result = service->FuncBool(local_param_bool);
+		jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructBoolArray(Env, result);
+		return jresult;
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid"));
+		return nullptr;
+	}
 }
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncInt(JNIEnv* Env, jclass Clazz, jobjectArray paramInt)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncInt"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncInt: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    TArray<FTestbed1StructInt> local_param_int = TArray<FTestbed1StructInt>();
-    Testbed1DataJavaConverter::fillStructIntArray(Env, paramInt, local_param_int);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncInt"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncInt: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	TArray<FTestbed1StructInt> local_param_int = TArray<FTestbed1StructInt>();
+	Testbed1DataJavaConverter::fillStructIntArray(Env, paramInt, local_param_int);
 
-    auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto result = service->FuncInt( local_param_int);
-        jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructIntArray(Env, result);
-        return jresult;
-    }
-    else
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid"));
-        return nullptr;
-    }
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto result = service->FuncInt(local_param_int);
+		jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructIntArray(Env, result);
+		return jresult;
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid"));
+		return nullptr;
+	}
 }
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncFloat(JNIEnv* Env, jclass Clazz, jobjectArray paramFloat)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncFloat"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncFloat: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    TArray<FTestbed1StructFloat> local_param_float = TArray<FTestbed1StructFloat>();
-    Testbed1DataJavaConverter::fillStructFloatArray(Env, paramFloat, local_param_float);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncFloat"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncFloat: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	TArray<FTestbed1StructFloat> local_param_float = TArray<FTestbed1StructFloat>();
+	Testbed1DataJavaConverter::fillStructFloatArray(Env, paramFloat, local_param_float);
 
-    auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto result = service->FuncFloat( local_param_float);
-        jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructFloatArray(Env, result);
-        return jresult;
-    }
-    else
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid"));
-        return nullptr;
-    }
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto result = service->FuncFloat(local_param_float);
+		jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructFloatArray(Env, result);
+		return jresult;
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid"));
+		return nullptr;
+	}
 }
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncString(JNIEnv* Env, jclass Clazz, jobjectArray paramString)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncString"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncString: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    TArray<FTestbed1StructString> local_param_string = TArray<FTestbed1StructString>();
-    Testbed1DataJavaConverter::fillStructStringArray(Env, paramString, local_param_string);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncString"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncString: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	TArray<FTestbed1StructString> local_param_string = TArray<FTestbed1StructString>();
+	Testbed1DataJavaConverter::fillStructStringArray(Env, paramString, local_param_string);
 
-    auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto result = service->FuncString( local_param_string);
-        jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructStringArray(Env, result);
-        return jresult;
-    }
-    else
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid"));
-        return nullptr;
-    }
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto result = service->FuncString(local_param_string);
+		jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructStringArray(Env, result);
+		return jresult;
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid"));
+		return nullptr;
+	}
 }
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncEnum(JNIEnv* Env, jclass Clazz, jobjectArray paramEnum)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncEnum"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncEnum: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    TArray<ETestbed1Enum0> local_param_enum = TArray<ETestbed1Enum0>();
-    Testbed1DataJavaConverter::fillEnum0Array(Env, paramEnum, local_param_enum);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncEnum"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeFuncEnum: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	TArray<ETestbed1Enum0> local_param_enum = TArray<ETestbed1Enum0>();
+	Testbed1DataJavaConverter::fillEnum0Array(Env, paramEnum, local_param_enum);
 
-    auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto result = service->FuncEnum( local_param_enum);
-        jobjectArray jresult = Testbed1DataJavaConverter::makeJavaEnum0Array(Env, result);
-        return jresult;
-    }
-    else
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid"));
-        return nullptr;
-    }
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto result = service->FuncEnum(local_param_enum);
+		jobjectArray jresult = Testbed1DataJavaConverter::makeJavaEnum0Array(Env, result);
+		return jresult;
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid"));
+		return nullptr;
+	}
 }
 JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropBool(JNIEnv* Env, jclass Clazz, jobjectArray propBool)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropBool"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
-    TArray<FTestbed1StructBool> local_prop_bool = TArray<FTestbed1StructBool>();
-    Testbed1DataJavaConverter::fillStructBoolArray(Env, propBool, local_prop_bool);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropBool"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop_bool= MoveTemp(local_prop_bool)]()
-    {
-        auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropBool(plocal_prop_bool);
-        }
-        else
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
-        }
-    });
+	TArray<FTestbed1StructBool> local_prop_bool = TArray<FTestbed1StructBool>();
+	Testbed1DataJavaConverter::fillStructBoolArray(Env, propBool, local_prop_bool);
+
+	AsyncTask(ENamedThreads::GameThread, [plocal_prop_bool = MoveTemp(local_prop_bool)]()
+		{
+		auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetPropBool(plocal_prop_bool);
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
+		}
+	});
 }
 
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropBool(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropBool"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto PropBool = service->GetPropBool();
-        
-        jobjectArray jlocal_PropBool = Testbed1DataJavaConverter::makeJavaStructBoolArray(Env, PropBool);
-        return jlocal_PropBool;
-    }
-    else
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return nullptr;
-    }
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropBool"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto PropBool = service->GetPropBool();
+
+		jobjectArray jlocal_PropBool = Testbed1DataJavaConverter::makeJavaStructBoolArray(Env, PropBool);
+		return jlocal_PropBool;
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return nullptr;
+	}
 }
 JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropInt(JNIEnv* Env, jclass Clazz, jobjectArray propInt)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropInt"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
-    TArray<FTestbed1StructInt> local_prop_int = TArray<FTestbed1StructInt>();
-    Testbed1DataJavaConverter::fillStructIntArray(Env, propInt, local_prop_int);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropInt"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop_int= MoveTemp(local_prop_int)]()
-    {
-        auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropInt(plocal_prop_int);
-        }
-        else
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
-        }
-    });
+	TArray<FTestbed1StructInt> local_prop_int = TArray<FTestbed1StructInt>();
+	Testbed1DataJavaConverter::fillStructIntArray(Env, propInt, local_prop_int);
+
+	AsyncTask(ENamedThreads::GameThread, [plocal_prop_int = MoveTemp(local_prop_int)]()
+		{
+		auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetPropInt(plocal_prop_int);
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
+		}
+	});
 }
 
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropInt(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropInt"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto PropInt = service->GetPropInt();
-        
-        jobjectArray jlocal_PropInt = Testbed1DataJavaConverter::makeJavaStructIntArray(Env, PropInt);
-        return jlocal_PropInt;
-    }
-    else
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return nullptr;
-    }
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropInt"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto PropInt = service->GetPropInt();
+
+		jobjectArray jlocal_PropInt = Testbed1DataJavaConverter::makeJavaStructIntArray(Env, PropInt);
+		return jlocal_PropInt;
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return nullptr;
+	}
 }
 JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropFloat(JNIEnv* Env, jclass Clazz, jobjectArray propFloat)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropFloat"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropFloat: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
-    TArray<FTestbed1StructFloat> local_prop_float = TArray<FTestbed1StructFloat>();
-    Testbed1DataJavaConverter::fillStructFloatArray(Env, propFloat, local_prop_float);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropFloat"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropFloat: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop_float= MoveTemp(local_prop_float)]()
-    {
-        auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropFloat(plocal_prop_float);
-        }
-        else
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat"));
-        }
-    });
+	TArray<FTestbed1StructFloat> local_prop_float = TArray<FTestbed1StructFloat>();
+	Testbed1DataJavaConverter::fillStructFloatArray(Env, propFloat, local_prop_float);
+
+	AsyncTask(ENamedThreads::GameThread, [plocal_prop_float = MoveTemp(local_prop_float)]()
+		{
+		auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetPropFloat(plocal_prop_float);
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat"));
+		}
+	});
 }
 
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropFloat(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropFloat"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropFloat: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto PropFloat = service->GetPropFloat();
-        
-        jobjectArray jlocal_PropFloat = Testbed1DataJavaConverter::makeJavaStructFloatArray(Env, PropFloat);
-        return jlocal_PropFloat;
-    }
-    else
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return nullptr;
-    }
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropFloat"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropFloat: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto PropFloat = service->GetPropFloat();
+
+		jobjectArray jlocal_PropFloat = Testbed1DataJavaConverter::makeJavaStructFloatArray(Env, PropFloat);
+		return jlocal_PropFloat;
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return nullptr;
+	}
 }
 JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropString(JNIEnv* Env, jclass Clazz, jobjectArray propString)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropString"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropString: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
-    TArray<FTestbed1StructString> local_prop_string = TArray<FTestbed1StructString>();
-    Testbed1DataJavaConverter::fillStructStringArray(Env, propString, local_prop_string);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropString"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropString: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop_string= MoveTemp(local_prop_string)]()
-    {
-        auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropString(plocal_prop_string);
-        }
-        else
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propString"));
-        }
-    });
+	TArray<FTestbed1StructString> local_prop_string = TArray<FTestbed1StructString>();
+	Testbed1DataJavaConverter::fillStructStringArray(Env, propString, local_prop_string);
+
+	AsyncTask(ENamedThreads::GameThread, [plocal_prop_string = MoveTemp(local_prop_string)]()
+		{
+		auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetPropString(plocal_prop_string);
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propString"));
+		}
+	});
 }
 
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropString(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropString"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropString: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto PropString = service->GetPropString();
-        
-        jobjectArray jlocal_PropString = Testbed1DataJavaConverter::makeJavaStructStringArray(Env, PropString);
-        return jlocal_PropString;
-    }
-    else
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return nullptr;
-    }
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropString"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropString: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto PropString = service->GetPropString();
+
+		jobjectArray jlocal_PropString = Testbed1DataJavaConverter::makeJavaStructStringArray(Env, PropString);
+		return jlocal_PropString;
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return nullptr;
+	}
 }
 JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropEnum(JNIEnv* Env, jclass Clazz, jobjectArray propEnum)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropEnum"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropEnum: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
-    TArray<ETestbed1Enum0> local_prop_enum = TArray<ETestbed1Enum0>();
-    Testbed1DataJavaConverter::fillEnum0Array(Env, propEnum, local_prop_enum);
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropEnum"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeSetPropEnum: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop_enum= MoveTemp(local_prop_enum)]()
-    {
-        auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropEnum(plocal_prop_enum);
-        }
-        else
-        {
-            UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propEnum"));
-        }
-    });
+	TArray<ETestbed1Enum0> local_prop_enum = TArray<ETestbed1Enum0>();
+	Testbed1DataJavaConverter::fillEnum0Array(Env, propEnum, local_prop_enum);
+
+	AsyncTask(ENamedThreads::GameThread, [plocal_prop_enum = MoveTemp(local_prop_enum)]()
+		{
+		auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetPropEnum(plocal_prop_enum);
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propEnum"));
+		}
+	});
 }
 
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropEnum(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropEnum"));
-    if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropEnum: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto PropEnum = service->GetPropEnum();
-        
-        jobjectArray jlocal_PropEnum = Testbed1DataJavaConverter::makeJavaEnum0Array(Env, PropEnum);
-        return jlocal_PropEnum;
-    }
-    else
-    {
-        UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return nullptr;
-    }
+	UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropEnum"));
+	if (gUTestbed1StructArrayInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropEnum: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto PropEnum = service->GetPropEnum();
+
+		jobjectArray jlocal_PropEnum = Testbed1DataJavaConverter::makeJavaEnum0Array(Env, PropEnum);
+		return jlocal_PropEnum;
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return nullptr;
+	}
 }
 #endif

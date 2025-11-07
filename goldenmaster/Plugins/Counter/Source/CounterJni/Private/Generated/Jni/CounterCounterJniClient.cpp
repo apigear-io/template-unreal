@@ -37,9 +37,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-
-
-
 #include "Counter/Generated/Jni/CounterCounterJniClient.h"
 #include "Counter/Generated/Jni/CounterDataJavaConverter.h"
 
@@ -49,12 +46,12 @@ limitations under the License.
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
- #include "Android/AndroidJNI.h"
- #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
 
- #if USE_ANDROID_JNI
- #include <jni.h>
- #endif
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
 #endif
 
 #include <atomic>
@@ -62,741 +59,746 @@ limitations under the License.
 #include "GenericPlatform/GenericPlatformMisc.h"
 
 /**
-   \brief data structure to hold the last sent property values
+	\brief data structure to hold the last sent property values
 */
-
 
 class UCounterCounterJniClientMethodHelper
 {
 public:
-    template <typename ResultType>
-    FGuid StorePromise(TPromise<ResultType>& Promise);
+	template <typename ResultType>
+	FGuid StorePromise(TPromise<ResultType>& Promise);
 
-    template <typename ResultType>
-    bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+	template <typename ResultType>
+	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+
 private:
-    TMap<FGuid, void*> ReplyPromisesMap;
-    FCriticalSection ReplyPromisesMapCS;
-
+	TMap<FGuid, void*> ReplyPromisesMap;
+	FCriticalSection ReplyPromisesMapCS;
 };
 
-namespace {
+namespace
+{
 
-    UCounterCounterJniClient* gUCounterCounterJniClientHandle = nullptr;
-    TFunction<void(bool)> gUCounterCounterJniClientnotifyIsReady = [](bool value) { (void)value; UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("notifyIsReady used but not set ")); };
-    TFunction<void(FCustomTypesVector3D)> gUCounterCounterJniClientOnVectorChangedEmpty = [](FCustomTypesVector3D value) { (void)value; UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("onVectorChanged used but not set ")); };
-    TFunction<void(FCustomTypesVector3D)> gUCounterCounterJniClientOnVectorChanged = gUCounterCounterJniClientOnVectorChangedEmpty;
-    TFunction<void(FVector)> gUCounterCounterJniClientOnExternVectorChangedEmpty = [](FVector value) { (void)value; UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("onExternVectorChanged used but not set ")); };
-    TFunction<void(FVector)> gUCounterCounterJniClientOnExternVectorChanged = gUCounterCounterJniClientOnExternVectorChangedEmpty;
-    TFunction<void(TArray<FCustomTypesVector3D>)> gUCounterCounterJniClientOnVectorArrayChangedEmpty = [](TArray<FCustomTypesVector3D> value) { (void)value; UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("onVectorArrayChanged used but not set ")); };
-    TFunction<void(TArray<FCustomTypesVector3D>)> gUCounterCounterJniClientOnVectorArrayChanged = gUCounterCounterJniClientOnVectorArrayChangedEmpty;
-    TFunction<void(TArray<FVector>)> gUCounterCounterJniClientOnExternVectorArrayChangedEmpty = [](TArray<FVector> value) { (void)value; UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("onExternVectorArrayChanged used but not set ")); };
-    TFunction<void(TArray<FVector>)> gUCounterCounterJniClientOnExternVectorArrayChanged = gUCounterCounterJniClientOnExternVectorArrayChangedEmpty;
+UCounterCounterJniClient* gUCounterCounterJniClientHandle = nullptr;
+TFunction<void(bool)> gUCounterCounterJniClientnotifyIsReady = [](bool value)
+{
+	(void)value;
+	UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
+};
+TFunction<void(FCustomTypesVector3D)> gUCounterCounterJniClientOnVectorChangedEmpty = [](FCustomTypesVector3D value)
+{
+	(void)value;
+	UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("onVectorChanged used but not set "));
+};
+TFunction<void(FCustomTypesVector3D)> gUCounterCounterJniClientOnVectorChanged = gUCounterCounterJniClientOnVectorChangedEmpty;
+TFunction<void(FVector)> gUCounterCounterJniClientOnExternVectorChangedEmpty = [](FVector value)
+{
+	(void)value;
+	UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("onExternVectorChanged used but not set "));
+};
+TFunction<void(FVector)> gUCounterCounterJniClientOnExternVectorChanged = gUCounterCounterJniClientOnExternVectorChangedEmpty;
+TFunction<void(TArray<FCustomTypesVector3D>)> gUCounterCounterJniClientOnVectorArrayChangedEmpty = [](TArray<FCustomTypesVector3D> value)
+{
+	(void)value;
+	UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("onVectorArrayChanged used but not set "));
+};
+TFunction<void(TArray<FCustomTypesVector3D>)> gUCounterCounterJniClientOnVectorArrayChanged = gUCounterCounterJniClientOnVectorArrayChangedEmpty;
+TFunction<void(TArray<FVector>)> gUCounterCounterJniClientOnExternVectorArrayChangedEmpty = [](TArray<FVector> value)
+{
+	(void)value;
+	UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("onExternVectorArrayChanged used but not set "));
+};
+TFunction<void(TArray<FVector>)> gUCounterCounterJniClientOnExternVectorArrayChanged = gUCounterCounterJniClientOnExternVectorArrayChangedEmpty;
 
-    UCounterCounterJniClientMethodHelper  gUCounterCounterJniClientmethodHelper;
+UCounterCounterJniClientMethodHelper gUCounterCounterJniClientmethodHelper;
 
-}
-
+} // namespace
 
 DEFINE_LOG_CATEGORY(LogCounterCounterClient_JNI);
 
 UCounterCounterJniClient::UCounterCounterJniClient()
 {
 #if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("This is class that adapts the usage with android and jni, but seems to be used on different target. Make sure  you are using it with Android"));
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("This is class that adapts the usage with android and jni, but seems to be used on different target. Make sure you are using it with Android"));
 #endif
 }
 
 UCounterCounterJniClient::UCounterCounterJniClient(FVTableHelper& Helper)
-    : Super(Helper)
+	: Super(Helper)
 {
 }
 UCounterCounterJniClient::~UCounterCounterJniClient() = default;
 
 void UCounterCounterJniClient::Initialize(FSubsystemCollectionBase& Collection)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Init"));
-    Super::Initialize(Collection);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Init"));
+	Super::Initialize(Collection);
 
-    gUCounterCounterJniClientHandle = this;
-    gUCounterCounterJniClientnotifyIsReady = [this](bool value) {
-         b_isReady = value;
-         AsyncTask(ENamedThreads::GameThread, [this]()
-             {
-                 _ConnectionStatusChangedBP.Broadcast(b_isReady);
-                 _ConnectionStatusChanged.Broadcast(b_isReady);
-             });
-        };
+	gUCounterCounterJniClientHandle = this;
+	gUCounterCounterJniClientnotifyIsReady = [this](bool value)
+	{
+		b_isReady = value;
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_ConnectionStatusChangedBP.Broadcast(b_isReady);
+			_ConnectionStatusChanged.Broadcast(b_isReady);
+		});
+	};
 	gUCounterCounterJniClientOnVectorChanged = [this](const FCustomTypesVector3D& InVector)
-    {
-         Vector = InVector;
-         _GetPublisher()->BroadcastVectorChanged(Vector);
-    };
+	{
+		Vector = InVector;
+		_GetPublisher()->BroadcastVectorChanged(Vector);
+	};
 	gUCounterCounterJniClientOnExternVectorChanged = [this](const FVector& InExternVector)
-    {
-         ExternVector = InExternVector;
-         _GetPublisher()->BroadcastExternVectorChanged(ExternVector);
-    };
+	{
+		ExternVector = InExternVector;
+		_GetPublisher()->BroadcastExternVectorChanged(ExternVector);
+	};
 	gUCounterCounterJniClientOnVectorArrayChanged = [this](const TArray<FCustomTypesVector3D>& InVectorArray)
-    {
-         VectorArray = InVectorArray;
-         _GetPublisher()->BroadcastVectorArrayChanged(VectorArray);
-    };
+	{
+		VectorArray = InVectorArray;
+		_GetPublisher()->BroadcastVectorArrayChanged(VectorArray);
+	};
 	gUCounterCounterJniClientOnExternVectorArrayChanged = [this](const TArray<FVector>& InExternVectorArray)
-    {
-         ExternVectorArray = InExternVectorArray;
-         _GetPublisher()->BroadcastExternVectorArrayChanged(ExternVectorArray);
-    };
+	{
+		ExternVectorArray = InExternVectorArray;
+		_GetPublisher()->BroadcastExternVectorArrayChanged(ExternVectorArray);
+	};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniclient/CounterJniClient");
-    jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
-    jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
-    m_javaJniClientInstance = Env->NewGlobalRef(localRef);
-    FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniclient/CounterJniClient");
+	jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
+	jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
+	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
 }
 
 void UCounterCounterJniClient::Deinitialize()
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("deinit"));
-    _unbind();
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("deinit"));
+	_unbind();
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    Env->DeleteGlobalRef(m_javaJniClientInstance);
-    m_javaJniClientClass = nullptr;
-    m_javaJniClientInstance = nullptr;
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	Env->DeleteGlobalRef(m_javaJniClientInstance);
+	m_javaJniClientClass = nullptr;
+	m_javaJniClientInstance = nullptr;
 #endif
 
-    gUCounterCounterJniClientnotifyIsReady = [](bool value){(void)value; UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("notifyIsReady used but not set "));};
-    gUCounterCounterJniClientOnVectorChanged = gUCounterCounterJniClientOnVectorChangedEmpty;
-    gUCounterCounterJniClientOnExternVectorChanged = gUCounterCounterJniClientOnExternVectorChangedEmpty;
-    gUCounterCounterJniClientOnVectorArrayChanged = gUCounterCounterJniClientOnVectorArrayChangedEmpty;
-    gUCounterCounterJniClientOnExternVectorArrayChanged = gUCounterCounterJniClientOnExternVectorArrayChangedEmpty;
+	gUCounterCounterJniClientnotifyIsReady = [](bool value)
+	{
+		(void)value;
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
+	};
+	gUCounterCounterJniClientOnVectorChanged = gUCounterCounterJniClientOnVectorChangedEmpty;
+	gUCounterCounterJniClientOnExternVectorChanged = gUCounterCounterJniClientOnExternVectorChangedEmpty;
+	gUCounterCounterJniClientOnVectorArrayChanged = gUCounterCounterJniClientOnVectorArrayChangedEmpty;
+	gUCounterCounterJniClientOnExternVectorArrayChanged = gUCounterCounterJniClientOnExternVectorArrayChangedEmpty;
 
-    gUCounterCounterJniClientHandle = nullptr;
-    Super::Deinitialize();
+	gUCounterCounterJniClientHandle = nullptr;
+	Super::Deinitialize();
 }
 FCustomTypesVector3D UCounterCounterJniClient::GetVector() const
 {
-    return Vector;
+	return Vector;
 }
 void UCounterCounterJniClient::SetVector(const FCustomTypesVector3D& InVector)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:setVector"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:setVector"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetVector() == InVector )
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Property vector to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetVector() == InVector)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Property vector to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setVector (LcustomTypes/customTypes_api/Vector3D;)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setVector", "(LcustomTypes/customTypes_api/Vector3D;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setVector (LcustomTypes/customTypes_api/Vector3D;)V not found"));
-            return;
-        }
-        
-        jobject jlocal_Vector = CustomTypesDataJavaConverter::makeJavaVector3D(Env, InVector);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Vector);
-        Env->DeleteLocalRef(jlocal_Vector);
-    }
-#endif
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setVector (LcustomTypes/customTypes_api/Vector3D;)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setVector", "(LcustomTypes/customTypes_api/Vector3D;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setVector (LcustomTypes/customTypes_api/Vector3D;)V not found"));
+			return;
+		}
 
+		jobject jlocal_Vector = CustomTypesDataJavaConverter::makeJavaVector3D(Env, InVector);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Vector);
+		Env->DeleteLocalRef(jlocal_Vector);
+	}
+#endif
 }
 FVector UCounterCounterJniClient::GetExternVector() const
 {
-    return ExternVector;
+	return ExternVector;
 }
 void UCounterCounterJniClient::SetExternVector(const FVector& InExternVector)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:setExternVector"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:setExternVector"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetExternVector() == InExternVector )
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Property extern_vector to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetExternVector() == InExternVector)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Property extern_vector to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setExternVector (Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setExternVector", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setExternVector (Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
-            return;
-        }
-        
-        jobject jlocal_ExternVector = ExternTypesDataJavaConverter::makeJavaMyVector3D(Env, InExternVector);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_ExternVector);
-        Env->DeleteLocalRef(jlocal_ExternVector);
-    }
-#endif
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setExternVector (Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setExternVector", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setExternVector (Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
+			return;
+		}
 
+		jobject jlocal_ExternVector = ExternTypesDataJavaConverter::makeJavaMyVector3D(Env, InExternVector);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_ExternVector);
+		Env->DeleteLocalRef(jlocal_ExternVector);
+	}
+#endif
 }
 TArray<FCustomTypesVector3D> UCounterCounterJniClient::GetVectorArray() const
 {
-    return VectorArray;
+	return VectorArray;
 }
 void UCounterCounterJniClient::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:setVectorArray"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:setVectorArray"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetVectorArray() == InVectorArray )
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Property vectorArray to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetVectorArray() == InVectorArray)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Property vectorArray to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setVectorArray ([LcustomTypes/customTypes_api/Vector3D;)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setVectorArray", "([LcustomTypes/customTypes_api/Vector3D;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setVectorArray ([LcustomTypes/customTypes_api/Vector3D;)V not found"));
-            return;
-        }
-        
-        jobjectArray jlocal_VectorArray = CustomTypesDataJavaConverter::makeJavaVector3DArray(Env, InVectorArray);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_VectorArray);
-        Env->DeleteLocalRef(jlocal_VectorArray);
-    }
-#endif
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setVectorArray ([LcustomTypes/customTypes_api/Vector3D;)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setVectorArray", "([LcustomTypes/customTypes_api/Vector3D;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setVectorArray ([LcustomTypes/customTypes_api/Vector3D;)V not found"));
+			return;
+		}
 
+		jobjectArray jlocal_VectorArray = CustomTypesDataJavaConverter::makeJavaVector3DArray(Env, InVectorArray);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_VectorArray);
+		Env->DeleteLocalRef(jlocal_VectorArray);
+	}
+#endif
 }
 TArray<FVector> UCounterCounterJniClient::GetExternVectorArray() const
 {
-    return ExternVectorArray;
+	return ExternVectorArray;
 }
 void UCounterCounterJniClient::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:setExternVectorArray"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:setExternVectorArray"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetExternVectorArray() == InExternVectorArray )
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Property extern_vectorArray to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetExternVectorArray() == InExternVectorArray)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Property extern_vectorArray to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setExternVectorArray ([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setExternVectorArray", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setExternVectorArray ([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
-            return;
-        }
-        
-        jobjectArray jlocal_ExternVectorArray = ExternTypesDataJavaConverter::makeJavaMyVector3DArray(Env, InExternVectorArray);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_ExternVectorArray);
-        Env->DeleteLocalRef(jlocal_ExternVectorArray);
-    }
-#endif
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setExternVectorArray ([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setExternVectorArray", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:setExternVectorArray ([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
+			return;
+		}
 
+		jobjectArray jlocal_ExternVectorArray = ExternTypesDataJavaConverter::makeJavaMyVector3DArray(Env, InExternVectorArray);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_ExternVectorArray);
+		Env->DeleteLocalRef(jlocal_ExternVectorArray);
+	}
+#endif
 }
 FVector UCounterCounterJniClient::Increment(const FVector& InVec)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:increment "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:increment "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return FVector(0.f, 0.f, 0.f);
-    }
-    TPromise<FVector> Promise;
+		return FVector(0.f, 0.f, 0.f);
+	}
+	TPromise<FVector> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementAsync:(Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
-        return FVector(0.f, 0.f, 0.f);
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "incrementAsync", "(Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-        jobject jlocal_Vec = ExternTypesDataJavaConverter::makeJavaMyVector3D(Env, InVec);;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementAsync:(Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
+		return FVector(0.f, 0.f, 0.f);
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "incrementAsync", "(Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		jobject jlocal_Vec = ExternTypesDataJavaConverter::makeJavaMyVector3D(Env, InVec);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
-        Env->DeleteLocalRef(jlocal_Vec);
-    }
-    else
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementAsync (Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
+		Env->DeleteLocalRef(jlocal_Vec);
+	}
+	else
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementAsync (Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 TArray<FVector> UCounterCounterJniClient::IncrementArray(const TArray<FVector>& InVec)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:incrementArray "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:incrementArray "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return TArray<FVector>();
-    }
-    TPromise<TArray<FVector>> Promise;
+		return TArray<FVector>();
+	}
+	TPromise<TArray<FVector>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementArrayAsync:(Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
-        return TArray<FVector>();
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "incrementArrayAsync", "(Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-        jobjectArray jlocal_Vec = ExternTypesDataJavaConverter::makeJavaMyVector3DArray(Env, InVec);;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementArrayAsync:(Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
+		return TArray<FVector>();
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "incrementArrayAsync", "(Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		jobjectArray jlocal_Vec = ExternTypesDataJavaConverter::makeJavaMyVector3DArray(Env, InVec);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
-        Env->DeleteLocalRef(jlocal_Vec);
-    }
-    else
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementArrayAsync (Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
+		Env->DeleteLocalRef(jlocal_Vec);
+	}
+	else
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementArrayAsync (Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 FCustomTypesVector3D UCounterCounterJniClient::Decrement(const FCustomTypesVector3D& InVec)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:decrement "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:decrement "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return FCustomTypesVector3D();
-    }
-    TPromise<FCustomTypesVector3D> Promise;
+		return FCustomTypesVector3D();
+	}
+	TPromise<FCustomTypesVector3D> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementAsync:(Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V CLASS not found"));
-        return FCustomTypesVector3D();
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "decrementAsync", "(Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-        jobject jlocal_Vec = CustomTypesDataJavaConverter::makeJavaVector3D(Env, InVec);;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementAsync:(Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V CLASS not found"));
+		return FCustomTypesVector3D();
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "decrementAsync", "(Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		jobject jlocal_Vec = CustomTypesDataJavaConverter::makeJavaVector3D(Env, InVec);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
-        Env->DeleteLocalRef(jlocal_Vec);
-    }
-    else
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementAsync (Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
+		Env->DeleteLocalRef(jlocal_Vec);
+	}
+	else
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementAsync (Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 TArray<FCustomTypesVector3D> UCounterCounterJniClient::DecrementArray(const TArray<FCustomTypesVector3D>& InVec)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:decrementArray "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("counter/counterjniclient/CounterJniClient:decrementArray "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogCounterCounterClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return TArray<FCustomTypesVector3D>();
-    }
-    TPromise<TArray<FCustomTypesVector3D>> Promise;
+		return TArray<FCustomTypesVector3D>();
+	}
+	TPromise<TArray<FCustomTypesVector3D>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementArrayAsync:(Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V CLASS not found"));
-        return TArray<FCustomTypesVector3D>();
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "decrementArrayAsync", "(Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-        jobjectArray jlocal_Vec = CustomTypesDataJavaConverter::makeJavaVector3DArray(Env, InVec);;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementArrayAsync:(Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V CLASS not found"));
+		return TArray<FCustomTypesVector3D>();
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "decrementArrayAsync", "(Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		jobjectArray jlocal_Vec = CustomTypesDataJavaConverter::makeJavaVector3DArray(Env, InVec);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
-        Env->DeleteLocalRef(jlocal_Vec);
-    }
-    else
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementArrayAsync (Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
+		Env->DeleteLocalRef(jlocal_Vec);
+	}
+	else
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementArrayAsync (Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 
 bool UCounterCounterJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-    if (b_isReady)
-    {
-        if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
-        {
-            UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Already bound"));
-            return true;
-        }
-        else
-        {
-            _unbind();
-        }
-    }
-    m_lastBoundServicePackage = servicePackage;
-    m_lastConnectionId = connectionId;
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
+	if (b_isReady)
+	{
+		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
+		{
+			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Already bound"));
+			return true;
+		}
+		else
+		{
+			_unbind();
+		}
+	}
+	m_lastBoundServicePackage = servicePackage;
+	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
-        return false;
-    }
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-    if (MethodID != nullptr)
-    {
-        jobject Activity = FJavaWrapper::GameActivityThis;
-        auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
-        auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
-        auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
-        return res;
-    }
-    else
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:bind (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z not found"));
-    }
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
+		return false;
+	}
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	if (MethodID != nullptr)
+	{
+		jobject Activity = FJavaWrapper::GameActivityThis;
+		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
+		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
+		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
+		return res;
+	}
+	else
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:bind (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z not found"));
+	}
 #endif
-    return false;
+	return false;
 }
 
 void UCounterCounterJniClient::_unbind()
 {
 
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Request JNI unbind"));
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Request JNI unbind"));
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:unbind:()V CLASS not found"));
-        return;
-    }
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
-    if (MethodID != nullptr)
-    {
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
-    }
-    else
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:unbind ()V not found"));
-    }
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:unbind:()V CLASS not found"));
+		return;
+	}
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
+	if (MethodID != nullptr)
+	{
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
+	}
+	else
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:unbind ()V not found"));
+	}
 #endif
 }
 
 bool UCounterCounterJniClient::_IsReady() const
 {
-    return b_isReady;
+	return b_isReady;
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnVectorChanged(JNIEnv* Env, jclass Clazz,jobject vector)
+JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnVectorChanged(JNIEnv* Env, jclass Clazz, jobject vector)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnVectorChanged"));
-    if (gUCounterCounterJniClientHandle == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnVectorChanged: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    FCustomTypesVector3D local_vector = FCustomTypesVector3D();
-    CustomTypesDataJavaConverter::fillVector3D(Env, vector, local_vector);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnVectorChanged"));
+	if (gUCounterCounterJniClientHandle == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnVectorChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	FCustomTypesVector3D local_vector = FCustomTypesVector3D();
+	CustomTypesDataJavaConverter::fillVector3D(Env, vector, local_vector);
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_vector= MoveTemp(local_vector)]()
-    {
-        gUCounterCounterJniClientOnVectorChanged(plocal_vector);
-    });
+	AsyncTask(ENamedThreads::GameThread, [plocal_vector = MoveTemp(local_vector)]()
+		{
+		gUCounterCounterJniClientOnVectorChanged(plocal_vector);
+	});
 }
-JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorChanged(JNIEnv* Env, jclass Clazz,jobject extern_vector)
+JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorChanged(JNIEnv* Env, jclass Clazz, jobject extern_vector)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorChanged"));
-    if (gUCounterCounterJniClientHandle == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorChanged: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    FVector local_extern_vector = FVector(0.f, 0.f, 0.f);
-    ExternTypesDataJavaConverter::fillMyVector3D(Env, extern_vector, local_extern_vector);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorChanged"));
+	if (gUCounterCounterJniClientHandle == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	FVector local_extern_vector = FVector(0.f, 0.f, 0.f);
+	ExternTypesDataJavaConverter::fillMyVector3D(Env, extern_vector, local_extern_vector);
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_extern_vector= MoveTemp(local_extern_vector)]()
-    {
-        gUCounterCounterJniClientOnExternVectorChanged(plocal_extern_vector);
-    });
+	AsyncTask(ENamedThreads::GameThread, [plocal_extern_vector = MoveTemp(local_extern_vector)]()
+		{
+		gUCounterCounterJniClientOnExternVectorChanged(plocal_extern_vector);
+	});
 }
-JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnVectorArrayChanged(JNIEnv* Env, jclass Clazz,jobjectArray vectorArray)
+JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnVectorArrayChanged(JNIEnv* Env, jclass Clazz, jobjectArray vectorArray)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnVectorArrayChanged"));
-    if (gUCounterCounterJniClientHandle == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnVectorArrayChanged: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    TArray<FCustomTypesVector3D> local_vector_array = TArray<FCustomTypesVector3D>();
-    CustomTypesDataJavaConverter::fillVector3DArray(Env, vectorArray, local_vector_array);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnVectorArrayChanged"));
+	if (gUCounterCounterJniClientHandle == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnVectorArrayChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	TArray<FCustomTypesVector3D> local_vector_array = TArray<FCustomTypesVector3D>();
+	CustomTypesDataJavaConverter::fillVector3DArray(Env, vectorArray, local_vector_array);
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_vector_array= MoveTemp(local_vector_array)]()
-    {
-        gUCounterCounterJniClientOnVectorArrayChanged(plocal_vector_array);
-    });
+	AsyncTask(ENamedThreads::GameThread, [plocal_vector_array = MoveTemp(local_vector_array)]()
+		{
+		gUCounterCounterJniClientOnVectorArrayChanged(plocal_vector_array);
+	});
 }
-JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorArrayChanged(JNIEnv* Env, jclass Clazz,jobjectArray extern_vectorArray)
+JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorArrayChanged(JNIEnv* Env, jclass Clazz, jobjectArray extern_vectorArray)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorArrayChanged"));
-    if (gUCounterCounterJniClientHandle == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorArrayChanged: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    TArray<FVector> local_extern_vector_array = TArray<FVector>();
-    ExternTypesDataJavaConverter::fillMyVector3DArray(Env, extern_vectorArray, local_extern_vector_array);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorArrayChanged"));
+	if (gUCounterCounterJniClientHandle == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorArrayChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	TArray<FVector> local_extern_vector_array = TArray<FVector>();
+	ExternTypesDataJavaConverter::fillMyVector3DArray(Env, extern_vectorArray, local_extern_vector_array);
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_extern_vector_array= MoveTemp(local_extern_vector_array)]()
-    {
-        gUCounterCounterJniClientOnExternVectorArrayChanged(plocal_extern_vector_array);
-    });
+	AsyncTask(ENamedThreads::GameThread, [plocal_extern_vector_array = MoveTemp(local_extern_vector_array)]()
+		{
+		gUCounterCounterJniClientOnExternVectorArrayChanged(plocal_extern_vector_array);
+	});
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnValueChanged(JNIEnv* Env, jclass Clazz, jobject vector, jobject extern_vector, jobjectArray vectorArray, jobjectArray extern_vectorArray)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnValueChanged"));
-    if (gUCounterCounterJniClientHandle == nullptr)
-    {
-        UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnValueChanged: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    FCustomTypesVector3D local_vector = FCustomTypesVector3D();
-    CustomTypesDataJavaConverter::fillVector3D(Env, vector, local_vector);
-    FVector local_extern_vector = FVector(0.f, 0.f, 0.f);
-    ExternTypesDataJavaConverter::fillMyVector3D(Env, extern_vector, local_extern_vector);
-    TArray<FCustomTypesVector3D> local_vector_array = TArray<FCustomTypesVector3D>();
-    CustomTypesDataJavaConverter::fillVector3DArray(Env, vectorArray, local_vector_array);
-    TArray<FVector> local_extern_vector_array = TArray<FVector>();
-    ExternTypesDataJavaConverter::fillMyVector3DArray(Env, extern_vectorArray, local_extern_vector_array);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnValueChanged"));
+	if (gUCounterCounterJniClientHandle == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnValueChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	FCustomTypesVector3D local_vector = FCustomTypesVector3D();
+	CustomTypesDataJavaConverter::fillVector3D(Env, vector, local_vector);
+	FVector local_extern_vector = FVector(0.f, 0.f, 0.f);
+	ExternTypesDataJavaConverter::fillMyVector3D(Env, extern_vector, local_extern_vector);
+	TArray<FCustomTypesVector3D> local_vector_array = TArray<FCustomTypesVector3D>();
+	CustomTypesDataJavaConverter::fillVector3DArray(Env, vectorArray, local_vector_array);
+	TArray<FVector> local_extern_vector_array = TArray<FVector>();
+	ExternTypesDataJavaConverter::fillMyVector3DArray(Env, extern_vectorArray, local_extern_vector_array);
 
-    AsyncTask(ENamedThreads::GameThread, [ plocal_vector= MoveTemp(local_vector),  plocal_extern_vector= MoveTemp(local_extern_vector),  plocal_vector_array= MoveTemp(local_vector_array),  plocal_extern_vector_array= MoveTemp(local_extern_vector_array)]()
-        {
-            if (gUCounterCounterJniClientHandle == nullptr)
-            {
-                UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnValueChanged: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUCounterCounterJniClientHandle->_GetPublisher()->BroadcastValueChangedSignal( plocal_vector,  plocal_extern_vector,  plocal_vector_array,  plocal_extern_vector_array);
-        });
+	AsyncTask(ENamedThreads::GameThread, [plocal_vector = MoveTemp(local_vector), plocal_extern_vector = MoveTemp(local_extern_vector), plocal_vector_array = MoveTemp(local_vector_array), plocal_extern_vector_array = MoveTemp(local_extern_vector_array)]()
+		{
+		if (gUCounterCounterJniClientHandle == nullptr)
+		{
+			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnValueChanged: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUCounterCounterJniClientHandle->_GetPublisher()->BroadcastValueChangedSignal(plocal_vector, plocal_extern_vector, plocal_vector_array, plocal_extern_vector_array);
+	});
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementResult(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementResult"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
-    FVector cpp_result = FVector(0.f, 0.f, 0.f);
-    ExternTypesDataJavaConverter::fillMyVector3D(Env, result,cpp_result);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementResult"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
+	FVector cpp_result = FVector(0.f, 0.f, 0.f);
+	ExternTypesDataJavaConverter::fillMyVector3D(Env, result, cpp_result);
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-    {
-        gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
+		{
+		gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
+	});
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementArrayResult(JNIEnv* Env, jclass Clazz, jobjectArray result, jstring callId)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementArrayResult"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
-    TArray<FVector> cpp_result = TArray<FVector>();
-    ExternTypesDataJavaConverter::fillMyVector3DArray(Env, result, cpp_result);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementArrayResult"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
+	TArray<FVector> cpp_result = TArray<FVector>();
+	ExternTypesDataJavaConverter::fillMyVector3DArray(Env, result, cpp_result);
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-    {
-        gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
+		{
+		gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
+	});
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementResult(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementResult"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
-    FCustomTypesVector3D cpp_result = FCustomTypesVector3D();
-    CustomTypesDataJavaConverter::fillVector3D(Env, result,cpp_result);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementResult"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
+	FCustomTypesVector3D cpp_result = FCustomTypesVector3D();
+	CustomTypesDataJavaConverter::fillVector3D(Env, result, cpp_result);
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-    {
-        gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
+		{
+		gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
+	});
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementArrayResult(JNIEnv* Env, jclass Clazz, jobjectArray result, jstring callId)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementArrayResult"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
-    TArray<FCustomTypesVector3D> cpp_result = TArray<FCustomTypesVector3D>();
-    CustomTypesDataJavaConverter::fillVector3DArray(Env, result, cpp_result);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementArrayResult"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
+	TArray<FCustomTypesVector3D> cpp_result = TArray<FCustomTypesVector3D>();
+	CustomTypesDataJavaConverter::fillVector3DArray(Env, result, cpp_result);
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-    {
-        gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
+		{
+		gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
+	});
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-    AsyncTask(ENamedThreads::GameThread, [value]()
-        {
-            gUCounterCounterJniClientnotifyIsReady(value);
-        });
+	AsyncTask(ENamedThreads::GameThread, [value]()
+		{
+		gUCounterCounterJniClientnotifyIsReady(value);
+	});
 }
 #endif
-
 
 template <typename ResultType>
 FGuid UCounterCounterJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
-    FGuid Id = FGuid::NewGuid();
-    FScopeLock Lock(&ReplyPromisesMapCS);
-    ReplyPromisesMap.Add(Id, &Promise);
-    //TODO invalid id if sth goes wrong + log + checking
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
-    return Id;
+	FGuid Id = FGuid::NewGuid();
+	FScopeLock Lock(&ReplyPromisesMapCS);
+	ReplyPromisesMap.Add(Id, &Promise);
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	return Id;
 }
 
 template <typename ResultType>
 bool UCounterCounterJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-    UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
-    TPromise<ResultType>* PromisePtr = nullptr;
+	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	TPromise<ResultType>* PromisePtr = nullptr;
 
-    {
-        FScopeLock Lock(&ReplyPromisesMapCS);
-        if (auto** Found = ReplyPromisesMap.Find(Id))
-        {
-            PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-            ReplyPromisesMap.Remove(Id);
-        }
-    }
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		if (auto** Found = ReplyPromisesMap.Find(Id))
+		{
+			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
+			ReplyPromisesMap.Remove(Id);
+		}
+	}
 
-    if (PromisePtr)
-    {
-        AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-            {
-                PromisePtr->SetValue(Value);
-            });
-        return true;
-
-    }
-    return false;
+	if (PromisePtr)
+	{
+		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
+			{
+			PromisePtr->SetValue(Value);
+		});
+		return true;
+	}
+	return false;
 }
 template FGuid UCounterCounterJniClientMethodHelper::StorePromise<FCustomTypesVector3D>(TPromise<FCustomTypesVector3D>& Promise);
 template bool UCounterCounterJniClientMethodHelper::FulfillPromise<FCustomTypesVector3D>(const FGuid& Id, const FCustomTypesVector3D& Value);
@@ -806,4 +808,3 @@ template FGuid UCounterCounterJniClientMethodHelper::StorePromise<TArray<FCustom
 template bool UCounterCounterJniClientMethodHelper::FulfillPromise<TArray<FCustomTypesVector3D>>(const FGuid& Id, const TArray<FCustomTypesVector3D>& Value);
 template FGuid UCounterCounterJniClientMethodHelper::StorePromise<TArray<FVector>>(TPromise<TArray<FVector>>& Promise);
 template bool UCounterCounterJniClientMethodHelper::FulfillPromise<TArray<FVector>>(const FGuid& Id, const TArray<FVector>& Value);
-
