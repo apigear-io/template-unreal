@@ -17,7 +17,6 @@ limitations under the License.
 #include "TbIfaceimportEmptyIfJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportEmptyIfJniClient.h"

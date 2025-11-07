@@ -31,11 +31,9 @@ limitations under the License.
 #endif
 #endif
 
-
 #include "TbNamesNamEsJniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesNamEs_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbNamesNamEsInterface
@@ -53,25 +51,23 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs")
-    void setBackendService(TScriptInterface<ITbNamesNamEsInterface> InService);
+	void setBackendService(TScriptInterface<ITbNamesNamEsInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbNames|NamEs")
 	TScriptInterface<ITbNamesNamEsInterface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
-
-	// signals
 	void OnSomeSignalSignal(bool bSomeParam) override;
 
 	void OnSomeSignal2Signal(bool bSomeParam) override;
@@ -80,7 +76,6 @@ private:
 	void OnSomePropertyChanged(int32 SomeProperty) override;
 	void OnSomePoperty2Changed(int32 SomePoperty2) override;
 	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty) override;
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbNames|NamEs")

@@ -43,10 +43,9 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbRefIfacesSimpleLocalIf_JNI);
 
-
-namespace 
+namespace
 {
-	UTbRefIfacesSimpleLocalIfJniAdapter* gUTbRefIfacesSimpleLocalIfJniAdapterHandle = nullptr;
+UTbRefIfacesSimpleLocalIfJniAdapter* gUTbRefIfacesSimpleLocalIfJniAdapterHandle = nullptr;
 }
 UTbRefIfacesSimpleLocalIfJniAdapter::UTbRefIfacesSimpleLocalIfJniAdapter()
 {
@@ -58,26 +57,26 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Initialize(FSubsystemCollectionBase& C
 	gUTbRefIfacesSimpleLocalIfJniAdapterHandle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaJniServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
-    auto Env = FAndroidApplication::GetJavaEnv();
-    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniServiceStarter");
-    if (BridgeClass == nullptr)
-    {
+	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
+	auto Env = FAndroidApplication::GetJavaEnv();
+	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniServiceStarter");
+	if (BridgeClass == nullptr)
+	{
 		UE_LOG(LogTemp, Warning, TEXT("TbRefIfacesJavaServiceStarter:start; CLASS not found"));
-        return;
-    }
+		return;
+	}
 	auto functionSignature = "(Landroid/content/Context;)LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
-    if (StartMethod == nullptr)
-    {
-		UE_LOG(LogTemp, Warning, TEXT( "TbRefIfacesJavaServiceStarter:start; method not found"));
+	if (StartMethod == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TbRefIfacesJavaServiceStarter:start; method not found"));
 		return;
-    }
-    jobject Activity = FJavaWrapper::GameActivityThis;
+	}
+	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 
-    m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
-    Env->DeleteLocalRef(localRef);
+	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
+	Env->DeleteLocalRef(localRef);
 #endif
 #endif
 }
@@ -88,33 +87,33 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Deinitialize()
 	gUTbRefIfacesSimpleLocalIfJniAdapterHandle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaJniServiceClass = nullptr;
-    if (m_javaJniServiceInstance)
-    {
-        FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
-        m_javaJniServiceInstance = nullptr;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	m_javaJniServiceClass = nullptr;
+	if (m_javaJniServiceInstance)
+	{
+		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
+		m_javaJniServiceInstance = nullptr;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 
-    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniServiceStarter");
-    if (BridgeClass != nullptr)
-    {
-        jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
-        if (StopMethod != nullptr)
-        {
-            jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
-            FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("TbRefIfacesJavaServiceStarter:stop; method not found, failed to stop service"));
-            return;
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT( "TbRefIfacesJavaServiceStarter:stop; CLASS not found, failed to stop service"));
-    }
+	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniServiceStarter");
+	if (BridgeClass != nullptr)
+	{
+		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		if (StopMethod != nullptr)
+		{
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
+			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("TbRefIfacesJavaServiceStarter:stop; method not found, failed to stop service"));
+			return;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TbRefIfacesJavaServiceStarter:stop; CLASS not found, failed to stop service"));
+	}
 #endif
 #endif
 	Super::Deinitialize();
@@ -150,143 +149,140 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesSimpleLocalIfJn
 
 void UTbRefIfacesSimpleLocalIfJniAdapter::callJniServiceReady(bool isServiceReady)
 {
-    UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("UTbRefIfacesSimpleLocalIfJniAdapter call nativeServiceReady the service function "));
-    
+	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("UTbRefIfacesSimpleLocalIfJniAdapter call nativeServiceReady the service function "));
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (!m_javaJniServiceClass || !m_javaJniServiceInstance )
-        {
-            UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:nativeServiceReady(Z)V CLASS not found"));
-            return;
-        }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:nativeServiceReady(Z)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
 
-        if (MethodID != nullptr)
-        {
-            FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
-        }
-        else
-        {
-            UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:nativeServiceReady(Z)V not found "));
-        }
-    }
-#endif 
+		if (MethodID != nullptr)
+		{
+			FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
+		}
+		else
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:nativeServiceReady(Z)V not found "));
+		}
+	}
+#endif
 }
 
 void UTbRefIfacesSimpleLocalIfJniAdapter::OnIntSignalSignal(int32 Param)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Notify java jni UTbRefIfacesSimpleLocalIfJniAdapter::onIntSignal "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
-        {
-            UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:onIntSignal (I)V CLASS not found"));
-            return;
-        }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onIntSignal", "(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:onIntSignal (I)V not found"));
-            return;
-        }
+	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Notify java jni UTbRefIfacesSimpleLocalIfJniAdapter::onIntSignal "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:onIntSignal (I)V CLASS not found"));
+			return;
+		}
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onIntSignal", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:onIntSignal (I)V not found"));
+			return;
+		}
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param);
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param);
+	}
 #endif
 }
 void UTbRefIfacesSimpleLocalIfJniAdapter::OnIntPropertyChanged(int32 IntProperty)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Notify java jni UTbRefIfacesSimpleLocalIfJniAdapter::OnIntProperty "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService::onIntPropertyChanged(I)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Notify java jni UTbRefIfacesSimpleLocalIfJniAdapter::OnIntProperty "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService::onIntPropertyChanged(I)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onIntPropertyChanged","(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:onIntPropertyChanged(I)V not found"));
-            return;
-        }
-        
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, IntProperty);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onIntPropertyChanged", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:onIntPropertyChanged(I)V not found"));
+			return;
+		}
 
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, IntProperty);
+	}
 #endif
 }
-
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jint Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod(JNIEnv* Env, jclass Clazz, jint param)
 {
-    UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod"));
-    if (gUTbRefIfacesSimpleLocalIfJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod: JNI SERVICE ADAPTER NOT FOUND "));
-        return 0;
-    }
+	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod"));
+	if (gUTbRefIfacesSimpleLocalIfJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod: JNI SERVICE ADAPTER NOT FOUND "));
+		return 0;
+	}
 
-    auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto result = service->IntMethod( param);
-        return result;
-    }
-    else
-    {
-        UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("service not valid"));
-        return 0;
-    }
+	auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto result = service->IntMethod(param);
+		return result;
+	}
+	else
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("service not valid"));
+		return 0;
+	}
 }
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeSetIntProperty(JNIEnv* Env, jclass Clazz, jint intProperty)
 {
-    UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeSetIntProperty"));
-    if (gUTbRefIfacesSimpleLocalIfJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeSetIntProperty: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
+	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeSetIntProperty"));
+	if (gUTbRefIfacesSimpleLocalIfJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeSetIntProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [intProperty]()
-    {
-        auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetIntProperty(intProperty);
-        }
-        else
-        {
-            UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("service not valid, cannot set value for intProperty"));
-        }
-    });
+	AsyncTask(ENamedThreads::GameThread, [intProperty]()
+		{
+		auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetIntProperty(intProperty);
+		}
+		else
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("service not valid, cannot set value for intProperty"));
+		}
+	});
 }
 
 JNI_METHOD jint Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeGetIntProperty(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeGetIntProperty"));
-    if (gUTbRefIfacesSimpleLocalIfJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeGetIntProperty: JNI SERVICE ADAPTER NOT FOUND "));
-        return 0;
-    }
-    auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto IntProperty = service->GetIntProperty(); 
-        return IntProperty;
-    }
-    else
-    {
-        UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return 0;
-    }
+	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeGetIntProperty"));
+	if (gUTbRefIfacesSimpleLocalIfJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeGetIntProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		return 0;
+	}
+	auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto IntProperty = service->GetIntProperty();
+		return IntProperty;
+	}
+	else
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return 0;
+	}
 }
 #endif

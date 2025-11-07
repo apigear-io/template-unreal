@@ -5,9 +5,7 @@
 #include "Delegates/DelegateCombinations.h"
 #include "{{$ModuleName}}JniConnectionStatus.generated.h"
 
-
-/**
- * @brief Used when the interface client changes its subscription status:
+/** @brief Used when the interface client changes its subscription status:
  * either is connected with the service side (true) or connection couldn't be established or ended (false).
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$ModuleName}}JniConnectionStatusChangedDelegateBP, bool, IsConnected);
