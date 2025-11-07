@@ -3,9 +3,7 @@
 #include "Delegates/DelegateCombinations.h"
 #include "CounterJniConnectionStatus.generated.h"
 
-
-/**
- * @brief Used when the interface client changes its subscription status:
+/** @brief Used when the interface client changes its subscription status:
  * either is connected with the service side (true) or connection couldn't be established or ended (false).
  */
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterJniConnectionStatusChangedDelegateBP, bool, IsConnected);

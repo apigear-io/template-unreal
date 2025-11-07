@@ -59,16 +59,14 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 #include "Engine/Engine.h"
-{{$className := printf "%sDataJavaConverter" $ModuleName}}
+{{- $className := printf "%sDataJavaConverter" $ModuleName}}
 
-class  {{ $API_MACRO }} {{$className }}{
+class {{ $API_MACRO }} {{$className }}
+{
 public:
-
 {{- range .Module.Structs }}
-
 {{- $structType := printf "F%s%s" $ModuleName .Name }}
 {{- $structName := printf "out_%s" (snake .Name)}}
-
 	static void fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$structType}}& {{$structName}});
 	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$structType}}>& out_array);
 {{- $in_cppStructName := printf "out_%s" (snake .Name)}}
@@ -76,20 +74,20 @@ public:
 	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$structType}}>& cppArray);
 {{- end }}
 
-{{- range .Module.Enums }}
+{{- range $idx, $p := .Module.Enums }}
 {{- $cpp_class := printf "E%s%s" $ModuleName .Name }}
-
+{{- if or .Module.Structs $idx}}{{- nl }}{{end}}
 	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array);
 	static {{$cpp_class}} get{{Camel .Name }}Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$cpp_class}}>& cppArray);
 	static jobject makeJava{{Camel .Name }}(JNIEnv* env, {{$cpp_class}} value);
 {{- end }}
 
-{{- range .Module.Interfaces }}
+{{- range $idx, $p := .Module.Interfaces }}
 
 {{- $ifType := printf "TScriptInterface<I%s%sInterface>" $ModuleName (Camel .Name) }}
+{{- if or (or .Module.Enums .Module.Structs) $idx}}{{- nl }}{{end}}
 {{- $ifName := printf "out_%s" (snake .Name)}}
-
 	static void fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$ifType}} {{$ifName}});
 	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$ifType}}>& out_array);
 {{- $in_cppIfName := printf "out_%s" (snake .Name)}}
@@ -108,7 +106,6 @@ public:
 {{- end }}
 {{- $exType := printf "%s%s" $namespace $ext.Name }}
 {{- $exName := printf "out_%s" (snake .Name)}}
-
 	static void fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exType}}& {{$exName}});
 	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$exType}}>& out_array);
 {{- $in_cppExName := printf "out_%s" (snake .Name)}}

@@ -35,10 +35,9 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  COUNTERAPI_API CounterDataJavaConverter{
+class COUNTERAPI_API CounterDataJavaConverter
+{
 public:
-
 	static void fillCounter(JNIEnv* env, jobject input, TScriptInterface<ICounterCounterInterface> out_counter);
 	static void fillCounterArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ICounterCounterInterface>>& out_array);
 	static jobject makeJavaCounter(JNIEnv* env, const TScriptInterface<ICounterCounterInterface> out_counter);

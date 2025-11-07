@@ -32,10 +32,9 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  CUSTOMTYPESAPI_API CustomTypesDataJavaConverter{
+class CUSTOMTYPESAPI_API CustomTypesDataJavaConverter
+{
 public:
-
 	static void fillVector3D(JNIEnv* env, jobject input, FCustomTypesVector3D& out_vector3_d);
 	static void fillVector3DArray(JNIEnv* env, jobjectArray input, TArray<FCustomTypesVector3D>& out_array);
 	static jobject makeJavaVector3D(JNIEnv* env, const FCustomTypesVector3D& out_vector3_d);

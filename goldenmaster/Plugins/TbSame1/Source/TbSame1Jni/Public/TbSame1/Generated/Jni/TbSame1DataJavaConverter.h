@@ -33,15 +33,13 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  TBSAME1API_API TbSame1DataJavaConverter{
+class TBSAME1API_API TbSame1DataJavaConverter
+{
 public:
-
 	static void fillStruct1(JNIEnv* env, jobject input, FTbSame1Struct1& out_struct1);
 	static void fillStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTbSame1Struct1>& out_array);
 	static jobject makeJavaStruct1(JNIEnv* env, const FTbSame1Struct1& out_struct1);
 	static jobjectArray makeJavaStruct1Array(JNIEnv* env, const TArray<FTbSame1Struct1>& cppArray);
-
 	static void fillStruct2(JNIEnv* env, jobject input, FTbSame1Struct2& out_struct2);
 	static void fillStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTbSame1Struct2>& out_array);
 	static jobject makeJavaStruct2(JNIEnv* env, const FTbSame1Struct2& out_struct2);
