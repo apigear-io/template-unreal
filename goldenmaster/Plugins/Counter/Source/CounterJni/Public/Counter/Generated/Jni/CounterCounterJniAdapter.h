@@ -31,11 +31,9 @@ limitations under the License.
 #endif
 #endif
 
-
 #include "CounterCounterJniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounter_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ICounterCounterInterface
@@ -53,32 +51,29 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter")
-    void setBackendService(TScriptInterface<ICounterCounterInterface> InService);
+	void setBackendService(TScriptInterface<ICounterCounterInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter")
 	TScriptInterface<ICounterCounterInterface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
-
-	// signals
 	void OnValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray) override;
 
 	void OnVectorChanged(const FCustomTypesVector3D& Vector) override;
 	void OnExternVectorChanged(const FVector& ExternVector) override;
 	void OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& VectorArray) override;
 	void OnExternVectorArrayChanged(const TArray<FVector>& ExternVectorArray) override;
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Counter|Counter")

@@ -17,9 +17,8 @@ limitations under the License.
 */
 
 #include "TbRefIfaces/Generated/Jni/TbRefIfacesDataJavaConverter.h"
-
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
-
+#include "TbIfaceimport/Generated/api/TbIfaceimport_data.h"
 #include "TbRefIfaces/Implementation/TbRefIfacesSimpleLocalIf.h"
 #include "TbRefIfaces/Implementation/TbRefIfacesParentIf.h"
 
@@ -34,98 +33,94 @@ limitations under the License.
 #endif
 #endif
 
-
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-
-
-
 
 void TbRefIfacesDataJavaConverter::fillSimpleLocalIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if)
 {
-    if (!input || !out_simple_local_if)
-    {
-        return;
-    }
-    // currently not supported, stub function generated for possible custom implementation
+	if (!input || !out_simple_local_if)
+	{
+		return;
+	}
+	// currently not supported, stub function generated for possible custom implementation
 }
 
 void TbRefIfacesDataJavaConverter::fillSimpleLocalIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& out_array)
 {
-    // currently not supported, stub function generated for possible custom implementation
+	// currently not supported, stub function generated for possible custom implementation
 }
+
 jobject TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if)
 {
-    if (!out_simple_local_if)
-    {
-        return nullptr;
-    }
+	if (!out_simple_local_if)
+	{
+		return nullptr;
+	}
 
-    jobject javaObjInstance = nullptr;
-    // currently not supported, stub function generated for possible custom implementation
-    return javaObjInstance;
+	jobject javaObjInstance = nullptr;
+	// currently not supported, stub function generated for possible custom implementation
+	return javaObjInstance;
 }
 
 jobjectArray TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& cppArray)
 {
-    jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
-    auto arraySize = cppArray.Num();
-    jobjectArray javaArray = env->NewObjectArray( arraySize, javaClass, nullptr);
-    // currently not supported, stub function generated for possible custom implementation 
-    return javaArray;
+	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
+	auto arraySize = cppArray.Num();
+	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	// Currently not supported, stub function generated for possible custom implementation.
+	return javaArray;
 }
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> TbRefIfacesDataJavaConverter::getCppInstanceTbRefIfacesSimpleLocalIf()
 {
-    UTbRefIfacesSimpleLocalIfImplementation* Impl = NewObject<UTbRefIfacesSimpleLocalIfImplementation>();
-    TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> wrapped;
-    wrapped.SetObject(Impl);
-    wrapped.SetInterface(Cast<ITbRefIfacesSimpleLocalIfInterface>(Impl));
-    return wrapped;
+	UTbRefIfacesSimpleLocalIfImplementation* Impl = NewObject<UTbRefIfacesSimpleLocalIfImplementation>();
+	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> wrapped;
+	wrapped.SetObject(Impl);
+	wrapped.SetInterface(Cast<ITbRefIfacesSimpleLocalIfInterface>(Impl));
+	return wrapped;
 }
-
 
 void TbRefIfacesDataJavaConverter::fillParentIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if)
 {
-    if (!input || !out_parent_if)
-    {
-        return;
-    }
-    // currently not supported, stub function generated for possible custom implementation
+	if (!input || !out_parent_if)
+	{
+		return;
+	}
+	// currently not supported, stub function generated for possible custom implementation
 }
 
 void TbRefIfacesDataJavaConverter::fillParentIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& out_array)
 {
-    // currently not supported, stub function generated for possible custom implementation
+	// currently not supported, stub function generated for possible custom implementation
 }
+
 jobject TbRefIfacesDataJavaConverter::makeJavaParentIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if)
 {
-    if (!out_parent_if)
-    {
-        return nullptr;
-    }
+	if (!out_parent_if)
+	{
+		return nullptr;
+	}
 
-    jobject javaObjInstance = nullptr;
-    // currently not supported, stub function generated for possible custom implementation
-    return javaObjInstance;
+	jobject javaObjInstance = nullptr;
+	// currently not supported, stub function generated for possible custom implementation
+	return javaObjInstance;
 }
 
 jobjectArray TbRefIfacesDataJavaConverter::makeJavaParentIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& cppArray)
 {
-    jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
-    auto arraySize = cppArray.Num();
-    jobjectArray javaArray = env->NewObjectArray( arraySize, javaClass, nullptr);
-    // currently not supported, stub function generated for possible custom implementation 
-    return javaArray;
+	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
+	auto arraySize = cppArray.Num();
+	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	// Currently not supported, stub function generated for possible custom implementation.
+	return javaArray;
 }
 
 TScriptInterface<ITbRefIfacesParentIfInterface> TbRefIfacesDataJavaConverter::getCppInstanceTbRefIfacesParentIf()
 {
-    UTbRefIfacesParentIfImplementation* Impl = NewObject<UTbRefIfacesParentIfImplementation>();
-    TScriptInterface<ITbRefIfacesParentIfInterface> wrapped;
-    wrapped.SetObject(Impl);
-    wrapped.SetInterface(Cast<ITbRefIfacesParentIfInterface>(Impl));
-    return wrapped;
+	UTbRefIfacesParentIfImplementation* Impl = NewObject<UTbRefIfacesParentIfImplementation>();
+	TScriptInterface<ITbRefIfacesParentIfInterface> wrapped;
+	wrapped.SetObject(Impl);
+	wrapped.SetInterface(Cast<ITbRefIfacesParentIfInterface>(Impl));
+	return wrapped;
 }
-
 
 #endif

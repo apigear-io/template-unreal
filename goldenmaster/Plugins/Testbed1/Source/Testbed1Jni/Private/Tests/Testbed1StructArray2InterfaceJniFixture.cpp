@@ -17,7 +17,6 @@ limitations under the License.
 #include "Testbed1StructArray2InterfaceJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "Testbed1/Generated/Jni/Testbed1StructArray2InterfaceJniClient.h"
