@@ -24,16 +24,15 @@ limitations under the License.
 #include "Testbed1/Generated/Jni/Testbed1StructInterfaceJniClient.h"
 #include "Testbed1/Generated/Jni/Testbed1StructInterfaceJniAdapter.h"
 
-
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
- #include "Android/AndroidJNI.h"
- #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
 
- #if USE_ANDROID_JNI
- #include <jni.h>
- #endif
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
 #endif
 
 // nested namespaces do not work with UE4.27 MSVC due to old C++ standard
@@ -61,14 +60,14 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetClient() != nullptr);
 
 		// set up service and adapter
-		auto service =ImplFixture->GetLocalImplementation();
+		auto service = ImplFixture->GetLocalImplementation();
 		ImplFixture->GetAdapter()->setBackendService(service);
 
 		// setup client
 		UTestbed1StructInterfaceJniClient* JniClient = ImplFixture->GetClient();
 		TestTrue("Check for valid Jni client", JniClient != nullptr);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		JniClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
 			{
 			if (bConnected)
@@ -76,20 +75,20 @@ void UTestbed1StructInterfaceJniSpec::Define()
 				TestDone.Execute();
 			}
 		});
-		//Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section. 
+		// Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section.
 		FString servicePackage = "com.goldenmaster";
 		JniClient->_bindToService(servicePackage, "TestConnectionId");
-		#else
+#else
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	AfterEach([this]()
 		{
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			UTestbed1StructInterfaceJniClient* JniClient =ImplFixture->GetClient();
-			#endif
-			ImplFixture.Reset();
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UTestbed1StructInterfaceJniClient* JniClient = ImplFixture->GetClient();
+#endif
+		ImplFixture.Reset();
 	});
 
 	It("Property.PropBool.Default", [this]()
@@ -119,9 +118,9 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = createTestFTestbed1StructBool();
 		ImplFixture->GetClient()->SetPropBool(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropBool.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -130,11 +129,11 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		FTestbed1StructBool DefaultValue = FTestbed1StructBool(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropBool(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed1StructInterfacePublisher->OnPropBoolChanged.AddLambda([this, DefaultValue, TestDone](const FTestbed1StructBool& InPropBool)
 			{
 			FTestbed1StructBool TestValue = FTestbed1StructBool();
@@ -142,12 +141,11 @@ void UTestbed1StructInterfaceJniSpec::Define()
 			TestValue = createTestFTestbed1StructBool();
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropBool(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropBool(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropBool(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -160,16 +158,16 @@ void UTestbed1StructInterfaceJniSpec::Define()
 	LatentIt("Property.PropBool.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		FTestbed1StructBool StartValue =  ImplFixture->GetLocalImplementation()->GetPropBool();
+		FTestbed1StructBool StartValue = ImplFixture->GetLocalImplementation()->GetPropBool();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropBool(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		Testbed1StructInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBool& InPropBool)
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		Testbed1StructInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructBool& InPropBool)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -184,18 +182,18 @@ void UTestbed1StructInterfaceJniSpec::Define()
 				TestValue = createTestFTestbed1StructBool();
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropBool(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropBool(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropBool(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = FTestbed1StructBool(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropBool(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropBool(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -240,9 +238,9 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = createTestFTestbed1StructInt();
 		ImplFixture->GetClient()->SetPropInt(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropInt.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -251,11 +249,11 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		FTestbed1StructInt DefaultValue = FTestbed1StructInt(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed1StructInterfacePublisher->OnPropIntChanged.AddLambda([this, DefaultValue, TestDone](const FTestbed1StructInt& InPropInt)
 			{
 			FTestbed1StructInt TestValue = FTestbed1StructInt();
@@ -263,12 +261,11 @@ void UTestbed1StructInterfaceJniSpec::Define()
 			TestValue = createTestFTestbed1StructInt();
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropInt(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -281,16 +278,16 @@ void UTestbed1StructInterfaceJniSpec::Define()
 	LatentIt("Property.PropInt.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		FTestbed1StructInt StartValue =  ImplFixture->GetLocalImplementation()->GetPropInt();
+		FTestbed1StructInt StartValue = ImplFixture->GetLocalImplementation()->GetPropInt();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		Testbed1StructInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructInt& InPropInt)
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		Testbed1StructInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructInt& InPropInt)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -305,18 +302,18 @@ void UTestbed1StructInterfaceJniSpec::Define()
 				TestValue = createTestFTestbed1StructInt();
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = FTestbed1StructInt(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropInt(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropInt(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -361,9 +358,9 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = createTestFTestbed1StructFloat();
 		ImplFixture->GetClient()->SetPropFloat(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropFloat.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -372,11 +369,11 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		FTestbed1StructFloat DefaultValue = FTestbed1StructFloat(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed1StructInterfacePublisher->OnPropFloatChanged.AddLambda([this, DefaultValue, TestDone](const FTestbed1StructFloat& InPropFloat)
 			{
 			FTestbed1StructFloat TestValue = FTestbed1StructFloat();
@@ -384,12 +381,11 @@ void UTestbed1StructInterfaceJniSpec::Define()
 			TestValue = createTestFTestbed1StructFloat();
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropFloat(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -402,16 +398,16 @@ void UTestbed1StructInterfaceJniSpec::Define()
 	LatentIt("Property.PropFloat.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		FTestbed1StructFloat StartValue =  ImplFixture->GetLocalImplementation()->GetPropFloat();
+		FTestbed1StructFloat StartValue = ImplFixture->GetLocalImplementation()->GetPropFloat();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		Testbed1StructInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloat& InPropFloat)
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		Testbed1StructInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructFloat& InPropFloat)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -426,18 +422,18 @@ void UTestbed1StructInterfaceJniSpec::Define()
 				TestValue = createTestFTestbed1StructFloat();
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = FTestbed1StructFloat(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropFloat(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropFloat(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -482,9 +478,9 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = createTestFTestbed1StructString();
 		ImplFixture->GetClient()->SetPropString(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropString.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -493,11 +489,11 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		FTestbed1StructString DefaultValue = FTestbed1StructString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropString(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed1StructInterfacePublisher->OnPropStringChanged.AddLambda([this, DefaultValue, TestDone](const FTestbed1StructString& InPropString)
 			{
 			FTestbed1StructString TestValue = FTestbed1StructString();
@@ -505,12 +501,11 @@ void UTestbed1StructInterfaceJniSpec::Define()
 			TestValue = createTestFTestbed1StructString();
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropString(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropString(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropString(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -523,16 +518,16 @@ void UTestbed1StructInterfaceJniSpec::Define()
 	LatentIt("Property.PropString.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		FTestbed1StructString StartValue =  ImplFixture->GetLocalImplementation()->GetPropString();
+		FTestbed1StructString StartValue = ImplFixture->GetLocalImplementation()->GetPropString();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropString(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		Testbed1StructInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructString& InPropString)
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		Testbed1StructInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructString& InPropString)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -547,18 +542,18 @@ void UTestbed1StructInterfaceJniSpec::Define()
 				TestValue = createTestFTestbed1StructString();
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropString(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropString(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropString(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = FTestbed1StructString(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropString(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropString(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -582,7 +577,7 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncBool(FTestbed1StructBool());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -593,7 +588,7 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncInt(FTestbed1StructInt());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -604,7 +599,7 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncFloat(FTestbed1StructFloat());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -615,20 +610,19 @@ void UTestbed1StructInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncString(FTestbed1StructString());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTestbed1StructInterfacePublisher* SourceTestbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed1StructInterfacePublisher->OnSigBoolSignal.AddLambda([this, TestDone](const FTestbed1StructBool& InParamBool)
 			{
 			// known test value
@@ -644,13 +638,12 @@ void UTestbed1StructInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTestbed1StructInterfacePublisher* SourceTestbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed1StructInterfacePublisher->OnSigIntSignal.AddLambda([this, TestDone](const FTestbed1StructInt& InParamInt)
 			{
 			// known test value
@@ -666,13 +659,12 @@ void UTestbed1StructInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTestbed1StructInterfacePublisher* SourceTestbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed1StructInterfacePublisher->OnSigFloatSignal.AddLambda([this, TestDone](const FTestbed1StructFloat& InParamFloat)
 			{
 			// known test value
@@ -688,13 +680,12 @@ void UTestbed1StructInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTestbed1StructInterfacePublisher* SourceTestbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		Testbed1StructInterfacePublisher->OnSigStringSignal.AddLambda([this, TestDone](const FTestbed1StructString& InParamString)
 			{
 			// known test value

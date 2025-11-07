@@ -37,9 +37,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-
-
-
 #include "TbSame2/Generated/Jni/TbSame2SameEnum1InterfaceJniClient.h"
 #include "TbSame2/Generated/Jni/TbSame2DataJavaConverter.h"
 #include "TbSame2/Generated/api/TbSame2_data.h"
@@ -50,12 +47,12 @@ limitations under the License.
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
- #include "Android/AndroidJNI.h"
- #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
 
- #if USE_ANDROID_JNI
- #include <jni.h>
- #endif
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
 #endif
 
 #include <atomic>
@@ -63,355 +60,359 @@ limitations under the License.
 #include "GenericPlatform/GenericPlatformMisc.h"
 
 /**
-   \brief data structure to hold the last sent property values
+	\brief data structure to hold the last sent property values
 */
-
 
 class UTbSame2SameEnum1InterfaceJniClientMethodHelper
 {
 public:
-    template <typename ResultType>
-    FGuid StorePromise(TPromise<ResultType>& Promise);
+	template <typename ResultType>
+	FGuid StorePromise(TPromise<ResultType>& Promise);
 
-    template <typename ResultType>
-    bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+	template <typename ResultType>
+	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+
 private:
-    TMap<FGuid, void*> ReplyPromisesMap;
-    FCriticalSection ReplyPromisesMapCS;
-
+	TMap<FGuid, void*> ReplyPromisesMap;
+	FCriticalSection ReplyPromisesMapCS;
 };
 
-namespace {
+namespace
+{
 
-    UTbSame2SameEnum1InterfaceJniClient* gUTbSame2SameEnum1InterfaceJniClientHandle = nullptr;
-    TFunction<void(bool)> gUTbSame2SameEnum1InterfaceJniClientnotifyIsReady = [](bool value) { (void)value; UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set ")); };
-    TFunction<void(ETbSame2Enum1)> gUTbSame2SameEnum1InterfaceJniClientOnProp1ChangedEmpty = [](ETbSame2Enum1 value) { (void)value; UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("onProp1Changed used but not set ")); };
-    TFunction<void(ETbSame2Enum1)> gUTbSame2SameEnum1InterfaceJniClientOnProp1Changed = gUTbSame2SameEnum1InterfaceJniClientOnProp1ChangedEmpty;
+UTbSame2SameEnum1InterfaceJniClient* gUTbSame2SameEnum1InterfaceJniClientHandle = nullptr;
+TFunction<void(bool)> gUTbSame2SameEnum1InterfaceJniClientnotifyIsReady = [](bool value)
+{
+	(void)value;
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
+};
+TFunction<void(ETbSame2Enum1)> gUTbSame2SameEnum1InterfaceJniClientOnProp1ChangedEmpty = [](ETbSame2Enum1 value)
+{
+	(void)value;
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("onProp1Changed used but not set "));
+};
+TFunction<void(ETbSame2Enum1)> gUTbSame2SameEnum1InterfaceJniClientOnProp1Changed = gUTbSame2SameEnum1InterfaceJniClientOnProp1ChangedEmpty;
 
-    UTbSame2SameEnum1InterfaceJniClientMethodHelper  gUTbSame2SameEnum1InterfaceJniClientmethodHelper;
+UTbSame2SameEnum1InterfaceJniClientMethodHelper gUTbSame2SameEnum1InterfaceJniClientmethodHelper;
 
-}
-
+} // namespace
 
 DEFINE_LOG_CATEGORY(LogTbSame2SameEnum1InterfaceClient_JNI);
 
 UTbSame2SameEnum1InterfaceJniClient::UTbSame2SameEnum1InterfaceJniClient()
 {
 #if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("This is class that adapts the usage with android and jni, but seems to be used on different target. Make sure  you are using it with Android"));
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("This is class that adapts the usage with android and jni, but seems to be used on different target. Make sure you are using it with Android"));
 #endif
 }
 
 UTbSame2SameEnum1InterfaceJniClient::UTbSame2SameEnum1InterfaceJniClient(FVTableHelper& Helper)
-    : Super(Helper)
+	: Super(Helper)
 {
 }
 UTbSame2SameEnum1InterfaceJniClient::~UTbSame2SameEnum1InterfaceJniClient() = default;
 
 void UTbSame2SameEnum1InterfaceJniClient::Initialize(FSubsystemCollectionBase& Collection)
 {
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Init"));
-    Super::Initialize(Collection);
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Init"));
+	Super::Initialize(Collection);
 
-    gUTbSame2SameEnum1InterfaceJniClientHandle = this;
-    gUTbSame2SameEnum1InterfaceJniClientnotifyIsReady = [this](bool value) {
-         b_isReady = value;
-         AsyncTask(ENamedThreads::GameThread, [this]()
-             {
-                 _ConnectionStatusChangedBP.Broadcast(b_isReady);
-                 _ConnectionStatusChanged.Broadcast(b_isReady);
-             });
-        };
+	gUTbSame2SameEnum1InterfaceJniClientHandle = this;
+	gUTbSame2SameEnum1InterfaceJniClientnotifyIsReady = [this](bool value)
+	{
+		b_isReady = value;
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_ConnectionStatusChangedBP.Broadcast(b_isReady);
+			_ConnectionStatusChanged.Broadcast(b_isReady);
+		});
+	};
 	gUTbSame2SameEnum1InterfaceJniClientOnProp1Changed = [this](ETbSame2Enum1 InProp1)
-    {
-         Prop1 = InProp1;
-         _GetPublisher()->BroadcastProp1Changed(Prop1);
-    };
+	{
+		Prop1 = InProp1;
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
+	};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient");
-    jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
-    jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
-    m_javaJniClientInstance = Env->NewGlobalRef(localRef);
-    FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient");
+	jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
+	jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
+	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
 }
 
 void UTbSame2SameEnum1InterfaceJniClient::Deinitialize()
 {
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("deinit"));
-    _unbind();
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("deinit"));
+	_unbind();
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    Env->DeleteGlobalRef(m_javaJniClientInstance);
-    m_javaJniClientClass = nullptr;
-    m_javaJniClientInstance = nullptr;
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	Env->DeleteGlobalRef(m_javaJniClientInstance);
+	m_javaJniClientClass = nullptr;
+	m_javaJniClientInstance = nullptr;
 #endif
 
-    gUTbSame2SameEnum1InterfaceJniClientnotifyIsReady = [](bool value){(void)value; UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));};
-    gUTbSame2SameEnum1InterfaceJniClientOnProp1Changed = gUTbSame2SameEnum1InterfaceJniClientOnProp1ChangedEmpty;
+	gUTbSame2SameEnum1InterfaceJniClientnotifyIsReady = [](bool value)
+	{
+		(void)value;
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
+	};
+	gUTbSame2SameEnum1InterfaceJniClientOnProp1Changed = gUTbSame2SameEnum1InterfaceJniClientOnProp1ChangedEmpty;
 
-    gUTbSame2SameEnum1InterfaceJniClientHandle = nullptr;
-    Super::Deinitialize();
+	gUTbSame2SameEnum1InterfaceJniClientHandle = nullptr;
+	Super::Deinitialize();
 }
 ETbSame2Enum1 UTbSame2SameEnum1InterfaceJniClient::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 void UTbSame2SameEnum1InterfaceJniClient::SetProp1(ETbSame2Enum1 InProp1)
 {
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:setProp1"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:setProp1"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetProp1() == InProp1 )
-    {
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Property prop1 to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp1() == InProp1)
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Property prop1 to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:setProp1 (LtbSame2/tbSame2_api/Enum1;)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setProp1", "(LtbSame2/tbSame2_api/Enum1;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:setProp1 (LtbSame2/tbSame2_api/Enum1;)V not found"));
-            return;
-        }
-        
-        jobject jlocal_Prop1 = TbSame2DataJavaConverter::makeJavaEnum1(Env, InProp1);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop1);
-        Env->DeleteLocalRef(jlocal_Prop1);
-    }
-#endif
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:setProp1 (LtbSame2/tbSame2_api/Enum1;)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setProp1", "(LtbSame2/tbSame2_api/Enum1;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:setProp1 (LtbSame2/tbSame2_api/Enum1;)V not found"));
+			return;
+		}
 
+		jobject jlocal_Prop1 = TbSame2DataJavaConverter::makeJavaEnum1(Env, InProp1);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop1);
+		Env->DeleteLocalRef(jlocal_Prop1);
+	}
+#endif
 }
 ETbSame2Enum1 UTbSame2SameEnum1InterfaceJniClient::Func1(ETbSame2Enum1 InParam1)
 {
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:func1 "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:func1 "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return ETbSame2Enum1::TS2E1_Value1;
-    }
-    TPromise<ETbSame2Enum1> Promise;
+		return ETbSame2Enum1::TS2E1_Value1;
+	}
+	TPromise<ETbSame2Enum1> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:func1Async:(Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V CLASS not found"));
-        return ETbSame2Enum1::TS2E1_Value1;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "func1Async", "(Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTbSame2SameEnum1InterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-        jobject jlocal_Param1 = TbSame2DataJavaConverter::makeJavaEnum1(Env, InParam1);;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:func1Async:(Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V CLASS not found"));
+		return ETbSame2Enum1::TS2E1_Value1;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "func1Async", "(Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSame2SameEnum1InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		jobject jlocal_Param1 = TbSame2DataJavaConverter::makeJavaEnum1(Env, InParam1);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
-        Env->DeleteLocalRef(jlocal_Param1);
-    }
-    else
-    {
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:func1Async (Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
+		Env->DeleteLocalRef(jlocal_Param1);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:func1Async (Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 
 bool UTbSame2SameEnum1InterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-    if (b_isReady)
-    {
-        if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
-        {
-            UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("Already bound"));
-            return true;
-        }
-        else
-        {
-            _unbind();
-        }
-    }
-    m_lastBoundServicePackage = servicePackage;
-    m_lastConnectionId = connectionId;
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
+	if (b_isReady)
+	{
+		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
+		{
+			UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("Already bound"));
+			return true;
+		}
+		else
+		{
+			_unbind();
+		}
+	}
+	m_lastBoundServicePackage = servicePackage;
+	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
-        return false;
-    }
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-    if (MethodID != nullptr)
-    {
-        jobject Activity = FJavaWrapper::GameActivityThis;
-        auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
-        auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
-        auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
-        return res;
-    }
-    else
-    {
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:bind (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z not found"));
-    }
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
+		return false;
+	}
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	if (MethodID != nullptr)
+	{
+		jobject Activity = FJavaWrapper::GameActivityThis;
+		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
+		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
+		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
+		return res;
+	}
+	else
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:bind (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z not found"));
+	}
 #endif
-    return false;
+	return false;
 }
 
 void UTbSame2SameEnum1InterfaceJniClient::_unbind()
 {
 
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Request JNI unbind"));
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Request JNI unbind"));
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:unbind:()V CLASS not found"));
-        return;
-    }
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
-    if (MethodID != nullptr)
-    {
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
-    }
-    else
-    {
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:unbind ()V not found"));
-    }
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:unbind:()V CLASS not found"));
+		return;
+	}
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
+	if (MethodID != nullptr)
+	{
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient:unbind ()V not found"));
+	}
 #endif
 }
 
 bool UTbSame2SameEnum1InterfaceJniClient::_IsReady() const
 {
-    return b_isReady;
+	return b_isReady;
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnProp1Changed(JNIEnv* Env, jclass Clazz,jobject prop1)
+JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnProp1Changed(JNIEnv* Env, jclass Clazz, jobject prop1)
 {
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnProp1Changed"));
-    if (gUTbSame2SameEnum1InterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnProp1Changed: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    ETbSame2Enum1 local_prop1 = TbSame2DataJavaConverter::getEnum1Value(Env, prop1);
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnProp1Changed"));
+	if (gUTbSame2SameEnum1InterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnProp1Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	ETbSame2Enum1 local_prop1 = TbSame2DataJavaConverter::getEnum1Value(Env, prop1);
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop1= MoveTemp(local_prop1)]()
-    {
-        gUTbSame2SameEnum1InterfaceJniClientOnProp1Changed(plocal_prop1);
-    });
+	AsyncTask(ENamedThreads::GameThread, [plocal_prop1 = MoveTemp(local_prop1)]()
+		{
+		gUTbSame2SameEnum1InterfaceJniClientOnProp1Changed(plocal_prop1);
+	});
 }
 
 JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnSig1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnSig1"));
-    if (gUTbSame2SameEnum1InterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    ETbSame2Enum1 local_param1 = TbSame2DataJavaConverter::getEnum1Value(Env, param1);
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnSig1"));
+	if (gUTbSame2SameEnum1InterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	ETbSame2Enum1 local_param1 = TbSame2DataJavaConverter::getEnum1Value(Env, param1);
 
-    AsyncTask(ENamedThreads::GameThread, [ plocal_param1= MoveTemp(local_param1)]()
-        {
-            if (gUTbSame2SameEnum1InterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTbSame2SameEnum1InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal( plocal_param1);
-        });
+	AsyncTask(ENamedThreads::GameThread, [plocal_param1 = MoveTemp(local_param1)]()
+		{
+		if (gUTbSame2SameEnum1InterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Warning, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTbSame2SameEnum1InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(plocal_param1);
+	});
 }
 
 JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnFunc1Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
 {
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnFunc1Result"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
-    ETbSame2Enum1 cpp_result = TbSame2DataJavaConverter::getEnum1Value(Env, result);
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT("Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeOnFunc1Result"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
+	ETbSame2Enum1 cpp_result = TbSame2DataJavaConverter::getEnum1Value(Env, result);
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-    {
-        gUTbSame2SameEnum1InterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
+		{
+		gUTbSame2SameEnum1InterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
+	});
 }
 
 JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameEnum1InterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-    AsyncTask(ENamedThreads::GameThread, [value]()
-        {
-            gUTbSame2SameEnum1InterfaceJniClientnotifyIsReady(value);
-        });
+	AsyncTask(ENamedThreads::GameThread, [value]()
+		{
+		gUTbSame2SameEnum1InterfaceJniClientnotifyIsReady(value);
+	});
 }
 #endif
-
 
 template <typename ResultType>
 FGuid UTbSame2SameEnum1InterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
-    FGuid Id = FGuid::NewGuid();
-    FScopeLock Lock(&ReplyPromisesMapCS);
-    ReplyPromisesMap.Add(Id, &Promise);
-    //TODO invalid id if sth goes wrong + log + checking
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
-    return Id;
+	FGuid Id = FGuid::NewGuid();
+	FScopeLock Lock(&ReplyPromisesMapCS);
+	ReplyPromisesMap.Add(Id, &Promise);
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	return Id;
 }
 
 template <typename ResultType>
 bool UTbSame2SameEnum1InterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-    UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
-    TPromise<ResultType>* PromisePtr = nullptr;
+	UE_LOG(LogTbSame2SameEnum1InterfaceClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	TPromise<ResultType>* PromisePtr = nullptr;
 
-    {
-        FScopeLock Lock(&ReplyPromisesMapCS);
-        if (auto** Found = ReplyPromisesMap.Find(Id))
-        {
-            PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-            ReplyPromisesMap.Remove(Id);
-        }
-    }
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		if (auto** Found = ReplyPromisesMap.Find(Id))
+		{
+			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
+			ReplyPromisesMap.Remove(Id);
+		}
+	}
 
-    if (PromisePtr)
-    {
-        AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-            {
-                PromisePtr->SetValue(Value);
-            });
-        return true;
-
-    }
-    return false;
+	if (PromisePtr)
+	{
+		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
+			{
+			PromisePtr->SetValue(Value);
+		});
+		return true;
+	}
+	return false;
 }
 template FGuid UTbSame2SameEnum1InterfaceJniClientMethodHelper::StorePromise<ETbSame2Enum1>(TPromise<ETbSame2Enum1>& Promise);
 template bool UTbSame2SameEnum1InterfaceJniClientMethodHelper::FulfillPromise<ETbSame2Enum1>(const FGuid& Id, const ETbSame2Enum1& Value);
-

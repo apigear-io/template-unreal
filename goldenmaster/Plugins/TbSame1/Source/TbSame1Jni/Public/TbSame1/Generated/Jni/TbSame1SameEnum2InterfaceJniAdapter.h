@@ -31,11 +31,9 @@ limitations under the License.
 #endif
 #endif
 
-
 #include "TbSame1SameEnum2InterfaceJniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameEnum2Interface_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbSame1SameEnum2InterfaceInterface
@@ -53,32 +51,29 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
-    void setBackendService(TScriptInterface<ITbSame1SameEnum2InterfaceInterface> InService);
+	void setBackendService(TScriptInterface<ITbSame1SameEnum2InterfaceInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	TScriptInterface<ITbSame1SameEnum2InterfaceInterface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
-
-	// signals
 	void OnSig1Signal(ETbSame1Enum1 Param1) override;
 
 	void OnSig2Signal(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
 
 	void OnProp1Changed(ETbSame1Enum1 Prop1) override;
 	void OnProp2Changed(ETbSame1Enum2 Prop2) override;
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameEnum2Interface")

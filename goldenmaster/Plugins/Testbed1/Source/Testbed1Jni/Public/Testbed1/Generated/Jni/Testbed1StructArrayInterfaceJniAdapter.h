@@ -31,11 +31,9 @@ limitations under the License.
 #endif
 #endif
 
-
 #include "Testbed1StructArrayInterfaceJniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArrayInterface_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITestbed1StructArrayInterfaceInterface
@@ -53,25 +51,23 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
-    void setBackendService(TScriptInterface<ITestbed1StructArrayInterfaceInterface> InService);
+	void setBackendService(TScriptInterface<ITestbed1StructArrayInterfaceInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	TScriptInterface<ITestbed1StructArrayInterfaceInterface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
-
-	// signals
 	void OnSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool) override;
 
 	void OnSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt) override;
@@ -87,7 +83,6 @@ private:
 	void OnPropFloatChanged(const TArray<FTestbed1StructFloat>& PropFloat) override;
 	void OnPropStringChanged(const TArray<FTestbed1StructString>& PropString) override;
 	void OnPropEnumChanged(const TArray<ETestbed1Enum0>& PropEnum) override;
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructArrayInterface")

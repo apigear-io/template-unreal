@@ -31,11 +31,9 @@ limitations under the License.
 #endif
 #endif
 
-
 #include "TbSimpleSimpleArrayInterfaceJniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleArrayInterface_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbSimpleSimpleArrayInterfaceInterface
@@ -53,25 +51,23 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
-    void setBackendService(TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> InService);
+	void setBackendService(TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
-
-	// signals
 	void OnSigBoolSignal(const TArray<bool>& ParamBool) override;
 
 	void OnSigIntSignal(const TArray<int32>& ParamInt) override;
@@ -97,7 +93,6 @@ private:
 	void OnPropFloat64Changed(const TArray<double>& PropFloat64) override;
 	void OnPropStringChanged(const TArray<FString>& PropString) override;
 	void OnPropReadOnlyStringChanged(const FString& PropReadOnlyString) override;
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleArrayInterface")
