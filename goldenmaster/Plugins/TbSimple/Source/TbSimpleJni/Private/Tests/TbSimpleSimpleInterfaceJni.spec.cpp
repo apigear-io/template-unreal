@@ -24,16 +24,15 @@ limitations under the License.
 #include "TbSimple/Generated/Jni/TbSimpleSimpleInterfaceJniClient.h"
 #include "TbSimple/Generated/Jni/TbSimpleSimpleInterfaceJniAdapter.h"
 
-
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
- #include "Android/AndroidJNI.h"
- #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
 
- #if USE_ANDROID_JNI
- #include <jni.h>
- #endif
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
 #endif
 
 // nested namespaces do not work with UE4.27 MSVC due to old C++ standard
@@ -61,14 +60,14 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetClient() != nullptr);
 
 		// set up service and adapter
-		auto service =ImplFixture->GetLocalImplementation();
+		auto service = ImplFixture->GetLocalImplementation();
 		ImplFixture->GetAdapter()->setBackendService(service);
 
 		// setup client
 		UTbSimpleSimpleInterfaceJniClient* JniClient = ImplFixture->GetClient();
 		TestTrue("Check for valid Jni client", JniClient != nullptr);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		JniClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
 			{
 			if (bConnected)
@@ -76,20 +75,20 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 				TestDone.Execute();
 			}
 		});
-		//Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section. 
+		// Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section.
 		FString servicePackage = "com.goldenmaster";
 		JniClient->_bindToService(servicePackage, "TestConnectionId");
-		#else
+#else
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	AfterEach([this]()
 		{
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			UTbSimpleSimpleInterfaceJniClient* JniClient =ImplFixture->GetClient();
-			#endif
-			ImplFixture.Reset();
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UTbSimpleSimpleInterfaceJniClient* JniClient = ImplFixture->GetClient();
+#endif
+		ImplFixture.Reset();
 	});
 
 	It("Property.PropBool.Default", [this]()
@@ -119,9 +118,9 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetClient()->SetPropBool(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropBool.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -130,11 +129,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		bool DefaultValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropBool(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnPropBoolChanged.AddLambda([this, DefaultValue, TestDone](bool bInPropBool)
 			{
 			bool TestValue = false;
@@ -142,12 +141,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 			TestValue = true;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropBool(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropBool(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropBool(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -160,16 +158,16 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 	LatentIt("Property.PropBool.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		bool StartValue =  ImplFixture->GetLocalImplementation()->GetPropBool();
+		bool StartValue = ImplFixture->GetLocalImplementation()->GetPropBool();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropBool(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue](bool bInPropBool)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -184,18 +182,18 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 				TestValue = true;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInPropBool, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropBool(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropBool(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropBool(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = false; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropBool(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropBool(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -240,9 +238,9 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetClient()->SetPropInt(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropInt.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -251,11 +249,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		int32 DefaultValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnPropIntChanged.AddLambda([this, DefaultValue, TestDone](int32 InPropInt)
 			{
 			int32 TestValue = 0;
@@ -263,12 +261,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 			TestValue = 1;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropInt(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -281,16 +278,16 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 	LatentIt("Property.PropInt.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		int32 StartValue =  ImplFixture->GetLocalImplementation()->GetPropInt();
+		int32 StartValue = ImplFixture->GetLocalImplementation()->GetPropInt();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue](int32 InPropInt)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -305,18 +302,18 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 				TestValue = 1;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropInt(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropInt(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -361,9 +358,9 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetClient()->SetPropInt32(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropInt32.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -372,11 +369,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		int32 DefaultValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt32(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnPropInt32Changed.AddLambda([this, DefaultValue, TestDone](int32 InPropInt32)
 			{
 			int32 TestValue = 0;
@@ -384,12 +381,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 			TestValue = 1;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt32(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt32(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropInt32(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -402,16 +398,16 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 	LatentIt("Property.PropInt32.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		int32 StartValue =  ImplFixture->GetLocalImplementation()->GetPropInt32();
+		int32 StartValue = ImplFixture->GetLocalImplementation()->GetPropInt32();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt32(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone](int32 InPropInt32)
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone, StartValue](int32 InPropInt32)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -426,18 +422,18 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 				TestValue = 1;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt32, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt32(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt32(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt32(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropInt32(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropInt32(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -482,9 +478,9 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = 1LL;
 		ImplFixture->GetClient()->SetPropInt64(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropInt64.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -493,11 +489,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		int64 DefaultValue = 0LL; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt64(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnPropInt64Changed.AddLambda([this, DefaultValue, TestDone](int64 InPropInt64)
 			{
 			int64 TestValue = 0LL;
@@ -505,12 +501,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 			TestValue = 1LL;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt64(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt64(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropInt64(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -523,16 +518,16 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 	LatentIt("Property.PropInt64.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		int64 StartValue =  ImplFixture->GetLocalImplementation()->GetPropInt64();
+		int64 StartValue = ImplFixture->GetLocalImplementation()->GetPropInt64();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropInt64(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone](int64 InPropInt64)
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone, StartValue](int64 InPropInt64)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -547,18 +542,18 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 				TestValue = 1LL;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt64, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropInt64(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt64(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropInt64(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0LL; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropInt64(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropInt64(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -603,9 +598,9 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetClient()->SetPropFloat(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropFloat.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -614,11 +609,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		float DefaultValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnPropFloatChanged.AddLambda([this, DefaultValue, TestDone](float InPropFloat)
 			{
 			float TestValue = 0.0f;
@@ -626,12 +621,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 			TestValue = 1.0f;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropFloat(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -644,16 +638,16 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 	LatentIt("Property.PropFloat.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		float StartValue =  ImplFixture->GetLocalImplementation()->GetPropFloat();
+		float StartValue = ImplFixture->GetLocalImplementation()->GetPropFloat();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](float InPropFloat)
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, StartValue](float InPropFloat)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -668,18 +662,18 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 				TestValue = 1.0f;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0.0f; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropFloat(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropFloat(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -724,9 +718,9 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = 1.0f;
 		ImplFixture->GetClient()->SetPropFloat32(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropFloat32.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -735,11 +729,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		float DefaultValue = 0.0f; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat32(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnPropFloat32Changed.AddLambda([this, DefaultValue, TestDone](float InPropFloat32)
 			{
 			float TestValue = 0.0f;
@@ -747,12 +741,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 			TestValue = 1.0f;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat32(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat32(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropFloat32(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -765,16 +758,16 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 	LatentIt("Property.PropFloat32.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		float StartValue =  ImplFixture->GetLocalImplementation()->GetPropFloat32();
+		float StartValue = ImplFixture->GetLocalImplementation()->GetPropFloat32();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat32(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone](float InPropFloat32)
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone, StartValue](float InPropFloat32)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -789,18 +782,18 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 				TestValue = 1.0f;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat32, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat32(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat32(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat32(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0.0f; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropFloat32(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropFloat32(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -845,9 +838,9 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = 1.0;
 		ImplFixture->GetClient()->SetPropFloat64(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropFloat64.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -856,11 +849,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		double DefaultValue = 0.0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat64(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnPropFloat64Changed.AddLambda([this, DefaultValue, TestDone](double InPropFloat64)
 			{
 			double TestValue = 0.0;
@@ -868,12 +861,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 			TestValue = 1.0;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat64(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat64(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropFloat64(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -886,16 +878,16 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 	LatentIt("Property.PropFloat64.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		double StartValue =  ImplFixture->GetLocalImplementation()->GetPropFloat64();
+		double StartValue = ImplFixture->GetLocalImplementation()->GetPropFloat64();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropFloat64(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone](double InPropFloat64)
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone, StartValue](double InPropFloat64)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -910,18 +902,18 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 				TestValue = 1.0;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat64, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropFloat64(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat64(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropFloat64(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0.0; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropFloat64(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropFloat64(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -966,9 +958,9 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		// use different test value
 		TestValue = FString("xyz");
 		ImplFixture->GetClient()->SetPropString(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.PropString.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -977,11 +969,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		FString DefaultValue = FString(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropString(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnPropStringChanged.AddLambda([this, DefaultValue, TestDone](const FString& InPropString)
 			{
 			FString TestValue = FString();
@@ -989,12 +981,11 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 			TestValue = FString("xyz");
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropString(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropString(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetPropString(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -1007,16 +998,16 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 	LatentIt("Property.PropString.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		FString StartValue =  ImplFixture->GetLocalImplementation()->GetPropString();
+		FString StartValue = ImplFixture->GetLocalImplementation()->GetPropString();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetPropString(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const FString& InPropString)
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbSimpleSimpleInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, StartValue](const FString& InPropString)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -1031,18 +1022,18 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 				TestValue = FString("xyz");
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetPropString(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropString(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetPropString(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = FString(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetPropString(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetPropString(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -1066,7 +1057,7 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncNoReturnValue(false);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1077,7 +1068,7 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncNoParams();
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1088,7 +1079,7 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncBool(false);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1099,7 +1090,7 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncInt(0);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1110,7 +1101,7 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncInt32(0);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1121,7 +1112,7 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncInt64(0LL);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1132,7 +1123,7 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncFloat(0.0f);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1143,7 +1134,7 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncFloat32(0.0f);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1154,7 +1145,7 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncFloat64(0.0);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -1165,20 +1156,19 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->FuncString(FString());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
 
 	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleInterfacePublisher* SourceTbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnSigBoolSignal.AddLambda([this, TestDone](bool bInParamBool)
 			{
 			// known test value
@@ -1194,13 +1184,12 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleInterfacePublisher* SourceTbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnSigIntSignal.AddLambda([this, TestDone](int32 InParamInt)
 			{
 			// known test value
@@ -1216,13 +1205,12 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigInt32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleInterfacePublisher* SourceTbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnSigInt32Signal.AddLambda([this, TestDone](int32 InParamInt32)
 			{
 			// known test value
@@ -1238,13 +1226,12 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigInt64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleInterfacePublisher* SourceTbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnSigInt64Signal.AddLambda([this, TestDone](int64 InParamInt64)
 			{
 			// known test value
@@ -1260,13 +1247,12 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleInterfacePublisher* SourceTbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnSigFloatSignal.AddLambda([this, TestDone](float InParamFloat)
 			{
 			// known test value
@@ -1282,13 +1268,12 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigFloat32", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleInterfacePublisher* SourceTbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnSigFloat32Signal.AddLambda([this, TestDone](float InParamFloat32)
 			{
 			// known test value
@@ -1304,13 +1289,12 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigFloat64", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleInterfacePublisher* SourceTbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnSigFloat64Signal.AddLambda([this, TestDone](double InParamFloat64)
 			{
 			// known test value
@@ -1326,13 +1310,12 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbSimpleSimpleInterfacePublisher* SourceTbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbSimpleSimpleInterfacePublisher->OnSigStringSignal.AddLambda([this, TestDone](const FString& InParamString)
 			{
 			// known test value

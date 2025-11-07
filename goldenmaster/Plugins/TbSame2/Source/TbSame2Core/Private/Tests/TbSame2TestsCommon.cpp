@@ -68,7 +68,6 @@ TArray<ETbSame2Enum1> createTestFTbSame2Enum1Array()
 	return TestValueArray;
 }
 
-
 TArray<ETbSame2Enum2> createTestFTbSame2Enum2Array()
 {
 	TArray<ETbSame2Enum2> TestValueArray;
@@ -77,7 +76,5 @@ TArray<ETbSame2Enum2> createTestFTbSame2Enum2Array()
 	TestValueArray.Add(val);
 	return TestValueArray;
 }
-
-
 
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -17,7 +17,6 @@ limitations under the License.
 #include "CounterCounterJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "Counter/Generated/Jni/CounterCounterJniClient.h"

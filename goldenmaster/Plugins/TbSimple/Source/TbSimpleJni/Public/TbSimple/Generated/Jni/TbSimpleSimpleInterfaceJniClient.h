@@ -83,15 +83,15 @@ public:
 	FTbSimpleJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
 	FTbSimpleJniConnectionStatusChangedDelegate _ConnectionStatusChanged;
 
-	/**
-	 * Informs about the subscription state of the interface client.
-	 * @return true if the client is connected to a service and ready to send and receive messages or false if the server cannot be reached.
+	/** @brief Informs about the subscription state of the interface client.
+	 * @return true if the client is connected to a service and ready to send and receive messages
+		or false if the server cannot be reached.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|JNI")
 	bool _IsReady() const;
 
-	/**
-	* @param package. This client will connect only to a SimpleInterface Service, that myb be exposed by the application that runs it.
+	/** @param package. This client will connect only to a SimpleInterface Service,
+		that may be exposed by the application that runs it.
 	* To make successful binding the package of that application must be passed here.
 	* @return true if successfully bound, false it binding failed.
 	*/
@@ -100,6 +100,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface|JNI|Connection")
 	void _unbind();
+
 private:
 	bool b_isReady = false;
 	FString m_lastBoundServicePackage;

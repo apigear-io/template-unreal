@@ -31,11 +31,9 @@ limitations under the License.
 #endif
 #endif
 
-
 #include "Testbed1StructArray2InterfaceJniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArray2Interface_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITestbed1StructArray2InterfaceInterface
@@ -53,25 +51,23 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface")
-    void setBackendService(TScriptInterface<ITestbed1StructArray2InterfaceInterface> InService);
+	void setBackendService(TScriptInterface<ITestbed1StructArray2InterfaceInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArray2Interface")
 	TScriptInterface<ITestbed1StructArray2InterfaceInterface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
-
-	// signals
 	void OnSigBoolSignal(const FTestbed1StructBoolWithArray& ParamBool) override;
 
 	void OnSigIntSignal(const FTestbed1StructIntWithArray& ParamInt) override;
@@ -85,7 +81,6 @@ private:
 	void OnPropFloatChanged(const FTestbed1StructFloatWithArray& PropFloat) override;
 	void OnPropStringChanged(const FTestbed1StructStringWithArray& PropString) override;
 	void OnPropEnumChanged(const FTestbed1StructEnumWithArray& PropEnum) override;
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructArray2Interface")

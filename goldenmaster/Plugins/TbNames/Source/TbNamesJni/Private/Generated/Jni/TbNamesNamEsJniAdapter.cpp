@@ -29,7 +29,6 @@ limitations under the License.
 #include "HAL/Platform.h"
 #include "TbNames/Generated/api/TbNames_data.h"
 
-
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -43,10 +42,9 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbNamesNamEs_JNI);
 
-
-namespace 
+namespace
 {
-	UTbNamesNamEsJniAdapter* gUTbNamesNamEsJniAdapterHandle = nullptr;
+UTbNamesNamEsJniAdapter* gUTbNamesNamEsJniAdapterHandle = nullptr;
 }
 UTbNamesNamEsJniAdapter::UTbNamesNamEsJniAdapter()
 {
@@ -58,26 +56,26 @@ void UTbNamesNamEsJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 	gUTbNamesNamEsJniAdapterHandle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaJniServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniService");
-    auto Env = FAndroidApplication::GetJavaEnv();
-    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniServiceStarter");
-    if (BridgeClass == nullptr)
-    {
+	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniService");
+	auto Env = FAndroidApplication::GetJavaEnv();
+	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniServiceStarter");
+	if (BridgeClass == nullptr)
+	{
 		UE_LOG(LogTemp, Warning, TEXT("TbNamesJavaServiceStarter:start; CLASS not found"));
-        return;
-    }
+		return;
+	}
 	auto functionSignature = "(Landroid/content/Context;)LtbNames/tbNames_api/INamEs;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
-    if (StartMethod == nullptr)
-    {
-		UE_LOG(LogTemp, Warning, TEXT( "TbNamesJavaServiceStarter:start; method not found"));
+	if (StartMethod == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TbNamesJavaServiceStarter:start; method not found"));
 		return;
-    }
-    jobject Activity = FJavaWrapper::GameActivityThis;
+	}
+	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 
-    m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
-    Env->DeleteLocalRef(localRef);
+	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
+	Env->DeleteLocalRef(localRef);
 #endif
 #endif
 }
@@ -88,33 +86,33 @@ void UTbNamesNamEsJniAdapter::Deinitialize()
 	gUTbNamesNamEsJniAdapterHandle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaJniServiceClass = nullptr;
-    if (m_javaJniServiceInstance)
-    {
-        FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
-        m_javaJniServiceInstance = nullptr;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	m_javaJniServiceClass = nullptr;
+	if (m_javaJniServiceInstance)
+	{
+		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
+		m_javaJniServiceInstance = nullptr;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 
-    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniServiceStarter");
-    if (BridgeClass != nullptr)
-    {
-        jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
-        if (StopMethod != nullptr)
-        {
-            jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
-            FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("TbNamesJavaServiceStarter:stop; method not found, failed to stop service"));
-            return;
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT( "TbNamesJavaServiceStarter:stop; CLASS not found, failed to stop service"));
-    }
+	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniServiceStarter");
+	if (BridgeClass != nullptr)
+	{
+		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		if (StopMethod != nullptr)
+		{
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
+			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("TbNamesJavaServiceStarter:stop; method not found, failed to stop service"));
+			return;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TbNamesJavaServiceStarter:stop; CLASS not found, failed to stop service"));
+	}
 #endif
 #endif
 	Super::Deinitialize();
@@ -150,395 +148,387 @@ TScriptInterface<ITbNamesNamEsInterface> UTbNamesNamEsJniAdapter::getBackendServ
 
 void UTbNamesNamEsJniAdapter::callJniServiceReady(bool isServiceReady)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("UTbNamesNamEsJniAdapter call nativeServiceReady the service function "));
-    
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("UTbNamesNamEsJniAdapter call nativeServiceReady the service function "));
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (!m_javaJniServiceClass || !m_javaJniServiceInstance )
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:nativeServiceReady(Z)V CLASS not found"));
-            return;
-        }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:nativeServiceReady(Z)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
 
-        if (MethodID != nullptr)
-        {
-            FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
-        }
-        else
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:nativeServiceReady(Z)V not found "));
-        }
-    }
-#endif 
+		if (MethodID != nullptr)
+		{
+			FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
+		}
+		else
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:nativeServiceReady(Z)V not found "));
+		}
+	}
+#endif
 }
 
 void UTbNamesNamEsJniAdapter::OnSomeSignalSignal(bool bSomeParam)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::onSomeSignal "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal (Z)V CLASS not found"));
-            return;
-        }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSomeSignal", "(Z)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal (Z)V not found"));
-            return;
-        }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::onSomeSignal "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal (Z)V CLASS not found"));
+			return;
+		}
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSomeSignal", "(Z)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal (Z)V not found"));
+			return;
+		}
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bSomeParam);
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bSomeParam);
+	}
 #endif
 }
 
 void UTbNamesNamEsJniAdapter::OnSomeSignal2Signal(bool bSomeParam)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::onSomeSignal2 "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal2 (Z)V CLASS not found"));
-            return;
-        }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSomeSignal2", "(Z)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal2 (Z)V not found"));
-            return;
-        }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::onSomeSignal2 "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal2 (Z)V CLASS not found"));
+			return;
+		}
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSomeSignal2", "(Z)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal2 (Z)V not found"));
+			return;
+		}
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bSomeParam);
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bSomeParam);
+	}
 #endif
 }
 void UTbNamesNamEsJniAdapter::OnSwitchChanged(bool bSwitch)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnSwitch "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSwitchChanged(Z)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnSwitch "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSwitchChanged(Z)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSwitchChanged","(Z)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSwitchChanged(Z)V not found"));
-            return;
-        }
-        
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bSwitch);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSwitchChanged", "(Z)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSwitchChanged(Z)V not found"));
+			return;
+		}
 
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bSwitch);
+	}
 #endif
 }
 void UTbNamesNamEsJniAdapter::OnSomePropertyChanged(int32 SomeProperty)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnSomeProperty "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSomePropertyChanged(I)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnSomeProperty "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSomePropertyChanged(I)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSomePropertyChanged","(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomePropertyChanged(I)V not found"));
-            return;
-        }
-        
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, SomeProperty);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSomePropertyChanged", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomePropertyChanged(I)V not found"));
+			return;
+		}
 
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, SomeProperty);
+	}
 #endif
 }
 void UTbNamesNamEsJniAdapter::OnSomePoperty2Changed(int32 SomePoperty2)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnSomePoperty2 "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSomePoperty2Changed(I)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnSomePoperty2 "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSomePoperty2Changed(I)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSomePoperty2Changed","(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomePoperty2Changed(I)V not found"));
-            return;
-        }
-        
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, SomePoperty2);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSomePoperty2Changed", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomePoperty2Changed(I)V not found"));
+			return;
+		}
 
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, SomePoperty2);
+	}
 #endif
 }
 void UTbNamesNamEsJniAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnEnumProperty "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onEnumPropertyChanged(LtbNames/tbNames_api/EnumWithUnderScores;)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnEnumProperty "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onEnumPropertyChanged(LtbNames/tbNames_api/EnumWithUnderScores;)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onEnumPropertyChanged","(LtbNames/tbNames_api/EnumWithUnderScores;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onEnumPropertyChanged(LtbNames/tbNames_api/EnumWithUnderScores;)V not found"));
-            return;
-        }
-        
-        jobject jlocal_EnumProperty = TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(Env, EnumProperty);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_EnumProperty);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onEnumPropertyChanged", "(LtbNames/tbNames_api/EnumWithUnderScores;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onEnumPropertyChanged(LtbNames/tbNames_api/EnumWithUnderScores;)V not found"));
+			return;
+		}
 
-    }
+		jobject jlocal_EnumProperty = TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(Env, EnumProperty);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_EnumProperty);
+	}
 #endif
 }
-
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction(JNIEnv* Env, jclass Clazz, jboolean SOME_PARAM)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction"));
-    if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction: JNI SERVICE ADAPTER NOT FOUND "));
-        return ;
-    }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction"));
+	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        service->SomeFunction( SOME_PARAM);
-        return;
-    }
-    else
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid"));
-        return ;
-    }
+	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SomeFunction(SOME_PARAM);
+		return;
+	}
+	else
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid"));
+		return;
+	}
 }
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2(JNIEnv* Env, jclass Clazz, jboolean Some_Param)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2"));
-    if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2: JNI SERVICE ADAPTER NOT FOUND "));
-        return ;
-    }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2"));
+	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        service->SomeFunction2( Some_Param);
-        return;
-    }
-    else
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid"));
-        return ;
-    }
+	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SomeFunction2(Some_Param);
+		return;
+	}
+	else
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid"));
+		return;
+	}
 }
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch(JNIEnv* Env, jclass Clazz, jboolean Switch)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch"));
-    if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch"));
+	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [Switch]()
-    {
-        auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetSwitch(Switch);
-        }
-        else
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for Switch"));
-        }
-    });
+	AsyncTask(ENamedThreads::GameThread, [Switch]()
+		{
+		auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetSwitch(Switch);
+		}
+		else
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for Switch"));
+		}
+	});
 }
 
 JNI_METHOD jboolean Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwitch(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwitch"));
-    if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwitch: JNI SERVICE ADAPTER NOT FOUND "));
-        return false;
-    }
-    auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto bSwitch = service->GetSwitch(); 
-        return bSwitch;
-    }
-    else
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return false;
-    }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwitch"));
+	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwitch: JNI SERVICE ADAPTER NOT FOUND "));
+		return false;
+	}
+	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto bSwitch = service->GetSwitch();
+		return bSwitch;
+	}
+	else
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return false;
+	}
 }
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProperty(JNIEnv* Env, jclass Clazz, jint SOME_PROPERTY)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProperty"));
-    if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProperty: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProperty"));
+	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [SOME_PROPERTY]()
-    {
-        auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetSomeProperty(SOME_PROPERTY);
-        }
-        else
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for SOME_PROPERTY"));
-        }
-    });
+	AsyncTask(ENamedThreads::GameThread, [SOME_PROPERTY]()
+		{
+		auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetSomeProperty(SOME_PROPERTY);
+		}
+		else
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for SOME_PROPERTY"));
+		}
+	});
 }
 
 JNI_METHOD jint Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProperty(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProperty"));
-    if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProperty: JNI SERVICE ADAPTER NOT FOUND "));
-        return 0;
-    }
-    auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto SomeProperty = service->GetSomeProperty(); 
-        return SomeProperty;
-    }
-    else
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return 0;
-    }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProperty"));
+	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		return 0;
+	}
+	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto SomeProperty = service->GetSomeProperty();
+		return SomeProperty;
+	}
+	else
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return 0;
+	}
 }
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePoperty2(JNIEnv* Env, jclass Clazz, jint Some_Poperty2)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePoperty2"));
-    if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePoperty2: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePoperty2"));
+	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePoperty2: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [Some_Poperty2]()
-    {
-        auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetSomePoperty2(Some_Poperty2);
-        }
-        else
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for Some_Poperty2"));
-        }
-    });
+	AsyncTask(ENamedThreads::GameThread, [Some_Poperty2]()
+		{
+		auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetSomePoperty2(Some_Poperty2);
+		}
+		else
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for Some_Poperty2"));
+		}
+	});
 }
 
 JNI_METHOD jint Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePoperty2(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePoperty2"));
-    if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePoperty2: JNI SERVICE ADAPTER NOT FOUND "));
-        return 0;
-    }
-    auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto SomePoperty2 = service->GetSomePoperty2(); 
-        return SomePoperty2;
-    }
-    else
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return 0;
-    }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePoperty2"));
+	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePoperty2: JNI SERVICE ADAPTER NOT FOUND "));
+		return 0;
+	}
+	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto SomePoperty2 = service->GetSomePoperty2();
+		return SomePoperty2;
+	}
+	else
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return 0;
+	}
 }
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProperty(JNIEnv* Env, jclass Clazz, jobject enum_property)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProperty"));
-    if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProperty: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
-    ETbNamesEnum_With_Under_scores local_enum_property = TbNamesDataJavaConverter::getEnumWithUnderScoresValue(Env, enum_property);
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProperty"));
+	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_enum_property= MoveTemp(local_enum_property)]()
-    {
-        auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetEnumProperty(plocal_enum_property);
-        }
-        else
-        {
-            UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for enum_property"));
-        }
-    });
+	ETbNamesEnum_With_Under_scores local_enum_property = TbNamesDataJavaConverter::getEnumWithUnderScoresValue(Env, enum_property);
+
+	AsyncTask(ENamedThreads::GameThread, [plocal_enum_property = MoveTemp(local_enum_property)]()
+		{
+		auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+		if (service != nullptr)
+		{
+			service->SetEnumProperty(plocal_enum_property);
+		}
+		else
+		{
+			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for enum_property"));
+		}
+	});
 }
 
 JNI_METHOD jobject Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetEnumProperty(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetEnumProperty"));
-    if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetEnumProperty: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto EnumProperty = service->GetEnumProperty();
-        
-        jobject jlocal_EnumProperty = TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(Env, EnumProperty);
-        return jlocal_EnumProperty;
-    }
-    else
-    {
-        UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return nullptr;
-    }
+	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetEnumProperty"));
+	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetEnumProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto EnumProperty = service->GetEnumProperty();
+
+		jobject jlocal_EnumProperty = TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(Env, EnumProperty);
+		return jlocal_EnumProperty;
+	}
+	else
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return nullptr;
+	}
 }
 #endif

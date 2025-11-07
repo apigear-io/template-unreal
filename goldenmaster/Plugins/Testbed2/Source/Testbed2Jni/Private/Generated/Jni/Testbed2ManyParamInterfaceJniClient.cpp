@@ -37,9 +37,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-
-
-
 #include "Testbed2/Generated/Jni/Testbed2ManyParamInterfaceJniClient.h"
 #include "Testbed2/Generated/Jni/Testbed2DataJavaConverter.h"
 #include "Testbed2/Generated/api/Testbed2_data.h"
@@ -50,12 +47,12 @@ limitations under the License.
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
- #include "Android/AndroidJNI.h"
- #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
 
- #if USE_ANDROID_JNI
- #include <jni.h>
- #endif
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
 #endif
 
 #include <atomic>
@@ -63,758 +60,762 @@ limitations under the License.
 #include "GenericPlatform/GenericPlatformMisc.h"
 
 /**
-   \brief data structure to hold the last sent property values
+	\brief data structure to hold the last sent property values
 */
-
 
 class UTestbed2ManyParamInterfaceJniClientMethodHelper
 {
 public:
-    template <typename ResultType>
-    FGuid StorePromise(TPromise<ResultType>& Promise);
+	template <typename ResultType>
+	FGuid StorePromise(TPromise<ResultType>& Promise);
 
-    template <typename ResultType>
-    bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+	template <typename ResultType>
+	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+
 private:
-    TMap<FGuid, void*> ReplyPromisesMap;
-    FCriticalSection ReplyPromisesMapCS;
-
+	TMap<FGuid, void*> ReplyPromisesMap;
+	FCriticalSection ReplyPromisesMapCS;
 };
 
-namespace {
+namespace
+{
 
-    UTestbed2ManyParamInterfaceJniClient* gUTestbed2ManyParamInterfaceJniClientHandle = nullptr;
-    TFunction<void(bool)> gUTestbed2ManyParamInterfaceJniClientnotifyIsReady = [](bool value) { (void)value; UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set ")); };
-    TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp1ChangedEmpty = [](int32 value) { (void)value; UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("onProp1Changed used but not set ")); };
-    TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp1Changed = gUTestbed2ManyParamInterfaceJniClientOnProp1ChangedEmpty;
-    TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp2ChangedEmpty = [](int32 value) { (void)value; UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("onProp2Changed used but not set ")); };
-    TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp2Changed = gUTestbed2ManyParamInterfaceJniClientOnProp2ChangedEmpty;
-    TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp3ChangedEmpty = [](int32 value) { (void)value; UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("onProp3Changed used but not set ")); };
-    TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp3Changed = gUTestbed2ManyParamInterfaceJniClientOnProp3ChangedEmpty;
-    TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp4ChangedEmpty = [](int32 value) { (void)value; UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("onProp4Changed used but not set ")); };
-    TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp4Changed = gUTestbed2ManyParamInterfaceJniClientOnProp4ChangedEmpty;
+UTestbed2ManyParamInterfaceJniClient* gUTestbed2ManyParamInterfaceJniClientHandle = nullptr;
+TFunction<void(bool)> gUTestbed2ManyParamInterfaceJniClientnotifyIsReady = [](bool value)
+{
+	(void)value;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
+};
+TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp1ChangedEmpty = [](int32 value)
+{
+	(void)value;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("onProp1Changed used but not set "));
+};
+TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp1Changed = gUTestbed2ManyParamInterfaceJniClientOnProp1ChangedEmpty;
+TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp2ChangedEmpty = [](int32 value)
+{
+	(void)value;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("onProp2Changed used but not set "));
+};
+TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp2Changed = gUTestbed2ManyParamInterfaceJniClientOnProp2ChangedEmpty;
+TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp3ChangedEmpty = [](int32 value)
+{
+	(void)value;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("onProp3Changed used but not set "));
+};
+TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp3Changed = gUTestbed2ManyParamInterfaceJniClientOnProp3ChangedEmpty;
+TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp4ChangedEmpty = [](int32 value)
+{
+	(void)value;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("onProp4Changed used but not set "));
+};
+TFunction<void(int32)> gUTestbed2ManyParamInterfaceJniClientOnProp4Changed = gUTestbed2ManyParamInterfaceJniClientOnProp4ChangedEmpty;
 
-    UTestbed2ManyParamInterfaceJniClientMethodHelper  gUTestbed2ManyParamInterfaceJniClientmethodHelper;
+UTestbed2ManyParamInterfaceJniClientMethodHelper gUTestbed2ManyParamInterfaceJniClientmethodHelper;
 
-}
-
+} // namespace
 
 DEFINE_LOG_CATEGORY(LogTestbed2ManyParamInterfaceClient_JNI);
 
 UTestbed2ManyParamInterfaceJniClient::UTestbed2ManyParamInterfaceJniClient()
 {
 #if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("This is class that adapts the usage with android and jni, but seems to be used on different target. Make sure  you are using it with Android"));
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("This is class that adapts the usage with android and jni, but seems to be used on different target. Make sure you are using it with Android"));
 #endif
 }
 
 UTestbed2ManyParamInterfaceJniClient::UTestbed2ManyParamInterfaceJniClient(FVTableHelper& Helper)
-    : Super(Helper)
+	: Super(Helper)
 {
 }
 UTestbed2ManyParamInterfaceJniClient::~UTestbed2ManyParamInterfaceJniClient() = default;
 
 void UTestbed2ManyParamInterfaceJniClient::Initialize(FSubsystemCollectionBase& Collection)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Init"));
-    Super::Initialize(Collection);
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Init"));
+	Super::Initialize(Collection);
 
-    gUTestbed2ManyParamInterfaceJniClientHandle = this;
-    gUTestbed2ManyParamInterfaceJniClientnotifyIsReady = [this](bool value) {
-         b_isReady = value;
-         AsyncTask(ENamedThreads::GameThread, [this]()
-             {
-                 _ConnectionStatusChangedBP.Broadcast(b_isReady);
-                 _ConnectionStatusChanged.Broadcast(b_isReady);
-             });
-        };
+	gUTestbed2ManyParamInterfaceJniClientHandle = this;
+	gUTestbed2ManyParamInterfaceJniClientnotifyIsReady = [this](bool value)
+	{
+		b_isReady = value;
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_ConnectionStatusChangedBP.Broadcast(b_isReady);
+			_ConnectionStatusChanged.Broadcast(b_isReady);
+		});
+	};
 	gUTestbed2ManyParamInterfaceJniClientOnProp1Changed = [this](int32 InProp1)
-    {
-         Prop1 = InProp1;
-         _GetPublisher()->BroadcastProp1Changed(Prop1);
-    };
+	{
+		Prop1 = InProp1;
+		_GetPublisher()->BroadcastProp1Changed(Prop1);
+	};
 	gUTestbed2ManyParamInterfaceJniClientOnProp2Changed = [this](int32 InProp2)
-    {
-         Prop2 = InProp2;
-         _GetPublisher()->BroadcastProp2Changed(Prop2);
-    };
+	{
+		Prop2 = InProp2;
+		_GetPublisher()->BroadcastProp2Changed(Prop2);
+	};
 	gUTestbed2ManyParamInterfaceJniClientOnProp3Changed = [this](int32 InProp3)
-    {
-         Prop3 = InProp3;
-         _GetPublisher()->BroadcastProp3Changed(Prop3);
-    };
+	{
+		Prop3 = InProp3;
+		_GetPublisher()->BroadcastProp3Changed(Prop3);
+	};
 	gUTestbed2ManyParamInterfaceJniClientOnProp4Changed = [this](int32 InProp4)
-    {
-         Prop4 = InProp4;
-         _GetPublisher()->BroadcastProp4Changed(Prop4);
-    };
+	{
+		Prop4 = InProp4;
+		_GetPublisher()->BroadcastProp4Changed(Prop4);
+	};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-    jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
-    jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
-    m_javaJniClientInstance = Env->NewGlobalRef(localRef);
-    FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
+	jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
+	jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
+	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
 }
 
 void UTestbed2ManyParamInterfaceJniClient::Deinitialize()
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("deinit"));
-    _unbind();
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("deinit"));
+	_unbind();
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    Env->DeleteGlobalRef(m_javaJniClientInstance);
-    m_javaJniClientClass = nullptr;
-    m_javaJniClientInstance = nullptr;
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	Env->DeleteGlobalRef(m_javaJniClientInstance);
+	m_javaJniClientClass = nullptr;
+	m_javaJniClientInstance = nullptr;
 #endif
 
-    gUTestbed2ManyParamInterfaceJniClientnotifyIsReady = [](bool value){(void)value; UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));};
-    gUTestbed2ManyParamInterfaceJniClientOnProp1Changed = gUTestbed2ManyParamInterfaceJniClientOnProp1ChangedEmpty;
-    gUTestbed2ManyParamInterfaceJniClientOnProp2Changed = gUTestbed2ManyParamInterfaceJniClientOnProp2ChangedEmpty;
-    gUTestbed2ManyParamInterfaceJniClientOnProp3Changed = gUTestbed2ManyParamInterfaceJniClientOnProp3ChangedEmpty;
-    gUTestbed2ManyParamInterfaceJniClientOnProp4Changed = gUTestbed2ManyParamInterfaceJniClientOnProp4ChangedEmpty;
+	gUTestbed2ManyParamInterfaceJniClientnotifyIsReady = [](bool value)
+	{
+		(void)value;
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
+	};
+	gUTestbed2ManyParamInterfaceJniClientOnProp1Changed = gUTestbed2ManyParamInterfaceJniClientOnProp1ChangedEmpty;
+	gUTestbed2ManyParamInterfaceJniClientOnProp2Changed = gUTestbed2ManyParamInterfaceJniClientOnProp2ChangedEmpty;
+	gUTestbed2ManyParamInterfaceJniClientOnProp3Changed = gUTestbed2ManyParamInterfaceJniClientOnProp3ChangedEmpty;
+	gUTestbed2ManyParamInterfaceJniClientOnProp4Changed = gUTestbed2ManyParamInterfaceJniClientOnProp4ChangedEmpty;
 
-    gUTestbed2ManyParamInterfaceJniClientHandle = nullptr;
-    Super::Deinitialize();
+	gUTestbed2ManyParamInterfaceJniClientHandle = nullptr;
+	Super::Deinitialize();
 }
 int32 UTestbed2ManyParamInterfaceJniClient::GetProp1() const
 {
-    return Prop1;
+	return Prop1;
 }
 void UTestbed2ManyParamInterfaceJniClient::SetProp1(int32 InProp1)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp1"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp1"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetProp1() == InProp1 )
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Property prop1 to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp1() == InProp1)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Property prop1 to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp1 (I)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setProp1", "(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp1 (I)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp1);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp1 (I)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setProp1", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp1 (I)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp1);
+	}
 #endif
-
 }
 int32 UTestbed2ManyParamInterfaceJniClient::GetProp2() const
 {
-    return Prop2;
+	return Prop2;
 }
 void UTestbed2ManyParamInterfaceJniClient::SetProp2(int32 InProp2)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp2"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp2"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetProp2() == InProp2 )
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Property prop2 to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp2() == InProp2)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Property prop2 to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp2 (I)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setProp2", "(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp2 (I)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp2);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp2 (I)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setProp2", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp2 (I)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp2);
+	}
 #endif
-
 }
 int32 UTestbed2ManyParamInterfaceJniClient::GetProp3() const
 {
-    return Prop3;
+	return Prop3;
 }
 void UTestbed2ManyParamInterfaceJniClient::SetProp3(int32 InProp3)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp3"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp3"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetProp3() == InProp3 )
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Property prop3 to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp3() == InProp3)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Property prop3 to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp3 (I)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setProp3", "(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp3 (I)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp3);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp3 (I)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setProp3", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp3 (I)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp3);
+	}
 #endif
-
 }
 int32 UTestbed2ManyParamInterfaceJniClient::GetProp4() const
 {
-    return Prop4;
+	return Prop4;
 }
 void UTestbed2ManyParamInterfaceJniClient::SetProp4(int32 InProp4)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp4"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp4"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetProp4() == InProp4 )
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Property prop4 to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetProp4() == InProp4)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Property prop4 to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp4 (I)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setProp4", "(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp4 (I)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp4);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp4 (I)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setProp4", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:setProp4 (I)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp4);
+	}
 #endif
-
 }
 int32 UTestbed2ManyParamInterfaceJniClient::Func1(int32 InParam1)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1 "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1 "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return 0;
-    }
-    TPromise<int32> Promise;
+		return 0;
+	}
+	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1Async:(Ljava/lang/String;I)V CLASS not found"));
-        return 0;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "func1Async", "(Ljava/lang/String;I)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1Async:(Ljava/lang/String;I)V CLASS not found"));
+		return 0;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "func1Async", "(Ljava/lang/String;I)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1);
-    }
-    else
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1Async (Ljava/lang/String;I)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1);
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1Async (Ljava/lang/String;I)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 int32 UTestbed2ManyParamInterfaceJniClient::Func2(int32 InParam1, int32 InParam2)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2 "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2 "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return 0;
-    }
-    TPromise<int32> Promise;
+		return 0;
+	}
+	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2Async:(Ljava/lang/String;II)V CLASS not found"));
-        return 0;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "func2Async", "(Ljava/lang/String;II)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2Async:(Ljava/lang/String;II)V CLASS not found"));
+		return 0;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "func2Async", "(Ljava/lang/String;II)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1,  InParam2);
-    }
-    else
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2Async (Ljava/lang/String;II)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2);
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2Async (Ljava/lang/String;II)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 int32 UTestbed2ManyParamInterfaceJniClient::Func3(int32 InParam1, int32 InParam2, int32 InParam3)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3 "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3 "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return 0;
-    }
-    TPromise<int32> Promise;
+		return 0;
+	}
+	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3Async:(Ljava/lang/String;III)V CLASS not found"));
-        return 0;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "func3Async", "(Ljava/lang/String;III)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3Async:(Ljava/lang/String;III)V CLASS not found"));
+		return 0;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "func3Async", "(Ljava/lang/String;III)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1,  InParam2,  InParam3);
-    }
-    else
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3Async (Ljava/lang/String;III)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2, InParam3);
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3Async (Ljava/lang/String;III)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 int32 UTestbed2ManyParamInterfaceJniClient::Func4(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4 "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4 "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return 0;
-    }
-    TPromise<int32> Promise;
+		return 0;
+	}
+	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4Async:(Ljava/lang/String;IIII)V CLASS not found"));
-        return 0;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "func4Async", "(Ljava/lang/String;IIII)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4Async:(Ljava/lang/String;IIII)V CLASS not found"));
+		return 0;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "func4Async", "(Ljava/lang/String;IIII)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1,  InParam2,  InParam3,  InParam4);
-    }
-    else
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4Async (Ljava/lang/String;IIII)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2, InParam3, InParam4);
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4Async (Ljava/lang/String;IIII)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 
 bool UTestbed2ManyParamInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-    if (b_isReady)
-    {
-        if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
-        {
-            UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Already bound"));
-            return true;
-        }
-        else
-        {
-            _unbind();
-        }
-    }
-    m_lastBoundServicePackage = servicePackage;
-    m_lastConnectionId = connectionId;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
+	if (b_isReady)
+	{
+		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Already bound"));
+			return true;
+		}
+		else
+		{
+			_unbind();
+		}
+	}
+	m_lastBoundServicePackage = servicePackage;
+	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
-        return false;
-    }
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-    if (MethodID != nullptr)
-    {
-        jobject Activity = FJavaWrapper::GameActivityThis;
-        auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
-        auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
-        auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
-        return res;
-    }
-    else
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:bind (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z not found"));
-    }
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
+		return false;
+	}
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	if (MethodID != nullptr)
+	{
+		jobject Activity = FJavaWrapper::GameActivityThis;
+		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
+		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
+		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
+		return res;
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:bind (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z not found"));
+	}
 #endif
-    return false;
+	return false;
 }
 
 void UTestbed2ManyParamInterfaceJniClient::_unbind()
 {
 
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Request JNI unbind"));
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Request JNI unbind"));
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:unbind:()V CLASS not found"));
-        return;
-    }
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
-    if (MethodID != nullptr)
-    {
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
-    }
-    else
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:unbind ()V not found"));
-    }
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:unbind:()V CLASS not found"));
+		return;
+	}
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
+	if (MethodID != nullptr)
+	{
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:unbind ()V not found"));
+	}
 #endif
 }
 
 bool UTestbed2ManyParamInterfaceJniClient::_IsReady() const
 {
-    return b_isReady;
+	return b_isReady;
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp1Changed(JNIEnv* Env, jclass Clazz,jint prop1)
+JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp1Changed(JNIEnv* Env, jclass Clazz, jint prop1)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp1Changed"));
-    if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp1Changed: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp1Changed"));
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp1Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [prop1]()
-    {
-        gUTestbed2ManyParamInterfaceJniClientOnProp1Changed(prop1);
-    });
+	AsyncTask(ENamedThreads::GameThread, [prop1]()
+		{
+		gUTestbed2ManyParamInterfaceJniClientOnProp1Changed(prop1);
+	});
 }
-JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp2Changed(JNIEnv* Env, jclass Clazz,jint prop2)
+JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp2Changed(JNIEnv* Env, jclass Clazz, jint prop2)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp2Changed"));
-    if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp2Changed: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp2Changed"));
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp2Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [prop2]()
-    {
-        gUTestbed2ManyParamInterfaceJniClientOnProp2Changed(prop2);
-    });
+	AsyncTask(ENamedThreads::GameThread, [prop2]()
+		{
+		gUTestbed2ManyParamInterfaceJniClientOnProp2Changed(prop2);
+	});
 }
-JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp3Changed(JNIEnv* Env, jclass Clazz,jint prop3)
+JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp3Changed(JNIEnv* Env, jclass Clazz, jint prop3)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp3Changed"));
-    if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp3Changed: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp3Changed"));
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp3Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [prop3]()
-    {
-        gUTestbed2ManyParamInterfaceJniClientOnProp3Changed(prop3);
-    });
+	AsyncTask(ENamedThreads::GameThread, [prop3]()
+		{
+		gUTestbed2ManyParamInterfaceJniClientOnProp3Changed(prop3);
+	});
 }
-JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp4Changed(JNIEnv* Env, jclass Clazz,jint prop4)
+JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp4Changed(JNIEnv* Env, jclass Clazz, jint prop4)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp4Changed"));
-    if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp4Changed: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp4Changed"));
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp4Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [prop4]()
-    {
-        gUTestbed2ManyParamInterfaceJniClientOnProp4Changed(prop4);
-    });
+	AsyncTask(ENamedThreads::GameThread, [prop4]()
+		{
+		gUTestbed2ManyParamInterfaceJniClientOnProp4Changed(prop4);
+	});
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig1(JNIEnv* Env, jclass Clazz, jint param1)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig1"));
-    if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig1"));
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ param1]()
-        {
-            if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal( param1);
-        });
+	AsyncTask(ENamedThreads::GameThread, [param1]()
+		{
+		if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(param1);
+	});
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig2(JNIEnv* Env, jclass Clazz, jint param1, jint param2)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig2"));
-    if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig2"));
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ param1,  param2]()
-        {
-            if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal( param1,  param2);
-        });
+	AsyncTask(ENamedThreads::GameThread, [param1, param2]()
+		{
+		if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(param1, param2);
+	});
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig3(JNIEnv* Env, jclass Clazz, jint param1, jint param2, jint param3)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig3"));
-    if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig3"));
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ param1,  param2,  param3]()
-        {
-            if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig3Signal( param1,  param2,  param3);
-        });
+	AsyncTask(ENamedThreads::GameThread, [param1, param2, param3]()
+		{
+		if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig3Signal(param1, param2, param3);
+	});
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig4(JNIEnv* Env, jclass Clazz, jint param1, jint param2, jint param3, jint param4)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig4"));
-    if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig4: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig4"));
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig4: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ param1,  param2,  param3,  param4]()
-        {
-            if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig4: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig4Signal( param1,  param2,  param3,  param4);
-        });
+	AsyncTask(ENamedThreads::GameThread, [param1, param2, param3, param4]()
+		{
+		if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig4: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig4Signal(param1, param2, param3, param4);
+	});
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc1Result(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc1Result"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc1Result"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc2Result(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc2Result"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc2Result"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc3Result(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc3Result"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc3Result"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc4Result(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc4Result"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc4Result"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-    AsyncTask(ENamedThreads::GameThread, [value]()
-        {
-            gUTestbed2ManyParamInterfaceJniClientnotifyIsReady(value);
-        });
+	AsyncTask(ENamedThreads::GameThread, [value]()
+		{
+		gUTestbed2ManyParamInterfaceJniClientnotifyIsReady(value);
+	});
 }
 #endif
-
 
 template <typename ResultType>
 FGuid UTestbed2ManyParamInterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
-    FGuid Id = FGuid::NewGuid();
-    FScopeLock Lock(&ReplyPromisesMapCS);
-    ReplyPromisesMap.Add(Id, &Promise);
-    //TODO invalid id if sth goes wrong + log + checking
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
-    return Id;
+	FGuid Id = FGuid::NewGuid();
+	FScopeLock Lock(&ReplyPromisesMapCS);
+	ReplyPromisesMap.Add(Id, &Promise);
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	return Id;
 }
 
 template <typename ResultType>
 bool UTestbed2ManyParamInterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-    UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
-    TPromise<ResultType>* PromisePtr = nullptr;
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	TPromise<ResultType>* PromisePtr = nullptr;
 
-    {
-        FScopeLock Lock(&ReplyPromisesMapCS);
-        if (auto** Found = ReplyPromisesMap.Find(Id))
-        {
-            PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-            ReplyPromisesMap.Remove(Id);
-        }
-    }
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		if (auto** Found = ReplyPromisesMap.Find(Id))
+		{
+			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
+			ReplyPromisesMap.Remove(Id);
+		}
+	}
 
-    if (PromisePtr)
-    {
-        AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-            {
-                PromisePtr->SetValue(Value);
-            });
-        return true;
-
-    }
-    return false;
+	if (PromisePtr)
+	{
+		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
+			{
+			PromisePtr->SetValue(Value);
+		});
+		return true;
+	}
+	return false;
 }
 template FGuid UTestbed2ManyParamInterfaceJniClientMethodHelper::StorePromise<int32>(TPromise<int32>& Promise);
 template bool UTestbed2ManyParamInterfaceJniClientMethodHelper::FulfillPromise<int32>(const FGuid& Id, const int32& Value);
-

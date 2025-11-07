@@ -17,7 +17,6 @@ limitations under the License.
 #include "Testbed2ManyParamInterfaceJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "Testbed2/Generated/Jni/Testbed2ManyParamInterfaceJniClient.h"

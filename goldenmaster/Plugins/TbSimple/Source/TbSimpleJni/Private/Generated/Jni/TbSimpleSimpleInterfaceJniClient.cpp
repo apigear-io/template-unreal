@@ -37,9 +37,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
-
-
-
 #include "TbSimple/Generated/Jni/TbSimpleSimpleInterfaceJniClient.h"
 #include "TbSimple/Generated/Jni/TbSimpleDataJavaConverter.h"
 
@@ -49,12 +46,12 @@ limitations under the License.
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
- #include "Android/AndroidJNI.h"
- #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
 
- #if USE_ANDROID_JNI
- #include <jni.h>
- #endif
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
 #endif
 
 #include <atomic>
@@ -62,1413 +59,1413 @@ limitations under the License.
 #include "GenericPlatform/GenericPlatformMisc.h"
 
 /**
-   \brief data structure to hold the last sent property values
+	\brief data structure to hold the last sent property values
 */
-
 
 class UTbSimpleSimpleInterfaceJniClientMethodHelper
 {
 public:
-    template <typename ResultType>
-    FGuid StorePromise(TPromise<ResultType>& Promise);
+	template <typename ResultType>
+	FGuid StorePromise(TPromise<ResultType>& Promise);
 
-    template <typename ResultType>
-    bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+	template <typename ResultType>
+	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+
 private:
-    TMap<FGuid, void*> ReplyPromisesMap;
-    FCriticalSection ReplyPromisesMapCS;
-
+	TMap<FGuid, void*> ReplyPromisesMap;
+	FCriticalSection ReplyPromisesMapCS;
 };
 
-namespace {
+namespace
+{
 
-    UTbSimpleSimpleInterfaceJniClient* gUTbSimpleSimpleInterfaceJniClientHandle = nullptr;
-    TFunction<void(bool)> gUTbSimpleSimpleInterfaceJniClientnotifyIsReady = [](bool value) { (void)value; UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set ")); };
-    TFunction<void(bool)> gUTbSimpleSimpleInterfaceJniClientOnPropBoolChangedEmpty = [](bool value) { (void)value; UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropBoolChanged used but not set ")); };
-    TFunction<void(bool)> gUTbSimpleSimpleInterfaceJniClientOnPropBoolChanged = gUTbSimpleSimpleInterfaceJniClientOnPropBoolChangedEmpty;
-    TFunction<void(int32)> gUTbSimpleSimpleInterfaceJniClientOnPropIntChangedEmpty = [](int32 value) { (void)value; UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropIntChanged used but not set ")); };
-    TFunction<void(int32)> gUTbSimpleSimpleInterfaceJniClientOnPropIntChanged = gUTbSimpleSimpleInterfaceJniClientOnPropIntChangedEmpty;
-    TFunction<void(int32)> gUTbSimpleSimpleInterfaceJniClientOnPropInt32ChangedEmpty = [](int32 value) { (void)value; UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropInt32Changed used but not set ")); };
-    TFunction<void(int32)> gUTbSimpleSimpleInterfaceJniClientOnPropInt32Changed = gUTbSimpleSimpleInterfaceJniClientOnPropInt32ChangedEmpty;
-    TFunction<void(int64)> gUTbSimpleSimpleInterfaceJniClientOnPropInt64ChangedEmpty = [](int64 value) { (void)value; UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropInt64Changed used but not set ")); };
-    TFunction<void(int64)> gUTbSimpleSimpleInterfaceJniClientOnPropInt64Changed = gUTbSimpleSimpleInterfaceJniClientOnPropInt64ChangedEmpty;
-    TFunction<void(float)> gUTbSimpleSimpleInterfaceJniClientOnPropFloatChangedEmpty = [](float value) { (void)value; UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropFloatChanged used but not set ")); };
-    TFunction<void(float)> gUTbSimpleSimpleInterfaceJniClientOnPropFloatChanged = gUTbSimpleSimpleInterfaceJniClientOnPropFloatChangedEmpty;
-    TFunction<void(float)> gUTbSimpleSimpleInterfaceJniClientOnPropFloat32ChangedEmpty = [](float value) { (void)value; UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropFloat32Changed used but not set ")); };
-    TFunction<void(float)> gUTbSimpleSimpleInterfaceJniClientOnPropFloat32Changed = gUTbSimpleSimpleInterfaceJniClientOnPropFloat32ChangedEmpty;
-    TFunction<void(double)> gUTbSimpleSimpleInterfaceJniClientOnPropFloat64ChangedEmpty = [](double value) { (void)value; UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropFloat64Changed used but not set ")); };
-    TFunction<void(double)> gUTbSimpleSimpleInterfaceJniClientOnPropFloat64Changed = gUTbSimpleSimpleInterfaceJniClientOnPropFloat64ChangedEmpty;
-    TFunction<void(FString)> gUTbSimpleSimpleInterfaceJniClientOnPropStringChangedEmpty = [](FString value) { (void)value; UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropStringChanged used but not set ")); };
-    TFunction<void(FString)> gUTbSimpleSimpleInterfaceJniClientOnPropStringChanged = gUTbSimpleSimpleInterfaceJniClientOnPropStringChangedEmpty;
+UTbSimpleSimpleInterfaceJniClient* gUTbSimpleSimpleInterfaceJniClientHandle = nullptr;
+TFunction<void(bool)> gUTbSimpleSimpleInterfaceJniClientnotifyIsReady = [](bool value)
+{
+	(void)value;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
+};
+TFunction<void(bool)> gUTbSimpleSimpleInterfaceJniClientOnPropBoolChangedEmpty = [](bool value)
+{
+	(void)value;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropBoolChanged used but not set "));
+};
+TFunction<void(bool)> gUTbSimpleSimpleInterfaceJniClientOnPropBoolChanged = gUTbSimpleSimpleInterfaceJniClientOnPropBoolChangedEmpty;
+TFunction<void(int32)> gUTbSimpleSimpleInterfaceJniClientOnPropIntChangedEmpty = [](int32 value)
+{
+	(void)value;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropIntChanged used but not set "));
+};
+TFunction<void(int32)> gUTbSimpleSimpleInterfaceJniClientOnPropIntChanged = gUTbSimpleSimpleInterfaceJniClientOnPropIntChangedEmpty;
+TFunction<void(int32)> gUTbSimpleSimpleInterfaceJniClientOnPropInt32ChangedEmpty = [](int32 value)
+{
+	(void)value;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropInt32Changed used but not set "));
+};
+TFunction<void(int32)> gUTbSimpleSimpleInterfaceJniClientOnPropInt32Changed = gUTbSimpleSimpleInterfaceJniClientOnPropInt32ChangedEmpty;
+TFunction<void(int64)> gUTbSimpleSimpleInterfaceJniClientOnPropInt64ChangedEmpty = [](int64 value)
+{
+	(void)value;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropInt64Changed used but not set "));
+};
+TFunction<void(int64)> gUTbSimpleSimpleInterfaceJniClientOnPropInt64Changed = gUTbSimpleSimpleInterfaceJniClientOnPropInt64ChangedEmpty;
+TFunction<void(float)> gUTbSimpleSimpleInterfaceJniClientOnPropFloatChangedEmpty = [](float value)
+{
+	(void)value;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropFloatChanged used but not set "));
+};
+TFunction<void(float)> gUTbSimpleSimpleInterfaceJniClientOnPropFloatChanged = gUTbSimpleSimpleInterfaceJniClientOnPropFloatChangedEmpty;
+TFunction<void(float)> gUTbSimpleSimpleInterfaceJniClientOnPropFloat32ChangedEmpty = [](float value)
+{
+	(void)value;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropFloat32Changed used but not set "));
+};
+TFunction<void(float)> gUTbSimpleSimpleInterfaceJniClientOnPropFloat32Changed = gUTbSimpleSimpleInterfaceJniClientOnPropFloat32ChangedEmpty;
+TFunction<void(double)> gUTbSimpleSimpleInterfaceJniClientOnPropFloat64ChangedEmpty = [](double value)
+{
+	(void)value;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropFloat64Changed used but not set "));
+};
+TFunction<void(double)> gUTbSimpleSimpleInterfaceJniClientOnPropFloat64Changed = gUTbSimpleSimpleInterfaceJniClientOnPropFloat64ChangedEmpty;
+TFunction<void(FString)> gUTbSimpleSimpleInterfaceJniClientOnPropStringChangedEmpty = [](FString value)
+{
+	(void)value;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("onPropStringChanged used but not set "));
+};
+TFunction<void(FString)> gUTbSimpleSimpleInterfaceJniClientOnPropStringChanged = gUTbSimpleSimpleInterfaceJniClientOnPropStringChangedEmpty;
 
-    UTbSimpleSimpleInterfaceJniClientMethodHelper  gUTbSimpleSimpleInterfaceJniClientmethodHelper;
+UTbSimpleSimpleInterfaceJniClientMethodHelper gUTbSimpleSimpleInterfaceJniClientmethodHelper;
 
-}
-
+} // namespace
 
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleInterfaceClient_JNI);
 
 UTbSimpleSimpleInterfaceJniClient::UTbSimpleSimpleInterfaceJniClient()
 {
 #if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("This is class that adapts the usage with android and jni, but seems to be used on different target. Make sure  you are using it with Android"));
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("This is class that adapts the usage with android and jni, but seems to be used on different target. Make sure you are using it with Android"));
 #endif
 }
 
 UTbSimpleSimpleInterfaceJniClient::UTbSimpleSimpleInterfaceJniClient(FVTableHelper& Helper)
-    : Super(Helper)
+	: Super(Helper)
 {
 }
 UTbSimpleSimpleInterfaceJniClient::~UTbSimpleSimpleInterfaceJniClient() = default;
 
 void UTbSimpleSimpleInterfaceJniClient::Initialize(FSubsystemCollectionBase& Collection)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Init"));
-    Super::Initialize(Collection);
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Init"));
+	Super::Initialize(Collection);
 
-    gUTbSimpleSimpleInterfaceJniClientHandle = this;
-    gUTbSimpleSimpleInterfaceJniClientnotifyIsReady = [this](bool value) {
-         b_isReady = value;
-         AsyncTask(ENamedThreads::GameThread, [this]()
-             {
-                 _ConnectionStatusChangedBP.Broadcast(b_isReady);
-                 _ConnectionStatusChanged.Broadcast(b_isReady);
-             });
-        };
+	gUTbSimpleSimpleInterfaceJniClientHandle = this;
+	gUTbSimpleSimpleInterfaceJniClientnotifyIsReady = [this](bool value)
+	{
+		b_isReady = value;
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_ConnectionStatusChangedBP.Broadcast(b_isReady);
+			_ConnectionStatusChanged.Broadcast(b_isReady);
+		});
+	};
 	gUTbSimpleSimpleInterfaceJniClientOnPropBoolChanged = [this](bool bInPropBool)
-    {
-         bPropBool = bInPropBool;
-         _GetPublisher()->BroadcastPropBoolChanged(bPropBool);
-    };
+	{
+		bPropBool = bInPropBool;
+		_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
+	};
 	gUTbSimpleSimpleInterfaceJniClientOnPropIntChanged = [this](int32 InPropInt)
-    {
-         PropInt = InPropInt;
-         _GetPublisher()->BroadcastPropIntChanged(PropInt);
-    };
+	{
+		PropInt = InPropInt;
+		_GetPublisher()->BroadcastPropIntChanged(PropInt);
+	};
 	gUTbSimpleSimpleInterfaceJniClientOnPropInt32Changed = [this](int32 InPropInt32)
-    {
-         PropInt32 = InPropInt32;
-         _GetPublisher()->BroadcastPropInt32Changed(PropInt32);
-    };
+	{
+		PropInt32 = InPropInt32;
+		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
+	};
 	gUTbSimpleSimpleInterfaceJniClientOnPropInt64Changed = [this](int64 InPropInt64)
-    {
-         PropInt64 = InPropInt64;
-         _GetPublisher()->BroadcastPropInt64Changed(PropInt64);
-    };
+	{
+		PropInt64 = InPropInt64;
+		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
+	};
 	gUTbSimpleSimpleInterfaceJniClientOnPropFloatChanged = [this](float InPropFloat)
-    {
-         PropFloat = InPropFloat;
-         _GetPublisher()->BroadcastPropFloatChanged(PropFloat);
-    };
+	{
+		PropFloat = InPropFloat;
+		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
+	};
 	gUTbSimpleSimpleInterfaceJniClientOnPropFloat32Changed = [this](float InPropFloat32)
-    {
-         PropFloat32 = InPropFloat32;
-         _GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
-    };
+	{
+		PropFloat32 = InPropFloat32;
+		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
+	};
 	gUTbSimpleSimpleInterfaceJniClientOnPropFloat64Changed = [this](double InPropFloat64)
-    {
-         PropFloat64 = InPropFloat64;
-         _GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
-    };
+	{
+		PropFloat64 = InPropFloat64;
+		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
+	};
 	gUTbSimpleSimpleInterfaceJniClientOnPropStringChanged = [this](const FString& InPropString)
-    {
-         PropString = InPropString;
-         _GetPublisher()->BroadcastPropStringChanged(PropString);
-    };
+	{
+		PropString = InPropString;
+		_GetPublisher()->BroadcastPropStringChanged(PropString);
+	};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-    jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
-    jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
-    m_javaJniClientInstance = Env->NewGlobalRef(localRef);
-    FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
+	jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
+	jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
+	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
 }
 
 void UTbSimpleSimpleInterfaceJniClient::Deinitialize()
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("deinit"));
-    _unbind();
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("deinit"));
+	_unbind();
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    Env->DeleteGlobalRef(m_javaJniClientInstance);
-    m_javaJniClientClass = nullptr;
-    m_javaJniClientInstance = nullptr;
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	Env->DeleteGlobalRef(m_javaJniClientInstance);
+	m_javaJniClientClass = nullptr;
+	m_javaJniClientInstance = nullptr;
 #endif
 
-    gUTbSimpleSimpleInterfaceJniClientnotifyIsReady = [](bool value){(void)value; UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));};
-    gUTbSimpleSimpleInterfaceJniClientOnPropBoolChanged = gUTbSimpleSimpleInterfaceJniClientOnPropBoolChangedEmpty;
-    gUTbSimpleSimpleInterfaceJniClientOnPropIntChanged = gUTbSimpleSimpleInterfaceJniClientOnPropIntChangedEmpty;
-    gUTbSimpleSimpleInterfaceJniClientOnPropInt32Changed = gUTbSimpleSimpleInterfaceJniClientOnPropInt32ChangedEmpty;
-    gUTbSimpleSimpleInterfaceJniClientOnPropInt64Changed = gUTbSimpleSimpleInterfaceJniClientOnPropInt64ChangedEmpty;
-    gUTbSimpleSimpleInterfaceJniClientOnPropFloatChanged = gUTbSimpleSimpleInterfaceJniClientOnPropFloatChangedEmpty;
-    gUTbSimpleSimpleInterfaceJniClientOnPropFloat32Changed = gUTbSimpleSimpleInterfaceJniClientOnPropFloat32ChangedEmpty;
-    gUTbSimpleSimpleInterfaceJniClientOnPropFloat64Changed = gUTbSimpleSimpleInterfaceJniClientOnPropFloat64ChangedEmpty;
-    gUTbSimpleSimpleInterfaceJniClientOnPropStringChanged = gUTbSimpleSimpleInterfaceJniClientOnPropStringChangedEmpty;
+	gUTbSimpleSimpleInterfaceJniClientnotifyIsReady = [](bool value)
+	{
+		(void)value;
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
+	};
+	gUTbSimpleSimpleInterfaceJniClientOnPropBoolChanged = gUTbSimpleSimpleInterfaceJniClientOnPropBoolChangedEmpty;
+	gUTbSimpleSimpleInterfaceJniClientOnPropIntChanged = gUTbSimpleSimpleInterfaceJniClientOnPropIntChangedEmpty;
+	gUTbSimpleSimpleInterfaceJniClientOnPropInt32Changed = gUTbSimpleSimpleInterfaceJniClientOnPropInt32ChangedEmpty;
+	gUTbSimpleSimpleInterfaceJniClientOnPropInt64Changed = gUTbSimpleSimpleInterfaceJniClientOnPropInt64ChangedEmpty;
+	gUTbSimpleSimpleInterfaceJniClientOnPropFloatChanged = gUTbSimpleSimpleInterfaceJniClientOnPropFloatChangedEmpty;
+	gUTbSimpleSimpleInterfaceJniClientOnPropFloat32Changed = gUTbSimpleSimpleInterfaceJniClientOnPropFloat32ChangedEmpty;
+	gUTbSimpleSimpleInterfaceJniClientOnPropFloat64Changed = gUTbSimpleSimpleInterfaceJniClientOnPropFloat64ChangedEmpty;
+	gUTbSimpleSimpleInterfaceJniClientOnPropStringChanged = gUTbSimpleSimpleInterfaceJniClientOnPropStringChangedEmpty;
 
-    gUTbSimpleSimpleInterfaceJniClientHandle = nullptr;
-    Super::Deinitialize();
+	gUTbSimpleSimpleInterfaceJniClientHandle = nullptr;
+	Super::Deinitialize();
 }
 bool UTbSimpleSimpleInterfaceJniClient::GetPropBool() const
 {
-    return bPropBool;
+	return bPropBool;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropBool(bool bInPropBool)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropBool"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropBool"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetPropBool() == bInPropBool )
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propBool to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropBool() == bInPropBool)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propBool to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropBool (Z)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropBool", "(Z)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropBool (Z)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, bInPropBool);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropBool (Z)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropBool", "(Z)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropBool (Z)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, bInPropBool);
+	}
 #endif
-
 }
 int32 UTbSimpleSimpleInterfaceJniClient::GetPropInt() const
 {
-    return PropInt;
+	return PropInt;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropInt(int32 InPropInt)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetPropInt() == InPropInt )
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propInt to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt() == InPropInt)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propInt to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt (I)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropInt", "(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt (I)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropInt);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt (I)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropInt", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt (I)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropInt);
+	}
 #endif
-
 }
 int32 UTbSimpleSimpleInterfaceJniClient::GetPropInt32() const
 {
-    return PropInt32;
+	return PropInt32;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropInt32(int32 InPropInt32)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt32"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt32"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetPropInt32() == InPropInt32 )
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propInt32 to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt32() == InPropInt32)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propInt32 to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt32 (I)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropInt32", "(I)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt32 (I)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropInt32);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt32 (I)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropInt32", "(I)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt32 (I)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropInt32);
+	}
 #endif
-
 }
 int64 UTbSimpleSimpleInterfaceJniClient::GetPropInt64() const
 {
-    return PropInt64;
+	return PropInt64;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropInt64(int64 InPropInt64)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt64"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt64"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetPropInt64() == InPropInt64 )
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propInt64 to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropInt64() == InPropInt64)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propInt64 to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt64 (J)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropInt64", "(J)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt64 (J)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropInt64);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt64 (J)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropInt64", "(J)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt64 (J)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropInt64);
+	}
 #endif
-
 }
 float UTbSimpleSimpleInterfaceJniClient::GetPropFloat() const
 {
-    return PropFloat;
+	return PropFloat;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropFloat(float InPropFloat)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetPropFloat() == InPropFloat )
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propFloat to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropFloat() == InPropFloat)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propFloat to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat (F)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropFloat", "(F)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat (F)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropFloat);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat (F)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropFloat", "(F)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat (F)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropFloat);
+	}
 #endif
-
 }
 float UTbSimpleSimpleInterfaceJniClient::GetPropFloat32() const
 {
-    return PropFloat32;
+	return PropFloat32;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropFloat32(float InPropFloat32)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat32"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat32"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetPropFloat32() == InPropFloat32 )
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propFloat32 to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropFloat32() == InPropFloat32)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propFloat32 to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat32 (F)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropFloat32", "(F)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat32 (F)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropFloat32);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat32 (F)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropFloat32", "(F)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat32 (F)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropFloat32);
+	}
 #endif
-
 }
 double UTbSimpleSimpleInterfaceJniClient::GetPropFloat64() const
 {
-    return PropFloat64;
+	return PropFloat64;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropFloat64(double InPropFloat64)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat64"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat64"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetPropFloat64() == InPropFloat64 )
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propFloat64 to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropFloat64() == InPropFloat64)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propFloat64 to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat64 (D)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropFloat64", "(D)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat64 (D)V not found"));
-            return;
-        }
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropFloat64);
-    }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat64 (D)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropFloat64", "(D)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat64 (D)V not found"));
+			return;
+		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropFloat64);
+	}
 #endif
-
 }
 FString UTbSimpleSimpleInterfaceJniClient::GetPropString() const
 {
-    return PropString;
+	return PropString;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropString(const FString& InPropString)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropString"));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropString"));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
-    // only send change requests if the value changed -> reduce network load
-    if (GetPropString() == InPropString )
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propString to set is same as current, new value won't be sent"));
-        return;
-    }
+	// only send change requests if the value changed -> reduce network load
+	if (GetPropString() == InPropString)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Property propString to set is same as current, new value won't be sent"));
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniClientClass == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropString (Ljava/lang/String;)V CLASS not found"));
-            return;
-        }
-        static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropString", "(Ljava/lang/String;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropString (Ljava/lang/String;)V not found"));
-            return;
-        }
-        
-        auto jlocal_PropStringWrapped = FJavaHelper::ToJavaString(Env, InPropString);
-        jstring jlocal_PropString = static_cast<jstring>(Env->NewLocalRef(*jlocal_PropStringWrapped));
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropString);
-        Env->DeleteLocalRef(jlocal_PropString);
-    }
-#endif
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniClientClass == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropString (Ljava/lang/String;)V CLASS not found"));
+			return;
+		}
+		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropString", "(Ljava/lang/String;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropString (Ljava/lang/String;)V not found"));
+			return;
+		}
 
+		auto jlocal_PropStringWrapped = FJavaHelper::ToJavaString(Env, InPropString);
+		jstring jlocal_PropString = static_cast<jstring>(Env->NewLocalRef(*jlocal_PropStringWrapped));
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropString);
+		Env->DeleteLocalRef(jlocal_PropString);
+	}
+#endif
 }
 void UTbSimpleSimpleInterfaceJniClient::FuncNoReturnValue(bool bInParamBool)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoReturnValue "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoReturnValue "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return;
-    }
+		return;
+	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoReturnValueAsync:(Ljava/lang/String;Z)V CLASS not found"));
-        return;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcNoReturnValueAsync", "(Ljava/lang/String;Z)V");
-    if (MethodID != nullptr)
-    {
-        FGuid id = FGuid::NewGuid();
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoReturnValueAsync:(Ljava/lang/String;Z)V CLASS not found"));
+		return;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcNoReturnValueAsync", "(Ljava/lang/String;Z)V");
+	if (MethodID != nullptr)
+	{
+		FGuid id = FGuid::NewGuid();
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInParamBool);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoReturnValueAsync (Ljava/lang/String;Z)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInParamBool);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoReturnValueAsync (Ljava/lang/String;Z)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return;
-
+	return;
 }
 bool UTbSimpleSimpleInterfaceJniClient::FuncNoParams()
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParams "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParams "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return false;
-    }
-    TPromise<bool> Promise;
+		return false;
+	}
+	TPromise<bool> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync:(Ljava/lang/String;)V CLASS not found"));
-        return false;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcNoParamsAsync", "(Ljava/lang/String;)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync:(Ljava/lang/String;)V CLASS not found"));
+		return false;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcNoParamsAsync", "(Ljava/lang/String;)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync (Ljava/lang/String;)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync (Ljava/lang/String;)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 bool UTbSimpleSimpleInterfaceJniClient::FuncBool(bool bInParamBool)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBool "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBool "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return false;
-    }
-    TPromise<bool> Promise;
+		return false;
+	}
+	TPromise<bool> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Z)V CLASS not found"));
-        return false;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcBoolAsync", "(Ljava/lang/String;Z)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Z)V CLASS not found"));
+		return false;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcBoolAsync", "(Ljava/lang/String;Z)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInParamBool);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInParamBool);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 int32 UTbSimpleSimpleInterfaceJniClient::FuncInt(int32 InParamInt)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return 0;
-    }
-    TPromise<int32> Promise;
+		return 0;
+	}
+	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcIntAsync:(Ljava/lang/String;I)V CLASS not found"));
-        return 0;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcIntAsync", "(Ljava/lang/String;I)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcIntAsync:(Ljava/lang/String;I)V CLASS not found"));
+		return 0;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcIntAsync", "(Ljava/lang/String;I)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamInt);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcIntAsync (Ljava/lang/String;I)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamInt);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcIntAsync (Ljava/lang/String;I)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 int32 UTbSimpleSimpleInterfaceJniClient::FuncInt32(int32 InParamInt32)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32 "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32 "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return 0;
-    }
-    TPromise<int32> Promise;
+		return 0;
+	}
+	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32Async:(Ljava/lang/String;I)V CLASS not found"));
-        return 0;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcInt32Async", "(Ljava/lang/String;I)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32Async:(Ljava/lang/String;I)V CLASS not found"));
+		return 0;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcInt32Async", "(Ljava/lang/String;I)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamInt32);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32Async (Ljava/lang/String;I)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamInt32);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32Async (Ljava/lang/String;I)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 int64 UTbSimpleSimpleInterfaceJniClient::FuncInt64(int64 InParamInt64)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64 "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64 "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return 0LL;
-    }
-    TPromise<int64> Promise;
+		return 0LL;
+	}
+	TPromise<int64> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64Async:(Ljava/lang/String;J)V CLASS not found"));
-        return 0LL;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcInt64Async", "(Ljava/lang/String;J)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64Async:(Ljava/lang/String;J)V CLASS not found"));
+		return 0LL;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcInt64Async", "(Ljava/lang/String;J)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamInt64);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64Async (Ljava/lang/String;J)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamInt64);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64Async (Ljava/lang/String;J)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 float UTbSimpleSimpleInterfaceJniClient::FuncFloat(float InParamFloat)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return 0.0f;
-    }
-    TPromise<float> Promise;
+		return 0.0f;
+	}
+	TPromise<float> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloatAsync:(Ljava/lang/String;F)V CLASS not found"));
-        return 0.0f;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcFloatAsync", "(Ljava/lang/String;F)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloatAsync:(Ljava/lang/String;F)V CLASS not found"));
+		return 0.0f;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcFloatAsync", "(Ljava/lang/String;F)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamFloat);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloatAsync (Ljava/lang/String;F)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamFloat);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloatAsync (Ljava/lang/String;F)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 float UTbSimpleSimpleInterfaceJniClient::FuncFloat32(float InParamFloat32)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32 "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32 "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return 0.0f;
-    }
-    TPromise<float> Promise;
+		return 0.0f;
+	}
+	TPromise<float> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32Async:(Ljava/lang/String;F)V CLASS not found"));
-        return 0.0f;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcFloat32Async", "(Ljava/lang/String;F)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32Async:(Ljava/lang/String;F)V CLASS not found"));
+		return 0.0f;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcFloat32Async", "(Ljava/lang/String;F)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamFloat32);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32Async (Ljava/lang/String;F)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamFloat32);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32Async (Ljava/lang/String;F)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 double UTbSimpleSimpleInterfaceJniClient::FuncFloat64(double InParamFloat)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64 "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64 "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return 0.0;
-    }
-    TPromise<double> Promise;
+		return 0.0;
+	}
+	TPromise<double> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64Async:(Ljava/lang/String;D)V CLASS not found"));
-        return 0.0;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcFloat64Async", "(Ljava/lang/String;D)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64Async:(Ljava/lang/String;D)V CLASS not found"));
+		return 0.0;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcFloat64Async", "(Ljava/lang/String;D)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamFloat);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64Async (Ljava/lang/String;D)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParamFloat);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64Async (Ljava/lang/String;D)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 FString UTbSimpleSimpleInterfaceJniClient::FuncString(const FString& InParamString)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcString "));
-    if (!b_isReady)
-    {
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcString "));
+	if (!b_isReady)
+	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #else
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
 #endif
-        return FString();
-    }
-    TPromise<FString> Promise;
+		return FString();
+	}
+	TPromise<FString> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcStringAsync:(Ljava/lang/String;Ljava/lang/String;)V CLASS not found"));
-        return FString();
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcStringAsync", "(Ljava/lang/String;Ljava/lang/String;)V");
-    if (MethodID != nullptr)
-    {
-        auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
-        auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-        auto jlocal_ParamStringWrapped = FJavaHelper::ToJavaString(Env, InParamString);
-        jstring jlocal_ParamString = static_cast<jstring>(Env->NewLocalRef(*jlocal_ParamStringWrapped));;
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcStringAsync:(Ljava/lang/String;Ljava/lang/String;)V CLASS not found"));
+		return FString();
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcStringAsync", "(Ljava/lang/String;Ljava/lang/String;)V");
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		auto jlocal_ParamStringWrapped = FJavaHelper::ToJavaString(Env, InParamString);
+		jstring jlocal_ParamString = static_cast<jstring>(Env->NewLocalRef(*jlocal_ParamStringWrapped));
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamString);
-        Env->DeleteLocalRef(jlocal_ParamString);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcStringAsync (Ljava/lang/String;Ljava/lang/String;)V not found"));
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamString);
+		Env->DeleteLocalRef(jlocal_ParamString);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcStringAsync (Ljava/lang/String;Ljava/lang/String;)V not found"));
+	}
 #endif
-    //TODO probalby #elsif set some default on promise as a result.
-    return Promise.GetFuture().Get();
-
+	return Promise.GetFuture().Get();
 }
 
 bool UTbSimpleSimpleInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-    if (b_isReady)
-    {
-        if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
-        {
-            UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Already bound"));
-            return true;
-        }
-        else
-        {
-            _unbind();
-        }
-    }
-    m_lastBoundServicePackage = servicePackage;
-    m_lastConnectionId = connectionId;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
+	if (b_isReady)
+	{
+		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Already bound"));
+			return true;
+		}
+		else
+		{
+			_unbind();
+		}
+	}
+	m_lastBoundServicePackage = servicePackage;
+	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
-        return false;
-    }
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-    if (MethodID != nullptr)
-    {
-        jobject Activity = FJavaWrapper::GameActivityThis;
-        auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
-        auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
-        auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
-        return res;
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:bind (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z not found"));
-    }
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
+		return false;
+	}
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	if (MethodID != nullptr)
+	{
+		jobject Activity = FJavaWrapper::GameActivityThis;
+		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
+		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
+		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
+		return res;
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:bind (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z not found"));
+	}
 #endif
-    return false;
+	return false;
 }
 
 void UTbSimpleSimpleInterfaceJniClient::_unbind()
 {
 
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Request JNI unbind"));
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Request JNI unbind"));
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-    if (m_javaJniClientClass == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:unbind:()V CLASS not found"));
-        return;
-    }
-    static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
-    if (MethodID != nullptr)
-    {
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
-    }
-    else
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:unbind ()V not found"));
-    }
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	if (m_javaJniClientClass == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:unbind:()V CLASS not found"));
+		return;
+	}
+	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
+	if (MethodID != nullptr)
+	{
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:unbind ()V not found"));
+	}
 #endif
 }
 
 bool UTbSimpleSimpleInterfaceJniClient::_IsReady() const
 {
-    return b_isReady;
+	return b_isReady;
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropBoolChanged(JNIEnv* Env, jclass Clazz,jboolean propBool)
+JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropBoolChanged(JNIEnv* Env, jclass Clazz, jboolean propBool)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropBoolChanged"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropBoolChanged: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropBoolChanged"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropBoolChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [propBool]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientOnPropBoolChanged(propBool);
-    });
+	AsyncTask(ENamedThreads::GameThread, [propBool]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientOnPropBoolChanged(propBool);
+	});
 }
-JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropIntChanged(JNIEnv* Env, jclass Clazz,jint propInt)
+JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropIntChanged(JNIEnv* Env, jclass Clazz, jint propInt)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropIntChanged"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropIntChanged: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropIntChanged"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropIntChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [propInt]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientOnPropIntChanged(propInt);
-    });
+	AsyncTask(ENamedThreads::GameThread, [propInt]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientOnPropIntChanged(propInt);
+	});
 }
-JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt32Changed(JNIEnv* Env, jclass Clazz,jint propInt32)
+JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt32Changed(JNIEnv* Env, jclass Clazz, jint propInt32)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt32Changed"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt32Changed: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt32Changed"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt32Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [propInt32]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientOnPropInt32Changed(propInt32);
-    });
+	AsyncTask(ENamedThreads::GameThread, [propInt32]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientOnPropInt32Changed(propInt32);
+	});
 }
-JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt64Changed(JNIEnv* Env, jclass Clazz,jlong propInt64)
+JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt64Changed(JNIEnv* Env, jclass Clazz, jlong propInt64)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt64Changed"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt64Changed: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt64Changed"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt64Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [propInt64]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientOnPropInt64Changed(propInt64);
-    });
+	AsyncTask(ENamedThreads::GameThread, [propInt64]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientOnPropInt64Changed(propInt64);
+	});
 }
-JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloatChanged(JNIEnv* Env, jclass Clazz,jfloat propFloat)
+JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloatChanged(JNIEnv* Env, jclass Clazz, jfloat propFloat)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloatChanged"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloatChanged: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloatChanged"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloatChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [propFloat]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientOnPropFloatChanged(propFloat);
-    });
+	AsyncTask(ENamedThreads::GameThread, [propFloat]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientOnPropFloatChanged(propFloat);
+	});
 }
-JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat32Changed(JNIEnv* Env, jclass Clazz,jfloat propFloat32)
+JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat32Changed(JNIEnv* Env, jclass Clazz, jfloat propFloat32)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat32Changed"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat32Changed: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat32Changed"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat32Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [propFloat32]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientOnPropFloat32Changed(propFloat32);
-    });
+	AsyncTask(ENamedThreads::GameThread, [propFloat32]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientOnPropFloat32Changed(propFloat32);
+	});
 }
-JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat64Changed(JNIEnv* Env, jclass Clazz,jdouble propFloat64)
+JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat64Changed(JNIEnv* Env, jclass Clazz, jdouble propFloat64)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat64Changed"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat64Changed: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat64Changed"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat64Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [propFloat64]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientOnPropFloat64Changed(propFloat64);
-    });
+	AsyncTask(ENamedThreads::GameThread, [propFloat64]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientOnPropFloat64Changed(propFloat64);
+	});
 }
-JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropStringChanged(JNIEnv* Env, jclass Clazz,jstring propString)
+JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropStringChanged(JNIEnv* Env, jclass Clazz, jstring propString)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropStringChanged"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropStringChanged: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    FString local_prop_string = FJavaHelper::FStringFromParam(Env, propString);
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropStringChanged"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropStringChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	FString local_prop_string = FJavaHelper::FStringFromParam(Env, propString);
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop_string= MoveTemp(local_prop_string)]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientOnPropStringChanged(plocal_prop_string);
-    });
+	AsyncTask(ENamedThreads::GameThread, [plocal_prop_string = MoveTemp(local_prop_string)]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientOnPropStringChanged(plocal_prop_string);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigBool(JNIEnv* Env, jclass Clazz, jboolean paramBool)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigBool"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigBool"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ paramBool]()
-        {
-            if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal( paramBool);
-        });
+	AsyncTask(ENamedThreads::GameThread, [paramBool]()
+		{
+		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(paramBool);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt(JNIEnv* Env, jclass Clazz, jint paramInt)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ paramInt]()
-        {
-            if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigIntSignal( paramInt);
-        });
+	AsyncTask(ENamedThreads::GameThread, [paramInt]()
+		{
+		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigIntSignal(paramInt);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt32(JNIEnv* Env, jclass Clazz, jint paramInt32)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt32"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt32"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ paramInt32]()
-        {
-            if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt32Signal( paramInt32);
-        });
+	AsyncTask(ENamedThreads::GameThread, [paramInt32]()
+		{
+		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt32Signal(paramInt32);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt64(JNIEnv* Env, jclass Clazz, jlong paramInt64)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt64"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt64"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ paramInt64]()
-        {
-            if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt64Signal( paramInt64);
-        });
+	AsyncTask(ENamedThreads::GameThread, [paramInt64]()
+		{
+		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt64Signal(paramInt64);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat(JNIEnv* Env, jclass Clazz, jfloat paramFloat)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ paramFloat]()
-        {
-            if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloatSignal( paramFloat);
-        });
+	AsyncTask(ENamedThreads::GameThread, [paramFloat]()
+		{
+		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloatSignal(paramFloat);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat32(JNIEnv* Env, jclass Clazz, jfloat paramFloat32)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat32"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat32"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ paramFloat32]()
-        {
-            if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat32Signal( paramFloat32);
-        });
+	AsyncTask(ENamedThreads::GameThread, [paramFloat32]()
+		{
+		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat32Signal(paramFloat32);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat64(JNIEnv* Env, jclass Clazz, jdouble paramFloat64)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat64"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat64"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [ paramFloat64]()
-        {
-            if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat64Signal( paramFloat64);
-        });
+	AsyncTask(ENamedThreads::GameThread, [paramFloat64]()
+		{
+		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat64Signal(paramFloat64);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigString(JNIEnv* Env, jclass Clazz, jstring paramString)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigString"));
-    if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-    {
-        UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    FString local_param_string = FJavaHelper::FStringFromParam(Env, paramString);
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigString"));
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	FString local_param_string = FJavaHelper::FStringFromParam(Env, paramString);
 
-    AsyncTask(ENamedThreads::GameThread, [ plocal_param_string= MoveTemp(local_param_string)]()
-        {
-            if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-            {
-                UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
-                return;
-            }
-            gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigStringSignal( plocal_param_string);
-        });
+	AsyncTask(ENamedThreads::GameThread, [plocal_param_string = MoveTemp(local_param_string)]()
+		{
+		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
+			return;
+		}
+		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigStringSignal(plocal_param_string);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoReturnValueResult(JNIEnv* Env, jclass Clazz, jstring callId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoReturnValueResult"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
-    FGuid::Parse(callIdString, guid);
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoReturnValueResult for id %s"), *(guid.ToString(EGuidFormats::Digits)));
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoReturnValueResult"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
+	FGuid::Parse(callIdString, guid);
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoReturnValueResult for id %s"), *(guid.ToString(EGuidFormats::Digits)));
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoParamsResult(JNIEnv* Env, jclass Clazz, jboolean result, jstring callId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoParamsResult"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoParamsResult"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncBoolResult(JNIEnv* Env, jclass Clazz, jboolean result, jstring callId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncBoolResult"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncBoolResult"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncIntResult(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncIntResult"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncIntResult"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncInt32Result(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncInt32Result"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncInt32Result"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncInt64Result(JNIEnv* Env, jclass Clazz, jlong result, jstring callId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncInt64Result"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncInt64Result"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloatResult(JNIEnv* Env, jclass Clazz, jfloat result, jstring callId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloatResult"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloatResult"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloat32Result(JNIEnv* Env, jclass Clazz, jfloat result, jstring callId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloat32Result"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloat32Result"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloat64Result(JNIEnv* Env, jclass Clazz, jdouble result, jstring callId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloat64Result"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloat64Result"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, result]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, result]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncStringResult(JNIEnv* Env, jclass Clazz, jstring result, jstring callId)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncStringResult"));
-    FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-    FGuid guid;
-    FString cpp_result = FJavaHelper::FStringFromParam(Env, result);
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncStringResult"));
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	FGuid guid;
+	FString cpp_result = FJavaHelper::FStringFromParam(Env, result);
 
-    FGuid::Parse(callIdString, guid);
-    AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-    {
-        gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-    });
-    
+	FGuid::Parse(callIdString, guid);
+	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
+	});
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-    AsyncTask(ENamedThreads::GameThread, [value]()
-        {
-            gUTbSimpleSimpleInterfaceJniClientnotifyIsReady(value);
-        });
+	AsyncTask(ENamedThreads::GameThread, [value]()
+		{
+		gUTbSimpleSimpleInterfaceJniClientnotifyIsReady(value);
+	});
 }
 #endif
-
 
 template <typename ResultType>
 FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
-    FGuid Id = FGuid::NewGuid();
-    FScopeLock Lock(&ReplyPromisesMapCS);
-    ReplyPromisesMap.Add(Id, &Promise);
-    //TODO invalid id if sth goes wrong + log + checking
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
-    return Id;
+	FGuid Id = FGuid::NewGuid();
+	FScopeLock Lock(&ReplyPromisesMapCS);
+	ReplyPromisesMap.Add(Id, &Promise);
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	return Id;
 }
 
 template <typename ResultType>
 bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-    UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
-    TPromise<ResultType>* PromisePtr = nullptr;
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	TPromise<ResultType>* PromisePtr = nullptr;
 
-    {
-        FScopeLock Lock(&ReplyPromisesMapCS);
-        if (auto** Found = ReplyPromisesMap.Find(Id))
-        {
-            PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-            ReplyPromisesMap.Remove(Id);
-        }
-    }
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		if (auto** Found = ReplyPromisesMap.Find(Id))
+		{
+			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
+			ReplyPromisesMap.Remove(Id);
+		}
+	}
 
-    if (PromisePtr)
-    {
-        AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-            {
-                PromisePtr->SetValue(Value);
-            });
-        return true;
-
-    }
-    return false;
+	if (PromisePtr)
+	{
+		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
+			{
+			PromisePtr->SetValue(Value);
+		});
+		return true;
+	}
+	return false;
 }
 template FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise<FString>(TPromise<FString>& Promise);
 template bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise<FString>(const FGuid& Id, const FString& Value);
@@ -1482,4 +1479,3 @@ template FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise<int32
 template bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise<int32>(const FGuid& Id, const int32& Value);
 template FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise<int64>(TPromise<int64>& Promise);
 template bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise<int64>(const FGuid& Id, const int64& Value);
-

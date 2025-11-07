@@ -33,10 +33,9 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  TBIFACEIMPORTAPI_API TbIfaceimportDataJavaConverter{
+class TBIFACEIMPORTAPI_API TbIfaceimportDataJavaConverter
+{
 public:
-
 	static void fillEmptyIf(JNIEnv* env, jobject input, TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if);
 	static void fillEmptyIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& out_array);
 	static jobject makeJavaEmptyIf(JNIEnv* env, const TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if);

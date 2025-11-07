@@ -17,7 +17,6 @@ limitations under the License.
 #include "TbSimpleSimpleArrayInterfaceJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbSimple/Generated/Jni/TbSimpleSimpleArrayInterfaceJniClient.h"

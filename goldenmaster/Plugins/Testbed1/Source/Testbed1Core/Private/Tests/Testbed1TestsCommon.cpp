@@ -244,6 +244,4 @@ TArray<ETestbed1Enum0> createTestFTestbed1Enum0Array()
 	return TestValueArray;
 }
 
-
-
 #endif // WITH_DEV_AUTOMATION_TESTS

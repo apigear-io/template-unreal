@@ -31,11 +31,9 @@ limitations under the License.
 #endif
 #endif
 
-
 #include "TbSimpleNoOperationsInterfaceJniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoOperationsInterface_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbSimpleNoOperationsInterfaceInterface
@@ -53,32 +51,29 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
-    void setBackendService(TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> InService);
+	void setBackendService(TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoOperationsInterface")
 	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
-
-	// signals
 	void OnSigVoidSignal() override;
 
 	void OnSigBoolSignal(bool bParamBool) override;
 
 	void OnPropBoolChanged(bool bPropBool) override;
 	void OnPropIntChanged(int32 PropInt) override;
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|NoOperationsInterface")

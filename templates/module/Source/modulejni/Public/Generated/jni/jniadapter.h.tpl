@@ -26,11 +26,9 @@
 #endif
 #endif
 
-
 #include "{{$Iface}}JniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
@@ -48,25 +46,24 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{Camel .Module.Name}}|{{Camel .Interface.Name}}")
-    void setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService);
+	void setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{Camel .Module.Name}}|{{Camel .Interface.Name}}")
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
 
-	// signals
 	{{- range $i, $e := .Interface.Signals }}
 	{{- if $i }}{{nl}}{{ end }}
 	void On{{Camel .Name}}Signal({{ueParams "" .Params}}) override;
@@ -76,7 +73,6 @@ private:
 {{- range $i, $e := .Interface.Properties }}
 	void On{{Camel .Name}}Changed({{ueParam "" .}}) override;
 {{- end }}
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "{{$Category}}")

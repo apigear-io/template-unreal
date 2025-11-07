@@ -17,8 +17,6 @@ limitations under the License.
 */
 
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
-
-
 #include "TbIfaceimport/Implementation/TbIfaceimportEmptyIf.h"
 
 #if PLATFORM_ANDROID
@@ -32,54 +30,50 @@ limitations under the License.
 #endif
 #endif
 
-
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-
-
-
 
 void TbIfaceimportDataJavaConverter::fillEmptyIf(JNIEnv* env, jobject input, TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if)
 {
-    if (!input || !out_empty_if)
-    {
-        return;
-    }
-    // currently not supported, stub function generated for possible custom implementation
+	if (!input || !out_empty_if)
+	{
+		return;
+	}
+	// currently not supported, stub function generated for possible custom implementation
 }
 
 void TbIfaceimportDataJavaConverter::fillEmptyIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& out_array)
 {
-    // currently not supported, stub function generated for possible custom implementation
+	// currently not supported, stub function generated for possible custom implementation
 }
+
 jobject TbIfaceimportDataJavaConverter::makeJavaEmptyIf(JNIEnv* env, const TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if)
 {
-    if (!out_empty_if)
-    {
-        return nullptr;
-    }
+	if (!out_empty_if)
+	{
+		return nullptr;
+	}
 
-    jobject javaObjInstance = nullptr;
-    // currently not supported, stub function generated for possible custom implementation
-    return javaObjInstance;
+	jobject javaObjInstance = nullptr;
+	// currently not supported, stub function generated for possible custom implementation
+	return javaObjInstance;
 }
 
 jobjectArray TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& cppArray)
 {
-    jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
-    auto arraySize = cppArray.Num();
-    jobjectArray javaArray = env->NewObjectArray( arraySize, javaClass, nullptr);
-    // currently not supported, stub function generated for possible custom implementation 
-    return javaArray;
+	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
+	auto arraySize = cppArray.Num();
+	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	// Currently not supported, stub function generated for possible custom implementation.
+	return javaArray;
 }
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> TbIfaceimportDataJavaConverter::getCppInstanceTbIfaceimportEmptyIf()
 {
-    UTbIfaceimportEmptyIfImplementation* Impl = NewObject<UTbIfaceimportEmptyIfImplementation>();
-    TScriptInterface<ITbIfaceimportEmptyIfInterface> wrapped;
-    wrapped.SetObject(Impl);
-    wrapped.SetInterface(Cast<ITbIfaceimportEmptyIfInterface>(Impl));
-    return wrapped;
+	UTbIfaceimportEmptyIfImplementation* Impl = NewObject<UTbIfaceimportEmptyIfImplementation>();
+	TScriptInterface<ITbIfaceimportEmptyIfInterface> wrapped;
+	wrapped.SetObject(Impl);
+	wrapped.SetInterface(Cast<ITbIfaceimportEmptyIfInterface>(Impl));
+	return wrapped;
 }
-
 
 #endif

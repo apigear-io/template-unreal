@@ -33,10 +33,9 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  EXTERNTYPESAPI_API ExternTypesDataJavaConverter{
+class EXTERNTYPESAPI_API ExternTypesDataJavaConverter
+{
 public:
-
 	static void fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d);
 	static void fillMyVector3DArray(JNIEnv* env, jobjectArray input, TArray<FVector>& out_array);
 	static jobject makeJavaMyVector3D(JNIEnv* env, const FVector& out_my_vector3_d);

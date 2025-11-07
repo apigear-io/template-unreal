@@ -28,6 +28,4 @@ TArray<ETbNamesEnum_With_Under_scores> createTestFTbNamesEnum_With_Under_scoresA
 	return TestValueArray;
 }
 
-
-
 #endif // WITH_DEV_AUTOMATION_TESTS

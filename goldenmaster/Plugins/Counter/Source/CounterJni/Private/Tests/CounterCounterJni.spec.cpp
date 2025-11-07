@@ -26,16 +26,15 @@ limitations under the License.
 #include "CustomTypes/Tests/CustomTypesTestsCommon.h"
 #include "ExternTypes/Tests/ExternTypesTestsCommon.h"
 
-
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
- #include "Android/AndroidJNI.h"
- #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
 
- #if USE_ANDROID_JNI
- #include <jni.h>
- #endif
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
 #endif
 
 // nested namespaces do not work with UE4.27 MSVC due to old C++ standard
@@ -63,14 +62,14 @@ void UCounterCounterJniSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetClient() != nullptr);
 
 		// set up service and adapter
-		auto service =ImplFixture->GetLocalImplementation();
+		auto service = ImplFixture->GetLocalImplementation();
 		ImplFixture->GetAdapter()->setBackendService(service);
 
 		// setup client
 		UCounterCounterJniClient* JniClient = ImplFixture->GetClient();
 		TestTrue("Check for valid Jni client", JniClient != nullptr);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		JniClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
 			{
 			if (bConnected)
@@ -78,20 +77,20 @@ void UCounterCounterJniSpec::Define()
 				TestDone.Execute();
 			}
 		});
-		//Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section. 
+		// Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section.
 		FString servicePackage = "com.goldenmaster";
 		JniClient->_bindToService(servicePackage, "TestConnectionId");
-		#else
+#else
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	AfterEach([this]()
 		{
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			UCounterCounterJniClient* JniClient =ImplFixture->GetClient();
-			#endif
-			ImplFixture.Reset();
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UCounterCounterJniClient* JniClient = ImplFixture->GetClient();
+#endif
+		ImplFixture.Reset();
 	});
 
 	It("Property.Vector.Default", [this]()
@@ -121,9 +120,9 @@ void UCounterCounterJniSpec::Define()
 		// use different test value
 		TestValue = createTestFCustomTypesVector3D();
 		ImplFixture->GetClient()->SetVector(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.Vector.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -132,11 +131,11 @@ void UCounterCounterJniSpec::Define()
 		FCustomTypesVector3D DefaultValue = FCustomTypesVector3D(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetVector(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		CounterCounterPublisher->OnVectorChanged.AddLambda([this, DefaultValue, TestDone](const FCustomTypesVector3D& InVector)
 			{
 			FCustomTypesVector3D TestValue = FCustomTypesVector3D();
@@ -144,12 +143,11 @@ void UCounterCounterJniSpec::Define()
 			TestValue = createTestFCustomTypesVector3D();
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetVector(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetVector(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetVector(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -162,16 +160,16 @@ void UCounterCounterJniSpec::Define()
 	LatentIt("Property.Vector.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		FCustomTypesVector3D StartValue =  ImplFixture->GetLocalImplementation()->GetVector();
+		FCustomTypesVector3D StartValue = ImplFixture->GetLocalImplementation()->GetVector();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetVector(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetClient()->_GetPublisher();
 		CounterCounterPublisher->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
-		#else
+#else
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		CounterCounterPublisher->OnVectorChanged.AddLambda([this, TestDone, StartValue](const FCustomTypesVector3D& InVector)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -186,18 +184,18 @@ void UCounterCounterJniSpec::Define()
 				TestValue = createTestFCustomTypesVector3D();
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVector, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetVector(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetVector(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetVector(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = FCustomTypesVector3D(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetVector(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetVector(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -249,9 +247,9 @@ void UCounterCounterJniSpec::Define()
 		// use different test value
 		TestValue = createTestFCustomTypesVector3DArray();
 		ImplFixture->GetClient()->SetVectorArray(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.VectorArray.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -260,11 +258,11 @@ void UCounterCounterJniSpec::Define()
 		TArray<FCustomTypesVector3D> DefaultValue = TArray<FCustomTypesVector3D>(); // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetVectorArray(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, DefaultValue, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
 			{
 			TArray<FCustomTypesVector3D> TestValue = TArray<FCustomTypesVector3D>();
@@ -272,12 +270,11 @@ void UCounterCounterJniSpec::Define()
 			TestValue = createTestFCustomTypesVector3DArray();
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetVectorArray(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetVectorArray(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetVectorArray(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -290,16 +287,16 @@ void UCounterCounterJniSpec::Define()
 	LatentIt("Property.VectorArray.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		TArray<FCustomTypesVector3D> StartValue =  ImplFixture->GetLocalImplementation()->GetVectorArray();
+		TArray<FCustomTypesVector3D> StartValue = ImplFixture->GetLocalImplementation()->GetVectorArray();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetVectorArray(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetClient()->_GetPublisher();
 		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
-		#else
+#else
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, TestDone, StartValue](const TArray<FCustomTypesVector3D>& InVectorArray)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -314,18 +311,18 @@ void UCounterCounterJniSpec::Define()
 				TestValue = createTestFCustomTypesVector3DArray();
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InVectorArray, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetVectorArray(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetVectorArray(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetVectorArray(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = TArray<FCustomTypesVector3D>(); // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetVectorArray(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetVectorArray(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -358,7 +355,7 @@ void UCounterCounterJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->Increment(FVector(0.f, 0.f, 0.f));
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -371,7 +368,7 @@ void UCounterCounterJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->IncrementArray(TArray<FVector>());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -382,7 +379,7 @@ void UCounterCounterJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->Decrement(FCustomTypesVector3D());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -393,20 +390,19 @@ void UCounterCounterJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->DecrementArray(TArray<FCustomTypesVector3D>());
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
 
 	LatentIt("Signal.ValueChanged", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UCounterCounterPublisher* SourceCounterCounterPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		CounterCounterPublisher->OnValueChangedSignal.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 			{
 			// known test value

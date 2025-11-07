@@ -17,7 +17,6 @@ limitations under the License.
 #include "TbSame2SameEnum2InterfaceJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbSame2/Generated/Jni/TbSame2SameEnum2InterfaceJniClient.h"

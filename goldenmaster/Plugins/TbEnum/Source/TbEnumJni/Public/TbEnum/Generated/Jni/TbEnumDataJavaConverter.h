@@ -33,10 +33,9 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  TBENUMAPI_API TbEnumDataJavaConverter{
+class TBENUMAPI_API TbEnumDataJavaConverter
+{
 public:
-
 	static void fillEnum0Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum0>& out_array);
 	static ETbEnumEnum0 getEnum0Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnum0Array(JNIEnv* env, const TArray<ETbEnumEnum0>& cppArray);

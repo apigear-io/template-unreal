@@ -24,16 +24,15 @@ limitations under the License.
 #include "TbNames/Generated/Jni/TbNamesNamEsJniClient.h"
 #include "TbNames/Generated/Jni/TbNamesNamEsJniAdapter.h"
 
-
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
- #include "Android/AndroidJNI.h"
- #include "Android/AndroidApplication.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
 
- #if USE_ANDROID_JNI
- #include <jni.h>
- #endif
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
 #endif
 
 // nested namespaces do not work with UE4.27 MSVC due to old C++ standard
@@ -61,14 +60,14 @@ void UTbNamesNamEsJniSpec::Define()
 		TestTrue("Check for valid testImplementation", ImplFixture->GetClient() != nullptr);
 
 		// set up service and adapter
-		auto service =ImplFixture->GetLocalImplementation();
+		auto service = ImplFixture->GetLocalImplementation();
 		ImplFixture->GetAdapter()->setBackendService(service);
 
 		// setup client
 		UTbNamesNamEsJniClient* JniClient = ImplFixture->GetClient();
 		TestTrue("Check for valid Jni client", JniClient != nullptr);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		JniClient->_ConnectionStatusChanged.AddLambda([this, TestDone](bool bConnected)
 			{
 			if (bConnected)
@@ -76,20 +75,20 @@ void UTbNamesNamEsJniSpec::Define()
 				TestDone.Execute();
 			}
 		});
-		//Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section. 
+		// Test packge name should start with name of the  pacakge declared by the test application in e.g. defaultEngine.ini in [/Script/AndroidRuntimeSettings.AndroidRuntimeSettings] section.
 		FString servicePackage = "com.goldenmaster";
 		JniClient->_bindToService(servicePackage, "TestConnectionId");
-		#else
+#else
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	AfterEach([this]()
 		{
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			UTbNamesNamEsJniClient* JniClient =ImplFixture->GetClient();
-			#endif
-			ImplFixture.Reset();
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UTbNamesNamEsJniClient* JniClient = ImplFixture->GetClient();
+#endif
+		ImplFixture.Reset();
 	});
 
 	It("Property.Switch.Default", [this]()
@@ -119,9 +118,9 @@ void UTbNamesNamEsJniSpec::Define()
 		// use different test value
 		TestValue = true;
 		ImplFixture->GetClient()->SetSwitch(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.Switch.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -130,11 +129,11 @@ void UTbNamesNamEsJniSpec::Define()
 		bool DefaultValue = false; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetSwitch(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbNamesNamEsPublisher->OnSwitchChanged.AddLambda([this, DefaultValue, TestDone](bool bInSwitch)
 			{
 			bool TestValue = false;
@@ -142,12 +141,11 @@ void UTbNamesNamEsJniSpec::Define()
 			TestValue = true;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetSwitch(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetSwitch(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetSwitch(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -160,16 +158,16 @@ void UTbNamesNamEsJniSpec::Define()
 	LatentIt("Property.Switch.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		bool StartValue =  ImplFixture->GetLocalImplementation()->GetSwitch();
+		bool StartValue = ImplFixture->GetLocalImplementation()->GetSwitch();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetSwitch(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbNamesNamEsPublisher->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch)
-		#else
+#else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbNamesNamEsPublisher->OnSwitchChanged.AddLambda([this, TestDone, StartValue](bool bInSwitch)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -184,18 +182,18 @@ void UTbNamesNamEsJniSpec::Define()
 				TestValue = true;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), bInSwitch, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetSwitch(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetSwitch(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetSwitch(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = false; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetSwitch(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetSwitch(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -240,9 +238,9 @@ void UTbNamesNamEsJniSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetClient()->SetSomeProperty(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.SomeProperty.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -251,11 +249,11 @@ void UTbNamesNamEsJniSpec::Define()
 		int32 DefaultValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetSomeProperty(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbNamesNamEsPublisher->OnSomePropertyChanged.AddLambda([this, DefaultValue, TestDone](int32 InSomeProperty)
 			{
 			int32 TestValue = 0;
@@ -263,12 +261,11 @@ void UTbNamesNamEsJniSpec::Define()
 			TestValue = 1;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetSomeProperty(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetSomeProperty(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetSomeProperty(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -281,16 +278,16 @@ void UTbNamesNamEsJniSpec::Define()
 	LatentIt("Property.SomeProperty.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		int32 StartValue =  ImplFixture->GetLocalImplementation()->GetSomeProperty();
+		int32 StartValue = ImplFixture->GetLocalImplementation()->GetSomeProperty();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetSomeProperty(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbNamesNamEsPublisher->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty)
-		#else
+#else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbNamesNamEsPublisher->OnSomePropertyChanged.AddLambda([this, TestDone, StartValue](int32 InSomeProperty)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -305,18 +302,18 @@ void UTbNamesNamEsJniSpec::Define()
 				TestValue = 1;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomeProperty, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetSomeProperty(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetSomeProperty(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetSomeProperty(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetSomeProperty(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetSomeProperty(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -361,9 +358,9 @@ void UTbNamesNamEsJniSpec::Define()
 		// use different test value
 		TestValue = 1;
 		ImplFixture->GetClient()->SetSomePoperty2(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.SomePoperty2.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -372,11 +369,11 @@ void UTbNamesNamEsJniSpec::Define()
 		int32 DefaultValue = 0; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetSomePoperty2(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbNamesNamEsPublisher->OnSomePoperty2Changed.AddLambda([this, DefaultValue, TestDone](int32 InSomePoperty2)
 			{
 			int32 TestValue = 0;
@@ -384,12 +381,11 @@ void UTbNamesNamEsJniSpec::Define()
 			TestValue = 1;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetSomePoperty2(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetSomePoperty2(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetSomePoperty2(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -402,16 +398,16 @@ void UTbNamesNamEsJniSpec::Define()
 	LatentIt("Property.SomePoperty2.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		int32 StartValue =  ImplFixture->GetLocalImplementation()->GetSomePoperty2();
+		int32 StartValue = ImplFixture->GetLocalImplementation()->GetSomePoperty2();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetSomePoperty2(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbNamesNamEsPublisher->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2)
-		#else
+#else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbNamesNamEsPublisher->OnSomePoperty2Changed.AddLambda([this, TestDone, StartValue](int32 InSomePoperty2)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -426,18 +422,18 @@ void UTbNamesNamEsJniSpec::Define()
 				TestValue = 1;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InSomePoperty2, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetSomePoperty2(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetSomePoperty2(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetSomePoperty2(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = 0; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetSomePoperty2(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetSomePoperty2(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -482,9 +478,9 @@ void UTbNamesNamEsJniSpec::Define()
 		// use different test value
 		TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
 		ImplFixture->GetClient()->SetEnumProperty(TestValue);
-		#if ! (PLATFORM_ANDROID && USE_ANDROID_JNI)
+#if !(PLATFORM_ANDROID && USE_ANDROID_JNI)
 		TestDone.Execute();
-		#endif
+#endif
 	});
 
 	LatentIt("Property.EnumProperty.ChangeLocalCheckRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
@@ -493,11 +489,11 @@ void UTbNamesNamEsJniSpec::Define()
 		ETbNamesEnum_With_Under_scores DefaultValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue; // default value
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetEnumProperty(), DefaultValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbNamesNamEsPublisher->OnEnumPropertyChanged.AddLambda([this, DefaultValue, TestDone](ETbNamesEnum_With_Under_scores InEnumProperty)
 			{
 			ETbNamesEnum_With_Under_scores TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
@@ -505,12 +501,11 @@ void UTbNamesNamEsJniSpec::Define()
 			TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
 			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetEnumProperty(), TestValue);
-			#if PLATFORM_ANDROID && USE_ANDROID_JNI
-			//TODO CHANGE THE IMPLEMENTATION TO CLIENT this is confusing
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetEnumProperty(), TestValue);
-			#else
+#else
 			TestEqual(TEXT("No connection, client has same value as at the start"), ImplFixture->GetClient()->GetEnumProperty(), DefaultValue);
-			#endif
+#endif
 			TestDone.Execute();
 		});
 		// use different test value, but init it first.
@@ -523,16 +518,16 @@ void UTbNamesNamEsJniSpec::Define()
 	LatentIt("Property.EnumProperty.ChangeLocalChangeBackRemote", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		// Do implement test here
-		ETbNamesEnum_With_Under_scores StartValue =  ImplFixture->GetLocalImplementation()->GetEnumProperty();
+		ETbNamesEnum_With_Under_scores StartValue = ImplFixture->GetLocalImplementation()->GetEnumProperty();
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetClient()->GetEnumProperty(), StartValue);
 
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
 		TbNamesNamEsPublisher->OnEnumPropertyChanged.AddLambda([this, TestDone](ETbNamesEnum_With_Under_scores InEnumProperty)
-		#else
+#else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
 		TbNamesNamEsPublisher->OnEnumPropertyChanged.AddLambda([this, TestDone, StartValue](ETbNamesEnum_With_Under_scores InEnumProperty)
-		#endif
+#endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
@@ -547,18 +542,18 @@ void UTbNamesNamEsJniSpec::Define()
 				TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_SecondValue;
 				TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InEnumProperty, TestValue);
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetLocalImplementation()->GetEnumProperty(), TestValue);
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetEnumProperty(), TestValue);
-				#else
+#else
 				TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetClient()->GetEnumProperty(), StartValue);
-				#endif
+#endif
 				// now set it to the default value
 				TestValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue; // default value
-				#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 				ImplFixture->GetClient()->SetEnumProperty(TestValue);
-				#else
+#else
 				ImplFixture->GetLocalImplementation()->SetEnumProperty(TestValue);
-				#endif
+#endif
 			}
 			else
 			{
@@ -582,7 +577,7 @@ void UTbNamesNamEsJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->SomeFunction(false);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
@@ -593,20 +588,19 @@ void UTbNamesNamEsJniSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetClient()->SomeFunction2(false);
-			//Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
+			// Test will work also without connection, we always return default value. real check should test for custom, which is not possible for generated tests.
 			TestDone.Execute();
 		});
 	});
 
 	LatentIt("Signal.SomeSignal", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbNamesNamEsPublisher* SourceTbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbNamesNamEsPublisher->OnSomeSignalSignal.AddLambda([this, TestDone](bool bInSomeParam)
 			{
 			// known test value
@@ -622,13 +616,12 @@ void UTbNamesNamEsJniSpec::Define()
 
 	LatentIt("Signal.SomeSignal2", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
-
 		UTbNamesNamEsPublisher* SourceTbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
-		#else
+#else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		#endif
+#endif
 		TbNamesNamEsPublisher->OnSomeSignal2Signal.AddLambda([this, TestDone](bool bInSomeParam)
 			{
 			// known test value

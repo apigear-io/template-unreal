@@ -31,11 +31,9 @@ limitations under the License.
 #endif
 #endif
 
-
 #include "TbRefIfacesParentIfJniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesParentIf_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbRefIfacesParentIfInterface
@@ -53,25 +51,23 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf")
-    void setBackendService(TScriptInterface<ITbRefIfacesParentIfInterface> InService);
+	void setBackendService(TScriptInterface<ITbRefIfacesParentIfInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf")
 	TScriptInterface<ITbRefIfacesParentIfInterface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
-
-	// signals
 	void OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
 
 	void OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
@@ -84,7 +80,6 @@ private:
 	void OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& LocalIfList) override;
 	void OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& ImportedIf) override;
 	void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList) override;
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbRefIfaces|ParentIf")
