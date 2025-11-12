@@ -59,4 +59,22 @@ TArray<FTbSame1Struct2> createTestFTbSame1Struct2Array()
 	return TestValueArray;
 }
 
+TArray<ETbSame1Enum1> createTestFTbSame1Enum1Array()
+{
+	TArray<ETbSame1Enum1> TestValueArray;
+
+	ETbSame1Enum1 val = ETbSame1Enum1::TS1E1_Value1;
+	TestValueArray.Add(val);
+	return TestValueArray;
+}
+
+TArray<ETbSame1Enum2> createTestFTbSame1Enum2Array()
+{
+	TArray<ETbSame1Enum2> TestValueArray;
+
+	ETbSame1Enum2 val = ETbSame1Enum2::TS1E2_Value1;
+	TestValueArray.Add(val);
+	return TestValueArray;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

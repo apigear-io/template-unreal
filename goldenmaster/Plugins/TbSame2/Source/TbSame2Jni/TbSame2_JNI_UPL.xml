@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<trace enable="true"/>
+	<init>
+		<log text="android tb.same2 init"/>
+	</init>
+
+	<androidManifestUpdates>
+		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> 
+		<addPermission android:name="tbSame2.tbSame2_android_service.PERMISSION_BIND"/>
+		<addElements tag="queries">
+				<package android:name="tbSame2.tbSame2_android_service" />
+		</addElements>
+
+		<addElements tag="application"><service 
+			android:name="tbSame2.tbSame2_android_service.SameStruct1InterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="tbSame2.tbSame2_android_service.SameStruct2InterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="tbSame2.tbSame2_android_service.SameEnum1InterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="tbSame2.tbSame2_android_service.SameEnum2InterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service>
+		</addElements>
+
+	</androidManifestUpdates>
+
+	<resourceCopies>
+		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSame2/tbSame2_android_service" dst="$S(BuildDir)/JavaLibs/tbSame2_android_service" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSame2/tbSame2_android_client" dst="$S(BuildDir)/JavaLibs/tbSame2_android_client" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSame2/tbSame2_api" dst="$S(BuildDir)/JavaLibs/tbSame2_api" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSame2/tbSame2_android_messenger" dst="$S(BuildDir)/JavaLibs/tbSame2_android_messenger" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSame2/tbSame2_impl" dst="$S(BuildDir)/JavaLibs/tbSame2_impl" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSame2/tbSame2jniservice" dst="$S(BuildDir)/src/tbSame2jniservice" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbSame2/tbSame2jniclient" dst="$S(BuildDir)/src/tbSame2jniclient" />
+	</resourceCopies>
+
+	<baseBuildGradleAdditions>
+		<addElements tag="buildscript">
+			<insertValue value="apply from: 'buildsystem/config.gradle'"/>
+			<insertValue value="apply from: 'buildsystem/dependencies.gradle'"/>
+			<insertNewline/>
+		</addElements>
+	</baseBuildGradleAdditions>
+
+	<settingsGradleAdditions>
+		<insert>
+			<![CDATA[
+      include ':tbSame2_api'
+      include ':tbSame2_impl'
+      include ':tbSame2_android_service'
+      include ':tbSame2_android_client'
+      include ':tbSame2_android_messenger'
+    ]]>
+		</insert>
+	
+	</settingsGradleAdditions>
+
+	<buildGradleAdditions>
+		<insert>
+            <![CDATA[
+                dependencies {
+                implementation project(':tbSame2_api')
+                implementation project(':tbSame2_impl')
+                implementation project(':tbSame2_android_service')
+                implementation project(':tbSame2_android_client')
+                implementation project(':tbSame2_android_messenger')
+                }
+            ]]>
+        </insert>
+		<insert>
+			<![CDATA[
+tasks.configureEach { task ->
+	if (task.name == 'assembleDebug') {
+		task.dependsOn ':tbSame2_api:assembleDebug'
+		task.dependsOn ':tbSame2_impl:assembleDebug'
+		task.dependsOn ':tbSame2_android_service:assembleDebug'
+		task.dependsOn ':tbSame2_android_client:assembleDebug'
+		task.dependsOn ':tbSame2_android_messenger:assembleDebug'
+	}
+	if (task.name == 'assembleRelease') {
+		task.dependsOn ':tbSame2_api:assembleRelease'
+		task.dependsOn ':tbSame2_impl:assembleRelease'
+		task.dependsOn ':tbSame2_android_service:assembleRelease'
+		task.dependsOn ':tbSame2_android_client:assembleRelease'
+		task.dependsOn ':tbSame2_android_messenger:assembleRelease'
+	}
+}
+
+]]>
+		</insert>
+	</buildGradleAdditions>
+
+
+	<proguardAdditions>
+		<insert>
+			-keep class tbSame2.tbSame2jniservice.SameStruct1InterfaceJniService {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniservice.SameStruct1InterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniclient.SameStruct1InterfaceJniClient {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniservice.SameStruct2InterfaceJniService {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniservice.SameStruct2InterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniclient.SameStruct2InterfaceJniClient {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniservice.SameEnum1InterfaceJniService {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniservice.SameEnum1InterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniclient.SameEnum1InterfaceJniClient {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniservice.SameEnum2InterfaceJniService {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniservice.SameEnum2InterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbSame2.tbSame2jniclient.SameEnum2InterfaceJniClient {
+			public *;
+			}
+		</insert>
+	</proguardAdditions>
+
+
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+	</gameActivityClassAdditions>
+
+
+	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
+	<gameActivityOnCreateAdditions>
+		<insert>
+			<![CDATA[
+		]]>
+		</insert>
+	</gameActivityOnCreateAdditions>
+
+
+</root>

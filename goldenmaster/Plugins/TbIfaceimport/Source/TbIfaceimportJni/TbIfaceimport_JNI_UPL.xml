@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<trace enable="true"/>
+	<init>
+		<log text="android tb.ifaceimport init"/>
+	</init>
+
+	<androidManifestUpdates>
+		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> 
+		<addPermission android:name="tbIfaceimport.tbIfaceimport_android_service.PERMISSION_BIND"/>
+		<addElements tag="queries">
+				<package android:name="tbIfaceimport.tbIfaceimport_android_service" />
+		</addElements>
+
+		<addElements tag="application"><service 
+			android:name="tbIfaceimport.tbIfaceimport_android_service.EmptyIfServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service>
+		</addElements>
+
+	</androidManifestUpdates>
+
+	<resourceCopies>
+		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbIfaceimport/tbIfaceimport_android_service" dst="$S(BuildDir)/JavaLibs/tbIfaceimport_android_service" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbIfaceimport/tbIfaceimport_android_client" dst="$S(BuildDir)/JavaLibs/tbIfaceimport_android_client" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbIfaceimport/tbIfaceimport_api" dst="$S(BuildDir)/JavaLibs/tbIfaceimport_api" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbIfaceimport/tbIfaceimport_android_messenger" dst="$S(BuildDir)/JavaLibs/tbIfaceimport_android_messenger" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbIfaceimport/tbIfaceimport_impl" dst="$S(BuildDir)/JavaLibs/tbIfaceimport_impl" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbIfaceimport/tbIfaceimportjniservice" dst="$S(BuildDir)/src/tbIfaceimportjniservice" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbIfaceimport/tbIfaceimportjniclient" dst="$S(BuildDir)/src/tbIfaceimportjniclient" />
+	</resourceCopies>
+
+	<baseBuildGradleAdditions>
+		<addElements tag="buildscript">
+			<insertValue value="apply from: 'buildsystem/config.gradle'"/>
+			<insertValue value="apply from: 'buildsystem/dependencies.gradle'"/>
+			<insertNewline/>
+		</addElements>
+	</baseBuildGradleAdditions>
+
+	<settingsGradleAdditions>
+		<insert>
+			<![CDATA[
+      include ':tbIfaceimport_api'
+      include ':tbIfaceimport_impl'
+      include ':tbIfaceimport_android_service'
+      include ':tbIfaceimport_android_client'
+      include ':tbIfaceimport_android_messenger'
+    ]]>
+		</insert>
+	
+	</settingsGradleAdditions>
+
+	<buildGradleAdditions>
+		<insert>
+            <![CDATA[
+                dependencies {
+                implementation project(':tbIfaceimport_api')
+                implementation project(':tbIfaceimport_impl')
+                implementation project(':tbIfaceimport_android_service')
+                implementation project(':tbIfaceimport_android_client')
+                implementation project(':tbIfaceimport_android_messenger')
+                }
+            ]]>
+        </insert>
+		<insert>
+			<![CDATA[
+tasks.configureEach { task ->
+	if (task.name == 'assembleDebug') {
+		task.dependsOn ':tbIfaceimport_api:assembleDebug'
+		task.dependsOn ':tbIfaceimport_impl:assembleDebug'
+		task.dependsOn ':tbIfaceimport_android_service:assembleDebug'
+		task.dependsOn ':tbIfaceimport_android_client:assembleDebug'
+		task.dependsOn ':tbIfaceimport_android_messenger:assembleDebug'
+	}
+	if (task.name == 'assembleRelease') {
+		task.dependsOn ':tbIfaceimport_api:assembleRelease'
+		task.dependsOn ':tbIfaceimport_impl:assembleRelease'
+		task.dependsOn ':tbIfaceimport_android_service:assembleRelease'
+		task.dependsOn ':tbIfaceimport_android_client:assembleRelease'
+		task.dependsOn ':tbIfaceimport_android_messenger:assembleRelease'
+	}
+}
+
+]]>
+		</insert>
+	</buildGradleAdditions>
+
+
+	<proguardAdditions>
+		<insert>
+			-keep class tbIfaceimport.tbIfaceimportjniservice.EmptyIfJniService {
+			public *;
+			}
+			-keep class tbIfaceimport.tbIfaceimportjniservice.EmptyIfJniServiceStarter {
+			public *;
+			}
+			-keep class tbIfaceimport.tbIfaceimportjniclient.EmptyIfJniClient {
+			public *;
+			}
+		</insert>
+	</proguardAdditions>
+
+
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+	</gameActivityClassAdditions>
+
+
+	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
+	<gameActivityOnCreateAdditions>
+		<insert>
+			<![CDATA[
+		]]>
+		</insert>
+	</gameActivityOnCreateAdditions>
+
+
+</root>

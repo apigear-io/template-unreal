@@ -60,4 +60,10 @@ FTestbed2NestedStruct3 TESTBED2CORE_API createTestFTestbed2NestedStruct3();
 
 TArray<FTestbed2NestedStruct3> TESTBED2CORE_API createTestFTestbed2NestedStruct3Array();
 
+TArray<ETestbed2Enum1> TESTBED2CORE_API createTestFTestbed2Enum1Array();
+
+TArray<ETestbed2Enum2> TESTBED2CORE_API createTestFTestbed2Enum2Array();
+
+TArray<ETestbed2Enum3> TESTBED2CORE_API createTestFTestbed2Enum3Array();
+
 #endif // WITH_DEV_AUTOMATION_TESTS
