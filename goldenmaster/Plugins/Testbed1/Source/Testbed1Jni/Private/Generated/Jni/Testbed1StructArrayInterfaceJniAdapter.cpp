@@ -556,18 +556,15 @@ JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_
 	TArray<FTestbed1StructBool> local_prop_bool = TArray<FTestbed1StructBool>();
 	Testbed1DataJavaConverter::fillStructBoolArray(Env, propBool, local_prop_bool);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_bool = MoveTemp(local_prop_bool)]()
-		{
-		auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropBool(plocal_prop_bool);
-		}
-		else
-		{
-			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
-		}
-	});
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropBool(local_prop_bool);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
+	}
 }
 
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropBool(JNIEnv* Env, jclass Clazz)
@@ -604,18 +601,15 @@ JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_
 	TArray<FTestbed1StructInt> local_prop_int = TArray<FTestbed1StructInt>();
 	Testbed1DataJavaConverter::fillStructIntArray(Env, propInt, local_prop_int);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_int = MoveTemp(local_prop_int)]()
-		{
-		auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropInt(plocal_prop_int);
-		}
-		else
-		{
-			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
-		}
-	});
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropInt(local_prop_int);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
+	}
 }
 
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropInt(JNIEnv* Env, jclass Clazz)
@@ -652,18 +646,15 @@ JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_
 	TArray<FTestbed1StructFloat> local_prop_float = TArray<FTestbed1StructFloat>();
 	Testbed1DataJavaConverter::fillStructFloatArray(Env, propFloat, local_prop_float);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_float = MoveTemp(local_prop_float)]()
-		{
-		auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropFloat(plocal_prop_float);
-		}
-		else
-		{
-			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat"));
-		}
-	});
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropFloat(local_prop_float);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat"));
+	}
 }
 
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropFloat(JNIEnv* Env, jclass Clazz)
@@ -700,18 +691,15 @@ JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_
 	TArray<FTestbed1StructString> local_prop_string = TArray<FTestbed1StructString>();
 	Testbed1DataJavaConverter::fillStructStringArray(Env, propString, local_prop_string);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_string = MoveTemp(local_prop_string)]()
-		{
-		auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropString(plocal_prop_string);
-		}
-		else
-		{
-			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propString"));
-		}
-	});
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropString(local_prop_string);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propString"));
+	}
 }
 
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropString(JNIEnv* Env, jclass Clazz)
@@ -748,18 +736,15 @@ JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_
 	TArray<ETestbed1Enum0> local_prop_enum = TArray<ETestbed1Enum0>();
 	Testbed1DataJavaConverter::fillEnum0Array(Env, propEnum, local_prop_enum);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_enum = MoveTemp(local_prop_enum)]()
-		{
-		auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropEnum(plocal_prop_enum);
-		}
-		else
-		{
-			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propEnum"));
-		}
-	});
+	auto service = gUTestbed1StructArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropEnum(local_prop_enum);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propEnum"));
+	}
 }
 
 JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJniService_nativeGetPropEnum(JNIEnv* Env, jclass Clazz)

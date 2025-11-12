@@ -445,14 +445,11 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed(JNIEnv* En
 	{{- $hasLocalVar := or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}
 	{{- $local_value := printf "local_%s" (snake .Name) }}
 
-	AsyncTask(ENamedThreads::GameThread, [{{- if $hasLocalVar }}p{{$local_value }} = MoveTemp({{$local_value -}}){{- else}}{{$javaPropName}}{{- end}}]()
-		{
 	{{- if $hasLocalVar }}
-		g{{$Class}}On{{Camel .Name}}Changed(p{{$local_value}});
+	g{{$Class}}On{{Camel .Name}}Changed({{$local_value}});
 	{{- else}}
-		g{{$Class}}On{{Camel .Name}}Changed({{$javaPropName}});
+	g{{$Class}}On{{Camel .Name}}Changed({{$javaPropName}});
 	{{- end}}
-	});
 }
 {{- end}}
 
@@ -471,27 +468,18 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jcla
 	{{- template "convert_to_local_cpp_value_java_param" . }}
 {{- end }}
 
-	AsyncTask(ENamedThreads::GameThread, [{{- range $idx, $p := .Params -}}
-			{{- if $idx}}, {{ end -}}
-			{{- $local_value := printf "local_%s" (snake .Name) -}}
-			{{- if or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}p{{$local_value }} = MoveTemp({{$local_value -}})
-			{{- else }}{{.Name}}
-			{{- end -}}
-		{{- end -}}]()
-		{
-		if (g{{$Class}}Handle == nullptr)
-		{
-			UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		g{{$Class}}Handle->_GetPublisher()->Broadcast{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
-		{{- if $idx}}, {{ end -}}
-		{{- $local_value := printf "local_%s" (snake .Name) -}}
-		{{- if or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}p{{$local_value -}}
-		{{- else }}{{ .Name}}
-		{{- end -}}
-	{{- end -}});
-	});
+	if (g{{$Class}}Handle == nullptr)
+	{
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	g{{$Class}}Handle->_GetPublisher()->Broadcast{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
+	{{- if $idx}}, {{ end -}}
+	{{- $local_value := printf "local_%s" (snake .Name) -}}
+	{{- if or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}{{$local_value -}}
+	{{- else }}{{ .Name}}
+	{{- end -}}
+{{- end -}});
 }
 
 {{- end }}
@@ -555,10 +543,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 {{- end }}
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, {{if $hasLocalVar}}local_result = MoveTemp(cpp_result){{else}}result{{end}}]()
-		{
-		g{{$Class}}methodHelper.FulfillPromise(guid, {{if $hasLocalVar}}local_{{end}}result);
-	});
+	g{{$Class}}methodHelper.FulfillPromise(guid, {{if $hasLocalVar}}cpp_{{end}}result);
 	{{- else }}
 	FGuid::Parse(callIdString, guid);
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result for id %s"), *(guid.ToString(EGuidFormats::Digits)));

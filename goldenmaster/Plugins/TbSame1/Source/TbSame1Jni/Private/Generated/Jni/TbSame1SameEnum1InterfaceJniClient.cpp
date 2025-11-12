@@ -328,11 +328,7 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameEnum1InterfaceJniClient_native
 		return;
 	}
 	ETbSame1Enum1 local_prop1 = TbSame1DataJavaConverter::getEnum1Value(Env, prop1);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop1 = MoveTemp(local_prop1)]()
-		{
-		gUTbSame1SameEnum1InterfaceJniClientOnProp1Changed(plocal_prop1);
-	});
+	gUTbSame1SameEnum1InterfaceJniClientOnProp1Changed(local_prop1);
 }
 
 JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameEnum1InterfaceJniClient_nativeOnSig1(JNIEnv* Env, jclass Clazz, jobject param1)
@@ -345,15 +341,12 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameEnum1InterfaceJniClient_native
 	}
 	ETbSame1Enum1 local_param1 = TbSame1DataJavaConverter::getEnum1Value(Env, param1);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param1 = MoveTemp(local_param1)]()
-		{
-		if (gUTbSame1SameEnum1InterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSame1SameEnum1InterfaceClient_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniclient_SameEnum1InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSame1SameEnum1InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(plocal_param1);
-	});
+	if (gUTbSame1SameEnum1InterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSame1SameEnum1InterfaceClient_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniclient_SameEnum1InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSame1SameEnum1InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(local_param1);
 }
 
 JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameEnum1InterfaceJniClient_nativeOnFunc1Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -364,10 +357,7 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameEnum1InterfaceJniClient_native
 	ETbSame1Enum1 cpp_result = TbSame1DataJavaConverter::getEnum1Value(Env, result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSame1SameEnum1InterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSame1SameEnum1InterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameEnum1InterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
