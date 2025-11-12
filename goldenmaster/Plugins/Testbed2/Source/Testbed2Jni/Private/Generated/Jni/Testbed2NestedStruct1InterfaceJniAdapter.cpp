@@ -305,18 +305,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniServic
 	FTestbed2NestedStruct1 local_prop1 = FTestbed2NestedStruct1();
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, prop1, local_prop1);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop1 = MoveTemp(local_prop1)]()
-		{
-		auto service = gUTestbed2NestedStruct1InterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp1(plocal_prop1);
-		}
-		else
-		{
-			UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Warning, TEXT("service not valid, cannot set value for prop1"));
-		}
-	});
+	auto service = gUTestbed2NestedStruct1InterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp1(local_prop1);
+	}
+	else
+	{
+		UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Warning, TEXT("service not valid, cannot set value for prop1"));
+	}
 }
 
 JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniService_nativeGetProp1(JNIEnv* Env, jclass Clazz)

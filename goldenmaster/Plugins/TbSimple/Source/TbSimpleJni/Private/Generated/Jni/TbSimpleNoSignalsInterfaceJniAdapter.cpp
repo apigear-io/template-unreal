@@ -270,18 +270,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_na
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [propBool]()
-		{
-		auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropBool(propBool);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
-		}
-	});
+	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropBool(propBool);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
+	}
 }
 
 JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropBool(JNIEnv* Env, jclass Clazz)
@@ -313,18 +310,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_na
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [propInt]()
-		{
-		auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropInt(propInt);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
-		}
-	});
+	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropInt(propInt);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
+	}
 }
 
 JNI_METHOD jint Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropInt(JNIEnv* Env, jclass Clazz)

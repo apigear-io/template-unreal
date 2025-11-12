@@ -339,11 +339,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_n
 		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnPropBoolChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propBool]()
-		{
-		gUTbSimpleNoOperationsInterfaceJniClientOnPropBoolChanged(propBool);
-	});
+	gUTbSimpleNoOperationsInterfaceJniClientOnPropBoolChanged(propBool);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnPropIntChanged(JNIEnv* Env, jclass Clazz, jint propInt)
 {
@@ -353,11 +349,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_n
 		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnPropIntChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propInt]()
-		{
-		gUTbSimpleNoOperationsInterfaceJniClientOnPropIntChanged(propInt);
-	});
+	gUTbSimpleNoOperationsInterfaceJniClientOnPropIntChanged(propInt);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigVoid(JNIEnv* Env, jclass Clazz)
@@ -369,15 +361,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_n
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, []()
-		{
-		if (gUTbSimpleNoOperationsInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigVoid: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleNoOperationsInterfaceJniClientHandle->_GetPublisher()->BroadcastSigVoidSignal();
-	});
+	if (gUTbSimpleNoOperationsInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigVoid: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleNoOperationsInterfaceJniClientHandle->_GetPublisher()->BroadcastSigVoidSignal();
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigBool(JNIEnv* Env, jclass Clazz, jboolean paramBool)
@@ -389,15 +378,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_n
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [paramBool]()
-		{
-		if (gUTbSimpleNoOperationsInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleNoOperationsInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(paramBool);
-	});
+	if (gUTbSimpleNoOperationsInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleNoOperationsInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(paramBool);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)

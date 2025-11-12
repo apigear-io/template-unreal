@@ -521,11 +521,7 @@ JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSwitchChang
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSwitchChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [Switch]()
-		{
-		gUTbNamesNamEsJniClientOnSwitchChanged(Switch);
-	});
+	gUTbNamesNamEsJniClientOnSwitchChanged(Switch);
 }
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePropertyChanged(JNIEnv* Env, jclass Clazz, jint SOME_PROPERTY)
 {
@@ -535,11 +531,7 @@ JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePropert
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePropertyChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [SOME_PROPERTY]()
-		{
-		gUTbNamesNamEsJniClientOnSomePropertyChanged(SOME_PROPERTY);
-	});
+	gUTbNamesNamEsJniClientOnSomePropertyChanged(SOME_PROPERTY);
 }
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePoperty2Changed(JNIEnv* Env, jclass Clazz, jint Some_Poperty2)
 {
@@ -549,11 +541,7 @@ JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePoperty
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePoperty2Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [Some_Poperty2]()
-		{
-		gUTbNamesNamEsJniClientOnSomePoperty2Changed(Some_Poperty2);
-	});
+	gUTbNamesNamEsJniClientOnSomePoperty2Changed(Some_Poperty2);
 }
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnEnumPropertyChanged(JNIEnv* Env, jclass Clazz, jobject enum_property)
 {
@@ -564,11 +552,7 @@ JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnEnumPropert
 		return;
 	}
 	ETbNamesEnum_With_Under_scores local_enum_property = TbNamesDataJavaConverter::getEnumWithUnderScoresValue(Env, enum_property);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_enum_property = MoveTemp(local_enum_property)]()
-		{
-		gUTbNamesNamEsJniClientOnEnumPropertyChanged(plocal_enum_property);
-	});
+	gUTbNamesNamEsJniClientOnEnumPropertyChanged(local_enum_property);
 }
 
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal(JNIEnv* Env, jclass Clazz, jboolean SOME_PARAM)
@@ -580,15 +564,12 @@ JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal(
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [SOME_PARAM]()
-		{
-		if (gUTbNamesNamEsJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbNamesNamEsJniClientHandle->_GetPublisher()->BroadcastSomeSignalSignal(SOME_PARAM);
-	});
+	if (gUTbNamesNamEsJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbNamesNamEsJniClientHandle->_GetPublisher()->BroadcastSomeSignalSignal(SOME_PARAM);
 }
 
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal2(JNIEnv* Env, jclass Clazz, jboolean Some_Param)
@@ -600,15 +581,12 @@ JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal2
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [Some_Param]()
-		{
-		if (gUTbNamesNamEsJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal2: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbNamesNamEsJniClientHandle->_GetPublisher()->BroadcastSomeSignal2Signal(Some_Param);
-	});
+	if (gUTbNamesNamEsJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal2: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbNamesNamEsJniClientHandle->_GetPublisher()->BroadcastSomeSignal2Signal(Some_Param);
 }
 
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeFunctionResult(JNIEnv* Env, jclass Clazz, jstring callId)

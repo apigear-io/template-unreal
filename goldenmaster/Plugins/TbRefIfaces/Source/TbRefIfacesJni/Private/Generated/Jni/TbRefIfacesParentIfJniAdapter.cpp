@@ -504,18 +504,15 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_native
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> local_local_if = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIf(Env, localIf, local_local_if);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_local_if = MoveTemp(local_local_if)]()
-		{
-		auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetLocalIf(plocal_local_if);
-		}
-		else
-		{
-			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("service not valid, cannot set value for localIf"));
-		}
-	});
+	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetLocalIf(local_local_if);
+	}
+	else
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("service not valid, cannot set value for localIf"));
+	}
 }
 
 JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetLocalIf(JNIEnv* Env, jclass Clazz)
@@ -554,18 +551,15 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_native
 	// interfaces are currently not supported. TbRefIfacesDataJavaConverter does not fill the array.
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIfArray(Env, localIfList, local_local_if_list);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_local_if_list = MoveTemp(local_local_if_list)]()
-		{
-		auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetLocalIfList(plocal_local_if_list);
-		}
-		else
-		{
-			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("service not valid, cannot set value for localIfList"));
-		}
-	});
+	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetLocalIfList(local_local_if_list);
+	}
+	else
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("service not valid, cannot set value for localIfList"));
+	}
 }
 
 JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetLocalIfList(JNIEnv* Env, jclass Clazz)
@@ -604,18 +598,15 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_native
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> local_imported_if = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	TbIfaceimportDataJavaConverter::fillEmptyIf(Env, importedIf, local_imported_if);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_imported_if = MoveTemp(local_imported_if)]()
-		{
-		auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetImportedIf(plocal_imported_if);
-		}
-		else
-		{
-			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("service not valid, cannot set value for importedIf"));
-		}
-	});
+	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetImportedIf(local_imported_if);
+	}
+	else
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("service not valid, cannot set value for importedIf"));
+	}
 }
 
 JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetImportedIf(JNIEnv* Env, jclass Clazz)
@@ -654,18 +645,15 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_native
 	// interfaces are currently not supported. TbIfaceimportDataJavaConverter does not fill the array.
 	TbIfaceimportDataJavaConverter::fillEmptyIfArray(Env, importedIfList, local_imported_if_list);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_imported_if_list = MoveTemp(local_imported_if_list)]()
-		{
-		auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetImportedIfList(plocal_imported_if_list);
-		}
-		else
-		{
-			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("service not valid, cannot set value for importedIfList"));
-		}
-	});
+	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetImportedIfList(local_imported_if_list);
+	}
+	else
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("service not valid, cannot set value for importedIfList"));
+	}
 }
 
 JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetImportedIfList(JNIEnv* Env, jclass Clazz)

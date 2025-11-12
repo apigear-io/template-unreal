@@ -982,18 +982,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_
 	}
 	Env->DeleteLocalRef(l_javaPropBoolArray);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_bool = MoveTemp(local_prop_bool)]()
-		{
-		auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropBool(plocal_prop_bool);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
-		}
-	});
+	auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropBool(local_prop_bool);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
+	}
 }
 
 JNI_METHOD jbooleanArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeGetPropBool(JNIEnv* Env, jclass Clazz)
@@ -1042,18 +1039,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_
 	Env->GetIntArrayRegion(propInt, 0, lenprop_int, local_prop_int.GetData());
 	Env->DeleteLocalRef(l_javaPropIntArray);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_int = MoveTemp(local_prop_int)]()
-		{
-		auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropInt(plocal_prop_int);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
-		}
-	});
+	auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropInt(local_prop_int);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
+	}
 }
 
 JNI_METHOD jintArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeGetPropInt(JNIEnv* Env, jclass Clazz)
@@ -1099,18 +1093,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_
 	Env->GetIntArrayRegion(propInt32, 0, lenprop_int32, local_prop_int32.GetData());
 	Env->DeleteLocalRef(l_javaPropInt32Array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_int32 = MoveTemp(local_prop_int32)]()
-		{
-		auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropInt32(plocal_prop_int32);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt32"));
-		}
-	});
+	auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropInt32(local_prop_int32);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt32"));
+	}
 }
 
 JNI_METHOD jintArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeGetPropInt32(JNIEnv* Env, jclass Clazz)
@@ -1156,18 +1147,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_
 	Env->GetLongArrayRegion(propInt64, 0, lenprop_int64, reinterpret_cast<jlong*>(local_prop_int64.GetData()));
 	Env->DeleteLocalRef(l_javaPropInt64Array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_int64 = MoveTemp(local_prop_int64)]()
-		{
-		auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropInt64(plocal_prop_int64);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt64"));
-		}
-	});
+	auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropInt64(local_prop_int64);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt64"));
+	}
 }
 
 JNI_METHOD jlongArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeGetPropInt64(JNIEnv* Env, jclass Clazz)
@@ -1213,18 +1201,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_
 	Env->GetFloatArrayRegion(propFloat, 0, lenprop_float, local_prop_float.GetData());
 	Env->DeleteLocalRef(l_javaPropFloatArray);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_float = MoveTemp(local_prop_float)]()
-		{
-		auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropFloat(plocal_prop_float);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat"));
-		}
-	});
+	auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropFloat(local_prop_float);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat"));
+	}
 }
 
 JNI_METHOD jfloatArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeGetPropFloat(JNIEnv* Env, jclass Clazz)
@@ -1270,18 +1255,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_
 	Env->GetFloatArrayRegion(propFloat32, 0, lenprop_float32, local_prop_float32.GetData());
 	Env->DeleteLocalRef(l_javaPropFloat32Array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_float32 = MoveTemp(local_prop_float32)]()
-		{
-		auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropFloat32(plocal_prop_float32);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat32"));
-		}
-	});
+	auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropFloat32(local_prop_float32);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat32"));
+	}
 }
 
 JNI_METHOD jfloatArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeGetPropFloat32(JNIEnv* Env, jclass Clazz)
@@ -1327,18 +1309,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_
 	Env->GetDoubleArrayRegion(propFloat64, 0, lenprop_float64, local_prop_float64.GetData());
 	Env->DeleteLocalRef(l_javaPropFloat64Array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_float64 = MoveTemp(local_prop_float64)]()
-		{
-		auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropFloat64(plocal_prop_float64);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat64"));
-		}
-	});
+	auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropFloat64(local_prop_float64);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat64"));
+	}
 }
 
 JNI_METHOD jdoubleArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeGetPropFloat64(JNIEnv* Env, jclass Clazz)
@@ -1380,18 +1359,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_
 	TArray<FString> local_prop_string = TArray<FString>();
 	local_prop_string = FJavaHelper::ObjectArrayToFStringTArray(Env, propString);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_string = MoveTemp(local_prop_string)]()
-		{
-		auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropString(plocal_prop_string);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propString"));
-		}
-	});
+	auto service = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropString(local_prop_string);
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("service not valid, cannot set value for propString"));
+	}
 }
 
 JNI_METHOD jobjectArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeGetPropString(JNIEnv* Env, jclass Clazz)

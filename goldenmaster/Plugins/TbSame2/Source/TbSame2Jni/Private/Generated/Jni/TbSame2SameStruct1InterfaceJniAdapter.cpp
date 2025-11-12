@@ -260,18 +260,15 @@ JNI_METHOD void Java_tbSame2_tbSame2jniservice_SameStruct1InterfaceJniService_na
 	FTbSame2Struct1 local_prop1 = FTbSame2Struct1();
 	TbSame2DataJavaConverter::fillStruct1(Env, prop1, local_prop1);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop1 = MoveTemp(local_prop1)]()
-		{
-		auto service = gUTbSame2SameStruct1InterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp1(plocal_prop1);
-		}
-		else
-		{
-			UE_LOG(LogTbSame2SameStruct1Interface_JNI, Warning, TEXT("service not valid, cannot set value for prop1"));
-		}
-	});
+	auto service = gUTbSame2SameStruct1InterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp1(local_prop1);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2SameStruct1Interface_JNI, Warning, TEXT("service not valid, cannot set value for prop1"));
+	}
 }
 
 JNI_METHOD jobject Java_tbSame2_tbSame2jniservice_SameStruct1InterfaceJniService_nativeGetProp1(JNIEnv* Env, jclass Clazz)

@@ -1029,11 +1029,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropBoolChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propBool]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientOnPropBoolChanged(propBool);
-	});
+	gUTbSimpleSimpleInterfaceJniClientOnPropBoolChanged(propBool);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropIntChanged(JNIEnv* Env, jclass Clazz, jint propInt)
 {
@@ -1043,11 +1039,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropIntChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propInt]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientOnPropIntChanged(propInt);
-	});
+	gUTbSimpleSimpleInterfaceJniClientOnPropIntChanged(propInt);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt32Changed(JNIEnv* Env, jclass Clazz, jint propInt32)
 {
@@ -1057,11 +1049,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt32Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propInt32]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientOnPropInt32Changed(propInt32);
-	});
+	gUTbSimpleSimpleInterfaceJniClientOnPropInt32Changed(propInt32);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt64Changed(JNIEnv* Env, jclass Clazz, jlong propInt64)
 {
@@ -1071,11 +1059,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropInt64Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propInt64]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientOnPropInt64Changed(propInt64);
-	});
+	gUTbSimpleSimpleInterfaceJniClientOnPropInt64Changed(propInt64);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloatChanged(JNIEnv* Env, jclass Clazz, jfloat propFloat)
 {
@@ -1085,11 +1069,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloatChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propFloat]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientOnPropFloatChanged(propFloat);
-	});
+	gUTbSimpleSimpleInterfaceJniClientOnPropFloatChanged(propFloat);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat32Changed(JNIEnv* Env, jclass Clazz, jfloat propFloat32)
 {
@@ -1099,11 +1079,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat32Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propFloat32]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientOnPropFloat32Changed(propFloat32);
-	});
+	gUTbSimpleSimpleInterfaceJniClientOnPropFloat32Changed(propFloat32);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat64Changed(JNIEnv* Env, jclass Clazz, jdouble propFloat64)
 {
@@ -1113,11 +1089,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropFloat64Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propFloat64]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientOnPropFloat64Changed(propFloat64);
-	});
+	gUTbSimpleSimpleInterfaceJniClientOnPropFloat64Changed(propFloat64);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnPropStringChanged(JNIEnv* Env, jclass Clazz, jstring propString)
 {
@@ -1128,11 +1100,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		return;
 	}
 	FString local_prop_string = FJavaHelper::FStringFromParam(Env, propString);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_string = MoveTemp(local_prop_string)]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientOnPropStringChanged(plocal_prop_string);
-	});
+	gUTbSimpleSimpleInterfaceJniClientOnPropStringChanged(local_prop_string);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigBool(JNIEnv* Env, jclass Clazz, jboolean paramBool)
@@ -1144,15 +1112,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [paramBool]()
-		{
-		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(paramBool);
-	});
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(paramBool);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt(JNIEnv* Env, jclass Clazz, jint paramInt)
@@ -1164,15 +1129,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [paramInt]()
-		{
-		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigIntSignal(paramInt);
-	});
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigIntSignal(paramInt);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt32(JNIEnv* Env, jclass Clazz, jint paramInt32)
@@ -1184,15 +1146,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [paramInt32]()
-		{
-		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt32Signal(paramInt32);
-	});
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt32Signal(paramInt32);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt64(JNIEnv* Env, jclass Clazz, jlong paramInt64)
@@ -1204,15 +1163,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [paramInt64]()
-		{
-		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt64Signal(paramInt64);
-	});
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt64Signal(paramInt64);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat(JNIEnv* Env, jclass Clazz, jfloat paramFloat)
@@ -1224,15 +1180,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [paramFloat]()
-		{
-		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloatSignal(paramFloat);
-	});
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloatSignal(paramFloat);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat32(JNIEnv* Env, jclass Clazz, jfloat paramFloat32)
@@ -1244,15 +1197,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [paramFloat32]()
-		{
-		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat32Signal(paramFloat32);
-	});
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat32Signal(paramFloat32);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat64(JNIEnv* Env, jclass Clazz, jdouble paramFloat64)
@@ -1264,15 +1214,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [paramFloat64]()
-		{
-		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat64Signal(paramFloat64);
-	});
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat64Signal(paramFloat64);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigString(JNIEnv* Env, jclass Clazz, jstring paramString)
@@ -1285,15 +1232,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 	}
 	FString local_param_string = FJavaHelper::FStringFromParam(Env, paramString);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param_string = MoveTemp(local_param_string)]()
-		{
-		if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigStringSignal(plocal_param_string);
-	});
+	if (gUTbSimpleSimpleInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleInterfaceJniClientHandle->_GetPublisher()->BroadcastSigStringSignal(local_param_string);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncNoReturnValueResult(JNIEnv* Env, jclass Clazz, jstring callId)
@@ -1312,10 +1256,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncBoolResult(JNIEnv* Env, jclass Clazz, jboolean result, jstring callId)
@@ -1325,10 +1266,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncIntResult(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
@@ -1338,10 +1276,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncInt32Result(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
@@ -1351,10 +1286,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncInt64Result(JNIEnv* Env, jclass Clazz, jlong result, jstring callId)
@@ -1364,10 +1296,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloatResult(JNIEnv* Env, jclass Clazz, jfloat result, jstring callId)
@@ -1377,10 +1306,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloat32Result(JNIEnv* Env, jclass Clazz, jfloat result, jstring callId)
@@ -1390,10 +1316,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncFloat64Result(JNIEnv* Env, jclass Clazz, jdouble result, jstring callId)
@@ -1403,10 +1326,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeOnFuncStringResult(JNIEnv* Env, jclass Clazz, jstring result, jstring callId)
@@ -1417,10 +1337,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeO
 	FString cpp_result = FJavaHelper::FStringFromParam(Env, result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)

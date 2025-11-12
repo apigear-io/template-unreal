@@ -623,11 +623,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	// interfaces are currently not supported. TbRefIfacesDataJavaConverter does not fill element.
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> local_local_if = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIf(Env, localIf, local_local_if);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_local_if = MoveTemp(local_local_if)]()
-		{
-		gUTbRefIfacesParentIfJniClientOnLocalIfChanged(plocal_local_if);
-	});
+	gUTbRefIfacesParentIfJniClientOnLocalIfChanged(local_local_if);
 }
 // interfaces as properties are currently not supported for jni. Generated for compatibility.
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnLocalIfListChanged(JNIEnv* Env, jclass Clazz, jobjectArray localIfList)
@@ -641,11 +637,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> local_local_if_list = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 	// interfaces are currently not supported. TbRefIfacesDataJavaConverter does not fill the array.
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIfArray(Env, localIfList, local_local_if_list);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_local_if_list = MoveTemp(local_local_if_list)]()
-		{
-		gUTbRefIfacesParentIfJniClientOnLocalIfListChanged(plocal_local_if_list);
-	});
+	gUTbRefIfacesParentIfJniClientOnLocalIfListChanged(local_local_if_list);
 }
 // interfaces as properties are currently not supported for jni. Generated for compatibility.
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnImportedIfChanged(JNIEnv* Env, jclass Clazz, jobject importedIf)
@@ -659,11 +651,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	// interfaces are currently not supported. TbIfaceimportDataJavaConverter does not fill element.
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> local_imported_if = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	TbIfaceimportDataJavaConverter::fillEmptyIf(Env, importedIf, local_imported_if);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_imported_if = MoveTemp(local_imported_if)]()
-		{
-		gUTbRefIfacesParentIfJniClientOnImportedIfChanged(plocal_imported_if);
-	});
+	gUTbRefIfacesParentIfJniClientOnImportedIfChanged(local_imported_if);
 }
 // interfaces as properties are currently not supported for jni. Generated for compatibility.
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnImportedIfListChanged(JNIEnv* Env, jclass Clazz, jobjectArray importedIfList)
@@ -677,11 +665,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> local_imported_if_list = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 	// interfaces are currently not supported. TbIfaceimportDataJavaConverter does not fill the array.
 	TbIfaceimportDataJavaConverter::fillEmptyIfArray(Env, importedIfList, local_imported_if_list);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_imported_if_list = MoveTemp(local_imported_if_list)]()
-		{
-		gUTbRefIfacesParentIfJniClientOnImportedIfListChanged(plocal_imported_if_list);
-	});
+	gUTbRefIfacesParentIfJniClientOnImportedIfListChanged(local_imported_if_list);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnLocalIfSignal(JNIEnv* Env, jclass Clazz, jobject param)
@@ -696,15 +680,12 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> local_param = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIf(Env, param, local_param);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param = MoveTemp(local_param)]()
-		{
-		if (gUTbRefIfacesParentIfJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnLocalIfSignal: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbRefIfacesParentIfJniClientHandle->_GetPublisher()->BroadcastLocalIfSignalSignal(plocal_param);
-	});
+	if (gUTbRefIfacesParentIfJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnLocalIfSignal: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbRefIfacesParentIfJniClientHandle->_GetPublisher()->BroadcastLocalIfSignalSignal(local_param);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnLocalIfSignalList(JNIEnv* Env, jclass Clazz, jobjectArray param)
@@ -719,15 +700,12 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	// interfaces are currently not supported. TbRefIfacesDataJavaConverter does not fill the array.
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIfArray(Env, param, local_param);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param = MoveTemp(local_param)]()
-		{
-		if (gUTbRefIfacesParentIfJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnLocalIfSignalList: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbRefIfacesParentIfJniClientHandle->_GetPublisher()->BroadcastLocalIfSignalListSignal(plocal_param);
-	});
+	if (gUTbRefIfacesParentIfJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnLocalIfSignalList: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbRefIfacesParentIfJniClientHandle->_GetPublisher()->BroadcastLocalIfSignalListSignal(local_param);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnImportedIfSignal(JNIEnv* Env, jclass Clazz, jobject param)
@@ -742,15 +720,12 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> local_param = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	TbIfaceimportDataJavaConverter::fillEmptyIf(Env, param, local_param);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param = MoveTemp(local_param)]()
-		{
-		if (gUTbRefIfacesParentIfJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnImportedIfSignal: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbRefIfacesParentIfJniClientHandle->_GetPublisher()->BroadcastImportedIfSignalSignal(plocal_param);
-	});
+	if (gUTbRefIfacesParentIfJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnImportedIfSignal: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbRefIfacesParentIfJniClientHandle->_GetPublisher()->BroadcastImportedIfSignalSignal(local_param);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnImportedIfSignalList(JNIEnv* Env, jclass Clazz, jobjectArray param)
@@ -765,15 +740,12 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	// interfaces are currently not supported. TbIfaceimportDataJavaConverter does not fill the array.
 	TbIfaceimportDataJavaConverter::fillEmptyIfArray(Env, param, local_param);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param = MoveTemp(local_param)]()
-		{
-		if (gUTbRefIfacesParentIfJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnImportedIfSignalList: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbRefIfacesParentIfJniClientHandle->_GetPublisher()->BroadcastImportedIfSignalListSignal(plocal_param);
-	});
+	if (gUTbRefIfacesParentIfJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnImportedIfSignalList: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbRefIfacesParentIfJniClientHandle->_GetPublisher()->BroadcastImportedIfSignalListSignal(local_param);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnLocalIfMethodResult(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -786,10 +758,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIf(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbRefIfacesParentIfJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbRefIfacesParentIfJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnLocalIfMethodListResult(JNIEnv* Env, jclass Clazz, jobjectArray result, jstring callId)
@@ -802,10 +771,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIfArray(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbRefIfacesParentIfJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbRefIfacesParentIfJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnImportedIfMethodResult(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -818,10 +784,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	TbIfaceimportDataJavaConverter::fillEmptyIf(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbRefIfacesParentIfJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbRefIfacesParentIfJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOnImportedIfMethodListResult(JNIEnv* Env, jclass Clazz, jobjectArray result, jstring callId)
@@ -834,10 +797,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeOn
 	TbIfaceimportDataJavaConverter::fillEmptyIfArray(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbRefIfacesParentIfJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbRefIfacesParentIfJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)

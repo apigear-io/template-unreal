@@ -415,18 +415,15 @@ JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetVector
 	FCustomTypesVector3D local_vector = FCustomTypesVector3D();
 	CustomTypesDataJavaConverter::fillVector3D(Env, vector, local_vector);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_vector = MoveTemp(local_vector)]()
-		{
-		auto service = gUCounterCounterJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetVector(plocal_vector);
-		}
-		else
-		{
-			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("service not valid, cannot set value for vector"));
-		}
-	});
+	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetVector(local_vector);
+	}
+	else
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("service not valid, cannot set value for vector"));
+	}
 }
 
 JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeGetVector(JNIEnv* Env, jclass Clazz)
@@ -463,18 +460,15 @@ JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetExtern
 	FVector local_extern_vector = FVector(0.f, 0.f, 0.f);
 	ExternTypesDataJavaConverter::fillMyVector3D(Env, extern_vector, local_extern_vector);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_extern_vector = MoveTemp(local_extern_vector)]()
-		{
-		auto service = gUCounterCounterJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetExternVector(plocal_extern_vector);
-		}
-		else
-		{
-			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("service not valid, cannot set value for extern_vector"));
-		}
-	});
+	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetExternVector(local_extern_vector);
+	}
+	else
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("service not valid, cannot set value for extern_vector"));
+	}
 }
 
 JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeGetExternVector(JNIEnv* Env, jclass Clazz)
@@ -511,18 +505,15 @@ JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetVector
 	TArray<FCustomTypesVector3D> local_vector_array = TArray<FCustomTypesVector3D>();
 	CustomTypesDataJavaConverter::fillVector3DArray(Env, vectorArray, local_vector_array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_vector_array = MoveTemp(local_vector_array)]()
-		{
-		auto service = gUCounterCounterJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetVectorArray(plocal_vector_array);
-		}
-		else
-		{
-			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("service not valid, cannot set value for vectorArray"));
-		}
-	});
+	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetVectorArray(local_vector_array);
+	}
+	else
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("service not valid, cannot set value for vectorArray"));
+	}
 }
 
 JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeGetVectorArray(JNIEnv* Env, jclass Clazz)
@@ -559,18 +550,15 @@ JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetExtern
 	TArray<FVector> local_extern_vector_array = TArray<FVector>();
 	ExternTypesDataJavaConverter::fillMyVector3DArray(Env, extern_vectorArray, local_extern_vector_array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_extern_vector_array = MoveTemp(local_extern_vector_array)]()
-		{
-		auto service = gUCounterCounterJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetExternVectorArray(plocal_extern_vector_array);
-		}
-		else
-		{
-			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("service not valid, cannot set value for extern_vectorArray"));
-		}
-	});
+	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetExternVectorArray(local_extern_vector_array);
+	}
+	else
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("service not valid, cannot set value for extern_vectorArray"));
+	}
 }
 
 JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeGetExternVectorArray(JNIEnv* Env, jclass Clazz)

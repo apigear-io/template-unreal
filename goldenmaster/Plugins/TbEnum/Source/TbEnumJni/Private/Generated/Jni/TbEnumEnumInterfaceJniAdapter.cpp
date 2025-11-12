@@ -473,18 +473,15 @@ JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetPr
 
 	ETbEnumEnum0 local_prop0 = TbEnumDataJavaConverter::getEnum0Value(Env, prop0);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop0 = MoveTemp(local_prop0)]()
-		{
-		auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp0(plocal_prop0);
-		}
-		else
-		{
-			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop0"));
-		}
-	});
+	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp0(local_prop0);
+	}
+	else
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop0"));
+	}
 }
 
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp0(JNIEnv* Env, jclass Clazz)
@@ -520,18 +517,15 @@ JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetPr
 
 	ETbEnumEnum1 local_prop1 = TbEnumDataJavaConverter::getEnum1Value(Env, prop1);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop1 = MoveTemp(local_prop1)]()
-		{
-		auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp1(plocal_prop1);
-		}
-		else
-		{
-			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop1"));
-		}
-	});
+	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp1(local_prop1);
+	}
+	else
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop1"));
+	}
 }
 
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp1(JNIEnv* Env, jclass Clazz)
@@ -567,18 +561,15 @@ JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetPr
 
 	ETbEnumEnum2 local_prop2 = TbEnumDataJavaConverter::getEnum2Value(Env, prop2);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop2 = MoveTemp(local_prop2)]()
-		{
-		auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp2(plocal_prop2);
-		}
-		else
-		{
-			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop2"));
-		}
-	});
+	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp2(local_prop2);
+	}
+	else
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop2"));
+	}
 }
 
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp2(JNIEnv* Env, jclass Clazz)
@@ -614,18 +605,15 @@ JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetPr
 
 	ETbEnumEnum3 local_prop3 = TbEnumDataJavaConverter::getEnum3Value(Env, prop3);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop3 = MoveTemp(local_prop3)]()
-		{
-		auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp3(plocal_prop3);
-		}
-		else
-		{
-			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop3"));
-		}
-	});
+	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp3(local_prop3);
+	}
+	else
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop3"));
+	}
 }
 
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp3(JNIEnv* Env, jclass Clazz)

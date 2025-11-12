@@ -321,11 +321,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nat
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntPropertyChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [intProperty]()
-		{
-		gUTbRefIfacesSimpleLocalIfJniClientOnIntPropertyChanged(intProperty);
-	});
+	gUTbRefIfacesSimpleLocalIfJniClientOnIntPropertyChanged(intProperty);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntSignal(JNIEnv* Env, jclass Clazz, jint param)
@@ -337,15 +333,12 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nat
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [param]()
-		{
-		if (gUTbRefIfacesSimpleLocalIfJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntSignal: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbRefIfacesSimpleLocalIfJniClientHandle->_GetPublisher()->BroadcastIntSignalSignal(param);
-	});
+	if (gUTbRefIfacesSimpleLocalIfJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntSignal: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbRefIfacesSimpleLocalIfJniClientHandle->_GetPublisher()->BroadcastIntSignalSignal(param);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntMethodResult(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
@@ -355,10 +348,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nat
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)

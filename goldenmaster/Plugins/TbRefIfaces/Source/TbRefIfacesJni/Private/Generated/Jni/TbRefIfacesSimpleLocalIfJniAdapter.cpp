@@ -251,18 +251,15 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_n
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [intProperty]()
-		{
-		auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetIntProperty(intProperty);
-		}
-		else
-		{
-			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("service not valid, cannot set value for intProperty"));
-		}
-	});
+	auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetIntProperty(intProperty);
+	}
+	else
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("service not valid, cannot set value for intProperty"));
+	}
 }
 
 JNI_METHOD jint Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeGetIntProperty(JNIEnv* Env, jclass Clazz)
