@@ -364,18 +364,15 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch(J
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [Switch]()
-		{
-		auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetSwitch(Switch);
-		}
-		else
-		{
-			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for Switch"));
-		}
-	});
+	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetSwitch(Switch);
+	}
+	else
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for Switch"));
+	}
 }
 
 JNI_METHOD jboolean Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwitch(JNIEnv* Env, jclass Clazz)
@@ -407,18 +404,15 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProp
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [SOME_PROPERTY]()
-		{
-		auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetSomeProperty(SOME_PROPERTY);
-		}
-		else
-		{
-			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for SOME_PROPERTY"));
-		}
-	});
+	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetSomeProperty(SOME_PROPERTY);
+	}
+	else
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for SOME_PROPERTY"));
+	}
 }
 
 JNI_METHOD jint Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProperty(JNIEnv* Env, jclass Clazz)
@@ -450,18 +444,15 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePope
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [Some_Poperty2]()
-		{
-		auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetSomePoperty2(Some_Poperty2);
-		}
-		else
-		{
-			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for Some_Poperty2"));
-		}
-	});
+	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetSomePoperty2(Some_Poperty2);
+	}
+	else
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for Some_Poperty2"));
+	}
 }
 
 JNI_METHOD jint Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePoperty2(JNIEnv* Env, jclass Clazz)
@@ -495,18 +486,15 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProp
 
 	ETbNamesEnum_With_Under_scores local_enum_property = TbNamesDataJavaConverter::getEnumWithUnderScoresValue(Env, enum_property);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_enum_property = MoveTemp(local_enum_property)]()
-		{
-		auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetEnumProperty(plocal_enum_property);
-		}
-		else
-		{
-			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for enum_property"));
-		}
-	});
+	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetEnumProperty(local_enum_property);
+	}
+	else
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("service not valid, cannot set value for enum_property"));
+	}
 }
 
 JNI_METHOD jobject Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetEnumProperty(JNIEnv* Env, jclass Clazz)
