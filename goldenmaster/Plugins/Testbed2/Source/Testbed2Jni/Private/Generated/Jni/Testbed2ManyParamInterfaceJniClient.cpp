@@ -578,11 +578,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp1Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [prop1]()
-		{
-		gUTestbed2ManyParamInterfaceJniClientOnProp1Changed(prop1);
-	});
+	gUTestbed2ManyParamInterfaceJniClientOnProp1Changed(prop1);
 }
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp2Changed(JNIEnv* Env, jclass Clazz, jint prop2)
 {
@@ -592,11 +588,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp2Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [prop2]()
-		{
-		gUTestbed2ManyParamInterfaceJniClientOnProp2Changed(prop2);
-	});
+	gUTestbed2ManyParamInterfaceJniClientOnProp2Changed(prop2);
 }
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp3Changed(JNIEnv* Env, jclass Clazz, jint prop3)
 {
@@ -606,11 +598,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp3Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [prop3]()
-		{
-		gUTestbed2ManyParamInterfaceJniClientOnProp3Changed(prop3);
-	});
+	gUTestbed2ManyParamInterfaceJniClientOnProp3Changed(prop3);
 }
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp4Changed(JNIEnv* Env, jclass Clazz, jint prop4)
 {
@@ -620,11 +608,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnProp4Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [prop4]()
-		{
-		gUTestbed2ManyParamInterfaceJniClientOnProp4Changed(prop4);
-	});
+	gUTestbed2ManyParamInterfaceJniClientOnProp4Changed(prop4);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig1(JNIEnv* Env, jclass Clazz, jint param1)
@@ -636,15 +620,12 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [param1]()
-		{
-		if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(param1);
-	});
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(param1);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig2(JNIEnv* Env, jclass Clazz, jint param1, jint param2)
@@ -656,15 +637,12 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [param1, param2]()
-		{
-		if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(param1, param2);
-	});
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(param1, param2);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig3(JNIEnv* Env, jclass Clazz, jint param1, jint param2, jint param3)
@@ -676,15 +654,12 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [param1, param2, param3]()
-		{
-		if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig3Signal(param1, param2, param3);
-	});
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig3Signal(param1, param2, param3);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig4(JNIEnv* Env, jclass Clazz, jint param1, jint param2, jint param3, jint param4)
@@ -696,15 +671,12 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [param1, param2, param3, param4]()
-		{
-		if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig4: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig4Signal(param1, param2, param3, param4);
-	});
+	if (gUTestbed2ManyParamInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnSig4: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTestbed2ManyParamInterfaceJniClientHandle->_GetPublisher()->BroadcastSig4Signal(param1, param2, param3, param4);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc1Result(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
@@ -714,10 +686,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc2Result(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
@@ -727,10 +696,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc3Result(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
@@ -740,10 +706,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc4Result(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
@@ -753,10 +716,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)

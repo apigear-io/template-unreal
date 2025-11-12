@@ -599,11 +599,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp0
 		return;
 	}
 	ETbEnumEnum0 local_prop0 = TbEnumDataJavaConverter::getEnum0Value(Env, prop0);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop0 = MoveTemp(local_prop0)]()
-		{
-		gUTbEnumEnumInterfaceJniClientOnProp0Changed(plocal_prop0);
-	});
+	gUTbEnumEnumInterfaceJniClientOnProp0Changed(local_prop0);
 }
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp1Changed(JNIEnv* Env, jclass Clazz, jobject prop1)
 {
@@ -614,11 +610,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp1
 		return;
 	}
 	ETbEnumEnum1 local_prop1 = TbEnumDataJavaConverter::getEnum1Value(Env, prop1);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop1 = MoveTemp(local_prop1)]()
-		{
-		gUTbEnumEnumInterfaceJniClientOnProp1Changed(plocal_prop1);
-	});
+	gUTbEnumEnumInterfaceJniClientOnProp1Changed(local_prop1);
 }
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp2Changed(JNIEnv* Env, jclass Clazz, jobject prop2)
 {
@@ -629,11 +621,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp2
 		return;
 	}
 	ETbEnumEnum2 local_prop2 = TbEnumDataJavaConverter::getEnum2Value(Env, prop2);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop2 = MoveTemp(local_prop2)]()
-		{
-		gUTbEnumEnumInterfaceJniClientOnProp2Changed(plocal_prop2);
-	});
+	gUTbEnumEnumInterfaceJniClientOnProp2Changed(local_prop2);
 }
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp3Changed(JNIEnv* Env, jclass Clazz, jobject prop3)
 {
@@ -644,11 +632,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp3
 		return;
 	}
 	ETbEnumEnum3 local_prop3 = TbEnumDataJavaConverter::getEnum3Value(Env, prop3);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop3 = MoveTemp(local_prop3)]()
-		{
-		gUTbEnumEnumInterfaceJniClientOnProp3Changed(plocal_prop3);
-	});
+	gUTbEnumEnumInterfaceJniClientOnProp3Changed(local_prop3);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig0(JNIEnv* Env, jclass Clazz, jobject param0)
@@ -661,15 +645,12 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig0(
 	}
 	ETbEnumEnum0 local_param0 = TbEnumDataJavaConverter::getEnum0Value(Env, param0);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param0 = MoveTemp(local_param0)]()
-		{
-		if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig0: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig0Signal(plocal_param0);
-	});
+	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig0: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig0Signal(local_param0);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig1(JNIEnv* Env, jclass Clazz, jobject param1)
@@ -682,15 +663,12 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig1(
 	}
 	ETbEnumEnum1 local_param1 = TbEnumDataJavaConverter::getEnum1Value(Env, param1);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param1 = MoveTemp(local_param1)]()
-		{
-		if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(plocal_param1);
-	});
+	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(local_param1);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig2(JNIEnv* Env, jclass Clazz, jobject param2)
@@ -703,15 +681,12 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig2(
 	}
 	ETbEnumEnum2 local_param2 = TbEnumDataJavaConverter::getEnum2Value(Env, param2);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param2 = MoveTemp(local_param2)]()
-		{
-		if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(plocal_param2);
-	});
+	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(local_param2);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig3(JNIEnv* Env, jclass Clazz, jobject param3)
@@ -724,15 +699,12 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig3(
 	}
 	ETbEnumEnum3 local_param3 = TbEnumDataJavaConverter::getEnum3Value(Env, param3);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param3 = MoveTemp(local_param3)]()
-		{
-		if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig3Signal(plocal_param3);
-	});
+	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig3Signal(local_param3);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc0Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -743,10 +715,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc0
 	ETbEnumEnum0 cpp_result = TbEnumDataJavaConverter::getEnum0Value(Env, result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc1Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -757,10 +726,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc1
 	ETbEnumEnum1 cpp_result = TbEnumDataJavaConverter::getEnum1Value(Env, result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc2Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -771,10 +737,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc2
 	ETbEnumEnum2 cpp_result = TbEnumDataJavaConverter::getEnum2Value(Env, result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc3Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -785,10 +748,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc3
 	ETbEnumEnum3 cpp_result = TbEnumDataJavaConverter::getEnum3Value(Env, result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)

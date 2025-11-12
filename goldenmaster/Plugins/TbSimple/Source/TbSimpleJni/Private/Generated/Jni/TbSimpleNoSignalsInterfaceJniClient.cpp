@@ -396,11 +396,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nati
 		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nativeOnPropBoolChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propBool]()
-		{
-		gUTbSimpleNoSignalsInterfaceJniClientOnPropBoolChanged(propBool);
-	});
+	gUTbSimpleNoSignalsInterfaceJniClientOnPropBoolChanged(propBool);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nativeOnPropIntChanged(JNIEnv* Env, jclass Clazz, jint propInt)
 {
@@ -410,11 +406,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nati
 		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nativeOnPropIntChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-
-	AsyncTask(ENamedThreads::GameThread, [propInt]()
-		{
-		gUTbSimpleNoSignalsInterfaceJniClientOnPropIntChanged(propInt);
-	});
+	gUTbSimpleNoSignalsInterfaceJniClientOnPropIntChanged(propInt);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nativeOnFuncVoidResult(JNIEnv* Env, jclass Clazz, jstring callId)
@@ -433,10 +425,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nati
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, result]()
-		{
-		gUTbSimpleNoSignalsInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
-	});
+	gUTbSimpleNoSignalsInterfaceJniClientmethodHelper.FulfillPromise(guid, result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)

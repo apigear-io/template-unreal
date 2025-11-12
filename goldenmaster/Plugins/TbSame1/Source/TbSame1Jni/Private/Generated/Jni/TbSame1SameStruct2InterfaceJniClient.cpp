@@ -412,11 +412,7 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	}
 	FTbSame1Struct2 local_prop1 = FTbSame1Struct2();
 	TbSame1DataJavaConverter::fillStruct2(Env, prop1, local_prop1);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop1 = MoveTemp(local_prop1)]()
-		{
-		gUTbSame1SameStruct2InterfaceJniClientOnProp1Changed(plocal_prop1);
-	});
+	gUTbSame1SameStruct2InterfaceJniClientOnProp1Changed(local_prop1);
 }
 JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnProp2Changed(JNIEnv* Env, jclass Clazz, jobject prop2)
 {
@@ -428,11 +424,7 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	}
 	FTbSame1Struct2 local_prop2 = FTbSame1Struct2();
 	TbSame1DataJavaConverter::fillStruct2(Env, prop2, local_prop2);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop2 = MoveTemp(local_prop2)]()
-		{
-		gUTbSame1SameStruct2InterfaceJniClientOnProp2Changed(plocal_prop2);
-	});
+	gUTbSame1SameStruct2InterfaceJniClientOnProp2Changed(local_prop2);
 }
 
 JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnSig1(JNIEnv* Env, jclass Clazz, jobject param1)
@@ -446,15 +438,12 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	FTbSame1Struct1 local_param1 = FTbSame1Struct1();
 	TbSame1DataJavaConverter::fillStruct1(Env, param1, local_param1);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param1 = MoveTemp(local_param1)]()
-		{
-		if (gUTbSame1SameStruct2InterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSame1SameStruct2InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(plocal_param1);
-	});
+	if (gUTbSame1SameStruct2InterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSame1SameStruct2InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(local_param1);
 }
 
 JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnSig2(JNIEnv* Env, jclass Clazz, jobject param1, jobject param2)
@@ -470,15 +459,12 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	FTbSame1Struct2 local_param2 = FTbSame1Struct2();
 	TbSame1DataJavaConverter::fillStruct2(Env, param2, local_param2);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param1 = MoveTemp(local_param1), plocal_param2 = MoveTemp(local_param2)]()
-		{
-		if (gUTbSame1SameStruct2InterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSame1SameStruct2InterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(plocal_param1, plocal_param2);
-	});
+	if (gUTbSame1SameStruct2InterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSame1SameStruct2InterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(local_param1, local_param2);
 }
 
 JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnFunc1Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -490,10 +476,7 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	TbSame1DataJavaConverter::fillStruct1(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSame1SameStruct2InterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSame1SameStruct2InterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnFunc2Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -505,10 +488,7 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	TbSame1DataJavaConverter::fillStruct1(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSame1SameStruct2InterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSame1SameStruct2InterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)

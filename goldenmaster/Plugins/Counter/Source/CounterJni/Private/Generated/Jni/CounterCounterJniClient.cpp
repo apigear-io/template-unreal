@@ -599,11 +599,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnVectorCha
 	}
 	FCustomTypesVector3D local_vector = FCustomTypesVector3D();
 	CustomTypesDataJavaConverter::fillVector3D(Env, vector, local_vector);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_vector = MoveTemp(local_vector)]()
-		{
-		gUCounterCounterJniClientOnVectorChanged(plocal_vector);
-	});
+	gUCounterCounterJniClientOnVectorChanged(local_vector);
 }
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorChanged(JNIEnv* Env, jclass Clazz, jobject extern_vector)
 {
@@ -615,11 +611,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnExternVec
 	}
 	FVector local_extern_vector = FVector(0.f, 0.f, 0.f);
 	ExternTypesDataJavaConverter::fillMyVector3D(Env, extern_vector, local_extern_vector);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_extern_vector = MoveTemp(local_extern_vector)]()
-		{
-		gUCounterCounterJniClientOnExternVectorChanged(plocal_extern_vector);
-	});
+	gUCounterCounterJniClientOnExternVectorChanged(local_extern_vector);
 }
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnVectorArrayChanged(JNIEnv* Env, jclass Clazz, jobjectArray vectorArray)
 {
@@ -631,11 +623,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnVectorArr
 	}
 	TArray<FCustomTypesVector3D> local_vector_array = TArray<FCustomTypesVector3D>();
 	CustomTypesDataJavaConverter::fillVector3DArray(Env, vectorArray, local_vector_array);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_vector_array = MoveTemp(local_vector_array)]()
-		{
-		gUCounterCounterJniClientOnVectorArrayChanged(plocal_vector_array);
-	});
+	gUCounterCounterJniClientOnVectorArrayChanged(local_vector_array);
 }
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnExternVectorArrayChanged(JNIEnv* Env, jclass Clazz, jobjectArray extern_vectorArray)
 {
@@ -647,11 +635,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnExternVec
 	}
 	TArray<FVector> local_extern_vector_array = TArray<FVector>();
 	ExternTypesDataJavaConverter::fillMyVector3DArray(Env, extern_vectorArray, local_extern_vector_array);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_extern_vector_array = MoveTemp(local_extern_vector_array)]()
-		{
-		gUCounterCounterJniClientOnExternVectorArrayChanged(plocal_extern_vector_array);
-	});
+	gUCounterCounterJniClientOnExternVectorArrayChanged(local_extern_vector_array);
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnValueChanged(JNIEnv* Env, jclass Clazz, jobject vector, jobject extern_vector, jobjectArray vectorArray, jobjectArray extern_vectorArray)
@@ -671,15 +655,12 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnValueChan
 	TArray<FVector> local_extern_vector_array = TArray<FVector>();
 	ExternTypesDataJavaConverter::fillMyVector3DArray(Env, extern_vectorArray, local_extern_vector_array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_vector = MoveTemp(local_vector), plocal_extern_vector = MoveTemp(local_extern_vector), plocal_vector_array = MoveTemp(local_vector_array), plocal_extern_vector_array = MoveTemp(local_extern_vector_array)]()
-		{
-		if (gUCounterCounterJniClientHandle == nullptr)
-		{
-			UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnValueChanged: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUCounterCounterJniClientHandle->_GetPublisher()->BroadcastValueChangedSignal(plocal_vector, plocal_extern_vector, plocal_vector_array, plocal_extern_vector_array);
-	});
+	if (gUCounterCounterJniClientHandle == nullptr)
+	{
+		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnValueChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUCounterCounterJniClientHandle->_GetPublisher()->BroadcastValueChangedSignal(local_vector, local_extern_vector, local_vector_array, local_extern_vector_array);
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementResult(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -691,10 +672,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnIncrement
 	ExternTypesDataJavaConverter::fillMyVector3D(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementArrayResult(JNIEnv* Env, jclass Clazz, jobjectArray result, jstring callId)
@@ -706,10 +684,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnIncrement
 	ExternTypesDataJavaConverter::fillMyVector3DArray(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementResult(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -721,10 +696,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnDecrement
 	CustomTypesDataJavaConverter::fillVector3D(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementArrayResult(JNIEnv* Env, jclass Clazz, jobjectArray result, jstring callId)
@@ -736,10 +708,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnDecrement
 	CustomTypesDataJavaConverter::fillVector3DArray(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUCounterCounterJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
