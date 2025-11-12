@@ -268,15 +268,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_VoidInterfaceJniClient_nativeOnS
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, []()
-		{
-		if (gUTbSimpleVoidInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleVoidInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_VoidInterfaceJniClient_nativeOnSigVoid: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleVoidInterfaceJniClientHandle->_GetPublisher()->BroadcastSigVoidSignal();
-	});
+	if (gUTbSimpleVoidInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleVoidInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_VoidInterfaceJniClient_nativeOnSigVoid: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleVoidInterfaceJniClientHandle->_GetPublisher()->BroadcastSigVoidSignal();
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_VoidInterfaceJniClient_nativeOnFuncVoidResult(JNIEnv* Env, jclass Clazz, jstring callId)

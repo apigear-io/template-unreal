@@ -525,11 +525,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 	}
 	FTestbed2NestedStruct1 local_prop1 = FTestbed2NestedStruct1();
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, prop1, local_prop1);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop1 = MoveTemp(local_prop1)]()
-		{
-		gUTestbed2NestedStruct3InterfaceJniClientOnProp1Changed(plocal_prop1);
-	});
+	gUTestbed2NestedStruct3InterfaceJniClientOnProp1Changed(local_prop1);
 }
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp2Changed(JNIEnv* Env, jclass Clazz, jobject prop2)
 {
@@ -541,11 +537,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 	}
 	FTestbed2NestedStruct2 local_prop2 = FTestbed2NestedStruct2();
 	Testbed2DataJavaConverter::fillNestedStruct2(Env, prop2, local_prop2);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop2 = MoveTemp(local_prop2)]()
-		{
-		gUTestbed2NestedStruct3InterfaceJniClientOnProp2Changed(plocal_prop2);
-	});
+	gUTestbed2NestedStruct3InterfaceJniClientOnProp2Changed(local_prop2);
 }
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp3Changed(JNIEnv* Env, jclass Clazz, jobject prop3)
 {
@@ -557,11 +549,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 	}
 	FTestbed2NestedStruct3 local_prop3 = FTestbed2NestedStruct3();
 	Testbed2DataJavaConverter::fillNestedStruct3(Env, prop3, local_prop3);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop3 = MoveTemp(local_prop3)]()
-		{
-		gUTestbed2NestedStruct3InterfaceJniClientOnProp3Changed(plocal_prop3);
-	});
+	gUTestbed2NestedStruct3InterfaceJniClientOnProp3Changed(local_prop3);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig1(JNIEnv* Env, jclass Clazz, jobject param1)
@@ -575,15 +563,12 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 	FTestbed2NestedStruct1 local_param1 = FTestbed2NestedStruct1();
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, param1, local_param1);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param1 = MoveTemp(local_param1)]()
-		{
-		if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTestbed2NestedStruct3InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(plocal_param1);
-	});
+	if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTestbed2NestedStruct3InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(local_param1);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig2(JNIEnv* Env, jclass Clazz, jobject param1, jobject param2)
@@ -599,15 +584,12 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 	FTestbed2NestedStruct2 local_param2 = FTestbed2NestedStruct2();
 	Testbed2DataJavaConverter::fillNestedStruct2(Env, param2, local_param2);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param1 = MoveTemp(local_param1), plocal_param2 = MoveTemp(local_param2)]()
-		{
-		if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTestbed2NestedStruct3InterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(plocal_param1, plocal_param2);
-	});
+	if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTestbed2NestedStruct3InterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(local_param1, local_param2);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig3(JNIEnv* Env, jclass Clazz, jobject param1, jobject param2, jobject param3)
@@ -625,15 +607,12 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 	FTestbed2NestedStruct3 local_param3 = FTestbed2NestedStruct3();
 	Testbed2DataJavaConverter::fillNestedStruct3(Env, param3, local_param3);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param1 = MoveTemp(local_param1), plocal_param2 = MoveTemp(local_param2), plocal_param3 = MoveTemp(local_param3)]()
-		{
-		if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTestbed2NestedStruct3InterfaceJniClientHandle->_GetPublisher()->BroadcastSig3Signal(plocal_param1, plocal_param2, plocal_param3);
-	});
+	if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTestbed2NestedStruct3InterfaceJniClientHandle->_GetPublisher()->BroadcastSig3Signal(local_param1, local_param2, local_param3);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnFunc1Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -645,10 +624,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnFunc2Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -660,10 +636,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnFunc3Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -675,10 +648,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, result, cpp_result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
