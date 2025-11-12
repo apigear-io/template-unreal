@@ -338,18 +338,15 @@ JNI_METHOD void Java_tbSame1_tbSame1jniservice_SameStruct2InterfaceJniService_na
 	FTbSame1Struct2 local_prop1 = FTbSame1Struct2();
 	TbSame1DataJavaConverter::fillStruct2(Env, prop1, local_prop1);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop1 = MoveTemp(local_prop1)]()
-		{
-		auto service = gUTbSame1SameStruct2InterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp1(plocal_prop1);
-		}
-		else
-		{
-			UE_LOG(LogTbSame1SameStruct2Interface_JNI, Warning, TEXT("service not valid, cannot set value for prop1"));
-		}
-	});
+	auto service = gUTbSame1SameStruct2InterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp1(local_prop1);
+	}
+	else
+	{
+		UE_LOG(LogTbSame1SameStruct2Interface_JNI, Warning, TEXT("service not valid, cannot set value for prop1"));
+	}
 }
 
 JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameStruct2InterfaceJniService_nativeGetProp1(JNIEnv* Env, jclass Clazz)
@@ -386,18 +383,15 @@ JNI_METHOD void Java_tbSame1_tbSame1jniservice_SameStruct2InterfaceJniService_na
 	FTbSame1Struct2 local_prop2 = FTbSame1Struct2();
 	TbSame1DataJavaConverter::fillStruct2(Env, prop2, local_prop2);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop2 = MoveTemp(local_prop2)]()
-		{
-		auto service = gUTbSame1SameStruct2InterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp2(plocal_prop2);
-		}
-		else
-		{
-			UE_LOG(LogTbSame1SameStruct2Interface_JNI, Warning, TEXT("service not valid, cannot set value for prop2"));
-		}
-	});
+	auto service = gUTbSame1SameStruct2InterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp2(local_prop2);
+	}
+	else
+	{
+		UE_LOG(LogTbSame1SameStruct2Interface_JNI, Warning, TEXT("service not valid, cannot set value for prop2"));
+	}
 }
 
 JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameStruct2InterfaceJniService_nativeGetProp2(JNIEnv* Env, jclass Clazz)

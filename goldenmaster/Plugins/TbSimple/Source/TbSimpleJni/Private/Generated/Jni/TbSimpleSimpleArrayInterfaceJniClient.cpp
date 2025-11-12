@@ -1109,11 +1109,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		local_prop_bool.Add(TempPropBool[i] == JNI_TRUE);
 	}
 	Env->DeleteLocalRef(l_javaPropBoolArray);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_bool = MoveTemp(local_prop_bool)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientOnPropBoolChanged(plocal_prop_bool);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientOnPropBoolChanged(local_prop_bool);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropIntChanged(JNIEnv* Env, jclass Clazz, jintArray propInt)
 {
@@ -1129,11 +1125,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	local_prop_int.AddUninitialized(lenprop_int);
 	Env->GetIntArrayRegion(propInt, 0, lenprop_int, local_prop_int.GetData());
 	Env->DeleteLocalRef(l_javaPropIntArray);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_int = MoveTemp(local_prop_int)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientOnPropIntChanged(plocal_prop_int);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientOnPropIntChanged(local_prop_int);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt32Changed(JNIEnv* Env, jclass Clazz, jintArray propInt32)
 {
@@ -1149,11 +1141,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	local_prop_int32.AddUninitialized(lenprop_int32);
 	Env->GetIntArrayRegion(propInt32, 0, lenprop_int32, local_prop_int32.GetData());
 	Env->DeleteLocalRef(l_javaPropInt32Array);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_int32 = MoveTemp(local_prop_int32)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt32Changed(plocal_prop_int32);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt32Changed(local_prop_int32);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt64Changed(JNIEnv* Env, jclass Clazz, jlongArray propInt64)
 {
@@ -1169,11 +1157,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	local_prop_int64.AddUninitialized(lenprop_int64);
 	Env->GetLongArrayRegion(propInt64, 0, lenprop_int64, reinterpret_cast<jlong*>(local_prop_int64.GetData()));
 	Env->DeleteLocalRef(l_javaPropInt64Array);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_int64 = MoveTemp(local_prop_int64)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt64Changed(plocal_prop_int64);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt64Changed(local_prop_int64);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloatChanged(JNIEnv* Env, jclass Clazz, jfloatArray propFloat)
 {
@@ -1189,11 +1173,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	local_prop_float.AddUninitialized(lenprop_float);
 	Env->GetFloatArrayRegion(propFloat, 0, lenprop_float, local_prop_float.GetData());
 	Env->DeleteLocalRef(l_javaPropFloatArray);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_float = MoveTemp(local_prop_float)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloatChanged(plocal_prop_float);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloatChanged(local_prop_float);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat32Changed(JNIEnv* Env, jclass Clazz, jfloatArray propFloat32)
 {
@@ -1209,11 +1189,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	local_prop_float32.AddUninitialized(lenprop_float32);
 	Env->GetFloatArrayRegion(propFloat32, 0, lenprop_float32, local_prop_float32.GetData());
 	Env->DeleteLocalRef(l_javaPropFloat32Array);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_float32 = MoveTemp(local_prop_float32)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat32Changed(plocal_prop_float32);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat32Changed(local_prop_float32);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat64Changed(JNIEnv* Env, jclass Clazz, jdoubleArray propFloat64)
 {
@@ -1229,11 +1205,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	local_prop_float64.AddUninitialized(lenprop_float64);
 	Env->GetDoubleArrayRegion(propFloat64, 0, lenprop_float64, local_prop_float64.GetData());
 	Env->DeleteLocalRef(l_javaPropFloat64Array);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_float64 = MoveTemp(local_prop_float64)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat64Changed(plocal_prop_float64);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat64Changed(local_prop_float64);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropStringChanged(JNIEnv* Env, jclass Clazz, jobjectArray propString)
 {
@@ -1245,11 +1217,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	}
 	TArray<FString> local_prop_string = TArray<FString>();
 	local_prop_string = FJavaHelper::ObjectArrayToFStringTArray(Env, propString);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_string = MoveTemp(local_prop_string)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientOnPropStringChanged(plocal_prop_string);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientOnPropStringChanged(local_prop_string);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropReadOnlyStringChanged(JNIEnv* Env, jclass Clazz, jstring propReadOnlyString)
 {
@@ -1260,11 +1228,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		return;
 	}
 	FString local_prop_read_only_string = FJavaHelper::FStringFromParam(Env, propReadOnlyString);
-
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_read_only_string = MoveTemp(local_prop_read_only_string)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientOnPropReadOnlyStringChanged(plocal_prop_read_only_string);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientOnPropReadOnlyStringChanged(local_prop_read_only_string);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigBool(JNIEnv* Env, jclass Clazz, jbooleanArray paramBool)
@@ -1288,15 +1252,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	}
 	Env->DeleteLocalRef(l_javaParamBoolArray);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param_bool = MoveTemp(local_param_bool)]()
-		{
-		if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(plocal_param_bool);
-	});
+	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(local_param_bool);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt(JNIEnv* Env, jclass Clazz, jintArray paramInt)
@@ -1314,15 +1275,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->GetIntArrayRegion(paramInt, 0, lenparam_int, local_param_int.GetData());
 	Env->DeleteLocalRef(l_javaParamIntArray);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param_int = MoveTemp(local_param_int)]()
-		{
-		if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigIntSignal(plocal_param_int);
-	});
+	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigIntSignal(local_param_int);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt32(JNIEnv* Env, jclass Clazz, jintArray paramInt32)
@@ -1340,15 +1298,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->GetIntArrayRegion(paramInt32, 0, lenparam_int32, local_param_int32.GetData());
 	Env->DeleteLocalRef(l_javaParamInt32Array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param_int32 = MoveTemp(local_param_int32)]()
-		{
-		if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt32Signal(plocal_param_int32);
-	});
+	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt32Signal(local_param_int32);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt64(JNIEnv* Env, jclass Clazz, jlongArray paramInt64)
@@ -1366,15 +1321,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->GetLongArrayRegion(paramInt64, 0, lenparam_int64, reinterpret_cast<jlong*>(local_param_int64.GetData()));
 	Env->DeleteLocalRef(l_javaParamInt64Array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param_int64 = MoveTemp(local_param_int64)]()
-		{
-		if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt64Signal(plocal_param_int64);
-	});
+	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt64Signal(local_param_int64);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat(JNIEnv* Env, jclass Clazz, jfloatArray paramFloat)
@@ -1392,15 +1344,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->GetFloatArrayRegion(paramFloat, 0, lenparam_float, local_param_float.GetData());
 	Env->DeleteLocalRef(l_javaParamFloatArray);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param_float = MoveTemp(local_param_float)]()
-		{
-		if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloatSignal(plocal_param_float);
-	});
+	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloatSignal(local_param_float);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat32(JNIEnv* Env, jclass Clazz, jfloatArray paramFloa32)
@@ -1418,15 +1367,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->GetFloatArrayRegion(paramFloa32, 0, lenparam_floa32, local_param_floa32.GetData());
 	Env->DeleteLocalRef(l_javaParamFloa32Array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param_floa32 = MoveTemp(local_param_floa32)]()
-		{
-		if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat32Signal(plocal_param_floa32);
-	});
+	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat32Signal(local_param_floa32);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat64(JNIEnv* Env, jclass Clazz, jdoubleArray paramFloat64)
@@ -1444,15 +1390,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->GetDoubleArrayRegion(paramFloat64, 0, lenparam_float64, local_param_float64.GetData());
 	Env->DeleteLocalRef(l_javaParamFloat64Array);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param_float64 = MoveTemp(local_param_float64)]()
-		{
-		if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat64Signal(plocal_param_float64);
-	});
+	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat64Signal(local_param_float64);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigString(JNIEnv* Env, jclass Clazz, jobjectArray paramString)
@@ -1466,15 +1409,12 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	TArray<FString> local_param_string = TArray<FString>();
 	local_param_string = FJavaHelper::ObjectArrayToFStringTArray(Env, paramString);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_param_string = MoveTemp(local_param_string)]()
-		{
-		if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-		{
-			UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
-			return;
-		}
-		gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigStringSignal(plocal_param_string);
-	});
+	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigStringSignal(local_param_string);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncBoolResult(JNIEnv* Env, jclass Clazz, jbooleanArray result, jstring callId)
@@ -1496,10 +1436,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->DeleteLocalRef(localArray);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncIntResult(JNIEnv* Env, jclass Clazz, jintArray result, jstring callId)
@@ -1515,10 +1452,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->DeleteLocalRef(localArray);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncInt32Result(JNIEnv* Env, jclass Clazz, jintArray result, jstring callId)
@@ -1534,10 +1468,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->DeleteLocalRef(localArray);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncInt64Result(JNIEnv* Env, jclass Clazz, jlongArray result, jstring callId)
@@ -1553,10 +1484,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->DeleteLocalRef(localArray);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncFloatResult(JNIEnv* Env, jclass Clazz, jfloatArray result, jstring callId)
@@ -1572,10 +1500,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->DeleteLocalRef(localArray);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncFloat32Result(JNIEnv* Env, jclass Clazz, jfloatArray result, jstring callId)
@@ -1591,10 +1516,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->DeleteLocalRef(localArray);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncFloat64Result(JNIEnv* Env, jclass Clazz, jdoubleArray result, jstring callId)
@@ -1610,10 +1532,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	Env->DeleteLocalRef(localArray);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncStringResult(JNIEnv* Env, jclass Clazz, jobjectArray result, jstring callId)
@@ -1625,10 +1544,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	cpp_result = FJavaHelper::ObjectArrayToFStringTArray(Env, result);
 
 	FGuid::Parse(callIdString, guid);
-	AsyncTask(ENamedThreads::GameThread, [guid, local_result = MoveTemp(cpp_result)]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, local_result);
-	});
+	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)

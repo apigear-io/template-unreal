@@ -482,18 +482,15 @@ JNI_METHOD void Java_testbed1_testbed1jniservice_StructInterfaceJniService_nativ
 	FTestbed1StructBool local_prop_bool = FTestbed1StructBool();
 	Testbed1DataJavaConverter::fillStructBool(Env, propBool, local_prop_bool);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_bool = MoveTemp(local_prop_bool)]()
-		{
-		auto service = gUTestbed1StructInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropBool(plocal_prop_bool);
-		}
-		else
-		{
-			UE_LOG(LogTestbed1StructInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
-		}
-	});
+	auto service = gUTestbed1StructInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropBool(local_prop_bool);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructInterface_JNI, Warning, TEXT("service not valid, cannot set value for propBool"));
+	}
 }
 
 JNI_METHOD jobject Java_testbed1_testbed1jniservice_StructInterfaceJniService_nativeGetPropBool(JNIEnv* Env, jclass Clazz)
@@ -530,18 +527,15 @@ JNI_METHOD void Java_testbed1_testbed1jniservice_StructInterfaceJniService_nativ
 	FTestbed1StructInt local_prop_int = FTestbed1StructInt();
 	Testbed1DataJavaConverter::fillStructInt(Env, propInt, local_prop_int);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_int = MoveTemp(local_prop_int)]()
-		{
-		auto service = gUTestbed1StructInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropInt(plocal_prop_int);
-		}
-		else
-		{
-			UE_LOG(LogTestbed1StructInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
-		}
-	});
+	auto service = gUTestbed1StructInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropInt(local_prop_int);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructInterface_JNI, Warning, TEXT("service not valid, cannot set value for propInt"));
+	}
 }
 
 JNI_METHOD jobject Java_testbed1_testbed1jniservice_StructInterfaceJniService_nativeGetPropInt(JNIEnv* Env, jclass Clazz)
@@ -578,18 +572,15 @@ JNI_METHOD void Java_testbed1_testbed1jniservice_StructInterfaceJniService_nativ
 	FTestbed1StructFloat local_prop_float = FTestbed1StructFloat();
 	Testbed1DataJavaConverter::fillStructFloat(Env, propFloat, local_prop_float);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_float = MoveTemp(local_prop_float)]()
-		{
-		auto service = gUTestbed1StructInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropFloat(plocal_prop_float);
-		}
-		else
-		{
-			UE_LOG(LogTestbed1StructInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat"));
-		}
-	});
+	auto service = gUTestbed1StructInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropFloat(local_prop_float);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructInterface_JNI, Warning, TEXT("service not valid, cannot set value for propFloat"));
+	}
 }
 
 JNI_METHOD jobject Java_testbed1_testbed1jniservice_StructInterfaceJniService_nativeGetPropFloat(JNIEnv* Env, jclass Clazz)
@@ -626,18 +617,15 @@ JNI_METHOD void Java_testbed1_testbed1jniservice_StructInterfaceJniService_nativ
 	FTestbed1StructString local_prop_string = FTestbed1StructString();
 	Testbed1DataJavaConverter::fillStructString(Env, propString, local_prop_string);
 
-	AsyncTask(ENamedThreads::GameThread, [plocal_prop_string = MoveTemp(local_prop_string)]()
-		{
-		auto service = gUTestbed1StructInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetPropString(plocal_prop_string);
-		}
-		else
-		{
-			UE_LOG(LogTestbed1StructInterface_JNI, Warning, TEXT("service not valid, cannot set value for propString"));
-		}
-	});
+	auto service = gUTestbed1StructInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropString(local_prop_string);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1StructInterface_JNI, Warning, TEXT("service not valid, cannot set value for propString"));
+	}
 }
 
 JNI_METHOD jobject Java_testbed1_testbed1jniservice_StructInterfaceJniService_nativeGetPropString(JNIEnv* Env, jclass Clazz)
