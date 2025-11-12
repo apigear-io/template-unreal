@@ -451,18 +451,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [prop1]()
-		{
-		auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp1(prop1);
-		}
-		else
-		{
-			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop1"));
-		}
-	});
+	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp1(prop1);
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop1"));
+	}
 }
 
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp1(JNIEnv* Env, jclass Clazz)
@@ -494,18 +491,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [prop2]()
-		{
-		auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp2(prop2);
-		}
-		else
-		{
-			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop2"));
-		}
-	});
+	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp2(prop2);
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop2"));
+	}
 }
 
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp2(JNIEnv* Env, jclass Clazz)
@@ -537,18 +531,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [prop3]()
-		{
-		auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp3(prop3);
-		}
-		else
-		{
-			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop3"));
-		}
-	});
+	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp3(prop3);
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop3"));
+	}
 }
 
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp3(JNIEnv* Env, jclass Clazz)
@@ -580,18 +571,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 		return;
 	}
 
-	AsyncTask(ENamedThreads::GameThread, [prop4]()
-		{
-		auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
-		if (service != nullptr)
-		{
-			service->SetProp4(prop4);
-		}
-		else
-		{
-			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop4"));
-		}
-	});
+	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetProp4(prop4);
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("service not valid, cannot set value for prop4"));
+	}
 }
 
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp4(JNIEnv* Env, jclass Clazz)
