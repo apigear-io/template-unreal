@@ -110,6 +110,7 @@ std::string {{$Class}}::olinkObjectName()
 
 nlohmann::json {{$Class}}::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(Log{{$Class}}, Error, TEXT("No backend service set - please specify a service in the adapter {{$Iface}}OLinkAdapter which implements the {{$Iface}} interface"));
@@ -137,6 +138,7 @@ nlohmann::json {{$Class}}::olinkInvoke(const std::string& methodId, const nlohma
 
 void {{$Class}}::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(Log{{$Class}}, Error, TEXT("No backend service set - please specify a service in the adapter {{$Iface}}OLinkAdapter which implements the {{$Iface}} interface"));

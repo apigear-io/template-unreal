@@ -19,6 +19,7 @@
 {{- if not .IsReadOnly }}{{nl}}
 void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.Impl.Set{{Camel .Name}}");
 	if ({{ueVar "" .}} != {{ueVar "In" .}})
 	{
 		{{ueVar "" .}} = {{ueVar "In" .}};
@@ -36,6 +37,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {{- end }}
 {{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}({{ueParams "" .Params}})
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.Impl.{{Camel .Name}}");
 	{{- range .Params }}
 	(void){{ueVar "" .}};
 	{{- end }}

@@ -162,6 +162,7 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::GetPropBool() const
 
 void UTestbed1StructInterfaceOLinkClient::SetPropBool(const FTestbed1StructBool& InPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.SetPropBool");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -195,6 +196,7 @@ FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::GetPropInt() const
 
 void UTestbed1StructInterfaceOLinkClient::SetPropInt(const FTestbed1StructInt& InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.SetPropInt");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -228,6 +230,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::GetPropFloat() const
 
 void UTestbed1StructInterfaceOLinkClient::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.SetPropFloat");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -261,6 +264,7 @@ FTestbed1StructString UTestbed1StructInterfaceOLinkClient::GetPropString() const
 
 void UTestbed1StructInterfaceOLinkClient::SetPropString(const FTestbed1StructString& InPropString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.SetPropString");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -289,6 +293,7 @@ void UTestbed1StructInterfaceOLinkClient::SetPropString(const FTestbed1StructStr
 
 FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool(const FTestbed1StructBool& ParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.FuncBool");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -312,6 +317,7 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool(const FTestbed
 
 FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::FuncInt(const FTestbed1StructInt& ParamInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.FuncInt");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -335,6 +341,7 @@ FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::FuncInt(const FTestbed1S
 
 FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat(const FTestbed1StructFloat& ParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.FuncFloat");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -358,6 +365,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat(const FTestb
 
 FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString(const FTestbed1StructString& ParamString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.FuncString");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -386,6 +394,7 @@ bool UTestbed1StructInterfaceOLinkClient::_IsSubscribed() const
 
 void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.ApplyState");
 	const bool bPropBoolChanged = fields.contains("propBool") && (PropBool != fields["propBool"].get<FTestbed1StructBool>());
 	if (bPropBoolChanged)
 	{
@@ -437,6 +446,7 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 
 void UTestbed1StructInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.EmitSignal");
 	if (signalName == "sigBool")
 	{
 		const FTestbed1StructBool& outParamBool = args[0].get<FTestbed1StructBool>();

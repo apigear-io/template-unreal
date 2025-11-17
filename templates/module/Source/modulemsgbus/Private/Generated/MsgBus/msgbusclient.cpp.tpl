@@ -350,6 +350,7 @@ void {{$Class}}::OnServiceClosedConnection(const F{{$Iface}}ServiceDisconnectMes
 {{- if not .IsReadOnly }}{{nl}}
 void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.MsgBus.Set{{Camel .Name}}");
 	if (!_IsConnected())
 	{
 		UE_LOG(Log{{$Iface}}MsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -405,6 +406,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {{- $returnVal := (ueReturn "" .Return)}}
 {{$returnVal}} {{$Class}}::{{Camel .Name}}({{ueParams "In" .Params}})
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.MsgBus.{{Camel .Name}}");
 	if (!_IsConnected())
 	{
 		UE_LOG(Log{{$Iface}}MsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -458,6 +460,7 @@ void {{$Class}}::On{{Camel .Name}}Reply(const F{{$Iface}}{{Camel .Name}}ReplyMes
 {{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::On{{Camel .Name}}(const F{{$DisplayName}}{{Camel .Name}}SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.MsgBus.Signal{{Camel .Name}}");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(Log{{$Iface}}MsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

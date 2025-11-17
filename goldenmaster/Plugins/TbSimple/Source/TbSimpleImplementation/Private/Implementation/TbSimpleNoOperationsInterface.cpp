@@ -25,6 +25,7 @@ bool UTbSimpleNoOperationsInterfaceImplementation::GetPropBool() const
 
 void UTbSimpleNoOperationsInterfaceImplementation::SetPropBool(bool bInPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoOperationsInterface.Impl.SetPropBool");
 	if (bPropBool != bInPropBool)
 	{
 		bPropBool = bInPropBool;
@@ -38,6 +39,7 @@ int32 UTbSimpleNoOperationsInterfaceImplementation::GetPropInt() const
 
 void UTbSimpleNoOperationsInterfaceImplementation::SetPropInt(int32 InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoOperationsInterface.Impl.SetPropInt");
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;

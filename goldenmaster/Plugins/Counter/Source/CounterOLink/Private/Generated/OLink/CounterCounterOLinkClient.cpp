@@ -164,6 +164,7 @@ FCustomTypesVector3D UCounterCounterOLinkClient::GetVector() const
 
 void UCounterCounterOLinkClient::SetVector(const FCustomTypesVector3D& InVector)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.SetVector");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -197,6 +198,7 @@ FVector UCounterCounterOLinkClient::GetExternVector() const
 
 void UCounterCounterOLinkClient::SetExternVector(const FVector& InExternVector)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.SetExternVector");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -230,6 +232,7 @@ TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::GetVectorArray() const
 
 void UCounterCounterOLinkClient::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.SetVectorArray");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -263,6 +266,7 @@ TArray<FVector> UCounterCounterOLinkClient::GetExternVectorArray() const
 
 void UCounterCounterOLinkClient::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.SetExternVectorArray");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -291,6 +295,7 @@ void UCounterCounterOLinkClient::SetExternVectorArray(const TArray<FVector>& InE
 
 FVector UCounterCounterOLinkClient::Increment(const FVector& Vec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.Increment");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -314,6 +319,7 @@ FVector UCounterCounterOLinkClient::Increment(const FVector& Vec)
 
 TArray<FVector> UCounterCounterOLinkClient::IncrementArray(const TArray<FVector>& Vec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.IncrementArray");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -337,6 +343,7 @@ TArray<FVector> UCounterCounterOLinkClient::IncrementArray(const TArray<FVector>
 
 FCustomTypesVector3D UCounterCounterOLinkClient::Decrement(const FCustomTypesVector3D& Vec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.Decrement");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -360,6 +367,7 @@ FCustomTypesVector3D UCounterCounterOLinkClient::Decrement(const FCustomTypesVec
 
 TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.DecrementArray");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -388,6 +396,7 @@ bool UCounterCounterOLinkClient::_IsSubscribed() const
 
 void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.ApplyState");
 	const bool bVectorChanged = fields.contains("vector") && (Vector != fields["vector"].get<FCustomTypesVector3D>());
 	if (bVectorChanged)
 	{
@@ -439,6 +448,7 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 
 void UCounterCounterOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.EmitSignal");
 	if (signalName == "valueChanged")
 	{
 		const FCustomTypesVector3D& outVector = args[0].get<FCustomTypesVector3D>();

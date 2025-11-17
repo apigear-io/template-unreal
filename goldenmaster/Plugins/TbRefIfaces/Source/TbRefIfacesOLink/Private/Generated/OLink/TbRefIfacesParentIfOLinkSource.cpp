@@ -192,6 +192,7 @@ std::string TbRefIfacesParentIfOLinkSource::olinkObjectName()
 
 nlohmann::json TbRefIfacesParentIfOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbRefIfacesParentIfOLinkAdapter which implements the TbRefIfacesParentIf interface"));
@@ -228,6 +229,7 @@ nlohmann::json TbRefIfacesParentIfOLinkSource::olinkInvoke(const std::string& me
 
 void TbRefIfacesParentIfOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbRefIfacesParentIfOLinkAdapter which implements the TbRefIfacesParentIf interface"));

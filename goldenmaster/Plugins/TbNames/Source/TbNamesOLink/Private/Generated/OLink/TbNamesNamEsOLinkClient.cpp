@@ -158,6 +158,7 @@ bool UTbNamesNamEsOLinkClient::GetSwitch() const
 
 void UTbNamesNamEsOLinkClient::SetSwitch(bool bInSwitch)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.SetSwitch");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbNames plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -187,6 +188,7 @@ int32 UTbNamesNamEsOLinkClient::GetSomeProperty() const
 
 void UTbNamesNamEsOLinkClient::SetSomeProperty(int32 InSomeProperty)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.SetSomeProperty");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbNames plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -216,6 +218,7 @@ int32 UTbNamesNamEsOLinkClient::GetSomePoperty2() const
 
 void UTbNamesNamEsOLinkClient::SetSomePoperty2(int32 InSomePoperty2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.SetSomePoperty2");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbNames plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -245,6 +248,7 @@ ETbNamesEnum_With_Under_scores UTbNamesNamEsOLinkClient::GetEnumProperty() const
 
 void UTbNamesNamEsOLinkClient::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.SetEnumProperty");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbNames plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -269,6 +273,7 @@ void UTbNamesNamEsOLinkClient::SetEnumProperty(ETbNamesEnum_With_Under_scores In
 
 void UTbNamesNamEsOLinkClient::SomeFunction(bool bSomeParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.SomeFunction");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbNames plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -282,6 +287,7 @@ void UTbNamesNamEsOLinkClient::SomeFunction(bool bSomeParam)
 
 void UTbNamesNamEsOLinkClient::SomeFunction2(bool bSomeParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.SomeFunction2");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbNames plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -300,6 +306,7 @@ bool UTbNamesNamEsOLinkClient::_IsSubscribed() const
 
 void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.ApplyState");
 	const bool bSwitchChanged = fields.contains("Switch") && (bSwitch != fields["Switch"].get<bool>());
 	if (bSwitchChanged)
 	{
@@ -339,6 +346,7 @@ void UTbNamesNamEsOLinkClient::applyState(const nlohmann::json& fields)
 
 void UTbNamesNamEsOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.EmitSignal");
 	if (signalName == "SOME_SIGNAL")
 	{
 		bool boutSomeParam = args[0].get<bool>();

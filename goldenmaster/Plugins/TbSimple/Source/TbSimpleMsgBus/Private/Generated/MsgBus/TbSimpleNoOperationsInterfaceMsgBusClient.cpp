@@ -314,6 +314,7 @@ bool UTbSimpleNoOperationsInterfaceMsgBusClient::GetPropBool() const
 
 void UTbSimpleNoOperationsInterfaceMsgBusClient::SetPropBool(bool bInPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoOperationsInterface.MsgBus.SetPropBool");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleNoOperationsInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -350,6 +351,7 @@ int32 UTbSimpleNoOperationsInterfaceMsgBusClient::GetPropInt() const
 
 void UTbSimpleNoOperationsInterfaceMsgBusClient::SetPropInt(int32 InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoOperationsInterface.MsgBus.SetPropInt");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleNoOperationsInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -381,6 +383,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::SetPropInt(int32 InPropInt)
 
 void UTbSimpleNoOperationsInterfaceMsgBusClient::OnSigVoid(const FTbSimpleNoOperationsInterfaceSigVoidSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoOperationsInterface.MsgBus.SignalSigVoid");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleNoOperationsInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -393,6 +396,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnSigVoid(const FTbSimpleNoOper
 
 void UTbSimpleNoOperationsInterfaceMsgBusClient::OnSigBool(const FTbSimpleNoOperationsInterfaceSigBoolSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoOperationsInterface.MsgBus.SignalSigBool");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleNoOperationsInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

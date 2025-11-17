@@ -156,6 +156,7 @@ int32 UTbRefIfacesSimpleLocalIfOLinkClient::GetIntProperty() const
 
 void UTbRefIfacesSimpleLocalIfOLinkClient::SetIntProperty(int32 InIntProperty)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.SetIntProperty");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -180,6 +181,7 @@ void UTbRefIfacesSimpleLocalIfOLinkClient::SetIntProperty(int32 InIntProperty)
 
 int32 UTbRefIfacesSimpleLocalIfOLinkClient::IntMethod(int32 Param)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.IntMethod");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -208,6 +210,7 @@ bool UTbRefIfacesSimpleLocalIfOLinkClient::_IsSubscribed() const
 
 void UTbRefIfacesSimpleLocalIfOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.ApplyState");
 	const bool bIntPropertyChanged = fields.contains("intProperty") && (IntProperty != fields["intProperty"].get<int32>());
 	if (bIntPropertyChanged)
 	{
@@ -220,6 +223,7 @@ void UTbRefIfacesSimpleLocalIfOLinkClient::applyState(const nlohmann::json& fiel
 
 void UTbRefIfacesSimpleLocalIfOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.EmitSignal");
 	if (signalName == "intSignal")
 	{
 		int32 outParam = args[0].get<int32>();

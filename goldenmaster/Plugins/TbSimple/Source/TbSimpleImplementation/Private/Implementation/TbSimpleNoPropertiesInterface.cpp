@@ -21,11 +21,13 @@ UTbSimpleNoPropertiesInterfaceImplementation::~UTbSimpleNoPropertiesInterfaceImp
 
 void UTbSimpleNoPropertiesInterfaceImplementation::FuncVoid()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.Impl.FuncVoid");
 	// do business logic here
 }
 
 bool UTbSimpleNoPropertiesInterfaceImplementation::FuncBool(bool bParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.Impl.FuncBool");
 	(void)bParamBool;
 	// do business logic here
 	return false;

@@ -145,8 +145,10 @@ bool UTbSimpleEmptyInterfaceOLinkClient::_IsSubscribed() const
 
 void UTbSimpleEmptyInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.EmptyInterface.OLink.ApplyState");
 }
 
 void UTbSimpleEmptyInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.EmptyInterface.OLink.EmitSignal");
 }

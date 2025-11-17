@@ -96,6 +96,7 @@ void UOLinkClientConnection::log(const FString& logMessage)
 
 void UOLinkClientConnection::Connect_Implementation()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.OLink.Connect");
 	log(m_serverURL);
 
 	open(m_serverURL);
@@ -103,6 +104,7 @@ void UOLinkClientConnection::Connect_Implementation()
 
 void UOLinkClientConnection::Disconnect_Implementation()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.OLink.Disconnect");
 	for (std::string objectName : ListLinkedObjects)
 	{
 		m_node->unlinkRemote(objectName);
@@ -194,6 +196,7 @@ void UOLinkClientConnection::open(const FString& url)
 
 void UOLinkClientConnection::OnConnected_Implementation()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.OLink.OnConnected");
 	log("socket connected");
 
 	for (std::string objectName : ListLinkedObjects)
@@ -215,6 +218,7 @@ void UOLinkClientConnection::OnConnected_Implementation()
 
 void UOLinkClientConnection::OnDisconnected_Implementation(bool bReconnect)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.OLink.OnDisconnected");
 	log("socket disconnected");
 	for (std::string objectName : ListLinkedObjects)
 	{

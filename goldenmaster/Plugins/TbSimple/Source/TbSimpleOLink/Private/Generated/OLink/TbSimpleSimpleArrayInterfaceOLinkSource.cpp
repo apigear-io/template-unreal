@@ -321,6 +321,7 @@ std::string TbSimpleSimpleArrayInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json TbSimpleSimpleArrayInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleSimpleArrayInterfaceOLinkAdapter which implements the TbSimpleSimpleArrayInterface interface"));
@@ -381,6 +382,7 @@ nlohmann::json TbSimpleSimpleArrayInterfaceOLinkSource::olinkInvoke(const std::s
 
 void TbSimpleSimpleArrayInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleSimpleArrayInterfaceOLinkAdapter which implements the TbSimpleSimpleArrayInterface interface"));

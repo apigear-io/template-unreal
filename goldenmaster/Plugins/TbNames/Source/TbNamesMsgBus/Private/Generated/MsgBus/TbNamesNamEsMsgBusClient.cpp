@@ -336,6 +336,7 @@ bool UTbNamesNamEsMsgBusClient::GetSwitch() const
 
 void UTbNamesNamEsMsgBusClient::SetSwitch(bool bInSwitch)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.MsgBus.SetSwitch");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -372,6 +373,7 @@ int32 UTbNamesNamEsMsgBusClient::GetSomeProperty() const
 
 void UTbNamesNamEsMsgBusClient::SetSomeProperty(int32 InSomeProperty)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.MsgBus.SetSomeProperty");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -408,6 +410,7 @@ int32 UTbNamesNamEsMsgBusClient::GetSomePoperty2() const
 
 void UTbNamesNamEsMsgBusClient::SetSomePoperty2(int32 InSomePoperty2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.MsgBus.SetSomePoperty2");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -444,6 +447,7 @@ ETbNamesEnum_With_Under_scores UTbNamesNamEsMsgBusClient::GetEnumProperty() cons
 
 void UTbNamesNamEsMsgBusClient::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.MsgBus.SetEnumProperty");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -475,6 +479,7 @@ void UTbNamesNamEsMsgBusClient::SetEnumProperty(ETbNamesEnum_With_Under_scores I
 
 void UTbNamesNamEsMsgBusClient::SomeFunction(bool bInSomeParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.MsgBus.SomeFunction");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -496,6 +501,7 @@ void UTbNamesNamEsMsgBusClient::SomeFunction(bool bInSomeParam)
 
 void UTbNamesNamEsMsgBusClient::SomeFunction2(bool bInSomeParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.MsgBus.SomeFunction2");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -517,6 +523,7 @@ void UTbNamesNamEsMsgBusClient::SomeFunction2(bool bInSomeParam)
 
 void UTbNamesNamEsMsgBusClient::OnSomeSignal(const FTbNamesNamEsSomeSignalSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.MsgBus.SignalSomeSignal");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -529,6 +536,7 @@ void UTbNamesNamEsMsgBusClient::OnSomeSignal(const FTbNamesNamEsSomeSignalSignal
 
 void UTbNamesNamEsMsgBusClient::OnSomeSignal2(const FTbNamesNamEsSomeSignal2SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.MsgBus.SignalSomeSignal2");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbNamesNamEsMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

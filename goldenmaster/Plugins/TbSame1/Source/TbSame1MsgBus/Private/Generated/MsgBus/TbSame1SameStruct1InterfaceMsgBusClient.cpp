@@ -307,6 +307,7 @@ FTbSame1Struct1 UTbSame1SameStruct1InterfaceMsgBusClient::GetProp1() const
 
 void UTbSame1SameStruct1InterfaceMsgBusClient::SetProp1(const FTbSame1Struct1& InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct1Interface.MsgBus.SetProp1");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSame1SameStruct1InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -342,6 +343,7 @@ void UTbSame1SameStruct1InterfaceMsgBusClient::SetProp1(const FTbSame1Struct1& I
 
 FTbSame1Struct1 UTbSame1SameStruct1InterfaceMsgBusClient::Func1(const FTbSame1Struct1& InParam1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct1Interface.MsgBus.Func1");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSame1SameStruct1InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -371,6 +373,7 @@ void UTbSame1SameStruct1InterfaceMsgBusClient::OnFunc1Reply(const FTbSame1SameSt
 
 void UTbSame1SameStruct1InterfaceMsgBusClient::OnSig1(const FTbSame1SameStruct1InterfaceSig1SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct1Interface.MsgBus.SignalSig1");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSame1SameStruct1InterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

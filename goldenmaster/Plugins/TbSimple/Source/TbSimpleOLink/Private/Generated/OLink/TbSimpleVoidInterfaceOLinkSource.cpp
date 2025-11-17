@@ -90,6 +90,7 @@ std::string TbSimpleVoidInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json TbSimpleVoidInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.VoidInterface.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbSimpleVoidInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleVoidInterfaceOLinkAdapter which implements the TbSimpleVoidInterface interface"));
@@ -107,6 +108,7 @@ nlohmann::json TbSimpleVoidInterfaceOLinkSource::olinkInvoke(const std::string& 
 
 void TbSimpleVoidInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.VoidInterface.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbSimpleVoidInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleVoidInterfaceOLinkAdapter which implements the TbSimpleVoidInterface interface"));

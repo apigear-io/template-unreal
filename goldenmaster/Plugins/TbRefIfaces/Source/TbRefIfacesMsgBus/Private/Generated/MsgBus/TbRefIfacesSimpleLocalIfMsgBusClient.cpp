@@ -303,6 +303,7 @@ int32 UTbRefIfacesSimpleLocalIfMsgBusClient::GetIntProperty() const
 
 void UTbRefIfacesSimpleLocalIfMsgBusClient::SetIntProperty(int32 InIntProperty)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.MsgBus.SetIntProperty");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -334,6 +335,7 @@ void UTbRefIfacesSimpleLocalIfMsgBusClient::SetIntProperty(int32 InIntProperty)
 
 int32 UTbRefIfacesSimpleLocalIfMsgBusClient::IntMethod(int32 InParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.MsgBus.IntMethod");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -363,6 +365,7 @@ void UTbRefIfacesSimpleLocalIfMsgBusClient::OnIntMethodReply(const FTbRefIfacesS
 
 void UTbRefIfacesSimpleLocalIfMsgBusClient::OnIntSignal(const FTbRefIfacesSimpleLocalIfIntSignalSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.MsgBus.SignalIntSignal");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

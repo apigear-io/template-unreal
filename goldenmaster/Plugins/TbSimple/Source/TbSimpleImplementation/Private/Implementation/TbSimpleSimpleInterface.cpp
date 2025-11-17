@@ -25,6 +25,7 @@ bool UTbSimpleSimpleInterfaceImplementation::GetPropBool() const
 
 void UTbSimpleSimpleInterfaceImplementation::SetPropBool(bool bInPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.SetPropBool");
 	if (bPropBool != bInPropBool)
 	{
 		bPropBool = bInPropBool;
@@ -38,6 +39,7 @@ int32 UTbSimpleSimpleInterfaceImplementation::GetPropInt() const
 
 void UTbSimpleSimpleInterfaceImplementation::SetPropInt(int32 InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.SetPropInt");
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
@@ -51,6 +53,7 @@ int32 UTbSimpleSimpleInterfaceImplementation::GetPropInt32() const
 
 void UTbSimpleSimpleInterfaceImplementation::SetPropInt32(int32 InPropInt32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.SetPropInt32");
 	if (PropInt32 != InPropInt32)
 	{
 		PropInt32 = InPropInt32;
@@ -64,6 +67,7 @@ int64 UTbSimpleSimpleInterfaceImplementation::GetPropInt64() const
 
 void UTbSimpleSimpleInterfaceImplementation::SetPropInt64(int64 InPropInt64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.SetPropInt64");
 	if (PropInt64 != InPropInt64)
 	{
 		PropInt64 = InPropInt64;
@@ -77,6 +81,7 @@ float UTbSimpleSimpleInterfaceImplementation::GetPropFloat() const
 
 void UTbSimpleSimpleInterfaceImplementation::SetPropFloat(float InPropFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.SetPropFloat");
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
@@ -90,6 +95,7 @@ float UTbSimpleSimpleInterfaceImplementation::GetPropFloat32() const
 
 void UTbSimpleSimpleInterfaceImplementation::SetPropFloat32(float InPropFloat32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.SetPropFloat32");
 	if (PropFloat32 != InPropFloat32)
 	{
 		PropFloat32 = InPropFloat32;
@@ -103,6 +109,7 @@ double UTbSimpleSimpleInterfaceImplementation::GetPropFloat64() const
 
 void UTbSimpleSimpleInterfaceImplementation::SetPropFloat64(double InPropFloat64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.SetPropFloat64");
 	if (PropFloat64 != InPropFloat64)
 	{
 		PropFloat64 = InPropFloat64;
@@ -116,6 +123,7 @@ FString UTbSimpleSimpleInterfaceImplementation::GetPropString() const
 
 void UTbSimpleSimpleInterfaceImplementation::SetPropString(const FString& InPropString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.SetPropString");
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
@@ -125,18 +133,21 @@ void UTbSimpleSimpleInterfaceImplementation::SetPropString(const FString& InProp
 
 void UTbSimpleSimpleInterfaceImplementation::FuncNoReturnValue(bool bParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.FuncNoReturnValue");
 	(void)bParamBool;
 	// do business logic here
 }
 
 bool UTbSimpleSimpleInterfaceImplementation::FuncNoParams()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.FuncNoParams");
 	// do business logic here
 	return false;
 }
 
 bool UTbSimpleSimpleInterfaceImplementation::FuncBool(bool bParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.FuncBool");
 	(void)bParamBool;
 	// do business logic here
 	return false;
@@ -144,6 +155,7 @@ bool UTbSimpleSimpleInterfaceImplementation::FuncBool(bool bParamBool)
 
 int32 UTbSimpleSimpleInterfaceImplementation::FuncInt(int32 ParamInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.FuncInt");
 	(void)ParamInt;
 	// do business logic here
 	return 0;
@@ -151,6 +163,7 @@ int32 UTbSimpleSimpleInterfaceImplementation::FuncInt(int32 ParamInt)
 
 int32 UTbSimpleSimpleInterfaceImplementation::FuncInt32(int32 ParamInt32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.FuncInt32");
 	(void)ParamInt32;
 	// do business logic here
 	return 0;
@@ -158,6 +171,7 @@ int32 UTbSimpleSimpleInterfaceImplementation::FuncInt32(int32 ParamInt32)
 
 int64 UTbSimpleSimpleInterfaceImplementation::FuncInt64(int64 ParamInt64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.FuncInt64");
 	(void)ParamInt64;
 	// do business logic here
 	return 0LL;
@@ -165,6 +179,7 @@ int64 UTbSimpleSimpleInterfaceImplementation::FuncInt64(int64 ParamInt64)
 
 float UTbSimpleSimpleInterfaceImplementation::FuncFloat(float ParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.FuncFloat");
 	(void)ParamFloat;
 	// do business logic here
 	return 0.0f;
@@ -172,6 +187,7 @@ float UTbSimpleSimpleInterfaceImplementation::FuncFloat(float ParamFloat)
 
 float UTbSimpleSimpleInterfaceImplementation::FuncFloat32(float ParamFloat32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.FuncFloat32");
 	(void)ParamFloat32;
 	// do business logic here
 	return 0.0f;
@@ -179,6 +195,7 @@ float UTbSimpleSimpleInterfaceImplementation::FuncFloat32(float ParamFloat32)
 
 double UTbSimpleSimpleInterfaceImplementation::FuncFloat64(double ParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.FuncFloat64");
 	(void)ParamFloat;
 	// do business logic here
 	return 0.0;
@@ -186,6 +203,7 @@ double UTbSimpleSimpleInterfaceImplementation::FuncFloat64(double ParamFloat)
 
 FString UTbSimpleSimpleInterfaceImplementation::FuncString(const FString& ParamString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.Impl.FuncString");
 	(void)ParamString;
 	// do business logic here
 	return FString();

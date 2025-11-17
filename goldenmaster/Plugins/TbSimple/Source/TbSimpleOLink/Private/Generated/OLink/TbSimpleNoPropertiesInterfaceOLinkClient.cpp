@@ -140,6 +140,7 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::UseConnection(TScriptInterface<I
 
 void UTbSimpleNoPropertiesInterfaceOLinkClient::FuncVoid()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.OLink.FuncVoid");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -153,6 +154,7 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::FuncVoid()
 
 bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.OLink.FuncBool");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -181,10 +183,12 @@ bool UTbSimpleNoPropertiesInterfaceOLinkClient::_IsSubscribed() const
 
 void UTbSimpleNoPropertiesInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.OLink.ApplyState");
 }
 
 void UTbSimpleNoPropertiesInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.OLink.EmitSignal");
 	if (signalName == "sigVoid")
 	{
 		_GetPublisher()->BroadcastSigVoidSignal();

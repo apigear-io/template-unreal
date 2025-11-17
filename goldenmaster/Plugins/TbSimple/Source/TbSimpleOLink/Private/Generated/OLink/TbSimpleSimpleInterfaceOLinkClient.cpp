@@ -164,6 +164,7 @@ bool UTbSimpleSimpleInterfaceOLinkClient::GetPropBool() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropBool(bool bInPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.SetPropBool");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -193,6 +194,7 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt(int32 InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.SetPropInt");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -222,6 +224,7 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt32() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt32(int32 InPropInt32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.SetPropInt32");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -251,6 +254,7 @@ int64 UTbSimpleSimpleInterfaceOLinkClient::GetPropInt64() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropInt64(int64 InPropInt64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.SetPropInt64");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -280,6 +284,7 @@ float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat(float InPropFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.SetPropFloat");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -309,6 +314,7 @@ float UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat32() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat32(float InPropFloat32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.SetPropFloat32");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -338,6 +344,7 @@ double UTbSimpleSimpleInterfaceOLinkClient::GetPropFloat64() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropFloat64(double InPropFloat64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.SetPropFloat64");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -367,6 +374,7 @@ FString UTbSimpleSimpleInterfaceOLinkClient::GetPropString() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::SetPropString(const FString& InPropString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.SetPropString");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -395,6 +403,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::SetPropString(const FString& InPropStr
 
 void UTbSimpleSimpleInterfaceOLinkClient::FuncNoReturnValue(bool bParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncNoReturnValue");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -408,6 +417,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::FuncNoReturnValue(bool bParamBool)
 
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncNoParams()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncNoParams");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -431,6 +441,7 @@ bool UTbSimpleSimpleInterfaceOLinkClient::FuncNoParams()
 
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncBool");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -454,6 +465,7 @@ bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool(bool bParamBool)
 
 int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt(int32 ParamInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -477,6 +489,7 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt(int32 ParamInt)
 
 int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32(int32 ParamInt32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt32");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -500,6 +513,7 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32(int32 ParamInt32)
 
 int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64(int64 ParamInt64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt64");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -523,6 +537,7 @@ int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64(int64 ParamInt64)
 
 float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat(float ParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -546,6 +561,7 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat(float ParamFloat)
 
 float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32(float ParamFloat32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat32");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -569,6 +585,7 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32(float ParamFloat32)
 
 double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64(double ParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat64");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -592,6 +609,7 @@ double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64(double ParamFloat)
 
 FString UTbSimpleSimpleInterfaceOLinkClient::FuncString(const FString& ParamString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncString");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -620,6 +638,7 @@ bool UTbSimpleSimpleInterfaceOLinkClient::_IsSubscribed() const
 
 void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.ApplyState");
 	const bool bPropBoolChanged = fields.contains("propBool") && (bPropBool != fields["propBool"].get<bool>());
 	if (bPropBoolChanged)
 	{
@@ -698,6 +717,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::applyState(const nlohmann::json& field
 
 void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.EmitSignal");
 	if (signalName == "sigBool")
 	{
 		bool boutParamBool = args[0].get<bool>();

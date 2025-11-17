@@ -313,6 +313,7 @@ bool UTbSimpleNoSignalsInterfaceMsgBusClient::GetPropBool() const
 
 void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropBool(bool bInPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.MsgBus.SetPropBool");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -349,6 +350,7 @@ int32 UTbSimpleNoSignalsInterfaceMsgBusClient::GetPropInt() const
 
 void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropInt(int32 InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.MsgBus.SetPropInt");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -380,6 +382,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::SetPropInt(int32 InPropInt)
 
 void UTbSimpleNoSignalsInterfaceMsgBusClient::FuncVoid()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.MsgBus.FuncVoid");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -400,6 +403,7 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::FuncVoid()
 
 bool UTbSimpleNoSignalsInterfaceMsgBusClient::FuncBool(bool bInParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.MsgBus.FuncBool");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));

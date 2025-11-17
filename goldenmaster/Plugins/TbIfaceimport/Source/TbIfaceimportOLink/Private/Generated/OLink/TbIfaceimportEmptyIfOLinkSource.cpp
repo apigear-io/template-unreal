@@ -75,6 +75,7 @@ std::string TbIfaceimportEmptyIfOLinkSource::olinkObjectName()
 
 nlohmann::json TbIfaceimportEmptyIfOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbIfaceimport.EmptyIf.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbIfaceimportEmptyIfOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbIfaceimportEmptyIfOLinkAdapter which implements the TbIfaceimportEmptyIf interface"));
@@ -87,6 +88,7 @@ nlohmann::json TbIfaceimportEmptyIfOLinkSource::olinkInvoke(const std::string& m
 
 void TbIfaceimportEmptyIfOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbIfaceimport.EmptyIf.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbIfaceimportEmptyIfOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbIfaceimportEmptyIfOLinkAdapter which implements the TbIfaceimportEmptyIf interface"));

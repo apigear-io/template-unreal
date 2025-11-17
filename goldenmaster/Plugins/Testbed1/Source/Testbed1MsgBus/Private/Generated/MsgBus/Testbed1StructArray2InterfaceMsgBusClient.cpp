@@ -374,6 +374,7 @@ FTestbed1StructBoolWithArray UTestbed1StructArray2InterfaceMsgBusClient::GetProp
 
 void UTestbed1StructArray2InterfaceMsgBusClient::SetPropBool(const FTestbed1StructBoolWithArray& InPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.SetPropBool");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -414,6 +415,7 @@ FTestbed1StructIntWithArray UTestbed1StructArray2InterfaceMsgBusClient::GetPropI
 
 void UTestbed1StructArray2InterfaceMsgBusClient::SetPropInt(const FTestbed1StructIntWithArray& InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.SetPropInt");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -454,6 +456,7 @@ FTestbed1StructFloatWithArray UTestbed1StructArray2InterfaceMsgBusClient::GetPro
 
 void UTestbed1StructArray2InterfaceMsgBusClient::SetPropFloat(const FTestbed1StructFloatWithArray& InPropFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.SetPropFloat");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -494,6 +497,7 @@ FTestbed1StructStringWithArray UTestbed1StructArray2InterfaceMsgBusClient::GetPr
 
 void UTestbed1StructArray2InterfaceMsgBusClient::SetPropString(const FTestbed1StructStringWithArray& InPropString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.SetPropString");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -534,6 +538,7 @@ FTestbed1StructEnumWithArray UTestbed1StructArray2InterfaceMsgBusClient::GetProp
 
 void UTestbed1StructArray2InterfaceMsgBusClient::SetPropEnum(const FTestbed1StructEnumWithArray& InPropEnum)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.SetPropEnum");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -569,6 +574,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::SetPropEnum(const FTestbed1Stru
 
 TArray<FTestbed1StructBool> UTestbed1StructArray2InterfaceMsgBusClient::FuncBool(const FTestbed1StructBoolWithArray& InParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.FuncBool");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -598,6 +604,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnFuncBoolReply(const FTestbed1
 
 TArray<FTestbed1StructInt> UTestbed1StructArray2InterfaceMsgBusClient::FuncInt(const FTestbed1StructIntWithArray& InParamInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.FuncInt");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -627,6 +634,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnFuncIntReply(const FTestbed1S
 
 TArray<FTestbed1StructFloat> UTestbed1StructArray2InterfaceMsgBusClient::FuncFloat(const FTestbed1StructFloatWithArray& InParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.FuncFloat");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -656,6 +664,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnFuncFloatReply(const FTestbed
 
 TArray<FTestbed1StructString> UTestbed1StructArray2InterfaceMsgBusClient::FuncString(const FTestbed1StructStringWithArray& InParamString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.FuncString");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -685,6 +694,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnFuncStringReply(const FTestbe
 
 TArray<ETestbed1Enum0> UTestbed1StructArray2InterfaceMsgBusClient::FuncEnum(const FTestbed1StructEnumWithArray& InParamEnum)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.FuncEnum");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -714,6 +724,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnFuncEnumReply(const FTestbed1
 
 void UTestbed1StructArray2InterfaceMsgBusClient::OnSigBool(const FTestbed1StructArray2InterfaceSigBoolSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.SignalSigBool");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -726,6 +737,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnSigBool(const FTestbed1Struct
 
 void UTestbed1StructArray2InterfaceMsgBusClient::OnSigInt(const FTestbed1StructArray2InterfaceSigIntSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.SignalSigInt");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -738,6 +750,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnSigInt(const FTestbed1StructA
 
 void UTestbed1StructArray2InterfaceMsgBusClient::OnSigFloat(const FTestbed1StructArray2InterfaceSigFloatSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.SignalSigFloat");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -750,6 +763,7 @@ void UTestbed1StructArray2InterfaceMsgBusClient::OnSigFloat(const FTestbed1Struc
 
 void UTestbed1StructArray2InterfaceMsgBusClient::OnSigString(const FTestbed1StructArray2InterfaceSigStringSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.MsgBus.SignalSigString");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

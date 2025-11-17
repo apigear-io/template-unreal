@@ -163,6 +163,7 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfOLinkCl
 
 void UTbRefIfacesParentIfOLinkClient::SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.SetLocalIf");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -196,6 +197,7 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 
 void UTbRefIfacesParentIfOLinkClient::SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.SetLocalIfList");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -229,6 +231,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient
 
 void UTbRefIfacesParentIfOLinkClient::SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.SetImportedIf");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -262,6 +265,7 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLi
 
 void UTbRefIfacesParentIfOLinkClient::SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.SetImportedIfList");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -290,6 +294,7 @@ void UTbRefIfacesParentIfOLinkClient::SetImportedIfList(const TArray<TScriptInte
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfOLinkClient::LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.LocalIfMethod");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -313,6 +318,7 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfOLinkCl
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfOLinkClient::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.LocalIfMethodList");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -336,6 +342,7 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient::ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ImportedIfMethod");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -359,6 +366,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLinkClient::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ImportedIfMethodList");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -387,6 +395,7 @@ bool UTbRefIfacesParentIfOLinkClient::_IsSubscribed() const
 
 void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ApplyState");
 	const bool bLocalIfChanged = fields.contains("localIf") && (LocalIf != fields["localIf"].get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
 	if (bLocalIfChanged)
 	{
@@ -438,6 +447,7 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 
 void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.EmitSignal");
 	if (signalName == "localIfSignal")
 	{
 		const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& outParam = args[0].get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();

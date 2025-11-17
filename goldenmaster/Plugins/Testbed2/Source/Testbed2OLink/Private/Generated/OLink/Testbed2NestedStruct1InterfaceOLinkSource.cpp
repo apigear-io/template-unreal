@@ -104,6 +104,7 @@ std::string Testbed2NestedStruct1InterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json Testbed2NestedStruct1InterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed2NestedStruct1InterfaceOLinkAdapter which implements the Testbed2NestedStruct1Interface interface"));
@@ -133,6 +134,7 @@ nlohmann::json Testbed2NestedStruct1InterfaceOLinkSource::olinkInvoke(const std:
 
 void Testbed2NestedStruct1InterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed2NestedStruct1InterfaceOLinkAdapter which implements the Testbed2NestedStruct1Interface interface"));

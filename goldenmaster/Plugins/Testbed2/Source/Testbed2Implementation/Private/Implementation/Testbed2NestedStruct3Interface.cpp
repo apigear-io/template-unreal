@@ -25,6 +25,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceImplementation::GetProp1()
 
 void UTestbed2NestedStruct3InterfaceImplementation::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.Impl.SetProp1");
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
@@ -38,6 +39,7 @@ FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceImplementation::GetProp2()
 
 void UTestbed2NestedStruct3InterfaceImplementation::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.Impl.SetProp2");
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
@@ -51,6 +53,7 @@ FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceImplementation::GetProp3()
 
 void UTestbed2NestedStruct3InterfaceImplementation::SetProp3(const FTestbed2NestedStruct3& InProp3)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.Impl.SetProp3");
 	if (Prop3 != InProp3)
 	{
 		Prop3 = InProp3;
@@ -60,6 +63,7 @@ void UTestbed2NestedStruct3InterfaceImplementation::SetProp3(const FTestbed2Nest
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceImplementation::Func1(const FTestbed2NestedStruct1& Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.Impl.Func1");
 	(void)Param1;
 	// do business logic here
 	return FTestbed2NestedStruct1();
@@ -67,6 +71,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceImplementation::Func1(cons
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceImplementation::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.Impl.Func2");
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
@@ -75,6 +80,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceImplementation::Func2(cons
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceImplementation::Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.Impl.Func3");
 	(void)Param1;
 	(void)Param2;
 	(void)Param3;

@@ -278,6 +278,7 @@ void UTbSimpleVoidInterfaceMsgBusClient::OnServiceClosedConnection(const FTbSimp
 
 void UTbSimpleVoidInterfaceMsgBusClient::FuncVoid()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.VoidInterface.MsgBus.FuncVoid");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleVoidInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -298,6 +299,7 @@ void UTbSimpleVoidInterfaceMsgBusClient::FuncVoid()
 
 void UTbSimpleVoidInterfaceMsgBusClient::OnSigVoid(const FTbSimpleVoidInterfaceSigVoidSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.VoidInterface.MsgBus.SignalSigVoid");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleVoidInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

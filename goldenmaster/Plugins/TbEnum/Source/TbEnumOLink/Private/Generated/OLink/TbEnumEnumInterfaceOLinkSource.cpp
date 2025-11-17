@@ -191,6 +191,7 @@ std::string TbEnumEnumInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json TbEnumEnumInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbEnumEnumInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbEnumEnumInterfaceOLinkAdapter which implements the TbEnumEnumInterface interface"));
@@ -227,6 +228,7 @@ nlohmann::json TbEnumEnumInterfaceOLinkSource::olinkInvoke(const std::string& me
 
 void TbEnumEnumInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbEnumEnumInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbEnumEnumInterfaceOLinkAdapter which implements the TbEnumEnumInterface interface"));

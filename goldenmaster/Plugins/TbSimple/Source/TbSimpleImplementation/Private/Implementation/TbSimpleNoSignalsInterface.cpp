@@ -25,6 +25,7 @@ bool UTbSimpleNoSignalsInterfaceImplementation::GetPropBool() const
 
 void UTbSimpleNoSignalsInterfaceImplementation::SetPropBool(bool bInPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.Impl.SetPropBool");
 	if (bPropBool != bInPropBool)
 	{
 		bPropBool = bInPropBool;
@@ -38,6 +39,7 @@ int32 UTbSimpleNoSignalsInterfaceImplementation::GetPropInt() const
 
 void UTbSimpleNoSignalsInterfaceImplementation::SetPropInt(int32 InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.Impl.SetPropInt");
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
@@ -47,11 +49,13 @@ void UTbSimpleNoSignalsInterfaceImplementation::SetPropInt(int32 InPropInt)
 
 void UTbSimpleNoSignalsInterfaceImplementation::FuncVoid()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.Impl.FuncVoid");
 	// do business logic here
 }
 
 bool UTbSimpleNoSignalsInterfaceImplementation::FuncBool(bool bParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.Impl.FuncBool");
 	(void)bParamBool;
 	// do business logic here
 	return false;

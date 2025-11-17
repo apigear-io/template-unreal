@@ -155,6 +155,7 @@ ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::GetProp1() const
 
 void UTbSame1SameEnum1InterfaceOLinkClient::SetProp1(ETbSame1Enum1 InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameEnum1Interface.OLink.SetProp1");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSame1SameEnum1InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -179,6 +180,7 @@ void UTbSame1SameEnum1InterfaceOLinkClient::SetProp1(ETbSame1Enum1 InProp1)
 
 ETbSame1Enum1 UTbSame1SameEnum1InterfaceOLinkClient::Func1(ETbSame1Enum1 Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameEnum1Interface.OLink.Func1");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSame1SameEnum1InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -207,6 +209,7 @@ bool UTbSame1SameEnum1InterfaceOLinkClient::_IsSubscribed() const
 
 void UTbSame1SameEnum1InterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameEnum1Interface.OLink.ApplyState");
 	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<ETbSame1Enum1>());
 	if (bProp1Changed)
 	{
@@ -219,6 +222,7 @@ void UTbSame1SameEnum1InterfaceOLinkClient::applyState(const nlohmann::json& fie
 
 void UTbSame1SameEnum1InterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameEnum1Interface.OLink.EmitSignal");
 	if (signalName == "sig1")
 	{
 		ETbSame1Enum1 outParam1 = args[0].get<ETbSame1Enum1>();

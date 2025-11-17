@@ -400,6 +400,7 @@ bool UTbSimpleSimpleInterfaceMsgBusClient::GetPropBool() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropBool(bool bInPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SetPropBool");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -436,6 +437,7 @@ int32 UTbSimpleSimpleInterfaceMsgBusClient::GetPropInt() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropInt(int32 InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SetPropInt");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -472,6 +474,7 @@ int32 UTbSimpleSimpleInterfaceMsgBusClient::GetPropInt32() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropInt32(int32 InPropInt32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SetPropInt32");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -508,6 +511,7 @@ int64 UTbSimpleSimpleInterfaceMsgBusClient::GetPropInt64() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropInt64(int64 InPropInt64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SetPropInt64");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -544,6 +548,7 @@ float UTbSimpleSimpleInterfaceMsgBusClient::GetPropFloat() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropFloat(float InPropFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SetPropFloat");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -580,6 +585,7 @@ float UTbSimpleSimpleInterfaceMsgBusClient::GetPropFloat32() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropFloat32(float InPropFloat32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SetPropFloat32");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -616,6 +622,7 @@ double UTbSimpleSimpleInterfaceMsgBusClient::GetPropFloat64() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropFloat64(double InPropFloat64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SetPropFloat64");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -652,6 +659,7 @@ FString UTbSimpleSimpleInterfaceMsgBusClient::GetPropString() const
 
 void UTbSimpleSimpleInterfaceMsgBusClient::SetPropString(const FString& InPropString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SetPropString");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -687,6 +695,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropString(const FString& InPropSt
 
 void UTbSimpleSimpleInterfaceMsgBusClient::FuncNoReturnValue(bool bInParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.FuncNoReturnValue");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -708,6 +717,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::FuncNoReturnValue(bool bInParamBool)
 
 bool UTbSimpleSimpleInterfaceMsgBusClient::FuncNoParams()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.FuncNoParams");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -736,6 +746,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncNoParamsReply(const FTbSimpleSi
 
 bool UTbSimpleSimpleInterfaceMsgBusClient::FuncBool(bool bInParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.FuncBool");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -765,6 +776,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncBoolReply(const FTbSimpleSimple
 
 int32 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt(int32 InParamInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.FuncInt");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -794,6 +806,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncIntReply(const FTbSimpleSimpleI
 
 int32 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt32(int32 InParamInt32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.FuncInt32");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -823,6 +836,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncInt32Reply(const FTbSimpleSimpl
 
 int64 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt64(int64 InParamInt64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.FuncInt64");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -852,6 +866,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncInt64Reply(const FTbSimpleSimpl
 
 float UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat(float InParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.FuncFloat");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -881,6 +896,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloatReply(const FTbSimpleSimpl
 
 float UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat32(float InParamFloat32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.FuncFloat32");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -910,6 +926,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloat32Reply(const FTbSimpleSim
 
 double UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat64(double InParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.FuncFloat64");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -939,6 +956,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloat64Reply(const FTbSimpleSim
 
 FString UTbSimpleSimpleInterfaceMsgBusClient::FuncString(const FString& InParamString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.FuncString");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -968,6 +986,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncStringReply(const FTbSimpleSimp
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnSigBool(const FTbSimpleSimpleInterfaceSigBoolSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SignalSigBool");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -980,6 +999,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigBool(const FTbSimpleSimpleInterf
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt(const FTbSimpleSimpleInterfaceSigIntSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SignalSigInt");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -992,6 +1012,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt(const FTbSimpleSimpleInterfa
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt32(const FTbSimpleSimpleInterfaceSigInt32SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SignalSigInt32");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -1004,6 +1025,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt32(const FTbSimpleSimpleInter
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt64(const FTbSimpleSimpleInterfaceSigInt64SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SignalSigInt64");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -1016,6 +1038,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigInt64(const FTbSimpleSimpleInter
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat(const FTbSimpleSimpleInterfaceSigFloatSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SignalSigFloat");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -1028,6 +1051,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat(const FTbSimpleSimpleInter
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat32(const FTbSimpleSimpleInterfaceSigFloat32SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SignalSigFloat32");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -1040,6 +1064,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat32(const FTbSimpleSimpleInt
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat64(const FTbSimpleSimpleInterfaceSigFloat64SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SignalSigFloat64");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -1052,6 +1077,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnSigFloat64(const FTbSimpleSimpleInt
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnSigString(const FTbSimpleSimpleInterfaceSigStringSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.MsgBus.SignalSigString");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
