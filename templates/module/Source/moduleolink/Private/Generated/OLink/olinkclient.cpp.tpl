@@ -252,23 +252,19 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 
 		return {{ ueDefault "" .Return }};
 	}
-	TPromise<{{$returnVal}}> Promise;
+	TSharedRef<TPromise<{{$returnVal}}>> Promise = MakeShared<TPromise<{{$returnVal}}>>();
 	Async(EAsyncExecution::ThreadPool,
-		[{{ueVars "" .Params }}{{if len .Params}}, {{ end }}&Promise, this]()
+		[{{ueVars "" .Params }}{{if len .Params}}, {{ end }}Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc Get{{$IfaceName}}StateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			{{- if not .Return.IsArray}}
-			Promise.SetValue(arg.value.get<{{$returnVal}}>());
-			{{- else}}
-			Promise.SetValue(arg.value.get<{{$returnVal}}>());
-			{{- end }}
+			Promise->SetValue(arg.value.get<{{$returnVal}}>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}");
 		m_sink->GetNode()->invokeRemote(memberId, { {{- ueVars "" .Params -}} }, Get{{$IfaceName}}StateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 	{{- end }}
 }
 {{- end }}

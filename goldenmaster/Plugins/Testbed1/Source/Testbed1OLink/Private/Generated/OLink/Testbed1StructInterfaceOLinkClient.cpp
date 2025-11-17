@@ -300,19 +300,19 @@ FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool(const FTestbed
 
 		return FTestbed1StructBool();
 	}
-	TPromise<FTestbed1StructBool> Promise;
+	TSharedRef<TPromise<FTestbed1StructBool>> Promise = MakeShared<TPromise<FTestbed1StructBool>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamBool, &Promise, this]()
+		[ParamBool, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FTestbed1StructBool>());
+			Promise->SetValue(arg.value.get<FTestbed1StructBool>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamBool}, GetStructInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::FuncInt(const FTestbed1StructInt& ParamInt)
@@ -324,19 +324,19 @@ FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::FuncInt(const FTestbed1S
 
 		return FTestbed1StructInt();
 	}
-	TPromise<FTestbed1StructInt> Promise;
+	TSharedRef<TPromise<FTestbed1StructInt>> Promise = MakeShared<TPromise<FTestbed1StructInt>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamInt, &Promise, this]()
+		[ParamInt, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FTestbed1StructInt>());
+			Promise->SetValue(arg.value.get<FTestbed1StructInt>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetStructInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat(const FTestbed1StructFloat& ParamFloat)
@@ -348,19 +348,19 @@ FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::FuncFloat(const FTestb
 
 		return FTestbed1StructFloat();
 	}
-	TPromise<FTestbed1StructFloat> Promise;
+	TSharedRef<TPromise<FTestbed1StructFloat>> Promise = MakeShared<TPromise<FTestbed1StructFloat>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, &Promise, this]()
+		[ParamFloat, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FTestbed1StructFloat>());
+			Promise->SetValue(arg.value.get<FTestbed1StructFloat>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetStructInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString(const FTestbed1StructString& ParamString)
@@ -372,19 +372,19 @@ FTestbed1StructString UTestbed1StructInterfaceOLinkClient::FuncString(const FTes
 
 		return FTestbed1StructString();
 	}
-	TPromise<FTestbed1StructString> Promise;
+	TSharedRef<TPromise<FTestbed1StructString>> Promise = MakeShared<TPromise<FTestbed1StructString>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamString, &Promise, this]()
+		[ParamString, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetStructInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FTestbed1StructString>());
+			Promise->SetValue(arg.value.get<FTestbed1StructString>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetStructInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTestbed1StructInterfaceOLinkClient::_IsSubscribed() const

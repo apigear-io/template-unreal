@@ -228,19 +228,19 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func1(const FTbSame2Str
 
 		return FTbSame2Struct1();
 	}
-	TPromise<FTbSame2Struct1> Promise;
+	TSharedRef<TPromise<FTbSame2Struct1>> Promise = MakeShared<TPromise<FTbSame2Struct1>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, &Promise, this]()
+		[Param1, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FTbSame2Struct1>());
+			Promise->SetValue(arg.value.get<FTbSame2Struct1>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameStruct2InterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
@@ -252,19 +252,19 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func2(const FTbSame2Str
 
 		return FTbSame2Struct1();
 	}
-	TPromise<FTbSame2Struct1> Promise;
+	TSharedRef<TPromise<FTbSame2Struct1>> Promise = MakeShared<TPromise<FTbSame2Struct1>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, &Promise, this]()
+		[Param1, Param2, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FTbSame2Struct1>());
+			Promise->SetValue(arg.value.get<FTbSame2Struct1>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetSameStruct2InterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbSame2SameStruct2InterfaceOLinkClient::_IsSubscribed() const

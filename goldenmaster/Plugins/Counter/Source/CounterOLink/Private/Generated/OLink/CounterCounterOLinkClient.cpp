@@ -302,19 +302,19 @@ FVector UCounterCounterOLinkClient::Increment(const FVector& Vec)
 
 		return FVector(0.f, 0.f, 0.f);
 	}
-	TPromise<FVector> Promise;
+	TSharedRef<TPromise<FVector>> Promise = MakeShared<TPromise<FVector>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Vec, &Promise, this]()
+		[Vec, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FVector>());
+			Promise->SetValue(arg.value.get<FVector>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "increment");
 		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<FVector> UCounterCounterOLinkClient::IncrementArray(const TArray<FVector>& Vec)
@@ -326,19 +326,19 @@ TArray<FVector> UCounterCounterOLinkClient::IncrementArray(const TArray<FVector>
 
 		return TArray<FVector>();
 	}
-	TPromise<TArray<FVector>> Promise;
+	TSharedRef<TPromise<TArray<FVector>>> Promise = MakeShared<TPromise<TArray<FVector>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Vec, &Promise, this]()
+		[Vec, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<FVector>>());
+			Promise->SetValue(arg.value.get<TArray<FVector>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "incrementArray");
 		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 FCustomTypesVector3D UCounterCounterOLinkClient::Decrement(const FCustomTypesVector3D& Vec)
@@ -350,19 +350,19 @@ FCustomTypesVector3D UCounterCounterOLinkClient::Decrement(const FCustomTypesVec
 
 		return FCustomTypesVector3D();
 	}
-	TPromise<FCustomTypesVector3D> Promise;
+	TSharedRef<TPromise<FCustomTypesVector3D>> Promise = MakeShared<TPromise<FCustomTypesVector3D>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Vec, &Promise, this]()
+		[Vec, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FCustomTypesVector3D>());
+			Promise->SetValue(arg.value.get<FCustomTypesVector3D>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "decrement");
 		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
@@ -374,19 +374,19 @@ TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementArray(const TA
 
 		return TArray<FCustomTypesVector3D>();
 	}
-	TPromise<TArray<FCustomTypesVector3D>> Promise;
+	TSharedRef<TPromise<TArray<FCustomTypesVector3D>>> Promise = MakeShared<TPromise<TArray<FCustomTypesVector3D>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Vec, &Promise, this]()
+		[Vec, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<FCustomTypesVector3D>>());
+			Promise->SetValue(arg.value.get<TArray<FCustomTypesVector3D>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "decrementArray");
 		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UCounterCounterOLinkClient::_IsSubscribed() const
