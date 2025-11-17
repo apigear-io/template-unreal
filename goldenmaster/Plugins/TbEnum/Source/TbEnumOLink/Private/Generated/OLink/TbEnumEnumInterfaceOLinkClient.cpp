@@ -274,25 +274,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp3(ETbEnumEnum3 InProp3)
 ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0(ETbEnumEnum0 Param0)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.Func0");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return ETbEnumEnum0::TEE0_Value0;
-	}
-	TSharedRef<TPromise<ETbEnumEnum0>> Promise = MakeShared<TPromise<ETbEnumEnum0>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param0, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<ETbEnumEnum0>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func0");
-		m_sink->GetNode()->invokeRemote(memberId, {Param0}, GetEnumInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func0Async(Param0).Get();
 }
 
 TFuture<ETbEnumEnum0> UTbEnumEnumInterfaceOLinkClient::Func0Async(ETbEnumEnum0 Param0)
@@ -323,25 +305,7 @@ TFuture<ETbEnumEnum0> UTbEnumEnumInterfaceOLinkClient::Func0Async(ETbEnumEnum0 P
 ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1(ETbEnumEnum1 Param1)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.Func1");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return ETbEnumEnum1::TEE1_Value1;
-	}
-	TSharedRef<TPromise<ETbEnumEnum1>> Promise = MakeShared<TPromise<ETbEnumEnum1>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<ETbEnumEnum1>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetEnumInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func1Async(Param1).Get();
 }
 
 TFuture<ETbEnumEnum1> UTbEnumEnumInterfaceOLinkClient::Func1Async(ETbEnumEnum1 Param1)
@@ -372,25 +336,7 @@ TFuture<ETbEnumEnum1> UTbEnumEnumInterfaceOLinkClient::Func1Async(ETbEnumEnum1 P
 ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2(ETbEnumEnum2 Param2)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.Func2");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return ETbEnumEnum2::TEE2_Value2;
-	}
-	TSharedRef<TPromise<ETbEnumEnum2>> Promise = MakeShared<TPromise<ETbEnumEnum2>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param2, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<ETbEnumEnum2>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
-		m_sink->GetNode()->invokeRemote(memberId, {Param2}, GetEnumInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func2Async(Param2).Get();
 }
 
 TFuture<ETbEnumEnum2> UTbEnumEnumInterfaceOLinkClient::Func2Async(ETbEnumEnum2 Param2)
@@ -421,25 +367,7 @@ TFuture<ETbEnumEnum2> UTbEnumEnumInterfaceOLinkClient::Func2Async(ETbEnumEnum2 P
 ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3(ETbEnumEnum3 Param3)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.Func3");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return ETbEnumEnum3::TEE3_Value3;
-	}
-	TSharedRef<TPromise<ETbEnumEnum3>> Promise = MakeShared<TPromise<ETbEnumEnum3>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param3, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<ETbEnumEnum3>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
-		m_sink->GetNode()->invokeRemote(memberId, {Param3}, GetEnumInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func3Async(Param3).Get();
 }
 
 TFuture<ETbEnumEnum3> UTbEnumEnumInterfaceOLinkClient::Func3Async(ETbEnumEnum3 Param3)

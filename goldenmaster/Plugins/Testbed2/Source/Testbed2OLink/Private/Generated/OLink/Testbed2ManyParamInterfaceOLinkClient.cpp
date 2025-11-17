@@ -274,25 +274,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp4(int32 InProp4)
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func1(int32 Param1)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func1");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0;
-	}
-	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetManyParamInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func1Async(Param1).Get();
 }
 
 TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func1Async(int32 Param1)
@@ -323,25 +305,7 @@ TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func1Async(int32 Param1)
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func2(int32 Param1, int32 Param2)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func2");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0;
-	}
-	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetManyParamInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func2Async(Param1, Param2).Get();
 }
 
 TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func2Async(int32 Param1, int32 Param2)
@@ -372,25 +336,7 @@ TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func2Async(int32 Param1, 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func3(int32 Param1, int32 Param2, int32 Param3)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func3");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0;
-	}
-	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func3Async(Param1, Param2, Param3).Get();
 }
 
 TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func3Async(int32 Param1, int32 Param2, int32 Param3)
@@ -421,25 +367,7 @@ TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func3Async(int32 Param1, 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func4");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0;
-	}
-	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, Param4, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func4");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func4Async(Param1, Param2, Param3, Param4).Get();
 }
 
 TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func4Async(int32 Param1, int32 Param2, int32 Param3, int32 Param4)

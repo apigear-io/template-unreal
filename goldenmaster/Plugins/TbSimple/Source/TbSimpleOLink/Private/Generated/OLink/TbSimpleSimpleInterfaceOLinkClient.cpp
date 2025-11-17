@@ -418,25 +418,7 @@ void UTbSimpleSimpleInterfaceOLinkClient::FuncNoReturnValue(bool bParamBool)
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncNoParams()
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncNoParams");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return false;
-	}
-	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<bool>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoParams");
-		m_sink->GetNode()->invokeRemote(memberId, {}, GetSimpleInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return FuncNoParamsAsync().Get();
 }
 
 TFuture<bool> UTbSimpleSimpleInterfaceOLinkClient::FuncNoParamsAsync()
@@ -467,25 +449,7 @@ TFuture<bool> UTbSimpleSimpleInterfaceOLinkClient::FuncNoParamsAsync()
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncBool");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return false;
-	}
-	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
-	Async(EAsyncExecution::ThreadPool,
-		[bParamBool, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<bool>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetSimpleInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return FuncBoolAsync(bParamBool).Get();
 }
 
 TFuture<bool> UTbSimpleSimpleInterfaceOLinkClient::FuncBoolAsync(bool bParamBool)
@@ -516,25 +480,7 @@ TFuture<bool> UTbSimpleSimpleInterfaceOLinkClient::FuncBoolAsync(bool bParamBool
 int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt(int32 ParamInt)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0;
-	}
-	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
-	Async(EAsyncExecution::ThreadPool,
-		[ParamInt, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetSimpleInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return FuncIntAsync(ParamInt).Get();
 }
 
 TFuture<int32> UTbSimpleSimpleInterfaceOLinkClient::FuncIntAsync(int32 ParamInt)
@@ -565,25 +511,7 @@ TFuture<int32> UTbSimpleSimpleInterfaceOLinkClient::FuncIntAsync(int32 ParamInt)
 int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32(int32 ParamInt32)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt32");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0;
-	}
-	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
-	Async(EAsyncExecution::ThreadPool,
-		[ParamInt32, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamInt32}, GetSimpleInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return FuncInt32Async(ParamInt32).Get();
 }
 
 TFuture<int32> UTbSimpleSimpleInterfaceOLinkClient::FuncInt32Async(int32 ParamInt32)
@@ -614,25 +542,7 @@ TFuture<int32> UTbSimpleSimpleInterfaceOLinkClient::FuncInt32Async(int32 ParamIn
 int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64(int64 ParamInt64)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt64");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0LL;
-	}
-	TSharedRef<TPromise<int64>> Promise = MakeShared<TPromise<int64>>();
-	Async(EAsyncExecution::ThreadPool,
-		[ParamInt64, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<int64>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamInt64}, GetSimpleInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return FuncInt64Async(ParamInt64).Get();
 }
 
 TFuture<int64> UTbSimpleSimpleInterfaceOLinkClient::FuncInt64Async(int64 ParamInt64)
@@ -663,25 +573,7 @@ TFuture<int64> UTbSimpleSimpleInterfaceOLinkClient::FuncInt64Async(int64 ParamIn
 float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat(float ParamFloat)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0.0f;
-	}
-	TSharedRef<TPromise<float>> Promise = MakeShared<TPromise<float>>();
-	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<float>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return FuncFloatAsync(ParamFloat).Get();
 }
 
 TFuture<float> UTbSimpleSimpleInterfaceOLinkClient::FuncFloatAsync(float ParamFloat)
@@ -712,25 +604,7 @@ TFuture<float> UTbSimpleSimpleInterfaceOLinkClient::FuncFloatAsync(float ParamFl
 float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32(float ParamFloat32)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat32");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0.0f;
-	}
-	TSharedRef<TPromise<float>> Promise = MakeShared<TPromise<float>>();
-	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat32, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<float>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32}, GetSimpleInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return FuncFloat32Async(ParamFloat32).Get();
 }
 
 TFuture<float> UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32Async(float ParamFloat32)
@@ -761,25 +635,7 @@ TFuture<float> UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32Async(float Param
 double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64(double ParamFloat)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat64");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0.0;
-	}
-	TSharedRef<TPromise<double>> Promise = MakeShared<TPromise<double>>();
-	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<double>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return FuncFloat64Async(ParamFloat).Get();
 }
 
 TFuture<double> UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64Async(double ParamFloat)
@@ -810,25 +666,7 @@ TFuture<double> UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64Async(double Par
 FString UTbSimpleSimpleInterfaceOLinkClient::FuncString(const FString& ParamString)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncString");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return FString();
-	}
-	TSharedRef<TPromise<FString>> Promise = MakeShared<TPromise<FString>>();
-	Async(EAsyncExecution::ThreadPool,
-		[ParamString, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<FString>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetSimpleInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return FuncStringAsync(ParamString).Get();
 }
 
 TFuture<FString> UTbSimpleSimpleInterfaceOLinkClient::FuncStringAsync(const FString& ParamString)

@@ -182,25 +182,7 @@ void UTbRefIfacesSimpleLocalIfOLinkClient::SetIntProperty(int32 InIntProperty)
 int32 UTbRefIfacesSimpleLocalIfOLinkClient::IntMethod(int32 Param)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.IntMethod");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return 0;
-	}
-	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleLocalIfStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "intMethod");
-		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetSimpleLocalIfStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return IntMethodAsync(Param).Get();
 }
 
 TFuture<int32> UTbRefIfacesSimpleLocalIfOLinkClient::IntMethodAsync(int32 Param)
