@@ -112,6 +112,4 @@ TArray<ETbStructArrayTestEnum> createTestFTbStructArrayTestEnumArray()
 	return TestValueArray;
 }
 
-
-
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -17,11 +17,9 @@
 #endif
 #endif
 
-
 #include "TbStructArrayStructArrayFieldInterfaceJniAdapter.generated.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbStructArrayStructArrayFieldInterface_JNI, Log, All);
-
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbStructArrayStructArrayFieldInterfaceInterface
@@ -39,25 +37,23 @@ public:
 	void Deinitialize() override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface")
-    void setBackendService(TScriptInterface<ITbStructArrayStructArrayFieldInterfaceInterface> InService);
+	void setBackendService(TScriptInterface<ITbStructArrayStructArrayFieldInterfaceInterface> InService);
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface")
 	TScriptInterface<ITbStructArrayStructArrayFieldInterfaceInterface> getBackendService();
 
 private:
+	// Helper function, wraps calling java service side.
+	void callJniServiceReady(bool isServiceReady);
 
-    //helper function, wraps calling java service side
-    void callJniServiceReady(bool isServiceReady);
-
-	// helper member;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
+	// Class object of the used java service.
 	jclass m_javaJniServiceClass = nullptr;
+	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
-
-	// signals
 	void OnSigMixedSignal(const FTbStructArrayMixedStruct& ParamMixed) override;
 
 	void OnSigStructArraySignal(const FTbStructArrayStructWithArrayOfStructs& ParamPoints) override;
@@ -66,7 +62,6 @@ private:
 	void OnPropEnumArrayChanged(const FTbStructArrayStructWithArrayOfEnums& PropEnumArray) override;
 	void OnPropIntArrayChanged(const FTbStructArrayStructWithArrayOfInts& PropIntArray) override;
 	void OnPropMixedChanged(const FTbStructArrayMixedStruct& PropMixed) override;
-
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbStructArray|StructArrayFieldInterface")

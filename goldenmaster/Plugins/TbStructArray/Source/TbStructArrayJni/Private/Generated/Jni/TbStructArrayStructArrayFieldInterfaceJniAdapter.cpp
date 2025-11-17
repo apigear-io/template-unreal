@@ -15,7 +15,6 @@
 #include "HAL/Platform.h"
 #include "TbStructArray/Generated/api/TbStructArray_data.h"
 
-
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -29,10 +28,9 @@
 
 DEFINE_LOG_CATEGORY(LogTbStructArrayStructArrayFieldInterface_JNI);
 
-
-namespace 
+namespace
 {
-	UTbStructArrayStructArrayFieldInterfaceJniAdapter* gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle = nullptr;
+UTbStructArrayStructArrayFieldInterfaceJniAdapter* gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle = nullptr;
 }
 UTbStructArrayStructArrayFieldInterfaceJniAdapter::UTbStructArrayStructArrayFieldInterfaceJniAdapter()
 {
@@ -44,26 +42,26 @@ void UTbStructArrayStructArrayFieldInterfaceJniAdapter::Initialize(FSubsystemCol
 	gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaJniServiceClass =  FAndroidApplication::FindJavaClassGlobalRef("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService");
-    auto Env = FAndroidApplication::GetJavaEnv();
-    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniServiceStarter");
-    if (BridgeClass == nullptr)
-    {
+	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService");
+	auto Env = FAndroidApplication::GetJavaEnv();
+	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniServiceStarter");
+	if (BridgeClass == nullptr)
+	{
 		UE_LOG(LogTemp, Warning, TEXT("TbStructArrayJavaServiceStarter:start; CLASS not found"));
-        return;
-    }
+		return;
+	}
 	auto functionSignature = "(Landroid/content/Context;)LtbStructArray/tbStructArray_api/IStructArrayFieldInterface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
-    if (StartMethod == nullptr)
-    {
-		UE_LOG(LogTemp, Warning, TEXT( "TbStructArrayJavaServiceStarter:start; method not found"));
+	if (StartMethod == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TbStructArrayJavaServiceStarter:start; method not found"));
 		return;
-    }
-    jobject Activity = FJavaWrapper::GameActivityThis;
+	}
+	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 
-    m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
-    Env->DeleteLocalRef(localRef);
+	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
+	Env->DeleteLocalRef(localRef);
 #endif
 #endif
 }
@@ -74,33 +72,33 @@ void UTbStructArrayStructArrayFieldInterfaceJniAdapter::Deinitialize()
 	gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-    m_javaJniServiceClass = nullptr;
-    if (m_javaJniServiceInstance)
-    {
-        FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
-        m_javaJniServiceInstance = nullptr;
-    }
-    JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	m_javaJniServiceClass = nullptr;
+	if (m_javaJniServiceInstance)
+	{
+		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
+		m_javaJniServiceInstance = nullptr;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 
-    jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniServiceStarter");
-    if (BridgeClass != nullptr)
-    {
-        jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
-        if (StopMethod != nullptr)
-        {
-            jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
-            FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("TbStructArrayJavaServiceStarter:stop; method not found, failed to stop service"));
-            return;
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT( "TbStructArrayJavaServiceStarter:stop; CLASS not found, failed to stop service"));
-    }
+	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniServiceStarter");
+	if (BridgeClass != nullptr)
+	{
+		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		if (StopMethod != nullptr)
+		{
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal's activity
+			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("TbStructArrayJavaServiceStarter:stop; method not found, failed to stop service"));
+			return;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TbStructArrayJavaServiceStarter:stop; CLASS not found, failed to stop service"));
+	}
 #endif
 #endif
 	Super::Deinitialize();
@@ -136,425 +134,408 @@ TScriptInterface<ITbStructArrayStructArrayFieldInterfaceInterface> UTbStructArra
 
 void UTbStructArrayStructArrayFieldInterfaceJniAdapter::callJniServiceReady(bool isServiceReady)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("UTbStructArrayStructArrayFieldInterfaceJniAdapter call nativeServiceReady the service function "));
-    
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("UTbStructArrayStructArrayFieldInterfaceJniAdapter call nativeServiceReady the service function "));
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (!m_javaJniServiceClass || !m_javaJniServiceInstance )
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:nativeServiceReady(Z)V CLASS not found"));
-            return;
-        }
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:nativeServiceReady(Z)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
 
-        if (MethodID != nullptr)
-        {
-            FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
-        }
-        else
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:nativeServiceReady(Z)V not found "));
-        }
-    }
-#endif 
+		if (MethodID != nullptr)
+		{
+			FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
+		}
+		else
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:nativeServiceReady(Z)V not found "));
+		}
+	}
+#endif
 }
 
 void UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnSigMixedSignal(const FTbStructArrayMixedStruct& ParamMixed)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::onSigMixed "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onSigMixed (LtbStructArray/tbStructArray_api/MixedStruct;)V CLASS not found"));
-            return;
-        }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigMixed", "(LtbStructArray/tbStructArray_api/MixedStruct;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onSigMixed (LtbStructArray/tbStructArray_api/MixedStruct;)V not found"));
-            return;
-        }
-        jobject jlocal_ParamMixed = TbStructArrayDataJavaConverter::makeJavaMixedStruct(Env, ParamMixed);
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::onSigMixed "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onSigMixed (LtbStructArray/tbStructArray_api/MixedStruct;)V CLASS not found"));
+			return;
+		}
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigMixed", "(LtbStructArray/tbStructArray_api/MixedStruct;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onSigMixed (LtbStructArray/tbStructArray_api/MixedStruct;)V not found"));
+			return;
+		}
+		jobject jlocal_ParamMixed = TbStructArrayDataJavaConverter::makeJavaMixedStruct(Env, ParamMixed);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamMixed);
-        Env->DeleteLocalRef(jlocal_ParamMixed);
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamMixed);
+		Env->DeleteLocalRef(jlocal_ParamMixed);
+	}
 #endif
 }
 
 void UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnSigStructArraySignal(const FTbStructArrayStructWithArrayOfStructs& ParamPoints)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::onSigStructArray "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onSigStructArray (LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V CLASS not found"));
-            return;
-        }
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigStructArray", "(LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onSigStructArray (LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V not found"));
-            return;
-        }
-        jobject jlocal_ParamPoints = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfStructs(Env, ParamPoints);
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::onSigStructArray "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onSigStructArray (LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V CLASS not found"));
+			return;
+		}
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigStructArray", "(LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onSigStructArray (LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V not found"));
+			return;
+		}
+		jobject jlocal_ParamPoints = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfStructs(Env, ParamPoints);
 
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamPoints);
-        Env->DeleteLocalRef(jlocal_ParamPoints);
-    }
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamPoints);
+		Env->DeleteLocalRef(jlocal_ParamPoints);
+	}
 #endif
 }
 void UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropStructArrayChanged(const FTbStructArrayStructWithArrayOfStructs& PropStructArray)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropStructArray "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService::onPropStructArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropStructArray "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService::onPropStructArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropStructArrayChanged","(LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onPropStructArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V not found"));
-            return;
-        }
-        
-        jobject jlocal_PropStructArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfStructs(Env, PropStructArray);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropStructArray);
-        Env->DeleteLocalRef(jlocal_PropStructArray);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropStructArrayChanged", "(LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onPropStructArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfStructs;)V not found"));
+			return;
+		}
 
-    }
+		jobject jlocal_PropStructArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfStructs(Env, PropStructArray);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropStructArray);
+		Env->DeleteLocalRef(jlocal_PropStructArray);
+	}
 #endif
 }
 void UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropEnumArrayChanged(const FTbStructArrayStructWithArrayOfEnums& PropEnumArray)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropEnumArray "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService::onPropEnumArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfEnums;)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropEnumArray "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService::onPropEnumArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfEnums;)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropEnumArrayChanged","(LtbStructArray/tbStructArray_api/StructWithArrayOfEnums;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onPropEnumArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfEnums;)V not found"));
-            return;
-        }
-        
-        jobject jlocal_PropEnumArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfEnums(Env, PropEnumArray);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropEnumArray);
-        Env->DeleteLocalRef(jlocal_PropEnumArray);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropEnumArrayChanged", "(LtbStructArray/tbStructArray_api/StructWithArrayOfEnums;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onPropEnumArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfEnums;)V not found"));
+			return;
+		}
 
-    }
+		jobject jlocal_PropEnumArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfEnums(Env, PropEnumArray);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropEnumArray);
+		Env->DeleteLocalRef(jlocal_PropEnumArray);
+	}
 #endif
 }
 void UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropIntArrayChanged(const FTbStructArrayStructWithArrayOfInts& PropIntArray)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropIntArray "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService::onPropIntArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfInts;)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropIntArray "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService::onPropIntArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfInts;)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropIntArrayChanged","(LtbStructArray/tbStructArray_api/StructWithArrayOfInts;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onPropIntArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfInts;)V not found"));
-            return;
-        }
-        
-        jobject jlocal_PropIntArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfInts(Env, PropIntArray);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropIntArray);
-        Env->DeleteLocalRef(jlocal_PropIntArray);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropIntArrayChanged", "(LtbStructArray/tbStructArray_api/StructWithArrayOfInts;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onPropIntArrayChanged(LtbStructArray/tbStructArray_api/StructWithArrayOfInts;)V not found"));
+			return;
+		}
 
-    }
+		jobject jlocal_PropIntArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfInts(Env, PropIntArray);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropIntArray);
+		Env->DeleteLocalRef(jlocal_PropIntArray);
+	}
 #endif
 }
 void UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropMixedChanged(const FTbStructArrayMixedStruct& PropMixed)
 {
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropMixed "));
-    if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
-    {
-        if (m_javaJniServiceClass == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService::onPropMixedChanged(LtbStructArray/tbStructArray_api/MixedStruct;)V CLASS not found"));
-            return;
-        }
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Notify java jni UTbStructArrayStructArrayFieldInterfaceJniAdapter::OnPropMixed "));
+	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
+	{
+		if (m_javaJniServiceClass == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService::onPropMixedChanged(LtbStructArray/tbStructArray_api/MixedStruct;)V CLASS not found"));
+			return;
+		}
 
-        static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropMixedChanged","(LtbStructArray/tbStructArray_api/MixedStruct;)V");
-        if (MethodID == nullptr)
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onPropMixedChanged(LtbStructArray/tbStructArray_api/MixedStruct;)V not found"));
-            return;
-        }
-        
-        jobject jlocal_PropMixed = TbStructArrayDataJavaConverter::makeJavaMixedStruct(Env, PropMixed);
-        FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropMixed);
-        Env->DeleteLocalRef(jlocal_PropMixed);
+		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropMixedChanged", "(LtbStructArray/tbStructArray_api/MixedStruct;)V");
+		if (MethodID == nullptr)
+		{
+			UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("tbStructArray/tbStructArrayjniservice/StructArrayFieldInterfaceJniService:onPropMixedChanged(LtbStructArray/tbStructArray_api/MixedStruct;)V not found"));
+			return;
+		}
 
-    }
+		jobject jlocal_PropMixed = TbStructArrayDataJavaConverter::makeJavaMixedStruct(Env, PropMixed);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropMixed);
+		Env->DeleteLocalRef(jlocal_PropMixed);
+	}
 #endif
 }
-
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeFuncMixed(JNIEnv* Env, jclass Clazz, jobject paramMixed)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeFuncMixed"));
-    if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeFuncMixed: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    FTbStructArrayMixedStruct local_param_mixed = FTbStructArrayMixedStruct();
-    TbStructArrayDataJavaConverter::fillMixedStruct(Env, paramMixed, local_param_mixed);
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeFuncMixed"));
+	if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeFuncMixed: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	FTbStructArrayMixedStruct local_param_mixed = FTbStructArrayMixedStruct();
+	TbStructArrayDataJavaConverter::fillMixedStruct(Env, paramMixed, local_param_mixed);
 
-    auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto result = service->FuncMixed( local_param_mixed);
-        jobject jresult = TbStructArrayDataJavaConverter::makeJavaMixedStruct(Env, result);
-        return jresult;
-    }
-    else
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid"));
-        return nullptr;
-    }
+	auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto result = service->FuncMixed(local_param_mixed);
+		jobject jresult = TbStructArrayDataJavaConverter::makeJavaMixedStruct(Env, result);
+		return jresult;
+	}
+	else
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid"));
+		return nullptr;
+	}
 }
 JNI_METHOD jobject Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeFuncStructArray(JNIEnv* Env, jclass Clazz, jobject paramPoints)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeFuncStructArray"));
-    if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeFuncStructArray: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    FTbStructArrayStructWithArrayOfStructs local_param_points = FTbStructArrayStructWithArrayOfStructs();
-    TbStructArrayDataJavaConverter::fillStructWithArrayOfStructs(Env, paramPoints, local_param_points);
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeFuncStructArray"));
+	if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeFuncStructArray: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	FTbStructArrayStructWithArrayOfStructs local_param_points = FTbStructArrayStructWithArrayOfStructs();
+	TbStructArrayDataJavaConverter::fillStructWithArrayOfStructs(Env, paramPoints, local_param_points);
 
-    auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto result = service->FuncStructArray( local_param_points);
-        jobject jresult = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfStructs(Env, result);
-        return jresult;
-    }
-    else
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid"));
-        return nullptr;
-    }
+	auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto result = service->FuncStructArray(local_param_points);
+		jobject jresult = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfStructs(Env, result);
+		return jresult;
+	}
+	else
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid"));
+		return nullptr;
+	}
 }
 JNI_METHOD void Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropStructArray(JNIEnv* Env, jclass Clazz, jobject propStructArray)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropStructArray"));
-    if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropStructArray: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
-    FTbStructArrayStructWithArrayOfStructs local_prop_struct_array = FTbStructArrayStructWithArrayOfStructs();
-    TbStructArrayDataJavaConverter::fillStructWithArrayOfStructs(Env, propStructArray, local_prop_struct_array);
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropStructArray"));
+	if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropStructArray: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop_struct_array= MoveTemp(local_prop_struct_array)]()
-    {
-        auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropStructArray(plocal_prop_struct_array);
-        }
-        else
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid, cannot set value for propStructArray"));
-        }
-    });
+	FTbStructArrayStructWithArrayOfStructs local_prop_struct_array = FTbStructArrayStructWithArrayOfStructs();
+	TbStructArrayDataJavaConverter::fillStructWithArrayOfStructs(Env, propStructArray, local_prop_struct_array);
+
+	auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropStructArray(local_prop_struct_array);
+	}
+	else
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid, cannot set value for propStructArray"));
+	}
 }
 
 JNI_METHOD jobject Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropStructArray(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropStructArray"));
-    if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropStructArray: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto PropStructArray = service->GetPropStructArray();
-        
-        jobject jlocal_PropStructArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfStructs(Env, PropStructArray);
-        return jlocal_PropStructArray;
-    }
-    else
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return nullptr;
-    }
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropStructArray"));
+	if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropStructArray: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto PropStructArray = service->GetPropStructArray();
+
+		jobject jlocal_PropStructArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfStructs(Env, PropStructArray);
+		return jlocal_PropStructArray;
+	}
+	else
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return nullptr;
+	}
 }
 JNI_METHOD void Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropEnumArray(JNIEnv* Env, jclass Clazz, jobject propEnumArray)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropEnumArray"));
-    if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropEnumArray: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
-    FTbStructArrayStructWithArrayOfEnums local_prop_enum_array = FTbStructArrayStructWithArrayOfEnums();
-    TbStructArrayDataJavaConverter::fillStructWithArrayOfEnums(Env, propEnumArray, local_prop_enum_array);
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropEnumArray"));
+	if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropEnumArray: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop_enum_array= MoveTemp(local_prop_enum_array)]()
-    {
-        auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropEnumArray(plocal_prop_enum_array);
-        }
-        else
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid, cannot set value for propEnumArray"));
-        }
-    });
+	FTbStructArrayStructWithArrayOfEnums local_prop_enum_array = FTbStructArrayStructWithArrayOfEnums();
+	TbStructArrayDataJavaConverter::fillStructWithArrayOfEnums(Env, propEnumArray, local_prop_enum_array);
+
+	auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropEnumArray(local_prop_enum_array);
+	}
+	else
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid, cannot set value for propEnumArray"));
+	}
 }
 
 JNI_METHOD jobject Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropEnumArray(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropEnumArray"));
-    if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropEnumArray: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto PropEnumArray = service->GetPropEnumArray();
-        
-        jobject jlocal_PropEnumArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfEnums(Env, PropEnumArray);
-        return jlocal_PropEnumArray;
-    }
-    else
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return nullptr;
-    }
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropEnumArray"));
+	if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropEnumArray: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto PropEnumArray = service->GetPropEnumArray();
+
+		jobject jlocal_PropEnumArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfEnums(Env, PropEnumArray);
+		return jlocal_PropEnumArray;
+	}
+	else
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return nullptr;
+	}
 }
 JNI_METHOD void Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropIntArray(JNIEnv* Env, jclass Clazz, jobject propIntArray)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropIntArray"));
-    if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropIntArray: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
-    FTbStructArrayStructWithArrayOfInts local_prop_int_array = FTbStructArrayStructWithArrayOfInts();
-    TbStructArrayDataJavaConverter::fillStructWithArrayOfInts(Env, propIntArray, local_prop_int_array);
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropIntArray"));
+	if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropIntArray: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop_int_array= MoveTemp(local_prop_int_array)]()
-    {
-        auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropIntArray(plocal_prop_int_array);
-        }
-        else
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid, cannot set value for propIntArray"));
-        }
-    });
+	FTbStructArrayStructWithArrayOfInts local_prop_int_array = FTbStructArrayStructWithArrayOfInts();
+	TbStructArrayDataJavaConverter::fillStructWithArrayOfInts(Env, propIntArray, local_prop_int_array);
+
+	auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropIntArray(local_prop_int_array);
+	}
+	else
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid, cannot set value for propIntArray"));
+	}
 }
 
 JNI_METHOD jobject Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropIntArray(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropIntArray"));
-    if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropIntArray: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto PropIntArray = service->GetPropIntArray();
-        
-        jobject jlocal_PropIntArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfInts(Env, PropIntArray);
-        return jlocal_PropIntArray;
-    }
-    else
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return nullptr;
-    }
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropIntArray"));
+	if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropIntArray: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto PropIntArray = service->GetPropIntArray();
+
+		jobject jlocal_PropIntArray = TbStructArrayDataJavaConverter::makeJavaStructWithArrayOfInts(Env, PropIntArray);
+		return jlocal_PropIntArray;
+	}
+	else
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return nullptr;
+	}
 }
 JNI_METHOD void Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropMixed(JNIEnv* Env, jclass Clazz, jobject propMixed)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropMixed"));
-    if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropMixed: JNI SERVICE ADAPTER NOT FOUND "));
-        return;
-    }
-    
-    FTbStructArrayMixedStruct local_prop_mixed = FTbStructArrayMixedStruct();
-    TbStructArrayDataJavaConverter::fillMixedStruct(Env, propMixed, local_prop_mixed);
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropMixed"));
+	if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeSetPropMixed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
 
-    AsyncTask(ENamedThreads::GameThread, [plocal_prop_mixed= MoveTemp(local_prop_mixed)]()
-    {
-        auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
-        if (service != nullptr)
-        {
-            service->SetPropMixed(plocal_prop_mixed);
-        }
-        else
-        {
-            UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid, cannot set value for propMixed"));
-        }
-    });
+	FTbStructArrayMixedStruct local_prop_mixed = FTbStructArrayMixedStruct();
+	TbStructArrayDataJavaConverter::fillMixedStruct(Env, propMixed, local_prop_mixed);
+
+	auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		service->SetPropMixed(local_prop_mixed);
+	}
+	else
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not valid, cannot set value for propMixed"));
+	}
 }
 
 JNI_METHOD jobject Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropMixed(JNIEnv* Env, jclass Clazz)
 {
-    UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropMixed"));
-    if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropMixed: JNI SERVICE ADAPTER NOT FOUND "));
-        return nullptr;
-    }
-    auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
-    if (service != nullptr)
-    {
-        auto PropMixed = service->GetPropMixed();
-        
-        jobject jlocal_PropMixed = TbStructArrayDataJavaConverter::makeJavaMixedStruct(Env, PropMixed);
-        return jlocal_PropMixed;
-    }
-    else
-    {
-        UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
-        return nullptr;
-    }
+	UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Verbose, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropMixed"));
+	if (gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle == nullptr)
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("Java_tbStructArray_tbStructArrayjniservice_StructArrayFieldInterfaceJniService_nativeGetPropMixed: JNI SERVICE ADAPTER NOT FOUND "));
+		return nullptr;
+	}
+	auto service = gUTbStructArrayStructArrayFieldInterfaceJniAdapterHandle->getBackendService();
+	if (service != nullptr)
+	{
+		auto PropMixed = service->GetPropMixed();
+
+		jobject jlocal_PropMixed = TbStructArrayDataJavaConverter::makeJavaMixedStruct(Env, PropMixed);
+		return jlocal_PropMixed;
+	}
+	else
+	{
+		UE_LOG(LogTbStructArrayStructArrayFieldInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
+		return nullptr;
+	}
 }
 #endif

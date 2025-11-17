@@ -3,7 +3,6 @@
 #include "TbStructArrayStructArrayFieldInterfaceJniFixture.h"
 #include "Misc/AutomationTest.h"
 
-
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "TbStructArray/Generated/Jni/TbStructArrayStructArrayFieldInterfaceJniClient.h"

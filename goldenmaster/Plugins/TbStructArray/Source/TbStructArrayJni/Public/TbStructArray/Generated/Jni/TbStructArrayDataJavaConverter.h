@@ -33,30 +33,25 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-
-class  TBSTRUCTARRAYAPI_API TbStructArrayDataJavaConverter{
+class TBSTRUCTARRAYAPI_API TbStructArrayDataJavaConverter
+{
 public:
-
 	static void fillPoint(JNIEnv* env, jobject input, FTbStructArrayPoint& out_point);
 	static void fillPointArray(JNIEnv* env, jobjectArray input, TArray<FTbStructArrayPoint>& out_array);
 	static jobject makeJavaPoint(JNIEnv* env, const FTbStructArrayPoint& out_point);
 	static jobjectArray makeJavaPointArray(JNIEnv* env, const TArray<FTbStructArrayPoint>& cppArray);
-
 	static void fillStructWithArrayOfStructs(JNIEnv* env, jobject input, FTbStructArrayStructWithArrayOfStructs& out_struct_with_array_of_structs);
 	static void fillStructWithArrayOfStructsArray(JNIEnv* env, jobjectArray input, TArray<FTbStructArrayStructWithArrayOfStructs>& out_array);
 	static jobject makeJavaStructWithArrayOfStructs(JNIEnv* env, const FTbStructArrayStructWithArrayOfStructs& out_struct_with_array_of_structs);
 	static jobjectArray makeJavaStructWithArrayOfStructsArray(JNIEnv* env, const TArray<FTbStructArrayStructWithArrayOfStructs>& cppArray);
-
 	static void fillStructWithArrayOfEnums(JNIEnv* env, jobject input, FTbStructArrayStructWithArrayOfEnums& out_struct_with_array_of_enums);
 	static void fillStructWithArrayOfEnumsArray(JNIEnv* env, jobjectArray input, TArray<FTbStructArrayStructWithArrayOfEnums>& out_array);
 	static jobject makeJavaStructWithArrayOfEnums(JNIEnv* env, const FTbStructArrayStructWithArrayOfEnums& out_struct_with_array_of_enums);
 	static jobjectArray makeJavaStructWithArrayOfEnumsArray(JNIEnv* env, const TArray<FTbStructArrayStructWithArrayOfEnums>& cppArray);
-
 	static void fillStructWithArrayOfInts(JNIEnv* env, jobject input, FTbStructArrayStructWithArrayOfInts& out_struct_with_array_of_ints);
 	static void fillStructWithArrayOfIntsArray(JNIEnv* env, jobjectArray input, TArray<FTbStructArrayStructWithArrayOfInts>& out_array);
 	static jobject makeJavaStructWithArrayOfInts(JNIEnv* env, const FTbStructArrayStructWithArrayOfInts& out_struct_with_array_of_ints);
 	static jobjectArray makeJavaStructWithArrayOfIntsArray(JNIEnv* env, const TArray<FTbStructArrayStructWithArrayOfInts>& cppArray);
-
 	static void fillMixedStruct(JNIEnv* env, jobject input, FTbStructArrayMixedStruct& out_mixed_struct);
 	static void fillMixedStructArray(JNIEnv* env, jobjectArray input, TArray<FTbStructArrayMixedStruct>& out_array);
 	static jobject makeJavaMixedStruct(JNIEnv* env, const FTbStructArrayMixedStruct& out_mixed_struct);
