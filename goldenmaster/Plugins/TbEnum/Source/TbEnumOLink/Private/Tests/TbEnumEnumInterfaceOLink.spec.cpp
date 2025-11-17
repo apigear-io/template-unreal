@@ -466,7 +466,21 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func0(ETbEnumEnum0::TEE0_Value0);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func0Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<ETbEnumEnum0> Future = ImplFixture->GetImplementation()->Func0Async(ETbEnumEnum0::TEE0_Value0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbEnumEnum0& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -476,7 +490,21 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func1(ETbEnumEnum1::TEE1_Value1);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<ETbEnumEnum1> Future = ImplFixture->GetImplementation()->Func1Async(ETbEnumEnum1::TEE1_Value1);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbEnumEnum1& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -486,7 +514,21 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func2(ETbEnumEnum2::TEE2_Value2);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func2Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<ETbEnumEnum2> Future = ImplFixture->GetImplementation()->Func2Async(ETbEnumEnum2::TEE2_Value2);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbEnumEnum2& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -496,7 +538,21 @@ void UTbEnumEnumInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func3(ETbEnumEnum3::TEE3_Value3);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func3Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<ETbEnumEnum3> Future = ImplFixture->GetImplementation()->Func3Async(ETbEnumEnum3::TEE3_Value3);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbEnumEnum3& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

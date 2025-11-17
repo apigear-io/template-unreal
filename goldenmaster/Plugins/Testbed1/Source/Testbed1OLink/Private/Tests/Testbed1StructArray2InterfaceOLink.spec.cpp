@@ -558,7 +558,21 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncBool(FTestbed1StructBoolWithArray());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncBoolAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<FTestbed1StructBool>> Future = ImplFixture->GetImplementation()->FuncBoolAsync(FTestbed1StructBoolWithArray());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FTestbed1StructBool>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -568,7 +582,21 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncInt(FTestbed1StructIntWithArray());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncIntAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<FTestbed1StructInt>> Future = ImplFixture->GetImplementation()->FuncIntAsync(FTestbed1StructIntWithArray());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FTestbed1StructInt>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -578,7 +606,21 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncFloat(FTestbed1StructFloatWithArray());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncFloatAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<FTestbed1StructFloat>> Future = ImplFixture->GetImplementation()->FuncFloatAsync(FTestbed1StructFloatWithArray());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FTestbed1StructFloat>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -588,7 +630,21 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncString(FTestbed1StructStringWithArray());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncStringAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<FTestbed1StructString>> Future = ImplFixture->GetImplementation()->FuncStringAsync(FTestbed1StructStringWithArray());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FTestbed1StructString>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -598,7 +654,21 @@ void UTestbed1StructArray2InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncEnum(FTestbed1StructEnumWithArray());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncEnumAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<ETestbed1Enum0>> Future = ImplFixture->GetImplementation()->FuncEnumAsync(FTestbed1StructEnumWithArray());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<ETestbed1Enum0>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

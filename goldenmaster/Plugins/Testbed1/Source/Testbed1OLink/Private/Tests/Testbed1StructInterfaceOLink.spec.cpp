@@ -466,7 +466,21 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncBool(FTestbed1StructBool());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncBoolAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FTestbed1StructBool> Future = ImplFixture->GetImplementation()->FuncBoolAsync(FTestbed1StructBool());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed1StructBool& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -476,7 +490,21 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncInt(FTestbed1StructInt());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncIntAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FTestbed1StructInt> Future = ImplFixture->GetImplementation()->FuncIntAsync(FTestbed1StructInt());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed1StructInt& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -486,7 +514,21 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncFloat(FTestbed1StructFloat());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncFloatAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FTestbed1StructFloat> Future = ImplFixture->GetImplementation()->FuncFloatAsync(FTestbed1StructFloat());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed1StructFloat& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -496,7 +538,21 @@ void UTestbed1StructInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncString(FTestbed1StructString());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncStringAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FTestbed1StructString> Future = ImplFixture->GetImplementation()->FuncStringAsync(FTestbed1StructString());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed1StructString& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

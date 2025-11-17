@@ -466,7 +466,21 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func1(0);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<int32> Future = ImplFixture->GetImplementation()->Func1Async(0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -476,7 +490,21 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func2(0, 0);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func2Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<int32> Future = ImplFixture->GetImplementation()->Func2Async(0, 0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -486,7 +514,21 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func3(0, 0, 0);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func3Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<int32> Future = ImplFixture->GetImplementation()->Func3Async(0, 0, 0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -496,7 +538,21 @@ void UTestbed2ManyParamInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func4(0, 0, 0, 0);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func4Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<int32> Future = ImplFixture->GetImplementation()->Func4Async(0, 0, 0, 0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

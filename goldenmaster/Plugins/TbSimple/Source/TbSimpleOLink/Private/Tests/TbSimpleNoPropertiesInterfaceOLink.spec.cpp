@@ -98,6 +98,7 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncVoid();
+			// Verify values here based on service logic
 			TestDone.Execute();
 		});
 	});
@@ -108,7 +109,21 @@ void UTbSimpleNoPropertiesInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncBool(false);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncBoolAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<bool> Future = ImplFixture->GetImplementation()->FuncBoolAsync(false);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const bool& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
