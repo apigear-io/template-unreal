@@ -351,6 +351,31 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceOLinkClient::FuncBool(c
 	return Promise->GetFuture().Get();
 }
 
+TFuture<TArray<FTestbed1StructBool>> UTestbed1StructArrayInterfaceOLinkClient::FuncBoolAsync(const TArray<FTestbed1StructBool>& ParamBool)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncBoolAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<FTestbed1StructBool>> Promise;
+		Promise.SetValue(TArray<FTestbed1StructBool>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<FTestbed1StructBool>>> Promise = MakeShared<TPromise<TArray<FTestbed1StructBool>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamBool},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<FTestbed1StructBool>>());
+	});
+
+	return Promise->GetFuture();
+}
+
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceOLinkClient::FuncInt(const TArray<FTestbed1StructInt>& ParamInt)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncInt");
@@ -373,6 +398,31 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceOLinkClient::FuncInt(con
 	});
 
 	return Promise->GetFuture().Get();
+}
+
+TFuture<TArray<FTestbed1StructInt>> UTestbed1StructArrayInterfaceOLinkClient::FuncIntAsync(const TArray<FTestbed1StructInt>& ParamInt)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncIntAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<FTestbed1StructInt>> Promise;
+		Promise.SetValue(TArray<FTestbed1StructInt>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<FTestbed1StructInt>>> Promise = MakeShared<TPromise<TArray<FTestbed1StructInt>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamInt},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<FTestbed1StructInt>>());
+	});
+
+	return Promise->GetFuture();
 }
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceOLinkClient::FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
@@ -399,6 +449,31 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceOLinkClient::FuncFloat
 	return Promise->GetFuture().Get();
 }
 
+TFuture<TArray<FTestbed1StructFloat>> UTestbed1StructArrayInterfaceOLinkClient::FuncFloatAsync(const TArray<FTestbed1StructFloat>& ParamFloat)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncFloatAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<FTestbed1StructFloat>> Promise;
+		Promise.SetValue(TArray<FTestbed1StructFloat>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<FTestbed1StructFloat>>> Promise = MakeShared<TPromise<TArray<FTestbed1StructFloat>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<FTestbed1StructFloat>>());
+	});
+
+	return Promise->GetFuture();
+}
+
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceOLinkClient::FuncString(const TArray<FTestbed1StructString>& ParamString)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncString");
@@ -423,6 +498,31 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceOLinkClient::FuncStri
 	return Promise->GetFuture().Get();
 }
 
+TFuture<TArray<FTestbed1StructString>> UTestbed1StructArrayInterfaceOLinkClient::FuncStringAsync(const TArray<FTestbed1StructString>& ParamString)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncStringAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<FTestbed1StructString>> Promise;
+		Promise.SetValue(TArray<FTestbed1StructString>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<FTestbed1StructString>>> Promise = MakeShared<TPromise<TArray<FTestbed1StructString>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamString},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<FTestbed1StructString>>());
+	});
+
+	return Promise->GetFuture();
+}
+
 TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceOLinkClient::FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncEnum");
@@ -445,6 +545,31 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceOLinkClient::FuncEnum(const 
 	});
 
 	return Promise->GetFuture().Get();
+}
+
+TFuture<TArray<ETestbed1Enum0>> UTestbed1StructArrayInterfaceOLinkClient::FuncEnumAsync(const TArray<ETestbed1Enum0>& ParamEnum)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncEnumAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<ETestbed1Enum0>> Promise;
+		Promise.SetValue(TArray<ETestbed1Enum0>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<ETestbed1Enum0>>> Promise = MakeShared<TPromise<TArray<ETestbed1Enum0>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcEnum");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamEnum},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<ETestbed1Enum0>>());
+	});
+
+	return Promise->GetFuture();
 }
 
 bool UTestbed1StructArrayInterfaceOLinkClient::_IsSubscribed() const

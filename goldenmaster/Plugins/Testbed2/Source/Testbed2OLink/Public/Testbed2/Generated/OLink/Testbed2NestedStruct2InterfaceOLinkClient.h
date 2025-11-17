@@ -54,8 +54,10 @@ public:
 
 	// operations
 	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
+	TFuture<FTestbed2NestedStruct1> Func1Async(const FTestbed2NestedStruct1& Param1) override;
 
 	FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+	TFuture<FTestbed2NestedStruct1> Func2Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct2Interface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

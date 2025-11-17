@@ -60,12 +60,16 @@ public:
 
 	// operations
 	FVector Increment(const FVector& Vec) override;
+	TFuture<FVector> IncrementAsync(const FVector& Vec) override;
 
 	TArray<FVector> IncrementArray(const TArray<FVector>& Vec) override;
+	TFuture<TArray<FVector>> IncrementArrayAsync(const TArray<FVector>& Vec) override;
 
 	FCustomTypesVector3D Decrement(const FCustomTypesVector3D& Vec) override;
+	TFuture<FCustomTypesVector3D> DecrementAsync(const FCustomTypesVector3D& Vec) override;
 
 	TArray<FCustomTypesVector3D> DecrementArray(const TArray<FCustomTypesVector3D>& Vec) override;
+	TFuture<TArray<FCustomTypesVector3D>> DecrementArrayAsync(const TArray<FCustomTypesVector3D>& Vec) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

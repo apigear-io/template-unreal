@@ -54,8 +54,10 @@ public:
 
 	// operations
 	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override;
+	TFuture<FTbSame2Struct1> Func1Async(const FTbSame2Struct1& Param1) override;
 
 	FTbSame2Struct1 Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
+	TFuture<FTbSame2Struct1> Func2Async(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame2|SameStruct2Interface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

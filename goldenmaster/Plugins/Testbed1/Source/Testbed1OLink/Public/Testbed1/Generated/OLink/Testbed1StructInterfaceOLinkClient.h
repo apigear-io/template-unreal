@@ -60,12 +60,16 @@ public:
 
 	// operations
 	FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
+	TFuture<FTestbed1StructBool> FuncBoolAsync(const FTestbed1StructBool& ParamBool) override;
 
 	FTestbed1StructInt FuncInt(const FTestbed1StructInt& ParamInt) override;
+	TFuture<FTestbed1StructInt> FuncIntAsync(const FTestbed1StructInt& ParamInt) override;
 
 	FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
+	TFuture<FTestbed1StructFloat> FuncFloatAsync(const FTestbed1StructFloat& ParamFloat) override;
 
 	FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
+	TFuture<FTestbed1StructString> FuncStringAsync(const FTestbed1StructString& ParamString) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructInterface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

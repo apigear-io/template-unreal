@@ -60,12 +60,16 @@ public:
 
 	// operations
 	int32 Func1(int32 Param1) override;
+	TFuture<int32> Func1Async(int32 Param1) override;
 
 	int32 Func2(int32 Param1, int32 Param2) override;
+	TFuture<int32> Func2Async(int32 Param1, int32 Param2) override;
 
 	int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
+	TFuture<int32> Func3Async(int32 Param1, int32 Param2, int32 Param3) override;
 
 	int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
+	TFuture<int32> Func4Async(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
