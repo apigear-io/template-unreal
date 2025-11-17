@@ -127,7 +127,21 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->LocalIfMethod(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.LocalIfMethodAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Future = ImplFixture->GetImplementation()->LocalIfMethodAsync(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -137,7 +151,21 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->LocalIfMethodList(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.LocalIfMethodListAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Future = ImplFixture->GetImplementation()->LocalIfMethodListAsync(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -147,7 +175,21 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->ImportedIfMethod(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.ImportedIfMethodAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Future = ImplFixture->GetImplementation()->ImportedIfMethodAsync(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -157,7 +199,21 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->ImportedIfMethodList(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.ImportedIfMethodListAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Future = ImplFixture->GetImplementation()->ImportedIfMethodListAsync(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

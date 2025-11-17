@@ -98,6 +98,7 @@ void UTbSimpleVoidInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncVoid();
+			// Verify values here based on service logic
 			TestDone.Execute();
 		});
 	});
