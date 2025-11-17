@@ -95,10 +95,15 @@ void UAbstractTbRefIfacesParentIf::LocalIfMethodAsync(UObject* WorldContextObjec
 
 TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UAbstractTbRefIfacesParentIf::LocalIfMethodAsync(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
+	TWeakObjectPtr<UAbstractTbRefIfacesParentIf> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param, this]()
+		[Param, WeakThis]()
 		{
-		return LocalIfMethod(Param);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->LocalIfMethod(Param);
+		}
+		return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	});
 }
 
@@ -124,10 +129,15 @@ void UAbstractTbRefIfacesParentIf::LocalIfMethodListAsync(UObject* WorldContextO
 
 TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> UAbstractTbRefIfacesParentIf::LocalIfMethodListAsync(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
+	TWeakObjectPtr<UAbstractTbRefIfacesParentIf> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param, this]()
+		[Param, WeakThis]()
 		{
-		return LocalIfMethodList(Param);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->LocalIfMethodList(Param);
+		}
+		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 	});
 }
 
@@ -153,10 +163,15 @@ void UAbstractTbRefIfacesParentIf::ImportedIfMethodAsync(UObject* WorldContextOb
 
 TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UAbstractTbRefIfacesParentIf::ImportedIfMethodAsync(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
+	TWeakObjectPtr<UAbstractTbRefIfacesParentIf> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param, this]()
+		[Param, WeakThis]()
 		{
-		return ImportedIfMethod(Param);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->ImportedIfMethod(Param);
+		}
+		return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	});
 }
 
@@ -182,10 +197,15 @@ void UAbstractTbRefIfacesParentIf::ImportedIfMethodListAsync(UObject* WorldConte
 
 TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> UAbstractTbRefIfacesParentIf::ImportedIfMethodListAsync(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
+	TWeakObjectPtr<UAbstractTbRefIfacesParentIf> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param, this]()
+		[Param, WeakThis]()
 		{
-		return ImportedIfMethodList(Param);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->ImportedIfMethodList(Param);
+		}
+		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 	});
 }
 

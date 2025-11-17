@@ -105,10 +105,15 @@ void UAbstractTestbed1StructArray2Interface::FuncBoolAsync(UObject* WorldContext
 
 TFuture<TArray<FTestbed1StructBool>> UAbstractTestbed1StructArray2Interface::FuncBoolAsync(const FTestbed1StructBoolWithArray& ParamBool)
 {
+	TWeakObjectPtr<UAbstractTestbed1StructArray2Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamBool, this]()
+		[ParamBool, WeakThis]()
 		{
-		return FuncBool(ParamBool);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(ParamBool);
+		}
+		return TArray<FTestbed1StructBool>();
 	});
 }
 
@@ -134,10 +139,15 @@ void UAbstractTestbed1StructArray2Interface::FuncIntAsync(UObject* WorldContextO
 
 TFuture<TArray<FTestbed1StructInt>> UAbstractTestbed1StructArray2Interface::FuncIntAsync(const FTestbed1StructIntWithArray& ParamInt)
 {
+	TWeakObjectPtr<UAbstractTestbed1StructArray2Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt, this]()
+		[ParamInt, WeakThis]()
 		{
-		return FuncInt(ParamInt);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt(ParamInt);
+		}
+		return TArray<FTestbed1StructInt>();
 	});
 }
 
@@ -163,10 +173,15 @@ void UAbstractTestbed1StructArray2Interface::FuncFloatAsync(UObject* WorldContex
 
 TFuture<TArray<FTestbed1StructFloat>> UAbstractTestbed1StructArray2Interface::FuncFloatAsync(const FTestbed1StructFloatWithArray& ParamFloat)
 {
+	TWeakObjectPtr<UAbstractTestbed1StructArray2Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat(ParamFloat);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat(ParamFloat);
+		}
+		return TArray<FTestbed1StructFloat>();
 	});
 }
 
@@ -192,10 +207,15 @@ void UAbstractTestbed1StructArray2Interface::FuncStringAsync(UObject* WorldConte
 
 TFuture<TArray<FTestbed1StructString>> UAbstractTestbed1StructArray2Interface::FuncStringAsync(const FTestbed1StructStringWithArray& ParamString)
 {
+	TWeakObjectPtr<UAbstractTestbed1StructArray2Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamString, this]()
+		[ParamString, WeakThis]()
 		{
-		return FuncString(ParamString);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncString(ParamString);
+		}
+		return TArray<FTestbed1StructString>();
 	});
 }
 
@@ -221,10 +241,15 @@ void UAbstractTestbed1StructArray2Interface::FuncEnumAsync(UObject* WorldContext
 
 TFuture<TArray<ETestbed1Enum0>> UAbstractTestbed1StructArray2Interface::FuncEnumAsync(const FTestbed1StructEnumWithArray& ParamEnum)
 {
+	TWeakObjectPtr<UAbstractTestbed1StructArray2Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamEnum, this]()
+		[ParamEnum, WeakThis]()
 		{
-		return FuncEnum(ParamEnum);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncEnum(ParamEnum);
+		}
+		return TArray<ETestbed1Enum0>();
 	});
 }
 

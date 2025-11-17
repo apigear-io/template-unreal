@@ -65,10 +65,15 @@ void UAbstractTbRefIfacesSimpleLocalIf::IntMethodAsync(UObject* WorldContextObje
 
 TFuture<int32> UAbstractTbRefIfacesSimpleLocalIf::IntMethodAsync(int32 Param)
 {
+	TWeakObjectPtr<UAbstractTbRefIfacesSimpleLocalIf> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param, this]()
+		[Param, WeakThis]()
 		{
-		return IntMethod(Param);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->IntMethod(Param);
+		}
+		return 0;
 	});
 }
 

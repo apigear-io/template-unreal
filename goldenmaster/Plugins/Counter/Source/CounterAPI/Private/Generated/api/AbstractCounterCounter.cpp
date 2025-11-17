@@ -95,10 +95,15 @@ void UAbstractCounterCounter::IncrementAsync(UObject* WorldContextObject, FLaten
 
 TFuture<FVector> UAbstractCounterCounter::IncrementAsync(const FVector& Vec)
 {
+	TWeakObjectPtr<UAbstractCounterCounter> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Vec, this]()
+		[Vec, WeakThis]()
 		{
-		return Increment(Vec);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Increment(Vec);
+		}
+		return FVector(0.f, 0.f, 0.f);
 	});
 }
 
@@ -124,10 +129,15 @@ void UAbstractCounterCounter::IncrementArrayAsync(UObject* WorldContextObject, F
 
 TFuture<TArray<FVector>> UAbstractCounterCounter::IncrementArrayAsync(const TArray<FVector>& Vec)
 {
+	TWeakObjectPtr<UAbstractCounterCounter> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Vec, this]()
+		[Vec, WeakThis]()
 		{
-		return IncrementArray(Vec);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->IncrementArray(Vec);
+		}
+		return TArray<FVector>();
 	});
 }
 
@@ -153,10 +163,15 @@ void UAbstractCounterCounter::DecrementAsync(UObject* WorldContextObject, FLaten
 
 TFuture<FCustomTypesVector3D> UAbstractCounterCounter::DecrementAsync(const FCustomTypesVector3D& Vec)
 {
+	TWeakObjectPtr<UAbstractCounterCounter> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Vec, this]()
+		[Vec, WeakThis]()
 		{
-		return Decrement(Vec);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Decrement(Vec);
+		}
+		return FCustomTypesVector3D();
 	});
 }
 
@@ -182,10 +197,15 @@ void UAbstractCounterCounter::DecrementArrayAsync(UObject* WorldContextObject, F
 
 TFuture<TArray<FCustomTypesVector3D>> UAbstractCounterCounter::DecrementArrayAsync(const TArray<FCustomTypesVector3D>& Vec)
 {
+	TWeakObjectPtr<UAbstractCounterCounter> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Vec, this]()
+		[Vec, WeakThis]()
 		{
-		return DecrementArray(Vec);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->DecrementArray(Vec);
+		}
+		return TArray<FCustomTypesVector3D>();
 	});
 }
 
