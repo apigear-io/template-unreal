@@ -300,7 +300,23 @@ void UCounterCounterOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Increment(FVector(0.f, 0.f, 0.f));
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	// Please implement serialization for FVector before enabling the test.
+	xLatentIt("Operation.IncrementAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Please implement serialization for FVector before testing.
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FVector> Future = ImplFixture->GetImplementation()->IncrementAsync(FVector(0.f, 0.f, 0.f));
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FVector& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -312,7 +328,23 @@ void UCounterCounterOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->IncrementArray(TArray<FVector>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	// Please implement serialization for TArray<FVector> before enabling the test.
+	xLatentIt("Operation.IncrementArrayAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Please implement serialization for TArray<FVector> before testing.
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<FVector>> Future = ImplFixture->GetImplementation()->IncrementArrayAsync(TArray<FVector>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FVector>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -322,7 +354,21 @@ void UCounterCounterOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Decrement(FCustomTypesVector3D());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.DecrementAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FCustomTypesVector3D> Future = ImplFixture->GetImplementation()->DecrementAsync(FCustomTypesVector3D());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FCustomTypesVector3D& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -332,7 +378,21 @@ void UCounterCounterOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->DecrementArray(TArray<FCustomTypesVector3D>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.DecrementArrayAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<FCustomTypesVector3D>> Future = ImplFixture->GetImplementation()->DecrementArrayAsync(TArray<FCustomTypesVector3D>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FCustomTypesVector3D>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

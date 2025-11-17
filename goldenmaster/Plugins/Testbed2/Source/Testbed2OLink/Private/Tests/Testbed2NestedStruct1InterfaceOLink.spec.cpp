@@ -190,6 +190,7 @@ void UTestbed2NestedStruct1InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncNoReturnValue(FTestbed2NestedStruct1());
+			// Verify values here based on service logic
 			TestDone.Execute();
 		});
 	});
@@ -200,7 +201,21 @@ void UTestbed2NestedStruct1InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncNoParams();
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncNoParamsAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FTestbed2NestedStruct1> Future = ImplFixture->GetImplementation()->FuncNoParamsAsync();
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed2NestedStruct1& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -210,7 +225,21 @@ void UTestbed2NestedStruct1InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func1(FTestbed2NestedStruct1());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FTestbed2NestedStruct1> Future = ImplFixture->GetImplementation()->Func1Async(FTestbed2NestedStruct1());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed2NestedStruct1& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

@@ -466,6 +466,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->SomeFunction(false);
+			// Verify values here based on service logic
 			TestDone.Execute();
 		});
 	});
@@ -476,6 +477,7 @@ void UTbNamesNamEsOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->SomeFunction2(false);
+			// Verify values here based on service logic
 			TestDone.Execute();
 		});
 	});

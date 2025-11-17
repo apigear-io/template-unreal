@@ -304,9 +304,37 @@ void {{$Class}}OLinkSpec::Define()
 				{{ if $i }}, {{end}}{{ueDefault "" .}}
 				{{- end -}}
 			);
+			// Verify values here based on service logic
 			TestDone.Execute();
 		});
 	});
+{{- if not .Return.IsVoid }}
+{{- nl }}
+	{{- if (eq .Return.KindType "extern")}}
+	// Please implement serialization for {{ueType "" .Return}} before enabling the test.
+	{{- end }}
+	{{if (eq .Return.KindType "extern")}}x{{end}}LatentIt("Operation.{{ Camel .Name }}Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		{{- range $i, $e := .Params }}
+		{{- if (eq .KindType "extern")}}
+		// Please implement serialization for {{ueType "" .}} before testing.
+		{{- end }}
+		{{- end }}
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<{{ueReturn "" .Return}}> Future = ImplFixture->GetImplementation()->{{Camel .Name}}Async(
+			{{- range $i, $e := .Params -}}
+			{{ if $i }}, {{end}}{{ueDefault "" .}}
+			{{- end -}}
+		);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const {{ueReturn "" .Return}}& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
+		});
+	});
+{{- end }}
 {{- end }}
 
 {{- range .Interface.Signals }}
