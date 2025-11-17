@@ -121,10 +121,5 @@ mkdir -p "$ProjectTarget_path/Plugins/TbRefIfaces" && cp -rf "$script_path/TbRef
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
-# copy android plugin to blank project for build and functional testing
-mkdir -p "$ProjectTarget_path/../android" && cp -rf "$script_path/android" "$ProjectTarget_path/android/" 1>&-
-if [ $? -ne 0 ]; then exit 1; fi;
-
-
 buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.+.OLink.+.MsgBus.+.Jni."
 if [ $buildresult -ne 0 ]; then exit 1; fi;
