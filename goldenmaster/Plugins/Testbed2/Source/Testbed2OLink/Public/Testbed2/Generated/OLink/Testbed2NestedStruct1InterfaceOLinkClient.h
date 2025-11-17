@@ -53,8 +53,10 @@ public:
 	void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) override;
 
 	FTestbed2NestedStruct1 FuncNoParams() override;
+	TFuture<FTestbed2NestedStruct1> FuncNoParamsAsync() override;
 
 	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
+	TFuture<FTestbed2NestedStruct1> Func1Async(const FTestbed2NestedStruct1& Param1) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|NestedStruct1Interface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);
