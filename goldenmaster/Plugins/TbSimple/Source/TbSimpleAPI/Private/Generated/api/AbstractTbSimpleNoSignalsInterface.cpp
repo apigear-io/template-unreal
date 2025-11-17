@@ -75,10 +75,15 @@ void UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync(UObject* WorldContextObj
 
 TFuture<bool> UAbstractTbSimpleNoSignalsInterface::FuncBoolAsync(bool bParamBool)
 {
+	TWeakObjectPtr<UAbstractTbSimpleNoSignalsInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[bParamBool, this]()
+		[bParamBool, WeakThis]()
 		{
-		return FuncBool(bParamBool);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(bParamBool);
+		}
+		return false;
 	});
 }
 

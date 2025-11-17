@@ -75,10 +75,15 @@ void UAbstractTbSame2SameStruct2Interface::Func1Async(UObject* WorldContextObjec
 
 TFuture<FTbSame2Struct1> UAbstractTbSame2SameStruct2Interface::Func1Async(const FTbSame2Struct1& Param1)
 {
+	TWeakObjectPtr<UAbstractTbSame2SameStruct2Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return FTbSame2Struct1();
 	});
 }
 
@@ -104,10 +109,15 @@ void UAbstractTbSame2SameStruct2Interface::Func2Async(UObject* WorldContextObjec
 
 TFuture<FTbSame2Struct1> UAbstractTbSame2SameStruct2Interface::Func2Async(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
+	TWeakObjectPtr<UAbstractTbSame2SameStruct2Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, this]()
+		[Param1, Param2, WeakThis]()
 		{
-		return Func2(Param1, Param2);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func2(Param1, Param2);
+		}
+		return FTbSame2Struct1();
 	});
 }
 

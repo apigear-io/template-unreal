@@ -85,10 +85,15 @@ void UAbstractTestbed2NestedStruct3Interface::Func1Async(UObject* WorldContextOb
 
 TFuture<FTestbed2NestedStruct1> UAbstractTestbed2NestedStruct3Interface::Func1Async(const FTestbed2NestedStruct1& Param1)
 {
+	TWeakObjectPtr<UAbstractTestbed2NestedStruct3Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return FTestbed2NestedStruct1();
 	});
 }
 
@@ -114,10 +119,15 @@ void UAbstractTestbed2NestedStruct3Interface::Func2Async(UObject* WorldContextOb
 
 TFuture<FTestbed2NestedStruct1> UAbstractTestbed2NestedStruct3Interface::Func2Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
+	TWeakObjectPtr<UAbstractTestbed2NestedStruct3Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, this]()
+		[Param1, Param2, WeakThis]()
 		{
-		return Func2(Param1, Param2);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func2(Param1, Param2);
+		}
+		return FTestbed2NestedStruct1();
 	});
 }
 
@@ -143,10 +153,15 @@ void UAbstractTestbed2NestedStruct3Interface::Func3Async(UObject* WorldContextOb
 
 TFuture<FTestbed2NestedStruct1> UAbstractTestbed2NestedStruct3Interface::Func3Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
+	TWeakObjectPtr<UAbstractTestbed2NestedStruct3Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, this]()
+		[Param1, Param2, Param3, WeakThis]()
 		{
-		return Func3(Param1, Param2, Param3);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func3(Param1, Param2, Param3);
+		}
+		return FTestbed2NestedStruct1();
 	});
 }
 

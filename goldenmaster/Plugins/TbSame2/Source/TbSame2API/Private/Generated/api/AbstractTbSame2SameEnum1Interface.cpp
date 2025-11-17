@@ -65,10 +65,15 @@ void UAbstractTbSame2SameEnum1Interface::Func1Async(UObject* WorldContextObject,
 
 TFuture<ETbSame2Enum1> UAbstractTbSame2SameEnum1Interface::Func1Async(ETbSame2Enum1 Param1)
 {
+	TWeakObjectPtr<UAbstractTbSame2SameEnum1Interface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return ETbSame2Enum1::TS2E1_Value1;
 	});
 }
 
