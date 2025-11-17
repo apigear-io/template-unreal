@@ -280,19 +280,19 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0(ETbEnumEnum0 Param0)
 
 		return ETbEnumEnum0::TEE0_Value0;
 	}
-	TPromise<ETbEnumEnum0> Promise;
+	TSharedRef<TPromise<ETbEnumEnum0>> Promise = MakeShared<TPromise<ETbEnumEnum0>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param0, &Promise, this]()
+		[Param0, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<ETbEnumEnum0>());
+			Promise->SetValue(arg.value.get<ETbEnumEnum0>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func0");
 		m_sink->GetNode()->invokeRemote(memberId, {Param0}, GetEnumInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1(ETbEnumEnum1 Param1)
@@ -304,19 +304,19 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1(ETbEnumEnum1 Param1)
 
 		return ETbEnumEnum1::TEE1_Value1;
 	}
-	TPromise<ETbEnumEnum1> Promise;
+	TSharedRef<TPromise<ETbEnumEnum1>> Promise = MakeShared<TPromise<ETbEnumEnum1>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, &Promise, this]()
+		[Param1, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<ETbEnumEnum1>());
+			Promise->SetValue(arg.value.get<ETbEnumEnum1>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetEnumInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2(ETbEnumEnum2 Param2)
@@ -328,19 +328,19 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2(ETbEnumEnum2 Param2)
 
 		return ETbEnumEnum2::TEE2_Value2;
 	}
-	TPromise<ETbEnumEnum2> Promise;
+	TSharedRef<TPromise<ETbEnumEnum2>> Promise = MakeShared<TPromise<ETbEnumEnum2>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param2, &Promise, this]()
+		[Param2, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<ETbEnumEnum2>());
+			Promise->SetValue(arg.value.get<ETbEnumEnum2>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
 		m_sink->GetNode()->invokeRemote(memberId, {Param2}, GetEnumInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3(ETbEnumEnum3 Param3)
@@ -352,19 +352,19 @@ ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3(ETbEnumEnum3 Param3)
 
 		return ETbEnumEnum3::TEE3_Value3;
 	}
-	TPromise<ETbEnumEnum3> Promise;
+	TSharedRef<TPromise<ETbEnumEnum3>> Promise = MakeShared<TPromise<ETbEnumEnum3>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param3, &Promise, this]()
+		[Param3, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetEnumInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<ETbEnumEnum3>());
+			Promise->SetValue(arg.value.get<ETbEnumEnum3>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
 		m_sink->GetNode()->invokeRemote(memberId, {Param3}, GetEnumInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbEnumEnumInterfaceOLinkClient::_IsSubscribed() const

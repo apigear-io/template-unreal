@@ -188,19 +188,19 @@ int32 UTbRefIfacesSimpleLocalIfOLinkClient::IntMethod(int32 Param)
 
 		return 0;
 	}
-	TPromise<int32> Promise;
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param, &Promise, this]()
+		[Param, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleLocalIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleLocalIfStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<int32>());
+			Promise->SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "intMethod");
 		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetSimpleLocalIfStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbRefIfacesSimpleLocalIfOLinkClient::_IsSubscribed() const

@@ -451,19 +451,19 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool(const TArray<boo
 
 		return TArray<bool>();
 	}
-	TPromise<TArray<bool>> Promise;
+	TSharedRef<TPromise<TArray<bool>>> Promise = MakeShared<TPromise<TArray<bool>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamBool, &Promise, this]()
+		[ParamBool, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<bool>>());
+			Promise->SetValue(arg.value.get<TArray<bool>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamBool}, GetSimpleArrayInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt(const TArray<int32>& ParamInt)
@@ -475,19 +475,19 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt(const TArray<int
 
 		return TArray<int32>();
 	}
-	TPromise<TArray<int32>> Promise;
+	TSharedRef<TPromise<TArray<int32>>> Promise = MakeShared<TPromise<TArray<int32>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamInt, &Promise, this]()
+		[ParamInt, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<int32>>());
+			Promise->SetValue(arg.value.get<TArray<int32>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetSimpleArrayInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32(const TArray<int32>& ParamInt32)
@@ -499,19 +499,19 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32(const TArray<i
 
 		return TArray<int32>();
 	}
-	TPromise<TArray<int32>> Promise;
+	TSharedRef<TPromise<TArray<int32>>> Promise = MakeShared<TPromise<TArray<int32>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamInt32, &Promise, this]()
+		[ParamInt32, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<int32>>());
+			Promise->SetValue(arg.value.get<TArray<int32>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamInt32}, GetSimpleArrayInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64(const TArray<int64>& ParamInt64)
@@ -523,19 +523,19 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64(const TArray<i
 
 		return TArray<int64>();
 	}
-	TPromise<TArray<int64>> Promise;
+	TSharedRef<TPromise<TArray<int64>>> Promise = MakeShared<TPromise<TArray<int64>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamInt64, &Promise, this]()
+		[ParamInt64, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<int64>>());
+			Promise->SetValue(arg.value.get<TArray<int64>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamInt64}, GetSimpleArrayInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat(const TArray<float>& ParamFloat)
@@ -547,19 +547,19 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat(const TArray<f
 
 		return TArray<float>();
 	}
-	TPromise<TArray<float>> Promise;
+	TSharedRef<TPromise<TArray<float>>> Promise = MakeShared<TPromise<TArray<float>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, &Promise, this]()
+		[ParamFloat, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<float>>());
+			Promise->SetValue(arg.value.get<TArray<float>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32(const TArray<float>& ParamFloat32)
@@ -571,19 +571,19 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32(const TArray
 
 		return TArray<float>();
 	}
-	TPromise<TArray<float>> Promise;
+	TSharedRef<TPromise<TArray<float>>> Promise = MakeShared<TPromise<TArray<float>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat32, &Promise, this]()
+		[ParamFloat32, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<float>>());
+			Promise->SetValue(arg.value.get<TArray<float>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32}, GetSimpleArrayInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64(const TArray<double>& ParamFloat)
@@ -595,19 +595,19 @@ TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64(const TArra
 
 		return TArray<double>();
 	}
-	TPromise<TArray<double>> Promise;
+	TSharedRef<TPromise<TArray<double>>> Promise = MakeShared<TPromise<TArray<double>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, &Promise, this]()
+		[ParamFloat, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<double>>());
+			Promise->SetValue(arg.value.get<TArray<double>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleArrayInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString(const TArray<FString>& ParamString)
@@ -619,19 +619,19 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString(const TArra
 
 		return TArray<FString>();
 	}
-	TPromise<TArray<FString>> Promise;
+	TSharedRef<TPromise<TArray<FString>>> Promise = MakeShared<TPromise<TArray<FString>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamString, &Promise, this]()
+		[ParamString, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleArrayInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<FString>>());
+			Promise->SetValue(arg.value.get<TArray<FString>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetSimpleArrayInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbSimpleSimpleArrayInterfaceOLinkClient::_IsSubscribed() const

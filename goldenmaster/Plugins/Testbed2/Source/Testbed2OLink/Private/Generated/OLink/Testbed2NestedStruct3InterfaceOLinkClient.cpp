@@ -264,19 +264,19 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func1(const F
 
 		return FTestbed2NestedStruct1();
 	}
-	TPromise<FTestbed2NestedStruct1> Promise;
+	TSharedRef<TPromise<FTestbed2NestedStruct1>> Promise = MakeShared<TPromise<FTestbed2NestedStruct1>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, &Promise, this]()
+		[Param1, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct3InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct3InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>());
+			Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetNestedStruct3InterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
@@ -288,19 +288,19 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func2(const F
 
 		return FTestbed2NestedStruct1();
 	}
-	TPromise<FTestbed2NestedStruct1> Promise;
+	TSharedRef<TPromise<FTestbed2NestedStruct1>> Promise = MakeShared<TPromise<FTestbed2NestedStruct1>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, &Promise, this]()
+		[Param1, Param2, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct3InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct3InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>());
+			Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetNestedStruct3InterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
@@ -312,19 +312,19 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func3(const F
 
 		return FTestbed2NestedStruct1();
 	}
-	TPromise<FTestbed2NestedStruct1> Promise;
+	TSharedRef<TPromise<FTestbed2NestedStruct1>> Promise = MakeShared<TPromise<FTestbed2NestedStruct1>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, &Promise, this]()
+		[Param1, Param2, Param3, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct3InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct3InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>());
+			Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3}, GetNestedStruct3InterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTestbed2NestedStruct3InterfaceOLinkClient::_IsSubscribed() const

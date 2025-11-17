@@ -301,19 +301,19 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfOLinkCl
 
 		return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	}
-	TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Promise;
+	TSharedRef<TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise = MakeShared<TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param, &Promise, this]()
+		[Param, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+			Promise->SetValue(arg.value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethod");
 		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfOLinkClient::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
@@ -325,19 +325,19 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 
 		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 	}
-	TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise;
+	TSharedRef<TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>> Promise = MakeShared<TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param, &Promise, this]()
+		[Param, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
+			Promise->SetValue(arg.value.get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethodList");
 		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient::ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
@@ -349,19 +349,19 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient
 
 		return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	}
-	TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Promise;
+	TSharedRef<TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise = MakeShared<TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param, &Promise, this]()
+		[Param, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+			Promise->SetValue(arg.value.get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfMethod");
 		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLinkClient::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
@@ -373,19 +373,19 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLi
 
 		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 	}
-	TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise;
+	TSharedRef<TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>> Promise = MakeShared<TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param, &Promise, this]()
+		[Param, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
+			Promise->SetValue(arg.value.get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfMethodList");
 		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbRefIfacesParentIfOLinkClient::_IsSubscribed() const

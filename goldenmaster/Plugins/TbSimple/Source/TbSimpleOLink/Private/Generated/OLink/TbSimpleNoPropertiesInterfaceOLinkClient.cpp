@@ -161,19 +161,19 @@ bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool(bool bParamBool)
 
 		return false;
 	}
-	TPromise<bool> Promise;
+	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
 	Async(EAsyncExecution::ThreadPool,
-		[bParamBool, &Promise, this]()
+		[bParamBool, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertiesInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertiesInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<bool>());
+			Promise->SetValue(arg.value.get<bool>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
 		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoPropertiesInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbSimpleNoPropertiesInterfaceOLinkClient::_IsSubscribed() const

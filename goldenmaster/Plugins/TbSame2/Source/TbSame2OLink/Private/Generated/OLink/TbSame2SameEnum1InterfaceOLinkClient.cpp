@@ -187,19 +187,19 @@ ETbSame2Enum1 UTbSame2SameEnum1InterfaceOLinkClient::Func1(ETbSame2Enum1 Param1)
 
 		return ETbSame2Enum1::TS2E1_Value1;
 	}
-	TPromise<ETbSame2Enum1> Promise;
+	TSharedRef<TPromise<ETbSame2Enum1>> Promise = MakeShared<TPromise<ETbSame2Enum1>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, &Promise, this]()
+		[Param1, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum1InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<ETbSame2Enum1>());
+			Promise->SetValue(arg.value.get<ETbSame2Enum1>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameEnum1InterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbSame2SameEnum1InterfaceOLinkClient::_IsSubscribed() const

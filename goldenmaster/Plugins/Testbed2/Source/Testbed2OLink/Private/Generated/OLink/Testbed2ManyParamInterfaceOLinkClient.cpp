@@ -280,19 +280,19 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func1(int32 Param1)
 
 		return 0;
 	}
-	TPromise<int32> Promise;
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, &Promise, this]()
+		[Param1, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<int32>());
+			Promise->SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetManyParamInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func2(int32 Param1, int32 Param2)
@@ -304,19 +304,19 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func2(int32 Param1, int32 Param2)
 
 		return 0;
 	}
-	TPromise<int32> Promise;
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, &Promise, this]()
+		[Param1, Param2, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<int32>());
+			Promise->SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetManyParamInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func3(int32 Param1, int32 Param2, int32 Param3)
@@ -328,19 +328,19 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func3(int32 Param1, int32 Param2, 
 
 		return 0;
 	}
-	TPromise<int32> Promise;
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, &Promise, this]()
+		[Param1, Param2, Param3, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<int32>());
+			Promise->SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
@@ -352,19 +352,19 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func4(int32 Param1, int32 Param2, 
 
 		return 0;
 	}
-	TPromise<int32> Promise;
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, Param4, &Promise, this]()
+		[Param1, Param2, Param3, Param4, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<int32>());
+			Promise->SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func4");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTestbed2ManyParamInterfaceOLinkClient::_IsSubscribed() const

@@ -424,19 +424,19 @@ bool UTbSimpleSimpleInterfaceOLinkClient::FuncNoParams()
 
 		return false;
 	}
-	TPromise<bool> Promise;
+	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
 	Async(EAsyncExecution::ThreadPool,
-		[&Promise, this]()
+		[Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<bool>());
+			Promise->SetValue(arg.value.get<bool>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoParams");
 		m_sink->GetNode()->invokeRemote(memberId, {}, GetSimpleInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool(bool bParamBool)
@@ -448,19 +448,19 @@ bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool(bool bParamBool)
 
 		return false;
 	}
-	TPromise<bool> Promise;
+	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
 	Async(EAsyncExecution::ThreadPool,
-		[bParamBool, &Promise, this]()
+		[bParamBool, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<bool>());
+			Promise->SetValue(arg.value.get<bool>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
 		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetSimpleInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt(int32 ParamInt)
@@ -472,19 +472,19 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt(int32 ParamInt)
 
 		return 0;
 	}
-	TPromise<int32> Promise;
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamInt, &Promise, this]()
+		[ParamInt, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<int32>());
+			Promise->SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetSimpleInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32(int32 ParamInt32)
@@ -496,19 +496,19 @@ int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32(int32 ParamInt32)
 
 		return 0;
 	}
-	TPromise<int32> Promise;
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamInt32, &Promise, this]()
+		[ParamInt32, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<int32>());
+			Promise->SetValue(arg.value.get<int32>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamInt32}, GetSimpleInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64(int64 ParamInt64)
@@ -520,19 +520,19 @@ int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64(int64 ParamInt64)
 
 		return 0LL;
 	}
-	TPromise<int64> Promise;
+	TSharedRef<TPromise<int64>> Promise = MakeShared<TPromise<int64>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamInt64, &Promise, this]()
+		[ParamInt64, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<int64>());
+			Promise->SetValue(arg.value.get<int64>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamInt64}, GetSimpleInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat(float ParamFloat)
@@ -544,19 +544,19 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat(float ParamFloat)
 
 		return 0.0f;
 	}
-	TPromise<float> Promise;
+	TSharedRef<TPromise<float>> Promise = MakeShared<TPromise<float>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, &Promise, this]()
+		[ParamFloat, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<float>());
+			Promise->SetValue(arg.value.get<float>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32(float ParamFloat32)
@@ -568,19 +568,19 @@ float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32(float ParamFloat32)
 
 		return 0.0f;
 	}
-	TPromise<float> Promise;
+	TSharedRef<TPromise<float>> Promise = MakeShared<TPromise<float>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat32, &Promise, this]()
+		[ParamFloat32, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<float>());
+			Promise->SetValue(arg.value.get<float>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32}, GetSimpleInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64(double ParamFloat)
@@ -592,19 +592,19 @@ double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64(double ParamFloat)
 
 		return 0.0;
 	}
-	TPromise<double> Promise;
+	TSharedRef<TPromise<double>> Promise = MakeShared<TPromise<double>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, &Promise, this]()
+		[ParamFloat, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<double>());
+			Promise->SetValue(arg.value.get<double>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 FString UTbSimpleSimpleInterfaceOLinkClient::FuncString(const FString& ParamString)
@@ -616,19 +616,19 @@ FString UTbSimpleSimpleInterfaceOLinkClient::FuncString(const FString& ParamStri
 
 		return FString();
 	}
-	TPromise<FString> Promise;
+	TSharedRef<TPromise<FString>> Promise = MakeShared<TPromise<FString>>();
 	Async(EAsyncExecution::ThreadPool,
-		[ParamString, &Promise, this]()
+		[ParamString, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FString>());
+			Promise->SetValue(arg.value.get<FString>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
 		m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetSimpleInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbSimpleSimpleInterfaceOLinkClient::_IsSubscribed() const

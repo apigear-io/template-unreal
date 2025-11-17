@@ -192,19 +192,19 @@ FTbSame1Struct1 UTbSame1SameStruct1InterfaceOLinkClient::Func1(const FTbSame1Str
 
 		return FTbSame1Struct1();
 	}
-	TPromise<FTbSame1Struct1> Promise;
+	TSharedRef<TPromise<FTbSame1Struct1>> Promise = MakeShared<TPromise<FTbSame1Struct1>>();
 	Async(EAsyncExecution::ThreadPool,
-		[Param1, &Promise, this]()
+		[Param1, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct1InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<FTbSame1Struct1>());
+			Promise->SetValue(arg.value.get<FTbSame1Struct1>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
 		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameStruct1InterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbSame1SameStruct1InterfaceOLinkClient::_IsSubscribed() const

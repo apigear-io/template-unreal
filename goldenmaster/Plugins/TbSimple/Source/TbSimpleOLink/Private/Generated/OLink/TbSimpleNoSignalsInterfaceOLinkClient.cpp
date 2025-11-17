@@ -232,19 +232,19 @@ bool UTbSimpleNoSignalsInterfaceOLinkClient::FuncBool(bool bParamBool)
 
 		return false;
 	}
-	TPromise<bool> Promise;
+	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
 	Async(EAsyncExecution::ThreadPool,
-		[bParamBool, &Promise, this]()
+		[bParamBool, Promise, this]()
 		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetNoSignalsInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		ApiGear::ObjectLink::InvokeReplyFunc GetNoSignalsInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-			Promise.SetValue(arg.value.get<bool>());
+			Promise->SetValue(arg.value.get<bool>());
 		};
 		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
 		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoSignalsInterfaceStateFunc);
 	});
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 bool UTbSimpleNoSignalsInterfaceOLinkClient::_IsSubscribed() const
