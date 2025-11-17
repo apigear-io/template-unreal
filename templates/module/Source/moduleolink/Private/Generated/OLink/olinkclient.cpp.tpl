@@ -186,6 +186,7 @@ void {{$Class}}::UseConnection(TScriptInterface<IApiGearConnection> InConnection
 {{- if not .IsReadOnly }}{{nl}}
 void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.OLink.Set{{Camel .Name}}");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear {{ $ModuleName }} plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -233,6 +234,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {{- $returnVal := (ueReturn "" .Return)}}
 {{$returnVal}} {{$Class}}::{{Camel .Name}}({{ueParams "" .Params}})
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.OLink.{{Camel .Name}}");
 	{{- if .Return.IsVoid }}
 	if (!m_sink->IsReady())
 	{
@@ -278,6 +280,7 @@ bool {{$Class}}::_IsSubscribed() const
 
 void {{$Class}}::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.OLink.ApplyState");
 {{- range $i, $e := .Interface.Properties }}
 {{- if $i }}{{nl}}{{ end }}
 	const bool b{{Camel .Name}}Changed = fields.contains("{{.Name}}") && ({{ueVar "" .}} != fields["{{.Name}}"].get<{{ueReturn "" .}}>());
@@ -300,6 +303,7 @@ void {{$Class}}::applyState(const nlohmann::json& fields)
 
 void {{$Class}}::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.OLink.EmitSignal");
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
 	if (signalName == "{{.Name}}")

@@ -148,6 +148,7 @@ std::string CounterCounterOLinkSource::olinkObjectName()
 
 nlohmann::json CounterCounterOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogCounterCounterOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter CounterCounterOLinkAdapter which implements the CounterCounter interface"));
@@ -184,6 +185,7 @@ nlohmann::json CounterCounterOLinkSource::olinkInvoke(const std::string& methodI
 
 void CounterCounterOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogCounterCounterOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter CounterCounterOLinkAdapter which implements the CounterCounter interface"));

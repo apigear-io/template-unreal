@@ -105,6 +105,7 @@ std::string TbRefIfacesSimpleLocalIfOLinkSource::olinkObjectName()
 
 nlohmann::json TbRefIfacesSimpleLocalIfOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbRefIfacesSimpleLocalIfOLinkAdapter which implements the TbRefIfacesSimpleLocalIf interface"));
@@ -123,6 +124,7 @@ nlohmann::json TbRefIfacesSimpleLocalIfOLinkSource::olinkInvoke(const std::strin
 
 void TbRefIfacesSimpleLocalIfOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbRefIfacesSimpleLocalIfOLinkAdapter which implements the TbRefIfacesSimpleLocalIf interface"));

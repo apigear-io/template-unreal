@@ -140,6 +140,7 @@ void UTbSimpleVoidInterfaceOLinkClient::UseConnection(TScriptInterface<IApiGearC
 
 void UTbSimpleVoidInterfaceOLinkClient::FuncVoid()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.VoidInterface.OLink.FuncVoid");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleVoidInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -158,10 +159,12 @@ bool UTbSimpleVoidInterfaceOLinkClient::_IsSubscribed() const
 
 void UTbSimpleVoidInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.VoidInterface.OLink.ApplyState");
 }
 
 void UTbSimpleVoidInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.VoidInterface.OLink.EmitSignal");
 	if (signalName == "sigVoid")
 	{
 		_GetPublisher()->BroadcastSigVoidSignal();

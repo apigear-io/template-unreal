@@ -145,8 +145,10 @@ bool UTbIfaceimportEmptyIfOLinkClient::_IsSubscribed() const
 
 void UTbIfaceimportEmptyIfOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbIfaceimport.EmptyIf.OLink.ApplyState");
 }
 
 void UTbIfaceimportEmptyIfOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbIfaceimport.EmptyIf.OLink.EmitSignal");
 }

@@ -25,6 +25,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceImplementation::GetProp1() const
 
 void UTbSame2SameEnum2InterfaceImplementation::SetProp1(ETbSame2Enum1 InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameEnum2Interface.Impl.SetProp1");
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
@@ -38,6 +39,7 @@ ETbSame2Enum2 UTbSame2SameEnum2InterfaceImplementation::GetProp2() const
 
 void UTbSame2SameEnum2InterfaceImplementation::SetProp2(ETbSame2Enum2 InProp2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameEnum2Interface.Impl.SetProp2");
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
@@ -47,6 +49,7 @@ void UTbSame2SameEnum2InterfaceImplementation::SetProp2(ETbSame2Enum2 InProp2)
 
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceImplementation::Func1(ETbSame2Enum1 Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameEnum2Interface.Impl.Func1");
 	(void)Param1;
 	// do business logic here
 	return ETbSame2Enum1::TS2E1_Value1;
@@ -54,6 +57,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceImplementation::Func1(ETbSame2Enum1 Para
 
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceImplementation::Func2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameEnum2Interface.Impl.Func2");
 	(void)Param1;
 	(void)Param2;
 	// do business logic here

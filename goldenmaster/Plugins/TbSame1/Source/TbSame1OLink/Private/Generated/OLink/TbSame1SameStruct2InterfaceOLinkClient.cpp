@@ -158,6 +158,7 @@ FTbSame1Struct2 UTbSame1SameStruct2InterfaceOLinkClient::GetProp1() const
 
 void UTbSame1SameStruct2InterfaceOLinkClient::SetProp1(const FTbSame1Struct2& InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.SetProp1");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -191,6 +192,7 @@ FTbSame1Struct2 UTbSame1SameStruct2InterfaceOLinkClient::GetProp2() const
 
 void UTbSame1SameStruct2InterfaceOLinkClient::SetProp2(const FTbSame1Struct2& InProp2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.SetProp2");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -219,6 +221,7 @@ void UTbSame1SameStruct2InterfaceOLinkClient::SetProp2(const FTbSame1Struct2& In
 
 FTbSame1Struct1 UTbSame1SameStruct2InterfaceOLinkClient::Func1(const FTbSame1Struct1& Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.Func1");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -242,6 +245,7 @@ FTbSame1Struct1 UTbSame1SameStruct2InterfaceOLinkClient::Func1(const FTbSame1Str
 
 FTbSame1Struct1 UTbSame1SameStruct2InterfaceOLinkClient::Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.Func2");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -270,6 +274,7 @@ bool UTbSame1SameStruct2InterfaceOLinkClient::_IsSubscribed() const
 
 void UTbSame1SameStruct2InterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.ApplyState");
 	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<FTbSame1Struct2>());
 	if (bProp1Changed)
 	{
@@ -297,6 +302,7 @@ void UTbSame1SameStruct2InterfaceOLinkClient::applyState(const nlohmann::json& f
 
 void UTbSame1SameStruct2InterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.EmitSignal");
 	if (signalName == "sig1")
 	{
 		const FTbSame1Struct1& outParam1 = args[0].get<FTbSame1Struct1>();

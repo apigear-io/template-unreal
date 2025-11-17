@@ -25,6 +25,7 @@ FTestbed1StructBoolWithArray UTestbed1StructArray2InterfaceImplementation::GetPr
 
 void UTestbed1StructArray2InterfaceImplementation::SetPropBool(const FTestbed1StructBoolWithArray& InPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.SetPropBool");
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
@@ -38,6 +39,7 @@ FTestbed1StructIntWithArray UTestbed1StructArray2InterfaceImplementation::GetPro
 
 void UTestbed1StructArray2InterfaceImplementation::SetPropInt(const FTestbed1StructIntWithArray& InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.SetPropInt");
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
@@ -51,6 +53,7 @@ FTestbed1StructFloatWithArray UTestbed1StructArray2InterfaceImplementation::GetP
 
 void UTestbed1StructArray2InterfaceImplementation::SetPropFloat(const FTestbed1StructFloatWithArray& InPropFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.SetPropFloat");
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
@@ -64,6 +67,7 @@ FTestbed1StructStringWithArray UTestbed1StructArray2InterfaceImplementation::Get
 
 void UTestbed1StructArray2InterfaceImplementation::SetPropString(const FTestbed1StructStringWithArray& InPropString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.SetPropString");
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
@@ -77,6 +81,7 @@ FTestbed1StructEnumWithArray UTestbed1StructArray2InterfaceImplementation::GetPr
 
 void UTestbed1StructArray2InterfaceImplementation::SetPropEnum(const FTestbed1StructEnumWithArray& InPropEnum)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.SetPropEnum");
 	if (PropEnum != InPropEnum)
 	{
 		PropEnum = InPropEnum;
@@ -86,6 +91,7 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropEnum(const FTestbed1St
 
 TArray<FTestbed1StructBool> UTestbed1StructArray2InterfaceImplementation::FuncBool(const FTestbed1StructBoolWithArray& ParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.FuncBool");
 	(void)ParamBool;
 	// do business logic here
 	return TArray<FTestbed1StructBool>();
@@ -93,6 +99,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArray2InterfaceImplementation::FuncBo
 
 TArray<FTestbed1StructInt> UTestbed1StructArray2InterfaceImplementation::FuncInt(const FTestbed1StructIntWithArray& ParamInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.FuncInt");
 	(void)ParamInt;
 	// do business logic here
 	return TArray<FTestbed1StructInt>();
@@ -100,6 +107,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArray2InterfaceImplementation::FuncInt
 
 TArray<FTestbed1StructFloat> UTestbed1StructArray2InterfaceImplementation::FuncFloat(const FTestbed1StructFloatWithArray& ParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.FuncFloat");
 	(void)ParamFloat;
 	// do business logic here
 	return TArray<FTestbed1StructFloat>();
@@ -107,6 +115,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArray2InterfaceImplementation::FuncF
 
 TArray<FTestbed1StructString> UTestbed1StructArray2InterfaceImplementation::FuncString(const FTestbed1StructStringWithArray& ParamString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.FuncString");
 	(void)ParamString;
 	// do business logic here
 	return TArray<FTestbed1StructString>();
@@ -114,6 +123,7 @@ TArray<FTestbed1StructString> UTestbed1StructArray2InterfaceImplementation::Func
 
 TArray<ETestbed1Enum0> UTestbed1StructArray2InterfaceImplementation::FuncEnum(const FTestbed1StructEnumWithArray& ParamEnum)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.FuncEnum");
 	(void)ParamEnum;
 	// do business logic here
 	return TArray<ETestbed1Enum0>();

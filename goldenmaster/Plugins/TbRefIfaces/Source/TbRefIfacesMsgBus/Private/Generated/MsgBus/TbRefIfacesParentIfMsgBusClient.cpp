@@ -358,6 +358,7 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfMsgBusC
 
 void UTbRefIfacesParentIfMsgBusClient::SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.SetLocalIf");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -398,6 +399,7 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 
 void UTbRefIfacesParentIfMsgBusClient::SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.SetLocalIfList");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -438,6 +440,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfMsgBusClien
 
 void UTbRefIfacesParentIfMsgBusClient::SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.SetImportedIf");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -478,6 +481,7 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfMsg
 
 void UTbRefIfacesParentIfMsgBusClient::SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.SetImportedIfList");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -513,6 +517,7 @@ void UTbRefIfacesParentIfMsgBusClient::SetImportedIfList(const TArray<TScriptInt
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfMsgBusClient::LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.LocalIfMethod");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -542,6 +547,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfMethodReply(const FTbRefIfacesPa
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfMsgBusClient::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.LocalIfMethodList");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -571,6 +577,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfMethodListReply(const FTbRefIfac
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfMsgBusClient::ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.ImportedIfMethod");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -600,6 +607,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfMethodReply(const FTbRefIface
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfMsgBusClient::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.ImportedIfMethodList");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -629,6 +637,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfMethodListReply(const FTbRefI
 
 void UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignal(const FTbRefIfacesParentIfLocalIfSignalSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.SignalLocalIfSignal");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -641,6 +650,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignal(const FTbRefIfacesParentI
 
 void UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignalList(const FTbRefIfacesParentIfLocalIfSignalListSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.SignalLocalIfSignalList");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -653,6 +663,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfSignalList(const FTbRefIfacesPar
 
 void UTbRefIfacesParentIfMsgBusClient::OnImportedIfSignal(const FTbRefIfacesParentIfImportedIfSignalSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.SignalImportedIfSignal");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -665,6 +676,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfSignal(const FTbRefIfacesPare
 
 void UTbRefIfacesParentIfMsgBusClient::OnImportedIfSignalList(const FTbRefIfacesParentIfImportedIfSignalListSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.MsgBus.SignalImportedIfSignalList");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbRefIfacesParentIfMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

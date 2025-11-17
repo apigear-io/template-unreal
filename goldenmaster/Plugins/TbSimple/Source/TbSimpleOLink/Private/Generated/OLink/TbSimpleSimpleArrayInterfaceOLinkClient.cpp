@@ -172,6 +172,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropBool() const
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropBool(const TArray<bool>& InPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.SetPropBool");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -205,6 +206,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt() const
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt(const TArray<int32>& InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.SetPropInt");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -238,6 +240,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt32() const
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt32(const TArray<int32>& InPropInt32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.SetPropInt32");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -271,6 +274,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt64() const
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt64(const TArray<int64>& InPropInt64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.SetPropInt64");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -304,6 +308,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat() const
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat(const TArray<float>& InPropFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.SetPropFloat");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -337,6 +342,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat32() const
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat32(const TArray<float>& InPropFloat32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.SetPropFloat32");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -370,6 +376,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat64() const
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat64(const TArray<double>& InPropFloat64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.SetPropFloat64");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -403,6 +410,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropString() const
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropString(const TArray<FString>& InPropString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.SetPropString");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -436,6 +444,7 @@ FString UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropReadOnlyString() const
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool(const TArray<bool>& ParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncBool");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -459,6 +468,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool(const TArray<boo
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt(const TArray<int32>& ParamInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncInt");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -482,6 +492,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt(const TArray<int
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32(const TArray<int32>& ParamInt32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncInt32");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -505,6 +516,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32(const TArray<i
 
 TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64(const TArray<int64>& ParamInt64)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncInt64");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -528,6 +540,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64(const TArray<i
 
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat(const TArray<float>& ParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncFloat");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -551,6 +564,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat(const TArray<f
 
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32(const TArray<float>& ParamFloat32)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncFloat32");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -574,6 +588,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32(const TArray
 
 TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64(const TArray<double>& ParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncFloat64");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -597,6 +612,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64(const TArra
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString(const TArray<FString>& ParamString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncString");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -625,6 +641,7 @@ bool UTbSimpleSimpleArrayInterfaceOLinkClient::_IsSubscribed() const
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.ApplyState");
 	const bool bPropBoolChanged = fields.contains("propBool") && (PropBool != fields["propBool"].get<TArray<bool>>());
 	if (bPropBoolChanged)
 	{
@@ -736,6 +753,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 
 void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.EmitSignal");
 	if (signalName == "sigBool")
 	{
 		const TArray<bool>& outParamBool = args[0].get<TArray<bool>>();

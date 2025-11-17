@@ -158,6 +158,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp1() const
 
 void UTestbed2ManyParamInterfaceOLinkClient::SetProp1(int32 InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.SetProp1");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -187,6 +188,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp2() const
 
 void UTestbed2ManyParamInterfaceOLinkClient::SetProp2(int32 InProp2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.SetProp2");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -216,6 +218,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp3() const
 
 void UTestbed2ManyParamInterfaceOLinkClient::SetProp3(int32 InProp3)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.SetProp3");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -245,6 +248,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::GetProp4() const
 
 void UTestbed2ManyParamInterfaceOLinkClient::SetProp4(int32 InProp4)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.SetProp4");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -269,6 +273,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp4(int32 InProp4)
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func1(int32 Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func1");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -292,6 +297,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func1(int32 Param1)
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func2(int32 Param1, int32 Param2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func2");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -315,6 +321,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func2(int32 Param1, int32 Param2)
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func3(int32 Param1, int32 Param2, int32 Param3)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func3");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -338,6 +345,7 @@ int32 UTestbed2ManyParamInterfaceOLinkClient::Func3(int32 Param1, int32 Param2, 
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func4");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -366,6 +374,7 @@ bool UTestbed2ManyParamInterfaceOLinkClient::_IsSubscribed() const
 
 void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.ApplyState");
 	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<int32>());
 	if (bProp1Changed)
 	{
@@ -405,6 +414,7 @@ void UTestbed2ManyParamInterfaceOLinkClient::applyState(const nlohmann::json& fi
 
 void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.EmitSignal");
 	if (signalName == "sig1")
 	{
 		int32 outParam1 = args[0].get<int32>();

@@ -158,6 +158,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::GetProp0() const
 
 void UTbEnumEnumInterfaceOLinkClient::SetProp0(ETbEnumEnum0 InProp0)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.SetProp0");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -187,6 +188,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::GetProp1() const
 
 void UTbEnumEnumInterfaceOLinkClient::SetProp1(ETbEnumEnum1 InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.SetProp1");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -216,6 +218,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::GetProp2() const
 
 void UTbEnumEnumInterfaceOLinkClient::SetProp2(ETbEnumEnum2 InProp2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.SetProp2");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -245,6 +248,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::GetProp3() const
 
 void UTbEnumEnumInterfaceOLinkClient::SetProp3(ETbEnumEnum3 InProp3)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.SetProp3");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -269,6 +273,7 @@ void UTbEnumEnumInterfaceOLinkClient::SetProp3(ETbEnumEnum3 InProp3)
 
 ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0(ETbEnumEnum0 Param0)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.Func0");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -292,6 +297,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceOLinkClient::Func0(ETbEnumEnum0 Param0)
 
 ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1(ETbEnumEnum1 Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.Func1");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -315,6 +321,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceOLinkClient::Func1(ETbEnumEnum1 Param1)
 
 ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2(ETbEnumEnum2 Param2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.Func2");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -338,6 +345,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceOLinkClient::Func2(ETbEnumEnum2 Param2)
 
 ETbEnumEnum3 UTbEnumEnumInterfaceOLinkClient::Func3(ETbEnumEnum3 Param3)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.Func3");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbEnum plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -366,6 +374,7 @@ bool UTbEnumEnumInterfaceOLinkClient::_IsSubscribed() const
 
 void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.ApplyState");
 	const bool bProp0Changed = fields.contains("prop0") && (Prop0 != fields["prop0"].get<ETbEnumEnum0>());
 	if (bProp0Changed)
 	{
@@ -405,6 +414,7 @@ void UTbEnumEnumInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 
 void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.EmitSignal");
 	if (signalName == "sig0")
 	{
 		ETbEnumEnum0 outParam0 = args[0].get<ETbEnumEnum0>();

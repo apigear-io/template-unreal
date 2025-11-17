@@ -133,6 +133,7 @@ std::string TbSame2SameStruct2InterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json TbSame2SameStruct2InterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameStruct2Interface.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSame2SameStruct2InterfaceOLinkAdapter which implements the TbSame2SameStruct2Interface interface"));
@@ -158,6 +159,7 @@ nlohmann::json TbSame2SameStruct2InterfaceOLinkSource::olinkInvoke(const std::st
 
 void TbSame2SameStruct2InterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameStruct2Interface.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSame2SameStruct2InterfaceOLinkAdapter which implements the TbSame2SameStruct2Interface interface"));

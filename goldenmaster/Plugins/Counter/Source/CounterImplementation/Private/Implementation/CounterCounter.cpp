@@ -25,6 +25,7 @@ FCustomTypesVector3D UCounterCounterImplementation::GetVector() const
 
 void UCounterCounterImplementation::SetVector(const FCustomTypesVector3D& InVector)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.Impl.SetVector");
 	if (Vector != InVector)
 	{
 		Vector = InVector;
@@ -38,6 +39,7 @@ FVector UCounterCounterImplementation::GetExternVector() const
 
 void UCounterCounterImplementation::SetExternVector(const FVector& InExternVector)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.Impl.SetExternVector");
 	if (ExternVector != InExternVector)
 	{
 		ExternVector = InExternVector;
@@ -51,6 +53,7 @@ TArray<FCustomTypesVector3D> UCounterCounterImplementation::GetVectorArray() con
 
 void UCounterCounterImplementation::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.Impl.SetVectorArray");
 	if (VectorArray != InVectorArray)
 	{
 		VectorArray = InVectorArray;
@@ -64,6 +67,7 @@ TArray<FVector> UCounterCounterImplementation::GetExternVectorArray() const
 
 void UCounterCounterImplementation::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.Impl.SetExternVectorArray");
 	if (ExternVectorArray != InExternVectorArray)
 	{
 		ExternVectorArray = InExternVectorArray;
@@ -73,6 +77,7 @@ void UCounterCounterImplementation::SetExternVectorArray(const TArray<FVector>& 
 
 FVector UCounterCounterImplementation::Increment(const FVector& Vec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.Impl.Increment");
 	(void)Vec;
 	// do business logic here
 	return FVector(0.f, 0.f, 0.f);
@@ -80,6 +85,7 @@ FVector UCounterCounterImplementation::Increment(const FVector& Vec)
 
 TArray<FVector> UCounterCounterImplementation::IncrementArray(const TArray<FVector>& Vec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.Impl.IncrementArray");
 	(void)Vec;
 	// do business logic here
 	return TArray<FVector>();
@@ -87,6 +93,7 @@ TArray<FVector> UCounterCounterImplementation::IncrementArray(const TArray<FVect
 
 FCustomTypesVector3D UCounterCounterImplementation::Decrement(const FCustomTypesVector3D& Vec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.Impl.Decrement");
 	(void)Vec;
 	// do business logic here
 	return FCustomTypesVector3D();
@@ -94,6 +101,7 @@ FCustomTypesVector3D UCounterCounterImplementation::Decrement(const FCustomTypes
 
 TArray<FCustomTypesVector3D> UCounterCounterImplementation::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.Impl.DecrementArray");
 	(void)Vec;
 	// do business logic here
 	return TArray<FCustomTypesVector3D>();

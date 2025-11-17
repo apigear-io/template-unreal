@@ -161,6 +161,7 @@ std::string TbNamesNamEsOLinkSource::olinkObjectName()
 
 nlohmann::json TbNamesNamEsOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbNamesNamEsOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbNamesNamEsOLinkAdapter which implements the TbNamesNamEs interface"));
@@ -185,6 +186,7 @@ nlohmann::json TbNamesNamEsOLinkSource::olinkInvoke(const std::string& methodId,
 
 void TbNamesNamEsOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbNamesNamEsOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbNamesNamEsOLinkAdapter which implements the TbNamesNamEs interface"));

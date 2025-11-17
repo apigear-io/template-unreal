@@ -103,6 +103,7 @@ std::string TbSimpleNoSignalsInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json TbSimpleNoSignalsInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleNoSignalsInterfaceOLinkAdapter which implements the TbSimpleNoSignalsInterface interface"));
@@ -126,6 +127,7 @@ nlohmann::json TbSimpleNoSignalsInterfaceOLinkSource::olinkInvoke(const std::str
 
 void TbSimpleNoSignalsInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter TbSimpleNoSignalsInterfaceOLinkAdapter which implements the TbSimpleNoSignalsInterface interface"));

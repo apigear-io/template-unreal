@@ -355,6 +355,7 @@ FCustomTypesVector3D UCounterCounterMsgBusClient::GetVector() const
 
 void UCounterCounterMsgBusClient::SetVector(const FCustomTypesVector3D& InVector)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.MsgBus.SetVector");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -395,6 +396,7 @@ FVector UCounterCounterMsgBusClient::GetExternVector() const
 
 void UCounterCounterMsgBusClient::SetExternVector(const FVector& InExternVector)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.MsgBus.SetExternVector");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -435,6 +437,7 @@ TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::GetVectorArray() const
 
 void UCounterCounterMsgBusClient::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.MsgBus.SetVectorArray");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -475,6 +478,7 @@ TArray<FVector> UCounterCounterMsgBusClient::GetExternVectorArray() const
 
 void UCounterCounterMsgBusClient::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.MsgBus.SetExternVectorArray");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -510,6 +514,7 @@ void UCounterCounterMsgBusClient::SetExternVectorArray(const TArray<FVector>& In
 
 FVector UCounterCounterMsgBusClient::Increment(const FVector& InVec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.MsgBus.Increment");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -539,6 +544,7 @@ void UCounterCounterMsgBusClient::OnIncrementReply(const FCounterCounterIncremen
 
 TArray<FVector> UCounterCounterMsgBusClient::IncrementArray(const TArray<FVector>& InVec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.MsgBus.IncrementArray");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -568,6 +574,7 @@ void UCounterCounterMsgBusClient::OnIncrementArrayReply(const FCounterCounterInc
 
 FCustomTypesVector3D UCounterCounterMsgBusClient::Decrement(const FCustomTypesVector3D& InVec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.MsgBus.Decrement");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -597,6 +604,7 @@ void UCounterCounterMsgBusClient::OnDecrementReply(const FCounterCounterDecremen
 
 TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::DecrementArray(const TArray<FCustomTypesVector3D>& InVec)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.MsgBus.DecrementArray");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -626,6 +634,7 @@ void UCounterCounterMsgBusClient::OnDecrementArrayReply(const FCounterCounterDec
 
 void UCounterCounterMsgBusClient::OnValueChanged(const FCounterCounterValueChangedSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.MsgBus.SignalValueChanged");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogCounterCounterMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

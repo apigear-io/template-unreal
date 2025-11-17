@@ -25,6 +25,7 @@ FTestbed1StructBool UTestbed1StructInterfaceImplementation::GetPropBool() const
 
 void UTestbed1StructInterfaceImplementation::SetPropBool(const FTestbed1StructBool& InPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.SetPropBool");
 	if (PropBool != InPropBool)
 	{
 		PropBool = InPropBool;
@@ -38,6 +39,7 @@ FTestbed1StructInt UTestbed1StructInterfaceImplementation::GetPropInt() const
 
 void UTestbed1StructInterfaceImplementation::SetPropInt(const FTestbed1StructInt& InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.SetPropInt");
 	if (PropInt != InPropInt)
 	{
 		PropInt = InPropInt;
@@ -51,6 +53,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceImplementation::GetPropFloat() cons
 
 void UTestbed1StructInterfaceImplementation::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.SetPropFloat");
 	if (PropFloat != InPropFloat)
 	{
 		PropFloat = InPropFloat;
@@ -64,6 +67,7 @@ FTestbed1StructString UTestbed1StructInterfaceImplementation::GetPropString() co
 
 void UTestbed1StructInterfaceImplementation::SetPropString(const FTestbed1StructString& InPropString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.SetPropString");
 	if (PropString != InPropString)
 	{
 		PropString = InPropString;
@@ -73,6 +77,7 @@ void UTestbed1StructInterfaceImplementation::SetPropString(const FTestbed1Struct
 
 FTestbed1StructBool UTestbed1StructInterfaceImplementation::FuncBool(const FTestbed1StructBool& ParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.FuncBool");
 	(void)ParamBool;
 	// do business logic here
 	return FTestbed1StructBool();
@@ -80,6 +85,7 @@ FTestbed1StructBool UTestbed1StructInterfaceImplementation::FuncBool(const FTest
 
 FTestbed1StructInt UTestbed1StructInterfaceImplementation::FuncInt(const FTestbed1StructInt& ParamInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.FuncInt");
 	(void)ParamInt;
 	// do business logic here
 	return FTestbed1StructInt();
@@ -87,6 +93,7 @@ FTestbed1StructInt UTestbed1StructInterfaceImplementation::FuncInt(const FTestbe
 
 FTestbed1StructFloat UTestbed1StructInterfaceImplementation::FuncFloat(const FTestbed1StructFloat& ParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.FuncFloat");
 	(void)ParamFloat;
 	// do business logic here
 	return FTestbed1StructFloat();
@@ -94,6 +101,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceImplementation::FuncFloat(const FTe
 
 FTestbed1StructString UTestbed1StructInterfaceImplementation::FuncString(const FTestbed1StructString& ParamString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.FuncString");
 	(void)ParamString;
 	// do business logic here
 	return FTestbed1StructString();

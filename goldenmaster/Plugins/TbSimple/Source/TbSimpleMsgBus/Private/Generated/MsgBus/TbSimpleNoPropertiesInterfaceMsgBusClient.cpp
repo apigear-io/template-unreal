@@ -280,6 +280,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnServiceClosedConnection(const
 
 void UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncVoid()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.MsgBus.FuncVoid");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -300,6 +301,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncVoid()
 
 bool UTbSimpleNoPropertiesInterfaceMsgBusClient::FuncBool(bool bInParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.MsgBus.FuncBool");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -329,6 +331,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnFuncBoolReply(const FTbSimple
 
 void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigVoid(const FTbSimpleNoPropertiesInterfaceSigVoidSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.MsgBus.SignalSigVoid");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -341,6 +344,7 @@ void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigVoid(const FTbSimpleNoProp
 
 void UTbSimpleNoPropertiesInterfaceMsgBusClient::OnSigBool(const FTbSimpleNoPropertiesInterfaceSigBoolSignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.MsgBus.SignalSigBool");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

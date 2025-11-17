@@ -25,6 +25,7 @@ int32 UTbRefIfacesSimpleLocalIfImplementation::GetIntProperty() const
 
 void UTbRefIfacesSimpleLocalIfImplementation::SetIntProperty(int32 InIntProperty)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.Impl.SetIntProperty");
 	if (IntProperty != InIntProperty)
 	{
 		IntProperty = InIntProperty;
@@ -34,6 +35,7 @@ void UTbRefIfacesSimpleLocalIfImplementation::SetIntProperty(int32 InIntProperty
 
 int32 UTbRefIfacesSimpleLocalIfImplementation::IntMethod(int32 Param)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.Impl.IntMethod");
 	(void)Param;
 	// do business logic here
 	return 0;

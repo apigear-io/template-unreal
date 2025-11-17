@@ -158,6 +158,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceOLinkClient::GetProp1() co
 
 void UTestbed2NestedStruct2InterfaceOLinkClient::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct2Interface.OLink.SetProp1");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -191,6 +192,7 @@ FTestbed2NestedStruct2 UTestbed2NestedStruct2InterfaceOLinkClient::GetProp2() co
 
 void UTestbed2NestedStruct2InterfaceOLinkClient::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct2Interface.OLink.SetProp2");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -219,6 +221,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::SetProp2(const FTestbed2NestedS
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceOLinkClient::Func1(const FTestbed2NestedStruct1& Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct2Interface.OLink.Func1");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -242,6 +245,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceOLinkClient::Func1(const F
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceOLinkClient::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct2Interface.OLink.Func2");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -270,6 +274,7 @@ bool UTestbed2NestedStruct2InterfaceOLinkClient::_IsSubscribed() const
 
 void UTestbed2NestedStruct2InterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct2Interface.OLink.ApplyState");
 	const bool bProp1Changed = fields.contains("prop1") && (Prop1 != fields["prop1"].get<FTestbed2NestedStruct1>());
 	if (bProp1Changed)
 	{
@@ -297,6 +302,7 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::applyState(const nlohmann::json
 
 void UTestbed2NestedStruct2InterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct2Interface.OLink.EmitSignal");
 	if (signalName == "sig1")
 	{
 		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();

@@ -191,6 +191,7 @@ std::string Testbed2ManyParamInterfaceOLinkSource::olinkObjectName()
 
 nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkInvoke(const std::string& methodId, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.ServerInvoke");
 	if (!BackendService)
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed2ManyParamInterfaceOLinkAdapter which implements the Testbed2ManyParamInterface interface"));
@@ -233,6 +234,7 @@ nlohmann::json Testbed2ManyParamInterfaceOLinkSource::olinkInvoke(const std::str
 
 void Testbed2ManyParamInterfaceOLinkSource::olinkSetProperty(const std::string& propertyId, const nlohmann::json& value)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.ServerSetProperty");
 	if (!BackendService)
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkSource, Error, TEXT("No backend service set - please specify a service in the adapter Testbed2ManyParamInterfaceOLinkAdapter which implements the Testbed2ManyParamInterface interface"));

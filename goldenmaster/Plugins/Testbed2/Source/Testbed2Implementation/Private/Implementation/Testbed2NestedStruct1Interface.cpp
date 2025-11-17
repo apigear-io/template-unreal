@@ -25,6 +25,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceImplementation::GetProp1()
 
 void UTestbed2NestedStruct1InterfaceImplementation::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.Impl.SetProp1");
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
@@ -34,18 +35,21 @@ void UTestbed2NestedStruct1InterfaceImplementation::SetProp1(const FTestbed2Nest
 
 void UTestbed2NestedStruct1InterfaceImplementation::FuncNoReturnValue(const FTestbed2NestedStruct1& Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.Impl.FuncNoReturnValue");
 	(void)Param1;
 	// do business logic here
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceImplementation::FuncNoParams()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.Impl.FuncNoParams");
 	// do business logic here
 	return FTestbed2NestedStruct1();
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceImplementation::Func1(const FTestbed2NestedStruct1& Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.Impl.Func1");
 	(void)Param1;
 	// do business logic here
 	return FTestbed2NestedStruct1();

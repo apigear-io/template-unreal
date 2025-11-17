@@ -25,6 +25,7 @@ bool UTbNamesNamEsImplementation::GetSwitch() const
 
 void UTbNamesNamEsImplementation::SetSwitch(bool bInSwitch)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.Impl.SetSwitch");
 	if (bSwitch != bInSwitch)
 	{
 		bSwitch = bInSwitch;
@@ -38,6 +39,7 @@ int32 UTbNamesNamEsImplementation::GetSomeProperty() const
 
 void UTbNamesNamEsImplementation::SetSomeProperty(int32 InSomeProperty)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.Impl.SetSomeProperty");
 	if (SomeProperty != InSomeProperty)
 	{
 		SomeProperty = InSomeProperty;
@@ -51,6 +53,7 @@ int32 UTbNamesNamEsImplementation::GetSomePoperty2() const
 
 void UTbNamesNamEsImplementation::SetSomePoperty2(int32 InSomePoperty2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.Impl.SetSomePoperty2");
 	if (SomePoperty2 != InSomePoperty2)
 	{
 		SomePoperty2 = InSomePoperty2;
@@ -64,6 +67,7 @@ ETbNamesEnum_With_Under_scores UTbNamesNamEsImplementation::GetEnumProperty() co
 
 void UTbNamesNamEsImplementation::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.Impl.SetEnumProperty");
 	if (EnumProperty != InEnumProperty)
 	{
 		EnumProperty = InEnumProperty;
@@ -73,12 +77,14 @@ void UTbNamesNamEsImplementation::SetEnumProperty(ETbNamesEnum_With_Under_scores
 
 void UTbNamesNamEsImplementation::SomeFunction(bool bSomeParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.Impl.SomeFunction");
 	(void)bSomeParam;
 	// do business logic here
 }
 
 void UTbNamesNamEsImplementation::SomeFunction2(bool bSomeParam)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.Impl.SomeFunction2");
 	(void)bSomeParam;
 	// do business logic here
 }

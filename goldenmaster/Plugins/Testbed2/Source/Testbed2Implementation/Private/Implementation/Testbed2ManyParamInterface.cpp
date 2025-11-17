@@ -25,6 +25,7 @@ int32 UTestbed2ManyParamInterfaceImplementation::GetProp1() const
 
 void UTestbed2ManyParamInterfaceImplementation::SetProp1(int32 InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.Impl.SetProp1");
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
@@ -38,6 +39,7 @@ int32 UTestbed2ManyParamInterfaceImplementation::GetProp2() const
 
 void UTestbed2ManyParamInterfaceImplementation::SetProp2(int32 InProp2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.Impl.SetProp2");
 	if (Prop2 != InProp2)
 	{
 		Prop2 = InProp2;
@@ -51,6 +53,7 @@ int32 UTestbed2ManyParamInterfaceImplementation::GetProp3() const
 
 void UTestbed2ManyParamInterfaceImplementation::SetProp3(int32 InProp3)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.Impl.SetProp3");
 	if (Prop3 != InProp3)
 	{
 		Prop3 = InProp3;
@@ -64,6 +67,7 @@ int32 UTestbed2ManyParamInterfaceImplementation::GetProp4() const
 
 void UTestbed2ManyParamInterfaceImplementation::SetProp4(int32 InProp4)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.Impl.SetProp4");
 	if (Prop4 != InProp4)
 	{
 		Prop4 = InProp4;
@@ -73,6 +77,7 @@ void UTestbed2ManyParamInterfaceImplementation::SetProp4(int32 InProp4)
 
 int32 UTestbed2ManyParamInterfaceImplementation::Func1(int32 Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.Impl.Func1");
 	(void)Param1;
 	// do business logic here
 	return 0;
@@ -80,6 +85,7 @@ int32 UTestbed2ManyParamInterfaceImplementation::Func1(int32 Param1)
 
 int32 UTestbed2ManyParamInterfaceImplementation::Func2(int32 Param1, int32 Param2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.Impl.Func2");
 	(void)Param1;
 	(void)Param2;
 	// do business logic here
@@ -88,6 +94,7 @@ int32 UTestbed2ManyParamInterfaceImplementation::Func2(int32 Param1, int32 Param
 
 int32 UTestbed2ManyParamInterfaceImplementation::Func3(int32 Param1, int32 Param2, int32 Param3)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.Impl.Func3");
 	(void)Param1;
 	(void)Param2;
 	(void)Param3;
@@ -97,6 +104,7 @@ int32 UTestbed2ManyParamInterfaceImplementation::Func3(int32 Param1, int32 Param
 
 int32 UTestbed2ManyParamInterfaceImplementation::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.Impl.Func4");
 	(void)Param1;
 	(void)Param2;
 	(void)Param3;

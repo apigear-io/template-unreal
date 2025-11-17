@@ -342,6 +342,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceMsgBusClient::GetProp0() const
 
 void UTbEnumEnumInterfaceMsgBusClient::SetProp0(ETbEnumEnum0 InProp0)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.SetProp0");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -378,6 +379,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceMsgBusClient::GetProp1() const
 
 void UTbEnumEnumInterfaceMsgBusClient::SetProp1(ETbEnumEnum1 InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.SetProp1");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -414,6 +416,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceMsgBusClient::GetProp2() const
 
 void UTbEnumEnumInterfaceMsgBusClient::SetProp2(ETbEnumEnum2 InProp2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.SetProp2");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -450,6 +453,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceMsgBusClient::GetProp3() const
 
 void UTbEnumEnumInterfaceMsgBusClient::SetProp3(ETbEnumEnum3 InProp3)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.SetProp3");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -481,6 +485,7 @@ void UTbEnumEnumInterfaceMsgBusClient::SetProp3(ETbEnumEnum3 InProp3)
 
 ETbEnumEnum0 UTbEnumEnumInterfaceMsgBusClient::Func0(ETbEnumEnum0 InParam0)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.Func0");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -510,6 +515,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnFunc0Reply(const FTbEnumEnumInterfaceFu
 
 ETbEnumEnum1 UTbEnumEnumInterfaceMsgBusClient::Func1(ETbEnumEnum1 InParam1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.Func1");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -539,6 +545,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnFunc1Reply(const FTbEnumEnumInterfaceFu
 
 ETbEnumEnum2 UTbEnumEnumInterfaceMsgBusClient::Func2(ETbEnumEnum2 InParam2)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.Func2");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -568,6 +575,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnFunc2Reply(const FTbEnumEnumInterfaceFu
 
 ETbEnumEnum3 UTbEnumEnumInterfaceMsgBusClient::Func3(ETbEnumEnum3 InParam3)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.Func3");
 	if (!_IsConnected())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Client has no connection to service."));
@@ -597,6 +605,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnFunc3Reply(const FTbEnumEnumInterfaceFu
 
 void UTbEnumEnumInterfaceMsgBusClient::OnSig0(const FTbEnumEnumInterfaceSig0SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.SignalSig0");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -609,6 +618,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnSig0(const FTbEnumEnumInterfaceSig0Sign
 
 void UTbEnumEnumInterfaceMsgBusClient::OnSig1(const FTbEnumEnumInterfaceSig1SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.SignalSig1");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -621,6 +631,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnSig1(const FTbEnumEnumInterfaceSig1Sign
 
 void UTbEnumEnumInterfaceMsgBusClient::OnSig2(const FTbEnumEnumInterfaceSig2SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.SignalSig2");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());
@@ -633,6 +644,7 @@ void UTbEnumEnumInterfaceMsgBusClient::OnSig2(const FTbEnumEnumInterfaceSig2Sign
 
 void UTbEnumEnumInterfaceMsgBusClient::OnSig3(const FTbEnumEnumInterfaceSig3SignalMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.MsgBus.SignalSig3");
 	if (ServiceAddress != Context->GetSender())
 	{
 		UE_LOG(LogTbEnumEnumInterfaceMsgBusClient, Error, TEXT("Got a message from wrong service(%s) instead of %s"), *Context->GetSender().ToString(), *ServiceAddress.ToString());

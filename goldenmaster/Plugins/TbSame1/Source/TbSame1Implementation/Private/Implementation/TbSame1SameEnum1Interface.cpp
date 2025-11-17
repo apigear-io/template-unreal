@@ -25,6 +25,7 @@ ETbSame1Enum1 UTbSame1SameEnum1InterfaceImplementation::GetProp1() const
 
 void UTbSame1SameEnum1InterfaceImplementation::SetProp1(ETbSame1Enum1 InProp1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameEnum1Interface.Impl.SetProp1");
 	if (Prop1 != InProp1)
 	{
 		Prop1 = InProp1;
@@ -34,6 +35,7 @@ void UTbSame1SameEnum1InterfaceImplementation::SetProp1(ETbSame1Enum1 InProp1)
 
 ETbSame1Enum1 UTbSame1SameEnum1InterfaceImplementation::Func1(ETbSame1Enum1 Param1)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameEnum1Interface.Impl.Func1");
 	(void)Param1;
 	// do business logic here
 	return ETbSame1Enum1::TS1E1_Value1;

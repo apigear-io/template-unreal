@@ -21,5 +21,6 @@ UTbSimpleVoidInterfaceImplementation::~UTbSimpleVoidInterfaceImplementation() = 
 
 void UTbSimpleVoidInterfaceImplementation::FuncVoid()
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.VoidInterface.Impl.FuncVoid");
 	// do business logic here
 }

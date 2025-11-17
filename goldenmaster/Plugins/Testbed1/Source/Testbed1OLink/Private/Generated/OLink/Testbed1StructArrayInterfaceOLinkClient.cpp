@@ -164,6 +164,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceOLinkClient::GetPropBoo
 
 void UTestbed1StructArrayInterfaceOLinkClient::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.SetPropBool");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -197,6 +198,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceOLinkClient::GetPropInt(
 
 void UTestbed1StructArrayInterfaceOLinkClient::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.SetPropInt");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -230,6 +232,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceOLinkClient::GetPropFl
 
 void UTestbed1StructArrayInterfaceOLinkClient::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.SetPropFloat");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -263,6 +266,7 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceOLinkClient::GetPropS
 
 void UTestbed1StructArrayInterfaceOLinkClient::SetPropString(const TArray<FTestbed1StructString>& InPropString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.SetPropString");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -296,6 +300,7 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceOLinkClient::GetPropEnum() c
 
 void UTestbed1StructArrayInterfaceOLinkClient::SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.SetPropEnum");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -324,6 +329,7 @@ void UTestbed1StructArrayInterfaceOLinkClient::SetPropEnum(const TArray<ETestbed
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceOLinkClient::FuncBool(const TArray<FTestbed1StructBool>& ParamBool)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncBool");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -347,6 +353,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceOLinkClient::FuncBool(c
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceOLinkClient::FuncInt(const TArray<FTestbed1StructInt>& ParamInt)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncInt");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -370,6 +377,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceOLinkClient::FuncInt(con
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceOLinkClient::FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncFloat");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -393,6 +401,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceOLinkClient::FuncFloat
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceOLinkClient::FuncString(const TArray<FTestbed1StructString>& ParamString)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncString");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -416,6 +425,7 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceOLinkClient::FuncStri
 
 TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceOLinkClient::FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.FuncEnum");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
@@ -444,6 +454,7 @@ bool UTestbed1StructArrayInterfaceOLinkClient::_IsSubscribed() const
 
 void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& fields)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.ApplyState");
 	const bool bPropBoolChanged = fields.contains("propBool") && (PropBool != fields["propBool"].get<TArray<FTestbed1StructBool>>());
 	if (bPropBoolChanged)
 	{
@@ -507,6 +518,7 @@ void UTestbed1StructArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 
 void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& signalName, const nlohmann::json& args)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.EmitSignal");
 	if (signalName == "sigBool")
 	{
 		const TArray<FTestbed1StructBool>& outParamBool = args[0].get<TArray<FTestbed1StructBool>>();
