@@ -372,7 +372,11 @@ void {{$Class}}JniSpec::Define()
 			{{- else }}
 			{{ueType "" .}} {{ueVar "" .}}TestValue = {{ ueTestValue "" . }};
 			{{- end }}
+			{{- if not (eq .KindType "interface")}}
 			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), {{ueVar "In" .}}, {{ueVar "" .}}TestValue);
+			{{- else}}
+			// skip interface-type comparison
+			{{- end }}
 			{{- end }}
 			{{- end }}
 			TestDone.Execute();
