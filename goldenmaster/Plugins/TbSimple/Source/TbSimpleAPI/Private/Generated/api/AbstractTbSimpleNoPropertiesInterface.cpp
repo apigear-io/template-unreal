@@ -55,10 +55,15 @@ void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync(UObject* WorldContext
 
 TFuture<bool> UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync(bool bParamBool)
 {
+	TWeakObjectPtr<UAbstractTbSimpleNoPropertiesInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[bParamBool, this]()
+		[bParamBool, WeakThis]()
 		{
-		return FuncBool(bParamBool);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(bParamBool);
+		}
+		return false;
 	});
 }
 

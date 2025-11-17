@@ -90,10 +90,15 @@ void {{$abstractclass}}::{{Camel .Name}}Async(UObject* WorldContextObject, FLate
 
 TFuture<{{ueReturn "" .Return}}> {{$abstractclass}}::{{Camel .Name}}Async({{ueParams "" .Params}})
 {
+	TWeakObjectPtr<{{$abstractclass}}> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[{{range .Params}}{{ueVar "" .}}, {{ end }}this]()
+		[{{range .Params}}{{ueVar "" .}}, {{ end }}WeakThis]()
 		{
-		return {{Camel .Name}}({{ueVars "" .Params}});
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->{{Camel .Name}}({{ueVars "" .Params}});
+		}
+		return {{ueDefault "" .Return}};
 	});
 }
 {{- nl }}

@@ -95,10 +95,15 @@ void UAbstractTestbed2ManyParamInterface::Func1Async(UObject* WorldContextObject
 
 TFuture<int32> UAbstractTestbed2ManyParamInterface::Func1Async(int32 Param1)
 {
+	TWeakObjectPtr<UAbstractTestbed2ManyParamInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return 0;
 	});
 }
 
@@ -124,10 +129,15 @@ void UAbstractTestbed2ManyParamInterface::Func2Async(UObject* WorldContextObject
 
 TFuture<int32> UAbstractTestbed2ManyParamInterface::Func2Async(int32 Param1, int32 Param2)
 {
+	TWeakObjectPtr<UAbstractTestbed2ManyParamInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, this]()
+		[Param1, Param2, WeakThis]()
 		{
-		return Func2(Param1, Param2);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func2(Param1, Param2);
+		}
+		return 0;
 	});
 }
 
@@ -153,10 +163,15 @@ void UAbstractTestbed2ManyParamInterface::Func3Async(UObject* WorldContextObject
 
 TFuture<int32> UAbstractTestbed2ManyParamInterface::Func3Async(int32 Param1, int32 Param2, int32 Param3)
 {
+	TWeakObjectPtr<UAbstractTestbed2ManyParamInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, this]()
+		[Param1, Param2, Param3, WeakThis]()
 		{
-		return Func3(Param1, Param2, Param3);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func3(Param1, Param2, Param3);
+		}
+		return 0;
 	});
 }
 
@@ -182,10 +197,15 @@ void UAbstractTestbed2ManyParamInterface::Func4Async(UObject* WorldContextObject
 
 TFuture<int32> UAbstractTestbed2ManyParamInterface::Func4Async(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
+	TWeakObjectPtr<UAbstractTestbed2ManyParamInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, Param4, this]()
+		[Param1, Param2, Param3, Param4, WeakThis]()
 		{
-		return Func4(Param1, Param2, Param3, Param4);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func4(Param1, Param2, Param3, Param4);
+		}
+		return 0;
 	});
 }
 

@@ -95,10 +95,15 @@ void UAbstractTbEnumEnumInterface::Func0Async(UObject* WorldContextObject, FLate
 
 TFuture<ETbEnumEnum0> UAbstractTbEnumEnumInterface::Func0Async(ETbEnumEnum0 Param0)
 {
+	TWeakObjectPtr<UAbstractTbEnumEnumInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param0, this]()
+		[Param0, WeakThis]()
 		{
-		return Func0(Param0);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func0(Param0);
+		}
+		return ETbEnumEnum0::TEE0_Value0;
 	});
 }
 
@@ -124,10 +129,15 @@ void UAbstractTbEnumEnumInterface::Func1Async(UObject* WorldContextObject, FLate
 
 TFuture<ETbEnumEnum1> UAbstractTbEnumEnumInterface::Func1Async(ETbEnumEnum1 Param1)
 {
+	TWeakObjectPtr<UAbstractTbEnumEnumInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return ETbEnumEnum1::TEE1_Value1;
 	});
 }
 
@@ -153,10 +163,15 @@ void UAbstractTbEnumEnumInterface::Func2Async(UObject* WorldContextObject, FLate
 
 TFuture<ETbEnumEnum2> UAbstractTbEnumEnumInterface::Func2Async(ETbEnumEnum2 Param2)
 {
+	TWeakObjectPtr<UAbstractTbEnumEnumInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param2, this]()
+		[Param2, WeakThis]()
 		{
-		return Func2(Param2);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func2(Param2);
+		}
+		return ETbEnumEnum2::TEE2_Value2;
 	});
 }
 
@@ -182,10 +197,15 @@ void UAbstractTbEnumEnumInterface::Func3Async(UObject* WorldContextObject, FLate
 
 TFuture<ETbEnumEnum3> UAbstractTbEnumEnumInterface::Func3Async(ETbEnumEnum3 Param3)
 {
+	TWeakObjectPtr<UAbstractTbEnumEnumInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[Param3, this]()
+		[Param3, WeakThis]()
 		{
-		return Func3(Param3);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func3(Param3);
+		}
+		return ETbEnumEnum3::TEE3_Value3;
 	});
 }
 
