@@ -155,25 +155,7 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::FuncVoid()
 bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.OLink.FuncBool");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return false;
-	}
-	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
-	Async(EAsyncExecution::ThreadPool,
-		[bParamBool, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertiesInterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<bool>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoPropertiesInterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return FuncBoolAsync(bParamBool).Get();
 }
 
 TFuture<bool> UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBoolAsync(bool bParamBool)
