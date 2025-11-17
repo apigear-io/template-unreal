@@ -222,25 +222,7 @@ void UTbSame2SameStruct2InterfaceOLinkClient::SetProp2(const FTbSame2Struct2& In
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func1(const FTbSame2Struct1& Param1)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameStruct2Interface.OLink.Func1");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return FTbSame2Struct1();
-	}
-	TSharedRef<TPromise<FTbSame2Struct1>> Promise = MakeShared<TPromise<FTbSame2Struct1>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<FTbSame2Struct1>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameStruct2InterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func1Async(Param1).Get();
 }
 
 TFuture<FTbSame2Struct1> UTbSame2SameStruct2InterfaceOLinkClient::Func1Async(const FTbSame2Struct1& Param1)
@@ -271,25 +253,7 @@ TFuture<FTbSame2Struct1> UTbSame2SameStruct2InterfaceOLinkClient::Func1Async(con
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceOLinkClient::Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameStruct2Interface.OLink.Func2");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSame2SameStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return FTbSame2Struct1();
-	}
-	TSharedRef<TPromise<FTbSame2Struct1>> Promise = MakeShared<TPromise<FTbSame2Struct1>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<FTbSame2Struct1>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetSameStruct2InterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func2Async(Param1, Param2).Get();
 }
 
 TFuture<FTbSame2Struct1> UTbSame2SameStruct2InterfaceOLinkClient::Func2Async(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)

@@ -212,25 +212,7 @@ void UTbSame1SameEnum2InterfaceOLinkClient::SetProp2(ETbSame1Enum2 InProp2)
 ETbSame1Enum1 UTbSame1SameEnum2InterfaceOLinkClient::Func1(ETbSame1Enum1 Param1)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameEnum2Interface.OLink.Func1");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSame1SameEnum2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return ETbSame1Enum1::TS1E1_Value1;
-	}
-	TSharedRef<TPromise<ETbSame1Enum1>> Promise = MakeShared<TPromise<ETbSame1Enum1>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum2InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<ETbSame1Enum1>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameEnum2InterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func1Async(Param1).Get();
 }
 
 TFuture<ETbSame1Enum1> UTbSame1SameEnum2InterfaceOLinkClient::Func1Async(ETbSame1Enum1 Param1)
@@ -261,25 +243,7 @@ TFuture<ETbSame1Enum1> UTbSame1SameEnum2InterfaceOLinkClient::Func1Async(ETbSame
 ETbSame1Enum1 UTbSame1SameEnum2InterfaceOLinkClient::Func2(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameEnum2Interface.OLink.Func2");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogTbSame1SameEnum2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return ETbSame1Enum1::TS1E1_Value1;
-	}
-	TSharedRef<TPromise<ETbSame1Enum1>> Promise = MakeShared<TPromise<ETbSame1Enum1>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSameEnum2InterfaceStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<ETbSame1Enum1>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetSameEnum2InterfaceStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return Func2Async(Param1, Param2).Get();
 }
 
 TFuture<ETbSame1Enum1> UTbSame1SameEnum2InterfaceOLinkClient::Func2Async(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)

@@ -296,25 +296,7 @@ void UCounterCounterOLinkClient::SetExternVectorArray(const TArray<FVector>& InE
 FVector UCounterCounterOLinkClient::Increment(const FVector& Vec)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.Increment");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return FVector(0.f, 0.f, 0.f);
-	}
-	TSharedRef<TPromise<FVector>> Promise = MakeShared<TPromise<FVector>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Vec, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<FVector>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "increment");
-		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return IncrementAsync(Vec).Get();
 }
 
 TFuture<FVector> UCounterCounterOLinkClient::IncrementAsync(const FVector& Vec)
@@ -345,25 +327,7 @@ TFuture<FVector> UCounterCounterOLinkClient::IncrementAsync(const FVector& Vec)
 TArray<FVector> UCounterCounterOLinkClient::IncrementArray(const TArray<FVector>& Vec)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.IncrementArray");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return TArray<FVector>();
-	}
-	TSharedRef<TPromise<TArray<FVector>>> Promise = MakeShared<TPromise<TArray<FVector>>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Vec, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<TArray<FVector>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "incrementArray");
-		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return IncrementArrayAsync(Vec).Get();
 }
 
 TFuture<TArray<FVector>> UCounterCounterOLinkClient::IncrementArrayAsync(const TArray<FVector>& Vec)
@@ -394,25 +358,7 @@ TFuture<TArray<FVector>> UCounterCounterOLinkClient::IncrementArrayAsync(const T
 FCustomTypesVector3D UCounterCounterOLinkClient::Decrement(const FCustomTypesVector3D& Vec)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.Decrement");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return FCustomTypesVector3D();
-	}
-	TSharedRef<TPromise<FCustomTypesVector3D>> Promise = MakeShared<TPromise<FCustomTypesVector3D>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Vec, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<FCustomTypesVector3D>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "decrement");
-		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return DecrementAsync(Vec).Get();
 }
 
 TFuture<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementAsync(const FCustomTypesVector3D& Vec)
@@ -443,25 +389,7 @@ TFuture<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementAsync(const F
 TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.DecrementArray");
-	if (!m_sink->IsReady())
-	{
-		UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Counter plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
-
-		return TArray<FCustomTypesVector3D>();
-	}
-	TSharedRef<TPromise<TArray<FCustomTypesVector3D>>> Promise = MakeShared<TPromise<TArray<FCustomTypesVector3D>>>();
-	Async(EAsyncExecution::ThreadPool,
-		[Vec, Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetCounterStateFunc = [Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise->SetValue(arg.value.get<TArray<FCustomTypesVector3D>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "decrementArray");
-		m_sink->GetNode()->invokeRemote(memberId, {Vec}, GetCounterStateFunc);
-	});
-
-	return Promise->GetFuture().Get();
+	return DecrementArrayAsync(Vec).Get();
 }
 
 TFuture<TArray<FCustomTypesVector3D>> UCounterCounterOLinkClient::DecrementArrayAsync(const TArray<FCustomTypesVector3D>& Vec)
