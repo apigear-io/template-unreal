@@ -48,6 +48,7 @@ public:
 	void FuncVoid() override;
 
 	bool FuncBool(bool bParamBool) override;
+	TFuture<bool> FuncBoolAsync(bool bParamBool) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|NoPropertiesInterface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

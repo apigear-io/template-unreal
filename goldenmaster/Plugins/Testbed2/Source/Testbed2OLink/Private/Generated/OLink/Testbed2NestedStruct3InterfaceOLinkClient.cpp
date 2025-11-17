@@ -279,6 +279,31 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func1(const F
 	return Promise->GetFuture().Get();
 }
 
+TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct3InterfaceOLinkClient::Func1Async(const FTestbed2NestedStruct1& Param1)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.OLink.Func1Async");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<FTestbed2NestedStruct1> Promise;
+		Promise.SetValue(FTestbed2NestedStruct1());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<FTestbed2NestedStruct1>> Promise = MakeShared<TPromise<FTestbed2NestedStruct1>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param1},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
+	});
+
+	return Promise->GetFuture();
+}
+
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.OLink.Func2");
@@ -303,6 +328,31 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func2(const F
 	return Promise->GetFuture().Get();
 }
 
+TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct3InterfaceOLinkClient::Func2Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.OLink.Func2Async");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<FTestbed2NestedStruct1> Promise;
+		Promise.SetValue(FTestbed2NestedStruct1());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<FTestbed2NestedStruct1>> Promise = MakeShared<TPromise<FTestbed2NestedStruct1>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
+	});
+
+	return Promise->GetFuture();
+}
+
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.OLink.Func3");
@@ -325,6 +375,31 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceOLinkClient::Func3(const F
 	});
 
 	return Promise->GetFuture().Get();
+}
+
+TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct3InterfaceOLinkClient::Func3Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct3Interface.OLink.Func3Async");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<FTestbed2NestedStruct1> Promise;
+		Promise.SetValue(FTestbed2NestedStruct1());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<FTestbed2NestedStruct1>> Promise = MakeShared<TPromise<FTestbed2NestedStruct1>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
+	});
+
+	return Promise->GetFuture();
 }
 
 bool UTestbed2NestedStruct3InterfaceOLinkClient::_IsSubscribed() const

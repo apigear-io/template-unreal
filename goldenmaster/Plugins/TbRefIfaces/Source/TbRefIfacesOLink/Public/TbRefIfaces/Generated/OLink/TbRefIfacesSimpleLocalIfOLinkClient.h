@@ -51,6 +51,7 @@ public:
 
 	// operations
 	int32 IntMethod(int32 Param) override;
+	TFuture<int32> IntMethodAsync(int32 Param) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

@@ -316,6 +316,31 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfOLinkCl
 	return Promise->GetFuture().Get();
 }
 
+TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfOLinkClient::LocalIfMethodAsync(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.LocalIfMethodAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Promise;
+		Promise.SetValue(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise = MakeShared<TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethod");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+	});
+
+	return Promise->GetFuture();
+}
+
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfOLinkClient::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.LocalIfMethodList");
@@ -338,6 +363,31 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 	});
 
 	return Promise->GetFuture().Get();
+}
+
+TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> UTbRefIfacesParentIfOLinkClient::LocalIfMethodListAsync(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.LocalIfMethodListAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise;
+		Promise.SetValue(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>> Promise = MakeShared<TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethodList");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
+	});
+
+	return Promise->GetFuture();
 }
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient::ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
@@ -364,6 +414,31 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient
 	return Promise->GetFuture().Get();
 }
 
+TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLinkClient::ImportedIfMethodAsync(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ImportedIfMethodAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Promise;
+		Promise.SetValue(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise = MakeShared<TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfMethod");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+	});
+
+	return Promise->GetFuture();
+}
+
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLinkClient::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ImportedIfMethodList");
@@ -386,6 +461,31 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLi
 	});
 
 	return Promise->GetFuture().Get();
+}
+
+TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> UTbRefIfacesParentIfOLinkClient::ImportedIfMethodListAsync(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ImportedIfMethodListAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise;
+		Promise.SetValue(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>> Promise = MakeShared<TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfMethodList");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
+	});
+
+	return Promise->GetFuture();
 }
 
 bool UTbRefIfacesParentIfOLinkClient::_IsSubscribed() const

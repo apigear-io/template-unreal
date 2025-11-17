@@ -60,12 +60,16 @@ public:
 
 	// operations
 	ETbEnumEnum0 Func0(ETbEnumEnum0 Param0) override;
+	TFuture<ETbEnumEnum0> Func0Async(ETbEnumEnum0 Param0) override;
 
 	ETbEnumEnum1 Func1(ETbEnumEnum1 Param1) override;
+	TFuture<ETbEnumEnum1> Func1Async(ETbEnumEnum1 Param1) override;
 
 	ETbEnumEnum2 Func2(ETbEnumEnum2 Param2) override;
+	TFuture<ETbEnumEnum2> Func2Async(ETbEnumEnum2 Param2) override;
 
 	ETbEnumEnum3 Func3(ETbEnumEnum3 Param3) override;
+	TFuture<ETbEnumEnum3> Func3Async(ETbEnumEnum3 Param3) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

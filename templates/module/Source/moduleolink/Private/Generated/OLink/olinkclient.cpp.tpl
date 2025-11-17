@@ -267,6 +267,42 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 	return Promise->GetFuture().Get();
 	{{- end }}
 }
+{{- if not .Return.IsVoid }}{{nl}}
+{{- if .Description }}
+/**
+   \brief {{.Description}} - Async version
+*/
+{{- end }}
+{{- $returnVal := (ueReturn "" .Return)}}
+TFuture<{{$returnVal}}> {{$Class}}::{{Camel .Name}}Async({{ueParams "" .Params}})
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.{{$ModuleName}}.{{$IfaceName}}.OLink.{{Camel .Name}}Async");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear {{ $ModuleName }} plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<{{$returnVal}}> Promise;
+		Promise.SetValue({{ ueDefault "" .Return }});
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<{{$returnVal}}>> Promise = MakeShared<TPromise<{{$returnVal}}>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "{{.Name}}");
+
+	m_sink->GetNode()->invokeRemote(memberId, { {{- ueVars "" .Params -}} },
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		{{- if not .Return.IsArray}}
+		Promise->SetValue(arg.value.get<{{$returnVal}}>());
+		{{- else}}
+		Promise->SetValue(arg.value.get<{{$returnVal}}>());
+		{{- end }}
+	});
+
+	return Promise->GetFuture();
+}
+{{- end }}
 {{- end }}
 
 bool {{$Class}}::_IsSubscribed() const

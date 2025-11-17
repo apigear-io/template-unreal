@@ -54,6 +54,9 @@ public:
 {{- range $i, $e := .Interface.Operations }}
 {{- if $i }}{{nl}}{{ end }}
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
+{{- if not .Return.IsVoid }}
+	TFuture<{{ueReturn "" .Return}}> {{Camel .Name}}Async({{ueParams "" .Params}}) override;
+{{- end }}
 {{- end }}
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{$ModuleName}}|{{$IfaceName}}")

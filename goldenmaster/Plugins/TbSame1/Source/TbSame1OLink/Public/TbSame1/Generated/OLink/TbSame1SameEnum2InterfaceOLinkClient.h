@@ -54,8 +54,10 @@ public:
 
 	// operations
 	ETbSame1Enum1 Func1(ETbSame1Enum1 Param1) override;
+	TFuture<ETbSame1Enum1> Func1Async(ETbSame1Enum1 Param1) override;
 
 	ETbSame1Enum1 Func2(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
+	TFuture<ETbSame1Enum1> Func2Async(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum2Interface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

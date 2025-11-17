@@ -466,6 +466,31 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBool(const TArray<boo
 	return Promise->GetFuture().Get();
 }
 
+TFuture<TArray<bool>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBoolAsync(const TArray<bool>& ParamBool)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncBoolAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<bool>> Promise;
+		Promise.SetValue(TArray<bool>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<bool>>> Promise = MakeShared<TPromise<TArray<bool>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamBool},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<bool>>());
+	});
+
+	return Promise->GetFuture();
+}
+
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt(const TArray<int32>& ParamInt)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncInt");
@@ -488,6 +513,31 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt(const TArray<int
 	});
 
 	return Promise->GetFuture().Get();
+}
+
+TFuture<TArray<int32>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncIntAsync(const TArray<int32>& ParamInt)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncIntAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<int32>> Promise;
+		Promise.SetValue(TArray<int32>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<int32>>> Promise = MakeShared<TPromise<TArray<int32>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamInt},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<int32>>());
+	});
+
+	return Promise->GetFuture();
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32(const TArray<int32>& ParamInt32)
@@ -514,6 +564,31 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32(const TArray<i
 	return Promise->GetFuture().Get();
 }
 
+TFuture<TArray<int32>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32Async(const TArray<int32>& ParamInt32)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncInt32Async");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<int32>> Promise;
+		Promise.SetValue(TArray<int32>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<int32>>> Promise = MakeShared<TPromise<TArray<int32>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamInt32},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<int32>>());
+	});
+
+	return Promise->GetFuture();
+}
+
 TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64(const TArray<int64>& ParamInt64)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncInt64");
@@ -536,6 +611,31 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64(const TArray<i
 	});
 
 	return Promise->GetFuture().Get();
+}
+
+TFuture<TArray<int64>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64Async(const TArray<int64>& ParamInt64)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncInt64Async");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<int64>> Promise;
+		Promise.SetValue(TArray<int64>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<int64>>> Promise = MakeShared<TPromise<TArray<int64>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamInt64},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<int64>>());
+	});
+
+	return Promise->GetFuture();
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat(const TArray<float>& ParamFloat)
@@ -562,6 +662,31 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat(const TArray<f
 	return Promise->GetFuture().Get();
 }
 
+TFuture<TArray<float>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloatAsync(const TArray<float>& ParamFloat)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncFloatAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<float>> Promise;
+		Promise.SetValue(TArray<float>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<float>>> Promise = MakeShared<TPromise<TArray<float>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<float>>());
+	});
+
+	return Promise->GetFuture();
+}
+
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32(const TArray<float>& ParamFloat32)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncFloat32");
@@ -584,6 +709,31 @@ TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32(const TArray
 	});
 
 	return Promise->GetFuture().Get();
+}
+
+TFuture<TArray<float>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32Async(const TArray<float>& ParamFloat32)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncFloat32Async");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<float>> Promise;
+		Promise.SetValue(TArray<float>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<float>>> Promise = MakeShared<TPromise<TArray<float>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<float>>());
+	});
+
+	return Promise->GetFuture();
 }
 
 TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64(const TArray<double>& ParamFloat)
@@ -610,6 +760,31 @@ TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64(const TArra
 	return Promise->GetFuture().Get();
 }
 
+TFuture<TArray<double>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64Async(const TArray<double>& ParamFloat)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncFloat64Async");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<double>> Promise;
+		Promise.SetValue(TArray<double>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<double>>> Promise = MakeShared<TPromise<TArray<double>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<double>>());
+	});
+
+	return Promise->GetFuture();
+}
+
 TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString(const TArray<FString>& ParamString)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncString");
@@ -632,6 +807,31 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncString(const TArra
 	});
 
 	return Promise->GetFuture().Get();
+}
+
+TFuture<TArray<FString>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncStringAsync(const TArray<FString>& ParamString)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.FuncStringAsync");
+	if (!m_sink->IsReady())
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
+
+		TPromise<TArray<FString>> Promise;
+		Promise.SetValue(TArray<FString>());
+		return Promise.GetFuture();
+	}
+
+	TSharedRef<TPromise<TArray<FString>>> Promise = MakeShared<TPromise<TArray<FString>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamString},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
+		{
+		Promise->SetValue(arg.value.get<TArray<FString>>());
+	});
+
+	return Promise->GetFuture();
 }
 
 bool UTbSimpleSimpleArrayInterfaceOLinkClient::_IsSubscribed() const
