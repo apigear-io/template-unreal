@@ -145,9 +145,18 @@ void UOLinkClientConnection::open(const FString& url)
 			UAbstractApiGearConnection::OnDisconnected(IsAutoReconnectEnabled());
 			});
 
+		TWeakPtr<IWebSocket> CurrentSocket(m_socket);
 		m_socket->OnClosed().AddLambda(
-			[this](int32 StatusCode, const FString& Reason, bool bWasClean) -> void
+			[this, CurrentSocket](int32 StatusCode, const FString& Reason, bool bWasClean) -> void
 			{
+			// Need to check whether we are called by the correct socket and not an old one
+			TSharedPtr<IWebSocket> ActiveSocket = m_socket;
+			TSharedPtr<IWebSocket> ClosedSocket = CurrentSocket.Pin();
+			if (!ClosedSocket || ActiveSocket != ClosedSocket)
+			{
+				return;
+			}
+
 			(void)StatusCode;
 			(void)Reason;
 			(void)bWasClean;
