@@ -466,7 +466,16 @@ TFuture<TArray<bool>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncBoolAsync(co
 
 	m_sink->GetNode()->invokeRemote(memberId, {ParamBool},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<TArray<bool>>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<bool>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<bool>());
+			}
 		});
 
 	return Promise->GetFuture();
@@ -496,7 +505,16 @@ TFuture<TArray<int32>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncIntAsync(co
 
 	m_sink->GetNode()->invokeRemote(memberId, {ParamInt},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<TArray<int32>>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<int32>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Warning, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<int32>());
+			}
 		});
 
 	return Promise->GetFuture();
@@ -526,7 +544,16 @@ TFuture<TArray<int32>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt32Async(
 
 	m_sink->GetNode()->invokeRemote(memberId, {ParamInt32},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<TArray<int32>>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<int32>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Warning, TEXT("FuncInt32Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<int32>());
+			}
 		});
 
 	return Promise->GetFuture();
@@ -556,7 +583,16 @@ TFuture<TArray<int64>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncInt64Async(
 
 	m_sink->GetNode()->invokeRemote(memberId, {ParamInt64},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<TArray<int64>>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<int64>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Warning, TEXT("FuncInt64Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<int64>());
+			}
 		});
 
 	return Promise->GetFuture();
@@ -586,7 +622,16 @@ TFuture<TArray<float>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloatAsync(
 
 	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<TArray<float>>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<float>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Warning, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<float>());
+			}
 		});
 
 	return Promise->GetFuture();
@@ -616,7 +661,16 @@ TFuture<TArray<float>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat32Asyn
 
 	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<TArray<float>>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<float>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Warning, TEXT("FuncFloat32Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<float>());
+			}
 		});
 
 	return Promise->GetFuture();
@@ -646,7 +700,16 @@ TFuture<TArray<double>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncFloat64Asy
 
 	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<TArray<double>>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<double>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Warning, TEXT("FuncFloat64Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<double>());
+			}
 		});
 
 	return Promise->GetFuture();
@@ -676,7 +739,16 @@ TFuture<TArray<FString>> UTbSimpleSimpleArrayInterfaceOLinkClient::FuncStringAsy
 
 	m_sink->GetNode()->invokeRemote(memberId, {ParamString},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<TArray<FString>>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<FString>>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Warning, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<FString>());
+			}
 		});
 
 	return Promise->GetFuture();
@@ -804,6 +876,18 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleArrayInterface.OLink.EmitSignal");
 	if (signalName == "sigBool")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal sigBool: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal paramBool: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<bool>& outParamBool = args[0].get<TArray<bool>>();
 		_GetPublisher()->BroadcastSigBoolSignal(outParamBool);
 		return;
@@ -811,6 +895,18 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigInt")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal sigInt: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal paramInt: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<int32>& outParamInt = args[0].get<TArray<int32>>();
 		_GetPublisher()->BroadcastSigIntSignal(outParamInt);
 		return;
@@ -818,6 +914,18 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigInt32")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal sigInt32: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal paramInt32: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<int32>& outParamInt32 = args[0].get<TArray<int32>>();
 		_GetPublisher()->BroadcastSigInt32Signal(outParamInt32);
 		return;
@@ -825,6 +933,18 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigInt64")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal sigInt64: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal paramInt64: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<int64>& outParamInt64 = args[0].get<TArray<int64>>();
 		_GetPublisher()->BroadcastSigInt64Signal(outParamInt64);
 		return;
@@ -832,6 +952,18 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigFloat")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal sigFloat: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal paramFloat: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<float>& outParamFloat = args[0].get<TArray<float>>();
 		_GetPublisher()->BroadcastSigFloatSignal(outParamFloat);
 		return;
@@ -839,6 +971,18 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigFloat32")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal sigFloat32: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal paramFloa32: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<float>& outParamFloa32 = args[0].get<TArray<float>>();
 		_GetPublisher()->BroadcastSigFloat32Signal(outParamFloa32);
 		return;
@@ -846,6 +990,18 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigFloat64")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal sigFloat64: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal paramFloat64: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<double>& outParamFloat64 = args[0].get<TArray<double>>();
 		_GetPublisher()->BroadcastSigFloat64Signal(outParamFloat64);
 		return;
@@ -853,6 +1009,18 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigString")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal sigString: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbSimpleSimpleArrayInterfaceOLinkClient, Error, TEXT("Signal paramString: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<FString>& outParamString = args[0].get<TArray<FString>>();
 		_GetPublisher()->BroadcastSigStringSignal(outParamString);
 		return;

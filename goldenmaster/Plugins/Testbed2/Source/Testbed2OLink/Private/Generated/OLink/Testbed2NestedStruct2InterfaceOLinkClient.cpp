@@ -243,7 +243,16 @@ TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct2InterfaceOLinkClient::Func
 
 	m_sink->GetNode()->invokeRemote(memberId, {Param1},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+			{
+				Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(FTestbed2NestedStruct1());
+			}
 		});
 
 	return Promise->GetFuture();
@@ -273,7 +282,16 @@ TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct2InterfaceOLinkClient::Func
 
 	m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+			{
+				Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Warning, TEXT("Func2Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(FTestbed2NestedStruct1());
+			}
 		});
 
 	return Promise->GetFuture();
@@ -317,6 +335,18 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::emitSignal(const std::string& s
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct2Interface.OLink.EmitSignal");
 	if (signalName == "sig1")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Error, TEXT("Signal sig1: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
 		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
@@ -324,7 +354,25 @@ void UTestbed2NestedStruct2InterfaceOLinkClient::emitSignal(const std::string& s
 
 	if (signalName == "sig2")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 2)
+		{
+			UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Error, TEXT("Signal sig2: invalid args array (expected 2 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
+		// make sure the type matches our expectation
+		if (args[1].is_null() || !args[1].is_object())
+		{
+			UE_LOG(LogTestbed2NestedStruct2InterfaceOLinkClient, Error, TEXT("Signal param2: invalid type for parameter 1"));
+			return;
+		}
 		const FTestbed2NestedStruct2& outParam2 = args[1].get<FTestbed2NestedStruct2>();
 		_GetPublisher()->BroadcastSig2Signal(outParam1, outParam2);
 		return;

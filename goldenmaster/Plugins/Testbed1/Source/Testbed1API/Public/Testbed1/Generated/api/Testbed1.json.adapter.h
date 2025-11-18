@@ -1,6 +1,7 @@
 #pragma once
 
 #include "apigear.json.adapter.h"
+#include "Testbed1/Generated/Testbed1LogCategories.h"
 #include "Testbed1/Generated/api/Testbed1_data.h"
 #include "Testbed1/Generated/api/Testbed1StructInterfaceInterface.h"
 #include "Testbed1/Generated/api/Testbed1StructArrayInterfaceInterface.h"
@@ -8,7 +9,15 @@
 
 static void from_json(const nlohmann::json& j, FTestbed1StructBool& p)
 {
-	p.fieldBool = j.at("fieldBool").get<bool>();
+	const auto fieldBoolIter = j.find("fieldBool");
+	if (fieldBoolIter != j.end() && !fieldBoolIter->is_null() && fieldBoolIter->is_boolean())
+	{
+		p.fieldBool = fieldBoolIter->get<bool>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldBool' missing or type mismatch in FTestbed1StructBool -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructBool& p)
@@ -18,7 +27,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructBool& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructInt& p)
 {
-	p.fieldInt = j.at("fieldInt").get<int32>();
+	const auto fieldIntIter = j.find("fieldInt");
+	if (fieldIntIter != j.end() && !fieldIntIter->is_null() && fieldIntIter->is_number_integer())
+	{
+		p.fieldInt = fieldIntIter->get<int32>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldInt' missing or type mismatch in FTestbed1StructInt -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructInt& p)
@@ -28,7 +45,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructInt& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructFloat& p)
 {
-	p.fieldFloat = j.at("fieldFloat").get<float>();
+	const auto fieldFloatIter = j.find("fieldFloat");
+	if (fieldFloatIter != j.end() && !fieldFloatIter->is_null() && fieldFloatIter->is_number())
+	{
+		p.fieldFloat = fieldFloatIter->get<float>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldFloat' missing or type mismatch in FTestbed1StructFloat -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructFloat& p)
@@ -38,7 +63,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructFloat& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructString& p)
 {
-	p.fieldString = j.at("fieldString").get<FString>();
+	const auto fieldStringIter = j.find("fieldString");
+	if (fieldStringIter != j.end() && !fieldStringIter->is_null() && fieldStringIter->is_string())
+	{
+		p.fieldString = fieldStringIter->get<FString>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldString' missing or type mismatch in FTestbed1StructString -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructString& p)
@@ -48,7 +81,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructString& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructStruct& p)
 {
-	p.fieldString = j.at("fieldString").get<FTestbed1StructString>();
+	const auto fieldStringIter = j.find("fieldString");
+	if (fieldStringIter != j.end() && !fieldStringIter->is_null() && fieldStringIter->is_object())
+	{
+		p.fieldString = fieldStringIter->get<FTestbed1StructString>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldString' missing or type mismatch in FTestbed1StructStruct -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructStruct& p)
@@ -58,7 +99,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructStruct& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructEnum& p)
 {
-	p.fieldEnum = j.at("fieldEnum").get<ETestbed1Enum0>();
+	const auto fieldEnumIter = j.find("fieldEnum");
+	if (fieldEnumIter != j.end() && !fieldEnumIter->is_null() && fieldEnumIter->is_number_integer())
+	{
+		p.fieldEnum = fieldEnumIter->get<ETestbed1Enum0>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldEnum' missing or type mismatch in FTestbed1StructEnum -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructEnum& p)
@@ -68,7 +117,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructEnum& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructBoolWithArray& p)
 {
-	p.fieldBool = j.at("fieldBool").get<TArray<bool>>();
+	const auto fieldBoolIter = j.find("fieldBool");
+	if (fieldBoolIter != j.end() && !fieldBoolIter->is_null() && fieldBoolIter->is_array())
+	{
+		p.fieldBool = fieldBoolIter->get<TArray<bool>>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldBool' missing or type mismatch in FTestbed1StructBoolWithArray -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructBoolWithArray& p)
@@ -78,7 +135,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructBoolWithArray& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructIntWithArray& p)
 {
-	p.fieldInt = j.at("fieldInt").get<TArray<int32>>();
+	const auto fieldIntIter = j.find("fieldInt");
+	if (fieldIntIter != j.end() && !fieldIntIter->is_null() && fieldIntIter->is_array())
+	{
+		p.fieldInt = fieldIntIter->get<TArray<int32>>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldInt' missing or type mismatch in FTestbed1StructIntWithArray -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructIntWithArray& p)
@@ -88,7 +153,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructIntWithArray& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructFloatWithArray& p)
 {
-	p.fieldFloat = j.at("fieldFloat").get<TArray<float>>();
+	const auto fieldFloatIter = j.find("fieldFloat");
+	if (fieldFloatIter != j.end() && !fieldFloatIter->is_null() && fieldFloatIter->is_array())
+	{
+		p.fieldFloat = fieldFloatIter->get<TArray<float>>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldFloat' missing or type mismatch in FTestbed1StructFloatWithArray -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructFloatWithArray& p)
@@ -98,7 +171,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructFloatWithArray& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructStringWithArray& p)
 {
-	p.fieldString = j.at("fieldString").get<TArray<FString>>();
+	const auto fieldStringIter = j.find("fieldString");
+	if (fieldStringIter != j.end() && !fieldStringIter->is_null() && fieldStringIter->is_array())
+	{
+		p.fieldString = fieldStringIter->get<TArray<FString>>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldString' missing or type mismatch in FTestbed1StructStringWithArray -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructStringWithArray& p)
@@ -108,7 +189,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructStringWithArray& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructStructWithArray& p)
 {
-	p.fieldStruct = j.at("fieldStruct").get<TArray<FTestbed1StructStringWithArray>>();
+	const auto fieldStructIter = j.find("fieldStruct");
+	if (fieldStructIter != j.end() && !fieldStructIter->is_null() && fieldStructIter->is_array())
+	{
+		p.fieldStruct = fieldStructIter->get<TArray<FTestbed1StructStringWithArray>>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldStruct' missing or type mismatch in FTestbed1StructStructWithArray -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructStructWithArray& p)
@@ -118,7 +207,15 @@ static void to_json(nlohmann::json& j, const FTestbed1StructStructWithArray& p)
 
 static void from_json(const nlohmann::json& j, FTestbed1StructEnumWithArray& p)
 {
-	p.fieldEnum = j.at("fieldEnum").get<TArray<ETestbed1Enum0>>();
+	const auto fieldEnumIter = j.find("fieldEnum");
+	if (fieldEnumIter != j.end() && !fieldEnumIter->is_null() && fieldEnumIter->is_array())
+	{
+		p.fieldEnum = fieldEnumIter->get<TArray<ETestbed1Enum0>>();
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: struct field 'fieldEnum' missing or type mismatch in FTestbed1StructEnumWithArray -> using default value"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const FTestbed1StructEnumWithArray& p)
@@ -133,10 +230,45 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed1StructI
 		return;
 	}
 
-	Cast<ITestbed1StructInterfaceInterface>(p.GetObject())->SetPropBool(j.at("propBool").get<FTestbed1StructBool>());
-	Cast<ITestbed1StructInterfaceInterface>(p.GetObject())->SetPropInt(j.at("propInt").get<FTestbed1StructInt>());
-	Cast<ITestbed1StructInterfaceInterface>(p.GetObject())->SetPropFloat(j.at("propFloat").get<FTestbed1StructFloat>());
-	Cast<ITestbed1StructInterfaceInterface>(p.GetObject())->SetPropString(j.at("propString").get<FTestbed1StructString>());
+	const auto propBoolIter = j.find("propBool");
+	if (propBoolIter != j.end() && !propBoolIter->is_null() && propBoolIter->is_object())
+	{
+		Cast<ITestbed1StructInterfaceInterface>(p.GetObject())->SetPropBool(propBoolIter->get<FTestbed1StructBool>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITestbed1StructInterfaceInterface -> ignore"));
+	}
+
+	const auto propIntIter = j.find("propInt");
+	if (propIntIter != j.end() && !propIntIter->is_null() && propIntIter->is_object())
+	{
+		Cast<ITestbed1StructInterfaceInterface>(p.GetObject())->SetPropInt(propIntIter->get<FTestbed1StructInt>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITestbed1StructInterfaceInterface -> ignore"));
+	}
+
+	const auto propFloatIter = j.find("propFloat");
+	if (propFloatIter != j.end() && !propFloatIter->is_null() && propFloatIter->is_object())
+	{
+		Cast<ITestbed1StructInterfaceInterface>(p.GetObject())->SetPropFloat(propFloatIter->get<FTestbed1StructFloat>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propFloat' missing or type mismatch in ITestbed1StructInterfaceInterface -> ignore"));
+	}
+
+	const auto propStringIter = j.find("propString");
+	if (propStringIter != j.end() && !propStringIter->is_null() && propStringIter->is_object())
+	{
+		Cast<ITestbed1StructInterfaceInterface>(p.GetObject())->SetPropString(propStringIter->get<FTestbed1StructString>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propString' missing or type mismatch in ITestbed1StructInterfaceInterface -> ignore"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const TScriptInterface<ITestbed1StructInterfaceInterface>& p)
@@ -156,11 +288,55 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed1StructA
 		return;
 	}
 
-	Cast<ITestbed1StructArrayInterfaceInterface>(p.GetObject())->SetPropBool(j.at("propBool").get<TArray<FTestbed1StructBool>>());
-	Cast<ITestbed1StructArrayInterfaceInterface>(p.GetObject())->SetPropInt(j.at("propInt").get<TArray<FTestbed1StructInt>>());
-	Cast<ITestbed1StructArrayInterfaceInterface>(p.GetObject())->SetPropFloat(j.at("propFloat").get<TArray<FTestbed1StructFloat>>());
-	Cast<ITestbed1StructArrayInterfaceInterface>(p.GetObject())->SetPropString(j.at("propString").get<TArray<FTestbed1StructString>>());
-	Cast<ITestbed1StructArrayInterfaceInterface>(p.GetObject())->SetPropEnum(j.at("propEnum").get<TArray<ETestbed1Enum0>>());
+	const auto propBoolIter = j.find("propBool");
+	if (propBoolIter != j.end() && !propBoolIter->is_null() && propBoolIter->is_array())
+	{
+		Cast<ITestbed1StructArrayInterfaceInterface>(p.GetObject())->SetPropBool(propBoolIter->get<TArray<FTestbed1StructBool>>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITestbed1StructArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propIntIter = j.find("propInt");
+	if (propIntIter != j.end() && !propIntIter->is_null() && propIntIter->is_array())
+	{
+		Cast<ITestbed1StructArrayInterfaceInterface>(p.GetObject())->SetPropInt(propIntIter->get<TArray<FTestbed1StructInt>>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITestbed1StructArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propFloatIter = j.find("propFloat");
+	if (propFloatIter != j.end() && !propFloatIter->is_null() && propFloatIter->is_array())
+	{
+		Cast<ITestbed1StructArrayInterfaceInterface>(p.GetObject())->SetPropFloat(propFloatIter->get<TArray<FTestbed1StructFloat>>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propFloat' missing or type mismatch in ITestbed1StructArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propStringIter = j.find("propString");
+	if (propStringIter != j.end() && !propStringIter->is_null() && propStringIter->is_array())
+	{
+		Cast<ITestbed1StructArrayInterfaceInterface>(p.GetObject())->SetPropString(propStringIter->get<TArray<FTestbed1StructString>>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propString' missing or type mismatch in ITestbed1StructArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propEnumIter = j.find("propEnum");
+	if (propEnumIter != j.end() && !propEnumIter->is_null() && propEnumIter->is_array())
+	{
+		Cast<ITestbed1StructArrayInterfaceInterface>(p.GetObject())->SetPropEnum(propEnumIter->get<TArray<ETestbed1Enum0>>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propEnum' missing or type mismatch in ITestbed1StructArrayInterfaceInterface -> ignore"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const TScriptInterface<ITestbed1StructArrayInterfaceInterface>& p)
@@ -180,11 +356,55 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed1StructA
 		return;
 	}
 
-	Cast<ITestbed1StructArray2InterfaceInterface>(p.GetObject())->SetPropBool(j.at("propBool").get<FTestbed1StructBoolWithArray>());
-	Cast<ITestbed1StructArray2InterfaceInterface>(p.GetObject())->SetPropInt(j.at("propInt").get<FTestbed1StructIntWithArray>());
-	Cast<ITestbed1StructArray2InterfaceInterface>(p.GetObject())->SetPropFloat(j.at("propFloat").get<FTestbed1StructFloatWithArray>());
-	Cast<ITestbed1StructArray2InterfaceInterface>(p.GetObject())->SetPropString(j.at("propString").get<FTestbed1StructStringWithArray>());
-	Cast<ITestbed1StructArray2InterfaceInterface>(p.GetObject())->SetPropEnum(j.at("propEnum").get<FTestbed1StructEnumWithArray>());
+	const auto propBoolIter = j.find("propBool");
+	if (propBoolIter != j.end() && !propBoolIter->is_null() && propBoolIter->is_object())
+	{
+		Cast<ITestbed1StructArray2InterfaceInterface>(p.GetObject())->SetPropBool(propBoolIter->get<FTestbed1StructBoolWithArray>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITestbed1StructArray2InterfaceInterface -> ignore"));
+	}
+
+	const auto propIntIter = j.find("propInt");
+	if (propIntIter != j.end() && !propIntIter->is_null() && propIntIter->is_object())
+	{
+		Cast<ITestbed1StructArray2InterfaceInterface>(p.GetObject())->SetPropInt(propIntIter->get<FTestbed1StructIntWithArray>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITestbed1StructArray2InterfaceInterface -> ignore"));
+	}
+
+	const auto propFloatIter = j.find("propFloat");
+	if (propFloatIter != j.end() && !propFloatIter->is_null() && propFloatIter->is_object())
+	{
+		Cast<ITestbed1StructArray2InterfaceInterface>(p.GetObject())->SetPropFloat(propFloatIter->get<FTestbed1StructFloatWithArray>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propFloat' missing or type mismatch in ITestbed1StructArray2InterfaceInterface -> ignore"));
+	}
+
+	const auto propStringIter = j.find("propString");
+	if (propStringIter != j.end() && !propStringIter->is_null() && propStringIter->is_object())
+	{
+		Cast<ITestbed1StructArray2InterfaceInterface>(p.GetObject())->SetPropString(propStringIter->get<FTestbed1StructStringWithArray>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propString' missing or type mismatch in ITestbed1StructArray2InterfaceInterface -> ignore"));
+	}
+
+	const auto propEnumIter = j.find("propEnum");
+	if (propEnumIter != j.end() && !propEnumIter->is_null() && propEnumIter->is_object())
+	{
+		Cast<ITestbed1StructArray2InterfaceInterface>(p.GetObject())->SetPropEnum(propEnumIter->get<FTestbed1StructEnumWithArray>());
+	}
+	else
+	{
+		UE_LOG(LogTestbed1, Verbose, TEXT("from_json: interface property 'propEnum' missing or type mismatch in ITestbed1StructArray2InterfaceInterface -> ignore"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const TScriptInterface<ITestbed1StructArray2InterfaceInterface>& p)

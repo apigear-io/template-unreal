@@ -295,7 +295,16 @@ TFuture<ETbEnumEnum0> UTbEnumEnumInterfaceOLinkClient::Func0Async(ETbEnumEnum0 P
 
 	m_sink->GetNode()->invokeRemote(memberId, {Param0},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<ETbEnumEnum0>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<ETbEnumEnum0>());
+			}
+			else
+			{
+				UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("Func0Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(ETbEnumEnum0::TEE0_Value0);
+			}
 		});
 
 	return Promise->GetFuture();
@@ -325,7 +334,16 @@ TFuture<ETbEnumEnum1> UTbEnumEnumInterfaceOLinkClient::Func1Async(ETbEnumEnum1 P
 
 	m_sink->GetNode()->invokeRemote(memberId, {Param1},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<ETbEnumEnum1>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<ETbEnumEnum1>());
+			}
+			else
+			{
+				UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(ETbEnumEnum1::TEE1_Value1);
+			}
 		});
 
 	return Promise->GetFuture();
@@ -355,7 +373,16 @@ TFuture<ETbEnumEnum2> UTbEnumEnumInterfaceOLinkClient::Func2Async(ETbEnumEnum2 P
 
 	m_sink->GetNode()->invokeRemote(memberId, {Param2},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<ETbEnumEnum2>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<ETbEnumEnum2>());
+			}
+			else
+			{
+				UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("Func2Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(ETbEnumEnum2::TEE2_Value2);
+			}
 		});
 
 	return Promise->GetFuture();
@@ -385,7 +412,16 @@ TFuture<ETbEnumEnum3> UTbEnumEnumInterfaceOLinkClient::Func3Async(ETbEnumEnum3 P
 
 	m_sink->GetNode()->invokeRemote(memberId, {Param3},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
-			Promise->SetValue(arg.value.get<ETbEnumEnum3>());
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<ETbEnumEnum3>());
+			}
+			else
+			{
+				UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("Func3Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(ETbEnumEnum3::TEE3_Value3);
+			}
 		});
 
 	return Promise->GetFuture();
@@ -441,6 +477,18 @@ void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, 
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbEnum.EnumInterface.OLink.EmitSignal");
 	if (signalName == "sig0")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Signal sig0: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Signal param0: invalid type for parameter 0"));
+			return;
+		}
 		ETbEnumEnum0 outParam0 = args[0].get<ETbEnumEnum0>();
 		_GetPublisher()->BroadcastSig0Signal(outParam0);
 		return;
@@ -448,6 +496,18 @@ void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, 
 
 	if (signalName == "sig1")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Signal sig1: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		ETbEnumEnum1 outParam1 = args[0].get<ETbEnumEnum1>();
 		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
@@ -455,6 +515,18 @@ void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, 
 
 	if (signalName == "sig2")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Signal sig2: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Signal param2: invalid type for parameter 0"));
+			return;
+		}
 		ETbEnumEnum2 outParam2 = args[0].get<ETbEnumEnum2>();
 		_GetPublisher()->BroadcastSig2Signal(outParam2);
 		return;
@@ -462,6 +534,18 @@ void UTbEnumEnumInterfaceOLinkClient::emitSignal(const std::string& signalName, 
 
 	if (signalName == "sig3")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Signal sig3: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Signal param3: invalid type for parameter 0"));
+			return;
+		}
 		ETbEnumEnum3 outParam3 = args[0].get<ETbEnumEnum3>();
 		_GetPublisher()->BroadcastSig3Signal(outParam3);
 		return;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "apigear.json.adapter.h"
+#include "ExternTypes/Generated/ExternTypesLogCategories.h"
 #include "ExternTypes/Generated/api/ExternTypes_data.h"
 #include "Runtime/Core/Public/Math/Vector.h"
 
