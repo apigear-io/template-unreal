@@ -286,13 +286,13 @@ void {{$Class}}OLinkSpec::Define()
 
 {{- range .Interface.Operations }}
 {{- nl }}
-	{{- if (eq .Return.KindType "extern")}}
+	{{- if or (eq .Return.KindType "extern") (eq .Return.KindType "interface")}}
 	// Please implement serialization for {{ueType "" .Return}} before enabling the test.
 	{{- end }}
-	{{if (eq .Return.KindType "extern")}}x{{end}}LatentIt("Operation.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+	{{if or (eq .Return.KindType "extern") (eq .Return.KindType "interface")}}x{{end}}LatentIt("Operation.{{ Camel .Name }}", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
 		{{- range $i, $e := .Params }}
-		{{- if (eq .KindType "extern")}}
+		{{- if or (eq .KindType "extern") (eq .KindType "interface")}}
 		// Please implement serialization for {{ueType "" .}} before testing.
 		{{- end }}
 		{{- end }}
@@ -310,13 +310,13 @@ void {{$Class}}OLinkSpec::Define()
 	});
 {{- if not .Return.IsVoid }}
 {{- nl }}
-	{{- if (eq .Return.KindType "extern")}}
+	{{- if or (eq .Return.KindType "extern") (eq .Return.KindType "interface")}}
 	// Please implement serialization for {{ueType "" .Return}} before enabling the test.
 	{{- end }}
-	{{if (eq .Return.KindType "extern")}}x{{end}}LatentIt("Operation.{{ Camel .Name }}Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+	{{if or (eq .Return.KindType "extern") (eq .Return.KindType "interface")}}x{{end}}LatentIt("Operation.{{ Camel .Name }}Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
 		{
 		{{- range $i, $e := .Params }}
-		{{- if (eq .KindType "extern")}}
+		{{- if or (eq .KindType "extern") (eq .KindType "interface")}}
 		// Please implement serialization for {{ueType "" .}} before testing.
 		{{- end }}
 		{{- end }}
