@@ -121,8 +121,10 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetImportedIfList(), TestValue);
 	});
 
-	LatentIt("Operation.LocalIfMethod", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+	// Please implement serialization for TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> before enabling the test.
+	xLatentIt("Operation.LocalIfMethod", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
+		// Please implement serialization for TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> before testing.
 		// Do implement test here
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
@@ -132,8 +134,10 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		});
 	});
 
-	LatentIt("Operation.LocalIfMethodAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+	// Please implement serialization for TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> before enabling the test.
+	xLatentIt("Operation.LocalIfMethodAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
 		{
+		// Please implement serialization for TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> before testing.
 		// Test async operation through OLink (client -> network -> server -> network -> client callback)
 		TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Future = ImplFixture->GetImplementation()->LocalIfMethodAsync(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
 
@@ -145,8 +149,10 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		});
 	});
 
-	LatentIt("Operation.LocalIfMethodList", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+	// Please implement serialization for TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> before enabling the test.
+	xLatentIt("Operation.LocalIfMethodList", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
+		// Please implement serialization for TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> before testing.
 		// Do implement test here
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
@@ -156,8 +162,10 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		});
 	});
 
-	LatentIt("Operation.LocalIfMethodListAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+	// Please implement serialization for TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> before enabling the test.
+	xLatentIt("Operation.LocalIfMethodListAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
 		{
+		// Please implement serialization for TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> before testing.
 		// Test async operation through OLink (client -> network -> server -> network -> client callback)
 		TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Future = ImplFixture->GetImplementation()->LocalIfMethodListAsync(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
 
@@ -169,8 +177,10 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		});
 	});
 
-	LatentIt("Operation.ImportedIfMethod", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+	// Please implement serialization for TScriptInterface<ITbIfaceimportEmptyIfInterface> before enabling the test.
+	xLatentIt("Operation.ImportedIfMethod", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
+		// Please implement serialization for TScriptInterface<ITbIfaceimportEmptyIfInterface> before testing.
 		// Do implement test here
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
@@ -180,8 +190,10 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		});
 	});
 
-	LatentIt("Operation.ImportedIfMethodAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+	// Please implement serialization for TScriptInterface<ITbIfaceimportEmptyIfInterface> before enabling the test.
+	xLatentIt("Operation.ImportedIfMethodAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
 		{
+		// Please implement serialization for TScriptInterface<ITbIfaceimportEmptyIfInterface> before testing.
 		// Test async operation through OLink (client -> network -> server -> network -> client callback)
 		TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Future = ImplFixture->GetImplementation()->ImportedIfMethodAsync(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
 
@@ -193,8 +205,10 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		});
 	});
 
-	LatentIt("Operation.ImportedIfMethodList", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+	// Please implement serialization for TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> before enabling the test.
+	xLatentIt("Operation.ImportedIfMethodList", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
 		{
+		// Please implement serialization for TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> before testing.
 		// Do implement test here
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
@@ -204,8 +218,10 @@ void UTbRefIfacesParentIfOLinkSpec::Define()
 		});
 	});
 
-	LatentIt("Operation.ImportedIfMethodListAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+	// Please implement serialization for TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> before enabling the test.
+	xLatentIt("Operation.ImportedIfMethodListAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
 		{
+		// Please implement serialization for TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> before testing.
 		// Test async operation through OLink (client -> network -> server -> network -> client callback)
 		TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Future = ImplFixture->GetImplementation()->ImportedIfMethodListAsync(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
 
