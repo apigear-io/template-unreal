@@ -318,7 +318,16 @@ TFuture<FVector> UCounterCounterOLinkClient::IncrementAsync(const FVector& Vec)
 	m_sink->GetNode()->invokeRemote(memberId, {Vec},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<FVector>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+		{
+			Promise->SetValue(arg.value.get<FVector>());
+		}
+		else
+		{
+			UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("IncrementAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(FVector(0.f, 0.f, 0.f));
+		}
 	});
 
 	return Promise->GetFuture();
@@ -349,7 +358,16 @@ TFuture<TArray<FVector>> UCounterCounterOLinkClient::IncrementArrayAsync(const T
 	m_sink->GetNode()->invokeRemote(memberId, {Vec},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TArray<FVector>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+		{
+			Promise->SetValue(arg.value.get<TArray<FVector>>());
+		}
+		else
+		{
+			UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("IncrementArrayAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TArray<FVector>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -380,7 +398,16 @@ TFuture<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementAsync(const F
 	m_sink->GetNode()->invokeRemote(memberId, {Vec},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<FCustomTypesVector3D>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+		{
+			Promise->SetValue(arg.value.get<FCustomTypesVector3D>());
+		}
+		else
+		{
+			UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("DecrementAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(FCustomTypesVector3D());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -411,7 +438,16 @@ TFuture<TArray<FCustomTypesVector3D>> UCounterCounterOLinkClient::DecrementArray
 	m_sink->GetNode()->invokeRemote(memberId, {Vec},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TArray<FCustomTypesVector3D>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+		{
+			Promise->SetValue(arg.value.get<TArray<FCustomTypesVector3D>>());
+		}
+		else
+		{
+			UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("DecrementArrayAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TArray<FCustomTypesVector3D>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -479,9 +515,39 @@ void UCounterCounterOLinkClient::emitSignal(const std::string& signalName, const
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Counter.Counter.OLink.EmitSignal");
 	if (signalName == "valueChanged")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 4)
+		{
+			UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("Signal valueChanged: invalid args array (expected 4 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("Signal vector: invalid type for parameter 0"));
+			return;
+		}
 		const FCustomTypesVector3D& outVector = args[0].get<FCustomTypesVector3D>();
+		// make sure the type matches our expectation
+		if (args[1].is_null() || !args[1].is_object())
+		{
+			UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("Signal extern_vector: invalid type for parameter 1"));
+			return;
+		}
 		const FVector& outExternVector = args[1].get<FVector>();
+		// make sure the type matches our expectation
+		if (args[2].is_null() || !args[2].is_array())
+		{
+			UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("Signal vectorArray: invalid type for parameter 2"));
+			return;
+		}
 		const TArray<FCustomTypesVector3D>& outVectorArray = args[2].get<TArray<FCustomTypesVector3D>>();
+		// make sure the type matches our expectation
+		if (args[3].is_null() || !args[3].is_array())
+		{
+			UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("Signal extern_vectorArray: invalid type for parameter 3"));
+			return;
+		}
 		const TArray<FVector>& outExternVectorArray = args[3].get<TArray<FVector>>();
 		_GetPublisher()->BroadcastValueChangedSignal(outVector, outExternVector, outVectorArray, outExternVectorArray);
 		return;

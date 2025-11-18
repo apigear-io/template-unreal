@@ -248,7 +248,16 @@ TFuture<bool> UTbSimpleNoSignalsInterfaceOLinkClient::FuncBoolAsync(bool bParamB
 	m_sink->GetNode()->invokeRemote(memberId, {bParamBool},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<bool>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_boolean())
+		{
+			Promise->SetValue(arg.value.get<bool>());
+		}
+		else
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(false);
+		}
 	});
 
 	return Promise->GetFuture();

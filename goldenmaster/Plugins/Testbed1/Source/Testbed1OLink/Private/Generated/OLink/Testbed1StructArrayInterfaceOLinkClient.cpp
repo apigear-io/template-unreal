@@ -352,7 +352,16 @@ TFuture<TArray<FTestbed1StructBool>> UTestbed1StructArrayInterfaceOLinkClient::F
 	m_sink->GetNode()->invokeRemote(memberId, {ParamBool},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TArray<FTestbed1StructBool>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+		{
+			Promise->SetValue(arg.value.get<TArray<FTestbed1StructBool>>());
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TArray<FTestbed1StructBool>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -383,7 +392,16 @@ TFuture<TArray<FTestbed1StructInt>> UTestbed1StructArrayInterfaceOLinkClient::Fu
 	m_sink->GetNode()->invokeRemote(memberId, {ParamInt},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TArray<FTestbed1StructInt>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+		{
+			Promise->SetValue(arg.value.get<TArray<FTestbed1StructInt>>());
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Warning, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TArray<FTestbed1StructInt>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -414,7 +432,16 @@ TFuture<TArray<FTestbed1StructFloat>> UTestbed1StructArrayInterfaceOLinkClient::
 	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TArray<FTestbed1StructFloat>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+		{
+			Promise->SetValue(arg.value.get<TArray<FTestbed1StructFloat>>());
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Warning, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TArray<FTestbed1StructFloat>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -445,7 +472,16 @@ TFuture<TArray<FTestbed1StructString>> UTestbed1StructArrayInterfaceOLinkClient:
 	m_sink->GetNode()->invokeRemote(memberId, {ParamString},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TArray<FTestbed1StructString>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+		{
+			Promise->SetValue(arg.value.get<TArray<FTestbed1StructString>>());
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Warning, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TArray<FTestbed1StructString>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -476,7 +512,16 @@ TFuture<TArray<ETestbed1Enum0>> UTestbed1StructArrayInterfaceOLinkClient::FuncEn
 	m_sink->GetNode()->invokeRemote(memberId, {ParamEnum},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TArray<ETestbed1Enum0>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+		{
+			Promise->SetValue(arg.value.get<TArray<ETestbed1Enum0>>());
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Warning, TEXT("FuncEnumAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TArray<ETestbed1Enum0>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -556,6 +601,18 @@ void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArrayInterface.OLink.EmitSignal");
 	if (signalName == "sigBool")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("Signal sigBool: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("Signal paramBool: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<FTestbed1StructBool>& outParamBool = args[0].get<TArray<FTestbed1StructBool>>();
 		_GetPublisher()->BroadcastSigBoolSignal(outParamBool);
 		return;
@@ -563,6 +620,18 @@ void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigInt")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("Signal sigInt: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("Signal paramInt: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<FTestbed1StructInt>& outParamInt = args[0].get<TArray<FTestbed1StructInt>>();
 		_GetPublisher()->BroadcastSigIntSignal(outParamInt);
 		return;
@@ -570,6 +639,18 @@ void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigFloat")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("Signal sigFloat: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("Signal paramFloat: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<FTestbed1StructFloat>& outParamFloat = args[0].get<TArray<FTestbed1StructFloat>>();
 		_GetPublisher()->BroadcastSigFloatSignal(outParamFloat);
 		return;
@@ -577,6 +658,18 @@ void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigString")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("Signal sigString: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("Signal paramString: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<FTestbed1StructString>& outParamString = args[0].get<TArray<FTestbed1StructString>>();
 		_GetPublisher()->BroadcastSigStringSignal(outParamString);
 		return;
@@ -584,6 +677,18 @@ void UTestbed1StructArrayInterfaceOLinkClient::emitSignal(const std::string& sig
 
 	if (signalName == "sigEnum")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("Signal sigEnum: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTestbed1StructArrayInterfaceOLinkClient, Error, TEXT("Signal paramEnum: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<ETestbed1Enum0>& outParamEnum = args[0].get<TArray<ETestbed1Enum0>>();
 		_GetPublisher()->BroadcastSigEnumSignal(outParamEnum);
 		return;

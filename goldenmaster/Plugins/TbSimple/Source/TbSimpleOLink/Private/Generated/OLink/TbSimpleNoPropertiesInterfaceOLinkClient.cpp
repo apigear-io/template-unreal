@@ -177,7 +177,16 @@ TFuture<bool> UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBoolAsync(bool bPar
 	m_sink->GetNode()->invokeRemote(memberId, {bParamBool},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<bool>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_boolean())
+		{
+			Promise->SetValue(arg.value.get<bool>());
+		}
+		else
+		{
+			UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(false);
+		}
 	});
 
 	return Promise->GetFuture();
@@ -204,6 +213,18 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::emitSignal(const std::string& si
 
 	if (signalName == "sigBool")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Error, TEXT("Signal sigBool: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_boolean())
+		{
+			UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Error, TEXT("Signal paramBool: invalid type for parameter 0"));
+			return;
+		}
 		bool boutParamBool = args[0].get<bool>();
 		_GetPublisher()->BroadcastSigBoolSignal(boutParamBool);
 		return;

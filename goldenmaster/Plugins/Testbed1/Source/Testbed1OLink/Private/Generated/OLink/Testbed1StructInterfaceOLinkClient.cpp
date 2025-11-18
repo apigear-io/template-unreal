@@ -316,7 +316,16 @@ TFuture<FTestbed1StructBool> UTestbed1StructInterfaceOLinkClient::FuncBoolAsync(
 	m_sink->GetNode()->invokeRemote(memberId, {ParamBool},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<FTestbed1StructBool>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+		{
+			Promise->SetValue(arg.value.get<FTestbed1StructBool>());
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(FTestbed1StructBool());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -347,7 +356,16 @@ TFuture<FTestbed1StructInt> UTestbed1StructInterfaceOLinkClient::FuncIntAsync(co
 	m_sink->GetNode()->invokeRemote(memberId, {ParamInt},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<FTestbed1StructInt>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+		{
+			Promise->SetValue(arg.value.get<FTestbed1StructInt>());
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(FTestbed1StructInt());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -378,7 +396,16 @@ TFuture<FTestbed1StructFloat> UTestbed1StructInterfaceOLinkClient::FuncFloatAsyn
 	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<FTestbed1StructFloat>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+		{
+			Promise->SetValue(arg.value.get<FTestbed1StructFloat>());
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(FTestbed1StructFloat());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -409,7 +436,16 @@ TFuture<FTestbed1StructString> UTestbed1StructInterfaceOLinkClient::FuncStringAs
 	m_sink->GetNode()->invokeRemote(memberId, {ParamString},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<FTestbed1StructString>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+		{
+			Promise->SetValue(arg.value.get<FTestbed1StructString>());
+		}
+		else
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(FTestbed1StructString());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -477,6 +513,18 @@ void UTestbed1StructInterfaceOLinkClient::emitSignal(const std::string& signalNa
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.OLink.EmitSignal");
 	if (signalName == "sigBool")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("Signal sigBool: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("Signal paramBool: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed1StructBool& outParamBool = args[0].get<FTestbed1StructBool>();
 		_GetPublisher()->BroadcastSigBoolSignal(outParamBool);
 		return;
@@ -484,6 +532,18 @@ void UTestbed1StructInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigInt")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("Signal sigInt: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("Signal paramInt: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed1StructInt& outParamInt = args[0].get<FTestbed1StructInt>();
 		_GetPublisher()->BroadcastSigIntSignal(outParamInt);
 		return;
@@ -491,6 +551,18 @@ void UTestbed1StructInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigFloat")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("Signal sigFloat: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("Signal paramFloat: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed1StructFloat& outParamFloat = args[0].get<FTestbed1StructFloat>();
 		_GetPublisher()->BroadcastSigFloatSignal(outParamFloat);
 		return;
@@ -498,6 +570,18 @@ void UTestbed1StructInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigString")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("Signal sigString: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("Signal paramString: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed1StructString& outParamString = args[0].get<FTestbed1StructString>();
 		_GetPublisher()->BroadcastSigStringSignal(outParamString);
 		return;

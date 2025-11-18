@@ -4,6 +4,7 @@
 #pragma once
 
 #include "apigear.json.adapter.h"
+#include "{{$ModuleName}}/Generated/{{$ModuleName}}LogCategories.h"
 #include "{{$ModuleName}}/Generated/api/{{$ModuleName}}_data.h"
 {{- range .Module.Interfaces }}
 #include "{{$ModuleName}}/Generated/api/{{$ModuleName}}{{Camel .Name}}Interface.h"
@@ -24,8 +25,34 @@
 
 static void from_json(const nlohmann::json& j, {{$class}}& p)
 {
-{{- range .Fields}}
-	p.{{.Name}} = j.at("{{.Name}}").get<{{ueReturn "" .}}>();
+{{- range $idx, $elem := .Fields}}
+	{{- if $idx}}{{nl}}{{ end }}
+	const auto {{.Name}}Iter = j.find("{{.Name}}");
+	if ({{.Name}}Iter != j.end() && !{{.Name}}Iter->is_null(){{ " " }}
+	{{- if .IsArray -}}
+		&& {{.Name}}Iter->is_array()
+	{{- else if eq .KindType "enum" -}}
+		&& {{.Name}}Iter->is_number_integer()
+	{{- else if .IsPrimitive -}}
+		{{- if eq .Type "bool" -}}
+		&& {{.Name}}Iter->is_boolean()
+		{{- else if or (eq .Type "int") (eq .Type "int32") (eq .Type "int64") -}}
+		&& {{.Name}}Iter->is_number_integer()
+		{{- else if or (eq .Type "float") (eq .Type "float32") (eq .Type "float64") -}}
+		&& {{.Name}}Iter->is_number()
+		{{- else if eq .Type "string" -}}
+		&& {{.Name}}Iter->is_string()
+		{{- end }}
+	{{- else -}}
+		&& {{.Name}}Iter->is_object()
+	{{- end }})
+	{
+		p.{{.Name}} = {{.Name}}Iter->get<{{ueReturn "" .}}>();
+	}
+	else
+	{
+		UE_LOG(Log{{$ModuleName}}, Verbose, TEXT("from_json: struct field '{{.Name}}' missing or type mismatch in {{$class}} -> using default value"));
+	}
 {{- end }}
 }
 
@@ -51,9 +78,35 @@ static void from_json(const nlohmann::json& j, TScriptInterface<{{$class}}>& p)
 	}
 
 {{- if len .Properties}}{{nl}}{{- end}}
-{{- range .Properties}}
+{{- range $idx, $elem := .Properties}}
 {{- if not .IsReadOnly }}
-	Cast<{{$class}}>(p.GetObject())->Set{{Camel .Name}}(j.at("{{.Name}}").get<{{ueType "" .}}>());
+	{{- if $idx}}{{nl}}{{ end }}
+	const auto {{.Name}}Iter = j.find("{{.Name}}");
+	if ({{.Name}}Iter != j.end() && !{{.Name}}Iter->is_null(){{ " " }}
+	{{- if .IsArray -}}
+		&& {{.Name}}Iter->is_array()
+	{{- else if eq .KindType "enum" -}}
+		&& {{.Name}}Iter->is_number_integer()
+	{{- else if .IsPrimitive -}}
+		{{- if eq .Type "bool" -}}
+		&& {{.Name}}Iter->is_boolean()
+		{{- else if or (eq .Type "int") (eq .Type "int32") (eq .Type "int64") -}}
+		&& {{.Name}}Iter->is_number_integer()
+		{{- else if or (eq .Type "float") (eq .Type "float32") (eq .Type "float64") -}}
+		&& {{.Name}}Iter->is_number()
+		{{- else if eq .Type "string" -}}
+		&& {{.Name}}Iter->is_string()
+		{{- end }}
+	{{- else -}}
+		&& {{.Name}}Iter->is_object()
+	{{- end }})
+	{
+		Cast<{{$class}}>(p.GetObject())->Set{{Camel .Name}}({{.Name}}Iter->get<{{ueType "" .}}>());
+	}
+	else
+	{
+		UE_LOG(Log{{$ModuleName}}, Verbose, TEXT("from_json: interface property '{{.Name}}' missing or type mismatch in {{$class}} -> ignore"));
+	}
 {{- end }}
 {{- end }}
 }
