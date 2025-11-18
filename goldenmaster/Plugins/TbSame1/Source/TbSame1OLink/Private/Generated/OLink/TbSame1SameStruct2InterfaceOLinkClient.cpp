@@ -244,7 +244,16 @@ TFuture<FTbSame1Struct1> UTbSame1SameStruct2InterfaceOLinkClient::Func1Async(con
 	m_sink->GetNode()->invokeRemote(memberId, {Param1},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<FTbSame1Struct1>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+		{
+			Promise->SetValue(arg.value.get<FTbSame1Struct1>());
+		}
+		else
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+			Promise->SetValue(FTbSame1Struct1());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -275,7 +284,16 @@ TFuture<FTbSame1Struct1> UTbSame1SameStruct2InterfaceOLinkClient::Func2Async(con
 	m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<FTbSame1Struct1>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+		{
+			Promise->SetValue(arg.value.get<FTbSame1Struct1>());
+		}
+		else
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Warning, TEXT("Func2Async: invalid return value type or null -> returning default"));
+			Promise->SetValue(FTbSame1Struct1());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -319,6 +337,18 @@ void UTbSame1SameStruct2InterfaceOLinkClient::emitSignal(const std::string& sign
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.EmitSignal");
 	if (signalName == "sig1")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Signal sig1: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		const FTbSame1Struct1& outParam1 = args[0].get<FTbSame1Struct1>();
 		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
@@ -326,7 +356,25 @@ void UTbSame1SameStruct2InterfaceOLinkClient::emitSignal(const std::string& sign
 
 	if (signalName == "sig2")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 2)
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Signal sig2: invalid args array (expected 2 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		const FTbSame1Struct1& outParam1 = args[0].get<FTbSame1Struct1>();
+		// make sure the type matches our expectation
+		if (args[1].is_null() || !args[1].is_object())
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Signal param2: invalid type for parameter 1"));
+			return;
+		}
 		const FTbSame1Struct2& outParam2 = args[1].get<FTbSame1Struct2>();
 		_GetPublisher()->BroadcastSig2Signal(outParam1, outParam2);
 		return;

@@ -275,7 +275,33 @@ TFuture<{{$returnVal}}> {{$Class}}::{{Camel .Name}}Async({{ueParams "" .Params}}
 	m_sink->GetNode()->invokeRemote(memberId, { {{- ueVars "" .Params -}} },
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<{{$returnVal}}>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded(){{ " " }}
+		{{- if .Return.IsArray -}}
+			&& arg.value.is_array()
+		{{- else if eq .Return.KindType "enum" -}}
+			&& arg.value.is_number_integer()
+		{{- else if .Return.IsPrimitive -}}
+			{{- if eq .Return.Type "bool" -}}
+			&& arg.value.is_boolean()
+			{{- else if or (eq .Return.Type "int") (eq .Return.Type "int32") (eq .Return.Type "int64") -}}
+			&& arg.value.is_number_integer()
+			{{- else if or (eq .Return.Type "float") (eq .Return.Type "float32") (eq .Return.Type "float64") -}}
+			&& arg.value.is_number()
+			{{- else if eq .Return.Type "string" -}}
+			&& arg.value.is_string()
+			{{- end }}
+		{{- else -}}
+			&& arg.value.is_object()
+		{{- end }})
+		{
+			Promise->SetValue(arg.value.get<{{$returnVal}}>());
+		}
+		else
+		{
+			UE_LOG(Log{{$Iface}}OLinkClient, Warning, TEXT("{{Camel .Name}}Async: invalid return value type or null -> returning default"));
+			Promise->SetValue({{ ueDefault "" .Return }});
+		}
 	});
 
 	return Promise->GetFuture();
@@ -318,7 +344,38 @@ void {{$Class}}::emitSignal(const std::string& signalName, const nlohmann::json&
 {{- if $i }}{{nl}}{{ end }}
 	if (signalName == "{{.Name}}")
 	{
+		{{- if gt (len .Params) 0 }}
+		// check for correct array size
+		if (!args.is_array() || args.size() < {{len .Params}})
+		{
+			UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("Signal {{.Name}}: invalid args array (expected {{len .Params}} elements)"));
+			return;
+		}
+		{{- end }}
 		{{- range $idx, $elem := .Params }}
+		// make sure the type matches our expectation
+		if (args[{{$idx}}].is_null(){{ " " }}
+		{{- if .IsArray -}}
+			|| !args[{{$idx}}].is_array()
+		{{- else if eq .KindType "enum" -}}
+			|| !args[{{$idx}}].is_number_integer()
+		{{- else if .IsPrimitive -}}
+			{{- if eq .Type "bool" -}}
+			|| !args[{{$idx}}].is_boolean()
+			{{- else if or (eq .Type "int") (eq .Type "int32") (eq .Type "int64") -}}
+			|| !args[{{$idx}}].is_number_integer()
+			{{- else if or (eq .Type "float") (eq .Type "float32") (eq .Type "float64") -}}
+			|| !args[{{$idx}}].is_number()
+			{{- else if eq .Type "string" -}}
+			|| !args[{{$idx}}].is_string()
+			{{- end }}
+		{{- else -}}
+			|| !args[{{$idx}}].is_object()
+		{{- end }})
+		{
+			UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("Signal {{.Name}}: invalid type for parameter {{$idx}}"));
+			return;
+		}
 		{{ueParam "out" .}} = args[{{$idx}}].get<{{ueReturn "" .}}>();
 		{{- end }}
 		_GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "out" .Params}});

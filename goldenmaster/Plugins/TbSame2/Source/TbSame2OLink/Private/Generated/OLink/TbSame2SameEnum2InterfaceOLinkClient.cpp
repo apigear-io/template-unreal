@@ -234,7 +234,16 @@ TFuture<ETbSame2Enum1> UTbSame2SameEnum2InterfaceOLinkClient::Func1Async(ETbSame
 	m_sink->GetNode()->invokeRemote(memberId, {Param1},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<ETbSame2Enum1>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+		{
+			Promise->SetValue(arg.value.get<ETbSame2Enum1>());
+		}
+		else
+		{
+			UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+			Promise->SetValue(ETbSame2Enum1::TS2E1_Value1);
+		}
 	});
 
 	return Promise->GetFuture();
@@ -265,7 +274,16 @@ TFuture<ETbSame2Enum1> UTbSame2SameEnum2InterfaceOLinkClient::Func2Async(ETbSame
 	m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<ETbSame2Enum1>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+		{
+			Promise->SetValue(arg.value.get<ETbSame2Enum1>());
+		}
+		else
+		{
+			UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Warning, TEXT("Func2Async: invalid return value type or null -> returning default"));
+			Promise->SetValue(ETbSame2Enum1::TS2E1_Value1);
+		}
 	});
 
 	return Promise->GetFuture();
@@ -303,6 +321,18 @@ void UTbSame2SameEnum2InterfaceOLinkClient::emitSignal(const std::string& signal
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameEnum2Interface.OLink.EmitSignal");
 	if (signalName == "sig1")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("Signal sig1: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		ETbSame2Enum1 outParam1 = args[0].get<ETbSame2Enum1>();
 		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
@@ -310,7 +340,25 @@ void UTbSame2SameEnum2InterfaceOLinkClient::emitSignal(const std::string& signal
 
 	if (signalName == "sig2")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 2)
+		{
+			UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("Signal sig2: invalid args array (expected 2 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		ETbSame2Enum1 outParam1 = args[0].get<ETbSame2Enum1>();
+		// make sure the type matches our expectation
+		if (args[1].is_null() || !args[1].is_number_integer())
+		{
+			UE_LOG(LogTbSame2SameEnum2InterfaceOLinkClient, Error, TEXT("Signal param2: invalid type for parameter 1"));
+			return;
+		}
 		ETbSame2Enum2 outParam2 = args[1].get<ETbSame2Enum2>();
 		_GetPublisher()->BroadcastSig2Signal(outParam1, outParam2);
 		return;

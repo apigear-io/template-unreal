@@ -1,6 +1,7 @@
 #pragma once
 
 #include "apigear.json.adapter.h"
+#include "Counter/Generated/CounterLogCategories.h"
 #include "Counter/Generated/api/Counter_data.h"
 #include "Counter/Generated/api/CounterCounterInterface.h"
 #include "CustomTypes/Generated/api/CustomTypes.json.adapter.h"
@@ -13,10 +14,45 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ICounterCounterI
 		return;
 	}
 
-	Cast<ICounterCounterInterface>(p.GetObject())->SetVector(j.at("vector").get<FCustomTypesVector3D>());
-	Cast<ICounterCounterInterface>(p.GetObject())->SetExternVector(j.at("extern_vector").get<FVector>());
-	Cast<ICounterCounterInterface>(p.GetObject())->SetVectorArray(j.at("vectorArray").get<TArray<FCustomTypesVector3D>>());
-	Cast<ICounterCounterInterface>(p.GetObject())->SetExternVectorArray(j.at("extern_vectorArray").get<TArray<FVector>>());
+	const auto vectorIter = j.find("vector");
+	if (vectorIter != j.end() && !vectorIter->is_null() && vectorIter->is_object())
+	{
+		Cast<ICounterCounterInterface>(p.GetObject())->SetVector(vectorIter->get<FCustomTypesVector3D>());
+	}
+	else
+	{
+		UE_LOG(LogCounter, Verbose, TEXT("from_json: interface property 'vector' missing or type mismatch in ICounterCounterInterface -> ignore"));
+	}
+
+	const auto extern_vectorIter = j.find("extern_vector");
+	if (extern_vectorIter != j.end() && !extern_vectorIter->is_null() && extern_vectorIter->is_object())
+	{
+		Cast<ICounterCounterInterface>(p.GetObject())->SetExternVector(extern_vectorIter->get<FVector>());
+	}
+	else
+	{
+		UE_LOG(LogCounter, Verbose, TEXT("from_json: interface property 'extern_vector' missing or type mismatch in ICounterCounterInterface -> ignore"));
+	}
+
+	const auto vectorArrayIter = j.find("vectorArray");
+	if (vectorArrayIter != j.end() && !vectorArrayIter->is_null() && vectorArrayIter->is_array())
+	{
+		Cast<ICounterCounterInterface>(p.GetObject())->SetVectorArray(vectorArrayIter->get<TArray<FCustomTypesVector3D>>());
+	}
+	else
+	{
+		UE_LOG(LogCounter, Verbose, TEXT("from_json: interface property 'vectorArray' missing or type mismatch in ICounterCounterInterface -> ignore"));
+	}
+
+	const auto extern_vectorArrayIter = j.find("extern_vectorArray");
+	if (extern_vectorArrayIter != j.end() && !extern_vectorArrayIter->is_null() && extern_vectorArrayIter->is_array())
+	{
+		Cast<ICounterCounterInterface>(p.GetObject())->SetExternVectorArray(extern_vectorArrayIter->get<TArray<FVector>>());
+	}
+	else
+	{
+		UE_LOG(LogCounter, Verbose, TEXT("from_json: interface property 'extern_vectorArray' missing or type mismatch in ICounterCounterInterface -> ignore"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const TScriptInterface<ICounterCounterInterface>& p)

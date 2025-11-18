@@ -204,7 +204,16 @@ TFuture<int32> UTbRefIfacesSimpleLocalIfOLinkClient::IntMethodAsync(int32 Param)
 	m_sink->GetNode()->invokeRemote(memberId, {Param},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<int32>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+		{
+			Promise->SetValue(arg.value.get<int32>());
+		}
+		else
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Warning, TEXT("IntMethodAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(0);
+		}
 	});
 
 	return Promise->GetFuture();
@@ -233,6 +242,18 @@ void UTbRefIfacesSimpleLocalIfOLinkClient::emitSignal(const std::string& signalN
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.EmitSignal");
 	if (signalName == "intSignal")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Error, TEXT("Signal intSignal: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Error, TEXT("Signal param: invalid type for parameter 0"));
+			return;
+		}
 		int32 outParam = args[0].get<int32>();
 		_GetPublisher()->BroadcastIntSignalSignal(outParam);
 		return;

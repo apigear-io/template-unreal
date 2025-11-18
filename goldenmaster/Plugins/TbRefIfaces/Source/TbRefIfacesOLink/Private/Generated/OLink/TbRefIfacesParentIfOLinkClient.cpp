@@ -317,7 +317,16 @@ TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParent
 	m_sink->GetNode()->invokeRemote(memberId, {Param},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+		{
+			Promise->SetValue(arg.value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+		}
+		else
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("LocalIfMethodAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -348,7 +357,16 @@ TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> UTbRefIfac
 	m_sink->GetNode()->invokeRemote(memberId, {Param},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+		{
+			Promise->SetValue(arg.value.get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
+		}
+		else
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("LocalIfMethodListAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -379,7 +397,16 @@ TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOL
 	m_sink->GetNode()->invokeRemote(memberId, {Param},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+		{
+			Promise->SetValue(arg.value.get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+		}
+		else
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("ImportedIfMethodAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -410,7 +437,16 @@ TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> UTbRefIfacesPa
 	m_sink->GetNode()->invokeRemote(memberId, {Param},
 		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
 		{
-		Promise->SetValue(arg.value.get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
+		// check for actual field in j object and make sure the type matches our expectation
+		if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+		{
+			Promise->SetValue(arg.value.get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
+		}
+		else
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("ImportedIfMethodListAsync: invalid return value type or null -> returning default"));
+			Promise->SetValue(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+		}
 	});
 
 	return Promise->GetFuture();
@@ -478,6 +514,18 @@ void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, 
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.EmitSignal");
 	if (signalName == "localIfSignal")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal localIfSignal: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal param: invalid type for parameter 0"));
+			return;
+		}
 		const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& outParam = args[0].get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 		_GetPublisher()->BroadcastLocalIfSignalSignal(outParam);
 		return;
@@ -485,6 +533,18 @@ void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, 
 
 	if (signalName == "localIfSignalList")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal localIfSignalList: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal param: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& outParam = args[0].get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
 		_GetPublisher()->BroadcastLocalIfSignalListSignal(outParam);
 		return;
@@ -492,6 +552,18 @@ void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, 
 
 	if (signalName == "importedIfSignal")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal importedIfSignal: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal param: invalid type for parameter 0"));
+			return;
+		}
 		const TScriptInterface<ITbIfaceimportEmptyIfInterface>& outParam = args[0].get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 		_GetPublisher()->BroadcastImportedIfSignalSignal(outParam);
 		return;
@@ -499,6 +571,18 @@ void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, 
 
 	if (signalName == "importedIfSignalList")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal importedIfSignalList: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal param: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& outParam = args[0].get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
 		_GetPublisher()->BroadcastImportedIfSignalListSignal(outParam);
 		return;

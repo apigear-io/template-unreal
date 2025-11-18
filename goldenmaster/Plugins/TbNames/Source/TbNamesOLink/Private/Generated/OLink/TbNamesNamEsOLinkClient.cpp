@@ -349,6 +349,18 @@ void UTbNamesNamEsOLinkClient::emitSignal(const std::string& signalName, const n
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbNames.NamEs.OLink.EmitSignal");
 	if (signalName == "SOME_SIGNAL")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("Signal SOME_SIGNAL: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_boolean())
+		{
+			UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("Signal SOME_PARAM: invalid type for parameter 0"));
+			return;
+		}
 		bool boutSomeParam = args[0].get<bool>();
 		_GetPublisher()->BroadcastSomeSignalSignal(boutSomeParam);
 		return;
@@ -356,6 +368,18 @@ void UTbNamesNamEsOLinkClient::emitSignal(const std::string& signalName, const n
 
 	if (signalName == "Some_Signal2")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("Signal Some_Signal2: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_boolean())
+		{
+			UE_LOG(LogTbNamesNamEsOLinkClient, Error, TEXT("Signal Some_Param: invalid type for parameter 0"));
+			return;
+		}
 		bool boutSomeParam = args[0].get<bool>();
 		_GetPublisher()->BroadcastSomeSignal2Signal(boutSomeParam);
 		return;
