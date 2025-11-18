@@ -154,4 +154,31 @@ TArray<FTestbed2NestedStruct3> createTestFTestbed2NestedStruct3Array()
 	return TestValueArray;
 }
 
+TArray<ETestbed2Enum1> createTestFTestbed2Enum1Array()
+{
+	TArray<ETestbed2Enum1> TestValueArray;
+
+	ETestbed2Enum1 val = ETestbed2Enum1::T2E1_Value1;
+	TestValueArray.Add(val);
+	return TestValueArray;
+}
+
+TArray<ETestbed2Enum2> createTestFTestbed2Enum2Array()
+{
+	TArray<ETestbed2Enum2> TestValueArray;
+
+	ETestbed2Enum2 val = ETestbed2Enum2::T2E2_Value1;
+	TestValueArray.Add(val);
+	return TestValueArray;
+}
+
+TArray<ETestbed2Enum3> createTestFTestbed2Enum3Array()
+{
+	TArray<ETestbed2Enum3> TestValueArray;
+
+	ETestbed2Enum3 val = ETestbed2Enum3::T2E3_Value1;
+	TestValueArray.Add(val);
+	return TestValueArray;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

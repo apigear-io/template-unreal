@@ -80,4 +80,6 @@ FTestbed1StructEnumWithArray TESTBED1CORE_API createTestFTestbed1StructEnumWithA
 
 TArray<FTestbed1StructEnumWithArray> TESTBED1CORE_API createTestFTestbed1StructEnumWithArrayArray();
 
+TArray<ETestbed1Enum0> TESTBED1CORE_API createTestFTestbed1Enum0Array();
+
 #endif // WITH_DEV_AUTOMATION_TESTS

@@ -121,5 +121,5 @@ mkdir -p "$ProjectTarget_path/Plugins/TbRefIfaces" && cp -rf "$script_path/TbRef
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
-buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.+.OLink.+.MsgBus."
+buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.+.OLink.+.MsgBus.+.Jni."
 if [ $buildresult -ne 0 ]; then exit 1; fi;

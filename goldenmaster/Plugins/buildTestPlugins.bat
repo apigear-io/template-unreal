@@ -165,7 +165,7 @@ if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM run build and tests
-call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.+.OLink.+.MsgBus."
+call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.+.OLink.+.MsgBus.+.Jni."
 exit /b 0
 
 @REM function implementations
