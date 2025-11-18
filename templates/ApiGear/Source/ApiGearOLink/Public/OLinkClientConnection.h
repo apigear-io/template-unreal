@@ -64,6 +64,8 @@ public:
 private:
 	bool bInitialized = false;
 	void open(const FString& url);
+	void cleanupSocket();
+	void handleSocketClosed(int32 StatusCode, const FString& Reason, bool bWasClean);
 	/*
 	 * Helper method for sending messages, should be used from one thread, here achieved with scheduling task to main thread.
 	 * see m_processMessageTaskTimerHandle
@@ -74,6 +76,9 @@ private:
 
 	// Delegate handle for scheduled process message task
 	ApiGear::FDelegateHandle m_processMessageTaskTimerHandle;
+
+	mutable FCriticalSection SocketMutex;
+	std::atomic<bool> bIsClosing{false};
 
 	TSharedPtr<IWebSocket> m_socket;
 	FString m_serverURL;

@@ -110,97 +110,136 @@ void UOLinkClientConnection::Disconnect_Implementation()
 		m_node->unlinkRemote(objectName);
 	}
 
-	m_socket->Close();
+	cleanupSocket();
 }
 
 bool UOLinkClientConnection::IsConnected()
 {
-	if (m_socket && m_socket->IsConnected())
+	FScopeLock Lock(&SocketMutex);
+	return m_socket && m_socket->IsConnected() && !bIsClosing;
+}
+
+void UOLinkClientConnection::cleanupSocket()
+{
+	FScopeLock Lock(&SocketMutex);
+
+	if (!m_socket)
 	{
-		return true;
+		return;
 	}
-	return false;
+
+	bIsClosing = true;
+
+	m_socket->OnConnected().Clear();
+	m_socket->OnConnectionError().Clear();
+	m_socket->OnClosed().Clear();
+
+#if (ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION > 1)
+	m_socket->OnMessage().Clear();
+	m_socket->OnBinaryMessage().Clear();
+#else
+	m_socket->OnRawMessage().Clear();
+#endif
+
+	if (m_socket->IsConnected())
+	{
+		m_socket->Close(1000, TEXT("Intentional disconnect"));
+	}
+
+	m_socket.Reset();
+	bIsClosing = false;
+}
+
+void UOLinkClientConnection::handleSocketClosed(int32 StatusCode, const FString& Reason, bool bWasClean)
+{
+	UE_LOG(LogApiGearOLink, Display, TEXT("status: %d, reason: %s, clean: %d"), StatusCode, *Reason, bWasClean);
+
+	bool bReconnect = IsAutoReconnectEnabled();
+
+	// 1000 == we closed the connection -> do not reconnect
+	if (StatusCode == 1000)
+	{
+		bReconnect = false;
+	}
+
+	OnDisconnected(bReconnect);
 }
 
 void UOLinkClientConnection::open(const FString& url)
 {
-	if (!m_socket)
+	cleanupSocket();
+
+	if (!FModuleManager::Get().IsModuleLoaded("WebSockets"))
 	{
-		if (!FModuleManager::Get().IsModuleLoaded("WebSockets"))
+		FModuleManager::Get().LoadModule("WebSockets");
+	}
+
+	FScopeLock Lock(&SocketMutex);
+	m_socket = FWebSocketsModule::Get().CreateWebSocket(url);
+
+	TWeakObjectPtr<UOLinkClientConnection> WeakThis(this);
+
+	m_socket->OnConnected().AddLambda([WeakThis]() -> void
 		{
-			FModuleManager::Get().LoadModule("WebSockets");
+		if (UOLinkClientConnection* StrongThis = WeakThis.Get())
+		{
+			StrongThis->OnConnected();
 		}
-		m_socket = FWebSocketsModule::Get().CreateWebSocket(url);
+	});
 
-		m_socket->OnConnected().AddLambda([this]() -> void
-			{
-			OnConnected();
-		});
+	m_socket->OnConnectionError().AddLambda([WeakThis](const FString& Error) -> void
+		{
+		if (UOLinkClientConnection* StrongThis = WeakThis.Get())
+		{
+			StrongThis->log(FString::Printf(TEXT("connection error: %s -> %s"), *StrongThis->GetServerURL(), *Error));
+			StrongThis->OnDisconnected(StrongThis->IsAutoReconnectEnabled());
+		}
+	});
 
-		m_socket->OnConnectionError().AddLambda(
-			[this](const FString& Error) -> void
-			{
-			// This code will run if the connection failed. Check Error to see what happened.
-			log(FString::Printf(TEXT("connection error: %s -> %s"), *GetServerURL(), *Error));
-			UAbstractApiGearConnection::OnDisconnected(IsAutoReconnectEnabled());
-			});
-
-		TWeakPtr<IWebSocket> CurrentSocket(m_socket);
-		m_socket->OnClosed().AddLambda(
-			[this, CurrentSocket](int32 StatusCode, const FString& Reason, bool bWasClean) -> void
-			{
+	TWeakPtr<IWebSocket> CurrentSocket(m_socket);
+	m_socket->OnClosed().AddLambda([WeakThis, CurrentSocket](int32 StatusCode, const FString& Reason, bool bWasClean) -> void
+		{
+		if (UOLinkClientConnection* StrongThis = WeakThis.Get())
+		{
 			// Need to check whether we are called by the correct socket and not an old one
-			TSharedPtr<IWebSocket> ActiveSocket = m_socket;
+			TSharedPtr<IWebSocket> ActiveSocket = StrongThis->m_socket;
 			TSharedPtr<IWebSocket> ClosedSocket = CurrentSocket.Pin();
 			if (!ClosedSocket || ActiveSocket != ClosedSocket)
 			{
 				return;
 			}
 
-			(void)StatusCode;
-			(void)Reason;
-			(void)bWasClean;
-			UE_LOG(LogApiGearOLink, Display, TEXT("status: %d, reason: %s, clean: %d"), StatusCode, *Reason, bWasClean);
-
-			bool bReconnect = IsAutoReconnectEnabled();
-
-			// 1000 == we closed the connection -> do not reconnect
-			if (StatusCode == 1000)
-			{
-				bReconnect = false;
-			}
-			OnDisconnected(bReconnect);
-			});
+			StrongThis->handleSocketClosed(StatusCode, Reason, bWasClean);
+		}
+	});
 
 #if (ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION > 1)
-		m_socket->OnMessage().AddLambda(
-			[this](const FString& Message) -> void
-			{
-			// This code will run when we receive a string message from the server.
-			handleTextMessage(TCHAR_TO_UTF8(*Message));
-			});
+	m_socket->OnMessage().AddLambda([WeakThis](const FString& Message) -> void
+		{
+		if (UOLinkClientConnection* StrongThis = WeakThis.Get())
+		{
+			StrongThis->handleTextMessage(TCHAR_TO_UTF8(*Message));
+		}
+	});
 
-		m_socket->OnBinaryMessage().AddLambda(
-			[this](const void* Data, SIZE_T Size, bool /* bIsLastFragment */) -> void
-			{
-			// we assume the incoming binary message is actually text
-			handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
-			});
+	m_socket->OnBinaryMessage().AddLambda([WeakThis](const void* Data, SIZE_T Size, bool) -> void
+		{
+		if (UOLinkClientConnection* StrongThis = WeakThis.Get())
+		{
+			StrongThis->handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
+		}
+	});
 #else
-		m_socket->OnRawMessage().AddLambda(
-			[this](const void* Data, SIZE_T Size, SIZE_T /* BytesRemaining */) -> void
-			{
-			// we assume the incoming raw message is actually text
-			handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
-			});
+	m_socket->OnRawMessage().AddLambda([WeakThis](const void* Data, SIZE_T Size, SIZE_T) -> void
+		{
+		if (UOLinkClientConnection* StrongThis = WeakThis.Get())
+		{
+			StrongThis->handleTextMessage(std::string((uint8*)Data, (uint8*)Data + Size));
+		}
+	});
 #endif
-	}
 
-	if (!m_socket->IsConnected())
-	{
-		// TODO check whether already in "connecting" state - otherwise websocket will log a warning message
-		m_socket->Connect();
-	}
+	m_socket->Connect();
 }
 
 void UOLinkClientConnection::OnConnected_Implementation()
