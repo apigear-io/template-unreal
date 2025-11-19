@@ -58,8 +58,10 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
-#include "Engine/Engine.h"
 {{- $className := printf "%sDataJavaConverter" $ModuleName}}
+DECLARE_LOG_CATEGORY_EXTERN(Log{{$className}}_JNI, Log, All);
+
+#include "Engine/Engine.h"
 
 class {{ $API_MACRO }} {{$className }}
 {

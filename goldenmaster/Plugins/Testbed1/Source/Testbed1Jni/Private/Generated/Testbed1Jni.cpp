@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "Testbed1/Testbed1Jni.h"
 #include "Testbed1/Generated/Testbed1Factory.h"
+#include "Testbed1/Generated/Jni/Testbed1JniCache.h"
 #include "Engine/Engine.h"
 #include "Testbed1Settings.h"
 #include "Modules/ModuleManager.h"
@@ -25,12 +26,18 @@ limitations under the License.
 
 void FTestbed1JniModule::StartupModule()
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	Testbed1JniCache::init();
+#endif
 }
 
 void FTestbed1JniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	Testbed1JniCache::clear();
+#endif
 }
 
 IMPLEMENT_MODULE(FTestbed1JniModule, Testbed1Jni)

@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbSimple/TbSimpleJni.h"
 #include "TbSimple/Generated/TbSimpleFactory.h"
+#include "TbSimple/Generated/Jni/TbSimpleJniCache.h"
 #include "Engine/Engine.h"
 #include "TbSimpleSettings.h"
 #include "Modules/ModuleManager.h"
@@ -25,12 +26,18 @@ limitations under the License.
 
 void FTbSimpleJniModule::StartupModule()
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	TbSimpleJniCache::init();
+#endif
 }
 
 void FTbSimpleJniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	TbSimpleJniCache::clear();
+#endif
 }
 
 IMPLEMENT_MODULE(FTbSimpleJniModule, TbSimpleJni)

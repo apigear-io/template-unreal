@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbNames/TbNamesJni.h"
 #include "TbNames/Generated/TbNamesFactory.h"
+#include "TbNames/Generated/Jni/TbNamesJniCache.h"
 #include "Engine/Engine.h"
 #include "TbNamesSettings.h"
 #include "Modules/ModuleManager.h"
@@ -25,12 +26,18 @@ limitations under the License.
 
 void FTbNamesJniModule::StartupModule()
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	TbNamesJniCache::init();
+#endif
 }
 
 void FTbNamesJniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	TbNamesJniCache::clear();
+#endif
 }
 
 IMPLEMENT_MODULE(FTbNamesJniModule, TbNamesJni)

@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbSame1/TbSame1Jni.h"
 #include "TbSame1/Generated/TbSame1Factory.h"
+#include "TbSame1/Generated/Jni/TbSame1JniCache.h"
 #include "Engine/Engine.h"
 #include "TbSame1Settings.h"
 #include "Modules/ModuleManager.h"
@@ -25,12 +26,18 @@ limitations under the License.
 
 void FTbSame1JniModule::StartupModule()
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	TbSame1JniCache::init();
+#endif
 }
 
 void FTbSame1JniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	TbSame1JniCache::clear();
+#endif
 }
 
 IMPLEMENT_MODULE(FTbSame1JniModule, TbSame1Jni)

@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbSimple/Generated/Jni/TbSimpleNoSignalsInterfaceJniAdapter.h"
 #include "TbSimple/Generated/Jni/TbSimpleDataJavaConverter.h"
+#include "TbSimple/Generated/Jni/TbSimpleJniCache.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
@@ -55,7 +56,6 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 	gUTbSimpleNoSignalsInterfaceJniAdapterHandle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService");
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniServiceStarter");
 	if (BridgeClass == nullptr)
@@ -64,7 +64,7 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 		return;
 	}
 	auto functionSignature = "(Landroid/content/Context;)LtbSimple/tbSimple_api/INoSignalsInterface;";
-	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
+	static jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	if (StartMethod == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:start; method not found"));
@@ -75,6 +75,7 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
+	Env->DeleteGlobalRef(BridgeClass);
 #endif
 #endif
 }
@@ -85,7 +86,6 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::Deinitialize()
 	gUTbSimpleNoSignalsInterfaceJniAdapterHandle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = nullptr;
 	if (m_javaJniServiceInstance)
 	{
 		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
@@ -96,7 +96,7 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::Deinitialize()
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniServiceStarter");
 	if (BridgeClass != nullptr)
 	{
-		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		static jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
@@ -107,6 +107,7 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::Deinitialize()
 			UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:stop; method not found, failed to stop service"));
 			return;
 		}
+		Env->DeleteGlobalRef(BridgeClass);
 	}
 	else
 	{
@@ -152,13 +153,13 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::callJniServiceReady(bool isServiceRe
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		if (!TbSimpleJniCache::javaClassNoSignalsInterface || !m_javaJniServiceInstance)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:nativeServiceReady(Z)V CLASS not found"));
 			return;
 		}
 
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+		static const jmethodID MethodID = TbSimpleJniCache::serviceClassNoSignalsInterfaceReadyMethodID;
 
 		if (MethodID != nullptr)
 		{
@@ -177,13 +178,12 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::OnPropBoolChanged(bool bPropBool)
 	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleNoSignalsInterfaceJniAdapter::OnPropBool "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (TbSimpleJniCache::serviceClassNoSignalsInterface == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService::onPropBoolChanged(Z)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropBoolChanged", "(Z)V");
+		jmethodID MethodID = TbSimpleJniCache::serviceClassNoSignalsInterfacePropBoolChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:onPropBoolChanged(Z)V not found"));
@@ -200,13 +200,12 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::OnPropIntChanged(int32 PropInt)
 	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleNoSignalsInterfaceJniAdapter::OnPropInt "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (TbSimpleJniCache::serviceClassNoSignalsInterface == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService::onPropIntChanged(I)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropIntChanged", "(I)V");
+		jmethodID MethodID = TbSimpleJniCache::serviceClassNoSignalsInterfacePropIntChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:onPropIntChanged(I)V not found"));

@@ -17,6 +17,7 @@ limitations under the License.
 */
 
 #include "Testbed1/Generated/Jni/Testbed1DataJavaConverter.h"
+#include "Testbed1/Generated/Jni/Testbed1JniCache.h"
 #include "Testbed1/Generated/api/Testbed1_data.h"
 #include "Testbed1/Implementation/Testbed1StructInterface.h"
 #include "Testbed1/Implementation/Testbed1StructArrayInterface.h"
@@ -35,12 +36,20 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+DEFINE_LOG_CATEGORY(LogTestbed1DataJavaConverter_JNI);
+
 void Testbed1DataJavaConverter::fillStructBool(JNIEnv* env, jobject input, FTestbed1StructBool& out_struct_bool)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_bool = env->GetFieldID(cls, "fieldBool", "Z");
-	out_struct_bool.fieldBool = env->GetBooleanField(input, jFieldId_field_bool);
+	jfieldID jFieldId_field_bool = Testbed1JniCache::javaStructStructBoolFieldBoolFieldId;
+	if (jFieldId_field_bool)
+	{
+		out_struct_bool.fieldBool = env->GetBooleanField(input, jFieldId_field_bool);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_bool field in FTestbed1StructBool not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructBoolArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructBool>& out_array)
@@ -58,20 +67,36 @@ void Testbed1DataJavaConverter::fillStructBoolArray(JNIEnv* env, jobjectArray in
 
 jobject Testbed1DataJavaConverter::makeJavaStructBool(JNIEnv* env, const FTestbed1StructBool& in_struct_bool)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBool");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	jclass javaClass = Testbed1JniCache::javaStructStructBool;
+	if (Testbed1JniCache::javaStructStructBoolCtor == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructBool not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructBoolCtor);
 
-	jfieldID jFieldId_field_bool = env->GetFieldID(javaClass, "fieldBool", "Z");
-	env->SetBooleanField(javaObjInstance, jFieldId_field_bool, in_struct_bool.fieldBool);
+	jfieldID jFieldId_field_bool = Testbed1JniCache::javaStructStructBoolFieldBoolFieldId;
+	if (jFieldId_field_bool != nullptr)
+	{
+		env->SetBooleanField(javaObjInstance, jFieldId_field_bool, in_struct_bool.fieldBool);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_bool field in FTestbed1StructBool not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolArray(JNIEnv* env, const TArray<FTestbed1StructBool>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBool");
+	if (Testbed1JniCache::javaStructStructBool == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructBool not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructBool, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -84,10 +109,16 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolArray(JNIEnv* env, con
 
 void Testbed1DataJavaConverter::fillStructInt(JNIEnv* env, jobject input, FTestbed1StructInt& out_struct_int)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_int = env->GetFieldID(cls, "fieldInt", "I");
-	out_struct_int.fieldInt = env->GetIntField(input, jFieldId_field_int);
+	jfieldID jFieldId_field_int = Testbed1JniCache::javaStructStructIntFieldIntFieldId;
+	if (jFieldId_field_int)
+	{
+		out_struct_int.fieldInt = env->GetIntField(input, jFieldId_field_int);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_int field in FTestbed1StructInt not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructIntArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructInt>& out_array)
@@ -105,20 +136,36 @@ void Testbed1DataJavaConverter::fillStructIntArray(JNIEnv* env, jobjectArray inp
 
 jobject Testbed1DataJavaConverter::makeJavaStructInt(JNIEnv* env, const FTestbed1StructInt& in_struct_int)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructInt");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	jclass javaClass = Testbed1JniCache::javaStructStructInt;
+	if (Testbed1JniCache::javaStructStructIntCtor == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructInt not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructIntCtor);
 
-	jfieldID jFieldId_field_int = env->GetFieldID(javaClass, "fieldInt", "I");
-	env->SetIntField(javaObjInstance, jFieldId_field_int, in_struct_int.fieldInt);
+	jfieldID jFieldId_field_int = Testbed1JniCache::javaStructStructIntFieldIntFieldId;
+	if (jFieldId_field_int != nullptr)
+	{
+		env->SetIntField(javaObjInstance, jFieldId_field_int, in_struct_int.fieldInt);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_int field in FTestbed1StructInt not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructIntArray(JNIEnv* env, const TArray<FTestbed1StructInt>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructInt");
+	if (Testbed1JniCache::javaStructStructInt == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructInt not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructInt, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -131,10 +178,16 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructIntArray(JNIEnv* env, cons
 
 void Testbed1DataJavaConverter::fillStructFloat(JNIEnv* env, jobject input, FTestbed1StructFloat& out_struct_float)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_float = env->GetFieldID(cls, "fieldFloat", "F");
-	out_struct_float.fieldFloat = env->GetFloatField(input, jFieldId_field_float);
+	jfieldID jFieldId_field_float = Testbed1JniCache::javaStructStructFloatFieldFloatFieldId;
+	if (jFieldId_field_float)
+	{
+		out_struct_float.fieldFloat = env->GetFloatField(input, jFieldId_field_float);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_float field in FTestbed1StructFloat not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructFloatArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructFloat>& out_array)
@@ -152,20 +205,36 @@ void Testbed1DataJavaConverter::fillStructFloatArray(JNIEnv* env, jobjectArray i
 
 jobject Testbed1DataJavaConverter::makeJavaStructFloat(JNIEnv* env, const FTestbed1StructFloat& in_struct_float)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloat");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	jclass javaClass = Testbed1JniCache::javaStructStructFloat;
+	if (Testbed1JniCache::javaStructStructFloatCtor == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructFloat not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructFloatCtor);
 
-	jfieldID jFieldId_field_float = env->GetFieldID(javaClass, "fieldFloat", "F");
-	env->SetFloatField(javaObjInstance, jFieldId_field_float, in_struct_float.fieldFloat);
+	jfieldID jFieldId_field_float = Testbed1JniCache::javaStructStructFloatFieldFloatFieldId;
+	if (jFieldId_field_float != nullptr)
+	{
+		env->SetFloatField(javaObjInstance, jFieldId_field_float, in_struct_float.fieldFloat);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_float field in FTestbed1StructFloat not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatArray(JNIEnv* env, const TArray<FTestbed1StructFloat>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloat");
+	if (Testbed1JniCache::javaStructStructFloat == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructFloat not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructFloat, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -178,11 +247,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatArray(JNIEnv* env, co
 
 void Testbed1DataJavaConverter::fillStructString(JNIEnv* env, jobject input, FTestbed1StructString& out_struct_string)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_string = env->GetFieldID(cls, "fieldString", "Ljava/lang/String;");
-	jstring field_string_value = (jstring)env->GetObjectField(input, jFieldId_field_string);
-	out_struct_string.fieldString = FJavaHelper::FStringFromLocalRef(env, field_string_value);
+	jfieldID jFieldId_field_string = Testbed1JniCache::javaStructStructStringFieldStringFieldId;
+	if (jFieldId_field_string)
+	{
+		jstring field_string_value = (jstring)env->GetObjectField(input, jFieldId_field_string);
+		out_struct_string.fieldString = FJavaHelper::FStringFromLocalRef(env, field_string_value);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_string field in FTestbed1StructString not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructStringArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructString>& out_array)
@@ -200,23 +275,39 @@ void Testbed1DataJavaConverter::fillStructStringArray(JNIEnv* env, jobjectArray 
 
 jobject Testbed1DataJavaConverter::makeJavaStructString(JNIEnv* env, const FTestbed1StructString& in_struct_string)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructString");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	jclass javaClass = Testbed1JniCache::javaStructStructString;
+	if (Testbed1JniCache::javaStructStructStringCtor == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructString not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructStringCtor);
 
-	jfieldID jFieldId_field_string = env->GetFieldID(javaClass, "fieldString", "Ljava/lang/String;");
-	auto l_fieldStringWrapper = FJavaHelper::ToJavaString(env, in_struct_string.fieldString);
-	jstring l_fieldString = static_cast<jstring>(env->NewLocalRef(*l_fieldStringWrapper));
-	env->SetObjectField(javaObjInstance, jFieldId_field_string, l_fieldString);
-	// in UE 5.6 no need for new local ref
+	jfieldID jFieldId_field_string = Testbed1JniCache::javaStructStructStringFieldStringFieldId;
+	if (jFieldId_field_string != nullptr)
+	{
+		auto l_fieldStringWrapper = FJavaHelper::ToJavaString(env, in_struct_string.fieldString);
+		jstring l_fieldString = static_cast<jstring>(env->NewLocalRef(*l_fieldStringWrapper));
+		env->SetObjectField(javaObjInstance, jFieldId_field_string, l_fieldString);
+		// in UE 5.6 no need for new local ref
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_string field in FTestbed1StructString not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStringArray(JNIEnv* env, const TArray<FTestbed1StructString>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructString");
+	if (Testbed1JniCache::javaStructStructString == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructString not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructString, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -229,12 +320,18 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStringArray(JNIEnv* env, c
 
 void Testbed1DataJavaConverter::fillStructStruct(JNIEnv* env, jobject input, FTestbed1StructStruct& out_struct_struct)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_string = env->GetFieldID(cls, "fieldString", "Ltestbed1/testbed1_api/StructString;");
-	jobject field_string_value = env->GetObjectField(input, jFieldId_field_string);
-	fillStructString(env, field_string_value, out_struct_struct.fieldString);
-	env->DeleteLocalRef(field_string_value);
+	jfieldID jFieldId_field_string = Testbed1JniCache::javaStructStructStructFieldStringFieldId;
+	if (jFieldId_field_string)
+	{
+		jobject field_string_value = env->GetObjectField(input, jFieldId_field_string);
+		fillStructString(env, field_string_value, out_struct_struct.fieldString);
+		env->DeleteLocalRef(field_string_value);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_string field in FTestbed1StructStruct not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructStructArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStruct>& out_array)
@@ -252,22 +349,38 @@ void Testbed1DataJavaConverter::fillStructStructArray(JNIEnv* env, jobjectArray 
 
 jobject Testbed1DataJavaConverter::makeJavaStructStruct(JNIEnv* env, const FTestbed1StructStruct& in_struct_struct)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStruct");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	jclass javaClass = Testbed1JniCache::javaStructStructStruct;
+	if (Testbed1JniCache::javaStructStructStructCtor == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructStruct not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructStructCtor);
 
-	jfieldID jFieldId_field_string = env->GetFieldID(javaClass, "fieldString", "Ltestbed1/testbed1_api/StructString;");
-	jobject l_fieldString = makeJavaStructString(env, in_struct_struct.fieldString);
-	env->SetObjectField(javaObjInstance, jFieldId_field_string, l_fieldString);
-	env->DeleteLocalRef(l_fieldString);
+	jfieldID jFieldId_field_string = Testbed1JniCache::javaStructStructStructFieldStringFieldId;
+	if (jFieldId_field_string != nullptr)
+	{
+		jobject l_fieldString = makeJavaStructString(env, in_struct_struct.fieldString);
+		env->SetObjectField(javaObjInstance, jFieldId_field_string, l_fieldString);
+		env->DeleteLocalRef(l_fieldString);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_string field in FTestbed1StructStruct not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStructArray(JNIEnv* env, const TArray<FTestbed1StructStruct>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStruct");
+	if (Testbed1JniCache::javaStructStructStruct == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructStruct not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructStruct, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -280,11 +393,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStructArray(JNIEnv* env, c
 
 void Testbed1DataJavaConverter::fillStructEnum(JNIEnv* env, jobject input, FTestbed1StructEnum& out_struct_enum)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_enum = env->GetFieldID(cls, "fieldEnum", "Ltestbed1/testbed1_api/Enum0;");
-	jobject field_enum_value = env->GetObjectField(input, jFieldId_field_enum);
-	out_struct_enum.fieldEnum = getEnum0Value(env, field_enum_value);
+	jfieldID jFieldId_field_enum = Testbed1JniCache::javaStructStructEnumFieldEnumFieldId;
+	if (jFieldId_field_enum)
+	{
+		jobject field_enum_value = env->GetObjectField(input, jFieldId_field_enum);
+		out_struct_enum.fieldEnum = getEnum0Value(env, field_enum_value);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_enum field in FTestbed1StructEnum not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructEnumArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructEnum>& out_array)
@@ -302,22 +421,38 @@ void Testbed1DataJavaConverter::fillStructEnumArray(JNIEnv* env, jobjectArray in
 
 jobject Testbed1DataJavaConverter::makeJavaStructEnum(JNIEnv* env, const FTestbed1StructEnum& in_struct_enum)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnum");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	jclass javaClass = Testbed1JniCache::javaStructStructEnum;
+	if (Testbed1JniCache::javaStructStructEnumCtor == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructEnum not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructEnumCtor);
 
-	jfieldID jFieldId_field_enum = env->GetFieldID(javaClass, "fieldEnum", "Ltestbed1/testbed1_api/Enum0;");
-	jobject l_fieldEnum = makeJavaEnum0(env, in_struct_enum.fieldEnum);
-	env->SetObjectField(javaObjInstance, jFieldId_field_enum, l_fieldEnum);
-	env->DeleteLocalRef(l_fieldEnum);
+	jfieldID jFieldId_field_enum = Testbed1JniCache::javaStructStructEnumFieldEnumFieldId;
+	if (jFieldId_field_enum != nullptr)
+	{
+		jobject l_fieldEnum = makeJavaEnum0(env, in_struct_enum.fieldEnum);
+		env->SetObjectField(javaObjInstance, jFieldId_field_enum, l_fieldEnum);
+		env->DeleteLocalRef(l_fieldEnum);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_enum field in FTestbed1StructEnum not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumArray(JNIEnv* env, const TArray<FTestbed1StructEnum>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnum");
+	if (Testbed1JniCache::javaStructStructEnum == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructEnum not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructEnum, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -330,20 +465,26 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumArray(JNIEnv* env, con
 
 void Testbed1DataJavaConverter::fillStructBoolWithArray(JNIEnv* env, jobject input, FTestbed1StructBoolWithArray& out_struct_bool_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_bool = env->GetFieldID(cls, "fieldBool", "[Z");
-	jbooleanArray field_bool_value = (jbooleanArray)env->GetObjectField(input, jFieldId_field_bool);
-	jsize lenfield_bool = env->GetArrayLength(field_bool_value);
-	out_struct_bool_with_array.fieldBool.Reserve(lenfield_bool);
-	TArray<jboolean> Temp;
-	Temp.SetNumUninitialized(lenfield_bool);
-	env->GetBooleanArrayRegion(field_bool_value, 0, lenfield_bool, Temp.GetData());
-	for (int i = 0; i < lenfield_bool; i++)
+	jfieldID jFieldId_field_bool = Testbed1JniCache::javaStructStructBoolWithArrayFieldBoolFieldId;
+	if (jFieldId_field_bool)
 	{
-		out_struct_bool_with_array.fieldBool.Add(Temp[i] == JNI_TRUE);
+		jbooleanArray field_bool_value = (jbooleanArray)env->GetObjectField(input, jFieldId_field_bool);
+		jsize lenfield_bool = env->GetArrayLength(field_bool_value);
+		out_struct_bool_with_array.fieldBool.Reserve(lenfield_bool);
+		TArray<jboolean> Temp;
+		Temp.SetNumUninitialized(lenfield_bool);
+		env->GetBooleanArrayRegion(field_bool_value, 0, lenfield_bool, Temp.GetData());
+		for (int i = 0; i < lenfield_bool; i++)
+		{
+			out_struct_bool_with_array.fieldBool.Add(Temp[i] == JNI_TRUE);
+		}
+		env->DeleteLocalRef(field_bool_value);
 	}
-	env->DeleteLocalRef(field_bool_value);
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_bool field in FTestbed1StructBoolWithArray not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructBoolWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructBoolWithArray>& out_array)
@@ -361,30 +502,46 @@ void Testbed1DataJavaConverter::fillStructBoolWithArrayArray(JNIEnv* env, jobjec
 
 jobject Testbed1DataJavaConverter::makeJavaStructBoolWithArray(JNIEnv* env, const FTestbed1StructBoolWithArray& in_struct_bool_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBoolWithArray");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
-
-	jfieldID jFieldId_field_bool = env->GetFieldID(javaClass, "fieldBool", "[Z");
-	auto lenfield_bool = in_struct_bool_with_array.fieldBool.Num();
-	TArray<jboolean> Temp;
-	Temp.SetNumUninitialized(lenfield_bool);
-	jbooleanArray l_fieldBool = env->NewBooleanArray(lenfield_bool);
-	for (int i = 0; i < lenfield_bool; i++)
+	jclass javaClass = Testbed1JniCache::javaStructStructBoolWithArray;
+	if (Testbed1JniCache::javaStructStructBoolWithArrayCtor == nullptr)
 	{
-		Temp[i] = in_struct_bool_with_array.fieldBool[i] ? JNI_TRUE : JNI_FALSE;
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructBoolWithArray not found"));
+		return nullptr;
 	}
-	env->SetBooleanArrayRegion(l_fieldBool, 0, lenfield_bool, Temp.GetData());
-	env->SetObjectField(javaObjInstance, jFieldId_field_bool, l_fieldBool);
-	env->DeleteLocalRef(l_fieldBool);
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructBoolWithArrayCtor);
+
+	jfieldID jFieldId_field_bool = Testbed1JniCache::javaStructStructBoolWithArrayFieldBoolFieldId;
+	if (jFieldId_field_bool != nullptr)
+	{
+		auto lenfield_bool = in_struct_bool_with_array.fieldBool.Num();
+		TArray<jboolean> Temp;
+		Temp.SetNumUninitialized(lenfield_bool);
+		jbooleanArray l_fieldBool = env->NewBooleanArray(lenfield_bool);
+		for (int i = 0; i < lenfield_bool; i++)
+		{
+			Temp[i] = in_struct_bool_with_array.fieldBool[i] ? JNI_TRUE : JNI_FALSE;
+		}
+		env->SetBooleanArrayRegion(l_fieldBool, 0, lenfield_bool, Temp.GetData());
+		env->SetObjectField(javaObjInstance, jFieldId_field_bool, l_fieldBool);
+		env->DeleteLocalRef(l_fieldBool);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_bool field in FTestbed1StructBoolWithArray not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructBoolWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBoolWithArray");
+	if (Testbed1JniCache::javaStructStructBoolWithArray == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructBoolWithArray not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructBoolWithArray, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -397,14 +554,20 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolWithArrayArray(JNIEnv*
 
 void Testbed1DataJavaConverter::fillStructIntWithArray(JNIEnv* env, jobject input, FTestbed1StructIntWithArray& out_struct_int_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_int = env->GetFieldID(cls, "fieldInt", "[I");
-	jintArray field_int_value = (jintArray)env->GetObjectField(input, jFieldId_field_int);
-	jsize lenfield_int = env->GetArrayLength(field_int_value);
-	out_struct_int_with_array.fieldInt.AddUninitialized(lenfield_int);
-	env->GetIntArrayRegion(field_int_value, 0, lenfield_int, out_struct_int_with_array.fieldInt.GetData());
-	env->DeleteLocalRef(field_int_value);
+	jfieldID jFieldId_field_int = Testbed1JniCache::javaStructStructIntWithArrayFieldIntFieldId;
+	if (jFieldId_field_int)
+	{
+		jintArray field_int_value = (jintArray)env->GetObjectField(input, jFieldId_field_int);
+		jsize lenfield_int = env->GetArrayLength(field_int_value);
+		out_struct_int_with_array.fieldInt.AddUninitialized(lenfield_int);
+		env->GetIntArrayRegion(field_int_value, 0, lenfield_int, out_struct_int_with_array.fieldInt.GetData());
+		env->DeleteLocalRef(field_int_value);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_int field in FTestbed1StructIntWithArray not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructIntWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructIntWithArray>& out_array)
@@ -422,27 +585,43 @@ void Testbed1DataJavaConverter::fillStructIntWithArrayArray(JNIEnv* env, jobject
 
 jobject Testbed1DataJavaConverter::makeJavaStructIntWithArray(JNIEnv* env, const FTestbed1StructIntWithArray& in_struct_int_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructIntWithArray");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
-
-	jfieldID jFieldId_field_int = env->GetFieldID(javaClass, "fieldInt", "[I");
-	auto lenfield_int = in_struct_int_with_array.fieldInt.Num();
-	jintArray l_fieldInt = env->NewIntArray(lenfield_int);
-	if (l_fieldInt != NULL)
+	jclass javaClass = Testbed1JniCache::javaStructStructIntWithArray;
+	if (Testbed1JniCache::javaStructStructIntWithArrayCtor == nullptr)
 	{
-		env->SetIntArrayRegion(l_fieldInt, 0, lenfield_int, in_struct_int_with_array.fieldInt.GetData());
-	};
-	env->SetObjectField(javaObjInstance, jFieldId_field_int, l_fieldInt);
-	env->DeleteLocalRef(l_fieldInt);
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructIntWithArray not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructIntWithArrayCtor);
+
+	jfieldID jFieldId_field_int = Testbed1JniCache::javaStructStructIntWithArrayFieldIntFieldId;
+	if (jFieldId_field_int != nullptr)
+	{
+		auto lenfield_int = in_struct_int_with_array.fieldInt.Num();
+		jintArray l_fieldInt = env->NewIntArray(lenfield_int);
+		if (l_fieldInt != NULL)
+		{
+			env->SetIntArrayRegion(l_fieldInt, 0, lenfield_int, in_struct_int_with_array.fieldInt.GetData());
+		};
+		env->SetObjectField(javaObjInstance, jFieldId_field_int, l_fieldInt);
+		env->DeleteLocalRef(l_fieldInt);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_int field in FTestbed1StructIntWithArray not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructIntWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructIntWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructIntWithArray");
+	if (Testbed1JniCache::javaStructStructIntWithArray == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructIntWithArray not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructIntWithArray, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -455,14 +634,20 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructIntWithArrayArray(JNIEnv* 
 
 void Testbed1DataJavaConverter::fillStructFloatWithArray(JNIEnv* env, jobject input, FTestbed1StructFloatWithArray& out_struct_float_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_float = env->GetFieldID(cls, "fieldFloat", "[F");
-	jfloatArray field_float_value = (jfloatArray)env->GetObjectField(input, jFieldId_field_float);
-	jsize lenfield_float = env->GetArrayLength(field_float_value);
-	out_struct_float_with_array.fieldFloat.AddUninitialized(lenfield_float);
-	env->GetFloatArrayRegion(field_float_value, 0, lenfield_float, out_struct_float_with_array.fieldFloat.GetData());
-	env->DeleteLocalRef(field_float_value);
+	jfieldID jFieldId_field_float = Testbed1JniCache::javaStructStructFloatWithArrayFieldFloatFieldId;
+	if (jFieldId_field_float)
+	{
+		jfloatArray field_float_value = (jfloatArray)env->GetObjectField(input, jFieldId_field_float);
+		jsize lenfield_float = env->GetArrayLength(field_float_value);
+		out_struct_float_with_array.fieldFloat.AddUninitialized(lenfield_float);
+		env->GetFloatArrayRegion(field_float_value, 0, lenfield_float, out_struct_float_with_array.fieldFloat.GetData());
+		env->DeleteLocalRef(field_float_value);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_float field in FTestbed1StructFloatWithArray not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructFloatWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructFloatWithArray>& out_array)
@@ -480,27 +665,43 @@ void Testbed1DataJavaConverter::fillStructFloatWithArrayArray(JNIEnv* env, jobje
 
 jobject Testbed1DataJavaConverter::makeJavaStructFloatWithArray(JNIEnv* env, const FTestbed1StructFloatWithArray& in_struct_float_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloatWithArray");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
-
-	jfieldID jFieldId_field_float = env->GetFieldID(javaClass, "fieldFloat", "[F");
-	auto lenfield_float = in_struct_float_with_array.fieldFloat.Num();
-	jfloatArray l_fieldFloat = env->NewFloatArray(lenfield_float);
-	if (l_fieldFloat != NULL)
+	jclass javaClass = Testbed1JniCache::javaStructStructFloatWithArray;
+	if (Testbed1JniCache::javaStructStructFloatWithArrayCtor == nullptr)
 	{
-		env->SetFloatArrayRegion(l_fieldFloat, 0, lenfield_float, in_struct_float_with_array.fieldFloat.GetData());
-	};
-	env->SetObjectField(javaObjInstance, jFieldId_field_float, l_fieldFloat);
-	env->DeleteLocalRef(l_fieldFloat);
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructFloatWithArray not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructFloatWithArrayCtor);
+
+	jfieldID jFieldId_field_float = Testbed1JniCache::javaStructStructFloatWithArrayFieldFloatFieldId;
+	if (jFieldId_field_float != nullptr)
+	{
+		auto lenfield_float = in_struct_float_with_array.fieldFloat.Num();
+		jfloatArray l_fieldFloat = env->NewFloatArray(lenfield_float);
+		if (l_fieldFloat != NULL)
+		{
+			env->SetFloatArrayRegion(l_fieldFloat, 0, lenfield_float, in_struct_float_with_array.fieldFloat.GetData());
+		};
+		env->SetObjectField(javaObjInstance, jFieldId_field_float, l_fieldFloat);
+		env->DeleteLocalRef(l_fieldFloat);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_float field in FTestbed1StructFloatWithArray not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructFloatWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloatWithArray");
+	if (Testbed1JniCache::javaStructStructFloatWithArray == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructFloatWithArray not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructFloatWithArray, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -513,12 +714,18 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatWithArrayArray(JNIEnv
 
 void Testbed1DataJavaConverter::fillStructStringWithArray(JNIEnv* env, jobject input, FTestbed1StructStringWithArray& out_struct_string_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_string = env->GetFieldID(cls, "fieldString", "[Ljava/lang/String;");
-	jobjectArray field_string_value = (jobjectArray)env->GetObjectField(input, jFieldId_field_string);
-	out_struct_string_with_array.fieldString = FJavaHelper::ObjectArrayToFStringTArray(env, field_string_value);
-	env->DeleteLocalRef(field_string_value);
+	jfieldID jFieldId_field_string = Testbed1JniCache::javaStructStructStringWithArrayFieldStringFieldId;
+	if (jFieldId_field_string)
+	{
+		jobjectArray field_string_value = (jobjectArray)env->GetObjectField(input, jFieldId_field_string);
+		out_struct_string_with_array.fieldString = FJavaHelper::ObjectArrayToFStringTArray(env, field_string_value);
+		env->DeleteLocalRef(field_string_value);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_string field in FTestbed1StructStringWithArray not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructStringWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStringWithArray>& out_array)
@@ -536,29 +743,45 @@ void Testbed1DataJavaConverter::fillStructStringWithArrayArray(JNIEnv* env, jobj
 
 jobject Testbed1DataJavaConverter::makeJavaStructStringWithArray(JNIEnv* env, const FTestbed1StructStringWithArray& in_struct_string_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStringWithArray");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
-
-	jfieldID jFieldId_field_string = env->GetFieldID(javaClass, "fieldString", "[Ljava/lang/String;");
-	TArray<FStringView> fieldStringStringViews;
-	fieldStringStringViews.Reserve(in_struct_string_with_array.fieldString.Num());
-	for (const FString& Str : in_struct_string_with_array.fieldString)
+	jclass javaClass = Testbed1JniCache::javaStructStructStringWithArray;
+	if (Testbed1JniCache::javaStructStructStringWithArrayCtor == nullptr)
 	{
-		fieldStringStringViews.Add(FStringView(Str));
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructStringWithArray not found"));
+		return nullptr;
 	}
-	auto l_fieldStringWrapper = FJavaHelper::ToJavaStringArray(env, fieldStringStringViews);
-	jobjectArray l_fieldString = static_cast<jobjectArray>(env->NewLocalRef(*l_fieldStringWrapper));
-	env->SetObjectField(javaObjInstance, jFieldId_field_string, l_fieldString);
-	env->DeleteLocalRef(l_fieldString);
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructStringWithArrayCtor);
+
+	jfieldID jFieldId_field_string = Testbed1JniCache::javaStructStructStringWithArrayFieldStringFieldId;
+	if (jFieldId_field_string != nullptr)
+	{
+		TArray<FStringView> fieldStringStringViews;
+		fieldStringStringViews.Reserve(in_struct_string_with_array.fieldString.Num());
+		for (const FString& Str : in_struct_string_with_array.fieldString)
+		{
+			fieldStringStringViews.Add(FStringView(Str));
+		}
+		auto l_fieldStringWrapper = FJavaHelper::ToJavaStringArray(env, fieldStringStringViews);
+		jobjectArray l_fieldString = static_cast<jobjectArray>(env->NewLocalRef(*l_fieldStringWrapper));
+		env->SetObjectField(javaObjInstance, jFieldId_field_string, l_fieldString);
+		env->DeleteLocalRef(l_fieldString);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_string field in FTestbed1StructStringWithArray not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStringWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructStringWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStringWithArray");
+	if (Testbed1JniCache::javaStructStructStringWithArray == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructStringWithArray not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructStringWithArray, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -571,12 +794,18 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStringWithArrayArray(JNIEn
 
 void Testbed1DataJavaConverter::fillStructStructWithArray(JNIEnv* env, jobject input, FTestbed1StructStructWithArray& out_struct_struct_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_struct = env->GetFieldID(cls, "fieldStruct", "[Ltestbed1/testbed1_api/StructStringWithArray;");
-	jobjectArray field_struct_value = (jobjectArray)env->GetObjectField(input, jFieldId_field_struct);
-	fillStructStringWithArrayArray(env, field_struct_value, out_struct_struct_with_array.fieldStruct);
-	env->DeleteLocalRef(field_struct_value);
+	jfieldID jFieldId_field_struct = Testbed1JniCache::javaStructStructStructWithArrayFieldStructFieldId;
+	if (jFieldId_field_struct)
+	{
+		jobjectArray field_struct_value = (jobjectArray)env->GetObjectField(input, jFieldId_field_struct);
+		fillStructStringWithArrayArray(env, field_struct_value, out_struct_struct_with_array.fieldStruct);
+		env->DeleteLocalRef(field_struct_value);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_struct field in FTestbed1StructStructWithArray not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructStructWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStructWithArray>& out_array)
@@ -594,22 +823,38 @@ void Testbed1DataJavaConverter::fillStructStructWithArrayArray(JNIEnv* env, jobj
 
 jobject Testbed1DataJavaConverter::makeJavaStructStructWithArray(JNIEnv* env, const FTestbed1StructStructWithArray& in_struct_struct_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStructWithArray");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	jclass javaClass = Testbed1JniCache::javaStructStructStructWithArray;
+	if (Testbed1JniCache::javaStructStructStructWithArrayCtor == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructStructWithArray not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructStructWithArrayCtor);
 
-	jfieldID jFieldId_field_struct = env->GetFieldID(javaClass, "fieldStruct", "[Ltestbed1/testbed1_api/StructStringWithArray;");
-	jobjectArray l_fieldStruct = makeJavaStructStringWithArrayArray(env, in_struct_struct_with_array.fieldStruct);
-	env->SetObjectField(javaObjInstance, jFieldId_field_struct, l_fieldStruct);
-	env->DeleteLocalRef(l_fieldStruct);
+	jfieldID jFieldId_field_struct = Testbed1JniCache::javaStructStructStructWithArrayFieldStructFieldId;
+	if (jFieldId_field_struct != nullptr)
+	{
+		jobjectArray l_fieldStruct = makeJavaStructStringWithArrayArray(env, in_struct_struct_with_array.fieldStruct);
+		env->SetObjectField(javaObjInstance, jFieldId_field_struct, l_fieldStruct);
+		env->DeleteLocalRef(l_fieldStruct);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_struct field in FTestbed1StructStructWithArray not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStructWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructStructWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStructWithArray");
+	if (Testbed1JniCache::javaStructStructStructWithArray == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructStructWithArray not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructStructWithArray, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -622,12 +867,18 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStructWithArrayArray(JNIEn
 
 void Testbed1DataJavaConverter::fillStructEnumWithArray(JNIEnv* env, jobject input, FTestbed1StructEnumWithArray& out_struct_enum_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field_enum = env->GetFieldID(cls, "fieldEnum", "[Ltestbed1/testbed1_api/Enum0;");
-	jobjectArray field_enum_value = (jobjectArray)env->GetObjectField(input, jFieldId_field_enum);
-	fillEnum0Array(env, field_enum_value, out_struct_enum_with_array.fieldEnum);
-	env->DeleteLocalRef(field_enum_value);
+	jfieldID jFieldId_field_enum = Testbed1JniCache::javaStructStructEnumWithArrayFieldEnumFieldId;
+	if (jFieldId_field_enum)
+	{
+		jobjectArray field_enum_value = (jobjectArray)env->GetObjectField(input, jFieldId_field_enum);
+		fillEnum0Array(env, field_enum_value, out_struct_enum_with_array.fieldEnum);
+		env->DeleteLocalRef(field_enum_value);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_enum field in FTestbed1StructEnumWithArray not found"));
+	}
 }
 
 void Testbed1DataJavaConverter::fillStructEnumWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructEnumWithArray>& out_array)
@@ -645,22 +896,38 @@ void Testbed1DataJavaConverter::fillStructEnumWithArrayArray(JNIEnv* env, jobjec
 
 jobject Testbed1DataJavaConverter::makeJavaStructEnumWithArray(JNIEnv* env, const FTestbed1StructEnumWithArray& in_struct_enum_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnumWithArray");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	jclass javaClass = Testbed1JniCache::javaStructStructEnumWithArray;
+	if (Testbed1JniCache::javaStructStructEnumWithArrayCtor == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructEnumWithArray not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, Testbed1JniCache::javaStructStructEnumWithArrayCtor);
 
-	jfieldID jFieldId_field_enum = env->GetFieldID(javaClass, "fieldEnum", "[Ltestbed1/testbed1_api/Enum0;");
-	jobjectArray l_fieldEnum = makeJavaEnum0Array(env, in_struct_enum_with_array.fieldEnum);
-	env->SetObjectField(javaObjInstance, jFieldId_field_enum, l_fieldEnum);
-	env->DeleteLocalRef(l_fieldEnum);
+	jfieldID jFieldId_field_enum = Testbed1JniCache::javaStructStructEnumWithArrayFieldEnumFieldId;
+	if (jFieldId_field_enum != nullptr)
+	{
+		jobjectArray l_fieldEnum = makeJavaEnum0Array(env, in_struct_enum_with_array.fieldEnum);
+		env->SetObjectField(javaObjInstance, jFieldId_field_enum, l_fieldEnum);
+		env->DeleteLocalRef(l_fieldEnum);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("field_enum field in FTestbed1StructEnumWithArray not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructEnumWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnumWithArray");
+	if (Testbed1JniCache::javaStructStructEnumWithArray == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructEnumWithArray not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaStructStructEnumWithArray, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -673,7 +940,6 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumWithArrayArray(JNIEnv*
 
 void Testbed1DataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TArray<ETestbed1Enum0>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -686,19 +952,29 @@ void Testbed1DataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, 
 
 ETestbed1Enum0 Testbed1DataJavaConverter::getEnum0Value(JNIEnv* env, jobject input)
 {
-	ETestbed1Enum0 cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
-	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
-	int int_value = env->CallIntMethod(input, getValueMethod);
-	UTestbed1Library::toTestbed1Enum0(cppEnumValue, int_value);
+	ETestbed1Enum0 cppEnumValue = ETestbed1Enum0::T1E0_Value0;
+
+	if (Testbed1JniCache::javaEnumEnum0GetValueMethod != nullptr)
+	{
+		int int_value = env->CallIntMethod(input, Testbed1JniCache::javaEnumEnum0GetValueMethod);
+		UTestbed1Library::toTestbed1Enum0(cppEnumValue, int_value);
+	}
+	else
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Enum Enum0::getValue not found"));
+	}
 	return cppEnumValue;
 }
 
 jobjectArray Testbed1DataJavaConverter::makeJavaEnum0Array(JNIEnv* env, const TArray<ETestbed1Enum0>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
+	if (Testbed1JniCache::javaEnumEnum0 == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Enum Enum0 not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaEnumEnum0, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -711,12 +987,13 @@ jobjectArray Testbed1DataJavaConverter::makeJavaEnum0Array(JNIEnv* env, const TA
 
 jobject Testbed1DataJavaConverter::makeJavaEnum0(JNIEnv* env, ETestbed1Enum0 value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
-	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)Ltestbed1/testbed1_api/Enum0;");
-	if (!fromValueMethod)
+	if (Testbed1JniCache::javaEnumEnum0FromValueMethodId == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Enum Enum0::fromValue not found"));
 		return nullptr;
+	}
 	int int_value = (uint8)value;
-	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(Testbed1JniCache::javaEnumEnum0, Testbed1JniCache::javaEnumEnum0FromValueMethodId, int_value);
 	return javaObj;
 }
 
@@ -748,9 +1025,13 @@ jobject Testbed1DataJavaConverter::makeJavaStructInterface(JNIEnv* env, const TS
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed1StructInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructInterface");
+	if (!Testbed1JniCache::javaClassStructInterface)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("IStructInterface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaClassStructInterface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -792,9 +1073,13 @@ jobject Testbed1DataJavaConverter::makeJavaStructArrayInterface(JNIEnv* env, con
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructArrayInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed1StructArrayInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArrayInterface");
+	if (!Testbed1JniCache::javaClassStructArrayInterface)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("IStructArrayInterface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaClassStructArrayInterface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -836,9 +1121,13 @@ jobject Testbed1DataJavaConverter::makeJavaStructArray2Interface(JNIEnv* env, co
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructArray2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed1StructArray2InterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArray2Interface");
+	if (!Testbed1JniCache::javaClassStructArray2Interface)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("IStructArray2Interface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Testbed1JniCache::javaClassStructArray2Interface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }

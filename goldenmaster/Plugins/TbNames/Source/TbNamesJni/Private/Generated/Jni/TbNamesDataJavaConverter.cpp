@@ -17,6 +17,7 @@ limitations under the License.
 */
 
 #include "TbNames/Generated/Jni/TbNamesDataJavaConverter.h"
+#include "TbNames/Generated/Jni/TbNamesJniCache.h"
 #include "TbNames/Generated/api/TbNames_data.h"
 #include "TbNames/Implementation/TbNamesNamEs.h"
 
@@ -33,9 +34,10 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+DEFINE_LOG_CATEGORY(LogTbNamesDataJavaConverter_JNI);
+
 void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobjectArray input, TArray<ETbNamesEnum_With_Under_scores>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -48,19 +50,29 @@ void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobject
 
 ETbNamesEnum_With_Under_scores TbNamesDataJavaConverter::getEnumWithUnderScoresValue(JNIEnv* env, jobject input)
 {
-	ETbNamesEnum_With_Under_scores cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
-	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
-	int int_value = env->CallIntMethod(input, getValueMethod);
-	UTbNamesLibrary::toTbNamesEnum_With_Under_scores(cppEnumValue, int_value);
+	ETbNamesEnum_With_Under_scores cppEnumValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
+
+	if (TbNamesJniCache::javaEnumEnumWithUnderScoresGetValueMethod != nullptr)
+	{
+		int int_value = env->CallIntMethod(input, TbNamesJniCache::javaEnumEnumWithUnderScoresGetValueMethod);
+		UTbNamesLibrary::toTbNamesEnum_With_Under_scores(cppEnumValue, int_value);
+	}
+	else
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("Enum EnumWithUnderScores::getValue not found"));
+	}
 	return cppEnumValue;
 }
 
 jobjectArray TbNamesDataJavaConverter::makeJavaEnumWithUnderScoresArray(JNIEnv* env, const TArray<ETbNamesEnum_With_Under_scores>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
+	if (TbNamesJniCache::javaEnumEnumWithUnderScores == nullptr)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("Enum EnumWithUnderScores not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbNamesJniCache::javaEnumEnumWithUnderScores, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -73,12 +85,13 @@ jobjectArray TbNamesDataJavaConverter::makeJavaEnumWithUnderScoresArray(JNIEnv* 
 
 jobject TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(JNIEnv* env, ETbNamesEnum_With_Under_scores value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
-	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)LtbNames/tbNames_api/EnumWithUnderScores;");
-	if (!fromValueMethod)
+	if (TbNamesJniCache::javaEnumEnumWithUnderScoresFromValueMethodId == nullptr)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("Enum EnumWithUnderScores::fromValue not found"));
 		return nullptr;
+	}
 	int int_value = (uint8)value;
-	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(TbNamesJniCache::javaEnumEnumWithUnderScores, TbNamesJniCache::javaEnumEnumWithUnderScoresFromValueMethodId, int_value);
 	return javaObj;
 }
 
@@ -110,9 +123,13 @@ jobject TbNamesDataJavaConverter::makeJavaNamEs(JNIEnv* env, const TScriptInterf
 
 jobjectArray TbNamesDataJavaConverter::makeJavaNamEsArray(JNIEnv* env, const TArray<TScriptInterface<ITbNamesNamEsInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/INamEs");
+	if (!TbNamesJniCache::javaClassNamEs)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("INamEs not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbNamesJniCache::javaClassNamEs, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }

@@ -17,6 +17,7 @@ limitations under the License.
 */
 
 #include "TbSame2/Generated/Jni/TbSame2DataJavaConverter.h"
+#include "TbSame2/Generated/Jni/TbSame2JniCache.h"
 #include "TbSame2/Generated/api/TbSame2_data.h"
 #include "TbSame2/Implementation/TbSame2SameStruct1Interface.h"
 #include "TbSame2/Implementation/TbSame2SameStruct2Interface.h"
@@ -36,18 +37,40 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+DEFINE_LOG_CATEGORY(LogTbSame2DataJavaConverter_JNI);
+
 void TbSame2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame2Struct1& out_struct1)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field1 = env->GetFieldID(cls, "field1", "I");
-	out_struct1.field1 = env->GetIntField(input, jFieldId_field1);
+	jfieldID jFieldId_field1 = TbSame2JniCache::javaStructStruct1Field1FieldId;
+	if (jFieldId_field1)
+	{
+		out_struct1.field1 = env->GetIntField(input, jFieldId_field1);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field1 field in FTbSame2Struct1 not found"));
+	}
 
-	jfieldID jFieldId_field2 = env->GetFieldID(cls, "field2", "I");
-	out_struct1.field2 = env->GetIntField(input, jFieldId_field2);
+	jfieldID jFieldId_field2 = TbSame2JniCache::javaStructStruct1Field2FieldId;
+	if (jFieldId_field2)
+	{
+		out_struct1.field2 = env->GetIntField(input, jFieldId_field2);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field2 field in FTbSame2Struct1 not found"));
+	}
 
-	jfieldID jFieldId_field3 = env->GetFieldID(cls, "field3", "I");
-	out_struct1.field3 = env->GetIntField(input, jFieldId_field3);
+	jfieldID jFieldId_field3 = TbSame2JniCache::javaStructStruct1Field3FieldId;
+	if (jFieldId_field3)
+	{
+		out_struct1.field3 = env->GetIntField(input, jFieldId_field3);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field3 field in FTbSame2Struct1 not found"));
+	}
 }
 
 void TbSame2DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTbSame2Struct1>& out_array)
@@ -65,26 +88,56 @@ void TbSame2DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input,
 
 jobject TbSame2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame2Struct1& in_struct1)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct1");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	jclass javaClass = TbSame2JniCache::javaStructStruct1;
+	if (TbSame2JniCache::javaStructStruct1Ctor == nullptr)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("FTbSame2Struct1 not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, TbSame2JniCache::javaStructStruct1Ctor);
 
-	jfieldID jFieldId_field1 = env->GetFieldID(javaClass, "field1", "I");
-	env->SetIntField(javaObjInstance, jFieldId_field1, in_struct1.field1);
+	jfieldID jFieldId_field1 = TbSame2JniCache::javaStructStruct1Field1FieldId;
+	if (jFieldId_field1 != nullptr)
+	{
+		env->SetIntField(javaObjInstance, jFieldId_field1, in_struct1.field1);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field1 field in FTbSame2Struct1 not found"));
+	}
 
-	jfieldID jFieldId_field2 = env->GetFieldID(javaClass, "field2", "I");
-	env->SetIntField(javaObjInstance, jFieldId_field2, in_struct1.field2);
+	jfieldID jFieldId_field2 = TbSame2JniCache::javaStructStruct1Field2FieldId;
+	if (jFieldId_field2 != nullptr)
+	{
+		env->SetIntField(javaObjInstance, jFieldId_field2, in_struct1.field2);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field2 field in FTbSame2Struct1 not found"));
+	}
 
-	jfieldID jFieldId_field3 = env->GetFieldID(javaClass, "field3", "I");
-	env->SetIntField(javaObjInstance, jFieldId_field3, in_struct1.field3);
+	jfieldID jFieldId_field3 = TbSame2JniCache::javaStructStruct1Field3FieldId;
+	if (jFieldId_field3 != nullptr)
+	{
+		env->SetIntField(javaObjInstance, jFieldId_field3, in_struct1.field3);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field3 field in FTbSame2Struct1 not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray TbSame2DataJavaConverter::makeJavaStruct1Array(JNIEnv* env, const TArray<FTbSame2Struct1>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct1");
+	if (TbSame2JniCache::javaStructStruct1 == nullptr)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("FTbSame2Struct1 not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSame2JniCache::javaStructStruct1, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -97,16 +150,36 @@ jobjectArray TbSame2DataJavaConverter::makeJavaStruct1Array(JNIEnv* env, const T
 
 void TbSame2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame2Struct2& out_struct2)
 {
-	jclass cls = env->GetObjectClass(input);
 
-	jfieldID jFieldId_field1 = env->GetFieldID(cls, "field1", "I");
-	out_struct2.field1 = env->GetIntField(input, jFieldId_field1);
+	jfieldID jFieldId_field1 = TbSame2JniCache::javaStructStruct2Field1FieldId;
+	if (jFieldId_field1)
+	{
+		out_struct2.field1 = env->GetIntField(input, jFieldId_field1);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field1 field in FTbSame2Struct2 not found"));
+	}
 
-	jfieldID jFieldId_field2 = env->GetFieldID(cls, "field2", "I");
-	out_struct2.field2 = env->GetIntField(input, jFieldId_field2);
+	jfieldID jFieldId_field2 = TbSame2JniCache::javaStructStruct2Field2FieldId;
+	if (jFieldId_field2)
+	{
+		out_struct2.field2 = env->GetIntField(input, jFieldId_field2);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field2 field in FTbSame2Struct2 not found"));
+	}
 
-	jfieldID jFieldId_field3 = env->GetFieldID(cls, "field3", "I");
-	out_struct2.field3 = env->GetIntField(input, jFieldId_field3);
+	jfieldID jFieldId_field3 = TbSame2JniCache::javaStructStruct2Field3FieldId;
+	if (jFieldId_field3)
+	{
+		out_struct2.field3 = env->GetIntField(input, jFieldId_field3);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field3 field in FTbSame2Struct2 not found"));
+	}
 }
 
 void TbSame2DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTbSame2Struct2>& out_array)
@@ -124,26 +197,56 @@ void TbSame2DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input,
 
 jobject TbSame2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame2Struct2& in_struct2)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct2");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	jclass javaClass = TbSame2JniCache::javaStructStruct2;
+	if (TbSame2JniCache::javaStructStruct2Ctor == nullptr)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("FTbSame2Struct2 not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(javaClass, TbSame2JniCache::javaStructStruct2Ctor);
 
-	jfieldID jFieldId_field1 = env->GetFieldID(javaClass, "field1", "I");
-	env->SetIntField(javaObjInstance, jFieldId_field1, in_struct2.field1);
+	jfieldID jFieldId_field1 = TbSame2JniCache::javaStructStruct2Field1FieldId;
+	if (jFieldId_field1 != nullptr)
+	{
+		env->SetIntField(javaObjInstance, jFieldId_field1, in_struct2.field1);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field1 field in FTbSame2Struct2 not found"));
+	}
 
-	jfieldID jFieldId_field2 = env->GetFieldID(javaClass, "field2", "I");
-	env->SetIntField(javaObjInstance, jFieldId_field2, in_struct2.field2);
+	jfieldID jFieldId_field2 = TbSame2JniCache::javaStructStruct2Field2FieldId;
+	if (jFieldId_field2 != nullptr)
+	{
+		env->SetIntField(javaObjInstance, jFieldId_field2, in_struct2.field2);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field2 field in FTbSame2Struct2 not found"));
+	}
 
-	jfieldID jFieldId_field3 = env->GetFieldID(javaClass, "field3", "I");
-	env->SetIntField(javaObjInstance, jFieldId_field3, in_struct2.field3);
+	jfieldID jFieldId_field3 = TbSame2JniCache::javaStructStruct2Field3FieldId;
+	if (jFieldId_field3 != nullptr)
+	{
+		env->SetIntField(javaObjInstance, jFieldId_field3, in_struct2.field3);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("field3 field in FTbSame2Struct2 not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray TbSame2DataJavaConverter::makeJavaStruct2Array(JNIEnv* env, const TArray<FTbSame2Struct2>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct2");
+	if (TbSame2JniCache::javaStructStruct2 == nullptr)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("FTbSame2Struct2 not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSame2JniCache::javaStructStruct2, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -156,7 +259,6 @@ jobjectArray TbSame2DataJavaConverter::makeJavaStruct2Array(JNIEnv* env, const T
 
 void TbSame2DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETbSame2Enum1>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum1");
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -169,19 +271,29 @@ void TbSame2DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, T
 
 ETbSame2Enum1 TbSame2DataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 {
-	ETbSame2Enum1 cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum1");
-	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
-	int int_value = env->CallIntMethod(input, getValueMethod);
-	UTbSame2Library::toTbSame2Enum1(cppEnumValue, int_value);
+	ETbSame2Enum1 cppEnumValue = ETbSame2Enum1::TS2E1_Value1;
+
+	if (TbSame2JniCache::javaEnumEnum1GetValueMethod != nullptr)
+	{
+		int int_value = env->CallIntMethod(input, TbSame2JniCache::javaEnumEnum1GetValueMethod);
+		UTbSame2Library::toTbSame2Enum1(cppEnumValue, int_value);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("Enum Enum1::getValue not found"));
+	}
 	return cppEnumValue;
 }
 
 jobjectArray TbSame2DataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TArray<ETbSame2Enum1>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum1");
+	if (TbSame2JniCache::javaEnumEnum1 == nullptr)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("Enum Enum1 not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSame2JniCache::javaEnumEnum1, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -194,18 +306,18 @@ jobjectArray TbSame2DataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TAr
 
 jobject TbSame2DataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbSame2Enum1 value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum1");
-	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)LtbSame2/tbSame2_api/Enum1;");
-	if (!fromValueMethod)
+	if (TbSame2JniCache::javaEnumEnum1FromValueMethodId == nullptr)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("Enum Enum1::fromValue not found"));
 		return nullptr;
+	}
 	int int_value = (uint8)value;
-	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(TbSame2JniCache::javaEnumEnum1, TbSame2JniCache::javaEnumEnum1FromValueMethodId, int_value);
 	return javaObj;
 }
 
 void TbSame2DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETbSame2Enum2>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum2");
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -218,19 +330,29 @@ void TbSame2DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, T
 
 ETbSame2Enum2 TbSame2DataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 {
-	ETbSame2Enum2 cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum2");
-	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
-	int int_value = env->CallIntMethod(input, getValueMethod);
-	UTbSame2Library::toTbSame2Enum2(cppEnumValue, int_value);
+	ETbSame2Enum2 cppEnumValue = ETbSame2Enum2::TS2E2_Value1;
+
+	if (TbSame2JniCache::javaEnumEnum2GetValueMethod != nullptr)
+	{
+		int int_value = env->CallIntMethod(input, TbSame2JniCache::javaEnumEnum2GetValueMethod);
+		UTbSame2Library::toTbSame2Enum2(cppEnumValue, int_value);
+	}
+	else
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("Enum Enum2::getValue not found"));
+	}
 	return cppEnumValue;
 }
 
 jobjectArray TbSame2DataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TArray<ETbSame2Enum2>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum2");
+	if (TbSame2JniCache::javaEnumEnum2 == nullptr)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("Enum Enum2 not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSame2JniCache::javaEnumEnum2, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -243,12 +365,13 @@ jobjectArray TbSame2DataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TAr
 
 jobject TbSame2DataJavaConverter::makeJavaEnum2(JNIEnv* env, ETbSame2Enum2 value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum2");
-	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)LtbSame2/tbSame2_api/Enum2;");
-	if (!fromValueMethod)
+	if (TbSame2JniCache::javaEnumEnum2FromValueMethodId == nullptr)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("Enum Enum2::fromValue not found"));
 		return nullptr;
+	}
 	int int_value = (uint8)value;
-	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(TbSame2JniCache::javaEnumEnum2, TbSame2JniCache::javaEnumEnum2FromValueMethodId, int_value);
 	return javaObj;
 }
 
@@ -280,9 +403,13 @@ jobject TbSame2DataJavaConverter::makeJavaSameStruct1Interface(JNIEnv* env, cons
 
 jobjectArray TbSame2DataJavaConverter::makeJavaSameStruct1InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame2SameStruct1InterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameStruct1Interface");
+	if (!TbSame2JniCache::javaClassSameStruct1Interface)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("ISameStruct1Interface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSame2JniCache::javaClassSameStruct1Interface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -324,9 +451,13 @@ jobject TbSame2DataJavaConverter::makeJavaSameStruct2Interface(JNIEnv* env, cons
 
 jobjectArray TbSame2DataJavaConverter::makeJavaSameStruct2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame2SameStruct2InterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameStruct2Interface");
+	if (!TbSame2JniCache::javaClassSameStruct2Interface)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("ISameStruct2Interface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSame2JniCache::javaClassSameStruct2Interface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -368,9 +499,13 @@ jobject TbSame2DataJavaConverter::makeJavaSameEnum1Interface(JNIEnv* env, const 
 
 jobjectArray TbSame2DataJavaConverter::makeJavaSameEnum1InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame2SameEnum1InterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameEnum1Interface");
+	if (!TbSame2JniCache::javaClassSameEnum1Interface)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("ISameEnum1Interface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSame2JniCache::javaClassSameEnum1Interface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -412,9 +547,13 @@ jobject TbSame2DataJavaConverter::makeJavaSameEnum2Interface(JNIEnv* env, const 
 
 jobjectArray TbSame2DataJavaConverter::makeJavaSameEnum2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame2SameEnum2InterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameEnum2Interface");
+	if (!TbSame2JniCache::javaClassSameEnum2Interface)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("ISameEnum2Interface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSame2JniCache::javaClassSameEnum2Interface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }

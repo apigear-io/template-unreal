@@ -39,6 +39,7 @@ limitations under the License.
 
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportEmptyIfJniClient.h"
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
+#include "TbIfaceimport/Generated/Jni/TbIfaceimportJniCache.h"
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
@@ -123,9 +124,12 @@ void UTbIfaceimportEmptyIfJniClient::Initialize(FSubsystemCollectionBase& Collec
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
-	jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
-	jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+	if (TbIfaceimportJniCache::clientClassEmptyIfCtor == nullptr)
+	{
+		UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Warning, TEXT("Java Client Class tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient not found"));
+		return;
+	}
+	jobject localRef = Env->NewObject(TbIfaceimportJniCache::clientClassEmptyIf, TbIfaceimportJniCache::clientClassEmptyIfCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -138,7 +142,6 @@ void UTbIfaceimportEmptyIfJniClient::Deinitialize()
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	Env->DeleteGlobalRef(m_javaJniClientInstance);
-	m_javaJniClientClass = nullptr;
 	m_javaJniClientInstance = nullptr;
 #endif
 
@@ -171,12 +174,12 @@ bool UTbIfaceimportEmptyIfJniClient::_bindToService(FString servicePackage, FStr
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (m_javaJniClientClass == nullptr)
+	if (TbIfaceimportJniCache::clientClassEmptyIf == nullptr)
 	{
 		UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Warning, TEXT("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	jmethodID MethodID = TbIfaceimportJniCache::clientClassEmptyIfBindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
@@ -200,12 +203,12 @@ void UTbIfaceimportEmptyIfJniClient::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (m_javaJniClientClass == nullptr)
+	if (TbIfaceimportJniCache::clientClassEmptyIf == nullptr)
 	{
 		UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Warning, TEXT("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient:unbind:()V CLASS not found"));
 		return;
 	}
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
+	jmethodID MethodID = TbIfaceimportJniCache::clientClassEmptyIfUnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);

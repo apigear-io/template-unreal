@@ -1,0 +1,192 @@
+
+/**
+Copyright 2021 ApiGear UG
+Copyright 2021 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#pragma once
+
+#include "CoreMinimal.h"
+
+#if PLATFORM_ANDROID
+
+#include "Engine/Engine.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
+#endif
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+#include "Engine/Engine.h"
+
+class TESTBED1API_API Testbed1JniCache
+{
+public:
+	static jclass javaStructStructBool;
+	static jmethodID javaStructStructBoolCtor;
+	static jfieldID javaStructStructBoolFieldBoolFieldId;
+	static jclass javaStructStructInt;
+	static jmethodID javaStructStructIntCtor;
+	static jfieldID javaStructStructIntFieldIntFieldId;
+	static jclass javaStructStructFloat;
+	static jmethodID javaStructStructFloatCtor;
+	static jfieldID javaStructStructFloatFieldFloatFieldId;
+	static jclass javaStructStructString;
+	static jmethodID javaStructStructStringCtor;
+	static jfieldID javaStructStructStringFieldStringFieldId;
+	static jclass javaStructStructStruct;
+	static jmethodID javaStructStructStructCtor;
+	static jfieldID javaStructStructStructFieldStringFieldId;
+	static jclass javaStructStructEnum;
+	static jmethodID javaStructStructEnumCtor;
+	static jfieldID javaStructStructEnumFieldEnumFieldId;
+	static jclass javaStructStructBoolWithArray;
+	static jmethodID javaStructStructBoolWithArrayCtor;
+	static jfieldID javaStructStructBoolWithArrayFieldBoolFieldId;
+	static jclass javaStructStructIntWithArray;
+	static jmethodID javaStructStructIntWithArrayCtor;
+	static jfieldID javaStructStructIntWithArrayFieldIntFieldId;
+	static jclass javaStructStructFloatWithArray;
+	static jmethodID javaStructStructFloatWithArrayCtor;
+	static jfieldID javaStructStructFloatWithArrayFieldFloatFieldId;
+	static jclass javaStructStructStringWithArray;
+	static jmethodID javaStructStructStringWithArrayCtor;
+	static jfieldID javaStructStructStringWithArrayFieldStringFieldId;
+	static jclass javaStructStructStructWithArray;
+	static jmethodID javaStructStructStructWithArrayCtor;
+	static jfieldID javaStructStructStructWithArrayFieldStructFieldId;
+	static jclass javaStructStructEnumWithArray;
+	static jmethodID javaStructStructEnumWithArrayCtor;
+	static jfieldID javaStructStructEnumWithArrayFieldEnumFieldId;
+	static jclass javaEnumEnum0;
+	static jmethodID javaEnumEnum0FromValueMethodId;
+	static jmethodID javaEnumEnum0GetValueMethod;
+	static jclass javaClassStructInterface;
+	static jmethodID javaClassStructInterfacePropBoolSetterId;
+	static jmethodID javaClassStructInterfacePropBoolGetterId;
+	static jmethodID javaClassStructInterfacePropBoolChangedMethodID;
+	static jmethodID javaClassStructInterfacePropIntSetterId;
+	static jmethodID javaClassStructInterfacePropIntGetterId;
+	static jmethodID javaClassStructInterfacePropIntChangedMethodID;
+	static jmethodID javaClassStructInterfacePropFloatSetterId;
+	static jmethodID javaClassStructInterfacePropFloatGetterId;
+	static jmethodID javaClassStructInterfacePropFloatChangedMethodID;
+	static jmethodID javaClassStructInterfacePropStringSetterId;
+	static jmethodID javaClassStructInterfacePropStringGetterId;
+	static jmethodID javaClassStructInterfacePropStringChangedMethodID;
+	static jclass serviceClassStructInterface;
+	static jmethodID serviceClassStructInterfaceReadyMethodID;
+	static jmethodID serviceClassStructInterfacePropBoolChangedMethodID;
+	static jmethodID serviceClassStructInterfacePropIntChangedMethodID;
+	static jmethodID serviceClassStructInterfacePropFloatChangedMethodID;
+	static jmethodID serviceClassStructInterfacePropStringChangedMethodID;
+	static jmethodID serviceClassStructInterfaceSigBoolSignalMethodID;
+	static jmethodID serviceClassStructInterfaceSigIntSignalMethodID;
+	static jmethodID serviceClassStructInterfaceSigFloatSignalMethodID;
+	static jmethodID serviceClassStructInterfaceSigStringSignalMethodID;
+	static jclass clientClassStructInterface;
+	static jmethodID clientClassStructInterfaceCtor;
+	static jmethodID clientClassStructInterfaceBindMethodID;
+	static jmethodID clientClassStructInterfaceUnbindMethodID;
+	static jmethodID clientClassStructInterfaceFuncBoolAsyncMethodID;
+	static jmethodID clientClassStructInterfaceFuncIntAsyncMethodID;
+	static jmethodID clientClassStructInterfaceFuncFloatAsyncMethodID;
+	static jmethodID clientClassStructInterfaceFuncStringAsyncMethodID;
+	static jclass javaClassStructArrayInterface;
+	static jmethodID javaClassStructArrayInterfacePropBoolSetterId;
+	static jmethodID javaClassStructArrayInterfacePropBoolGetterId;
+	static jmethodID javaClassStructArrayInterfacePropBoolChangedMethodID;
+	static jmethodID javaClassStructArrayInterfacePropIntSetterId;
+	static jmethodID javaClassStructArrayInterfacePropIntGetterId;
+	static jmethodID javaClassStructArrayInterfacePropIntChangedMethodID;
+	static jmethodID javaClassStructArrayInterfacePropFloatSetterId;
+	static jmethodID javaClassStructArrayInterfacePropFloatGetterId;
+	static jmethodID javaClassStructArrayInterfacePropFloatChangedMethodID;
+	static jmethodID javaClassStructArrayInterfacePropStringSetterId;
+	static jmethodID javaClassStructArrayInterfacePropStringGetterId;
+	static jmethodID javaClassStructArrayInterfacePropStringChangedMethodID;
+	static jmethodID javaClassStructArrayInterfacePropEnumSetterId;
+	static jmethodID javaClassStructArrayInterfacePropEnumGetterId;
+	static jmethodID javaClassStructArrayInterfacePropEnumChangedMethodID;
+	static jclass serviceClassStructArrayInterface;
+	static jmethodID serviceClassStructArrayInterfaceReadyMethodID;
+	static jmethodID serviceClassStructArrayInterfacePropBoolChangedMethodID;
+	static jmethodID serviceClassStructArrayInterfacePropIntChangedMethodID;
+	static jmethodID serviceClassStructArrayInterfacePropFloatChangedMethodID;
+	static jmethodID serviceClassStructArrayInterfacePropStringChangedMethodID;
+	static jmethodID serviceClassStructArrayInterfacePropEnumChangedMethodID;
+	static jmethodID serviceClassStructArrayInterfaceSigBoolSignalMethodID;
+	static jmethodID serviceClassStructArrayInterfaceSigIntSignalMethodID;
+	static jmethodID serviceClassStructArrayInterfaceSigFloatSignalMethodID;
+	static jmethodID serviceClassStructArrayInterfaceSigStringSignalMethodID;
+	static jmethodID serviceClassStructArrayInterfaceSigEnumSignalMethodID;
+	static jclass clientClassStructArrayInterface;
+	static jmethodID clientClassStructArrayInterfaceCtor;
+	static jmethodID clientClassStructArrayInterfaceBindMethodID;
+	static jmethodID clientClassStructArrayInterfaceUnbindMethodID;
+	static jmethodID clientClassStructArrayInterfaceFuncBoolAsyncMethodID;
+	static jmethodID clientClassStructArrayInterfaceFuncIntAsyncMethodID;
+	static jmethodID clientClassStructArrayInterfaceFuncFloatAsyncMethodID;
+	static jmethodID clientClassStructArrayInterfaceFuncStringAsyncMethodID;
+	static jmethodID clientClassStructArrayInterfaceFuncEnumAsyncMethodID;
+	static jclass javaClassStructArray2Interface;
+	static jmethodID javaClassStructArray2InterfacePropBoolSetterId;
+	static jmethodID javaClassStructArray2InterfacePropBoolGetterId;
+	static jmethodID javaClassStructArray2InterfacePropBoolChangedMethodID;
+	static jmethodID javaClassStructArray2InterfacePropIntSetterId;
+	static jmethodID javaClassStructArray2InterfacePropIntGetterId;
+	static jmethodID javaClassStructArray2InterfacePropIntChangedMethodID;
+	static jmethodID javaClassStructArray2InterfacePropFloatSetterId;
+	static jmethodID javaClassStructArray2InterfacePropFloatGetterId;
+	static jmethodID javaClassStructArray2InterfacePropFloatChangedMethodID;
+	static jmethodID javaClassStructArray2InterfacePropStringSetterId;
+	static jmethodID javaClassStructArray2InterfacePropStringGetterId;
+	static jmethodID javaClassStructArray2InterfacePropStringChangedMethodID;
+	static jmethodID javaClassStructArray2InterfacePropEnumSetterId;
+	static jmethodID javaClassStructArray2InterfacePropEnumGetterId;
+	static jmethodID javaClassStructArray2InterfacePropEnumChangedMethodID;
+	static jclass serviceClassStructArray2Interface;
+	static jmethodID serviceClassStructArray2InterfaceReadyMethodID;
+	static jmethodID serviceClassStructArray2InterfacePropBoolChangedMethodID;
+	static jmethodID serviceClassStructArray2InterfacePropIntChangedMethodID;
+	static jmethodID serviceClassStructArray2InterfacePropFloatChangedMethodID;
+	static jmethodID serviceClassStructArray2InterfacePropStringChangedMethodID;
+	static jmethodID serviceClassStructArray2InterfacePropEnumChangedMethodID;
+	static jmethodID serviceClassStructArray2InterfaceSigBoolSignalMethodID;
+	static jmethodID serviceClassStructArray2InterfaceSigIntSignalMethodID;
+	static jmethodID serviceClassStructArray2InterfaceSigFloatSignalMethodID;
+	static jmethodID serviceClassStructArray2InterfaceSigStringSignalMethodID;
+	static jclass clientClassStructArray2Interface;
+	static jmethodID clientClassStructArray2InterfaceCtor;
+	static jmethodID clientClassStructArray2InterfaceBindMethodID;
+	static jmethodID clientClassStructArray2InterfaceUnbindMethodID;
+	static jmethodID clientClassStructArray2InterfaceFuncBoolAsyncMethodID;
+	static jmethodID clientClassStructArray2InterfaceFuncIntAsyncMethodID;
+	static jmethodID clientClassStructArray2InterfaceFuncFloatAsyncMethodID;
+	static jmethodID clientClassStructArray2InterfaceFuncStringAsyncMethodID;
+	static jmethodID clientClassStructArray2InterfaceFuncEnumAsyncMethodID;
+
+	static void init();
+	static void clear();
+	static bool isInitialized();
+
+private:
+	static bool m_isInitialized;
+};
+
+#endif

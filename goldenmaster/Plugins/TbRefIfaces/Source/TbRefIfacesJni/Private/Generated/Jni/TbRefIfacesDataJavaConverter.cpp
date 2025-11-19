@@ -17,6 +17,7 @@ limitations under the License.
 */
 
 #include "TbRefIfaces/Generated/Jni/TbRefIfacesDataJavaConverter.h"
+#include "TbRefIfaces/Generated/Jni/TbRefIfacesJniCache.h"
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
 #include "TbIfaceimport/Generated/api/TbIfaceimport_data.h"
 #include "TbRefIfaces/Implementation/TbRefIfacesSimpleLocalIf.h"
@@ -34,6 +35,8 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+DEFINE_LOG_CATEGORY(LogTbRefIfacesDataJavaConverter_JNI);
 
 void TbRefIfacesDataJavaConverter::fillSimpleLocalIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if)
 {
@@ -63,9 +66,13 @@ jobject TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(JNIEnv* env, const T
 
 jobjectArray TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
+	if (!TbRefIfacesJniCache::javaClassSimpleLocalIf)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("ISimpleLocalIf not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbRefIfacesJniCache::javaClassSimpleLocalIf, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -107,9 +114,13 @@ jobject TbRefIfacesDataJavaConverter::makeJavaParentIf(JNIEnv* env, const TScrip
 
 jobjectArray TbRefIfacesDataJavaConverter::makeJavaParentIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
+	if (!TbRefIfacesJniCache::javaClassParentIf)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("IParentIf not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbRefIfacesJniCache::javaClassParentIf, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }

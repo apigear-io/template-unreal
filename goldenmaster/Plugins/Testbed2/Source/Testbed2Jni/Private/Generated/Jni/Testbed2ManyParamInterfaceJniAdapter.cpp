@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "Testbed2/Generated/Jni/Testbed2ManyParamInterfaceJniAdapter.h"
 #include "Testbed2/Generated/Jni/Testbed2DataJavaConverter.h"
+#include "Testbed2/Generated/Jni/Testbed2JniCache.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
@@ -56,7 +57,6 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 	gUTestbed2ManyParamInterfaceJniAdapterHandle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/ManyParamInterfaceJniService");
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/ManyParamInterfaceJniServiceStarter");
 	if (BridgeClass == nullptr)
@@ -65,7 +65,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 		return;
 	}
 	auto functionSignature = "(Landroid/content/Context;)Ltestbed2/testbed2_api/IManyParamInterface;";
-	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
+	static jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	if (StartMethod == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Testbed2JavaServiceStarter:start; method not found"));
@@ -76,6 +76,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
+	Env->DeleteGlobalRef(BridgeClass);
 #endif
 #endif
 }
@@ -86,7 +87,6 @@ void UTestbed2ManyParamInterfaceJniAdapter::Deinitialize()
 	gUTestbed2ManyParamInterfaceJniAdapterHandle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = nullptr;
 	if (m_javaJniServiceInstance)
 	{
 		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
@@ -97,7 +97,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Deinitialize()
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/ManyParamInterfaceJniServiceStarter");
 	if (BridgeClass != nullptr)
 	{
-		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		static jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
@@ -108,6 +108,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Deinitialize()
 			UE_LOG(LogTemp, Warning, TEXT("Testbed2JavaServiceStarter:stop; method not found, failed to stop service"));
 			return;
 		}
+		Env->DeleteGlobalRef(BridgeClass);
 	}
 	else
 	{
@@ -153,13 +154,13 @@ void UTestbed2ManyParamInterfaceJniAdapter::callJniServiceReady(bool isServiceRe
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		if (!Testbed2JniCache::javaClassManyParamInterface || !m_javaJniServiceInstance)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:nativeServiceReady(Z)V CLASS not found"));
 			return;
 		}
 
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+		static const jmethodID MethodID = Testbed2JniCache::serviceClassManyParamInterfaceReadyMethodID;
 
 		if (MethodID != nullptr)
 		{
@@ -179,12 +180,12 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig1Signal(int32 Param1)
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Notify java jni UTestbed2ManyParamInterfaceJniAdapter::onSig1 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (Testbed2JniCache::serviceClassManyParamInterface == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onSig1 (I)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSig1", "(I)V");
+		jmethodID MethodID = Testbed2JniCache::serviceClassManyParamInterfaceSig1SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onSig1 (I)V not found"));
@@ -202,12 +203,12 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig2Signal(int32 Param1, int32 Par
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Notify java jni UTestbed2ManyParamInterfaceJniAdapter::onSig2 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (Testbed2JniCache::serviceClassManyParamInterface == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onSig2 (II)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSig2", "(II)V");
+		jmethodID MethodID = Testbed2JniCache::serviceClassManyParamInterfaceSig2SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onSig2 (II)V not found"));
@@ -225,12 +226,12 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig3Signal(int32 Param1, int32 Par
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Notify java jni UTestbed2ManyParamInterfaceJniAdapter::onSig3 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (Testbed2JniCache::serviceClassManyParamInterface == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onSig3 (III)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSig3", "(III)V");
+		jmethodID MethodID = Testbed2JniCache::serviceClassManyParamInterfaceSig3SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onSig3 (III)V not found"));
@@ -248,12 +249,12 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig4Signal(int32 Param1, int32 Par
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Notify java jni UTestbed2ManyParamInterfaceJniAdapter::onSig4 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (Testbed2JniCache::serviceClassManyParamInterface == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onSig4 (IIII)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSig4", "(IIII)V");
+		jmethodID MethodID = Testbed2JniCache::serviceClassManyParamInterfaceSig4SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onSig4 (IIII)V not found"));
@@ -270,13 +271,12 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp1Changed(int32 Prop1)
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Notify java jni UTestbed2ManyParamInterfaceJniAdapter::OnProp1 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (Testbed2JniCache::serviceClassManyParamInterface == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService::onProp1Changed(I)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onProp1Changed", "(I)V");
+		jmethodID MethodID = Testbed2JniCache::serviceClassManyParamInterfaceProp1ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onProp1Changed(I)V not found"));
@@ -293,13 +293,12 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp2Changed(int32 Prop2)
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Notify java jni UTestbed2ManyParamInterfaceJniAdapter::OnProp2 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (Testbed2JniCache::serviceClassManyParamInterface == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService::onProp2Changed(I)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onProp2Changed", "(I)V");
+		jmethodID MethodID = Testbed2JniCache::serviceClassManyParamInterfaceProp2ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onProp2Changed(I)V not found"));
@@ -316,13 +315,12 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp3Changed(int32 Prop3)
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Notify java jni UTestbed2ManyParamInterfaceJniAdapter::OnProp3 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (Testbed2JniCache::serviceClassManyParamInterface == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService::onProp3Changed(I)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onProp3Changed", "(I)V");
+		jmethodID MethodID = Testbed2JniCache::serviceClassManyParamInterfaceProp3ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onProp3Changed(I)V not found"));
@@ -339,13 +337,12 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp4Changed(int32 Prop4)
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Notify java jni UTestbed2ManyParamInterfaceJniAdapter::OnProp4 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (Testbed2JniCache::serviceClassManyParamInterface == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService::onProp4Changed(I)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onProp4Changed", "(I)V");
+		jmethodID MethodID = Testbed2JniCache::serviceClassManyParamInterfaceProp4ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:onProp4Changed(I)V not found"));

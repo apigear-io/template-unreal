@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportEmptyIfJniAdapter.h"
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
+#include "TbIfaceimport/Generated/Jni/TbIfaceimportJniCache.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
@@ -55,7 +56,6 @@ void UTbIfaceimportEmptyIfJniAdapter::Initialize(FSubsystemCollectionBase& Colle
 	gUTbIfaceimportEmptyIfJniAdapterHandle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniServiceStarter");
 	if (BridgeClass == nullptr)
@@ -64,7 +64,7 @@ void UTbIfaceimportEmptyIfJniAdapter::Initialize(FSubsystemCollectionBase& Colle
 		return;
 	}
 	auto functionSignature = "(Landroid/content/Context;)LtbIfaceimport/tbIfaceimport_api/IEmptyIf;";
-	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
+	static jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	if (StartMethod == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("TbIfaceimportJavaServiceStarter:start; method not found"));
@@ -75,6 +75,7 @@ void UTbIfaceimportEmptyIfJniAdapter::Initialize(FSubsystemCollectionBase& Colle
 
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
+	Env->DeleteGlobalRef(BridgeClass);
 #endif
 #endif
 }
@@ -85,7 +86,6 @@ void UTbIfaceimportEmptyIfJniAdapter::Deinitialize()
 	gUTbIfaceimportEmptyIfJniAdapterHandle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = nullptr;
 	if (m_javaJniServiceInstance)
 	{
 		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
@@ -96,7 +96,7 @@ void UTbIfaceimportEmptyIfJniAdapter::Deinitialize()
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniServiceStarter");
 	if (BridgeClass != nullptr)
 	{
-		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		static jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
@@ -107,6 +107,7 @@ void UTbIfaceimportEmptyIfJniAdapter::Deinitialize()
 			UE_LOG(LogTemp, Warning, TEXT("TbIfaceimportJavaServiceStarter:stop; method not found, failed to stop service"));
 			return;
 		}
+		Env->DeleteGlobalRef(BridgeClass);
 	}
 	else
 	{
@@ -152,13 +153,13 @@ void UTbIfaceimportEmptyIfJniAdapter::callJniServiceReady(bool isServiceReady)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		if (!TbIfaceimportJniCache::javaClassEmptyIf || !m_javaJniServiceInstance)
 		{
 			UE_LOG(LogTbIfaceimportEmptyIf_JNI, Warning, TEXT("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService:nativeServiceReady(Z)V CLASS not found"));
 			return;
 		}
 
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+		static const jmethodID MethodID = TbIfaceimportJniCache::serviceClassEmptyIfReadyMethodID;
 
 		if (MethodID != nullptr)
 		{

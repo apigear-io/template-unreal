@@ -32,10 +32,14 @@ limitations under the License.
 {{- $Iface := printf "%s%s" $ModuleName $IfaceName }}
 {{- $ModuleNameRaw := .Module.Name}}
 {{- $jniclient_name:= printf "%sjniclient" ( camel $ModuleNameRaw) }}
-{{- $javaClassPath := ( join "/" (strSlice (camel $ModuleNameRaw) $jniclient_name ) ) }}
 {{- $javaClassName := printf "%sJniClient" $IfaceName }}
+{{- $javaClassPath := ( join "/" (strSlice (camel $ModuleNameRaw) $jniclient_name ) ) }}
 {{- $jniFullFuncPrefix := ( join "_" (strSlice "Java" ( camel $ModuleNameRaw) $jniclient_name $javaClassName ) ) }}
 {{- $javaClassFull := ( join "/" (strSlice (camel $ModuleNameRaw) $jniclient_name $javaClassName ) ) }}
+
+{{- $StaticCacheName := printf "%sJniCache" $ModuleName}}
+{{- $cachedClass:= printf "javaClass%s" (Camel .Interface.Name) }}
+{{- $clientClass:= printf "clientClass%s" (Camel .Interface.Name) }}
 
 {{- define "convert_to_java_type_in_param"}}
 		{{- $localName := printf "jlocal_%s" (Camel .Name) }}
@@ -92,6 +96,7 @@ limitations under the License.
 
 #include "{{$ModuleName}}/Generated/Jni/{{$Iface}}JniClient.h"
 #include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}DataJavaConverter.h"
+#include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}JniCache.h"
 {{ if or (len .Module.Enums) (len .Module.Structs) -}}
 #include "{{$ModuleName}}/Generated/api/{{ $ModuleName }}_data.h"
 {{ end }}
@@ -112,6 +117,9 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
+
+{{- $StaticCacheName := printf "%sJniCache" $ModuleName}}
+{{- $cachedClass:= printf "javaClass%s" (Camel .Interface.Name) }}
 
 /**
 	\brief data structure to hold the last sent property values
@@ -194,9 +202,12 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassFull}}");
-	jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
-	jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+	if ({{$StaticCacheName}}::{{$clientClass}}Ctor == nullptr)
+	{
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("Java Client Class {{$javaClassPath}}/{{$javaClassName}} not found"));
+		return;
+	}
+	jobject localRef = Env->NewObject({{$StaticCacheName}}::{{$clientClass}}, {{$StaticCacheName}}::{{$clientClass}}Ctor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -209,7 +220,6 @@ void {{$Class}}::Deinitialize()
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	Env->DeleteGlobalRef(m_javaJniClientInstance);
-	m_javaJniClientClass = nullptr;
 	m_javaJniClientInstance = nullptr;
 #endif
 
@@ -257,12 +267,12 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		{{- $signatureParam := jniJavaSignatureParam . }}
-		if (m_javaJniClientClass == nullptr)
+		if ({{$StaticCacheName}}::{{$cachedClass}} == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:set{{Camel .Name}} ({{$signatureParam}})V CLASS not found"));
 			return;
 		}
-		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "set{{Camel .Name}}", "({{$signatureParam}})V");
+		jmethodID MethodID = {{$StaticCacheName}}::{{$cachedClass}}{{ Camel .Name}}SetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:set{{Camel .Name}} ({{$signatureParam}})V not found"));
@@ -304,14 +314,14 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 	{{- end}}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (m_javaJniClientClass == nullptr)
+	if ({{$StaticCacheName}}::{{$clientClass}} == nullptr)
 	{
 		{{- $signatureParams:= jniJavaSignatureParams .Params}}
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async:(Ljava/lang/String;{{$signatureParams}})V CLASS not found"));
 		return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "{{camel .Name}}Async", "(Ljava/lang/String;{{$signatureParams}})V");
+	jmethodID MethodID = {{$StaticCacheName}}::{{$clientClass}}{{Camel .Name}}AsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		{{- if not .Return.IsVoid }}
@@ -374,12 +384,12 @@ bool {{$Class}}::_bindToService(FString servicePackage, FString connectionId)
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (m_javaJniClientClass == nullptr)
+	if ({{$StaticCacheName}}::{{$clientClass}} == nullptr)
 	{
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	jmethodID MethodID = {{$StaticCacheName}}::{{$clientClass}}BindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
@@ -403,12 +413,12 @@ void {{$Class}}::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (m_javaJniClientClass == nullptr)
+	if ({{$StaticCacheName}}::{{$clientClass}} == nullptr)
 	{
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:unbind:()V CLASS not found"));
 		return;
 	}
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
+	jmethodID MethodID = {{$StaticCacheName}}::{{$clientClass}}UnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);

@@ -17,6 +17,7 @@ limitations under the License.
 */
 
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
+#include "TbIfaceimport/Generated/Jni/TbIfaceimportJniCache.h"
 #include "TbIfaceimport/Implementation/TbIfaceimportEmptyIf.h"
 
 #if PLATFORM_ANDROID
@@ -31,6 +32,8 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+DEFINE_LOG_CATEGORY(LogTbIfaceimportDataJavaConverter_JNI);
 
 void TbIfaceimportDataJavaConverter::fillEmptyIf(JNIEnv* env, jobject input, TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if)
 {
@@ -60,9 +63,13 @@ jobject TbIfaceimportDataJavaConverter::makeJavaEmptyIf(JNIEnv* env, const TScri
 
 jobjectArray TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
+	if (!TbIfaceimportJniCache::javaClassEmptyIf)
+	{
+		UE_LOG(LogTbIfaceimportDataJavaConverter_JNI, Warning, TEXT("IEmptyIf not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbIfaceimportJniCache::javaClassEmptyIf, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }

@@ -39,6 +39,7 @@ limitations under the License.
 
 #include "Testbed1/Generated/Jni/Testbed1StructArrayInterfaceJniClient.h"
 #include "Testbed1/Generated/Jni/Testbed1DataJavaConverter.h"
+#include "Testbed1/Generated/Jni/Testbed1JniCache.h"
 #include "Testbed1/Generated/api/Testbed1_data.h"
 
 #include "Async/Async.h"
@@ -179,9 +180,12 @@ void UTestbed1StructArrayInterfaceJniClient::Initialize(FSubsystemCollectionBase
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniclient/StructArrayInterfaceJniClient");
-	jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
-	jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+	if (Testbed1JniCache::clientClassStructArrayInterfaceCtor == nullptr)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("Java Client Class testbed1/testbed1jniclient/StructArrayInterfaceJniClient not found"));
+		return;
+	}
+	jobject localRef = Env->NewObject(Testbed1JniCache::clientClassStructArrayInterface, Testbed1JniCache::clientClassStructArrayInterfaceCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -194,7 +198,6 @@ void UTestbed1StructArrayInterfaceJniClient::Deinitialize()
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	Env->DeleteGlobalRef(m_javaJniClientInstance);
-	m_javaJniClientClass = nullptr;
 	m_javaJniClientInstance = nullptr;
 #endif
 
@@ -239,12 +242,12 @@ void UTestbed1StructArrayInterfaceJniClient::SetPropBool(const TArray<FTestbed1S
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniClientClass == nullptr)
+		if (Testbed1JniCache::javaClassStructArrayInterface == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:setPropBool ([Ltestbed1/testbed1_api/StructBool;)V CLASS not found"));
 			return;
 		}
-		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropBool", "([Ltestbed1/testbed1_api/StructBool;)V");
+		jmethodID MethodID = Testbed1JniCache::javaClassStructArrayInterfacePropBoolSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:setPropBool ([Ltestbed1/testbed1_api/StructBool;)V not found"));
@@ -284,12 +287,12 @@ void UTestbed1StructArrayInterfaceJniClient::SetPropInt(const TArray<FTestbed1St
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniClientClass == nullptr)
+		if (Testbed1JniCache::javaClassStructArrayInterface == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:setPropInt ([Ltestbed1/testbed1_api/StructInt;)V CLASS not found"));
 			return;
 		}
-		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropInt", "([Ltestbed1/testbed1_api/StructInt;)V");
+		jmethodID MethodID = Testbed1JniCache::javaClassStructArrayInterfacePropIntSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:setPropInt ([Ltestbed1/testbed1_api/StructInt;)V not found"));
@@ -329,12 +332,12 @@ void UTestbed1StructArrayInterfaceJniClient::SetPropFloat(const TArray<FTestbed1
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniClientClass == nullptr)
+		if (Testbed1JniCache::javaClassStructArrayInterface == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:setPropFloat ([Ltestbed1/testbed1_api/StructFloat;)V CLASS not found"));
 			return;
 		}
-		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropFloat", "([Ltestbed1/testbed1_api/StructFloat;)V");
+		jmethodID MethodID = Testbed1JniCache::javaClassStructArrayInterfacePropFloatSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:setPropFloat ([Ltestbed1/testbed1_api/StructFloat;)V not found"));
@@ -374,12 +377,12 @@ void UTestbed1StructArrayInterfaceJniClient::SetPropString(const TArray<FTestbed
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniClientClass == nullptr)
+		if (Testbed1JniCache::javaClassStructArrayInterface == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:setPropString ([Ltestbed1/testbed1_api/StructString;)V CLASS not found"));
 			return;
 		}
-		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropString", "([Ltestbed1/testbed1_api/StructString;)V");
+		jmethodID MethodID = Testbed1JniCache::javaClassStructArrayInterfacePropStringSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:setPropString ([Ltestbed1/testbed1_api/StructString;)V not found"));
@@ -419,12 +422,12 @@ void UTestbed1StructArrayInterfaceJniClient::SetPropEnum(const TArray<ETestbed1E
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniClientClass == nullptr)
+		if (Testbed1JniCache::javaClassStructArrayInterface == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:setPropEnum ([Ltestbed1/testbed1_api/Enum0;)V CLASS not found"));
 			return;
 		}
-		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropEnum", "([Ltestbed1/testbed1_api/Enum0;)V");
+		jmethodID MethodID = Testbed1JniCache::javaClassStructArrayInterfacePropEnumSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:setPropEnum ([Ltestbed1/testbed1_api/Enum0;)V not found"));
@@ -452,13 +455,13 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceJniClient::FuncBool(con
 	TPromise<TArray<FTestbed1StructBool>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (m_javaJniClientClass == nullptr)
+	if (Testbed1JniCache::clientClassStructArrayInterface == nullptr)
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;[Ltestbed1/testbed1_api/StructBool;)V CLASS not found"));
 		return TArray<FTestbed1StructBool>();
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcBoolAsync", "(Ljava/lang/String;[Ltestbed1/testbed1_api/StructBool;)V");
+	jmethodID MethodID = Testbed1JniCache::clientClassStructArrayInterfaceFuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTestbed1StructArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -490,13 +493,13 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceJniClient::FuncInt(const
 	TPromise<TArray<FTestbed1StructInt>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (m_javaJniClientClass == nullptr)
+	if (Testbed1JniCache::clientClassStructArrayInterface == nullptr)
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcIntAsync:(Ljava/lang/String;[Ltestbed1/testbed1_api/StructInt;)V CLASS not found"));
 		return TArray<FTestbed1StructInt>();
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcIntAsync", "(Ljava/lang/String;[Ltestbed1/testbed1_api/StructInt;)V");
+	jmethodID MethodID = Testbed1JniCache::clientClassStructArrayInterfaceFuncIntAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTestbed1StructArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -528,13 +531,13 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceJniClient::FuncFloat(c
 	TPromise<TArray<FTestbed1StructFloat>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (m_javaJniClientClass == nullptr)
+	if (Testbed1JniCache::clientClassStructArrayInterface == nullptr)
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcFloatAsync:(Ljava/lang/String;[Ltestbed1/testbed1_api/StructFloat;)V CLASS not found"));
 		return TArray<FTestbed1StructFloat>();
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcFloatAsync", "(Ljava/lang/String;[Ltestbed1/testbed1_api/StructFloat;)V");
+	jmethodID MethodID = Testbed1JniCache::clientClassStructArrayInterfaceFuncFloatAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTestbed1StructArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -566,13 +569,13 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceJniClient::FuncString
 	TPromise<TArray<FTestbed1StructString>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (m_javaJniClientClass == nullptr)
+	if (Testbed1JniCache::clientClassStructArrayInterface == nullptr)
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcStringAsync:(Ljava/lang/String;[Ltestbed1/testbed1_api/StructString;)V CLASS not found"));
 		return TArray<FTestbed1StructString>();
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcStringAsync", "(Ljava/lang/String;[Ltestbed1/testbed1_api/StructString;)V");
+	jmethodID MethodID = Testbed1JniCache::clientClassStructArrayInterfaceFuncStringAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTestbed1StructArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -604,13 +607,13 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceJniClient::FuncEnum(const TA
 	TPromise<TArray<ETestbed1Enum0>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (m_javaJniClientClass == nullptr)
+	if (Testbed1JniCache::clientClassStructArrayInterface == nullptr)
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcEnumAsync:(Ljava/lang/String;[Ltestbed1/testbed1_api/Enum0;)V CLASS not found"));
 		return TArray<ETestbed1Enum0>();
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcEnumAsync", "(Ljava/lang/String;[Ltestbed1/testbed1_api/Enum0;)V");
+	jmethodID MethodID = Testbed1JniCache::clientClassStructArrayInterfaceFuncEnumAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTestbed1StructArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -647,12 +650,12 @@ bool UTestbed1StructArrayInterfaceJniClient::_bindToService(FString servicePacka
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (m_javaJniClientClass == nullptr)
+	if (Testbed1JniCache::clientClassStructArrayInterface == nullptr)
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	jmethodID MethodID = Testbed1JniCache::clientClassStructArrayInterfaceBindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
@@ -676,12 +679,12 @@ void UTestbed1StructArrayInterfaceJniClient::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (m_javaJniClientClass == nullptr)
+	if (Testbed1JniCache::clientClassStructArrayInterface == nullptr)
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:unbind:()V CLASS not found"));
 		return;
 	}
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
+	jmethodID MethodID = Testbed1JniCache::clientClassStructArrayInterfaceUnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
