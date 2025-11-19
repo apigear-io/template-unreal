@@ -60,12 +60,15 @@ void UAbstractApiGearConnection::Connect()
 
 void UAbstractApiGearConnection::Disconnect()
 {
-	if (!IsConnected() || GetConnectionState() == EApiGearConnectionState::Connecting)
+	EApiGearConnectionState CurrentState = GetConnectionState();
+
+	if (CurrentState == EApiGearConnectionState::Disconnected || CurrentState == EApiGearConnectionState::Disconnecting)
 	{
-		UAbstractApiGearConnection::StopReconnecting();
 		return;
 	}
 
+	UAbstractApiGearConnection::StopReconnecting();
+	SetConnectionState(EApiGearConnectionState::Disconnecting);
 	Disconnect_Implementation();
 }
 
