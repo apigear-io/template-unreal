@@ -1,0 +1,64 @@
+
+/**
+Copyright 2021 ApiGear UG
+Copyright 2021 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#pragma once
+
+#include "CoreMinimal.h"
+
+#if PLATFORM_ANDROID
+
+#include "Engine/Engine.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
+#endif
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+#include "Engine/Engine.h"
+
+class TBNAMESAPI_API TbNamesJniCache
+{
+	static jclass javaEnumEnumWithUnderScores = nullptr;
+	static jmethodID javaEnumEnumWithUnderScoresFromValueMethodId = nullptr;
+	static jmethodID javaEnumEnumWithUnderScoresGetValueMethod = nullptr;
+	static jclass javaClassNamEs = nullptr;
+	static jmethodID javaClassNamEsSwitchSetterId = nullptr;
+	static jmethodID javaClassNamEsSwitchGetterId = nullptr;
+	static jmethodID javaClassNamEsSomePropertySetterId = nullptr;
+	static jmethodID javaClassNamEsSomePropertyGetterId = nullptr;
+	static jmethodID javaClassNamEsSomePoperty2SetterId = nullptr;
+	static jmethodID javaClassNamEsSomePoperty2GetterId = nullptr;
+	static jmethodID javaClassNamEsEnumPropertySetterId = nullptr;
+	static jmethodID javaClassNamEsEnumPropertyGetterId = nullptr;
+	static jmethodID javaClassNamEsSomeSignalSignalMethodID = nullptr;
+	static jmethodID javaClassNamEsSomeSignal2SignalMethodID = nullptr;
+	static jmethodID javaClassNamEsSomeFunctionMethodID = nullptr;
+	static jmethodID javaClassNamEsSomeFunction2MethodID = nullptr;
+
+	static void init();
+	static void clear();
+	static bool isInitialized();
+
+private:
+	static bool m_isInitialized = false;
+}
+
+#endif
