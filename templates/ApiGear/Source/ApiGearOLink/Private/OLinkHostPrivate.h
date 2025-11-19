@@ -18,7 +18,7 @@ class INetworkingWebSocket;
 /// @brief the private implementation of the OLink server
 /// serves olink source implementations on the specified port
 /// and holds all connections to the clients
-class APIGEAROLINK_API OLinkHostPrivate
+class APIGEAROLINK_API OLinkHostPrivate : public TSharedFromThis<OLinkHostPrivate>
 {
 public:
 	explicit OLinkHostPrivate(uint32 InPort);

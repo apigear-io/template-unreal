@@ -13,7 +13,12 @@ TSharedPtr<ApiGear::ObjectLink::RemoteRegistry> UOLinkHost::GetOLinkRegistry()
 void UOLinkHost::Initialize(FSubsystemCollectionBase& Collection)
 {
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-	PrivateImplementation = MakePimpl<OLinkHostPrivate>(settings->OLINK_Port);
+	PrivateImplementation = MakeShared<OLinkHostPrivate>(settings->OLINK_Port);
+
+	if (settings->OLINK_AutoStart)
+	{
+		PrivateImplementation->Start(settings->OLINK_Port);
+	}
 }
 
 void UOLinkHost::Deinitialize()
