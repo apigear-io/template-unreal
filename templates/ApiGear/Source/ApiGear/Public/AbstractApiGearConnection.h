@@ -55,8 +55,10 @@ private:
 	bool bStopReconnectingRequested;
 
 	ApiGear::FDelegateHandle RetryTickerHandle;
+	ApiGear::FDelegateHandle ConnectionTimeoutHandle;
 
 	FTickerDelegate RetryTickerDelegate;
+	FTickerDelegate ConnectionTimeoutDelegate;
 
 	EApiGearConnectionState ConnectionState;
 };
