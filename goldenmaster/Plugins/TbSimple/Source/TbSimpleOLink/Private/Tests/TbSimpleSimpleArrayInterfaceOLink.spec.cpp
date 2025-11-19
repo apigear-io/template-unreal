@@ -841,7 +841,21 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncBool(TArray<bool>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncBoolAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<bool>> Future = ImplFixture->GetImplementation()->FuncBoolAsync(TArray<bool>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<bool>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -851,7 +865,21 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncInt(TArray<int32>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncIntAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<int32>> Future = ImplFixture->GetImplementation()->FuncIntAsync(TArray<int32>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<int32>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -861,7 +889,21 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncInt32(TArray<int32>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncInt32Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<int32>> Future = ImplFixture->GetImplementation()->FuncInt32Async(TArray<int32>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<int32>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -871,7 +913,21 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncInt64(TArray<int64>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncInt64Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<int64>> Future = ImplFixture->GetImplementation()->FuncInt64Async(TArray<int64>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<int64>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -881,7 +937,21 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncFloat(TArray<float>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncFloatAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<float>> Future = ImplFixture->GetImplementation()->FuncFloatAsync(TArray<float>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<float>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -891,7 +961,21 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncFloat32(TArray<float>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncFloat32Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<float>> Future = ImplFixture->GetImplementation()->FuncFloat32Async(TArray<float>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<float>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -901,7 +985,21 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncFloat64(TArray<double>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncFloat64Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<double>> Future = ImplFixture->GetImplementation()->FuncFloat64Async(TArray<double>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<double>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -911,7 +1009,21 @@ void UTbSimpleSimpleArrayInterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->FuncString(TArray<FString>());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncStringAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<TArray<FString>> Future = ImplFixture->GetImplementation()->FuncStringAsync(TArray<FString>());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const TArray<FString>& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

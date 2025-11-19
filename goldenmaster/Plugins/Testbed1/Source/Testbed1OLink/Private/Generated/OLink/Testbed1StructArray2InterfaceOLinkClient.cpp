@@ -330,121 +330,196 @@ void UTestbed1StructArray2InterfaceOLinkClient::SetPropEnum(const FTestbed1Struc
 TArray<FTestbed1StructBool> UTestbed1StructArray2InterfaceOLinkClient::FuncBool(const FTestbed1StructBoolWithArray& ParamBool)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.FuncBool");
+	return FuncBoolAsync(ParamBool).Get();
+}
+
+TFuture<TArray<FTestbed1StructBool>> UTestbed1StructArray2InterfaceOLinkClient::FuncBoolAsync(const FTestbed1StructBoolWithArray& ParamBool)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.FuncBoolAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return TArray<FTestbed1StructBool>();
+		TPromise<TArray<FTestbed1StructBool>> Promise;
+		Promise.SetValue(TArray<FTestbed1StructBool>());
+		return Promise.GetFuture();
 	}
-	TPromise<TArray<FTestbed1StructBool>> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamBool, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetStructArray2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<TArray<FTestbed1StructBool>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamBool}, GetStructArray2InterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<TArray<FTestbed1StructBool>>> Promise = MakeShared<TPromise<TArray<FTestbed1StructBool>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamBool},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<FTestbed1StructBool>>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<FTestbed1StructBool>());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 TArray<FTestbed1StructInt> UTestbed1StructArray2InterfaceOLinkClient::FuncInt(const FTestbed1StructIntWithArray& ParamInt)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.FuncInt");
+	return FuncIntAsync(ParamInt).Get();
+}
+
+TFuture<TArray<FTestbed1StructInt>> UTestbed1StructArray2InterfaceOLinkClient::FuncIntAsync(const FTestbed1StructIntWithArray& ParamInt)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.FuncIntAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return TArray<FTestbed1StructInt>();
+		TPromise<TArray<FTestbed1StructInt>> Promise;
+		Promise.SetValue(TArray<FTestbed1StructInt>());
+		return Promise.GetFuture();
 	}
-	TPromise<TArray<FTestbed1StructInt>> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamInt, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetStructArray2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<TArray<FTestbed1StructInt>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetStructArray2InterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<TArray<FTestbed1StructInt>>> Promise = MakeShared<TPromise<TArray<FTestbed1StructInt>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamInt},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<FTestbed1StructInt>>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Warning, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<FTestbed1StructInt>());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 TArray<FTestbed1StructFloat> UTestbed1StructArray2InterfaceOLinkClient::FuncFloat(const FTestbed1StructFloatWithArray& ParamFloat)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.FuncFloat");
+	return FuncFloatAsync(ParamFloat).Get();
+}
+
+TFuture<TArray<FTestbed1StructFloat>> UTestbed1StructArray2InterfaceOLinkClient::FuncFloatAsync(const FTestbed1StructFloatWithArray& ParamFloat)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.FuncFloatAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return TArray<FTestbed1StructFloat>();
+		TPromise<TArray<FTestbed1StructFloat>> Promise;
+		Promise.SetValue(TArray<FTestbed1StructFloat>());
+		return Promise.GetFuture();
 	}
-	TPromise<TArray<FTestbed1StructFloat>> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetStructArray2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<TArray<FTestbed1StructFloat>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetStructArray2InterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<TArray<FTestbed1StructFloat>>> Promise = MakeShared<TPromise<TArray<FTestbed1StructFloat>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<FTestbed1StructFloat>>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Warning, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<FTestbed1StructFloat>());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 TArray<FTestbed1StructString> UTestbed1StructArray2InterfaceOLinkClient::FuncString(const FTestbed1StructStringWithArray& ParamString)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.FuncString");
+	return FuncStringAsync(ParamString).Get();
+}
+
+TFuture<TArray<FTestbed1StructString>> UTestbed1StructArray2InterfaceOLinkClient::FuncStringAsync(const FTestbed1StructStringWithArray& ParamString)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.FuncStringAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return TArray<FTestbed1StructString>();
+		TPromise<TArray<FTestbed1StructString>> Promise;
+		Promise.SetValue(TArray<FTestbed1StructString>());
+		return Promise.GetFuture();
 	}
-	TPromise<TArray<FTestbed1StructString>> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamString, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetStructArray2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<TArray<FTestbed1StructString>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetStructArray2InterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<TArray<FTestbed1StructString>>> Promise = MakeShared<TPromise<TArray<FTestbed1StructString>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamString},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<FTestbed1StructString>>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Warning, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<FTestbed1StructString>());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 TArray<ETestbed1Enum0> UTestbed1StructArray2InterfaceOLinkClient::FuncEnum(const FTestbed1StructEnumWithArray& ParamEnum)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.FuncEnum");
+	return FuncEnumAsync(ParamEnum).Get();
+}
+
+TFuture<TArray<ETestbed1Enum0>> UTestbed1StructArray2InterfaceOLinkClient::FuncEnumAsync(const FTestbed1StructEnumWithArray& ParamEnum)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.FuncEnumAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return TArray<ETestbed1Enum0>();
+		TPromise<TArray<ETestbed1Enum0>> Promise;
+		Promise.SetValue(TArray<ETestbed1Enum0>());
+		return Promise.GetFuture();
 	}
-	TPromise<TArray<ETestbed1Enum0>> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamEnum, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetStructArray2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<TArray<ETestbed1Enum0>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcEnum");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamEnum}, GetStructArray2InterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<TArray<ETestbed1Enum0>>> Promise = MakeShared<TPromise<TArray<ETestbed1Enum0>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcEnum");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamEnum},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<ETestbed1Enum0>>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Warning, TEXT("FuncEnumAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<ETestbed1Enum0>());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 bool UTestbed1StructArray2InterfaceOLinkClient::_IsSubscribed() const
@@ -521,6 +596,18 @@ void UTestbed1StructArray2InterfaceOLinkClient::emitSignal(const std::string& si
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.OLink.EmitSignal");
 	if (signalName == "sigBool")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("Signal sigBool: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("Signal paramBool: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed1StructBoolWithArray& outParamBool = args[0].get<FTestbed1StructBoolWithArray>();
 		_GetPublisher()->BroadcastSigBoolSignal(outParamBool);
 		return;
@@ -528,6 +615,18 @@ void UTestbed1StructArray2InterfaceOLinkClient::emitSignal(const std::string& si
 
 	if (signalName == "sigInt")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("Signal sigInt: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("Signal paramInt: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed1StructIntWithArray& outParamInt = args[0].get<FTestbed1StructIntWithArray>();
 		_GetPublisher()->BroadcastSigIntSignal(outParamInt);
 		return;
@@ -535,6 +634,18 @@ void UTestbed1StructArray2InterfaceOLinkClient::emitSignal(const std::string& si
 
 	if (signalName == "sigFloat")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("Signal sigFloat: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("Signal paramFloat: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed1StructFloatWithArray& outParamFloat = args[0].get<FTestbed1StructFloatWithArray>();
 		_GetPublisher()->BroadcastSigFloatSignal(outParamFloat);
 		return;
@@ -542,6 +653,18 @@ void UTestbed1StructArray2InterfaceOLinkClient::emitSignal(const std::string& si
 
 	if (signalName == "sigString")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("Signal sigString: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("Signal paramString: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed1StructStringWithArray& outParamString = args[0].get<FTestbed1StructStringWithArray>();
 		_GetPublisher()->BroadcastSigStringSignal(outParamString);
 		return;

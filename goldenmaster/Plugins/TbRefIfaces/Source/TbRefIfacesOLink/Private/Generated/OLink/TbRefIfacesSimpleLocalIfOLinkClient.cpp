@@ -182,25 +182,40 @@ void UTbRefIfacesSimpleLocalIfOLinkClient::SetIntProperty(int32 InIntProperty)
 int32 UTbRefIfacesSimpleLocalIfOLinkClient::IntMethod(int32 Param)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.IntMethod");
+	return IntMethodAsync(Param).Get();
+}
+
+TFuture<int32> UTbRefIfacesSimpleLocalIfOLinkClient::IntMethodAsync(int32 Param)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.IntMethodAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0;
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
 	}
-	TPromise<int32> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleLocalIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "intMethod");
-		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetSimpleLocalIfStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "intMethod");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Warning, TEXT("IntMethodAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(0);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 bool UTbRefIfacesSimpleLocalIfOLinkClient::_IsSubscribed() const
@@ -226,6 +241,18 @@ void UTbRefIfacesSimpleLocalIfOLinkClient::emitSignal(const std::string& signalN
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.SimpleLocalIf.OLink.EmitSignal");
 	if (signalName == "intSignal")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Error, TEXT("Signal intSignal: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Error, TEXT("Signal param: invalid type for parameter 0"));
+			return;
+		}
 		int32 outParam = args[0].get<int32>();
 		_GetPublisher()->BroadcastIntSignalSignal(outParam);
 		return;

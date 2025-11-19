@@ -1,6 +1,7 @@
 #pragma once
 
 #include "apigear.json.adapter.h"
+#include "TbIfaceimport/Generated/TbIfaceimportLogCategories.h"
 #include "TbIfaceimport/Generated/api/TbIfaceimport_data.h"
 #include "TbIfaceimport/Generated/api/TbIfaceimportEmptyIfInterface.h"
 

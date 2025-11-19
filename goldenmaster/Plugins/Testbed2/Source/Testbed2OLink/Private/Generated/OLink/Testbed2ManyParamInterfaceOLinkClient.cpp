@@ -274,97 +274,157 @@ void UTestbed2ManyParamInterfaceOLinkClient::SetProp4(int32 InProp4)
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func1(int32 Param1)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func1");
+	return Func1Async(Param1).Get();
+}
+
+TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func1Async(int32 Param1)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func1Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0;
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
 	}
-	TPromise<int32> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetManyParamInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param1},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(0);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func2(int32 Param1, int32 Param2)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func2");
+	return Func2Async(Param1, Param2).Get();
+}
+
+TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func2Async(int32 Param1, int32 Param2)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func2Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0;
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
 	}
-	TPromise<int32> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetManyParamInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Warning, TEXT("Func2Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(0);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func3(int32 Param1, int32 Param2, int32 Param3)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func3");
+	return Func3Async(Param1, Param2, Param3).Get();
+}
+
+TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func3Async(int32 Param1, int32 Param2, int32 Param3)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func3Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0;
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
 	}
-	TPromise<int32> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3}, GetManyParamInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func3");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Warning, TEXT("Func3Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(0);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 int32 UTestbed2ManyParamInterfaceOLinkClient::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func4");
+	return Func4Async(Param1, Param2, Param3, Param4).Get();
+}
+
+TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func4Async(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.Func4Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0;
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
 	}
-	TPromise<int32> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, Param4, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetManyParamInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func4");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3, Param4}, GetManyParamInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func4");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2, Param3, Param4},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Warning, TEXT("Func4Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(0);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 bool UTestbed2ManyParamInterfaceOLinkClient::_IsSubscribed() const
@@ -417,6 +477,18 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.ManyParamInterface.OLink.EmitSignal");
 	if (signalName == "sig1")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal sig1: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		int32 outParam1 = args[0].get<int32>();
 		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
@@ -424,7 +496,25 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 
 	if (signalName == "sig2")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 2)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal sig2: invalid args array (expected 2 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		int32 outParam1 = args[0].get<int32>();
+		// make sure the type matches our expectation
+		if (args[1].is_null() || !args[1].is_number_integer())
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal param2: invalid type for parameter 1"));
+			return;
+		}
 		int32 outParam2 = args[1].get<int32>();
 		_GetPublisher()->BroadcastSig2Signal(outParam1, outParam2);
 		return;
@@ -432,8 +522,32 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 
 	if (signalName == "sig3")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 3)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal sig3: invalid args array (expected 3 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		int32 outParam1 = args[0].get<int32>();
+		// make sure the type matches our expectation
+		if (args[1].is_null() || !args[1].is_number_integer())
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal param2: invalid type for parameter 1"));
+			return;
+		}
 		int32 outParam2 = args[1].get<int32>();
+		// make sure the type matches our expectation
+		if (args[2].is_null() || !args[2].is_number_integer())
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal param3: invalid type for parameter 2"));
+			return;
+		}
 		int32 outParam3 = args[2].get<int32>();
 		_GetPublisher()->BroadcastSig3Signal(outParam1, outParam2, outParam3);
 		return;
@@ -441,9 +555,39 @@ void UTestbed2ManyParamInterfaceOLinkClient::emitSignal(const std::string& signa
 
 	if (signalName == "sig4")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 4)
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal sig4: invalid args array (expected 4 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		int32 outParam1 = args[0].get<int32>();
+		// make sure the type matches our expectation
+		if (args[1].is_null() || !args[1].is_number_integer())
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal param2: invalid type for parameter 1"));
+			return;
+		}
 		int32 outParam2 = args[1].get<int32>();
+		// make sure the type matches our expectation
+		if (args[2].is_null() || !args[2].is_number_integer())
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal param3: invalid type for parameter 2"));
+			return;
+		}
 		int32 outParam3 = args[2].get<int32>();
+		// make sure the type matches our expectation
+		if (args[3].is_null() || !args[3].is_number_integer())
+		{
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Signal param4: invalid type for parameter 3"));
+			return;
+		}
 		int32 outParam4 = args[3].get<int32>();
 		_GetPublisher()->BroadcastSig4Signal(outParam1, outParam2, outParam3, outParam4);
 		return;

@@ -226,25 +226,40 @@ void UTbSimpleNoSignalsInterfaceOLinkClient::FuncVoid()
 bool UTbSimpleNoSignalsInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.OLink.FuncBool");
+	return FuncBoolAsync(bParamBool).Get();
+}
+
+TFuture<bool> UTbSimpleNoSignalsInterfaceOLinkClient::FuncBoolAsync(bool bParamBool)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoSignalsInterface.OLink.FuncBoolAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return false;
+		TPromise<bool> Promise;
+		Promise.SetValue(false);
+		return Promise.GetFuture();
 	}
-	TPromise<bool> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[bParamBool, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetNoSignalsInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<bool>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoSignalsInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+
+	m_sink->GetNode()->invokeRemote(memberId, {bParamBool},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_boolean())
+			{
+				Promise->SetValue(arg.value.get<bool>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(false);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 bool UTbSimpleNoSignalsInterfaceOLinkClient::_IsSubscribed() const

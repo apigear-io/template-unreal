@@ -74,20 +74,28 @@ public:
 
 	// operations
 	TArray<bool> FuncBool(const TArray<bool>& ParamBool) override;
+	TFuture<TArray<bool>> FuncBoolAsync(const TArray<bool>& ParamBool) override;
 
 	TArray<int32> FuncInt(const TArray<int32>& ParamInt) override;
+	TFuture<TArray<int32>> FuncIntAsync(const TArray<int32>& ParamInt) override;
 
 	TArray<int32> FuncInt32(const TArray<int32>& ParamInt32) override;
+	TFuture<TArray<int32>> FuncInt32Async(const TArray<int32>& ParamInt32) override;
 
 	TArray<int64> FuncInt64(const TArray<int64>& ParamInt64) override;
+	TFuture<TArray<int64>> FuncInt64Async(const TArray<int64>& ParamInt64) override;
 
 	TArray<float> FuncFloat(const TArray<float>& ParamFloat) override;
+	TFuture<TArray<float>> FuncFloatAsync(const TArray<float>& ParamFloat) override;
 
 	TArray<float> FuncFloat32(const TArray<float>& ParamFloat32) override;
+	TFuture<TArray<float>> FuncFloat32Async(const TArray<float>& ParamFloat32) override;
 
 	TArray<double> FuncFloat64(const TArray<double>& ParamFloat) override;
+	TFuture<TArray<double>> FuncFloat64Async(const TArray<double>& ParamFloat) override;
 
 	TArray<FString> FuncString(const TArray<FString>& ParamString) override;
+	TFuture<TArray<FString>> FuncStringAsync(const TArray<FString>& ParamString) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleArrayInterface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

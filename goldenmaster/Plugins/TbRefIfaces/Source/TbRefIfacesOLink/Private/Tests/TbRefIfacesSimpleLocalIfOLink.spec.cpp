@@ -191,7 +191,21 @@ void UTbRefIfacesSimpleLocalIfOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->IntMethod(0);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.IntMethodAsync", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<int32> Future = ImplFixture->GetImplementation()->IntMethodAsync(0);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const int32& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

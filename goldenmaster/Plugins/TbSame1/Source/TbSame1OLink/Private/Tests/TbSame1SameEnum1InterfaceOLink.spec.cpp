@@ -190,7 +190,21 @@ void UTbSame1SameEnum1InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func1(ETbSame1Enum1::TS1E1_Value1);
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<ETbSame1Enum1> Future = ImplFixture->GetImplementation()->Func1Async(ETbSame1Enum1::TS1E1_Value1);
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const ETbSame1Enum1& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

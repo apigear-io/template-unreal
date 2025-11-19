@@ -1,6 +1,7 @@
 #pragma once
 
 #include "apigear.json.adapter.h"
+#include "TbSimple/Generated/TbSimpleLogCategories.h"
 #include "TbSimple/Generated/api/TbSimple_data.h"
 #include "TbSimple/Generated/api/TbSimpleVoidInterfaceInterface.h"
 #include "TbSimple/Generated/api/TbSimpleSimpleInterfaceInterface.h"
@@ -35,14 +36,85 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleI
 		return;
 	}
 
-	Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropBool(j.at("propBool").get<bool>());
-	Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropInt(j.at("propInt").get<int32>());
-	Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropInt32(j.at("propInt32").get<int32>());
-	Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropInt64(j.at("propInt64").get<int64>());
-	Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropFloat(j.at("propFloat").get<float>());
-	Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropFloat32(j.at("propFloat32").get<float>());
-	Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropFloat64(j.at("propFloat64").get<double>());
-	Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropString(j.at("propString").get<FString>());
+	const auto propBoolIter = j.find("propBool");
+	if (propBoolIter != j.end() && !propBoolIter->is_null() && propBoolIter->is_boolean())
+	{
+		Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropBool(propBoolIter->get<bool>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+	}
+
+	const auto propIntIter = j.find("propInt");
+	if (propIntIter != j.end() && !propIntIter->is_null() && propIntIter->is_number_integer())
+	{
+		Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropInt(propIntIter->get<int32>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+	}
+
+	const auto propInt32Iter = j.find("propInt32");
+	if (propInt32Iter != j.end() && !propInt32Iter->is_null() && propInt32Iter->is_number_integer())
+	{
+		Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropInt32(propInt32Iter->get<int32>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt32' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+	}
+
+	const auto propInt64Iter = j.find("propInt64");
+	if (propInt64Iter != j.end() && !propInt64Iter->is_null() && propInt64Iter->is_number_integer())
+	{
+		Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropInt64(propInt64Iter->get<int64>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt64' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+	}
+
+	const auto propFloatIter = j.find("propFloat");
+	if (propFloatIter != j.end() && !propFloatIter->is_null() && propFloatIter->is_number())
+	{
+		Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropFloat(propFloatIter->get<float>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+	}
+
+	const auto propFloat32Iter = j.find("propFloat32");
+	if (propFloat32Iter != j.end() && !propFloat32Iter->is_null() && propFloat32Iter->is_number())
+	{
+		Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropFloat32(propFloat32Iter->get<float>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat32' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+	}
+
+	const auto propFloat64Iter = j.find("propFloat64");
+	if (propFloat64Iter != j.end() && !propFloat64Iter->is_null() && propFloat64Iter->is_number())
+	{
+		Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropFloat64(propFloat64Iter->get<double>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat64' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+	}
+
+	const auto propStringIter = j.find("propString");
+	if (propStringIter != j.end() && !propStringIter->is_null() && propStringIter->is_string())
+	{
+		Cast<ITbSimpleSimpleInterfaceInterface>(p.GetObject())->SetPropString(propStringIter->get<FString>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propString' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const TScriptInterface<ITbSimpleSimpleInterfaceInterface>& p)
@@ -62,14 +134,85 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleA
 		return;
 	}
 
-	Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropBool(j.at("propBool").get<TArray<bool>>());
-	Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropInt(j.at("propInt").get<TArray<int32>>());
-	Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropInt32(j.at("propInt32").get<TArray<int32>>());
-	Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropInt64(j.at("propInt64").get<TArray<int64>>());
-	Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropFloat(j.at("propFloat").get<TArray<float>>());
-	Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropFloat32(j.at("propFloat32").get<TArray<float>>());
-	Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropFloat64(j.at("propFloat64").get<TArray<double>>());
-	Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropString(j.at("propString").get<TArray<FString>>());
+	const auto propBoolIter = j.find("propBool");
+	if (propBoolIter != j.end() && !propBoolIter->is_null() && propBoolIter->is_array())
+	{
+		Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropBool(propBoolIter->get<TArray<bool>>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propIntIter = j.find("propInt");
+	if (propIntIter != j.end() && !propIntIter->is_null() && propIntIter->is_array())
+	{
+		Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropInt(propIntIter->get<TArray<int32>>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propInt32Iter = j.find("propInt32");
+	if (propInt32Iter != j.end() && !propInt32Iter->is_null() && propInt32Iter->is_array())
+	{
+		Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropInt32(propInt32Iter->get<TArray<int32>>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt32' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propInt64Iter = j.find("propInt64");
+	if (propInt64Iter != j.end() && !propInt64Iter->is_null() && propInt64Iter->is_array())
+	{
+		Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropInt64(propInt64Iter->get<TArray<int64>>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt64' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propFloatIter = j.find("propFloat");
+	if (propFloatIter != j.end() && !propFloatIter->is_null() && propFloatIter->is_array())
+	{
+		Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropFloat(propFloatIter->get<TArray<float>>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propFloat32Iter = j.find("propFloat32");
+	if (propFloat32Iter != j.end() && !propFloat32Iter->is_null() && propFloat32Iter->is_array())
+	{
+		Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropFloat32(propFloat32Iter->get<TArray<float>>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat32' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propFloat64Iter = j.find("propFloat64");
+	if (propFloat64Iter != j.end() && !propFloat64Iter->is_null() && propFloat64Iter->is_array())
+	{
+		Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropFloat64(propFloat64Iter->get<TArray<double>>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat64' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+	}
+
+	const auto propStringIter = j.find("propString");
+	if (propStringIter != j.end() && !propStringIter->is_null() && propStringIter->is_array())
+	{
+		Cast<ITbSimpleSimpleArrayInterfaceInterface>(p.GetObject())->SetPropString(propStringIter->get<TArray<FString>>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propString' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface>& p)
@@ -107,8 +250,25 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleNoOpera
 		return;
 	}
 
-	Cast<ITbSimpleNoOperationsInterfaceInterface>(p.GetObject())->SetPropBool(j.at("propBool").get<bool>());
-	Cast<ITbSimpleNoOperationsInterfaceInterface>(p.GetObject())->SetPropInt(j.at("propInt").get<int32>());
+	const auto propBoolIter = j.find("propBool");
+	if (propBoolIter != j.end() && !propBoolIter->is_null() && propBoolIter->is_boolean())
+	{
+		Cast<ITbSimpleNoOperationsInterfaceInterface>(p.GetObject())->SetPropBool(propBoolIter->get<bool>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleNoOperationsInterfaceInterface -> ignore"));
+	}
+
+	const auto propIntIter = j.find("propInt");
+	if (propIntIter != j.end() && !propIntIter->is_null() && propIntIter->is_number_integer())
+	{
+		Cast<ITbSimpleNoOperationsInterfaceInterface>(p.GetObject())->SetPropInt(propIntIter->get<int32>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleNoOperationsInterfaceInterface -> ignore"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const TScriptInterface<ITbSimpleNoOperationsInterfaceInterface>& p)
@@ -128,8 +288,25 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleNoSigna
 		return;
 	}
 
-	Cast<ITbSimpleNoSignalsInterfaceInterface>(p.GetObject())->SetPropBool(j.at("propBool").get<bool>());
-	Cast<ITbSimpleNoSignalsInterfaceInterface>(p.GetObject())->SetPropInt(j.at("propInt").get<int32>());
+	const auto propBoolIter = j.find("propBool");
+	if (propBoolIter != j.end() && !propBoolIter->is_null() && propBoolIter->is_boolean())
+	{
+		Cast<ITbSimpleNoSignalsInterfaceInterface>(p.GetObject())->SetPropBool(propBoolIter->get<bool>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleNoSignalsInterfaceInterface -> ignore"));
+	}
+
+	const auto propIntIter = j.find("propInt");
+	if (propIntIter != j.end() && !propIntIter->is_null() && propIntIter->is_number_integer())
+	{
+		Cast<ITbSimpleNoSignalsInterfaceInterface>(p.GetObject())->SetPropInt(propIntIter->get<int32>());
+	}
+	else
+	{
+		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleNoSignalsInterfaceInterface -> ignore"));
+	}
 }
 
 static void to_json(nlohmann::json& j, const TScriptInterface<ITbSimpleNoSignalsInterfaceInterface>& p)

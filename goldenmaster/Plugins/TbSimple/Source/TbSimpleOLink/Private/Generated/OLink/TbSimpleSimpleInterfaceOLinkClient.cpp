@@ -418,217 +418,352 @@ void UTbSimpleSimpleInterfaceOLinkClient::FuncNoReturnValue(bool bParamBool)
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncNoParams()
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncNoParams");
+	return FuncNoParamsAsync().Get();
+}
+
+TFuture<bool> UTbSimpleSimpleInterfaceOLinkClient::FuncNoParamsAsync()
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncNoParamsAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return false;
+		TPromise<bool> Promise;
+		Promise.SetValue(false);
+		return Promise.GetFuture();
 	}
-	TPromise<bool> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[&Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<bool>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoParams");
-		m_sink->GetNode()->invokeRemote(memberId, {}, GetSimpleInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoParams");
+
+	m_sink->GetNode()->invokeRemote(memberId, {},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_boolean())
+			{
+				Promise->SetValue(arg.value.get<bool>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncNoParamsAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(false);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 bool UTbSimpleSimpleInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncBool");
+	return FuncBoolAsync(bParamBool).Get();
+}
+
+TFuture<bool> UTbSimpleSimpleInterfaceOLinkClient::FuncBoolAsync(bool bParamBool)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncBoolAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return false;
+		TPromise<bool> Promise;
+		Promise.SetValue(false);
+		return Promise.GetFuture();
 	}
-	TPromise<bool> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[bParamBool, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<bool>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetSimpleInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+
+	m_sink->GetNode()->invokeRemote(memberId, {bParamBool},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_boolean())
+			{
+				Promise->SetValue(arg.value.get<bool>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(false);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt(int32 ParamInt)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt");
+	return FuncIntAsync(ParamInt).Get();
+}
+
+TFuture<int32> UTbSimpleSimpleInterfaceOLinkClient::FuncIntAsync(int32 ParamInt)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncIntAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0;
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
 	}
-	TPromise<int32> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamInt, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamInt}, GetSimpleInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamInt},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(0);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 int32 UTbSimpleSimpleInterfaceOLinkClient::FuncInt32(int32 ParamInt32)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt32");
+	return FuncInt32Async(ParamInt32).Get();
+}
+
+TFuture<int32> UTbSimpleSimpleInterfaceOLinkClient::FuncInt32Async(int32 ParamInt32)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt32Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0;
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
 	}
-	TPromise<int32> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamInt32, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<int32>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamInt32}, GetSimpleInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<int32>> Promise = MakeShared<TPromise<int32>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt32");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamInt32},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<int32>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncInt32Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(0);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 int64 UTbSimpleSimpleInterfaceOLinkClient::FuncInt64(int64 ParamInt64)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt64");
+	return FuncInt64Async(ParamInt64).Get();
+}
+
+TFuture<int64> UTbSimpleSimpleInterfaceOLinkClient::FuncInt64Async(int64 ParamInt64)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncInt64Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0LL;
+		TPromise<int64> Promise;
+		Promise.SetValue(0LL);
+		return Promise.GetFuture();
 	}
-	TPromise<int64> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamInt64, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<int64>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamInt64}, GetSimpleInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<int64>> Promise = MakeShared<TPromise<int64>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcInt64");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamInt64},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number_integer())
+			{
+				Promise->SetValue(arg.value.get<int64>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncInt64Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(0LL);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat(float ParamFloat)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat");
+	return FuncFloatAsync(ParamFloat).Get();
+}
+
+TFuture<float> UTbSimpleSimpleInterfaceOLinkClient::FuncFloatAsync(float ParamFloat)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloatAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0.0f;
+		TPromise<float> Promise;
+		Promise.SetValue(0.0f);
+		return Promise.GetFuture();
 	}
-	TPromise<float> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<float>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<float>> Promise = MakeShared<TPromise<float>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number())
+			{
+				Promise->SetValue(arg.value.get<float>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(0.0f);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 float UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32(float ParamFloat32)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat32");
+	return FuncFloat32Async(ParamFloat32).Get();
+}
+
+TFuture<float> UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32Async(float ParamFloat32)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat32Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0.0f;
+		TPromise<float> Promise;
+		Promise.SetValue(0.0f);
+		return Promise.GetFuture();
 	}
-	TPromise<float> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat32, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<float>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32}, GetSimpleInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<float>> Promise = MakeShared<TPromise<float>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat32");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat32},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number())
+			{
+				Promise->SetValue(arg.value.get<float>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncFloat32Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(0.0f);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 double UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64(double ParamFloat)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat64");
+	return FuncFloat64Async(ParamFloat).Get();
+}
+
+TFuture<double> UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64Async(double ParamFloat)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncFloat64Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return 0.0;
+		TPromise<double> Promise;
+		Promise.SetValue(0.0);
+		return Promise.GetFuture();
 	}
-	TPromise<double> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<double>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamFloat}, GetSimpleInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<double>> Promise = MakeShared<TPromise<double>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcFloat64");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamFloat},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_number())
+			{
+				Promise->SetValue(arg.value.get<double>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncFloat64Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(0.0);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 FString UTbSimpleSimpleInterfaceOLinkClient::FuncString(const FString& ParamString)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncString");
+	return FuncStringAsync(ParamString).Get();
+}
+
+TFuture<FString> UTbSimpleSimpleInterfaceOLinkClient::FuncStringAsync(const FString& ParamString)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.FuncStringAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return FString();
+		TPromise<FString> Promise;
+		Promise.SetValue(FString());
+		return Promise.GetFuture();
 	}
-	TPromise<FString> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[ParamString, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSimpleInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<FString>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
-		m_sink->GetNode()->invokeRemote(memberId, {ParamString}, GetSimpleInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<FString>> Promise = MakeShared<TPromise<FString>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcString");
+
+	m_sink->GetNode()->invokeRemote(memberId, {ParamString},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_string())
+			{
+				Promise->SetValue(arg.value.get<FString>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(FString());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 bool UTbSimpleSimpleInterfaceOLinkClient::_IsSubscribed() const
@@ -720,6 +855,18 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.SimpleInterface.OLink.EmitSignal");
 	if (signalName == "sigBool")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal sigBool: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_boolean())
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal paramBool: invalid type for parameter 0"));
+			return;
+		}
 		bool boutParamBool = args[0].get<bool>();
 		_GetPublisher()->BroadcastSigBoolSignal(boutParamBool);
 		return;
@@ -727,6 +874,18 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigInt")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal sigInt: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal paramInt: invalid type for parameter 0"));
+			return;
+		}
 		int32 outParamInt = args[0].get<int32>();
 		_GetPublisher()->BroadcastSigIntSignal(outParamInt);
 		return;
@@ -734,6 +893,18 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigInt32")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal sigInt32: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal paramInt32: invalid type for parameter 0"));
+			return;
+		}
 		int32 outParamInt32 = args[0].get<int32>();
 		_GetPublisher()->BroadcastSigInt32Signal(outParamInt32);
 		return;
@@ -741,6 +912,18 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigInt64")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal sigInt64: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number_integer())
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal paramInt64: invalid type for parameter 0"));
+			return;
+		}
 		int64 outParamInt64 = args[0].get<int64>();
 		_GetPublisher()->BroadcastSigInt64Signal(outParamInt64);
 		return;
@@ -748,6 +931,18 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigFloat")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal sigFloat: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number())
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal paramFloat: invalid type for parameter 0"));
+			return;
+		}
 		float outParamFloat = args[0].get<float>();
 		_GetPublisher()->BroadcastSigFloatSignal(outParamFloat);
 		return;
@@ -755,6 +950,18 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigFloat32")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal sigFloat32: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number())
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal paramFloat32: invalid type for parameter 0"));
+			return;
+		}
 		float outParamFloat32 = args[0].get<float>();
 		_GetPublisher()->BroadcastSigFloat32Signal(outParamFloat32);
 		return;
@@ -762,6 +969,18 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigFloat64")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal sigFloat64: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_number())
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal paramFloat64: invalid type for parameter 0"));
+			return;
+		}
 		double outParamFloat64 = args[0].get<double>();
 		_GetPublisher()->BroadcastSigFloat64Signal(outParamFloat64);
 		return;
@@ -769,6 +988,18 @@ void UTbSimpleSimpleInterfaceOLinkClient::emitSignal(const std::string& signalNa
 
 	if (signalName == "sigString")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal sigString: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_string())
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("Signal paramString: invalid type for parameter 0"));
+			return;
+		}
 		const FString& outParamString = args[0].get<FString>();
 		_GetPublisher()->BroadcastSigStringSignal(outParamString);
 		return;

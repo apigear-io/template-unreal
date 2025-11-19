@@ -15,7 +15,8 @@ enum class EApiGearConnectionState : uint8
 {
 	Disconnected UMETA(Displayname = "Disconnected"),
 	Connecting UMETA(Displayname = "Connecting"),
-	Connected UMETA(Displayname = "Connected")
+	Connected UMETA(Displayname = "Connected"),
+	Disconnecting UMETA(Displayname = "Disconnecting")
 };
 
 ///  Used when Network Layer Connection changes its state to connected(true) or any other connection state (false).

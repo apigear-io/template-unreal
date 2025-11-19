@@ -222,49 +222,79 @@ void UTbSame1SameStruct2InterfaceOLinkClient::SetProp2(const FTbSame1Struct2& In
 FTbSame1Struct1 UTbSame1SameStruct2InterfaceOLinkClient::Func1(const FTbSame1Struct1& Param1)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.Func1");
+	return Func1Async(Param1).Get();
+}
+
+TFuture<FTbSame1Struct1> UTbSame1SameStruct2InterfaceOLinkClient::Func1Async(const FTbSame1Struct1& Param1)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.Func1Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return FTbSame1Struct1();
+		TPromise<FTbSame1Struct1> Promise;
+		Promise.SetValue(FTbSame1Struct1());
+		return Promise.GetFuture();
 	}
-	TPromise<FTbSame1Struct1> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<FTbSame1Struct1>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetSameStruct2InterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<FTbSame1Struct1>> Promise = MakeShared<TPromise<FTbSame1Struct1>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param1},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+			{
+				Promise->SetValue(arg.value.get<FTbSame1Struct1>());
+			}
+			else
+			{
+				UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(FTbSame1Struct1());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 FTbSame1Struct1 UTbSame1SameStruct2InterfaceOLinkClient::Func2(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.Func2");
+	return Func2Async(Param1, Param2).Get();
+}
+
+TFuture<FTbSame1Struct1> UTbSame1SameStruct2InterfaceOLinkClient::Func2Async(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.Func2Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSame1 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return FTbSame1Struct1();
+		TPromise<FTbSame1Struct1> Promise;
+		Promise.SetValue(FTbSame1Struct1());
+		return Promise.GetFuture();
 	}
-	TPromise<FTbSame1Struct1> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetSameStruct2InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<FTbSame1Struct1>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2}, GetSameStruct2InterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<FTbSame1Struct1>> Promise = MakeShared<TPromise<FTbSame1Struct1>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func2");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param1, Param2},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+			{
+				Promise->SetValue(arg.value.get<FTbSame1Struct1>());
+			}
+			else
+			{
+				UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Warning, TEXT("Func2Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(FTbSame1Struct1());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 bool UTbSame1SameStruct2InterfaceOLinkClient::_IsSubscribed() const
@@ -305,6 +335,18 @@ void UTbSame1SameStruct2InterfaceOLinkClient::emitSignal(const std::string& sign
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameStruct2Interface.OLink.EmitSignal");
 	if (signalName == "sig1")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Signal sig1: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		const FTbSame1Struct1& outParam1 = args[0].get<FTbSame1Struct1>();
 		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;
@@ -312,7 +354,25 @@ void UTbSame1SameStruct2InterfaceOLinkClient::emitSignal(const std::string& sign
 
 	if (signalName == "sig2")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 2)
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Signal sig2: invalid args array (expected 2 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		const FTbSame1Struct1& outParam1 = args[0].get<FTbSame1Struct1>();
+		// make sure the type matches our expectation
+		if (args[1].is_null() || !args[1].is_object())
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Signal param2: invalid type for parameter 1"));
+			return;
+		}
 		const FTbSame1Struct2& outParam2 = args[1].get<FTbSame1Struct2>();
 		_GetPublisher()->BroadcastSig2Signal(outParam1, outParam2);
 		return;

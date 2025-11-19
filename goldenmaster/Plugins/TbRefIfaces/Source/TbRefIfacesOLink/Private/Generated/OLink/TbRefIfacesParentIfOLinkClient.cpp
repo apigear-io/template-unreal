@@ -295,97 +295,157 @@ void UTbRefIfacesParentIfOLinkClient::SetImportedIfList(const TArray<TScriptInte
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfOLinkClient::LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.LocalIfMethod");
+	return LocalIfMethodAsync(Param).Get();
+}
+
+TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfOLinkClient::LocalIfMethodAsync(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.LocalIfMethodAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
+		TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Promise;
+		Promise.SetValue(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+		return Promise.GetFuture();
 	}
-	TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethod");
-		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise = MakeShared<TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethod");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+			{
+				Promise->SetValue(arg.value.get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+			}
+			else
+			{
+				UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("LocalIfMethodAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfOLinkClient::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.LocalIfMethodList");
+	return LocalIfMethodListAsync(Param).Get();
+}
+
+TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> UTbRefIfacesParentIfOLinkClient::LocalIfMethodListAsync(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.LocalIfMethodListAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+		TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise;
+		Promise.SetValue(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+		return Promise.GetFuture();
 	}
-	TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethodList");
-		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>> Promise = MakeShared<TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfMethodList");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>());
+			}
+			else
+			{
+				UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("LocalIfMethodListAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient::ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ImportedIfMethod");
+	return ImportedIfMethodAsync(Param).Get();
+}
+
+TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLinkClient::ImportedIfMethodAsync(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ImportedIfMethodAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+		TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Promise;
+		Promise.SetValue(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+		return Promise.GetFuture();
 	}
-	TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfMethod");
-		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise = MakeShared<TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfMethod");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+			{
+				Promise->SetValue(arg.value.get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+			}
+			else
+			{
+				UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("ImportedIfMethodAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLinkClient::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ImportedIfMethodList");
+	return ImportedIfMethodListAsync(Param).Get();
+}
+
+TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> UTbRefIfacesParentIfOLinkClient::ImportedIfMethodListAsync(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.ImportedIfMethodListAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbRefIfaces plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+		TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise;
+		Promise.SetValue(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+		return Promise.GetFuture();
 	}
-	TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetParentIfStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfMethodList");
-		m_sink->GetNode()->invokeRemote(memberId, {Param}, GetParentIfStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>> Promise = MakeShared<TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfMethodList");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_array())
+			{
+				Promise->SetValue(arg.value.get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>());
+			}
+			else
+			{
+				UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("ImportedIfMethodListAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 bool UTbRefIfacesParentIfOLinkClient::_IsSubscribed() const
@@ -450,6 +510,18 @@ void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, 
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.OLink.EmitSignal");
 	if (signalName == "localIfSignal")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal localIfSignal: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal param: invalid type for parameter 0"));
+			return;
+		}
 		const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& outParam = args[0].get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 		_GetPublisher()->BroadcastLocalIfSignalSignal(outParam);
 		return;
@@ -457,6 +529,18 @@ void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, 
 
 	if (signalName == "localIfSignalList")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal localIfSignalList: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal param: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& outParam = args[0].get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
 		_GetPublisher()->BroadcastLocalIfSignalListSignal(outParam);
 		return;
@@ -464,6 +548,18 @@ void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, 
 
 	if (signalName == "importedIfSignal")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal importedIfSignal: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal param: invalid type for parameter 0"));
+			return;
+		}
 		const TScriptInterface<ITbIfaceimportEmptyIfInterface>& outParam = args[0].get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 		_GetPublisher()->BroadcastImportedIfSignalSignal(outParam);
 		return;
@@ -471,6 +567,18 @@ void UTbRefIfacesParentIfOLinkClient::emitSignal(const std::string& signalName, 
 
 	if (signalName == "importedIfSignalList")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal importedIfSignalList: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_array())
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("Signal param: invalid type for parameter 0"));
+			return;
+		}
 		const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& outParam = args[0].get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
 		_GetPublisher()->BroadcastImportedIfSignalListSignal(outParam);
 		return;

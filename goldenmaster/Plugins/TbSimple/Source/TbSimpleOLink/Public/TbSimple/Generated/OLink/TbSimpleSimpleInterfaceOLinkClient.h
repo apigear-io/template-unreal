@@ -74,22 +74,31 @@ public:
 	void FuncNoReturnValue(bool bParamBool) override;
 
 	bool FuncNoParams() override;
+	TFuture<bool> FuncNoParamsAsync() override;
 
 	bool FuncBool(bool bParamBool) override;
+	TFuture<bool> FuncBoolAsync(bool bParamBool) override;
 
 	int32 FuncInt(int32 ParamInt) override;
+	TFuture<int32> FuncIntAsync(int32 ParamInt) override;
 
 	int32 FuncInt32(int32 ParamInt32) override;
+	TFuture<int32> FuncInt32Async(int32 ParamInt32) override;
 
 	int64 FuncInt64(int64 ParamInt64) override;
+	TFuture<int64> FuncInt64Async(int64 ParamInt64) override;
 
 	float FuncFloat(float ParamFloat) override;
+	TFuture<float> FuncFloatAsync(float ParamFloat) override;
 
 	float FuncFloat32(float ParamFloat32) override;
+	TFuture<float> FuncFloat32Async(float ParamFloat32) override;
 
 	double FuncFloat64(double ParamFloat) override;
+	TFuture<double> FuncFloat64Async(double ParamFloat) override;
 
 	FString FuncString(const FString& ParamString) override;
+	TFuture<FString> FuncStringAsync(const FString& ParamString) override;
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|SimpleInterface")
 	void UseConnection(TScriptInterface<class IApiGearConnection> InConnection);

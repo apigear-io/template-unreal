@@ -140,10 +140,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync(UObject* WorldContextO
 
 TFuture<TArray<bool>> UAbstractTbSimpleSimpleArrayInterface::FuncBoolAsync(const TArray<bool>& ParamBool)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleArrayInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamBool, this]()
+		[ParamBool, WeakThis]()
 		{
-		return FuncBool(ParamBool);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(ParamBool);
+		}
+		return TArray<bool>();
 	});
 }
 
@@ -169,10 +174,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync(UObject* WorldContextOb
 
 TFuture<TArray<int32>> UAbstractTbSimpleSimpleArrayInterface::FuncIntAsync(const TArray<int32>& ParamInt)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleArrayInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt, this]()
+		[ParamInt, WeakThis]()
 		{
-		return FuncInt(ParamInt);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt(ParamInt);
+		}
+		return TArray<int32>();
 	});
 }
 
@@ -198,10 +208,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async(UObject* WorldContext
 
 TFuture<TArray<int32>> UAbstractTbSimpleSimpleArrayInterface::FuncInt32Async(const TArray<int32>& ParamInt32)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleArrayInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt32, this]()
+		[ParamInt32, WeakThis]()
 		{
-		return FuncInt32(ParamInt32);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt32(ParamInt32);
+		}
+		return TArray<int32>();
 	});
 }
 
@@ -227,10 +242,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async(UObject* WorldContext
 
 TFuture<TArray<int64>> UAbstractTbSimpleSimpleArrayInterface::FuncInt64Async(const TArray<int64>& ParamInt64)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleArrayInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt64, this]()
+		[ParamInt64, WeakThis]()
 		{
-		return FuncInt64(ParamInt64);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt64(ParamInt64);
+		}
+		return TArray<int64>();
 	});
 }
 
@@ -256,10 +276,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync(UObject* WorldContext
 
 TFuture<TArray<float>> UAbstractTbSimpleSimpleArrayInterface::FuncFloatAsync(const TArray<float>& ParamFloat)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleArrayInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat(ParamFloat);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat(ParamFloat);
+		}
+		return TArray<float>();
 	});
 }
 
@@ -285,10 +310,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async(UObject* WorldConte
 
 TFuture<TArray<float>> UAbstractTbSimpleSimpleArrayInterface::FuncFloat32Async(const TArray<float>& ParamFloat32)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleArrayInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat32, this]()
+		[ParamFloat32, WeakThis]()
 		{
-		return FuncFloat32(ParamFloat32);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat32(ParamFloat32);
+		}
+		return TArray<float>();
 	});
 }
 
@@ -314,10 +344,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async(UObject* WorldConte
 
 TFuture<TArray<double>> UAbstractTbSimpleSimpleArrayInterface::FuncFloat64Async(const TArray<double>& ParamFloat)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleArrayInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat64(ParamFloat);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat64(ParamFloat);
+		}
+		return TArray<double>();
 	});
 }
 
@@ -343,10 +378,15 @@ void UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync(UObject* WorldContex
 
 TFuture<TArray<FString>> UAbstractTbSimpleSimpleArrayInterface::FuncStringAsync(const TArray<FString>& ParamString)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleArrayInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamString, this]()
+		[ParamString, WeakThis]()
 		{
-		return FuncString(ParamString);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncString(ParamString);
+		}
+		return TArray<FString>();
 	});
 }
 

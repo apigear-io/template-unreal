@@ -95,10 +95,15 @@ void UAbstractTestbed1StructInterface::FuncBoolAsync(UObject* WorldContextObject
 
 TFuture<FTestbed1StructBool> UAbstractTestbed1StructInterface::FuncBoolAsync(const FTestbed1StructBool& ParamBool)
 {
+	TWeakObjectPtr<UAbstractTestbed1StructInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamBool, this]()
+		[ParamBool, WeakThis]()
 		{
-		return FuncBool(ParamBool);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(ParamBool);
+		}
+		return FTestbed1StructBool();
 	});
 }
 
@@ -124,10 +129,15 @@ void UAbstractTestbed1StructInterface::FuncIntAsync(UObject* WorldContextObject,
 
 TFuture<FTestbed1StructInt> UAbstractTestbed1StructInterface::FuncIntAsync(const FTestbed1StructInt& ParamInt)
 {
+	TWeakObjectPtr<UAbstractTestbed1StructInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt, this]()
+		[ParamInt, WeakThis]()
 		{
-		return FuncInt(ParamInt);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt(ParamInt);
+		}
+		return FTestbed1StructInt();
 	});
 }
 
@@ -153,10 +163,15 @@ void UAbstractTestbed1StructInterface::FuncFloatAsync(UObject* WorldContextObjec
 
 TFuture<FTestbed1StructFloat> UAbstractTestbed1StructInterface::FuncFloatAsync(const FTestbed1StructFloat& ParamFloat)
 {
+	TWeakObjectPtr<UAbstractTestbed1StructInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat(ParamFloat);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat(ParamFloat);
+		}
+		return FTestbed1StructFloat();
 	});
 }
 
@@ -182,10 +197,15 @@ void UAbstractTestbed1StructInterface::FuncStringAsync(UObject* WorldContextObje
 
 TFuture<FTestbed1StructString> UAbstractTestbed1StructInterface::FuncStringAsync(const FTestbed1StructString& ParamString)
 {
+	TWeakObjectPtr<UAbstractTestbed1StructInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamString, this]()
+		[ParamString, WeakThis]()
 		{
-		return FuncString(ParamString);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncString(ParamString);
+		}
+		return FTestbed1StructString();
 	});
 }
 

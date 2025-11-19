@@ -200,49 +200,79 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::FuncNoReturnValue(const FTestbe
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::FuncNoParams()
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.OLink.FuncNoParams");
+	return FuncNoParamsAsync().Get();
+}
+
+TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct1InterfaceOLinkClient::FuncNoParamsAsync()
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.OLink.FuncNoParamsAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return FTestbed2NestedStruct1();
+		TPromise<FTestbed2NestedStruct1> Promise;
+		Promise.SetValue(FTestbed2NestedStruct1());
+		return Promise.GetFuture();
 	}
-	TPromise<FTestbed2NestedStruct1> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[&Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoParams");
-		m_sink->GetNode()->invokeRemote(memberId, {}, GetNestedStruct1InterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<FTestbed2NestedStruct1>> Promise = MakeShared<TPromise<FTestbed2NestedStruct1>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoParams");
+
+	m_sink->GetNode()->invokeRemote(memberId, {},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+			{
+				Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Warning, TEXT("FuncNoParamsAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(FTestbed2NestedStruct1());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceOLinkClient::Func1(const FTestbed2NestedStruct1& Param1)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.OLink.Func1");
+	return Func1Async(Param1).Get();
+}
+
+TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct1InterfaceOLinkClient::Func1Async(const FTestbed2NestedStruct1& Param1)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.OLink.Func1Async");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear Testbed2 plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return FTestbed2NestedStruct1();
+		TPromise<FTestbed2NestedStruct1> Promise;
+		Promise.SetValue(FTestbed2NestedStruct1());
+		return Promise.GetFuture();
 	}
-	TPromise<FTestbed2NestedStruct1> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[Param1, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct1InterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<FTestbed2NestedStruct1>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
-		m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetNestedStruct1InterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<FTestbed2NestedStruct1>> Promise = MakeShared<TPromise<FTestbed2NestedStruct1>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "func1");
+
+	m_sink->GetNode()->invokeRemote(memberId, {Param1},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_object())
+			{
+				Promise->SetValue(arg.value.get<FTestbed2NestedStruct1>());
+			}
+			else
+			{
+				UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+				Promise->SetValue(FTestbed2NestedStruct1());
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 bool UTestbed2NestedStruct1InterfaceOLinkClient::_IsSubscribed() const
@@ -271,6 +301,18 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::emitSignal(const std::string& s
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed2.NestedStruct1Interface.OLink.EmitSignal");
 	if (signalName == "sig1")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Error, TEXT("Signal sig1: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_object())
+		{
+			UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Error, TEXT("Signal param1: invalid type for parameter 0"));
+			return;
+		}
 		const FTestbed2NestedStruct1& outParam1 = args[0].get<FTestbed2NestedStruct1>();
 		_GetPublisher()->BroadcastSig1Signal(outParam1);
 		return;

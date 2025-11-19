@@ -374,7 +374,21 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func1(FTestbed2NestedStruct1());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func1Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FTestbed2NestedStruct1> Future = ImplFixture->GetImplementation()->Func1Async(FTestbed2NestedStruct1());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed2NestedStruct1& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -384,7 +398,21 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func2(FTestbed2NestedStruct1(), FTestbed2NestedStruct2());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func2Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FTestbed2NestedStruct1> Future = ImplFixture->GetImplementation()->Func2Async(FTestbed2NestedStruct1(), FTestbed2NestedStruct2());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed2NestedStruct1& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 
@@ -394,7 +422,21 @@ void UTestbed2NestedStruct3InterfaceOLinkSpec::Define()
 		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
 			{
 			ImplFixture->GetImplementation()->Func3(FTestbed2NestedStruct1(), FTestbed2NestedStruct2(), FTestbed2NestedStruct3());
+			// Verify values here based on service logic
 			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.Func3Async", EAsyncExecution::ThreadPool, [this](const FDoneDelegate& TestDone)
+		{
+		// Test async operation through OLink (client -> network -> server -> network -> client callback)
+		TFuture<FTestbed2NestedStruct1> Future = ImplFixture->GetImplementation()->Func3Async(FTestbed2NestedStruct1(), FTestbed2NestedStruct2(), FTestbed2NestedStruct3());
+
+		const FDoneDelegate Done = TestDone;
+		Future.Next([this, Done](const FTestbed2NestedStruct1& Result)
+			{
+			// Verify values here based on service logic
+			Done.Execute();
 		});
 	});
 

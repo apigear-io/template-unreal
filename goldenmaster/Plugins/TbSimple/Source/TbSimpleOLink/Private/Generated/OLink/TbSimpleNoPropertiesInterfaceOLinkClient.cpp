@@ -155,25 +155,40 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::FuncVoid()
 bool UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBool(bool bParamBool)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.OLink.FuncBool");
+	return FuncBoolAsync(bParamBool).Get();
+}
+
+TFuture<bool> UTbSimpleNoPropertiesInterfaceOLinkClient::FuncBoolAsync(bool bParamBool)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSimple.NoPropertiesInterface.OLink.FuncBoolAsync");
 	if (!m_sink->IsReady())
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Error, TEXT("%s has no node. Probably no valid connection or service. Are the ApiGear TbSimple plugin settings correct? Service set up correctly?"), UTF8_TO_TCHAR(m_sink->olinkObjectName().c_str()));
 
-		return false;
+		TPromise<bool> Promise;
+		Promise.SetValue(false);
+		return Promise.GetFuture();
 	}
-	TPromise<bool> Promise;
-	Async(EAsyncExecution::ThreadPool,
-		[bParamBool, &Promise, this]()
-		{
-		ApiGear::ObjectLink::InvokeReplyFunc GetNoPropertiesInterfaceStateFunc = [&Promise](ApiGear::ObjectLink::InvokeReplyArg arg)
-		{
-			Promise.SetValue(arg.value.get<bool>());
-		};
-		static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
-		m_sink->GetNode()->invokeRemote(memberId, {bParamBool}, GetNoPropertiesInterfaceStateFunc);
-	});
 
-	return Promise.GetFuture().Get();
+	TSharedRef<TPromise<bool>> Promise = MakeShared<TPromise<bool>>();
+
+	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcBool");
+
+	m_sink->GetNode()->invokeRemote(memberId, {bParamBool},
+		[Promise](ApiGear::ObjectLink::InvokeReplyArg arg) {
+			// check for actual field in j object and make sure the type matches our expectation
+			if (!arg.value.is_null() && !arg.value.is_discarded() && arg.value.is_boolean())
+			{
+				Promise->SetValue(arg.value.get<bool>());
+			}
+			else
+			{
+				UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+				Promise->SetValue(false);
+			}
+		});
+
+	return Promise->GetFuture();
 }
 
 bool UTbSimpleNoPropertiesInterfaceOLinkClient::_IsSubscribed() const
@@ -197,6 +212,18 @@ void UTbSimpleNoPropertiesInterfaceOLinkClient::emitSignal(const std::string& si
 
 	if (signalName == "sigBool")
 	{
+		// check for correct array size
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Error, TEXT("Signal sigBool: invalid args array (expected 1 elements)"));
+			return;
+		}
+		// make sure the type matches our expectation
+		if (args[0].is_null() || !args[0].is_boolean())
+		{
+			UE_LOG(LogTbSimpleNoPropertiesInterfaceOLinkClient, Error, TEXT("Signal paramBool: invalid type for parameter 0"));
+			return;
+		}
 		bool boutParamBool = args[0].get<bool>();
 		_GetPublisher()->BroadcastSigBoolSignal(boutParamBool);
 		return;

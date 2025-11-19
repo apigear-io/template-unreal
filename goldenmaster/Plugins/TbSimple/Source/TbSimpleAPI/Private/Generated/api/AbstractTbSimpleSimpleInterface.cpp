@@ -135,10 +135,15 @@ void UAbstractTbSimpleSimpleInterface::FuncNoParamsAsync(UObject* WorldContextOb
 
 TFuture<bool> UAbstractTbSimpleSimpleInterface::FuncNoParamsAsync()
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[this]()
+		[WeakThis]()
 		{
-		return FuncNoParams();
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncNoParams();
+		}
+		return false;
 	});
 }
 
@@ -164,10 +169,15 @@ void UAbstractTbSimpleSimpleInterface::FuncBoolAsync(UObject* WorldContextObject
 
 TFuture<bool> UAbstractTbSimpleSimpleInterface::FuncBoolAsync(bool bParamBool)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[bParamBool, this]()
+		[bParamBool, WeakThis]()
 		{
-		return FuncBool(bParamBool);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(bParamBool);
+		}
+		return false;
 	});
 }
 
@@ -193,10 +203,15 @@ void UAbstractTbSimpleSimpleInterface::FuncIntAsync(UObject* WorldContextObject,
 
 TFuture<int32> UAbstractTbSimpleSimpleInterface::FuncIntAsync(int32 ParamInt)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt, this]()
+		[ParamInt, WeakThis]()
 		{
-		return FuncInt(ParamInt);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt(ParamInt);
+		}
+		return 0;
 	});
 }
 
@@ -222,10 +237,15 @@ void UAbstractTbSimpleSimpleInterface::FuncInt32Async(UObject* WorldContextObjec
 
 TFuture<int32> UAbstractTbSimpleSimpleInterface::FuncInt32Async(int32 ParamInt32)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt32, this]()
+		[ParamInt32, WeakThis]()
 		{
-		return FuncInt32(ParamInt32);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt32(ParamInt32);
+		}
+		return 0;
 	});
 }
 
@@ -251,10 +271,15 @@ void UAbstractTbSimpleSimpleInterface::FuncInt64Async(UObject* WorldContextObjec
 
 TFuture<int64> UAbstractTbSimpleSimpleInterface::FuncInt64Async(int64 ParamInt64)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt64, this]()
+		[ParamInt64, WeakThis]()
 		{
-		return FuncInt64(ParamInt64);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt64(ParamInt64);
+		}
+		return 0LL;
 	});
 }
 
@@ -280,10 +305,15 @@ void UAbstractTbSimpleSimpleInterface::FuncFloatAsync(UObject* WorldContextObjec
 
 TFuture<float> UAbstractTbSimpleSimpleInterface::FuncFloatAsync(float ParamFloat)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat(ParamFloat);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat(ParamFloat);
+		}
+		return 0.0f;
 	});
 }
 
@@ -309,10 +339,15 @@ void UAbstractTbSimpleSimpleInterface::FuncFloat32Async(UObject* WorldContextObj
 
 TFuture<float> UAbstractTbSimpleSimpleInterface::FuncFloat32Async(float ParamFloat32)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat32, this]()
+		[ParamFloat32, WeakThis]()
 		{
-		return FuncFloat32(ParamFloat32);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat32(ParamFloat32);
+		}
+		return 0.0f;
 	});
 }
 
@@ -338,10 +373,15 @@ void UAbstractTbSimpleSimpleInterface::FuncFloat64Async(UObject* WorldContextObj
 
 TFuture<double> UAbstractTbSimpleSimpleInterface::FuncFloat64Async(double ParamFloat)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat64(ParamFloat);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat64(ParamFloat);
+		}
+		return 0.0;
 	});
 }
 
@@ -367,10 +407,15 @@ void UAbstractTbSimpleSimpleInterface::FuncStringAsync(UObject* WorldContextObje
 
 TFuture<FString> UAbstractTbSimpleSimpleInterface::FuncStringAsync(const FString& ParamString)
 {
+	TWeakObjectPtr<UAbstractTbSimpleSimpleInterface> WeakThis(this);
 	return Async(EAsyncExecution::ThreadPool,
-		[ParamString, this]()
+		[ParamString, WeakThis]()
 		{
-		return FuncString(ParamString);
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncString(ParamString);
+		}
+		return FString();
 	});
 }
 
