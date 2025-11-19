@@ -48,7 +48,7 @@ if [ $? -ne 0 ]; then exit 1; fi;
 buildTestPlugins()
 {
 	# do not use -unattended as this seems to cause some issue when exiting the editor after test run
-	"$RunUAT_path" BuildCookRun -installed -project="$1" -run -RunAutomationTest="$3" -nullrhi -NoP4 -build -verbose -nodebuginfo -log="$2/RunTests.log" -addcmdline="-ReportExportPath=$2 " -Configuration=Test -notools -utf8output
+	"$RunUAT_path" BuildCookRun -installed -project="$1" -run -RunAutomationTest="$3" -nullrhi -NoP4 -build -verbose -NoEditorTelemetry -WarningsAsErrors -nodebuginfo -log="$2/RunTests.log" -addcmdline="-ReportExportPath=$2 " -Configuration=Test -notools -utf8output
 	buildresult=$?
 }
 
