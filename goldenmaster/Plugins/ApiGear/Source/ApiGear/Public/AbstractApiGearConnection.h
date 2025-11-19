@@ -41,6 +41,9 @@ public:
 	bool IsAutoReconnectEnabled() const override;
 
 private:
+	UFUNCTION()
+	bool OnConnectionTimeout(float DeltaTime);
+
 	void SetConnectionState(EApiGearConnectionState State);
 
 	virtual void OnConnected_Implementation() PURE_VIRTUAL(UAbstractApiGearConnection::OnConnected_Implementation, );
@@ -55,8 +58,10 @@ private:
 	bool bStopReconnectingRequested;
 
 	ApiGear::FDelegateHandle RetryTickerHandle;
+	ApiGear::FDelegateHandle ConnectionTimeoutHandle;
 
 	FTickerDelegate RetryTickerDelegate;
+	FTickerDelegate ConnectionTimeoutDelegate;
 
 	EApiGearConnectionState ConnectionState;
 };

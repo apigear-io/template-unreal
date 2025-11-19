@@ -8,6 +8,17 @@ UAbstractApiGearConnection::UAbstractApiGearConnection(const FObjectInitializer&
 	, bStopReconnectingRequested(false)
 {
 	RetryTickerDelegate.BindUFunction(this, "Connect");
+	ConnectionTimeoutDelegate.BindUObject(this, &UAbstractApiGearConnection::OnConnectionTimeout);
+}
+
+bool UAbstractApiGearConnection::OnConnectionTimeout(float DeltaTime)
+{
+	if (GetConnectionState() == EApiGearConnectionState::Connecting)
+	{
+		UE_LOG(LogApiGearConnection, Warning, TEXT("Connection timeout"));
+		Disconnect();
+	}
+	return false;
 }
 
 FApiGearConnectionIsConnectedDelegate& UAbstractApiGearConnection::GetIsConnectedChangedDelegate()
@@ -24,8 +35,8 @@ void UAbstractApiGearConnection::OnConnected()
 {
 	SetConnectionState(EApiGearConnectionState::Connected);
 
-	// disable reconnect ticker
 	ApiGearTicker::GetCoreTicker().RemoveTicker(RetryTickerHandle);
+	ApiGearTicker::GetCoreTicker().RemoveTicker(ConnectionTimeoutHandle);
 
 	OnConnected_Implementation();
 }
@@ -35,6 +46,8 @@ void UAbstractApiGearConnection::OnDisconnected(bool bReconnect)
 	OnDisconnected_Implementation(bReconnect);
 
 	SetConnectionState(EApiGearConnectionState::Disconnected);
+
+	ApiGearTicker::GetCoreTicker().RemoveTicker(ConnectionTimeoutHandle);
 
 	if (bIsAutoReconnectEnabled && bReconnect && !bStopReconnectingRequested)
 	{
@@ -55,6 +68,8 @@ void UAbstractApiGearConnection::Connect()
 	}
 	SetConnectionState(EApiGearConnectionState::Connecting);
 
+	ConnectionTimeoutHandle = ApiGearTicker::GetCoreTicker().AddTicker(ConnectionTimeoutDelegate, 300.0f);
+
 	Connect_Implementation();
 }
 
@@ -68,6 +83,7 @@ void UAbstractApiGearConnection::Disconnect()
 	}
 
 	UAbstractApiGearConnection::StopReconnecting();
+	ApiGearTicker::GetCoreTicker().RemoveTicker(ConnectionTimeoutHandle);
 	SetConnectionState(EApiGearConnectionState::Disconnecting);
 	Disconnect_Implementation();
 }
