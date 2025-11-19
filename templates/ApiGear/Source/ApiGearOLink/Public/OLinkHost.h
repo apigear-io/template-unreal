@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Subsystems/GameInstanceSubsystem.h"
-#include "Templates/PimplPtr.h"
+#include "Templates/SharedPointer.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/remotenode.h"
 #include "olink/remoteregistry.h"
@@ -42,5 +42,5 @@ public:
 
 private:
 	/// @brief the private implementation of the OLink server
-	TPimplPtr<OLinkHostPrivate> PrivateImplementation;
+	TSharedPtr<OLinkHostPrivate> PrivateImplementation;
 };

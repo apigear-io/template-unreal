@@ -2,7 +2,6 @@
 #include "OLinkCommon.h"
 #include "OLinkHostConnection.h"
 #include "ApiGearLogCategories.h"
-#include "ApiGearSettings.h"
 #include "Modules/ModuleManager.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/remoteregistry.h"
@@ -46,15 +45,8 @@ OLinkHostPrivate::OLinkHostPrivate(uint32 InPort)
 	: m_loggingDisabled(false)
 	, Port(InPort)
 {
-	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
-
 	Registry = MakeShared<ApiGear::ObjectLink::RemoteRegistry>();
 	Registry->onLog(logHostFunc());
-
-	if (settings->OLINK_AutoStart)
-	{
-		Start(Port);
-	}
 }
 
 OLinkHostPrivate::~OLinkHostPrivate()
@@ -80,7 +72,7 @@ bool OLinkHostPrivate::Start(uint32 InPort)
 		return false;
 	}
 
-	TickerHandle = ApiGearTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateRaw(this, &OLinkHostPrivate::Tick));
+	TickerHandle = ApiGearTicker::GetCoreTicker().AddTicker(FTickerDelegate::CreateSP(AsShared(), &OLinkHostPrivate::Tick));
 	return true;
 }
 
