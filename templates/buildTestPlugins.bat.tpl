@@ -73,20 +73,69 @@ xcopy /E /Y "%script_path%\{{ Camel .Name}}" "%{{ Camel .Name}}PluginTarget_path
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 {{ end }}
 
-@REM run build and tests
-call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.{{ if .Features.olink_tests -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}"
-if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-if not exist %script_path%index.json (echo WARNING: no test results found) else findstr /C:"\"failed\": 0" %script_path%index.json >nul
-if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+@REM Run primary tests (with ASan if enabled)
+set "SANITIZER="
+if defined ENABLE_ASAN (
+	set "SANITIZER=asan"
+)
+
+call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" ".Impl.{{ if .Features.olink_tests -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}" "%SANITIZER%" "%script_path%RunTests.log" "%script_path%"
+if %ERRORLEVEL% GEQ 1 (
+	echo ERROR: Tests failed
+	exit /b %ERRORLEVEL%
+)
+
+@REM Check test results
+if not exist %script_path%index.json (
+	echo WARNING: no test results found
+) else (
+	findstr /C:"\"failed\": 0" %script_path%index.json >nul
+	if %ERRORLEVEL% GEQ 1 (
+		echo ERROR: Tests failed ^(check index.json^)
+		exit /b %ERRORLEVEL%
+	)
+)
+
+@REM TSan tests (opt-in with ENABLE_TSAN=1)
+@REM Usage: set ENABLE_TSAN=1 && buildTestPlugins.bat
+if defined ENABLE_TSAN (
+	call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" ".Impl.{{ if .Features.olink_tests -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}" "tsan" "%script_path%RunTests-TSan.log" "%script_path%tsan-results"
+	if %ERRORLEVEL% GEQ 1 (
+		echo ERROR: TSan tests failed ^(threading issues detected^)
+		exit /b %ERRORLEVEL%
+	)
+	@REM Check TSan test results
+	if exist %script_path%tsan-results\index.json (
+		findstr /C:"\"failed\": 0" %script_path%tsan-results\index.json >nul
+		if %ERRORLEVEL% GEQ 1 (
+			echo ERROR: TSan tests failed ^(check tsan-results\index.json^)
+			exit /b %ERRORLEVEL%
+		)
+	)
+)
 exit /b 0
 
 @REM function implementations
 
-@REM build UE plugin
+@REM Run tests with optional sanitizer
+@REM Args: project tests sanitizer log_file report_path
 :buildTestPlugins
 (
+	set "sanitizer=%~3"
+	set "log_file=%~4"
+	set "report_path=%~5"
+	set "SANITIZER_FLAGS="
+
+	echo === Running Tests ===
+	if "%sanitizer%"=="asan" (
+		echo Enabled: ASan + UBSan
+		set "SANITIZER_FLAGS=-EnableASan -EnableUndefinedBehaviorSanitizer"
+	) else if "%sanitizer%"=="tsan" (
+		echo Enabled: TSan
+		set "SANITIZER_FLAGS=-EnableThreadSanitizer"
+	)
+
 	@REM do not use -unattended as this seems to cause some issue when exiting the editor after test run
-	"%RunUAT_path%" BuildCookRun -installed -project="%1" -run -RunAutomationTest="%3" -nullrhi -NoP4 -build -verbose -NoEditorTelemetry -WarningsAsErrors -nodebuginfo -log="%2/RunTests.log" -addcmdline="-ReportExportPath=%2 " -Configuration=Test -notools -utf8output
-	set buildresult=!ERRORLEVEL!
+	"%RunUAT_path%" BuildCookRun -installed !SANITIZER_FLAGS! -project="%~1" -run -RunAutomationTest="%~2" -nullrhi -NoP4 -build -verbose -WarningsAsErrors -nodebuginfo -NoEditorTelemetry -log="!log_file!" -addcmdline="-ReportExportPath=!report_path!" -Configuration=Test -notools -utf8output
 )
 exit /b %ERRORLEVEL%
