@@ -36,49 +36,64 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 #include "Engine/Engine.h"
-{{- $CacheClassName := printf "%sJniCache" $ModuleName}}
+{{- $StaticCacheName := printf "%sJniCache" $ModuleName}}
 
-class {{ $API_MACRO }} {{$CacheClassName }}
+class {{ $API_MACRO }} {{$StaticCacheName }}
 {
-
+public:
 {{- range .Module.Structs }}
 	{{- $className:= printf "javaStruct%s" (Camel .Name) }}
-	static jclass {{$className}} = nullptr;
-	static jmethodID {{$className}}Ctor = nullptr;
+	static jclass {{$className}};
+	static jmethodID {{$className}}Ctor;
 {{- range .Fields }}
-	static jfieldID {{$className}}{{Camel .Name}}FieldId = nullptr;
+	static jfieldID {{$className}}{{Camel .Name}}FieldId;
 {{- end }}
 {{- end }}
 
 {{- range .Module.Enums }}
 	{{- $className:= printf "javaEnum%s" (Camel .Name) }}
-	static jclass {{$className}} = nullptr;
-	static jmethodID {{$className}}FromValueMethodId = nullptr;
-	static jmethodID {{$className}}GetValueMethod = nullptr;
+	static jclass {{$className}};
+	static jmethodID {{$className}}FromValueMethodId;
+	static jmethodID {{$className}}GetValueMethod;
 
 {{- end }}
 
 {{- range .Module.Interfaces }}
 {{- $className:= printf "javaClass%s" (Camel .Name) }}
-	static jclass {{$className}} = nullptr;
+	static jclass {{$className}};
 {{- range .Properties }}
 	{{- if not .IsReadOnly }}
-	static jmethodID {{$className}}{{ Camel .Name}}SetterId = nullptr;
+	static jmethodID {{$className}}{{ Camel .Name}}SetterId;
 	{{- end }}
-	static jmethodID {{$className}}{{ Camel .Name}}GetterId = nullptr;
+	static jmethodID {{$className}}{{ Camel .Name}}GetterId;
+	static jmethodID {{$className}}{{ Camel .Name}}ChangedMethodID;
+{{- end }}
+
+{{- $serviceClass:= printf "serviceClass%s" (Camel .Name) }}
+{{- $clientClass:= printf "clientClass%s" (Camel .Name) }}
+	static jclass {{$serviceClass}};
+	static jmethodID {{$serviceClass}}ReadyMethodID;
+{{- range .Properties }}
+	static jmethodID {{$serviceClass}}{{ Camel .Name}}ChangedMethodID;
 {{- end }}
 {{- range .Signals }}
-	static jmethodID {{$className}}{{ Camel .Name}}SignalMethodID = nullptr;
+	static jmethodID {{$serviceClass}}{{ Camel .Name}}SignalMethodID;
 {{- end }}
+	static jclass {{$clientClass}};
+	static jmethodID {{$clientClass}}Ctor;
+	static jmethodID {{$clientClass}}BindMethodID;
+	static jmethodID {{$clientClass}}UnbindMethodID;
+
 {{- range .Operations }}
-	static jmethodID {{$className}}{{ Camel .Name}}MethodID = nullptr;
+	static jmethodID {{$clientClass}}{{ Camel .Name}}AsyncMethodID;
 {{- end }}
+
 
 {{- end }}
 
 {{- range .Module.Externs }}
-	static jclass javaClass{{.Name}} = nullptr;
-	static jmethodID ctor{{.Name}} = nullptr;
+	static jclass javaClass{{.Name}};
+	static jmethodID javaClass{{.Name}}Ctor;
 {{- end }}
 
 	static void init();
@@ -86,7 +101,7 @@ class {{ $API_MACRO }} {{$CacheClassName }}
 	static bool isInitialized();
 
 private:
-	static bool m_isInitialized = false;
-}
+	static bool m_isInitialized;
+};
 
 #endif

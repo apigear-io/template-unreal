@@ -36,35 +36,58 @@ limitations under the License.
 
 class TBREFIFACESAPI_API TbRefIfacesJniCache
 {
-	static jclass javaClassSimpleLocalIf = nullptr;
-	static jmethodID javaClassSimpleLocalIfIntPropertySetterId = nullptr;
-	static jmethodID javaClassSimpleLocalIfIntPropertyGetterId = nullptr;
-	static jmethodID javaClassSimpleLocalIfIntSignalSignalMethodID = nullptr;
-	static jmethodID javaClassSimpleLocalIfIntMethodMethodID = nullptr;
-	static jclass javaClassParentIf = nullptr;
-	static jmethodID javaClassParentIfLocalIfSetterId = nullptr;
-	static jmethodID javaClassParentIfLocalIfGetterId = nullptr;
-	static jmethodID javaClassParentIfLocalIfListSetterId = nullptr;
-	static jmethodID javaClassParentIfLocalIfListGetterId = nullptr;
-	static jmethodID javaClassParentIfImportedIfSetterId = nullptr;
-	static jmethodID javaClassParentIfImportedIfGetterId = nullptr;
-	static jmethodID javaClassParentIfImportedIfListSetterId = nullptr;
-	static jmethodID javaClassParentIfImportedIfListGetterId = nullptr;
-	static jmethodID javaClassParentIfLocalIfSignalSignalMethodID = nullptr;
-	static jmethodID javaClassParentIfLocalIfSignalListSignalMethodID = nullptr;
-	static jmethodID javaClassParentIfImportedIfSignalSignalMethodID = nullptr;
-	static jmethodID javaClassParentIfImportedIfSignalListSignalMethodID = nullptr;
-	static jmethodID javaClassParentIfLocalIfMethodMethodID = nullptr;
-	static jmethodID javaClassParentIfLocalIfMethodListMethodID = nullptr;
-	static jmethodID javaClassParentIfImportedIfMethodMethodID = nullptr;
-	static jmethodID javaClassParentIfImportedIfMethodListMethodID = nullptr;
+public:
+	static jclass javaClassSimpleLocalIf;
+	static jmethodID javaClassSimpleLocalIfIntPropertySetterId;
+	static jmethodID javaClassSimpleLocalIfIntPropertyGetterId;
+	static jmethodID javaClassSimpleLocalIfIntPropertyChangedMethodID;
+	static jclass serviceClassSimpleLocalIf;
+	static jmethodID serviceClassSimpleLocalIfReadyMethodID;
+	static jmethodID serviceClassSimpleLocalIfIntPropertyChangedMethodID;
+	static jmethodID serviceClassSimpleLocalIfIntSignalSignalMethodID;
+	static jclass clientClassSimpleLocalIf;
+	static jmethodID clientClassSimpleLocalIfCtor;
+	static jmethodID clientClassSimpleLocalIfBindMethodID;
+	static jmethodID clientClassSimpleLocalIfUnbindMethodID;
+	static jmethodID clientClassSimpleLocalIfIntMethodAsyncMethodID;
+	static jclass javaClassParentIf;
+	static jmethodID javaClassParentIfLocalIfSetterId;
+	static jmethodID javaClassParentIfLocalIfGetterId;
+	static jmethodID javaClassParentIfLocalIfChangedMethodID;
+	static jmethodID javaClassParentIfLocalIfListSetterId;
+	static jmethodID javaClassParentIfLocalIfListGetterId;
+	static jmethodID javaClassParentIfLocalIfListChangedMethodID;
+	static jmethodID javaClassParentIfImportedIfSetterId;
+	static jmethodID javaClassParentIfImportedIfGetterId;
+	static jmethodID javaClassParentIfImportedIfChangedMethodID;
+	static jmethodID javaClassParentIfImportedIfListSetterId;
+	static jmethodID javaClassParentIfImportedIfListGetterId;
+	static jmethodID javaClassParentIfImportedIfListChangedMethodID;
+	static jclass serviceClassParentIf;
+	static jmethodID serviceClassParentIfReadyMethodID;
+	static jmethodID serviceClassParentIfLocalIfChangedMethodID;
+	static jmethodID serviceClassParentIfLocalIfListChangedMethodID;
+	static jmethodID serviceClassParentIfImportedIfChangedMethodID;
+	static jmethodID serviceClassParentIfImportedIfListChangedMethodID;
+	static jmethodID serviceClassParentIfLocalIfSignalSignalMethodID;
+	static jmethodID serviceClassParentIfLocalIfSignalListSignalMethodID;
+	static jmethodID serviceClassParentIfImportedIfSignalSignalMethodID;
+	static jmethodID serviceClassParentIfImportedIfSignalListSignalMethodID;
+	static jclass clientClassParentIf;
+	static jmethodID clientClassParentIfCtor;
+	static jmethodID clientClassParentIfBindMethodID;
+	static jmethodID clientClassParentIfUnbindMethodID;
+	static jmethodID clientClassParentIfLocalIfMethodAsyncMethodID;
+	static jmethodID clientClassParentIfLocalIfMethodListAsyncMethodID;
+	static jmethodID clientClassParentIfImportedIfMethodAsyncMethodID;
+	static jmethodID clientClassParentIfImportedIfMethodListAsyncMethodID;
 
 	static void init();
 	static void clear();
 	static bool isInitialized();
 
 private:
-	static bool m_isInitialized = false;
-}
+	static bool m_isInitialized;
+};
 
 #endif

@@ -17,6 +17,7 @@ limitations under the License.
 */
 
 #include "TbEnum/Generated/Jni/TbEnumDataJavaConverter.h"
+#include "TbEnum/Generated/Jni/TbEnumJniCache.h"
 #include "TbEnum/Generated/api/TbEnum_data.h"
 #include "TbEnum/Implementation/TbEnumEnumInterface.h"
 
@@ -33,9 +34,10 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+DEFINE_LOG_CATEGORY(LogTbEnumDataJavaConverter_JNI);
+
 void TbEnumDataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum0>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum0");
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -48,19 +50,29 @@ void TbEnumDataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TA
 
 ETbEnumEnum0 TbEnumDataJavaConverter::getEnum0Value(JNIEnv* env, jobject input)
 {
-	ETbEnumEnum0 cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum0");
-	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
-	int int_value = env->CallIntMethod(input, getValueMethod);
-	UTbEnumLibrary::toTbEnumEnum0(cppEnumValue, int_value);
+	ETbEnumEnum0 cppEnumValue = ETbEnumEnum0::TEE0_Value0;
+
+	if (TbEnumJniCache::javaEnumEnum0GetValueMethod != nullptr)
+	{
+		int int_value = env->CallIntMethod(input, TbEnumJniCache::javaEnumEnum0GetValueMethod);
+		UTbEnumLibrary::toTbEnumEnum0(cppEnumValue, int_value);
+	}
+	else
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum0::getValue not found"));
+	}
 	return cppEnumValue;
 }
 
 jobjectArray TbEnumDataJavaConverter::makeJavaEnum0Array(JNIEnv* env, const TArray<ETbEnumEnum0>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum0");
+	if (TbEnumJniCache::javaEnumEnum0 == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum0 not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbEnumJniCache::javaEnumEnum0, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -73,18 +85,18 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum0Array(JNIEnv* env, const TArr
 
 jobject TbEnumDataJavaConverter::makeJavaEnum0(JNIEnv* env, ETbEnumEnum0 value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum0");
-	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)LtbEnum/tbEnum_api/Enum0;");
-	if (!fromValueMethod)
+	if (TbEnumJniCache::javaEnumEnum0FromValueMethodId == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum0::fromValue not found"));
 		return nullptr;
+	}
 	int int_value = (uint8)value;
-	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(TbEnumJniCache::javaEnumEnum0, TbEnumJniCache::javaEnumEnum0FromValueMethodId, int_value);
 	return javaObj;
 }
 
 void TbEnumDataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum1>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum1");
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -97,19 +109,29 @@ void TbEnumDataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TA
 
 ETbEnumEnum1 TbEnumDataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 {
-	ETbEnumEnum1 cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum1");
-	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
-	int int_value = env->CallIntMethod(input, getValueMethod);
-	UTbEnumLibrary::toTbEnumEnum1(cppEnumValue, int_value);
+	ETbEnumEnum1 cppEnumValue = ETbEnumEnum1::TEE1_Value1;
+
+	if (TbEnumJniCache::javaEnumEnum1GetValueMethod != nullptr)
+	{
+		int int_value = env->CallIntMethod(input, TbEnumJniCache::javaEnumEnum1GetValueMethod);
+		UTbEnumLibrary::toTbEnumEnum1(cppEnumValue, int_value);
+	}
+	else
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum1::getValue not found"));
+	}
 	return cppEnumValue;
 }
 
 jobjectArray TbEnumDataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TArray<ETbEnumEnum1>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum1");
+	if (TbEnumJniCache::javaEnumEnum1 == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum1 not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbEnumJniCache::javaEnumEnum1, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -122,18 +144,18 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TArr
 
 jobject TbEnumDataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbEnumEnum1 value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum1");
-	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)LtbEnum/tbEnum_api/Enum1;");
-	if (!fromValueMethod)
+	if (TbEnumJniCache::javaEnumEnum1FromValueMethodId == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum1::fromValue not found"));
 		return nullptr;
+	}
 	int int_value = (uint8)value;
-	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(TbEnumJniCache::javaEnumEnum1, TbEnumJniCache::javaEnumEnum1FromValueMethodId, int_value);
 	return javaObj;
 }
 
 void TbEnumDataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum2>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum2");
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -146,19 +168,29 @@ void TbEnumDataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TA
 
 ETbEnumEnum2 TbEnumDataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 {
-	ETbEnumEnum2 cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum2");
-	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
-	int int_value = env->CallIntMethod(input, getValueMethod);
-	UTbEnumLibrary::toTbEnumEnum2(cppEnumValue, int_value);
+	ETbEnumEnum2 cppEnumValue = ETbEnumEnum2::TEE2_Value2;
+
+	if (TbEnumJniCache::javaEnumEnum2GetValueMethod != nullptr)
+	{
+		int int_value = env->CallIntMethod(input, TbEnumJniCache::javaEnumEnum2GetValueMethod);
+		UTbEnumLibrary::toTbEnumEnum2(cppEnumValue, int_value);
+	}
+	else
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum2::getValue not found"));
+	}
 	return cppEnumValue;
 }
 
 jobjectArray TbEnumDataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TArray<ETbEnumEnum2>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum2");
+	if (TbEnumJniCache::javaEnumEnum2 == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum2 not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbEnumJniCache::javaEnumEnum2, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -171,18 +203,18 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TArr
 
 jobject TbEnumDataJavaConverter::makeJavaEnum2(JNIEnv* env, ETbEnumEnum2 value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum2");
-	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)LtbEnum/tbEnum_api/Enum2;");
-	if (!fromValueMethod)
+	if (TbEnumJniCache::javaEnumEnum2FromValueMethodId == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum2::fromValue not found"));
 		return nullptr;
+	}
 	int int_value = (uint8)value;
-	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(TbEnumJniCache::javaEnumEnum2, TbEnumJniCache::javaEnumEnum2FromValueMethodId, int_value);
 	return javaObj;
 }
 
 void TbEnumDataJavaConverter::fillEnum3Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum3>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum3");
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -195,19 +227,29 @@ void TbEnumDataJavaConverter::fillEnum3Array(JNIEnv* env, jobjectArray input, TA
 
 ETbEnumEnum3 TbEnumDataJavaConverter::getEnum3Value(JNIEnv* env, jobject input)
 {
-	ETbEnumEnum3 cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum3");
-	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
-	int int_value = env->CallIntMethod(input, getValueMethod);
-	UTbEnumLibrary::toTbEnumEnum3(cppEnumValue, int_value);
+	ETbEnumEnum3 cppEnumValue = ETbEnumEnum3::TEE3_Value3;
+
+	if (TbEnumJniCache::javaEnumEnum3GetValueMethod != nullptr)
+	{
+		int int_value = env->CallIntMethod(input, TbEnumJniCache::javaEnumEnum3GetValueMethod);
+		UTbEnumLibrary::toTbEnumEnum3(cppEnumValue, int_value);
+	}
+	else
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum3::getValue not found"));
+	}
 	return cppEnumValue;
 }
 
 jobjectArray TbEnumDataJavaConverter::makeJavaEnum3Array(JNIEnv* env, const TArray<ETbEnumEnum3>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum3");
+	if (TbEnumJniCache::javaEnumEnum3 == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum3 not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbEnumJniCache::javaEnumEnum3, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
@@ -220,12 +262,13 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum3Array(JNIEnv* env, const TArr
 
 jobject TbEnumDataJavaConverter::makeJavaEnum3(JNIEnv* env, ETbEnumEnum3 value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum3");
-	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)LtbEnum/tbEnum_api/Enum3;");
-	if (!fromValueMethod)
+	if (TbEnumJniCache::javaEnumEnum3FromValueMethodId == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Enum Enum3::fromValue not found"));
 		return nullptr;
+	}
 	int int_value = (uint8)value;
-	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(TbEnumJniCache::javaEnumEnum3, TbEnumJniCache::javaEnumEnum3FromValueMethodId, int_value);
 	return javaObj;
 }
 
@@ -257,9 +300,13 @@ jobject TbEnumDataJavaConverter::makeJavaEnumInterface(JNIEnv* env, const TScrip
 
 jobjectArray TbEnumDataJavaConverter::makeJavaEnumInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbEnumEnumInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/IEnumInterface");
+	if (!TbEnumJniCache::javaClassEnumInterface)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("IEnumInterface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbEnumJniCache::javaClassEnumInterface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }

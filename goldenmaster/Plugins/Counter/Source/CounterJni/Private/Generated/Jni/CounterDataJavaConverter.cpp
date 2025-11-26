@@ -17,6 +17,7 @@ limitations under the License.
 */
 
 #include "Counter/Generated/Jni/CounterDataJavaConverter.h"
+#include "Counter/Generated/Jni/CounterJniCache.h"
 #include "CustomTypes/Generated/Jni/CustomTypesDataJavaConverter.h"
 #include "CustomTypes/Generated/api/CustomTypes_data.h"
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
@@ -35,6 +36,8 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+DEFINE_LOG_CATEGORY(LogCounterDataJavaConverter_JNI);
 
 void CounterDataJavaConverter::fillCounter(JNIEnv* env, jobject input, TScriptInterface<ICounterCounterInterface> out_counter)
 {
@@ -64,9 +67,13 @@ jobject CounterDataJavaConverter::makeJavaCounter(JNIEnv* env, const TScriptInte
 
 jobjectArray CounterDataJavaConverter::makeJavaCounterArray(JNIEnv* env, const TArray<TScriptInterface<ICounterCounterInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
+	if (!CounterJniCache::javaClassCounter)
+	{
+		UE_LOG(LogCounterDataJavaConverter_JNI, Warning, TEXT("ICounter not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, CounterJniCache::javaClassCounter, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }

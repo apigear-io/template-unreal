@@ -39,12 +39,16 @@ limitations under the License.
 //	env->ExceptionClear();
 //	LOG UE;
 //}
+jclass ExternTypesJniCache::javaClassMyVector3D = nullptr;
+jmethodID ExternTypesJniCache::javaClassMyVector3DCtor = nullptr;
+
+bool ExternTypesJniCache::m_isInitialized = false;
 
 void ExternTypesJniCache::init()
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	javaClassMyVector3D = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
-	ctorMyVector3D = env->GetMethodID(ExternTypesJniCache::javaClassMyVector3D, "<init>", "()V");
+	javaClassMyVector3DCtor = env->GetMethodID(ExternTypesJniCache::javaClassMyVector3D, "<init>", "()V");
 	m_isInitialized = true;
 }
 
@@ -54,7 +58,7 @@ void ExternTypesJniCache::clear()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	env->DeleteGlobalRef(javaClassMyVector3D);
 	javaClassMyVector3D = nullptr;
-	ctorMyVector3D = nullptr;
+	javaClassMyVector3DCtor = nullptr;
 }
 
 bool ExternTypesJniCache::isInitialized()

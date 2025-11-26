@@ -31,6 +31,7 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesDataJavaConverter_JNI, Log, All);
 
 #include "Engine/Engine.h"
 

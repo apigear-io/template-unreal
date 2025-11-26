@@ -17,6 +17,7 @@ limitations under the License.
 */
 
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
+#include "ExternTypes/Generated/Jni/ExternTypesJniCache.h"
 #include "Runtime/Core/Public/Math/Vector.h"
 
 #if PLATFORM_ANDROID
@@ -32,9 +33,15 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+DEFINE_LOG_CATEGORY(LogExternTypesDataJavaConverter_JNI);
+
 void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d)
 {
-	jclass cls = env->GetObjectClass(input);
+	if (!ExternTypesJniCache::javaClassMyVector3D)
+	{
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("org/apache/commons/math3/geometry/euclidean/threed/Vector3D not found"));
+		return;
+	}
 
 	// do the serialization field by field: e.g. for int type field
 	// jfieldID jFieldId_firstField = env->GetFieldID(cls, "firstField", "I");
@@ -56,21 +63,28 @@ void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray
 
 jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVector& out_my_vector3_d)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	if (!ExternTypesJniCache::javaClassMyVector3DCtor)
+	{
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("org/apache/commons/math3/geometry/euclidean/threed/Vector3D  ctor not found"));
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(ExternTypesJniCache::javaClassMyVector3D, ExternTypesJniCache::javaClassMyVector3DCtor);
 
 	// do the serialization field by field: e.g. for int type field
-	// jfieldID jFieldId_firstField = env->GetFieldID(javaClass, "jFieldId_firstField", "I");
+	// jfieldID jFieldId_firstField = env->GetFieldID(ExternTypesJniCache::javaClassMyVector3D, "jFieldId_firstField", "I");
 	// env->SetIntField(javaObjInstance, jFieldId_firstField, out_my_vector3_d.FirstField);
 	return javaObjInstance;
 }
 
 jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, const TArray<FVector>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	if (!ExternTypesJniCache::javaClassMyVector3D)
+	{
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("org/apache/commons/math3/geometry/euclidean/threed/Vector3D not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, ExternTypesJniCache::javaClassMyVector3D, nullptr);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{

@@ -36,14 +36,21 @@ limitations under the License.
 
 class TBIFACEIMPORTAPI_API TbIfaceimportJniCache
 {
-	static jclass javaClassEmptyIf = nullptr;
+public:
+	static jclass javaClassEmptyIf;
+	static jclass serviceClassEmptyIf;
+	static jmethodID serviceClassEmptyIfReadyMethodID;
+	static jclass clientClassEmptyIf;
+	static jmethodID clientClassEmptyIfCtor;
+	static jmethodID clientClassEmptyIfBindMethodID;
+	static jmethodID clientClassEmptyIfUnbindMethodID;
 
 	static void init();
 	static void clear();
 	static bool isInitialized();
 
 private:
-	static bool m_isInitialized = false;
-}
+	static bool m_isInitialized;
+};
 
 #endif

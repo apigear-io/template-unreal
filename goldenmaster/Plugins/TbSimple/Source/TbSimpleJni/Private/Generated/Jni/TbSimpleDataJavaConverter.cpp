@@ -17,6 +17,7 @@ limitations under the License.
 */
 
 #include "TbSimple/Generated/Jni/TbSimpleDataJavaConverter.h"
+#include "TbSimple/Generated/Jni/TbSimpleJniCache.h"
 #include "TbSimple/Implementation/TbSimpleVoidInterface.h"
 #include "TbSimple/Implementation/TbSimpleSimpleInterface.h"
 #include "TbSimple/Implementation/TbSimpleSimpleArrayInterface.h"
@@ -37,6 +38,8 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+DEFINE_LOG_CATEGORY(LogTbSimpleDataJavaConverter_JNI);
 
 void TbSimpleDataJavaConverter::fillVoidInterface(JNIEnv* env, jobject input, TScriptInterface<ITbSimpleVoidInterfaceInterface> out_void_interface)
 {
@@ -66,9 +69,13 @@ jobject TbSimpleDataJavaConverter::makeJavaVoidInterface(JNIEnv* env, const TScr
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaVoidInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleVoidInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/IVoidInterface");
+	if (!TbSimpleJniCache::javaClassVoidInterface)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("IVoidInterface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassVoidInterface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -110,9 +117,13 @@ jobject TbSimpleDataJavaConverter::makeJavaSimpleInterface(JNIEnv* env, const TS
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaSimpleInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleSimpleInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/ISimpleInterface");
+	if (!TbSimpleJniCache::javaClassSimpleInterface)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("ISimpleInterface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassSimpleInterface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -154,9 +165,13 @@ jobject TbSimpleDataJavaConverter::makeJavaSimpleArrayInterface(JNIEnv* env, con
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaSimpleArrayInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/ISimpleArrayInterface");
+	if (!TbSimpleJniCache::javaClassSimpleArrayInterface)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("ISimpleArrayInterface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassSimpleArrayInterface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -198,9 +213,13 @@ jobject TbSimpleDataJavaConverter::makeJavaNoPropertiesInterface(JNIEnv* env, co
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaNoPropertiesInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoPropertiesInterface");
+	if (!TbSimpleJniCache::javaClassNoPropertiesInterface)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("INoPropertiesInterface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassNoPropertiesInterface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -242,9 +261,13 @@ jobject TbSimpleDataJavaConverter::makeJavaNoOperationsInterface(JNIEnv* env, co
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaNoOperationsInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoOperationsInterface");
+	if (!TbSimpleJniCache::javaClassNoOperationsInterface)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("INoOperationsInterface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassNoOperationsInterface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -286,9 +309,13 @@ jobject TbSimpleDataJavaConverter::makeJavaNoSignalsInterface(JNIEnv* env, const
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaNoSignalsInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleNoSignalsInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoSignalsInterface");
+	if (!TbSimpleJniCache::javaClassNoSignalsInterface)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("INoSignalsInterface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassNoSignalsInterface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -330,9 +357,13 @@ jobject TbSimpleDataJavaConverter::makeJavaEmptyInterface(JNIEnv* env, const TSc
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaEmptyInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleEmptyInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/IEmptyInterface");
+	if (!TbSimpleJniCache::javaClassEmptyInterface)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("IEmptyInterface not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassEmptyInterface, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }

@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbSame1/Generated/Jni/TbSame1SameEnum2InterfaceJniAdapter.h"
 #include "TbSame1/Generated/Jni/TbSame1DataJavaConverter.h"
+#include "TbSame1/Generated/Jni/TbSame1JniCache.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
@@ -56,7 +57,6 @@ void UTbSame1SameEnum2InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& 
 	gUTbSame1SameEnum2InterfaceJniAdapterHandle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniService");
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniServiceStarter");
 	if (BridgeClass == nullptr)
@@ -65,7 +65,7 @@ void UTbSame1SameEnum2InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& 
 		return;
 	}
 	auto functionSignature = "(Landroid/content/Context;)LtbSame1/tbSame1_api/ISameEnum2Interface;";
-	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
+	static jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	if (StartMethod == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("TbSame1JavaServiceStarter:start; method not found"));
@@ -76,6 +76,7 @@ void UTbSame1SameEnum2InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& 
 
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
+	Env->DeleteGlobalRef(BridgeClass);
 #endif
 #endif
 }
@@ -86,7 +87,6 @@ void UTbSame1SameEnum2InterfaceJniAdapter::Deinitialize()
 	gUTbSame1SameEnum2InterfaceJniAdapterHandle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = nullptr;
 	if (m_javaJniServiceInstance)
 	{
 		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
@@ -97,7 +97,7 @@ void UTbSame1SameEnum2InterfaceJniAdapter::Deinitialize()
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniServiceStarter");
 	if (BridgeClass != nullptr)
 	{
-		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		static jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
@@ -108,6 +108,7 @@ void UTbSame1SameEnum2InterfaceJniAdapter::Deinitialize()
 			UE_LOG(LogTemp, Warning, TEXT("TbSame1JavaServiceStarter:stop; method not found, failed to stop service"));
 			return;
 		}
+		Env->DeleteGlobalRef(BridgeClass);
 	}
 	else
 	{
@@ -153,13 +154,13 @@ void UTbSame1SameEnum2InterfaceJniAdapter::callJniServiceReady(bool isServiceRea
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		if (!TbSame1JniCache::javaClassSameEnum2Interface || !m_javaJniServiceInstance)
 		{
 			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniService:nativeServiceReady(Z)V CLASS not found"));
 			return;
 		}
 
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+		static const jmethodID MethodID = TbSame1JniCache::serviceClassSameEnum2InterfaceReadyMethodID;
 
 		if (MethodID != nullptr)
 		{
@@ -179,12 +180,12 @@ void UTbSame1SameEnum2InterfaceJniAdapter::OnSig1Signal(ETbSame1Enum1 Param1)
 	UE_LOG(LogTbSame1SameEnum2Interface_JNI, Verbose, TEXT("Notify java jni UTbSame1SameEnum2InterfaceJniAdapter::onSig1 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (TbSame1JniCache::serviceClassSameEnum2Interface == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniService:onSig1 (LtbSame1/tbSame1_api/Enum1;)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSig1", "(LtbSame1/tbSame1_api/Enum1;)V");
+		jmethodID MethodID = TbSame1JniCache::serviceClassSameEnum2InterfaceSig1SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniService:onSig1 (LtbSame1/tbSame1_api/Enum1;)V not found"));
@@ -204,12 +205,12 @@ void UTbSame1SameEnum2InterfaceJniAdapter::OnSig2Signal(ETbSame1Enum1 Param1, ET
 	UE_LOG(LogTbSame1SameEnum2Interface_JNI, Verbose, TEXT("Notify java jni UTbSame1SameEnum2InterfaceJniAdapter::onSig2 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (TbSame1JniCache::serviceClassSameEnum2Interface == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniService:onSig2 (LtbSame1/tbSame1_api/Enum1;LtbSame1/tbSame1_api/Enum2;)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSig2", "(LtbSame1/tbSame1_api/Enum1;LtbSame1/tbSame1_api/Enum2;)V");
+		jmethodID MethodID = TbSame1JniCache::serviceClassSameEnum2InterfaceSig2SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniService:onSig2 (LtbSame1/tbSame1_api/Enum1;LtbSame1/tbSame1_api/Enum2;)V not found"));
@@ -230,13 +231,12 @@ void UTbSame1SameEnum2InterfaceJniAdapter::OnProp1Changed(ETbSame1Enum1 Prop1)
 	UE_LOG(LogTbSame1SameEnum2Interface_JNI, Verbose, TEXT("Notify java jni UTbSame1SameEnum2InterfaceJniAdapter::OnProp1 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (TbSame1JniCache::serviceClassSameEnum2Interface == nullptr)
 		{
 			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniService::onProp1Changed(LtbSame1/tbSame1_api/Enum1;)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onProp1Changed", "(LtbSame1/tbSame1_api/Enum1;)V");
+		jmethodID MethodID = TbSame1JniCache::serviceClassSameEnum2InterfaceProp1ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniService:onProp1Changed(LtbSame1/tbSame1_api/Enum1;)V not found"));
@@ -254,13 +254,12 @@ void UTbSame1SameEnum2InterfaceJniAdapter::OnProp2Changed(ETbSame1Enum2 Prop2)
 	UE_LOG(LogTbSame1SameEnum2Interface_JNI, Verbose, TEXT("Notify java jni UTbSame1SameEnum2InterfaceJniAdapter::OnProp2 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (TbSame1JniCache::serviceClassSameEnum2Interface == nullptr)
 		{
 			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniService::onProp2Changed(LtbSame1/tbSame1_api/Enum2;)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onProp2Changed", "(LtbSame1/tbSame1_api/Enum2;)V");
+		jmethodID MethodID = TbSame1JniCache::serviceClassSameEnum2InterfaceProp2ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameEnum2InterfaceJniService:onProp2Changed(LtbSame1/tbSame1_api/Enum2;)V not found"));

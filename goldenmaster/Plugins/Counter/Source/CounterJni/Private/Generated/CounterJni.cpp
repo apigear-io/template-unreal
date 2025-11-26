@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "Counter/CounterJni.h"
 #include "Counter/Generated/CounterFactory.h"
+#include "Counter/Generated/Jni/CounterJniCache.h"
 #include "Engine/Engine.h"
 #include "CounterSettings.h"
 #include "Modules/ModuleManager.h"
@@ -25,12 +26,18 @@ limitations under the License.
 
 void FCounterJniModule::StartupModule()
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	CounterJniCache::init();
+#endif
 }
 
 void FCounterJniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	CounterJniCache::clear();
+#endif
 }
 
 IMPLEMENT_MODULE(FCounterJniModule, CounterJni)

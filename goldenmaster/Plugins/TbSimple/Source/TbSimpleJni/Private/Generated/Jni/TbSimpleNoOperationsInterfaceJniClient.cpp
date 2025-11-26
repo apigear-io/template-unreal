@@ -39,6 +39,7 @@ limitations under the License.
 
 #include "TbSimple/Generated/Jni/TbSimpleNoOperationsInterfaceJniClient.h"
 #include "TbSimple/Generated/Jni/TbSimpleDataJavaConverter.h"
+#include "TbSimple/Generated/Jni/TbSimpleJniCache.h"
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
@@ -145,9 +146,12 @@ void UTbSimpleNoOperationsInterfaceJniClient::Initialize(FSubsystemCollectionBas
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
-	jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+	if (TbSimpleJniCache::clientClassNoOperationsInterfaceCtor == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java Client Class tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient not found"));
+		return;
+	}
+	jobject localRef = Env->NewObject(TbSimpleJniCache::clientClassNoOperationsInterface, TbSimpleJniCache::clientClassNoOperationsInterfaceCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -160,7 +164,6 @@ void UTbSimpleNoOperationsInterfaceJniClient::Deinitialize()
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	Env->DeleteGlobalRef(m_javaJniClientInstance);
-	m_javaJniClientClass = nullptr;
 	m_javaJniClientInstance = nullptr;
 #endif
 
@@ -202,12 +205,12 @@ void UTbSimpleNoOperationsInterfaceJniClient::SetPropBool(bool bInPropBool)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniClientClass == nullptr)
+		if (TbSimpleJniCache::javaClassNoOperationsInterface == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient:setPropBool (Z)V CLASS not found"));
 			return;
 		}
-		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropBool", "(Z)V");
+		jmethodID MethodID = TbSimpleJniCache::javaClassNoOperationsInterfacePropBoolSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient:setPropBool (Z)V not found"));
@@ -244,12 +247,12 @@ void UTbSimpleNoOperationsInterfaceJniClient::SetPropInt(int32 InPropInt)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniClientClass == nullptr)
+		if (TbSimpleJniCache::javaClassNoOperationsInterface == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient:setPropInt (I)V CLASS not found"));
 			return;
 		}
-		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropInt", "(I)V");
+		jmethodID MethodID = TbSimpleJniCache::javaClassNoOperationsInterfacePropIntSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient:setPropInt (I)V not found"));
@@ -279,12 +282,12 @@ bool UTbSimpleNoOperationsInterfaceJniClient::_bindToService(FString servicePack
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (m_javaJniClientClass == nullptr)
+	if (TbSimpleJniCache::clientClassNoOperationsInterface == nullptr)
 	{
 		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	jmethodID MethodID = TbSimpleJniCache::clientClassNoOperationsInterfaceBindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
@@ -308,12 +311,12 @@ void UTbSimpleNoOperationsInterfaceJniClient::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (m_javaJniClientClass == nullptr)
+	if (TbSimpleJniCache::clientClassNoOperationsInterface == nullptr)
 	{
 		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient:unbind:()V CLASS not found"));
 		return;
 	}
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
+	jmethodID MethodID = TbSimpleJniCache::clientClassNoOperationsInterfaceUnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);

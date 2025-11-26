@@ -36,18 +36,19 @@ limitations under the License.
 
 class CUSTOMTYPESAPI_API CustomTypesJniCache
 {
-	static jclass javaStructVector3D = nullptr;
-	static jmethodID javaStructVector3DCtor = nullptr;
-	static jfieldID javaStructVector3DXFieldId = nullptr;
-	static jfieldID javaStructVector3DYFieldId = nullptr;
-	static jfieldID javaStructVector3DZFieldId = nullptr;
+public:
+	static jclass javaStructVector3D;
+	static jmethodID javaStructVector3DCtor;
+	static jfieldID javaStructVector3DXFieldId;
+	static jfieldID javaStructVector3DYFieldId;
+	static jfieldID javaStructVector3DZFieldId;
 
 	static void init();
 	static void clear();
 	static bool isInitialized();
 
 private:
-	static bool m_isInitialized = false;
-}
+	static bool m_isInitialized;
+};
 
 #endif

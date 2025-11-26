@@ -36,42 +36,57 @@ limitations under the License.
 
 class TBENUMAPI_API TbEnumJniCache
 {
-	static jclass javaEnumEnum0 = nullptr;
-	static jmethodID javaEnumEnum0FromValueMethodId = nullptr;
-	static jmethodID javaEnumEnum0GetValueMethod = nullptr;
-	static jclass javaEnumEnum1 = nullptr;
-	static jmethodID javaEnumEnum1FromValueMethodId = nullptr;
-	static jmethodID javaEnumEnum1GetValueMethod = nullptr;
-	static jclass javaEnumEnum2 = nullptr;
-	static jmethodID javaEnumEnum2FromValueMethodId = nullptr;
-	static jmethodID javaEnumEnum2GetValueMethod = nullptr;
-	static jclass javaEnumEnum3 = nullptr;
-	static jmethodID javaEnumEnum3FromValueMethodId = nullptr;
-	static jmethodID javaEnumEnum3GetValueMethod = nullptr;
-	static jclass javaClassEnumInterface = nullptr;
-	static jmethodID javaClassEnumInterfaceProp0SetterId = nullptr;
-	static jmethodID javaClassEnumInterfaceProp0GetterId = nullptr;
-	static jmethodID javaClassEnumInterfaceProp1SetterId = nullptr;
-	static jmethodID javaClassEnumInterfaceProp1GetterId = nullptr;
-	static jmethodID javaClassEnumInterfaceProp2SetterId = nullptr;
-	static jmethodID javaClassEnumInterfaceProp2GetterId = nullptr;
-	static jmethodID javaClassEnumInterfaceProp3SetterId = nullptr;
-	static jmethodID javaClassEnumInterfaceProp3GetterId = nullptr;
-	static jmethodID javaClassEnumInterfaceSig0SignalMethodID = nullptr;
-	static jmethodID javaClassEnumInterfaceSig1SignalMethodID = nullptr;
-	static jmethodID javaClassEnumInterfaceSig2SignalMethodID = nullptr;
-	static jmethodID javaClassEnumInterfaceSig3SignalMethodID = nullptr;
-	static jmethodID javaClassEnumInterfaceFunc0MethodID = nullptr;
-	static jmethodID javaClassEnumInterfaceFunc1MethodID = nullptr;
-	static jmethodID javaClassEnumInterfaceFunc2MethodID = nullptr;
-	static jmethodID javaClassEnumInterfaceFunc3MethodID = nullptr;
+public:
+	static jclass javaEnumEnum0;
+	static jmethodID javaEnumEnum0FromValueMethodId;
+	static jmethodID javaEnumEnum0GetValueMethod;
+	static jclass javaEnumEnum1;
+	static jmethodID javaEnumEnum1FromValueMethodId;
+	static jmethodID javaEnumEnum1GetValueMethod;
+	static jclass javaEnumEnum2;
+	static jmethodID javaEnumEnum2FromValueMethodId;
+	static jmethodID javaEnumEnum2GetValueMethod;
+	static jclass javaEnumEnum3;
+	static jmethodID javaEnumEnum3FromValueMethodId;
+	static jmethodID javaEnumEnum3GetValueMethod;
+	static jclass javaClassEnumInterface;
+	static jmethodID javaClassEnumInterfaceProp0SetterId;
+	static jmethodID javaClassEnumInterfaceProp0GetterId;
+	static jmethodID javaClassEnumInterfaceProp0ChangedMethodID;
+	static jmethodID javaClassEnumInterfaceProp1SetterId;
+	static jmethodID javaClassEnumInterfaceProp1GetterId;
+	static jmethodID javaClassEnumInterfaceProp1ChangedMethodID;
+	static jmethodID javaClassEnumInterfaceProp2SetterId;
+	static jmethodID javaClassEnumInterfaceProp2GetterId;
+	static jmethodID javaClassEnumInterfaceProp2ChangedMethodID;
+	static jmethodID javaClassEnumInterfaceProp3SetterId;
+	static jmethodID javaClassEnumInterfaceProp3GetterId;
+	static jmethodID javaClassEnumInterfaceProp3ChangedMethodID;
+	static jclass serviceClassEnumInterface;
+	static jmethodID serviceClassEnumInterfaceReadyMethodID;
+	static jmethodID serviceClassEnumInterfaceProp0ChangedMethodID;
+	static jmethodID serviceClassEnumInterfaceProp1ChangedMethodID;
+	static jmethodID serviceClassEnumInterfaceProp2ChangedMethodID;
+	static jmethodID serviceClassEnumInterfaceProp3ChangedMethodID;
+	static jmethodID serviceClassEnumInterfaceSig0SignalMethodID;
+	static jmethodID serviceClassEnumInterfaceSig1SignalMethodID;
+	static jmethodID serviceClassEnumInterfaceSig2SignalMethodID;
+	static jmethodID serviceClassEnumInterfaceSig3SignalMethodID;
+	static jclass clientClassEnumInterface;
+	static jmethodID clientClassEnumInterfaceCtor;
+	static jmethodID clientClassEnumInterfaceBindMethodID;
+	static jmethodID clientClassEnumInterfaceUnbindMethodID;
+	static jmethodID clientClassEnumInterfaceFunc0AsyncMethodID;
+	static jmethodID clientClassEnumInterfaceFunc1AsyncMethodID;
+	static jmethodID clientClassEnumInterfaceFunc2AsyncMethodID;
+	static jmethodID clientClassEnumInterfaceFunc3AsyncMethodID;
 
 	static void init();
 	static void clear();
 	static bool isInitialized();
 
 private:
-	static bool m_isInitialized = false;
-}
+	static bool m_isInitialized;
+};
 
 #endif

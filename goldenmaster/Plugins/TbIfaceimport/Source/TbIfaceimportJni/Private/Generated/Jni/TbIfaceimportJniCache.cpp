@@ -39,12 +39,28 @@ limitations under the License.
 //	env->ExceptionClear();
 //	LOG UE;
 //}
+jclass TbIfaceimportJniCache::javaClassEmptyIf = nullptr;
+jclass TbIfaceimportJniCache::serviceClassEmptyIf = nullptr;
+jmethodID TbIfaceimportJniCache::serviceClassEmptyIfReadyMethodID = nullptr;
+jclass TbIfaceimportJniCache::clientClassEmptyIf = nullptr;
+jmethodID TbIfaceimportJniCache::clientClassEmptyIfCtor = nullptr;
+jmethodID TbIfaceimportJniCache::clientClassEmptyIfBindMethodID = nullptr;
+jmethodID TbIfaceimportJniCache::clientClassEmptyIfUnbindMethodID = nullptr;
+
+bool TbIfaceimportJniCache::m_isInitialized = false;
 
 void TbIfaceimportJniCache::init()
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("TbIfaceimport/TbIfaceimport_api/IEmptyIf");
+	javaClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
+
+	serviceClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
+	serviceClassEmptyIfReadyMethodID = env->GetMethodID(TbIfaceimportJniCache::serviceClassEmptyIf, "nativeServiceReady", "(Z)V");
+	clientClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
+	clientClassEmptyIfCtor = env->GetMethodID(TbIfaceimportJniCache::clientClassEmptyIf, "<init>", "()V");
+	clientClassEmptyIfBindMethodID = env->GetMethodID(TbIfaceimportJniCache::clientClassEmptyIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	clientClassEmptyIfUnbindMethodID = env->GetMethodID(TbIfaceimportJniCache::clientClassEmptyIf, "unbind", "()V");
 	m_isInitialized = true;
 }
 
@@ -54,6 +70,14 @@ void TbIfaceimportJniCache::clear()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	env->DeleteGlobalRef(javaClassEmptyIf);
 	javaClassEmptyIf = nullptr;
+	env->DeleteGlobalRef(serviceClassEmptyIf);
+	serviceClassEmptyIf = nullptr;
+	serviceClassEmptyIfReadyMethodID = nullptr;
+	env->DeleteGlobalRef(clientClassEmptyIf);
+	clientClassEmptyIf = nullptr;
+	clientClassEmptyIfCtor = nullptr;
+	clientClassEmptyIfBindMethodID = nullptr;
+	clientClassEmptyIfUnbindMethodID = nullptr;
 }
 
 bool TbIfaceimportJniCache::isInitialized()

@@ -1,6 +1,7 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $API_MACRO := printf "%sAPI_API" (CAMEL .Module.Name) }}
 {{- $ModuleName := Camel .Module.Name -}}
+{{- $jmoduleName := camel .Module.Name -}}
 {{- $Category := printf "ApiGear|%s" $ModuleName }}
 /**
 Copyright 2021 ApiGear UG
@@ -34,7 +35,7 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 #include "Engine/Engine.h"
-{{- $CacheClassName := printf "%sJniCache" $ModuleName}}
+{{- $StaticCacheName := printf "%sJniCache" $ModuleName}}
 
 // TODO
 // after each findJAvaClassGlobalRef and getting methodId or FieldId
@@ -44,54 +45,127 @@ limitations under the License.
 //	LOG UE;
 //}
 
-void {{$CacheClassName }}::init()
-{
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 {{- range .Module.Structs }}
-	{{- $className:= printf "javaStruct%s" (Camel .Name) }}
-	{{- $packageName := printf "%s/%s_api" $ModuleName $ModuleName }}
-	{{- $javaClassTypeName := Camel .Name}}
-	{{$className}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
-	{{$className}}Ctor = env->GetMethodID({{$CacheClassName }}::{{$className}}, "<init>", "()V");
+{{- $className:= printf "javaStruct%s" (Camel .Name) }}
+jclass {{$StaticCacheName }}::{{$className}} = nullptr;
+jmethodID {{$StaticCacheName }}::{{$className}}Ctor = nullptr;
 {{- range .Fields }}
-	{{- $javaFieldName := camel .Name}}
-	{{- $className:= printf "javaStruct%s" (Camel .Name) }}
-	{{$className}}{{snake .Name}}FieldId = env->GetFieldID({{$CacheClassName }}::{{$className}}, "{{$javaFieldName}}", "{{jniSignatureType . }}");
+jfieldID {{$StaticCacheName }}::{{$className}}{{Camel .Name}}FieldId = nullptr;
 {{- end }}
 {{- end }}
 
 {{- range .Module.Enums }}
-{{- $packageName := printf "%s/%s_api" $ModuleName $ModuleName}}
+{{- $className:= printf "javaEnum%s" (Camel .Name) }}
+jclass {{$StaticCacheName }}::{{$className}} = nullptr;
+jmethodID {{$StaticCacheName }}::{{$className}}FromValueMethodId = nullptr;
+jmethodID {{$StaticCacheName }}::{{$className}}GetValueMethod = nullptr;
+{{- end }}
+
+{{- range .Module.Interfaces }}
+{{- $className:= printf "javaClass%s" (Camel .Name) }}
+jclass {{$StaticCacheName }}::{{$className}} = nullptr;
+{{- range .Properties }}
+{{- if not .IsReadOnly }}
+jmethodID {{$StaticCacheName }}::{{$className}}{{ Camel .Name}}SetterId = nullptr;
+{{- end }}
+jmethodID {{$StaticCacheName }}::{{$className}}{{ Camel .Name}}GetterId = nullptr;
+{{- end }}
+
+{{- $serviceClass:= printf "serviceClass%s" (Camel .Name) }}
+{{- $clientClass:= printf "clientClass%s" (Camel .Name) }}
+jclass {{$StaticCacheName }}::{{$serviceClass}} = nullptr;
+jmethodID {{$StaticCacheName }}::{{$serviceClass}}ReadyMethodID = nullptr;
+{{- range .Properties }}
+jmethodID {{$StaticCacheName }}::{{$serviceClass}}{{ Camel .Name}}ChangedMethodID = nullptr;
+{{- end }}
+{{- range .Signals }}
+jmethodID {{$StaticCacheName }}::{{$serviceClass}}{{ Camel .Name}}SignalMethodID = nullptr;
+{{- end }}
+jclass {{$StaticCacheName }}::{{$clientClass}} = nullptr;
+jmethodID {{$StaticCacheName }}::{{$clientClass}}Ctor = nullptr;
+jmethodID {{$StaticCacheName }}::{{$clientClass}}BindMethodID = nullptr;
+jmethodID {{$StaticCacheName }}::{{$clientClass}}UnbindMethodID = nullptr;
+
+{{- range .Operations }}
+jmethodID {{$StaticCacheName }}::{{$clientClass}}{{ Camel .Name}}AsyncMethodID = nullptr;
+{{- end }}
+
+
+{{- end }}
+
+{{- range .Module.Externs }}
+jclass {{$StaticCacheName }}::javaClass{{.Name}} = nullptr;
+jmethodID {{$StaticCacheName }}::javaClass{{.Name}}Ctor = nullptr;
+{{- end }}
+
+bool {{$StaticCacheName }}::m_isInitialized = false;
+
+void {{$StaticCacheName }}::init()
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+{{- range .Module.Structs }}
+	{{- $className:= printf "javaStruct%s" (Camel .Name) }}
+	{{- $packageName := printf "%s/%s_api" $jmoduleName $jmoduleName }}
+	{{- $javaClassTypeName := Camel .Name}}
+	{{$className}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	{{$className}}Ctor = env->GetMethodID({{$StaticCacheName }}::{{$className}}, "<init>", "()V");
+{{- range .Fields }}
+	{{- $javaFieldName := camel .Name}}
+	{{$className}}{{Camel .Name}}FieldId = env->GetFieldID({{$StaticCacheName }}::{{$className}}, "{{$javaFieldName}}", "{{jniSignatureType . }}");
+{{- end }}
+{{- end }}
+
+{{- range .Module.Enums }}
+{{- $packageName := printf "%s/%s_api" $jmoduleName $jmoduleName}}
 {{- $javaClassTypeName := Camel .Name}}
 
 	{{- $className:= printf "javaEnum%s" (Camel .Name) }}
 	{{$className}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
-	{{$className}}FromValueMethodId = env->GetStaticMethodID({{$CacheClassName }}::{{$className}}, "fromValue", "(I)L{{$packageName}}/{{$javaClassTypeName}};");
-	{{$className}}GetValueMethod = env->GetMethodID({{$CacheClassName }}::{{$className}}, "getValue", "()I");
+	{{$className}}FromValueMethodId = env->GetStaticMethodID({{$StaticCacheName }}::{{$className}}, "fromValue", "(I)L{{$packageName}}/{{$javaClassTypeName}};");
+	{{$className}}GetValueMethod = env->GetMethodID({{$StaticCacheName }}::{{$className}}, "getValue", "()I");
 
 {{- end }}
 
 {{- range .Module.Interfaces }}
-{{- $fullJavaClassType := printf "%s/%s_api/I%s" $ModuleName $ModuleName (Camel .Name) }}
+{{- $fullJavaClassType := printf "%s/%s_api/I%s" $jmoduleName $jmoduleName (Camel .Name) }}
 {{- $className:= printf "javaClass%s" (Camel .Name) }}
 
 	{{$className}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
 {{- range .Properties }}
 	{{- $signatureParam := jniJavaSignatureParam . }}
 	{{- if not .IsReadOnly }}
-	{{$className}}{{ Camel .Name}}SetterId = env->GetMethodID({{$CacheClassName }}::{{$className}}, "set{{Camel .Name}}", "({{$signatureParam}})V");
+	{{$className}}{{ Camel .Name}}SetterId = env->GetMethodID({{$StaticCacheName }}::{{$className}}, "set{{Camel .Name}}", "({{$signatureParam}})V");
 	{{- end }}
-	{{$className}}{{ Camel .Name}}GetterId = env->GetMethodID({{$CacheClassName }}::{{$className}}, "get{{Camel .Name}}", "(){{$signatureParam}}");
+	{{$className}}{{ Camel .Name}}GetterId = env->GetMethodID({{$StaticCacheName }}::{{$className}}, "get{{Camel .Name}}", "(){{$signatureParam}}");
+{{- end }}
+
+{{- $serviceClass:= printf "serviceClass%s" (Camel .Name) }}
+{{- $javaServiceTypeName := printf "%sJniService" (Camel .Name) }}
+{{- $jniservice_name:= printf "%sjniservice" ( camel $ModuleName) }}
+{{- $javaServicePath := ( join "/" (strSlice ( camel $ModuleName) $jniservice_name) ) }}
+{{- $clientClass:= printf "clientClass%s" (Camel .Name) }}
+{{- $javaClientTypeName := printf "%sJniClient"  (Camel .Name) }}
+{{- $jniclient_name:= printf "%sjniclient" ( camel $ModuleName) }}
+{{- $javaClientPath := ( join "/" (strSlice ( camel $ModuleName) $jniclient_name) ) }}
+
+	{{$serviceClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaServicePath}}/{{$javaServiceTypeName}}");
+	{{$serviceClass}}ReadyMethodID = env->GetMethodID({{$StaticCacheName }}::{{$serviceClass}}, "nativeServiceReady", "(Z)V");
+{{- range .Properties }}
+	{{- $signatureParam := jniJavaSignatureParam . }}
+	{{$serviceClass}}{{ Camel .Name}}ChangedMethodID = env->GetMethodID({{$StaticCacheName }}::{{$serviceClass}}, "on{{Camel .Name}}Changed", "({{$signatureParam}})V");
 {{- end }}
 {{- range .Signals }}
 	{{- $signatureParams := jniJavaSignatureParams .Params }}
-	{{$className}}{{ Camel .Name}}SignalMethodID = env->GetMethodID({{$CacheClassName }}::{{$className}}, "on{{Camel .Name}}", "({{$signatureParams}})V");
+	{{$serviceClass}}{{ Camel .Name}}SignalMethodID = env->GetMethodID({{$StaticCacheName }}::{{$serviceClass}}, "on{{Camel .Name}}", "({{$signatureParams}})V");
 {{- end }}
+	{{$clientClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClientPath}}/{{$javaClientTypeName}}");
 {{- range .Operations }}
 	{{- $signatureParams := jniJavaSignatureParams .Params }}
-	{{$className}}{{ Camel .Name}}MethodID = env->GetMethodID({{$CacheClassName }}::{{$className}}, "{{camel .Name}}Async", "(Ljava/lang/String;{{$signatureParams}})V");
+	{{$clientClass}}{{Camel .Name}}AsyncMethodID = env->GetMethodID({{$StaticCacheName }}::{{$clientClass}}, "{{camel .Name}}Async", "(Ljava/lang/String;{{$signatureParams}})V");
 {{- end }}
-
+	{{$clientClass}}Ctor = env->GetMethodID({{$StaticCacheName}}::{{$clientClass}}, "<init>", "()V");
+	{{$clientClass}}BindMethodID = env->GetMethodID({{$StaticCacheName}}::{{$clientClass}}, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	{{$clientClass}}UnbindMethodID = env->GetMethodID({{$StaticCacheName}}::{{$clientClass}}, "unbind", "()V");
 {{- end }}
 
 {{- range .Module.Externs }}
@@ -102,12 +176,12 @@ void {{$CacheClassName }}::init()
 {{- $fullJavaClassType = printf "%s/%s" $prefix $fullJavaClassType }}
 {{- end }}
 	javaClass{{.Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
-	ctor{{.Name}} = env->GetMethodID({{$CacheClassName }}::javaClass{{.Name}}, "<init>", "()V");
+	javaClass{{.Name}}Ctor = env->GetMethodID({{$StaticCacheName }}::javaClass{{.Name}}, "<init>", "()V");
 {{- end }}
 	m_isInitialized = true;
 }
 
-void {{$CacheClassName }}::clear()
+void {{$StaticCacheName }}::clear()
 {
 	m_isInitialized = false;
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
@@ -132,7 +206,6 @@ void {{$CacheClassName }}::clear()
 {{- end }}
 
 {{- range .Module.Interfaces }}
-{{- $fullJavaClassType := printf "%s/%s_api/I%s" $ModuleName $ModuleName (Camel .Name) }}
 {{- $className:= printf "javaClass%s" (Camel .Name) }}
 	env->DeleteGlobalRef({{$className}});
 	{{$className}} = nullptr;
@@ -142,23 +215,36 @@ void {{$CacheClassName }}::clear()
 	{{- end }}
 	{{$className}}{{ Camel .Name}}GetterId = nullptr;
 {{- end }}
-{{- range .Signals }}
-	{{$className}}{{ Camel .Name}}SignalMethodID = nullptr;
-{{- end }}
-{{- range .Operations }}
-	{{$className}}{{ Camel .Name}}MethodID = nullptr;
-{{- end }}
 
+{{- $serviceClass:= printf "serviceClass%s" (Camel .Name) }}
+{{- $clientClass:= printf "clientClass%s" (Camel .Name) }}
+	env->DeleteGlobalRef({{$serviceClass}});
+	{{$serviceClass}} = nullptr;
+	{{$serviceClass}}ReadyMethodID = nullptr;
+{{- range .Properties }}
+	{{$serviceClass}}{{ Camel .Name}}ChangedMethodID = nullptr;
+{{- end }}
+{{- range .Signals }}
+	{{$serviceClass}}{{ Camel .Name}}SignalMethodID = nullptr;
+{{- end }}
+	env->DeleteGlobalRef({{$clientClass}});
+	{{$clientClass}} = nullptr;
+{{- range .Operations }}
+	{{$clientClass}}{{ Camel .Name}}AsyncMethodID = nullptr;
+{{- end }}
+	{{$clientClass}}Ctor = nullptr;
+	{{$clientClass}}BindMethodID = nullptr;
+	{{$clientClass}}UnbindMethodID = nullptr;
 {{- end }}
 
 {{- range .Module.Externs }}
 	env->DeleteGlobalRef(javaClass{{.Name}});
 	javaClass{{.Name}} = nullptr;
-	ctor{{.Name}} = nullptr;
+	javaClass{{.Name}}Ctor = nullptr;
 {{- end }}
 }
 
-bool {{$CacheClassName }}::isInitialized()
+bool {{$StaticCacheName }}::isInitialized()
 {
 	return m_isInitialized;
 }

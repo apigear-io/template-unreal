@@ -39,15 +39,22 @@ limitations under the License.
 //	env->ExceptionClear();
 //	LOG UE;
 //}
+jclass CustomTypesJniCache::javaStructVector3D = nullptr;
+jmethodID CustomTypesJniCache::javaStructVector3DCtor = nullptr;
+jfieldID CustomTypesJniCache::javaStructVector3DXFieldId = nullptr;
+jfieldID CustomTypesJniCache::javaStructVector3DYFieldId = nullptr;
+jfieldID CustomTypesJniCache::javaStructVector3DZFieldId = nullptr;
+
+bool CustomTypesJniCache::m_isInitialized = false;
 
 void CustomTypesJniCache::init()
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	javaStructVector3D = FAndroidApplication::FindJavaClassGlobalRef("CustomTypes/CustomTypes_api/Vector3D");
+	javaStructVector3D = FAndroidApplication::FindJavaClassGlobalRef("customTypes/customTypes_api/Vector3D");
 	javaStructVector3DCtor = env->GetMethodID(CustomTypesJniCache::javaStructVector3D, "<init>", "()V");
-	javaStructXxFieldId = env->GetFieldID(CustomTypesJniCache::javaStructX, "x", "F");
-	javaStructYyFieldId = env->GetFieldID(CustomTypesJniCache::javaStructY, "y", "F");
-	javaStructZzFieldId = env->GetFieldID(CustomTypesJniCache::javaStructZ, "z", "F");
+	javaStructVector3DXFieldId = env->GetFieldID(CustomTypesJniCache::javaStructVector3D, "x", "F");
+	javaStructVector3DYFieldId = env->GetFieldID(CustomTypesJniCache::javaStructVector3D, "y", "F");
+	javaStructVector3DZFieldId = env->GetFieldID(CustomTypesJniCache::javaStructVector3D, "z", "F");
 	m_isInitialized = true;
 }
 

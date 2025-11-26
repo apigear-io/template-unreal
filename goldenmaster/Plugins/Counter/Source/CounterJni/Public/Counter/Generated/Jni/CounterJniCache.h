@@ -36,27 +36,42 @@ limitations under the License.
 
 class COUNTERAPI_API CounterJniCache
 {
-	static jclass javaClassCounter = nullptr;
-	static jmethodID javaClassCounterVectorSetterId = nullptr;
-	static jmethodID javaClassCounterVectorGetterId = nullptr;
-	static jmethodID javaClassCounterExternVectorSetterId = nullptr;
-	static jmethodID javaClassCounterExternVectorGetterId = nullptr;
-	static jmethodID javaClassCounterVectorArraySetterId = nullptr;
-	static jmethodID javaClassCounterVectorArrayGetterId = nullptr;
-	static jmethodID javaClassCounterExternVectorArraySetterId = nullptr;
-	static jmethodID javaClassCounterExternVectorArrayGetterId = nullptr;
-	static jmethodID javaClassCounterValueChangedSignalMethodID = nullptr;
-	static jmethodID javaClassCounterIncrementMethodID = nullptr;
-	static jmethodID javaClassCounterIncrementArrayMethodID = nullptr;
-	static jmethodID javaClassCounterDecrementMethodID = nullptr;
-	static jmethodID javaClassCounterDecrementArrayMethodID = nullptr;
+public:
+	static jclass javaClassCounter;
+	static jmethodID javaClassCounterVectorSetterId;
+	static jmethodID javaClassCounterVectorGetterId;
+	static jmethodID javaClassCounterVectorChangedMethodID;
+	static jmethodID javaClassCounterExternVectorSetterId;
+	static jmethodID javaClassCounterExternVectorGetterId;
+	static jmethodID javaClassCounterExternVectorChangedMethodID;
+	static jmethodID javaClassCounterVectorArraySetterId;
+	static jmethodID javaClassCounterVectorArrayGetterId;
+	static jmethodID javaClassCounterVectorArrayChangedMethodID;
+	static jmethodID javaClassCounterExternVectorArraySetterId;
+	static jmethodID javaClassCounterExternVectorArrayGetterId;
+	static jmethodID javaClassCounterExternVectorArrayChangedMethodID;
+	static jclass serviceClassCounter;
+	static jmethodID serviceClassCounterReadyMethodID;
+	static jmethodID serviceClassCounterVectorChangedMethodID;
+	static jmethodID serviceClassCounterExternVectorChangedMethodID;
+	static jmethodID serviceClassCounterVectorArrayChangedMethodID;
+	static jmethodID serviceClassCounterExternVectorArrayChangedMethodID;
+	static jmethodID serviceClassCounterValueChangedSignalMethodID;
+	static jclass clientClassCounter;
+	static jmethodID clientClassCounterCtor;
+	static jmethodID clientClassCounterBindMethodID;
+	static jmethodID clientClassCounterUnbindMethodID;
+	static jmethodID clientClassCounterIncrementAsyncMethodID;
+	static jmethodID clientClassCounterIncrementArrayAsyncMethodID;
+	static jmethodID clientClassCounterDecrementAsyncMethodID;
+	static jmethodID clientClassCounterDecrementArrayAsyncMethodID;
 
 	static void init();
 	static void clear();
 	static bool isInitialized();
 
 private:
-	static bool m_isInitialized = false;
-}
+	static bool m_isInitialized;
+};
 
 #endif

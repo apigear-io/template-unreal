@@ -36,15 +36,16 @@ limitations under the License.
 
 class EXTERNTYPESAPI_API ExternTypesJniCache
 {
-	static jclass javaClassMyVector3D = nullptr;
-	static jmethodID ctorMyVector3D = nullptr;
+public:
+	static jclass javaClassMyVector3D;
+	static jmethodID javaClassMyVector3DCtor;
 
 	static void init();
 	static void clear();
 	static bool isInitialized();
 
 private:
-	static bool m_isInitialized = false;
-}
+	static bool m_isInitialized;
+};
 
 #endif

@@ -39,12 +39,38 @@ limitations under the License.
 //	env->ExceptionClear();
 //	LOG UE;
 //}
+jclass CounterJniCache::javaClassCounter = nullptr;
+jmethodID CounterJniCache::javaClassCounterVectorSetterId = nullptr;
+jmethodID CounterJniCache::javaClassCounterVectorGetterId = nullptr;
+jmethodID CounterJniCache::javaClassCounterExternVectorSetterId = nullptr;
+jmethodID CounterJniCache::javaClassCounterExternVectorGetterId = nullptr;
+jmethodID CounterJniCache::javaClassCounterVectorArraySetterId = nullptr;
+jmethodID CounterJniCache::javaClassCounterVectorArrayGetterId = nullptr;
+jmethodID CounterJniCache::javaClassCounterExternVectorArraySetterId = nullptr;
+jmethodID CounterJniCache::javaClassCounterExternVectorArrayGetterId = nullptr;
+jclass CounterJniCache::serviceClassCounter = nullptr;
+jmethodID CounterJniCache::serviceClassCounterReadyMethodID = nullptr;
+jmethodID CounterJniCache::serviceClassCounterVectorChangedMethodID = nullptr;
+jmethodID CounterJniCache::serviceClassCounterExternVectorChangedMethodID = nullptr;
+jmethodID CounterJniCache::serviceClassCounterVectorArrayChangedMethodID = nullptr;
+jmethodID CounterJniCache::serviceClassCounterExternVectorArrayChangedMethodID = nullptr;
+jmethodID CounterJniCache::serviceClassCounterValueChangedSignalMethodID = nullptr;
+jclass CounterJniCache::clientClassCounter = nullptr;
+jmethodID CounterJniCache::clientClassCounterCtor = nullptr;
+jmethodID CounterJniCache::clientClassCounterBindMethodID = nullptr;
+jmethodID CounterJniCache::clientClassCounterUnbindMethodID = nullptr;
+jmethodID CounterJniCache::clientClassCounterIncrementAsyncMethodID = nullptr;
+jmethodID CounterJniCache::clientClassCounterIncrementArrayAsyncMethodID = nullptr;
+jmethodID CounterJniCache::clientClassCounterDecrementAsyncMethodID = nullptr;
+jmethodID CounterJniCache::clientClassCounterDecrementArrayAsyncMethodID = nullptr;
+
+bool CounterJniCache::m_isInitialized = false;
 
 void CounterJniCache::init()
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaClassCounter = FAndroidApplication::FindJavaClassGlobalRef("Counter/Counter_api/ICounter");
+	javaClassCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
 	javaClassCounterVectorSetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "setVector", "(LcustomTypes/customTypes_api/Vector3D;)V");
 	javaClassCounterVectorGetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "getVector", "()LcustomTypes/customTypes_api/Vector3D;");
 	javaClassCounterExternVectorSetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "setExternVector", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
@@ -53,11 +79,22 @@ void CounterJniCache::init()
 	javaClassCounterVectorArrayGetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "getVectorArray", "()[LcustomTypes/customTypes_api/Vector3D;");
 	javaClassCounterExternVectorArraySetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "setExternVectorArray", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	javaClassCounterExternVectorArrayGetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "getExternVectorArray", "()[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;");
-	javaClassCounterValueChangedSignalMethodID = env->GetMethodID(CounterJniCache::javaClassCounter, "onValueChanged", "(LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-	javaClassCounterIncrementMethodID = env->GetMethodID(CounterJniCache::javaClassCounter, "incrementAsync", "(Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-	javaClassCounterIncrementArrayMethodID = env->GetMethodID(CounterJniCache::javaClassCounter, "incrementArrayAsync", "(Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-	javaClassCounterDecrementMethodID = env->GetMethodID(CounterJniCache::javaClassCounter, "decrementAsync", "(Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V");
-	javaClassCounterDecrementArrayMethodID = env->GetMethodID(CounterJniCache::javaClassCounter, "decrementArrayAsync", "(Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V");
+
+	serviceClassCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniservice/CounterJniService");
+	serviceClassCounterReadyMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "nativeServiceReady", "(Z)V");
+	serviceClassCounterVectorChangedMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "onVectorChanged", "(LcustomTypes/customTypes_api/Vector3D;)V");
+	serviceClassCounterExternVectorChangedMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "onExternVectorChanged", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	serviceClassCounterVectorArrayChangedMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "onVectorArrayChanged", "([LcustomTypes/customTypes_api/Vector3D;)V");
+	serviceClassCounterExternVectorArrayChangedMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "onExternVectorArrayChanged", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	serviceClassCounterValueChangedSignalMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "onValueChanged", "(LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	clientClassCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniclient/CounterJniClient");
+	clientClassCounterIncrementAsyncMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "incrementAsync", "(Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	clientClassCounterIncrementArrayAsyncMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "incrementArrayAsync", "(Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	clientClassCounterDecrementAsyncMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "decrementAsync", "(Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V");
+	clientClassCounterDecrementArrayAsyncMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "decrementArrayAsync", "(Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V");
+	clientClassCounterCtor = env->GetMethodID(CounterJniCache::clientClassCounter, "<init>", "()V");
+	clientClassCounterBindMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	clientClassCounterUnbindMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "unbind", "()V");
 	m_isInitialized = true;
 }
 
@@ -75,11 +112,23 @@ void CounterJniCache::clear()
 	javaClassCounterVectorArrayGetterId = nullptr;
 	javaClassCounterExternVectorArraySetterId = nullptr;
 	javaClassCounterExternVectorArrayGetterId = nullptr;
-	javaClassCounterValueChangedSignalMethodID = nullptr;
-	javaClassCounterIncrementMethodID = nullptr;
-	javaClassCounterIncrementArrayMethodID = nullptr;
-	javaClassCounterDecrementMethodID = nullptr;
-	javaClassCounterDecrementArrayMethodID = nullptr;
+	env->DeleteGlobalRef(serviceClassCounter);
+	serviceClassCounter = nullptr;
+	serviceClassCounterReadyMethodID = nullptr;
+	serviceClassCounterVectorChangedMethodID = nullptr;
+	serviceClassCounterExternVectorChangedMethodID = nullptr;
+	serviceClassCounterVectorArrayChangedMethodID = nullptr;
+	serviceClassCounterExternVectorArrayChangedMethodID = nullptr;
+	serviceClassCounterValueChangedSignalMethodID = nullptr;
+	env->DeleteGlobalRef(clientClassCounter);
+	clientClassCounter = nullptr;
+	clientClassCounterIncrementAsyncMethodID = nullptr;
+	clientClassCounterIncrementArrayAsyncMethodID = nullptr;
+	clientClassCounterDecrementAsyncMethodID = nullptr;
+	clientClassCounterDecrementArrayAsyncMethodID = nullptr;
+	clientClassCounterCtor = nullptr;
+	clientClassCounterBindMethodID = nullptr;
+	clientClassCounterUnbindMethodID = nullptr;
 }
 
 bool CounterJniCache::isInitialized()

@@ -126,6 +126,7 @@
 
 #include "{{$ModuleName}}/Generated/Jni/{{$Iface}}JniAdapter.h"
 #include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}DataJavaConverter.h"
+#include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}JniCache.h"
 #include "Async/Future.h"
 #include "Async/Async.h"
 #include "Engine/Engine.h"
@@ -172,6 +173,9 @@ namespace
 {{$Class}}* g{{$Class}}Handle = nullptr;
 }
 
+{{- $StaticCacheName := printf "%sJniCache" $ModuleName}}
+{{- $cachedClass:= printf "javaClass%s" (Camel .Interface.Name) }}
+{{- $serviceClass:= printf "serviceClass%s" (Camel .Interface.Name) }}
 
 {{- if .Interface.Description }}
 /**
@@ -188,7 +192,6 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	g{{$Class}}Handle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}");
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}Starter");
 	if (BridgeClass == nullptr)
@@ -197,7 +200,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 		return;
 	}
 	auto functionSignature = "(Landroid/content/Context;)L{{$javaIfClassFull}};";
-	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
+	static jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	if (StartMethod == nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("{{Camel .Module.Name}}JavaServiceStarter:start; method not found"));
@@ -208,6 +211,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
+	Env->DeleteGlobalRef(BridgeClass);
 #endif
 #endif
 }
@@ -218,7 +222,6 @@ void {{$Class}}::Deinitialize()
 	g{{$Class}}Handle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = nullptr;
 	if (m_javaJniServiceInstance)
 	{
 		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
@@ -229,7 +232,7 @@ void {{$Class}}::Deinitialize()
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}Starter");
 	if (BridgeClass != nullptr)
 	{
-		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		static jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
@@ -240,6 +243,7 @@ void {{$Class}}::Deinitialize()
 			UE_LOG(LogTemp, Warning, TEXT("{{Camel .Module.Name}}JavaServiceStarter:stop; method not found, failed to stop service"));
 			return;
 		}
+		Env->DeleteGlobalRef(BridgeClass);
 	}
 	else
 	{
@@ -286,13 +290,13 @@ void {{$Class}}::callJniServiceReady(bool isServiceReady)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		if (!{{$StaticCacheName}}::{{$cachedClass}} || !m_javaJniServiceInstance)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:nativeServiceReady(Z)V CLASS not found"));
 			return;
 		}
 
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
+		static const jmethodID MethodID = {{$StaticCacheName}}::{{$serviceClass}}ReadyMethodID;
 
 		if (MethodID != nullptr)
 		{
@@ -315,12 +319,12 @@ void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "" .Params}})
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		{{- $signatureParams:= jniJavaSignatureParams .Params}}
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if ({{$StaticCacheName}}::{{$serviceClass}} == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}} ({{$signatureParams}})V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "on{{Camel .Name}}", "({{$signatureParams}})V");
+		jmethodID MethodID = {{$StaticCacheName}}::{{$serviceClass}}{{ Camel .Name}}SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}} ({{$signatureParams}})V not found"));
@@ -368,13 +372,12 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 	{{- $signature := printf "(%s)V" (jniJavaSignatureParam .)}}
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if ({{$StaticCacheName}}::{{$serviceClass}} == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}::on{{Camel .Name}}Changed{{$signature}} CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "on{{Camel .Name}}Changed", "{{$signature}}");
+		jmethodID MethodID = {{$StaticCacheName}}::{{$serviceClass}}{{ Camel .Name}}ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}}Changed{{$signature}} not found"));

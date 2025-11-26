@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "CustomTypes/CustomTypesJni.h"
 #include "CustomTypes/Generated/CustomTypesFactory.h"
+#include "CustomTypes/Generated/Jni/CustomTypesJniCache.h"
 #include "Engine/Engine.h"
 #include "CustomTypesSettings.h"
 #include "Modules/ModuleManager.h"
@@ -25,12 +26,18 @@ limitations under the License.
 
 void FCustomTypesJniModule::StartupModule()
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	CustomTypesJniCache::init();
+#endif
 }
 
 void FCustomTypesJniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	CustomTypesJniCache::clear();
+#endif
 }
 
 IMPLEMENT_MODULE(FCustomTypesJniModule, CustomTypesJni)

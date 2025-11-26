@@ -36,29 +36,44 @@ limitations under the License.
 
 class TBNAMESAPI_API TbNamesJniCache
 {
-	static jclass javaEnumEnumWithUnderScores = nullptr;
-	static jmethodID javaEnumEnumWithUnderScoresFromValueMethodId = nullptr;
-	static jmethodID javaEnumEnumWithUnderScoresGetValueMethod = nullptr;
-	static jclass javaClassNamEs = nullptr;
-	static jmethodID javaClassNamEsSwitchSetterId = nullptr;
-	static jmethodID javaClassNamEsSwitchGetterId = nullptr;
-	static jmethodID javaClassNamEsSomePropertySetterId = nullptr;
-	static jmethodID javaClassNamEsSomePropertyGetterId = nullptr;
-	static jmethodID javaClassNamEsSomePoperty2SetterId = nullptr;
-	static jmethodID javaClassNamEsSomePoperty2GetterId = nullptr;
-	static jmethodID javaClassNamEsEnumPropertySetterId = nullptr;
-	static jmethodID javaClassNamEsEnumPropertyGetterId = nullptr;
-	static jmethodID javaClassNamEsSomeSignalSignalMethodID = nullptr;
-	static jmethodID javaClassNamEsSomeSignal2SignalMethodID = nullptr;
-	static jmethodID javaClassNamEsSomeFunctionMethodID = nullptr;
-	static jmethodID javaClassNamEsSomeFunction2MethodID = nullptr;
+public:
+	static jclass javaEnumEnumWithUnderScores;
+	static jmethodID javaEnumEnumWithUnderScoresFromValueMethodId;
+	static jmethodID javaEnumEnumWithUnderScoresGetValueMethod;
+	static jclass javaClassNamEs;
+	static jmethodID javaClassNamEsSwitchSetterId;
+	static jmethodID javaClassNamEsSwitchGetterId;
+	static jmethodID javaClassNamEsSwitchChangedMethodID;
+	static jmethodID javaClassNamEsSomePropertySetterId;
+	static jmethodID javaClassNamEsSomePropertyGetterId;
+	static jmethodID javaClassNamEsSomePropertyChangedMethodID;
+	static jmethodID javaClassNamEsSomePoperty2SetterId;
+	static jmethodID javaClassNamEsSomePoperty2GetterId;
+	static jmethodID javaClassNamEsSomePoperty2ChangedMethodID;
+	static jmethodID javaClassNamEsEnumPropertySetterId;
+	static jmethodID javaClassNamEsEnumPropertyGetterId;
+	static jmethodID javaClassNamEsEnumPropertyChangedMethodID;
+	static jclass serviceClassNamEs;
+	static jmethodID serviceClassNamEsReadyMethodID;
+	static jmethodID serviceClassNamEsSwitchChangedMethodID;
+	static jmethodID serviceClassNamEsSomePropertyChangedMethodID;
+	static jmethodID serviceClassNamEsSomePoperty2ChangedMethodID;
+	static jmethodID serviceClassNamEsEnumPropertyChangedMethodID;
+	static jmethodID serviceClassNamEsSomeSignalSignalMethodID;
+	static jmethodID serviceClassNamEsSomeSignal2SignalMethodID;
+	static jclass clientClassNamEs;
+	static jmethodID clientClassNamEsCtor;
+	static jmethodID clientClassNamEsBindMethodID;
+	static jmethodID clientClassNamEsUnbindMethodID;
+	static jmethodID clientClassNamEsSomeFunctionAsyncMethodID;
+	static jmethodID clientClassNamEsSomeFunction2AsyncMethodID;
 
 	static void init();
 	static void clear();
 	static bool isInitialized();
 
 private:
-	static bool m_isInitialized = false;
-}
+	static bool m_isInitialized;
+};
 
 #endif
