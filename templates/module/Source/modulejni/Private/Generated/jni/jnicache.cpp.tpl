@@ -37,13 +37,17 @@ limitations under the License.
 #include "Engine/Engine.h"
 {{- $StaticCacheName := printf "%sJniCache" $ModuleName}}
 
-// TODO
-// after each findJAvaClassGlobalRef and getting methodId or FieldId
-// if (env->ExceptionCheck()) {
-//	env->ExceptionDescribe(); // logs in java
-//	env->ExceptionClear();
-//	LOG UE;
-//}
+DEFINE_LOG_CATEGORY(Log{{$StaticCacheName}}_JNI);
+
+void {{$StaticCacheName }}::checkException(JNIEnv* env, FString memberInfo)
+{
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(Log{{$StaticCacheName}}_JNI, Warning, TEXT("Could not find %s"), *memberInfo);
+	}
+}
 
 {{- range .Module.Structs }}
 {{- $className:= printf "javaStruct%s" (Camel .Name) }}
@@ -108,10 +112,13 @@ void {{$StaticCacheName }}::init()
 	{{- $packageName := printf "%s/%s_api" $jmoduleName $jmoduleName }}
 	{{- $javaClassTypeName := Camel .Name}}
 	{{$className}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	checkException(env, "{{$packageName}}/{{$javaClassTypeName}}");
 	{{$className}}Ctor = env->GetMethodID({{$StaticCacheName }}::{{$className}}, "<init>", "()V");
+	checkException(env, "method <init>, ()V for {{$packageName}}/{{$javaClassTypeName}}");
 {{- range .Fields }}
 	{{- $javaFieldName := camel .Name}}
 	{{$className}}{{Camel .Name}}FieldId = env->GetFieldID({{$StaticCacheName }}::{{$className}}, "{{$javaFieldName}}", "{{jniSignatureType . }}");
+	checkException(env, "{{$javaFieldName}}, {{jniSignatureType . }} for {{$packageName}}/{{$javaClassTypeName}}");
 {{- end }}
 {{- end }}
 
@@ -121,8 +128,11 @@ void {{$StaticCacheName }}::init()
 
 	{{- $className:= printf "javaEnum%s" (Camel .Name) }}
 	{{$className}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	checkException(env, "{{$packageName}}/{{$javaClassTypeName}}");
 	{{$className}}FromValueMethodId = env->GetStaticMethodID({{$StaticCacheName }}::{{$className}}, "fromValue", "(I)L{{$packageName}}/{{$javaClassTypeName}};");
+	checkException(env, "fromValue (I)L{{$packageName}}/{{$javaClassTypeName}}; for {{$packageName}}/{{$javaClassTypeName}}");
 	{{$className}}GetValueMethod = env->GetMethodID({{$StaticCacheName }}::{{$className}}, "getValue", "()I");
+	checkException(env, "getValue (I)L{{$packageName}}/{{$javaClassTypeName}}; for {{$packageName}}/{{$javaClassTypeName}}");
 
 {{- end }}
 
@@ -131,12 +141,15 @@ void {{$StaticCacheName }}::init()
 {{- $className:= printf "javaClass%s" (Camel .Name) }}
 
 	{{$className}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
+	checkException(env, "{{$fullJavaClassType}}");
 {{- range .Properties }}
 	{{- $signatureParam := jniJavaSignatureParam . }}
 	{{- if not .IsReadOnly }}
 	{{$className}}{{ Camel .Name}}SetterId = env->GetMethodID({{$StaticCacheName }}::{{$className}}, "set{{Camel .Name}}", "({{$signatureParam}})V");
+	checkException(env, "set{{Camel .Name}}, ({{$signatureParam}})V  for {{$fullJavaClassType}}");
 	{{- end }}
 	{{$className}}{{ Camel .Name}}GetterId = env->GetMethodID({{$StaticCacheName }}::{{$className}}, "get{{Camel .Name}}", "(){{$signatureParam}}");
+	checkException(env, "get{{Camel .Name}}, (){{$signatureParam}} for {{$fullJavaClassType}}");
 {{- end }}
 
 {{- $serviceClass:= printf "serviceClass%s" (Camel .Name) }}
@@ -149,23 +162,32 @@ void {{$StaticCacheName }}::init()
 {{- $javaClientPath := ( join "/" (strSlice ( camel $ModuleName) $jniclient_name) ) }}
 
 	{{$serviceClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaServicePath}}/{{$javaServiceTypeName}}");
+	checkException(env, "{{$javaServicePath}}/{{$javaServiceTypeName}}");
 	{{$serviceClass}}ReadyMethodID = env->GetMethodID({{$StaticCacheName }}::{{$serviceClass}}, "nativeServiceReady", "(Z)V");
+	checkException(env, "nativeServiceReady, (Z)V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
 {{- range .Properties }}
 	{{- $signatureParam := jniJavaSignatureParam . }}
 	{{$serviceClass}}{{ Camel .Name}}ChangedMethodID = env->GetMethodID({{$StaticCacheName }}::{{$serviceClass}}, "on{{Camel .Name}}Changed", "({{$signatureParam}})V");
+	checkException(env, "on{{Camel .Name}}Changed, ({{$signatureParam}})V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
 {{- end }}
 {{- range .Signals }}
 	{{- $signatureParams := jniJavaSignatureParams .Params }}
 	{{$serviceClass}}{{ Camel .Name}}SignalMethodID = env->GetMethodID({{$StaticCacheName }}::{{$serviceClass}}, "on{{Camel .Name}}", "({{$signatureParams}})V");
+	checkException(env, "on{{Camel .Name}}, ({{$signatureParams}})V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
 {{- end }}
 	{{$clientClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClientPath}}/{{$javaClientTypeName}}");
+	checkException(env, "{{$javaClientPath}}/{{$javaClientTypeName}}");
 {{- range .Operations }}
 	{{- $signatureParams := jniJavaSignatureParams .Params }}
 	{{$clientClass}}{{Camel .Name}}AsyncMethodID = env->GetMethodID({{$StaticCacheName }}::{{$clientClass}}, "{{camel .Name}}Async", "(Ljava/lang/String;{{$signatureParams}})V");
+	checkException(env, "{{camel .Name}}Async, (Ljava/lang/String;{{$signatureParams}})V for {{$javaClientPath}}/{{$javaClientTypeName}}");
 {{- end }}
 	{{$clientClass}}Ctor = env->GetMethodID({{$StaticCacheName}}::{{$clientClass}}, "<init>", "()V");
+	checkException(env, "init, ()V for {{$javaClientPath}}/{{$javaClientTypeName}}");
 	{{$clientClass}}BindMethodID = env->GetMethodID({{$StaticCacheName}}::{{$clientClass}}, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	checkException(env, "bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for {{$javaClientPath}}/{{$javaClientTypeName}}");
 	{{$clientClass}}UnbindMethodID = env->GetMethodID({{$StaticCacheName}}::{{$clientClass}}, "unbind", "()V");
+	checkException(env, "unbind, ()V for {{$javaClientPath}}/{{$javaClientTypeName}}");
 {{- end }}
 
 {{- range .Module.Externs }}
@@ -176,7 +198,9 @@ void {{$StaticCacheName }}::init()
 {{- $fullJavaClassType = printf "%s/%s" $prefix $fullJavaClassType }}
 {{- end }}
 	javaClass{{.Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
+	checkException(env, "{{$fullJavaClassType}}");
 	javaClass{{.Name}}Ctor = env->GetMethodID({{$StaticCacheName }}::javaClass{{.Name}}, "<init>", "()V");
+	checkException(env, "init, ()V for {{$fullJavaClassType}}");
 {{- end }}
 	m_isInitialized = true;
 }

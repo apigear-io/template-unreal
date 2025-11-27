@@ -32,13 +32,17 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-// TODO
-// after each findJAvaClassGlobalRef and getting methodId or FieldId
-// if (env->ExceptionCheck()) {
-//	env->ExceptionDescribe(); // logs in java
-//	env->ExceptionClear();
-//	LOG UE;
-//}
+DEFINE_LOG_CATEGORY(LogCustomTypesJniCache_JNI);
+
+void CustomTypesJniCache::checkException(JNIEnv* env, FString memberInfo)
+{
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogCustomTypesJniCache_JNI, Warning, TEXT("Could not find %s"), *memberInfo);
+	}
+}
 jclass CustomTypesJniCache::javaStructVector3D = nullptr;
 jmethodID CustomTypesJniCache::javaStructVector3DCtor = nullptr;
 jfieldID CustomTypesJniCache::javaStructVector3DXFieldId = nullptr;
@@ -51,10 +55,15 @@ void CustomTypesJniCache::init()
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	javaStructVector3D = FAndroidApplication::FindJavaClassGlobalRef("customTypes/customTypes_api/Vector3D");
+	checkException(env, "customTypes/customTypes_api/Vector3D");
 	javaStructVector3DCtor = env->GetMethodID(CustomTypesJniCache::javaStructVector3D, "<init>", "()V");
+	checkException(env, "method <init>, ()V for customTypes/customTypes_api/Vector3D");
 	javaStructVector3DXFieldId = env->GetFieldID(CustomTypesJniCache::javaStructVector3D, "x", "F");
+	checkException(env, "x, F for customTypes/customTypes_api/Vector3D");
 	javaStructVector3DYFieldId = env->GetFieldID(CustomTypesJniCache::javaStructVector3D, "y", "F");
+	checkException(env, "y, F for customTypes/customTypes_api/Vector3D");
 	javaStructVector3DZFieldId = env->GetFieldID(CustomTypesJniCache::javaStructVector3D, "z", "F");
+	checkException(env, "z, F for customTypes/customTypes_api/Vector3D");
 	m_isInitialized = true;
 }
 

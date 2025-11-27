@@ -37,6 +37,7 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 {{- $StaticCacheName := printf "%sJniCache" $ModuleName}}
+DECLARE_LOG_CATEGORY_EXTERN(Log{{$StaticCacheName}}_JNI, Log, All);
 
 class {{ $API_MACRO }} {{$StaticCacheName }}
 {
@@ -102,6 +103,7 @@ public:
 
 private:
 	static bool m_isInitialized;
+	static void checkException(JNIEnv* env, FString memberInfo);
 };
 
 #endif

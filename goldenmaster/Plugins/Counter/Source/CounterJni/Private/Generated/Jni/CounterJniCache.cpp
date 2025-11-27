@@ -32,13 +32,17 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-// TODO
-// after each findJAvaClassGlobalRef and getting methodId or FieldId
-// if (env->ExceptionCheck()) {
-//	env->ExceptionDescribe(); // logs in java
-//	env->ExceptionClear();
-//	LOG UE;
-//}
+DEFINE_LOG_CATEGORY(LogCounterJniCache_JNI);
+
+void CounterJniCache::checkException(JNIEnv* env, FString memberInfo)
+{
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogCounterJniCache_JNI, Warning, TEXT("Could not find %s"), *memberInfo);
+	}
+}
 jclass CounterJniCache::javaClassCounter = nullptr;
 jmethodID CounterJniCache::javaClassCounterVectorSetterId = nullptr;
 jmethodID CounterJniCache::javaClassCounterVectorGetterId = nullptr;
@@ -71,30 +75,54 @@ void CounterJniCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	javaClassCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
+	checkException(env, "counter/counter_api/ICounter");
 	javaClassCounterVectorSetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "setVector", "(LcustomTypes/customTypes_api/Vector3D;)V");
+	checkException(env, "setVector, (LcustomTypes/customTypes_api/Vector3D;)V  for counter/counter_api/ICounter");
 	javaClassCounterVectorGetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "getVector", "()LcustomTypes/customTypes_api/Vector3D;");
+	checkException(env, "getVector, ()LcustomTypes/customTypes_api/Vector3D; for counter/counter_api/ICounter");
 	javaClassCounterExternVectorSetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "setExternVector", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	checkException(env, "setExternVector, (Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V  for counter/counter_api/ICounter");
 	javaClassCounterExternVectorGetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "getExternVector", "()Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;");
+	checkException(env, "getExternVector, ()Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D; for counter/counter_api/ICounter");
 	javaClassCounterVectorArraySetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "setVectorArray", "([LcustomTypes/customTypes_api/Vector3D;)V");
+	checkException(env, "setVectorArray, ([LcustomTypes/customTypes_api/Vector3D;)V  for counter/counter_api/ICounter");
 	javaClassCounterVectorArrayGetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "getVectorArray", "()[LcustomTypes/customTypes_api/Vector3D;");
+	checkException(env, "getVectorArray, ()[LcustomTypes/customTypes_api/Vector3D; for counter/counter_api/ICounter");
 	javaClassCounterExternVectorArraySetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "setExternVectorArray", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	checkException(env, "setExternVectorArray, ([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V  for counter/counter_api/ICounter");
 	javaClassCounterExternVectorArrayGetterId = env->GetMethodID(CounterJniCache::javaClassCounter, "getExternVectorArray", "()[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;");
+	checkException(env, "getExternVectorArray, ()[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D; for counter/counter_api/ICounter");
 
 	serviceClassCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniservice/CounterJniService");
+	checkException(env, "counter/counterjniservice/CounterJniService");
 	serviceClassCounterReadyMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "nativeServiceReady", "(Z)V");
+	checkException(env, "nativeServiceReady, (Z)V for counter/counterjniservice/CounterJniService");
 	serviceClassCounterVectorChangedMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "onVectorChanged", "(LcustomTypes/customTypes_api/Vector3D;)V");
+	checkException(env, "onVectorChanged, (LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniservice/CounterJniService");
 	serviceClassCounterExternVectorChangedMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "onExternVectorChanged", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	checkException(env, "onExternVectorChanged, (Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniservice/CounterJniService");
 	serviceClassCounterVectorArrayChangedMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "onVectorArrayChanged", "([LcustomTypes/customTypes_api/Vector3D;)V");
+	checkException(env, "onVectorArrayChanged, ([LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniservice/CounterJniService");
 	serviceClassCounterExternVectorArrayChangedMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "onExternVectorArrayChanged", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	checkException(env, "onExternVectorArrayChanged, ([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniservice/CounterJniService");
 	serviceClassCounterValueChangedSignalMethodID = env->GetMethodID(CounterJniCache::serviceClassCounter, "onValueChanged", "(LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	checkException(env, "onValueChanged, (LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniservice/CounterJniService");
 	clientClassCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniclient/CounterJniClient");
+	checkException(env, "counter/counterjniclient/CounterJniClient");
 	clientClassCounterIncrementAsyncMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "incrementAsync", "(Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	checkException(env, "incrementAsync, (Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient");
 	clientClassCounterIncrementArrayAsyncMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "incrementArrayAsync", "(Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	checkException(env, "incrementArrayAsync, (Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient");
 	clientClassCounterDecrementAsyncMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "decrementAsync", "(Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V");
+	checkException(env, "decrementAsync, (Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient");
 	clientClassCounterDecrementArrayAsyncMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "decrementArrayAsync", "(Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V");
+	checkException(env, "decrementArrayAsync, (Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient");
 	clientClassCounterCtor = env->GetMethodID(CounterJniCache::clientClassCounter, "<init>", "()V");
+	checkException(env, "init, ()V for counter/counterjniclient/CounterJniClient");
 	clientClassCounterBindMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	checkException(env, "bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for counter/counterjniclient/CounterJniClient");
 	clientClassCounterUnbindMethodID = env->GetMethodID(CounterJniCache::clientClassCounter, "unbind", "()V");
+	checkException(env, "unbind, ()V for counter/counterjniclient/CounterJniClient");
 	m_isInitialized = true;
 }
 

@@ -32,13 +32,17 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-// TODO
-// after each findJAvaClassGlobalRef and getting methodId or FieldId
-// if (env->ExceptionCheck()) {
-//	env->ExceptionDescribe(); // logs in java
-//	env->ExceptionClear();
-//	LOG UE;
-//}
+DEFINE_LOG_CATEGORY(LogTbSame2JniCache_JNI);
+
+void TbSame2JniCache::checkException(JNIEnv* env, FString memberInfo)
+{
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbSame2JniCache_JNI, Warning, TEXT("Could not find %s"), *memberInfo);
+	}
+}
 jclass TbSame2JniCache::javaStructStruct1 = nullptr;
 jmethodID TbSame2JniCache::javaStructStruct1Ctor = nullptr;
 jfieldID TbSame2JniCache::javaStructStruct1Field1FieldId = nullptr;
@@ -120,87 +124,161 @@ void TbSame2JniCache::init()
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	javaStructStruct1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct1");
+	checkException(env, "tbSame2/tbSame2_api/Struct1");
 	javaStructStruct1Ctor = env->GetMethodID(TbSame2JniCache::javaStructStruct1, "<init>", "()V");
+	checkException(env, "method <init>, ()V for tbSame2/tbSame2_api/Struct1");
 	javaStructStruct1Field1FieldId = env->GetFieldID(TbSame2JniCache::javaStructStruct1, "field1", "I");
+	checkException(env, "field1, I for tbSame2/tbSame2_api/Struct1");
 	javaStructStruct1Field2FieldId = env->GetFieldID(TbSame2JniCache::javaStructStruct1, "field2", "I");
+	checkException(env, "field2, I for tbSame2/tbSame2_api/Struct1");
 	javaStructStruct1Field3FieldId = env->GetFieldID(TbSame2JniCache::javaStructStruct1, "field3", "I");
+	checkException(env, "field3, I for tbSame2/tbSame2_api/Struct1");
 	javaStructStruct2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct2");
+	checkException(env, "tbSame2/tbSame2_api/Struct2");
 	javaStructStruct2Ctor = env->GetMethodID(TbSame2JniCache::javaStructStruct2, "<init>", "()V");
+	checkException(env, "method <init>, ()V for tbSame2/tbSame2_api/Struct2");
 	javaStructStruct2Field1FieldId = env->GetFieldID(TbSame2JniCache::javaStructStruct2, "field1", "I");
+	checkException(env, "field1, I for tbSame2/tbSame2_api/Struct2");
 	javaStructStruct2Field2FieldId = env->GetFieldID(TbSame2JniCache::javaStructStruct2, "field2", "I");
+	checkException(env, "field2, I for tbSame2/tbSame2_api/Struct2");
 	javaStructStruct2Field3FieldId = env->GetFieldID(TbSame2JniCache::javaStructStruct2, "field3", "I");
+	checkException(env, "field3, I for tbSame2/tbSame2_api/Struct2");
 	javaEnumEnum1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum1");
+	checkException(env, "tbSame2/tbSame2_api/Enum1");
 	javaEnumEnum1FromValueMethodId = env->GetStaticMethodID(TbSame2JniCache::javaEnumEnum1, "fromValue", "(I)LtbSame2/tbSame2_api/Enum1;");
+	checkException(env, "fromValue (I)LtbSame2/tbSame2_api/Enum1; for tbSame2/tbSame2_api/Enum1");
 	javaEnumEnum1GetValueMethod = env->GetMethodID(TbSame2JniCache::javaEnumEnum1, "getValue", "()I");
+	checkException(env, "getValue (I)LtbSame2/tbSame2_api/Enum1; for tbSame2/tbSame2_api/Enum1");
 	javaEnumEnum2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum2");
+	checkException(env, "tbSame2/tbSame2_api/Enum2");
 	javaEnumEnum2FromValueMethodId = env->GetStaticMethodID(TbSame2JniCache::javaEnumEnum2, "fromValue", "(I)LtbSame2/tbSame2_api/Enum2;");
+	checkException(env, "fromValue (I)LtbSame2/tbSame2_api/Enum2; for tbSame2/tbSame2_api/Enum2");
 	javaEnumEnum2GetValueMethod = env->GetMethodID(TbSame2JniCache::javaEnumEnum2, "getValue", "()I");
+	checkException(env, "getValue (I)LtbSame2/tbSame2_api/Enum2; for tbSame2/tbSame2_api/Enum2");
 
 	javaClassSameStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameStruct1Interface");
+	checkException(env, "tbSame2/tbSame2_api/ISameStruct1Interface");
 	javaClassSameStruct1InterfaceProp1SetterId = env->GetMethodID(TbSame2JniCache::javaClassSameStruct1Interface, "setProp1", "(LtbSame2/tbSame2_api/Struct1;)V");
+	checkException(env, "setProp1, (LtbSame2/tbSame2_api/Struct1;)V  for tbSame2/tbSame2_api/ISameStruct1Interface");
 	javaClassSameStruct1InterfaceProp1GetterId = env->GetMethodID(TbSame2JniCache::javaClassSameStruct1Interface, "getProp1", "()LtbSame2/tbSame2_api/Struct1;");
+	checkException(env, "getProp1, ()LtbSame2/tbSame2_api/Struct1; for tbSame2/tbSame2_api/ISameStruct1Interface");
 
 	serviceClassSameStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
+	checkException(env, "tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
 	serviceClassSameStruct1InterfaceReadyMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameStruct1Interface, "nativeServiceReady", "(Z)V");
+	checkException(env, "nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
 	serviceClassSameStruct1InterfaceProp1ChangedMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameStruct1Interface, "onProp1Changed", "(LtbSame2/tbSame2_api/Struct1;)V");
+	checkException(env, "onProp1Changed, (LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
 	serviceClassSameStruct1InterfaceSig1SignalMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameStruct1Interface, "onSig1", "(LtbSame2/tbSame2_api/Struct1;)V");
+	checkException(env, "onSig1, (LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
 	clientClassSameStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
+	checkException(env, "tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
 	clientClassSameStruct1InterfaceFunc1AsyncMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameStruct1Interface, "func1Async", "(Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V");
+	checkException(env, "func1Async, (Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
 	clientClassSameStruct1InterfaceCtor = env->GetMethodID(TbSame2JniCache::clientClassSameStruct1Interface, "<init>", "()V");
+	checkException(env, "init, ()V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
 	clientClassSameStruct1InterfaceBindMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameStruct1Interface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	checkException(env, "bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
 	clientClassSameStruct1InterfaceUnbindMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameStruct1Interface, "unbind", "()V");
+	checkException(env, "unbind, ()V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
 
 	javaClassSameStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameStruct2Interface");
+	checkException(env, "tbSame2/tbSame2_api/ISameStruct2Interface");
 	javaClassSameStruct2InterfaceProp1SetterId = env->GetMethodID(TbSame2JniCache::javaClassSameStruct2Interface, "setProp1", "(LtbSame2/tbSame2_api/Struct2;)V");
+	checkException(env, "setProp1, (LtbSame2/tbSame2_api/Struct2;)V  for tbSame2/tbSame2_api/ISameStruct2Interface");
 	javaClassSameStruct2InterfaceProp1GetterId = env->GetMethodID(TbSame2JniCache::javaClassSameStruct2Interface, "getProp1", "()LtbSame2/tbSame2_api/Struct2;");
+	checkException(env, "getProp1, ()LtbSame2/tbSame2_api/Struct2; for tbSame2/tbSame2_api/ISameStruct2Interface");
 	javaClassSameStruct2InterfaceProp2SetterId = env->GetMethodID(TbSame2JniCache::javaClassSameStruct2Interface, "setProp2", "(LtbSame2/tbSame2_api/Struct2;)V");
+	checkException(env, "setProp2, (LtbSame2/tbSame2_api/Struct2;)V  for tbSame2/tbSame2_api/ISameStruct2Interface");
 	javaClassSameStruct2InterfaceProp2GetterId = env->GetMethodID(TbSame2JniCache::javaClassSameStruct2Interface, "getProp2", "()LtbSame2/tbSame2_api/Struct2;");
+	checkException(env, "getProp2, ()LtbSame2/tbSame2_api/Struct2; for tbSame2/tbSame2_api/ISameStruct2Interface");
 
 	serviceClassSameStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameStruct2InterfaceJniService");
+	checkException(env, "tbSame2/tbSame2jniservice/SameStruct2InterfaceJniService");
 	serviceClassSameStruct2InterfaceReadyMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameStruct2Interface, "nativeServiceReady", "(Z)V");
+	checkException(env, "nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameStruct2InterfaceJniService");
 	serviceClassSameStruct2InterfaceProp1ChangedMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameStruct2Interface, "onProp1Changed", "(LtbSame2/tbSame2_api/Struct2;)V");
+	checkException(env, "onProp1Changed, (LtbSame2/tbSame2_api/Struct2;)V for tbSame2/tbSame2jniservice/SameStruct2InterfaceJniService");
 	serviceClassSameStruct2InterfaceProp2ChangedMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameStruct2Interface, "onProp2Changed", "(LtbSame2/tbSame2_api/Struct2;)V");
+	checkException(env, "onProp2Changed, (LtbSame2/tbSame2_api/Struct2;)V for tbSame2/tbSame2jniservice/SameStruct2InterfaceJniService");
 	serviceClassSameStruct2InterfaceSig1SignalMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameStruct2Interface, "onSig1", "(LtbSame2/tbSame2_api/Struct1;)V");
+	checkException(env, "onSig1, (LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniservice/SameStruct2InterfaceJniService");
 	serviceClassSameStruct2InterfaceSig2SignalMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameStruct2Interface, "onSig2", "(LtbSame2/tbSame2_api/Struct1;LtbSame2/tbSame2_api/Struct2;)V");
+	checkException(env, "onSig2, (LtbSame2/tbSame2_api/Struct1;LtbSame2/tbSame2_api/Struct2;)V for tbSame2/tbSame2jniservice/SameStruct2InterfaceJniService");
 	clientClassSameStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient");
+	checkException(env, "tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient");
 	clientClassSameStruct2InterfaceFunc1AsyncMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameStruct2Interface, "func1Async", "(Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V");
+	checkException(env, "func1Async, (Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient");
 	clientClassSameStruct2InterfaceFunc2AsyncMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameStruct2Interface, "func2Async", "(Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;LtbSame2/tbSame2_api/Struct2;)V");
+	checkException(env, "func2Async, (Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;LtbSame2/tbSame2_api/Struct2;)V for tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient");
 	clientClassSameStruct2InterfaceCtor = env->GetMethodID(TbSame2JniCache::clientClassSameStruct2Interface, "<init>", "()V");
+	checkException(env, "init, ()V for tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient");
 	clientClassSameStruct2InterfaceBindMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameStruct2Interface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	checkException(env, "bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient");
 	clientClassSameStruct2InterfaceUnbindMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameStruct2Interface, "unbind", "()V");
+	checkException(env, "unbind, ()V for tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient");
 
 	javaClassSameEnum1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameEnum1Interface");
+	checkException(env, "tbSame2/tbSame2_api/ISameEnum1Interface");
 	javaClassSameEnum1InterfaceProp1SetterId = env->GetMethodID(TbSame2JniCache::javaClassSameEnum1Interface, "setProp1", "(LtbSame2/tbSame2_api/Enum1;)V");
+	checkException(env, "setProp1, (LtbSame2/tbSame2_api/Enum1;)V  for tbSame2/tbSame2_api/ISameEnum1Interface");
 	javaClassSameEnum1InterfaceProp1GetterId = env->GetMethodID(TbSame2JniCache::javaClassSameEnum1Interface, "getProp1", "()LtbSame2/tbSame2_api/Enum1;");
+	checkException(env, "getProp1, ()LtbSame2/tbSame2_api/Enum1; for tbSame2/tbSame2_api/ISameEnum1Interface");
 
 	serviceClassSameEnum1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
+	checkException(env, "tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
 	serviceClassSameEnum1InterfaceReadyMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameEnum1Interface, "nativeServiceReady", "(Z)V");
+	checkException(env, "nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
 	serviceClassSameEnum1InterfaceProp1ChangedMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameEnum1Interface, "onProp1Changed", "(LtbSame2/tbSame2_api/Enum1;)V");
+	checkException(env, "onProp1Changed, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
 	serviceClassSameEnum1InterfaceSig1SignalMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameEnum1Interface, "onSig1", "(LtbSame2/tbSame2_api/Enum1;)V");
+	checkException(env, "onSig1, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
 	clientClassSameEnum1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient");
+	checkException(env, "tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient");
 	clientClassSameEnum1InterfaceFunc1AsyncMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameEnum1Interface, "func1Async", "(Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V");
+	checkException(env, "func1Async, (Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient");
 	clientClassSameEnum1InterfaceCtor = env->GetMethodID(TbSame2JniCache::clientClassSameEnum1Interface, "<init>", "()V");
+	checkException(env, "init, ()V for tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient");
 	clientClassSameEnum1InterfaceBindMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameEnum1Interface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	checkException(env, "bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient");
 	clientClassSameEnum1InterfaceUnbindMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameEnum1Interface, "unbind", "()V");
+	checkException(env, "unbind, ()V for tbSame2/tbSame2jniclient/SameEnum1InterfaceJniClient");
 
 	javaClassSameEnum2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameEnum2Interface");
+	checkException(env, "tbSame2/tbSame2_api/ISameEnum2Interface");
 	javaClassSameEnum2InterfaceProp1SetterId = env->GetMethodID(TbSame2JniCache::javaClassSameEnum2Interface, "setProp1", "(LtbSame2/tbSame2_api/Enum1;)V");
+	checkException(env, "setProp1, (LtbSame2/tbSame2_api/Enum1;)V  for tbSame2/tbSame2_api/ISameEnum2Interface");
 	javaClassSameEnum2InterfaceProp1GetterId = env->GetMethodID(TbSame2JniCache::javaClassSameEnum2Interface, "getProp1", "()LtbSame2/tbSame2_api/Enum1;");
+	checkException(env, "getProp1, ()LtbSame2/tbSame2_api/Enum1; for tbSame2/tbSame2_api/ISameEnum2Interface");
 	javaClassSameEnum2InterfaceProp2SetterId = env->GetMethodID(TbSame2JniCache::javaClassSameEnum2Interface, "setProp2", "(LtbSame2/tbSame2_api/Enum2;)V");
+	checkException(env, "setProp2, (LtbSame2/tbSame2_api/Enum2;)V  for tbSame2/tbSame2_api/ISameEnum2Interface");
 	javaClassSameEnum2InterfaceProp2GetterId = env->GetMethodID(TbSame2JniCache::javaClassSameEnum2Interface, "getProp2", "()LtbSame2/tbSame2_api/Enum2;");
+	checkException(env, "getProp2, ()LtbSame2/tbSame2_api/Enum2; for tbSame2/tbSame2_api/ISameEnum2Interface");
 
 	serviceClassSameEnum2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
+	checkException(env, "tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	serviceClassSameEnum2InterfaceReadyMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameEnum2Interface, "nativeServiceReady", "(Z)V");
+	checkException(env, "nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	serviceClassSameEnum2InterfaceProp1ChangedMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameEnum2Interface, "onProp1Changed", "(LtbSame2/tbSame2_api/Enum1;)V");
+	checkException(env, "onProp1Changed, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	serviceClassSameEnum2InterfaceProp2ChangedMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameEnum2Interface, "onProp2Changed", "(LtbSame2/tbSame2_api/Enum2;)V");
+	checkException(env, "onProp2Changed, (LtbSame2/tbSame2_api/Enum2;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	serviceClassSameEnum2InterfaceSig1SignalMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameEnum2Interface, "onSig1", "(LtbSame2/tbSame2_api/Enum1;)V");
+	checkException(env, "onSig1, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	serviceClassSameEnum2InterfaceSig2SignalMethodID = env->GetMethodID(TbSame2JniCache::serviceClassSameEnum2Interface, "onSig2", "(LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V");
+	checkException(env, "onSig2, (LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	clientClassSameEnum2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient");
+	checkException(env, "tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient");
 	clientClassSameEnum2InterfaceFunc1AsyncMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameEnum2Interface, "func1Async", "(Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V");
+	checkException(env, "func1Async, (Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient");
 	clientClassSameEnum2InterfaceFunc2AsyncMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameEnum2Interface, "func2Async", "(Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V");
+	checkException(env, "func2Async, (Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V for tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient");
 	clientClassSameEnum2InterfaceCtor = env->GetMethodID(TbSame2JniCache::clientClassSameEnum2Interface, "<init>", "()V");
+	checkException(env, "init, ()V for tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient");
 	clientClassSameEnum2InterfaceBindMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameEnum2Interface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	checkException(env, "bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient");
 	clientClassSameEnum2InterfaceUnbindMethodID = env->GetMethodID(TbSame2JniCache::clientClassSameEnum2Interface, "unbind", "()V");
+	checkException(env, "unbind, ()V for tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient");
 	m_isInitialized = true;
 }
 

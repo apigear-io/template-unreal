@@ -33,6 +33,7 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 #include "Engine/Engine.h"
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2JniCache_JNI, Log, All);
 
 class TBSAME2API_API TbSame2JniCache
 {
@@ -124,6 +125,7 @@ public:
 
 private:
 	static bool m_isInitialized;
+	static void checkException(JNIEnv* env, FString memberInfo);
 };
 
 #endif

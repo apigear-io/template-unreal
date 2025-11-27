@@ -32,13 +32,17 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-// TODO
-// after each findJAvaClassGlobalRef and getting methodId or FieldId
-// if (env->ExceptionCheck()) {
-//	env->ExceptionDescribe(); // logs in java
-//	env->ExceptionClear();
-//	LOG UE;
-//}
+DEFINE_LOG_CATEGORY(LogExternTypesJniCache_JNI);
+
+void ExternTypesJniCache::checkException(JNIEnv* env, FString memberInfo)
+{
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogExternTypesJniCache_JNI, Warning, TEXT("Could not find %s"), *memberInfo);
+	}
+}
 jclass ExternTypesJniCache::javaClassMyVector3D = nullptr;
 jmethodID ExternTypesJniCache::javaClassMyVector3DCtor = nullptr;
 
@@ -48,7 +52,9 @@ void ExternTypesJniCache::init()
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	javaClassMyVector3D = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	checkException(env, "org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
 	javaClassMyVector3DCtor = env->GetMethodID(ExternTypesJniCache::javaClassMyVector3D, "<init>", "()V");
+	checkException(env, "init, ()V for org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
 	m_isInitialized = true;
 }
 

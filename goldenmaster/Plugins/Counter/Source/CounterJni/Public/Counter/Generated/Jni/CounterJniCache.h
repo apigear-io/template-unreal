@@ -33,6 +33,7 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 #include "Engine/Engine.h"
+DECLARE_LOG_CATEGORY_EXTERN(LogCounterJniCache_JNI, Log, All);
 
 class COUNTERAPI_API CounterJniCache
 {
@@ -72,6 +73,7 @@ public:
 
 private:
 	static bool m_isInitialized;
+	static void checkException(JNIEnv* env, FString memberInfo);
 };
 
 #endif

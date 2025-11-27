@@ -32,13 +32,17 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-// TODO
-// after each findJAvaClassGlobalRef and getting methodId or FieldId
-// if (env->ExceptionCheck()) {
-//	env->ExceptionDescribe(); // logs in java
-//	env->ExceptionClear();
-//	LOG UE;
-//}
+DEFINE_LOG_CATEGORY(LogTbEnumJniCache_JNI);
+
+void TbEnumJniCache::checkException(JNIEnv* env, FString memberInfo)
+{
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbEnumJniCache_JNI, Warning, TEXT("Could not find %s"), *memberInfo);
+	}
+}
 jclass TbEnumJniCache::javaEnumEnum0 = nullptr;
 jmethodID TbEnumJniCache::javaEnumEnum0FromValueMethodId = nullptr;
 jmethodID TbEnumJniCache::javaEnumEnum0GetValueMethod = nullptr;
@@ -85,46 +89,85 @@ void TbEnumJniCache::init()
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	javaEnumEnum0 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum0");
+	checkException(env, "tbEnum/tbEnum_api/Enum0");
 	javaEnumEnum0FromValueMethodId = env->GetStaticMethodID(TbEnumJniCache::javaEnumEnum0, "fromValue", "(I)LtbEnum/tbEnum_api/Enum0;");
+	checkException(env, "fromValue (I)LtbEnum/tbEnum_api/Enum0; for tbEnum/tbEnum_api/Enum0");
 	javaEnumEnum0GetValueMethod = env->GetMethodID(TbEnumJniCache::javaEnumEnum0, "getValue", "()I");
+	checkException(env, "getValue (I)LtbEnum/tbEnum_api/Enum0; for tbEnum/tbEnum_api/Enum0");
 	javaEnumEnum1 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum1");
+	checkException(env, "tbEnum/tbEnum_api/Enum1");
 	javaEnumEnum1FromValueMethodId = env->GetStaticMethodID(TbEnumJniCache::javaEnumEnum1, "fromValue", "(I)LtbEnum/tbEnum_api/Enum1;");
+	checkException(env, "fromValue (I)LtbEnum/tbEnum_api/Enum1; for tbEnum/tbEnum_api/Enum1");
 	javaEnumEnum1GetValueMethod = env->GetMethodID(TbEnumJniCache::javaEnumEnum1, "getValue", "()I");
+	checkException(env, "getValue (I)LtbEnum/tbEnum_api/Enum1; for tbEnum/tbEnum_api/Enum1");
 	javaEnumEnum2 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum2");
+	checkException(env, "tbEnum/tbEnum_api/Enum2");
 	javaEnumEnum2FromValueMethodId = env->GetStaticMethodID(TbEnumJniCache::javaEnumEnum2, "fromValue", "(I)LtbEnum/tbEnum_api/Enum2;");
+	checkException(env, "fromValue (I)LtbEnum/tbEnum_api/Enum2; for tbEnum/tbEnum_api/Enum2");
 	javaEnumEnum2GetValueMethod = env->GetMethodID(TbEnumJniCache::javaEnumEnum2, "getValue", "()I");
+	checkException(env, "getValue (I)LtbEnum/tbEnum_api/Enum2; for tbEnum/tbEnum_api/Enum2");
 	javaEnumEnum3 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum3");
+	checkException(env, "tbEnum/tbEnum_api/Enum3");
 	javaEnumEnum3FromValueMethodId = env->GetStaticMethodID(TbEnumJniCache::javaEnumEnum3, "fromValue", "(I)LtbEnum/tbEnum_api/Enum3;");
+	checkException(env, "fromValue (I)LtbEnum/tbEnum_api/Enum3; for tbEnum/tbEnum_api/Enum3");
 	javaEnumEnum3GetValueMethod = env->GetMethodID(TbEnumJniCache::javaEnumEnum3, "getValue", "()I");
+	checkException(env, "getValue (I)LtbEnum/tbEnum_api/Enum3; for tbEnum/tbEnum_api/Enum3");
 
 	javaClassEnumInterface = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/IEnumInterface");
+	checkException(env, "tbEnum/tbEnum_api/IEnumInterface");
 	javaClassEnumInterfaceProp0SetterId = env->GetMethodID(TbEnumJniCache::javaClassEnumInterface, "setProp0", "(LtbEnum/tbEnum_api/Enum0;)V");
+	checkException(env, "setProp0, (LtbEnum/tbEnum_api/Enum0;)V  for tbEnum/tbEnum_api/IEnumInterface");
 	javaClassEnumInterfaceProp0GetterId = env->GetMethodID(TbEnumJniCache::javaClassEnumInterface, "getProp0", "()LtbEnum/tbEnum_api/Enum0;");
+	checkException(env, "getProp0, ()LtbEnum/tbEnum_api/Enum0; for tbEnum/tbEnum_api/IEnumInterface");
 	javaClassEnumInterfaceProp1SetterId = env->GetMethodID(TbEnumJniCache::javaClassEnumInterface, "setProp1", "(LtbEnum/tbEnum_api/Enum1;)V");
+	checkException(env, "setProp1, (LtbEnum/tbEnum_api/Enum1;)V  for tbEnum/tbEnum_api/IEnumInterface");
 	javaClassEnumInterfaceProp1GetterId = env->GetMethodID(TbEnumJniCache::javaClassEnumInterface, "getProp1", "()LtbEnum/tbEnum_api/Enum1;");
+	checkException(env, "getProp1, ()LtbEnum/tbEnum_api/Enum1; for tbEnum/tbEnum_api/IEnumInterface");
 	javaClassEnumInterfaceProp2SetterId = env->GetMethodID(TbEnumJniCache::javaClassEnumInterface, "setProp2", "(LtbEnum/tbEnum_api/Enum2;)V");
+	checkException(env, "setProp2, (LtbEnum/tbEnum_api/Enum2;)V  for tbEnum/tbEnum_api/IEnumInterface");
 	javaClassEnumInterfaceProp2GetterId = env->GetMethodID(TbEnumJniCache::javaClassEnumInterface, "getProp2", "()LtbEnum/tbEnum_api/Enum2;");
+	checkException(env, "getProp2, ()LtbEnum/tbEnum_api/Enum2; for tbEnum/tbEnum_api/IEnumInterface");
 	javaClassEnumInterfaceProp3SetterId = env->GetMethodID(TbEnumJniCache::javaClassEnumInterface, "setProp3", "(LtbEnum/tbEnum_api/Enum3;)V");
+	checkException(env, "setProp3, (LtbEnum/tbEnum_api/Enum3;)V  for tbEnum/tbEnum_api/IEnumInterface");
 	javaClassEnumInterfaceProp3GetterId = env->GetMethodID(TbEnumJniCache::javaClassEnumInterface, "getProp3", "()LtbEnum/tbEnum_api/Enum3;");
+	checkException(env, "getProp3, ()LtbEnum/tbEnum_api/Enum3; for tbEnum/tbEnum_api/IEnumInterface");
 
 	serviceClassEnumInterface = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnumjniservice/EnumInterfaceJniService");
+	checkException(env, "tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	serviceClassEnumInterfaceReadyMethodID = env->GetMethodID(TbEnumJniCache::serviceClassEnumInterface, "nativeServiceReady", "(Z)V");
+	checkException(env, "nativeServiceReady, (Z)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	serviceClassEnumInterfaceProp0ChangedMethodID = env->GetMethodID(TbEnumJniCache::serviceClassEnumInterface, "onProp0Changed", "(LtbEnum/tbEnum_api/Enum0;)V");
+	checkException(env, "onProp0Changed, (LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	serviceClassEnumInterfaceProp1ChangedMethodID = env->GetMethodID(TbEnumJniCache::serviceClassEnumInterface, "onProp1Changed", "(LtbEnum/tbEnum_api/Enum1;)V");
+	checkException(env, "onProp1Changed, (LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	serviceClassEnumInterfaceProp2ChangedMethodID = env->GetMethodID(TbEnumJniCache::serviceClassEnumInterface, "onProp2Changed", "(LtbEnum/tbEnum_api/Enum2;)V");
+	checkException(env, "onProp2Changed, (LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	serviceClassEnumInterfaceProp3ChangedMethodID = env->GetMethodID(TbEnumJniCache::serviceClassEnumInterface, "onProp3Changed", "(LtbEnum/tbEnum_api/Enum3;)V");
+	checkException(env, "onProp3Changed, (LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	serviceClassEnumInterfaceSig0SignalMethodID = env->GetMethodID(TbEnumJniCache::serviceClassEnumInterface, "onSig0", "(LtbEnum/tbEnum_api/Enum0;)V");
+	checkException(env, "onSig0, (LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	serviceClassEnumInterfaceSig1SignalMethodID = env->GetMethodID(TbEnumJniCache::serviceClassEnumInterface, "onSig1", "(LtbEnum/tbEnum_api/Enum1;)V");
+	checkException(env, "onSig1, (LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	serviceClassEnumInterfaceSig2SignalMethodID = env->GetMethodID(TbEnumJniCache::serviceClassEnumInterface, "onSig2", "(LtbEnum/tbEnum_api/Enum2;)V");
+	checkException(env, "onSig2, (LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	serviceClassEnumInterfaceSig3SignalMethodID = env->GetMethodID(TbEnumJniCache::serviceClassEnumInterface, "onSig3", "(LtbEnum/tbEnum_api/Enum3;)V");
+	checkException(env, "onSig3, (LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	clientClassEnumInterface = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
+	checkException(env, "tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 	clientClassEnumInterfaceFunc0AsyncMethodID = env->GetMethodID(TbEnumJniCache::clientClassEnumInterface, "func0Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V");
+	checkException(env, "func0Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 	clientClassEnumInterfaceFunc1AsyncMethodID = env->GetMethodID(TbEnumJniCache::clientClassEnumInterface, "func1Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V");
+	checkException(env, "func1Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 	clientClassEnumInterfaceFunc2AsyncMethodID = env->GetMethodID(TbEnumJniCache::clientClassEnumInterface, "func2Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V");
+	checkException(env, "func2Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 	clientClassEnumInterfaceFunc3AsyncMethodID = env->GetMethodID(TbEnumJniCache::clientClassEnumInterface, "func3Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V");
+	checkException(env, "func3Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 	clientClassEnumInterfaceCtor = env->GetMethodID(TbEnumJniCache::clientClassEnumInterface, "<init>", "()V");
+	checkException(env, "init, ()V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 	clientClassEnumInterfaceBindMethodID = env->GetMethodID(TbEnumJniCache::clientClassEnumInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	checkException(env, "bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 	clientClassEnumInterfaceUnbindMethodID = env->GetMethodID(TbEnumJniCache::clientClassEnumInterface, "unbind", "()V");
+	checkException(env, "unbind, ()V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 	m_isInitialized = true;
 }
 

@@ -32,13 +32,17 @@ limitations under the License.
 
 #include "Engine/Engine.h"
 
-// TODO
-// after each findJAvaClassGlobalRef and getting methodId or FieldId
-// if (env->ExceptionCheck()) {
-//	env->ExceptionDescribe(); // logs in java
-//	env->ExceptionClear();
-//	LOG UE;
-//}
+DEFINE_LOG_CATEGORY(LogTbIfaceimportJniCache_JNI);
+
+void TbIfaceimportJniCache::checkException(JNIEnv* env, FString memberInfo)
+{
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbIfaceimportJniCache_JNI, Warning, TEXT("Could not find %s"), *memberInfo);
+	}
+}
 jclass TbIfaceimportJniCache::javaClassEmptyIf = nullptr;
 jclass TbIfaceimportJniCache::serviceClassEmptyIf = nullptr;
 jmethodID TbIfaceimportJniCache::serviceClassEmptyIfReadyMethodID = nullptr;
@@ -54,13 +58,20 @@ void TbIfaceimportJniCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	javaClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
+	checkException(env, "tbIfaceimport/tbIfaceimport_api/IEmptyIf");
 
 	serviceClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
+	checkException(env, "tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
 	serviceClassEmptyIfReadyMethodID = env->GetMethodID(TbIfaceimportJniCache::serviceClassEmptyIf, "nativeServiceReady", "(Z)V");
+	checkException(env, "nativeServiceReady, (Z)V for tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
 	clientClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
+	checkException(env, "tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
 	clientClassEmptyIfCtor = env->GetMethodID(TbIfaceimportJniCache::clientClassEmptyIf, "<init>", "()V");
+	checkException(env, "init, ()V for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
 	clientClassEmptyIfBindMethodID = env->GetMethodID(TbIfaceimportJniCache::clientClassEmptyIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	checkException(env, "bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
 	clientClassEmptyIfUnbindMethodID = env->GetMethodID(TbIfaceimportJniCache::clientClassEmptyIf, "unbind", "()V");
+	checkException(env, "unbind, ()V for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
 	m_isInitialized = true;
 }
 
