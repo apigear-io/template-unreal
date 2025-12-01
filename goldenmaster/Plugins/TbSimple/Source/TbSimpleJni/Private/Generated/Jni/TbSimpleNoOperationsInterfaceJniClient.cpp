@@ -217,6 +217,8 @@ void UTbSimpleNoOperationsInterfaceJniClient::SetPropBool(bool bInPropBool)
 			return;
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, bInPropBool);
+		static const TCHAR* errorMsg = TEXT("failed to call setPropBool on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -259,6 +261,8 @@ void UTbSimpleNoOperationsInterfaceJniClient::SetPropInt(int32 InPropInt)
 			return;
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropInt);
+		static const TCHAR* errorMsg = TEXT("failed to call setPropInt on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -292,8 +296,14 @@ bool UTbSimpleNoOperationsInterfaceJniClient::_bindToService(FString servicePack
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
+		static const TCHAR* errorMsgPackage = TEXT("failed to craete java string for package in call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniError(errorMsgPackage);
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for connection id in call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
+		static const TCHAR* errorMsg = TEXT("failed to call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniError(errorMsg);
 		return res;
 	}
 	else
@@ -320,6 +330,8 @@ void UTbSimpleNoOperationsInterfaceJniClient::_unbind()
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
+		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniError(errorMsg);
 	}
 	else
 	{

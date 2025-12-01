@@ -60,21 +60,24 @@ void UTbRefIfacesParentIfJniAdapter::Initialize(FSubsystemCollectionBase& Collec
 #if USE_ANDROID_JNI
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniServiceStarter");
+	static const TCHAR* errorMsgCls = TEXT("TbRefIfacesJavaServiceStarter; class not found");
+	TbRefIfacesDataJavaConverter::checkJniError(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("TbRefIfacesJavaServiceStarter:start; CLASS not found"));
 		return;
 	}
 	auto functionSignature = "(Landroid/content/Context;)LtbRefIfaces/tbRefIfaces_api/IParentIf;";
-	static jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
+	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
+	static const TCHAR* errorMsgMethodId = TEXT("TbRefIfacesJavaServiceStarter::start; method not found");
+	TbRefIfacesDataJavaConverter::checkJniError(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("TbRefIfacesJavaServiceStarter:start; method not found"));
 		return;
 	}
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
-
+	static const TCHAR* errorMsgCall = TEXT("TbRefIfacesJavaServiceStarter failed to call start method");
+	TbRefIfacesDataJavaConverter::checkJniError(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -96,24 +99,25 @@ void UTbRefIfacesParentIfJniAdapter::Deinitialize()
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniServiceStarter");
+	static const TCHAR* errorMsgCls = TEXT("TbRefIfacesJavaServiceStarter; class not found");
+	TbRefIfacesDataJavaConverter::checkJniError(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
-		static jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		static const TCHAR* errorMsgMethodId = TEXT("TbRefIfacesJavaServiceStarter::stop; method not found");
+		TbRefIfacesDataJavaConverter::checkJniError(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
+			static const TCHAR* errorMsgCall = TEXT("TbRefIfacesJavaServiceStarter failed to call stop");
+			TbRefIfacesDataJavaConverter::checkJniError(errorMsgCall);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("TbRefIfacesJavaServiceStarter:stop; method not found, failed to stop service"));
 			return;
 		}
 		Env->DeleteGlobalRef(BridgeClass);
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("TbRefIfacesJavaServiceStarter:stop; CLASS not found, failed to stop service"));
 	}
 #endif
 #endif
@@ -155,22 +159,15 @@ void UTbRefIfacesParentIfJniAdapter::callJniServiceReady(bool isServiceReady)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!TbRefIfacesJniCache::javaClassParentIf || !m_javaJniServiceInstance)
+		if (!TbRefIfacesJniCache::javaClassParentIf || !m_javaJniServiceInstance || !TbRefIfacesJniCache::serviceClassParentIfReadyMethodID)
 		{
-			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService:nativeServiceReady(Z)V CLASS not found"));
+			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		static const jmethodID MethodID = TbRefIfacesJniCache::serviceClassParentIfReadyMethodID;
-
-		if (MethodID != nullptr)
-		{
-			FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
-		}
-		else
-		{
-			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService:nativeServiceReady(Z)V not found "));
-		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, TbRefIfacesJniCache::serviceClassParentIfReadyMethodID, isServiceReady);
+		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService:nativeServiceReady(Z)V CLASS not found");
+		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -196,6 +193,8 @@ void UTbRefIfacesParentIfJniAdapter::OnLocalIfSignalSignal(const TScriptInterfac
 		jobject jlocal_Param = TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(Env, Param);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param);
+		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService failed to call onLocalIfSignal (LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
+		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param);
 	}
 #endif
@@ -222,6 +221,8 @@ void UTbRefIfacesParentIfJniAdapter::OnLocalIfSignalListSignal(const TArray<TScr
 		jobjectArray jlocal_Param = TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(Env, Param);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param);
+		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService failed to call onLocalIfSignalList ([LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
+		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param);
 	}
 #endif
@@ -248,6 +249,8 @@ void UTbRefIfacesParentIfJniAdapter::OnImportedIfSignalSignal(const TScriptInter
 		jobject jlocal_Param = TbIfaceimportDataJavaConverter::makeJavaEmptyIf(Env, Param);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param);
+		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService failed to call onImportedIfSignal (LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
+		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param);
 	}
 #endif
@@ -274,6 +277,8 @@ void UTbRefIfacesParentIfJniAdapter::OnImportedIfSignalListSignal(const TArray<T
 		jobjectArray jlocal_Param = TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(Env, Param);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param);
+		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService failed to call onImportedIfSignalList ([LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
+		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param);
 	}
 #endif
@@ -301,6 +306,8 @@ void UTbRefIfacesParentIfJniAdapter::OnLocalIfChanged(const TScriptInterface<ITb
 		jobject jlocal_LocalIf = TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(Env, LocalIf);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_LocalIf);
 		Env->DeleteLocalRef(jlocal_LocalIf);
+		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService failed to call onLocalIfChanged ((LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V)V");
+		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -327,6 +334,8 @@ void UTbRefIfacesParentIfJniAdapter::OnLocalIfListChanged(const TArray<TScriptIn
 		jobjectArray jlocal_LocalIfList = TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(Env, LocalIfList);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_LocalIfList);
 		Env->DeleteLocalRef(jlocal_LocalIfList);
+		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService failed to call onLocalIfListChanged (([LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V)V");
+		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -353,6 +362,8 @@ void UTbRefIfacesParentIfJniAdapter::OnImportedIfChanged(const TScriptInterface<
 		jobject jlocal_ImportedIf = TbIfaceimportDataJavaConverter::makeJavaEmptyIf(Env, ImportedIf);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ImportedIf);
 		Env->DeleteLocalRef(jlocal_ImportedIf);
+		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService failed to call onImportedIfChanged ((LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V)V");
+		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -379,6 +390,8 @@ void UTbRefIfacesParentIfJniAdapter::OnImportedIfListChanged(const TArray<TScrip
 		jobjectArray jlocal_ImportedIfList = TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(Env, ImportedIfList);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ImportedIfList);
 		Env->DeleteLocalRef(jlocal_ImportedIfList);
+		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService failed to call onImportedIfListChanged (([LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V)V");
+		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }

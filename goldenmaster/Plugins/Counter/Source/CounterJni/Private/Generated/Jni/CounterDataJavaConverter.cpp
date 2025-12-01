@@ -74,6 +74,8 @@ jobjectArray CounterDataJavaConverter::makeJavaCounterArray(JNIEnv* env, const T
 	}
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, CounterJniCache::javaClassCounter, nullptr);
+	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_counter.");
+	checkJniError(errorMsg);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -85,6 +87,17 @@ TScriptInterface<ICounterCounterInterface> CounterDataJavaConverter::getCppInsta
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ICounterCounterInterface>(Impl));
 	return wrapped;
+}
+
+void CounterDataJavaConverter::checkJniError(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogCounterDataJavaConverter_JNI, Warning, TEXT("%s"), Msg);
+	}
 }
 
 #endif

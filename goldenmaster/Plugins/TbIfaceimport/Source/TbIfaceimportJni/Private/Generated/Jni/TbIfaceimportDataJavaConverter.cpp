@@ -70,6 +70,8 @@ jobjectArray TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(JNIEnv* env, c
 	}
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbIfaceimportJniCache::javaClassEmptyIf, nullptr);
+	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_empty_if.");
+	checkJniError(errorMsg);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -81,6 +83,17 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> TbIfaceimportDataJavaConverter:
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITbIfaceimportEmptyIfInterface>(Impl));
 	return wrapped;
+}
+
+void TbIfaceimportDataJavaConverter::checkJniError(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbIfaceimportDataJavaConverter_JNI, Warning, TEXT("%s"), Msg);
+	}
 }
 
 #endif

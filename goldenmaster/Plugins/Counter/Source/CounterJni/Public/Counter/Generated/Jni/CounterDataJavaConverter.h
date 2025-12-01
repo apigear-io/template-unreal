@@ -45,6 +45,8 @@ public:
 	static jobjectArray makeJavaCounterArray(JNIEnv* env, const TArray<TScriptInterface<ICounterCounterInterface>>& cppArray);
 
 	static TScriptInterface<ICounterCounterInterface> getCppInstanceCounterCounter();
+
+	static void checkJniError(const TCHAR* Msg);
 };
 
 #endif

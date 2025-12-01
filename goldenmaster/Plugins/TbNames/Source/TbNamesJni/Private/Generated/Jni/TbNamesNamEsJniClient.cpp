@@ -242,6 +242,8 @@ void UTbNamesNamEsJniClient::SetSwitch(bool bInSwitch)
 			return;
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, bInSwitch);
+		static const TCHAR* errorMsg = TEXT("failed to call setSwitch on tbNames/tbNamesjniclient/NamEsJniClient.");
+		TbNamesDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -284,6 +286,8 @@ void UTbNamesNamEsJniClient::SetSomeProperty(int32 InSomeProperty)
 			return;
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InSomeProperty);
+		static const TCHAR* errorMsg = TEXT("failed to call setSomeProperty on tbNames/tbNamesjniclient/NamEsJniClient.");
+		TbNamesDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -326,6 +330,8 @@ void UTbNamesNamEsJniClient::SetSomePoperty2(int32 InSomePoperty2)
 			return;
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InSomePoperty2);
+		static const TCHAR* errorMsg = TEXT("failed to call setSomePoperty2 on tbNames/tbNamesjniclient/NamEsJniClient.");
+		TbNamesDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -371,6 +377,8 @@ void UTbNamesNamEsJniClient::SetEnumProperty(ETbNamesEnum_With_Under_scores InEn
 		jobject jlocal_EnumProperty = TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(Env, InEnumProperty);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_EnumProperty);
 		Env->DeleteLocalRef(jlocal_EnumProperty);
+		static const TCHAR* errorMsg = TEXT("failed to call setEnumProperty on tbNames/tbNamesjniclient/NamEsJniClient.");
+		TbNamesDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -399,8 +407,13 @@ void UTbNamesNamEsJniClient::SomeFunction(bool bInSomeParam)
 	{
 		FGuid id = FGuid::NewGuid();
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call someFunctionAsync on tbNames/tbNamesjniclient/NamEsJniClient");
+		TbNamesDataJavaConverter::checkJniError(errorMsgId);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInSomeParam);
+
+		static const TCHAR* errorMsg = TEXT("failed to call someFunctionAsync on tbNames/tbNamesjniclient/NamEsJniClient.");
+		TbNamesDataJavaConverter::checkJniError(errorMsg);
 	}
 	else
 	{
@@ -434,8 +447,13 @@ void UTbNamesNamEsJniClient::SomeFunction2(bool bInSomeParam)
 	{
 		FGuid id = FGuid::NewGuid();
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call someFunction2Async on tbNames/tbNamesjniclient/NamEsJniClient");
+		TbNamesDataJavaConverter::checkJniError(errorMsgId);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInSomeParam);
+
+		static const TCHAR* errorMsg = TEXT("failed to call someFunction2Async on tbNames/tbNamesjniclient/NamEsJniClient.");
+		TbNamesDataJavaConverter::checkJniError(errorMsg);
 	}
 	else
 	{
@@ -474,8 +492,14 @@ bool UTbNamesNamEsJniClient::_bindToService(FString servicePackage, FString conn
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
+		static const TCHAR* errorMsgPackage = TEXT("failed to craete java string for package in call bind on tbNames/tbNamesjniclient/NamEsJniClient");
+		TbNamesDataJavaConverter::checkJniError(errorMsgPackage);
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for connection id in call bind on tbNames/tbNamesjniclient/NamEsJniClient");
+		TbNamesDataJavaConverter::checkJniError(errorMsgId);
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
+		static const TCHAR* errorMsg = TEXT("failed to call bind on tbNames/tbNamesjniclient/NamEsJniClient.");
+		TbNamesDataJavaConverter::checkJniError(errorMsg);
 		return res;
 	}
 	else
@@ -502,6 +526,8 @@ void UTbNamesNamEsJniClient::_unbind()
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
+		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbNames/tbNamesjniclient/NamEsJniClient.");
+		TbNamesDataJavaConverter::checkJniError(errorMsg);
 	}
 	else
 	{
@@ -596,6 +622,8 @@ JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeFunctio
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeFunctionResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnSomeFunction for tbNames/tbNamesjniclient/NamEsJniClient");
+	TbNamesDataJavaConverter::checkJniError(errorMsgId);
 	FGuid guid;
 	FGuid::Parse(callIdString, guid);
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeFunctionResult for id %s"), *(guid.ToString(EGuidFormats::Digits)));
@@ -605,6 +633,8 @@ JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeFunctio
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeFunction2Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnSomeFunction2 for tbNames/tbNamesjniclient/NamEsJniClient");
+	TbNamesDataJavaConverter::checkJniError(errorMsgId);
 	FGuid guid;
 	FGuid::Parse(callIdString, guid);
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeFunction2Result for id %s"), *(guid.ToString(EGuidFormats::Digits)));

@@ -244,6 +244,8 @@ void UCounterCounterJniClient::SetVector(const FCustomTypesVector3D& InVector)
 		jobject jlocal_Vector = CustomTypesDataJavaConverter::makeJavaVector3D(Env, InVector);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Vector);
 		Env->DeleteLocalRef(jlocal_Vector);
+		static const TCHAR* errorMsg = TEXT("failed to call setVector on counter/counterjniclient/CounterJniClient.");
+		CounterDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -289,6 +291,8 @@ void UCounterCounterJniClient::SetExternVector(const FVector& InExternVector)
 		jobject jlocal_ExternVector = ExternTypesDataJavaConverter::makeJavaMyVector3D(Env, InExternVector);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_ExternVector);
 		Env->DeleteLocalRef(jlocal_ExternVector);
+		static const TCHAR* errorMsg = TEXT("failed to call setExternVector on counter/counterjniclient/CounterJniClient.");
+		CounterDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -334,6 +338,8 @@ void UCounterCounterJniClient::SetVectorArray(const TArray<FCustomTypesVector3D>
 		jobjectArray jlocal_VectorArray = CustomTypesDataJavaConverter::makeJavaVector3DArray(Env, InVectorArray);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_VectorArray);
 		Env->DeleteLocalRef(jlocal_VectorArray);
+		static const TCHAR* errorMsg = TEXT("failed to call setVectorArray on counter/counterjniclient/CounterJniClient.");
+		CounterDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -379,6 +385,8 @@ void UCounterCounterJniClient::SetExternVectorArray(const TArray<FVector>& InExt
 		jobjectArray jlocal_ExternVectorArray = ExternTypesDataJavaConverter::makeJavaMyVector3DArray(Env, InExternVectorArray);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_ExternVectorArray);
 		Env->DeleteLocalRef(jlocal_ExternVectorArray);
+		static const TCHAR* errorMsg = TEXT("failed to call setExternVectorArray on counter/counterjniclient/CounterJniClient.");
+		CounterDataJavaConverter::checkJniError(errorMsg);
 	}
 #endif
 }
@@ -408,9 +416,14 @@ FVector UCounterCounterJniClient::Increment(const FVector& InVec)
 	{
 		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call incrementAsync on counter/counterjniclient/CounterJniClient");
+		CounterDataJavaConverter::checkJniError(errorMsgId);
 		jobject jlocal_Vec = ExternTypesDataJavaConverter::makeJavaMyVector3D(Env, InVec);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
+
+		static const TCHAR* errorMsg = TEXT("failed to call incrementAsync on counter/counterjniclient/CounterJniClient.");
+		CounterDataJavaConverter::checkJniError(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 	}
 	else
@@ -446,9 +459,14 @@ TArray<FVector> UCounterCounterJniClient::IncrementArray(const TArray<FVector>& 
 	{
 		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call incrementArrayAsync on counter/counterjniclient/CounterJniClient");
+		CounterDataJavaConverter::checkJniError(errorMsgId);
 		jobjectArray jlocal_Vec = ExternTypesDataJavaConverter::makeJavaMyVector3DArray(Env, InVec);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
+
+		static const TCHAR* errorMsg = TEXT("failed to call incrementArrayAsync on counter/counterjniclient/CounterJniClient.");
+		CounterDataJavaConverter::checkJniError(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 	}
 	else
@@ -484,9 +502,14 @@ FCustomTypesVector3D UCounterCounterJniClient::Decrement(const FCustomTypesVecto
 	{
 		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call decrementAsync on counter/counterjniclient/CounterJniClient");
+		CounterDataJavaConverter::checkJniError(errorMsgId);
 		jobject jlocal_Vec = CustomTypesDataJavaConverter::makeJavaVector3D(Env, InVec);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
+
+		static const TCHAR* errorMsg = TEXT("failed to call decrementAsync on counter/counterjniclient/CounterJniClient.");
+		CounterDataJavaConverter::checkJniError(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 	}
 	else
@@ -522,9 +545,14 @@ TArray<FCustomTypesVector3D> UCounterCounterJniClient::DecrementArray(const TArr
 	{
 		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call decrementArrayAsync on counter/counterjniclient/CounterJniClient");
+		CounterDataJavaConverter::checkJniError(errorMsgId);
 		jobjectArray jlocal_Vec = CustomTypesDataJavaConverter::makeJavaVector3DArray(Env, InVec);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
+
+		static const TCHAR* errorMsg = TEXT("failed to call decrementArrayAsync on counter/counterjniclient/CounterJniClient.");
+		CounterDataJavaConverter::checkJniError(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 	}
 	else
@@ -564,8 +592,14 @@ bool UCounterCounterJniClient::_bindToService(FString servicePackage, FString co
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
+		static const TCHAR* errorMsgPackage = TEXT("failed to craete java string for package in call bind on counter/counterjniclient/CounterJniClient");
+		CounterDataJavaConverter::checkJniError(errorMsgPackage);
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for connection id in call bind on counter/counterjniclient/CounterJniClient");
+		CounterDataJavaConverter::checkJniError(errorMsgId);
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
+		static const TCHAR* errorMsg = TEXT("failed to call bind on counter/counterjniclient/CounterJniClient.");
+		CounterDataJavaConverter::checkJniError(errorMsg);
 		return res;
 	}
 	else
@@ -592,6 +626,8 @@ void UCounterCounterJniClient::_unbind()
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
+		static const TCHAR* errorMsg = TEXT("failed to call unbind on counter/counterjniclient/CounterJniClient.");
+		CounterDataJavaConverter::checkJniError(errorMsg);
 	}
 	else
 	{
@@ -684,6 +720,8 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnIncrement
 {
 	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnIncrement for counter/counterjniclient/CounterJniClient");
+	CounterDataJavaConverter::checkJniError(errorMsgId);
 	FGuid guid;
 	FVector cpp_result = FVector(0.f, 0.f, 0.f);
 	ExternTypesDataJavaConverter::fillMyVector3D(Env, result, cpp_result);
@@ -696,6 +734,8 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnIncrement
 {
 	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementArrayResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnIncrementArray for counter/counterjniclient/CounterJniClient");
+	CounterDataJavaConverter::checkJniError(errorMsgId);
 	FGuid guid;
 	TArray<FVector> cpp_result = TArray<FVector>();
 	ExternTypesDataJavaConverter::fillMyVector3DArray(Env, result, cpp_result);
@@ -708,6 +748,8 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnDecrement
 {
 	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnDecrement for counter/counterjniclient/CounterJniClient");
+	CounterDataJavaConverter::checkJniError(errorMsgId);
 	FGuid guid;
 	FCustomTypesVector3D cpp_result = FCustomTypesVector3D();
 	CustomTypesDataJavaConverter::fillVector3D(Env, result, cpp_result);
@@ -720,6 +762,8 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnDecrement
 {
 	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementArrayResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnDecrementArray for counter/counterjniclient/CounterJniClient");
+	CounterDataJavaConverter::checkJniError(errorMsgId);
 	FGuid guid;
 	TArray<FCustomTypesVector3D> cpp_result = TArray<FCustomTypesVector3D>();
 	CustomTypesDataJavaConverter::fillVector3DArray(Env, result, cpp_result);

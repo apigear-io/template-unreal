@@ -179,8 +179,13 @@ void UTbSimpleNoPropertiesInterfaceJniClient::FuncVoid()
 	{
 		FGuid id = FGuid::NewGuid();
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call funcVoidAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
+
+		static const TCHAR* errorMsg = TEXT("failed to call funcVoidAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniError(errorMsg);
 	}
 	else
 	{
@@ -215,8 +220,13 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::FuncBool(bool bInParamBool)
 	{
 		auto id = gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInParamBool);
+
+		static const TCHAR* errorMsg = TEXT("failed to call funcBoolAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniError(errorMsg);
 	}
 	else
 	{
@@ -255,8 +265,14 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::_bindToService(FString servicePack
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
+		static const TCHAR* errorMsgPackage = TEXT("failed to craete java string for package in call bind on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniError(errorMsgPackage);
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
+		static const TCHAR* errorMsgId = TEXT("failed to craete java string for connection id in call bind on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
+		static const TCHAR* errorMsg = TEXT("failed to call bind on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniError(errorMsg);
 		return res;
 	}
 	else
@@ -283,6 +299,8 @@ void UTbSimpleNoPropertiesInterfaceJniClient::_unbind()
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
+		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniError(errorMsg);
 	}
 	else
 	{
@@ -336,6 +354,8 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoPropertiesInterfaceJniClient_n
 {
 	UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_NoPropertiesInterfaceJniClient_nativeOnFuncVoidResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFuncVoid for tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniError(errorMsgId);
 	FGuid guid;
 	FGuid::Parse(callIdString, guid);
 	UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_NoPropertiesInterfaceJniClient_nativeOnFuncVoidResult for id %s"), *(guid.ToString(EGuidFormats::Digits)));
@@ -345,6 +365,8 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoPropertiesInterfaceJniClient_n
 {
 	UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_NoPropertiesInterfaceJniClient_nativeOnFuncBoolResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFuncBool for tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniError(errorMsgId);
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);

@@ -83,6 +83,8 @@ public:
 	static jobjectArray makeJavaSameEnum2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame1SameEnum2InterfaceInterface>>& cppArray);
 
 	static TScriptInterface<ITbSame1SameEnum2InterfaceInterface> getCppInstanceTbSame1SameEnum2Interface();
+
+	static void checkJniError(const TCHAR* Msg);
 };
 
 #endif

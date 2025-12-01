@@ -48,6 +48,8 @@ public:
 	static jobjectArray makeJavaNamEsArray(JNIEnv* env, const TArray<TScriptInterface<ITbNamesNamEsInterface>>& cppArray);
 
 	static TScriptInterface<ITbNamesNamEsInterface> getCppInstanceTbNamesNamEs();
+
+	static void checkJniError(const TCHAR* Msg);
 };
 
 #endif

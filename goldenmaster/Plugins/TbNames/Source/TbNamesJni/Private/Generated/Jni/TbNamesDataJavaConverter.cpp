@@ -40,9 +40,13 @@ void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobject
 {
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
+	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of EnumWithUnderScores array.");
+	checkJniError(errorMsgLen);
 	for (jsize i = 0; i < len; ++i)
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
+		static const TCHAR* errorMsg = TEXT("failed when trying to get element of EnumWithUnderScores array.");
+		checkJniError(errorMsg);
 		out_array.Add(getEnumWithUnderScoresValue(env, element));
 		env->DeleteLocalRef(element);
 	}
@@ -55,6 +59,8 @@ ETbNamesEnum_With_Under_scores TbNamesDataJavaConverter::getEnumWithUnderScoresV
 	if (TbNamesJniCache::javaEnumEnumWithUnderScoresGetValueMethod != nullptr)
 	{
 		int int_value = env->CallIntMethod(input, TbNamesJniCache::javaEnumEnumWithUnderScoresGetValueMethod);
+		static const TCHAR* errorMsg = TEXT("failed when trying to call getValue method for EnumWithUnderScores.");
+		checkJniError(errorMsg);
 		UTbNamesLibrary::toTbNamesEnum_With_Under_scores(cppEnumValue, int_value);
 	}
 	else
@@ -73,11 +79,15 @@ jobjectArray TbNamesDataJavaConverter::makeJavaEnumWithUnderScoresArray(JNIEnv* 
 	}
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbNamesJniCache::javaEnumEnumWithUnderScores, nullptr);
+	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate EnumWithUnderScores jarray.");
+	checkJniError(errorMsgAlloc);
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
 		jobject element = makeJavaEnumWithUnderScores(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
+		static const TCHAR* errorMsg = TEXT("failed when trying to set element of EnumWithUnderScores array.");
+		checkJniError(errorMsg);
 		env->DeleteLocalRef(element);
 	}
 	return javaArray;
@@ -92,6 +102,8 @@ jobject TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(JNIEnv* env, ETbNa
 	}
 	int int_value = (uint8)value;
 	jobject javaObj = env->CallStaticObjectMethod(TbNamesJniCache::javaEnumEnumWithUnderScores, TbNamesJniCache::javaEnumEnumWithUnderScoresFromValueMethodId, int_value);
+	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for EnumWithUnderScores.");
+	checkJniError(errorMsg);
 	return javaObj;
 }
 
@@ -130,6 +142,8 @@ jobjectArray TbNamesDataJavaConverter::makeJavaNamEsArray(JNIEnv* env, const TAr
 	}
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbNamesJniCache::javaClassNamEs, nullptr);
+	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_nam_es.");
+	checkJniError(errorMsg);
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -141,6 +155,17 @@ TScriptInterface<ITbNamesNamEsInterface> TbNamesDataJavaConverter::getCppInstanc
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITbNamesNamEsInterface>(Impl));
 	return wrapped;
+}
+
+void TbNamesDataJavaConverter::checkJniError(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("%s"), Msg);
+	}
 }
 
 #endif

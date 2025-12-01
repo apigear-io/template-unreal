@@ -108,6 +108,8 @@ public:
 	static jobjectArray makeJavaNestedStruct3InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceInterface>>& cppArray);
 
 	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> getCppInstanceTestbed2NestedStruct3Interface();
+
+	static void checkJniError(const TCHAR* Msg);
 };
 
 #endif

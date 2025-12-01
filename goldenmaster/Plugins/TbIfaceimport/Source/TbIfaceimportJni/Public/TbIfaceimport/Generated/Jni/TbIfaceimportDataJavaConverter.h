@@ -43,6 +43,8 @@ public:
 	static jobjectArray makeJavaEmptyIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& cppArray);
 
 	static TScriptInterface<ITbIfaceimportEmptyIfInterface> getCppInstanceTbIfaceimportEmptyIf();
+
+	static void checkJniError(const TCHAR* Msg);
 };
 
 #endif

@@ -63,6 +63,8 @@ public:
 	static jobjectArray makeJavaEnumInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbEnumEnumInterfaceInterface>>& cppArray);
 
 	static TScriptInterface<ITbEnumEnumInterfaceInterface> getCppInstanceTbEnumEnumInterface();
+
+	static void checkJniError(const TCHAR* Msg);
 };
 
 #endif

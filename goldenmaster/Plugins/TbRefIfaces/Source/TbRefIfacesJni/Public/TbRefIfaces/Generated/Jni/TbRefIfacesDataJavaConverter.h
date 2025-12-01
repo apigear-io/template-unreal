@@ -51,6 +51,8 @@ public:
 	static jobjectArray makeJavaParentIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& cppArray);
 
 	static TScriptInterface<ITbRefIfacesParentIfInterface> getCppInstanceTbRefIfacesParentIf();
+
+	static void checkJniError(const TCHAR* Msg);
 };
 
 #endif

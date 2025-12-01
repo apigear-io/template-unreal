@@ -85,6 +85,8 @@ public:
 	static jobjectArray makeJavaEmptyInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleEmptyInterfaceInterface>>& cppArray);
 
 	static TScriptInterface<ITbSimpleEmptyInterfaceInterface> getCppInstanceTbSimpleEmptyInterface();
+
+	static void checkJniError(const TCHAR* Msg);
 };
 
 #endif

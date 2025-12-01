@@ -111,6 +111,8 @@ public:
 	static jobjectArray makeJavaStructArray2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed1StructArray2InterfaceInterface>>& cppArray);
 
 	static TScriptInterface<ITestbed1StructArray2InterfaceInterface> getCppInstanceTestbed1StructArray2Interface();
+
+	static void checkJniError(const TCHAR* Msg);
 };
 
 #endif

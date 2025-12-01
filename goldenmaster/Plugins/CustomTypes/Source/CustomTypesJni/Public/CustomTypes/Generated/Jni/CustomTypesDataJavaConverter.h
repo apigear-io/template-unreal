@@ -40,6 +40,8 @@ public:
 	static void fillVector3DArray(JNIEnv* env, jobjectArray input, TArray<FCustomTypesVector3D>& out_array);
 	static jobject makeJavaVector3D(JNIEnv* env, const FCustomTypesVector3D& out_vector3_d);
 	static jobjectArray makeJavaVector3DArray(JNIEnv* env, const TArray<FCustomTypesVector3D>& cppArray);
+
+	static void checkJniError(const TCHAR* Msg);
 };
 
 #endif
