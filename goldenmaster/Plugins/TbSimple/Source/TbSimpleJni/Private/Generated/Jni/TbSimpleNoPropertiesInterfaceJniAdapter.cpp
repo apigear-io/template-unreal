@@ -59,7 +59,7 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::Initialize(FSubsystemCollectionBa
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoPropertiesInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSimpleJavaServiceStarter; class not found");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgCls);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -67,7 +67,7 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::Initialize(FSubsystemCollectionBa
 	auto functionSignature = "(Landroid/content/Context;)LtbSimple/tbSimple_api/INoPropertiesInterface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("TbSimpleJavaServiceStarter::start; method not found");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgMethodId);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -75,7 +75,7 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::Initialize(FSubsystemCollectionBa
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("TbSimpleJavaServiceStarter failed to call start method");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgCall);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -98,18 +98,18 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoPropertiesInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSimpleJavaServiceStarter; class not found");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgCls);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("TbSimpleJavaServiceStarter::stop; method not found");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgMethodId);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbSimpleJavaServiceStarter failed to call stop");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgCall);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
 		else
 		{
@@ -165,7 +165,7 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::callJniServiceReady(bool isServic
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, TbSimpleJniCache::serviceClassNoPropertiesInterfaceReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/NoPropertiesInterfaceJniService:nativeServiceReady(Z)V CLASS not found");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -190,7 +190,7 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::OnSigVoidSignal()
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/NoPropertiesInterfaceJniService failed to call onSigVoid ()V");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -215,7 +215,7 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::OnSigBoolSignal(bool bParamBool)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bParamBool);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/NoPropertiesInterfaceJniService failed to call onSigBool (Z)V");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }

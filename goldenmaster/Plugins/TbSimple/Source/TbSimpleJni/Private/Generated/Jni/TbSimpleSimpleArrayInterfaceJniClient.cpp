@@ -304,20 +304,22 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropBool(const TArray<bool>& InP
 		auto lenprop_bool = InPropBool.Num();
 		jbooleanArray jlocal_PropBool = Env->NewBooleanArray(lenprop_bool);
 		static const TCHAR* errorMsgAllocatejlocal_PropBool = TEXT("failed allocate java array when converting InPropBool to jlocal_PropBool");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_PropBool);
-		TArray<jboolean> Temp;
-		Temp.SetNumUninitialized(lenprop_bool);
-		for (int i = 0; i < lenprop_bool; i++)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_PropBool))
 		{
-			Temp[i] = InPropBool[i] ? JNI_TRUE : JNI_FALSE;
+			TArray<jboolean> Temp;
+			Temp.SetNumUninitialized(lenprop_bool);
+			for (int i = 0; i < lenprop_bool; i++)
+			{
+				Temp[i] = InPropBool[i] ? JNI_TRUE : JNI_FALSE;
+			}
+			Env->SetBooleanArrayRegion(jlocal_PropBool, 0, lenprop_bool, Temp.GetData());
+			static const TCHAR* errorMsgjlocal_PropBool = TEXT("failed to set java array region when converting InPropBool to jlocal_PropBool");
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropBool);
 		}
-		Env->SetBooleanArrayRegion(jlocal_PropBool, 0, lenprop_bool, Temp.GetData());
-		static const TCHAR* errorMsgjlocal_PropBool = TEXT("failed to set java array region when converting InPropBool to jlocal_PropBool");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_PropBool);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropBool);
 		Env->DeleteLocalRef(jlocal_PropBool);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropBool on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -363,17 +365,16 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt(const TArray<int32>& InP
 		auto lenprop_int = InPropInt.Num();
 		jintArray jlocal_PropInt = Env->NewIntArray(lenprop_int);
 		static const TCHAR* errorMsgAllocatejlocal_PropInt = TEXT("failed allocate java array when converting InPropInt to jlocal_PropInt");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_PropInt);
-		if (jlocal_PropInt != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_PropInt))
 		{
 			Env->SetIntArrayRegion(jlocal_PropInt, 0, lenprop_int, InPropInt.GetData());
 			static const TCHAR* errorMsgjlocal_PropInt = TEXT("failed to set java array region when converting InPropInt to jlocal_PropInt");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_PropInt);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropInt);
 		};
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropInt);
 		Env->DeleteLocalRef(jlocal_PropInt);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropInt on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -419,17 +420,16 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt32(const TArray<int32>& I
 		auto lenprop_int32 = InPropInt32.Num();
 		jintArray jlocal_PropInt32 = Env->NewIntArray(lenprop_int32);
 		static const TCHAR* errorMsgAllocatejlocal_PropInt32 = TEXT("failed allocate java array when converting InPropInt32 to jlocal_PropInt32");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_PropInt32);
-		if (jlocal_PropInt32 != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_PropInt32))
 		{
 			Env->SetIntArrayRegion(jlocal_PropInt32, 0, lenprop_int32, InPropInt32.GetData());
 			static const TCHAR* errorMsgjlocal_PropInt32 = TEXT("failed to set java array region when converting InPropInt32 to jlocal_PropInt32");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_PropInt32);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropInt32);
 		};
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropInt32);
 		Env->DeleteLocalRef(jlocal_PropInt32);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropInt32 on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -475,17 +475,16 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt64(const TArray<int64>& I
 		auto lenprop_int64 = InPropInt64.Num();
 		jlongArray jlocal_PropInt64 = Env->NewLongArray(lenprop_int64);
 		static const TCHAR* errorMsgAllocatejlocal_PropInt64 = TEXT("failed allocate java array when converting InPropInt64 to jlocal_PropInt64");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_PropInt64);
-		if (jlocal_PropInt64 != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_PropInt64))
 		{
 			Env->SetLongArrayRegion(jlocal_PropInt64, 0, lenprop_int64, reinterpret_cast<const jlong*>(InPropInt64.GetData()));
 			static const TCHAR* errorMsgjlocal_PropInt64 = TEXT("failed to set java array region when converting InPropInt64 to jlocal_PropInt64");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_PropInt64);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropInt64);
 		};
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropInt64);
 		Env->DeleteLocalRef(jlocal_PropInt64);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropInt64 on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -531,17 +530,16 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat(const TArray<float>& I
 		auto lenprop_float = InPropFloat.Num();
 		jfloatArray jlocal_PropFloat = Env->NewFloatArray(lenprop_float);
 		static const TCHAR* errorMsgAllocatejlocal_PropFloat = TEXT("failed allocate java array when converting InPropFloat to jlocal_PropFloat");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_PropFloat);
-		if (jlocal_PropFloat != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_PropFloat))
 		{
 			Env->SetFloatArrayRegion(jlocal_PropFloat, 0, lenprop_float, InPropFloat.GetData());
 			static const TCHAR* errorMsgjlocal_PropFloat = TEXT("failed to set java array region when converting InPropFloat to jlocal_PropFloat");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_PropFloat);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropFloat);
 		};
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropFloat);
 		Env->DeleteLocalRef(jlocal_PropFloat);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropFloat on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -587,17 +585,16 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat32(const TArray<float>&
 		auto lenprop_float32 = InPropFloat32.Num();
 		jfloatArray jlocal_PropFloat32 = Env->NewFloatArray(lenprop_float32);
 		static const TCHAR* errorMsgAllocatejlocal_PropFloat32 = TEXT("failed allocate java array when converting InPropFloat32 to jlocal_PropFloat32");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_PropFloat32);
-		if (jlocal_PropFloat32 != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_PropFloat32))
 		{
 			Env->SetFloatArrayRegion(jlocal_PropFloat32, 0, lenprop_float32, InPropFloat32.GetData());
 			static const TCHAR* errorMsgjlocal_PropFloat32 = TEXT("failed to set java array region when converting InPropFloat32 to jlocal_PropFloat32");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_PropFloat32);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropFloat32);
 		};
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropFloat32);
 		Env->DeleteLocalRef(jlocal_PropFloat32);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropFloat32 on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -643,17 +640,16 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat64(const TArray<double>
 		auto lenprop_float64 = InPropFloat64.Num();
 		jdoubleArray jlocal_PropFloat64 = Env->NewDoubleArray(lenprop_float64);
 		static const TCHAR* errorMsgAllocatejlocal_PropFloat64 = TEXT("failed allocate java array when converting InPropFloat64 to jlocal_PropFloat64");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_PropFloat64);
-		if (jlocal_PropFloat64 != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_PropFloat64))
 		{
 			Env->SetDoubleArrayRegion(jlocal_PropFloat64, 0, lenprop_float64, InPropFloat64.GetData());
 			static const TCHAR* errorMsgjlocal_PropFloat64 = TEXT("failed to set java array region when converting InPropFloat64 to jlocal_PropFloat64");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_PropFloat64);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropFloat64);
 		};
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropFloat64);
 		Env->DeleteLocalRef(jlocal_PropFloat64);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropFloat64 on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -704,12 +700,12 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropString(const TArray<FString>
 		}
 		auto jlocal_PropStringWrapped = FJavaHelper::ToJavaStringArray(Env, InPropStringStringViews);
 		static const TCHAR* errorMsgjlocal_PropString = TEXT("failed converting InPropString to jlocal_PropString");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_PropString);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropString);
 		jobjectArray jlocal_PropString = static_cast<jobjectArray>(Env->NewLocalRef(*jlocal_PropStringWrapped));
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropString);
 		Env->DeleteLocalRef(jlocal_PropString);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropString on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -743,26 +739,28 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::FuncBool(const TArray<bool>
 	{
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
 		auto lenparam_bool = InParamBool.Num();
 		jbooleanArray jlocal_ParamBool = Env->NewBooleanArray(lenparam_bool);
 		static const TCHAR* errorMsgAllocatejlocal_ParamBool = TEXT("failed allocate java array when converting InParamBool to jlocal_ParamBool");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_ParamBool);
-		TArray<jboolean> Temp;
-		Temp.SetNumUninitialized(lenparam_bool);
-		for (int i = 0; i < lenparam_bool; i++)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_ParamBool))
 		{
-			Temp[i] = InParamBool[i] ? JNI_TRUE : JNI_FALSE;
+			TArray<jboolean> Temp;
+			Temp.SetNumUninitialized(lenparam_bool);
+			for (int i = 0; i < lenparam_bool; i++)
+			{
+				Temp[i] = InParamBool[i] ? JNI_TRUE : JNI_FALSE;
+			}
+			Env->SetBooleanArrayRegion(jlocal_ParamBool, 0, lenparam_bool, Temp.GetData());
+			static const TCHAR* errorMsgjlocal_ParamBool = TEXT("failed to set java array region when converting InParamBool to jlocal_ParamBool");
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_ParamBool);
 		}
-		Env->SetBooleanArrayRegion(jlocal_ParamBool, 0, lenparam_bool, Temp.GetData());
-		static const TCHAR* errorMsgjlocal_ParamBool = TEXT("failed to set java array region when converting InParamBool to jlocal_ParamBool");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_ParamBool);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamBool);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcBoolAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamBool);
 	}
 	else
@@ -798,23 +796,22 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt(const TArray<int32
 	{
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call funcIntAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcIntAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
 		auto lenparam_int = InParamInt.Num();
 		jintArray jlocal_ParamInt = Env->NewIntArray(lenparam_int);
 		static const TCHAR* errorMsgAllocatejlocal_ParamInt = TEXT("failed allocate java array when converting InParamInt to jlocal_ParamInt");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_ParamInt);
-		if (jlocal_ParamInt != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_ParamInt))
 		{
 			Env->SetIntArrayRegion(jlocal_ParamInt, 0, lenparam_int, InParamInt.GetData());
 			static const TCHAR* errorMsgjlocal_ParamInt = TEXT("failed to set java array region when converting InParamInt to jlocal_ParamInt");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_ParamInt);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_ParamInt);
 		};
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamInt);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcIntAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamInt);
 	}
 	else
@@ -850,23 +847,22 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt32(const TArray<int
 	{
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call funcInt32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcInt32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
 		auto lenparam_int32 = InParamInt32.Num();
 		jintArray jlocal_ParamInt32 = Env->NewIntArray(lenparam_int32);
 		static const TCHAR* errorMsgAllocatejlocal_ParamInt32 = TEXT("failed allocate java array when converting InParamInt32 to jlocal_ParamInt32");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_ParamInt32);
-		if (jlocal_ParamInt32 != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_ParamInt32))
 		{
 			Env->SetIntArrayRegion(jlocal_ParamInt32, 0, lenparam_int32, InParamInt32.GetData());
 			static const TCHAR* errorMsgjlocal_ParamInt32 = TEXT("failed to set java array region when converting InParamInt32 to jlocal_ParamInt32");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_ParamInt32);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_ParamInt32);
 		};
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamInt32);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcInt32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamInt32);
 	}
 	else
@@ -902,23 +898,22 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt64(const TArray<int
 	{
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call funcInt64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcInt64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
 		auto lenparam_int64 = InParamInt64.Num();
 		jlongArray jlocal_ParamInt64 = Env->NewLongArray(lenparam_int64);
 		static const TCHAR* errorMsgAllocatejlocal_ParamInt64 = TEXT("failed allocate java array when converting InParamInt64 to jlocal_ParamInt64");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_ParamInt64);
-		if (jlocal_ParamInt64 != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_ParamInt64))
 		{
 			Env->SetLongArrayRegion(jlocal_ParamInt64, 0, lenparam_int64, reinterpret_cast<const jlong*>(InParamInt64.GetData()));
 			static const TCHAR* errorMsgjlocal_ParamInt64 = TEXT("failed to set java array region when converting InParamInt64 to jlocal_ParamInt64");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_ParamInt64);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_ParamInt64);
 		};
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamInt64);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcInt64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamInt64);
 	}
 	else
@@ -954,23 +949,22 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat(const TArray<flo
 	{
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call funcFloatAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloatAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
 		auto lenparam_float = InParamFloat.Num();
 		jfloatArray jlocal_ParamFloat = Env->NewFloatArray(lenparam_float);
 		static const TCHAR* errorMsgAllocatejlocal_ParamFloat = TEXT("failed allocate java array when converting InParamFloat to jlocal_ParamFloat");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_ParamFloat);
-		if (jlocal_ParamFloat != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_ParamFloat))
 		{
 			Env->SetFloatArrayRegion(jlocal_ParamFloat, 0, lenparam_float, InParamFloat.GetData());
 			static const TCHAR* errorMsgjlocal_ParamFloat = TEXT("failed to set java array region when converting InParamFloat to jlocal_ParamFloat");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_ParamFloat);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_ParamFloat);
 		};
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamFloat);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcFloatAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamFloat);
 	}
 	else
@@ -1006,23 +1000,22 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat32(const TArray<f
 	{
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call funcFloat32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloat32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
 		auto lenparam_float32 = InParamFloat32.Num();
 		jfloatArray jlocal_ParamFloat32 = Env->NewFloatArray(lenparam_float32);
 		static const TCHAR* errorMsgAllocatejlocal_ParamFloat32 = TEXT("failed allocate java array when converting InParamFloat32 to jlocal_ParamFloat32");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_ParamFloat32);
-		if (jlocal_ParamFloat32 != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_ParamFloat32))
 		{
 			Env->SetFloatArrayRegion(jlocal_ParamFloat32, 0, lenparam_float32, InParamFloat32.GetData());
 			static const TCHAR* errorMsgjlocal_ParamFloat32 = TEXT("failed to set java array region when converting InParamFloat32 to jlocal_ParamFloat32");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_ParamFloat32);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_ParamFloat32);
 		};
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamFloat32);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcFloat32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamFloat32);
 	}
 	else
@@ -1058,23 +1051,22 @@ TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat64(const TArray<
 	{
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call funcFloat64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloat64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
 		auto lenparam_float = InParamFloat.Num();
 		jdoubleArray jlocal_ParamFloat = Env->NewDoubleArray(lenparam_float);
 		static const TCHAR* errorMsgAllocatejlocal_ParamFloat = TEXT("failed allocate java array when converting InParamFloat to jlocal_ParamFloat");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgAllocatejlocal_ParamFloat);
-		if (jlocal_ParamFloat != NULL)
+		if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgAllocatejlocal_ParamFloat))
 		{
 			Env->SetDoubleArrayRegion(jlocal_ParamFloat, 0, lenparam_float, InParamFloat.GetData());
 			static const TCHAR* errorMsgjlocal_ParamFloat = TEXT("failed to set java array region when converting InParamFloat to jlocal_ParamFloat");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_ParamFloat);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_ParamFloat);
 		};
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamFloat);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcFloat64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamFloat);
 	}
 	else
@@ -1110,8 +1102,8 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<
 	{
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call funcStringAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcStringAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
 		TArray<FStringView> InParamStringStringViews;
 		InParamStringStringViews.Reserve(InParamString.Num());
 		for (const FString& Str : InParamString)
@@ -1120,13 +1112,13 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<
 		}
 		auto jlocal_ParamStringWrapped = FJavaHelper::ToJavaStringArray(Env, InParamStringStringViews);
 		static const TCHAR* errorMsgjlocal_ParamString = TEXT("failed converting InParamString to jlocal_ParamString");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgjlocal_ParamString);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_ParamString);
 		jobjectArray jlocal_ParamString = static_cast<jobjectArray>(Env->NewLocalRef(*jlocal_ParamStringWrapped));
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamString);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcStringAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamString);
 	}
 	else
@@ -1166,14 +1158,20 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::_bindToService(FString servicePacka
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
-		static const TCHAR* errorMsgPackage = TEXT("failed to craete java string for package in call bind on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgPackage);
+		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		{
+			return false;
+		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for connection id in call bind on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		{
+			return false;
+		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		return res;
 	}
 	else
@@ -1201,7 +1199,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 	else
 	{
@@ -1228,13 +1226,13 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jbooleanArray l_javaPropBoolArray = (jbooleanArray)propBool;
 	jsize lenprop_bool = Env->GetArrayLength(l_javaPropBoolArray);
 	static const TCHAR* errorMsgLenlocal_prop_bool = TEXT("failed to get an array length l_javaPropBoolArray");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_prop_bool);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_prop_bool);
 	local_prop_bool.Reserve(lenprop_bool);
 	TArray<jboolean> TempPropBool;
 	TempPropBool.SetNumUninitialized(lenprop_bool);
 	Env->GetBooleanArrayRegion(l_javaPropBoolArray, 0, lenprop_bool, TempPropBool.GetData());
 	static const TCHAR* errorMsglocal_prop_bool = TEXT("failed to get an array region l_javaPropBoolArray");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_prop_bool);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_bool);
 	for (int i = 0; i < lenprop_bool; i++)
 	{
 		local_prop_bool.Add(TempPropBool[i] == JNI_TRUE);
@@ -1254,12 +1252,14 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jintArray l_javaPropIntArray = (jintArray)propInt;
 	jsize lenprop_int = Env->GetArrayLength(l_javaPropIntArray);
 	static const TCHAR* errorMsgLenlocal_prop_int = TEXT("failed to get an array length l_javaPropIntArray");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_prop_int);
-	local_prop_int.AddUninitialized(lenprop_int);
-	Env->GetIntArrayRegion(propInt, 0, lenprop_int, local_prop_int.GetData());
-	static const TCHAR* errorMsglocal_prop_int = TEXT("failed to get an array regionpropInt");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_prop_int);
-	Env->DeleteLocalRef(l_javaPropIntArray);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_prop_int))
+	{
+		local_prop_int.AddUninitialized(lenprop_int);
+		Env->GetIntArrayRegion(propInt, 0, lenprop_int, local_prop_int.GetData());
+		static const TCHAR* errorMsglocal_prop_int = TEXT("failed to get an array regionpropInt");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_int);
+		Env->DeleteLocalRef(l_javaPropIntArray);
+	}
 	gUTbSimpleSimpleArrayInterfaceJniClientOnPropIntChanged(local_prop_int);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt32Changed(JNIEnv* Env, jclass Clazz, jintArray propInt32)
@@ -1274,12 +1274,14 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jintArray l_javaPropInt32Array = (jintArray)propInt32;
 	jsize lenprop_int32 = Env->GetArrayLength(l_javaPropInt32Array);
 	static const TCHAR* errorMsgLenlocal_prop_int32 = TEXT("failed to get an array length l_javaPropInt32Array");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_prop_int32);
-	local_prop_int32.AddUninitialized(lenprop_int32);
-	Env->GetIntArrayRegion(propInt32, 0, lenprop_int32, local_prop_int32.GetData());
-	static const TCHAR* errorMsglocal_prop_int32 = TEXT("failed to get an array regionpropInt32");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_prop_int32);
-	Env->DeleteLocalRef(l_javaPropInt32Array);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_prop_int32))
+	{
+		local_prop_int32.AddUninitialized(lenprop_int32);
+		Env->GetIntArrayRegion(propInt32, 0, lenprop_int32, local_prop_int32.GetData());
+		static const TCHAR* errorMsglocal_prop_int32 = TEXT("failed to get an array regionpropInt32");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_int32);
+		Env->DeleteLocalRef(l_javaPropInt32Array);
+	}
 	gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt32Changed(local_prop_int32);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt64Changed(JNIEnv* Env, jclass Clazz, jlongArray propInt64)
@@ -1294,12 +1296,14 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jlongArray l_javaPropInt64Array = (jlongArray)propInt64;
 	jsize lenprop_int64 = Env->GetArrayLength(l_javaPropInt64Array);
 	static const TCHAR* errorMsgLenlocal_prop_int64 = TEXT("failed to get an array length l_javaPropInt64Array");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_prop_int64);
-	local_prop_int64.AddUninitialized(lenprop_int64);
-	Env->GetLongArrayRegion(propInt64, 0, lenprop_int64, reinterpret_cast<jlong*>(local_prop_int64.GetData()));
-	static const TCHAR* errorMsglocal_prop_int64 = TEXT("failed to get an array regionpropInt64");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_prop_int64);
-	Env->DeleteLocalRef(l_javaPropInt64Array);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_prop_int64))
+	{
+		local_prop_int64.AddUninitialized(lenprop_int64);
+		Env->GetLongArrayRegion(propInt64, 0, lenprop_int64, reinterpret_cast<jlong*>(local_prop_int64.GetData()));
+		static const TCHAR* errorMsglocal_prop_int64 = TEXT("failed to get an array regionpropInt64");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_int64);
+		Env->DeleteLocalRef(l_javaPropInt64Array);
+	}
 	gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt64Changed(local_prop_int64);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloatChanged(JNIEnv* Env, jclass Clazz, jfloatArray propFloat)
@@ -1314,12 +1318,14 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jfloatArray l_javaPropFloatArray = (jfloatArray)propFloat;
 	jsize lenprop_float = Env->GetArrayLength(l_javaPropFloatArray);
 	static const TCHAR* errorMsgLenlocal_prop_float = TEXT("failed to get an array length l_javaPropFloatArray");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_prop_float);
-	local_prop_float.AddUninitialized(lenprop_float);
-	Env->GetFloatArrayRegion(propFloat, 0, lenprop_float, local_prop_float.GetData());
-	static const TCHAR* errorMsglocal_prop_float = TEXT("failed to get an array regionpropFloat");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_prop_float);
-	Env->DeleteLocalRef(l_javaPropFloatArray);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_prop_float))
+	{
+		local_prop_float.AddUninitialized(lenprop_float);
+		Env->GetFloatArrayRegion(propFloat, 0, lenprop_float, local_prop_float.GetData());
+		static const TCHAR* errorMsglocal_prop_float = TEXT("failed to get an array regionpropFloat");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_float);
+		Env->DeleteLocalRef(l_javaPropFloatArray);
+	}
 	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloatChanged(local_prop_float);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat32Changed(JNIEnv* Env, jclass Clazz, jfloatArray propFloat32)
@@ -1334,12 +1340,14 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jfloatArray l_javaPropFloat32Array = (jfloatArray)propFloat32;
 	jsize lenprop_float32 = Env->GetArrayLength(l_javaPropFloat32Array);
 	static const TCHAR* errorMsgLenlocal_prop_float32 = TEXT("failed to get an array length l_javaPropFloat32Array");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_prop_float32);
-	local_prop_float32.AddUninitialized(lenprop_float32);
-	Env->GetFloatArrayRegion(propFloat32, 0, lenprop_float32, local_prop_float32.GetData());
-	static const TCHAR* errorMsglocal_prop_float32 = TEXT("failed to get an array regionpropFloat32");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_prop_float32);
-	Env->DeleteLocalRef(l_javaPropFloat32Array);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_prop_float32))
+	{
+		local_prop_float32.AddUninitialized(lenprop_float32);
+		Env->GetFloatArrayRegion(propFloat32, 0, lenprop_float32, local_prop_float32.GetData());
+		static const TCHAR* errorMsglocal_prop_float32 = TEXT("failed to get an array regionpropFloat32");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_float32);
+		Env->DeleteLocalRef(l_javaPropFloat32Array);
+	}
 	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat32Changed(local_prop_float32);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat64Changed(JNIEnv* Env, jclass Clazz, jdoubleArray propFloat64)
@@ -1354,12 +1362,14 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jdoubleArray l_javaPropFloat64Array = (jdoubleArray)propFloat64;
 	jsize lenprop_float64 = Env->GetArrayLength(l_javaPropFloat64Array);
 	static const TCHAR* errorMsgLenlocal_prop_float64 = TEXT("failed to get an array length l_javaPropFloat64Array");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_prop_float64);
-	local_prop_float64.AddUninitialized(lenprop_float64);
-	Env->GetDoubleArrayRegion(propFloat64, 0, lenprop_float64, local_prop_float64.GetData());
-	static const TCHAR* errorMsglocal_prop_float64 = TEXT("failed to get an array regionpropFloat64");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_prop_float64);
-	Env->DeleteLocalRef(l_javaPropFloat64Array);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_prop_float64))
+	{
+		local_prop_float64.AddUninitialized(lenprop_float64);
+		Env->GetDoubleArrayRegion(propFloat64, 0, lenprop_float64, local_prop_float64.GetData());
+		static const TCHAR* errorMsglocal_prop_float64 = TEXT("failed to get an array regionpropFloat64");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_float64);
+		Env->DeleteLocalRef(l_javaPropFloat64Array);
+	}
 	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat64Changed(local_prop_float64);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropStringChanged(JNIEnv* Env, jclass Clazz, jobjectArray propString)
@@ -1373,7 +1383,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	TArray<FString> local_prop_string = TArray<FString>();
 	local_prop_string = FJavaHelper::ObjectArrayToFStringTArray(Env, propString);
 	static const TCHAR* errorMsglocal_prop_string = TEXT("failed to convert propString from jstring array");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_prop_string);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_string);
 	gUTbSimpleSimpleArrayInterfaceJniClientOnPropStringChanged(local_prop_string);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropReadOnlyStringChanged(JNIEnv* Env, jclass Clazz, jstring propReadOnlyString)
@@ -1400,24 +1410,19 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jbooleanArray l_javaParamBoolArray = (jbooleanArray)paramBool;
 	jsize lenparam_bool = Env->GetArrayLength(l_javaParamBoolArray);
 	static const TCHAR* errorMsgLenlocal_param_bool = TEXT("failed to get an array length l_javaParamBoolArray");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_param_bool);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_param_bool);
 	local_param_bool.Reserve(lenparam_bool);
 	TArray<jboolean> TempParamBool;
 	TempParamBool.SetNumUninitialized(lenparam_bool);
 	Env->GetBooleanArrayRegion(l_javaParamBoolArray, 0, lenparam_bool, TempParamBool.GetData());
 	static const TCHAR* errorMsglocal_param_bool = TEXT("failed to get an array region l_javaParamBoolArray");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_param_bool);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_param_bool);
 	for (int i = 0; i < lenparam_bool; i++)
 	{
 		local_param_bool.Add(TempParamBool[i] == JNI_TRUE);
 	}
 	Env->DeleteLocalRef(l_javaParamBoolArray);
 
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(local_param_bool);
 }
 
@@ -1433,18 +1438,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jintArray l_javaParamIntArray = (jintArray)paramInt;
 	jsize lenparam_int = Env->GetArrayLength(l_javaParamIntArray);
 	static const TCHAR* errorMsgLenlocal_param_int = TEXT("failed to get an array length l_javaParamIntArray");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_param_int);
-	local_param_int.AddUninitialized(lenparam_int);
-	Env->GetIntArrayRegion(paramInt, 0, lenparam_int, local_param_int.GetData());
-	static const TCHAR* errorMsglocal_param_int = TEXT("failed to get an array regionparamInt");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_param_int);
-	Env->DeleteLocalRef(l_javaParamIntArray);
-
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_param_int))
 	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
+		local_param_int.AddUninitialized(lenparam_int);
+		Env->GetIntArrayRegion(paramInt, 0, lenparam_int, local_param_int.GetData());
+		static const TCHAR* errorMsglocal_param_int = TEXT("failed to get an array regionparamInt");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_param_int);
+		Env->DeleteLocalRef(l_javaParamIntArray);
 	}
+
 	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigIntSignal(local_param_int);
 }
 
@@ -1460,18 +1462,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jintArray l_javaParamInt32Array = (jintArray)paramInt32;
 	jsize lenparam_int32 = Env->GetArrayLength(l_javaParamInt32Array);
 	static const TCHAR* errorMsgLenlocal_param_int32 = TEXT("failed to get an array length l_javaParamInt32Array");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_param_int32);
-	local_param_int32.AddUninitialized(lenparam_int32);
-	Env->GetIntArrayRegion(paramInt32, 0, lenparam_int32, local_param_int32.GetData());
-	static const TCHAR* errorMsglocal_param_int32 = TEXT("failed to get an array regionparamInt32");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_param_int32);
-	Env->DeleteLocalRef(l_javaParamInt32Array);
-
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_param_int32))
 	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
+		local_param_int32.AddUninitialized(lenparam_int32);
+		Env->GetIntArrayRegion(paramInt32, 0, lenparam_int32, local_param_int32.GetData());
+		static const TCHAR* errorMsglocal_param_int32 = TEXT("failed to get an array regionparamInt32");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_param_int32);
+		Env->DeleteLocalRef(l_javaParamInt32Array);
 	}
+
 	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt32Signal(local_param_int32);
 }
 
@@ -1487,18 +1486,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jlongArray l_javaParamInt64Array = (jlongArray)paramInt64;
 	jsize lenparam_int64 = Env->GetArrayLength(l_javaParamInt64Array);
 	static const TCHAR* errorMsgLenlocal_param_int64 = TEXT("failed to get an array length l_javaParamInt64Array");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_param_int64);
-	local_param_int64.AddUninitialized(lenparam_int64);
-	Env->GetLongArrayRegion(paramInt64, 0, lenparam_int64, reinterpret_cast<jlong*>(local_param_int64.GetData()));
-	static const TCHAR* errorMsglocal_param_int64 = TEXT("failed to get an array regionparamInt64");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_param_int64);
-	Env->DeleteLocalRef(l_javaParamInt64Array);
-
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_param_int64))
 	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
+		local_param_int64.AddUninitialized(lenparam_int64);
+		Env->GetLongArrayRegion(paramInt64, 0, lenparam_int64, reinterpret_cast<jlong*>(local_param_int64.GetData()));
+		static const TCHAR* errorMsglocal_param_int64 = TEXT("failed to get an array regionparamInt64");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_param_int64);
+		Env->DeleteLocalRef(l_javaParamInt64Array);
 	}
+
 	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt64Signal(local_param_int64);
 }
 
@@ -1514,18 +1510,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jfloatArray l_javaParamFloatArray = (jfloatArray)paramFloat;
 	jsize lenparam_float = Env->GetArrayLength(l_javaParamFloatArray);
 	static const TCHAR* errorMsgLenlocal_param_float = TEXT("failed to get an array length l_javaParamFloatArray");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_param_float);
-	local_param_float.AddUninitialized(lenparam_float);
-	Env->GetFloatArrayRegion(paramFloat, 0, lenparam_float, local_param_float.GetData());
-	static const TCHAR* errorMsglocal_param_float = TEXT("failed to get an array regionparamFloat");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_param_float);
-	Env->DeleteLocalRef(l_javaParamFloatArray);
-
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_param_float))
 	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
+		local_param_float.AddUninitialized(lenparam_float);
+		Env->GetFloatArrayRegion(paramFloat, 0, lenparam_float, local_param_float.GetData());
+		static const TCHAR* errorMsglocal_param_float = TEXT("failed to get an array regionparamFloat");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_param_float);
+		Env->DeleteLocalRef(l_javaParamFloatArray);
 	}
+
 	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloatSignal(local_param_float);
 }
 
@@ -1541,18 +1534,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jfloatArray l_javaParamFloa32Array = (jfloatArray)paramFloa32;
 	jsize lenparam_floa32 = Env->GetArrayLength(l_javaParamFloa32Array);
 	static const TCHAR* errorMsgLenlocal_param_floa32 = TEXT("failed to get an array length l_javaParamFloa32Array");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_param_floa32);
-	local_param_floa32.AddUninitialized(lenparam_floa32);
-	Env->GetFloatArrayRegion(paramFloa32, 0, lenparam_floa32, local_param_floa32.GetData());
-	static const TCHAR* errorMsglocal_param_floa32 = TEXT("failed to get an array regionparamFloa32");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_param_floa32);
-	Env->DeleteLocalRef(l_javaParamFloa32Array);
-
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_param_floa32))
 	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
+		local_param_floa32.AddUninitialized(lenparam_floa32);
+		Env->GetFloatArrayRegion(paramFloa32, 0, lenparam_floa32, local_param_floa32.GetData());
+		static const TCHAR* errorMsglocal_param_floa32 = TEXT("failed to get an array regionparamFloa32");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_param_floa32);
+		Env->DeleteLocalRef(l_javaParamFloa32Array);
 	}
+
 	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat32Signal(local_param_floa32);
 }
 
@@ -1568,18 +1558,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	jdoubleArray l_javaParamFloat64Array = (jdoubleArray)paramFloat64;
 	jsize lenparam_float64 = Env->GetArrayLength(l_javaParamFloat64Array);
 	static const TCHAR* errorMsgLenlocal_param_float64 = TEXT("failed to get an array length l_javaParamFloat64Array");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLenlocal_param_float64);
-	local_param_float64.AddUninitialized(lenparam_float64);
-	Env->GetDoubleArrayRegion(paramFloat64, 0, lenparam_float64, local_param_float64.GetData());
-	static const TCHAR* errorMsglocal_param_float64 = TEXT("failed to get an array regionparamFloat64");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_param_float64);
-	Env->DeleteLocalRef(l_javaParamFloat64Array);
-
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLenlocal_param_float64))
 	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
+		local_param_float64.AddUninitialized(lenparam_float64);
+		Env->GetDoubleArrayRegion(paramFloat64, 0, lenparam_float64, local_param_float64.GetData());
+		static const TCHAR* errorMsglocal_param_float64 = TEXT("failed to get an array regionparamFloat64");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_param_float64);
+		Env->DeleteLocalRef(l_javaParamFloat64Array);
 	}
+
 	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat64Signal(local_param_float64);
 }
 
@@ -1594,13 +1581,8 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	TArray<FString> local_param_string = TArray<FString>();
 	local_param_string = FJavaHelper::ObjectArrayToFStringTArray(Env, paramString);
 	static const TCHAR* errorMsglocal_param_string = TEXT("failed to convert paramString from jstring array");
-	TbSimpleDataJavaConverter::checkJniError(errorMsglocal_param_string);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_param_string);
 
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigStringSignal(local_param_string);
 }
 
@@ -1608,25 +1590,30 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncBoolResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFuncBool for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncBool for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	TArray<bool> cpp_result = TArray<bool>();
 	jbooleanArray localArray = (jbooleanArray)result;
 	jsize len = Env->GetArrayLength(localArray);
 	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOnFuncBool for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLen);
-	cpp_result.AddUninitialized(len);
-	TArray<jboolean> Temp;
-	Temp.SetNumUninitialized(len);
-	Env->GetBooleanArrayRegion(localArray, 0, len, Temp.GetData());
-	static const TCHAR* errorMsgResult = TEXT("failed to convert result from boolean array in call nativeOnFuncBool for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgResult);
-	for (int i = 0; i < len; i++)
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLen))
 	{
-		cpp_result[i] = (Temp[i] == JNI_TRUE);
+		cpp_result.AddUninitialized(len);
+		TArray<jboolean> Temp;
+		Temp.SetNumUninitialized(len);
+		Env->GetBooleanArrayRegion(localArray, 0, len, Temp.GetData());
+		static const TCHAR* errorMsgResult = TEXT("failed to convert result from boolean array in call nativeOnFuncBool for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgResult);
+		for (int i = 0; i < len; i++)
+		{
+			cpp_result[i] = (Temp[i] == JNI_TRUE);
+		}
+		Env->DeleteLocalRef(localArray);
 	}
-	Env->DeleteLocalRef(localArray);
 
 	FGuid::Parse(callIdString, guid);
 	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
@@ -1636,19 +1623,24 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncIntResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFuncInt for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncInt for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	TArray<int32> cpp_result = TArray<int32>();
 	jintArray localArray = (jintArray)result;
 	jsize len = Env->GetArrayLength(localArray);
 	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOnFuncInt for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLen);
-	cpp_result.AddUninitialized(len);
-	Env->GetIntArrayRegion(result, 0, len, cpp_result.GetData());
-	static const TCHAR* errorMsgResult = TEXT("failed to convert result from Int array in call nativeOnFuncInt for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgResult);
-	Env->DeleteLocalRef(localArray);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLen))
+	{
+		cpp_result.AddUninitialized(len);
+		Env->GetIntArrayRegion(result, 0, len, cpp_result.GetData());
+		static const TCHAR* errorMsgResult = TEXT("failed to convert result from Int array in call nativeOnFuncInt for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgResult);
+		Env->DeleteLocalRef(localArray);
+	}
 
 	FGuid::Parse(callIdString, guid);
 	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
@@ -1658,19 +1650,24 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncInt32Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFuncInt32 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncInt32 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	TArray<int32> cpp_result = TArray<int32>();
 	jintArray localArray = (jintArray)result;
 	jsize len = Env->GetArrayLength(localArray);
 	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOnFuncInt32 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLen);
-	cpp_result.AddUninitialized(len);
-	Env->GetIntArrayRegion(result, 0, len, cpp_result.GetData());
-	static const TCHAR* errorMsgResult = TEXT("failed to convert result from Int array in call nativeOnFuncInt32 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgResult);
-	Env->DeleteLocalRef(localArray);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLen))
+	{
+		cpp_result.AddUninitialized(len);
+		Env->GetIntArrayRegion(result, 0, len, cpp_result.GetData());
+		static const TCHAR* errorMsgResult = TEXT("failed to convert result from Int array in call nativeOnFuncInt32 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgResult);
+		Env->DeleteLocalRef(localArray);
+	}
 
 	FGuid::Parse(callIdString, guid);
 	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
@@ -1680,19 +1677,24 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncInt64Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFuncInt64 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncInt64 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	TArray<int64> cpp_result = TArray<int64>();
 	jlongArray localArray = (jlongArray)result;
 	jsize len = Env->GetArrayLength(localArray);
 	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOnFuncInt64 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLen);
-	cpp_result.AddUninitialized(len);
-	Env->GetLongArrayRegion(result, 0, len, reinterpret_cast<jlong*>(cpp_result.GetData()));
-	static const TCHAR* errorMsgResult = TEXT("failed to convert result from Long array in call nativeOnFuncInt64 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgResult);
-	Env->DeleteLocalRef(localArray);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLen))
+	{
+		cpp_result.AddUninitialized(len);
+		Env->GetLongArrayRegion(result, 0, len, reinterpret_cast<jlong*>(cpp_result.GetData()));
+		static const TCHAR* errorMsgResult = TEXT("failed to convert result from Long array in call nativeOnFuncInt64 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgResult);
+		Env->DeleteLocalRef(localArray);
+	}
 
 	FGuid::Parse(callIdString, guid);
 	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
@@ -1702,19 +1704,24 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncFloatResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFuncFloat for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncFloat for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	TArray<float> cpp_result = TArray<float>();
 	jfloatArray localArray = (jfloatArray)result;
 	jsize len = Env->GetArrayLength(localArray);
 	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOnFuncFloat for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLen);
-	cpp_result.AddUninitialized(len);
-	Env->GetFloatArrayRegion(result, 0, len, cpp_result.GetData());
-	static const TCHAR* errorMsgResult = TEXT("failed to convert result from Float array in call nativeOnFuncFloat for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgResult);
-	Env->DeleteLocalRef(localArray);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLen))
+	{
+		cpp_result.AddUninitialized(len);
+		Env->GetFloatArrayRegion(result, 0, len, cpp_result.GetData());
+		static const TCHAR* errorMsgResult = TEXT("failed to convert result from Float array in call nativeOnFuncFloat for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgResult);
+		Env->DeleteLocalRef(localArray);
+	}
 
 	FGuid::Parse(callIdString, guid);
 	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
@@ -1724,19 +1731,24 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncFloat32Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFuncFloat32 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncFloat32 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	TArray<float> cpp_result = TArray<float>();
 	jfloatArray localArray = (jfloatArray)result;
 	jsize len = Env->GetArrayLength(localArray);
 	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOnFuncFloat32 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLen);
-	cpp_result.AddUninitialized(len);
-	Env->GetFloatArrayRegion(result, 0, len, cpp_result.GetData());
-	static const TCHAR* errorMsgResult = TEXT("failed to convert result from Float array in call nativeOnFuncFloat32 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgResult);
-	Env->DeleteLocalRef(localArray);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLen))
+	{
+		cpp_result.AddUninitialized(len);
+		Env->GetFloatArrayRegion(result, 0, len, cpp_result.GetData());
+		static const TCHAR* errorMsgResult = TEXT("failed to convert result from Float array in call nativeOnFuncFloat32 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgResult);
+		Env->DeleteLocalRef(localArray);
+	}
 
 	FGuid::Parse(callIdString, guid);
 	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
@@ -1746,19 +1758,24 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncFloat64Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFuncFloat64 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncFloat64 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	TArray<double> cpp_result = TArray<double>();
 	jdoubleArray localArray = (jdoubleArray)result;
 	jsize len = Env->GetArrayLength(localArray);
 	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOnFuncFloat64 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgLen);
-	cpp_result.AddUninitialized(len);
-	Env->GetDoubleArrayRegion(result, 0, len, cpp_result.GetData());
-	static const TCHAR* errorMsgResult = TEXT("failed to convert result from Double array in call nativeOnFuncFloat64 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgResult);
-	Env->DeleteLocalRef(localArray);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgLen))
+	{
+		cpp_result.AddUninitialized(len);
+		Env->GetDoubleArrayRegion(result, 0, len, cpp_result.GetData());
+		static const TCHAR* errorMsgResult = TEXT("failed to convert result from Double array in call nativeOnFuncFloat64 for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgResult);
+		Env->DeleteLocalRef(localArray);
+	}
 
 	FGuid::Parse(callIdString, guid);
 	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);
@@ -1768,13 +1785,16 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncStringResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFuncString for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncString for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	TArray<FString> cpp_result = TArray<FString>();
 	cpp_result = FJavaHelper::ObjectArrayToFStringTArray(Env, result);
 	static const TCHAR* errorMsgResult = TEXT("failed to convert result from jstring array in call nativeOnFuncString for tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgResult);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgResult);
 
 	FGuid::Parse(callIdString, guid);
 	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(guid, cpp_result);

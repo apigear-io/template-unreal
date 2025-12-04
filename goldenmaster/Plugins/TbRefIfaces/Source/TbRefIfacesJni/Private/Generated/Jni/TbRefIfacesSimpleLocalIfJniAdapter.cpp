@@ -61,7 +61,7 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Initialize(FSubsystemCollectionBase& C
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbRefIfacesJavaServiceStarter; class not found");
-	TbRefIfacesDataJavaConverter::checkJniError(errorMsgCls);
+	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -69,7 +69,7 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Initialize(FSubsystemCollectionBase& C
 	auto functionSignature = "(Landroid/content/Context;)LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("TbRefIfacesJavaServiceStarter::start; method not found");
-	TbRefIfacesDataJavaConverter::checkJniError(errorMsgMethodId);
+	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -77,7 +77,7 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Initialize(FSubsystemCollectionBase& C
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("TbRefIfacesJavaServiceStarter failed to call start method");
-	TbRefIfacesDataJavaConverter::checkJniError(errorMsgCall);
+	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -100,18 +100,18 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbRefIfacesJavaServiceStarter; class not found");
-	TbRefIfacesDataJavaConverter::checkJniError(errorMsgCls);
+	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("TbRefIfacesJavaServiceStarter::stop; method not found");
-		TbRefIfacesDataJavaConverter::checkJniError(errorMsgMethodId);
+		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbRefIfacesJavaServiceStarter failed to call stop");
-			TbRefIfacesDataJavaConverter::checkJniError(errorMsgCall);
+			TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
 		else
 		{
@@ -167,7 +167,7 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::callJniServiceReady(bool isServiceRead
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, TbRefIfacesJniCache::serviceClassSimpleLocalIfReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:nativeServiceReady(Z)V CLASS not found");
-		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
+		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -192,7 +192,7 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::OnIntSignalSignal(int32 Param)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param);
 		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService failed to call onIntSignal (I)V");
-		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
+		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -216,7 +216,7 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::OnIntPropertyChanged(int32 IntProperty
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, IntProperty);
 		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService failed to call onIntPropertyChanged ((I)V)V");
-		TbRefIfacesDataJavaConverter::checkJniError(errorMsg);
+		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }

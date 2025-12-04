@@ -59,7 +59,7 @@ void UTbIfaceimportEmptyIfJniAdapter::Initialize(FSubsystemCollectionBase& Colle
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbIfaceimportJavaServiceStarter; class not found");
-	TbIfaceimportDataJavaConverter::checkJniError(errorMsgCls);
+	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -67,7 +67,7 @@ void UTbIfaceimportEmptyIfJniAdapter::Initialize(FSubsystemCollectionBase& Colle
 	auto functionSignature = "(Landroid/content/Context;)LtbIfaceimport/tbIfaceimport_api/IEmptyIf;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("TbIfaceimportJavaServiceStarter::start; method not found");
-	TbIfaceimportDataJavaConverter::checkJniError(errorMsgMethodId);
+	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -75,7 +75,7 @@ void UTbIfaceimportEmptyIfJniAdapter::Initialize(FSubsystemCollectionBase& Colle
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("TbIfaceimportJavaServiceStarter failed to call start method");
-	TbIfaceimportDataJavaConverter::checkJniError(errorMsgCall);
+	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -98,18 +98,18 @@ void UTbIfaceimportEmptyIfJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbIfaceimportJavaServiceStarter; class not found");
-	TbIfaceimportDataJavaConverter::checkJniError(errorMsgCls);
+	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("TbIfaceimportJavaServiceStarter::stop; method not found");
-		TbIfaceimportDataJavaConverter::checkJniError(errorMsgMethodId);
+		TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbIfaceimportJavaServiceStarter failed to call stop");
-			TbIfaceimportDataJavaConverter::checkJniError(errorMsgCall);
+			TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
 		else
 		{
@@ -165,7 +165,7 @@ void UTbIfaceimportEmptyIfJniAdapter::callJniServiceReady(bool isServiceReady)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, TbIfaceimportJniCache::serviceClassEmptyIfReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService:nativeServiceReady(Z)V CLASS not found");
-		TbIfaceimportDataJavaConverter::checkJniError(errorMsg);
+		TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }

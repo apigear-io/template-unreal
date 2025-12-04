@@ -184,14 +184,20 @@ bool UTbIfaceimportEmptyIfJniClient::_bindToService(FString servicePackage, FStr
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
-		static const TCHAR* errorMsgPackage = TEXT("failed to craete java string for package in call bind on tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
-		TbIfaceimportDataJavaConverter::checkJniError(errorMsgPackage);
+		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
+		if (TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		{
+			return false;
+		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for connection id in call bind on tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
-		TbIfaceimportDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
+		if (TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		{
+			return false;
+		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient.");
-		TbIfaceimportDataJavaConverter::checkJniError(errorMsg);
+		TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsg);
 		return res;
 	}
 	else
@@ -219,7 +225,7 @@ void UTbIfaceimportEmptyIfJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient.");
-		TbIfaceimportDataJavaConverter::checkJniError(errorMsg);
+		TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 	else
 	{

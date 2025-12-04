@@ -60,7 +60,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/ManyParamInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("Testbed2JavaServiceStarter; class not found");
-	Testbed2DataJavaConverter::checkJniError(errorMsgCls);
+	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -68,7 +68,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 	auto functionSignature = "(Landroid/content/Context;)Ltestbed2/testbed2_api/IManyParamInterface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("Testbed2JavaServiceStarter::start; method not found");
-	Testbed2DataJavaConverter::checkJniError(errorMsgMethodId);
+	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -76,7 +76,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("Testbed2JavaServiceStarter failed to call start method");
-	Testbed2DataJavaConverter::checkJniError(errorMsgCall);
+	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -99,18 +99,18 @@ void UTestbed2ManyParamInterfaceJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/ManyParamInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("Testbed2JavaServiceStarter; class not found");
-	Testbed2DataJavaConverter::checkJniError(errorMsgCls);
+	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("Testbed2JavaServiceStarter::stop; method not found");
-		Testbed2DataJavaConverter::checkJniError(errorMsgMethodId);
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("Testbed2JavaServiceStarter failed to call stop");
-			Testbed2DataJavaConverter::checkJniError(errorMsgCall);
+			Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
 		else
 		{
@@ -166,7 +166,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::callJniServiceReady(bool isServiceRe
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Testbed2JniCache::serviceClassManyParamInterfaceReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:nativeServiceReady(Z)V CLASS not found");
-		Testbed2DataJavaConverter::checkJniError(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -191,7 +191,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig1Signal(int32 Param1)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param1);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onSig1 (I)V");
-		Testbed2DataJavaConverter::checkJniError(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -216,7 +216,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig2Signal(int32 Param1, int32 Par
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param1, Param2);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onSig2 (II)V");
-		Testbed2DataJavaConverter::checkJniError(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -241,7 +241,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig3Signal(int32 Param1, int32 Par
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param1, Param2, Param3);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onSig3 (III)V");
-		Testbed2DataJavaConverter::checkJniError(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -266,7 +266,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig4Signal(int32 Param1, int32 Par
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param1, Param2, Param3, Param4);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onSig4 (IIII)V");
-		Testbed2DataJavaConverter::checkJniError(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -290,7 +290,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp1Changed(int32 Prop1)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Prop1);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onProp1Changed ((I)V)V");
-		Testbed2DataJavaConverter::checkJniError(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -314,7 +314,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp2Changed(int32 Prop2)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Prop2);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onProp2Changed ((I)V)V");
-		Testbed2DataJavaConverter::checkJniError(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -338,7 +338,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp3Changed(int32 Prop3)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Prop3);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onProp3Changed ((I)V)V");
-		Testbed2DataJavaConverter::checkJniError(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -362,7 +362,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp4Changed(int32 Prop4)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Prop4);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onProp4Changed ((I)V)V");
-		Testbed2DataJavaConverter::checkJniError(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }

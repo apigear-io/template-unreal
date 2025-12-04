@@ -109,7 +109,7 @@ public:
 
 	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> getCppInstanceTestbed2NestedStruct3Interface();
 
-	static void checkJniError(const TCHAR* Msg);
+	static bool checkJniErrorOccured(const TCHAR* Msg);
 };
 
 #endif

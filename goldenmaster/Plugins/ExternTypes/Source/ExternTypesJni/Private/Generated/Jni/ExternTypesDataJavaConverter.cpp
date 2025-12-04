@@ -52,16 +52,26 @@ void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray
 {
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get len of Vector3D jarray.");
-	checkJniError(errorMsgLen);
+	if (checkJniErrorOccured(errorMsgLen))
+	{
+		return;
+	}
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
 	for (jsize i = 0; i < len; ++i)
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of Vector3D jarray.");
-		checkJniError(errorMsg);
-		fillMyVector3D(env, element, out_array[i]);
+		auto failed = checkJniErrorOccured(errorMsg);
+		if (!failed)
+		{
+			fillMyVector3D(env, element, out_array[i]);
+		}
 		env->DeleteLocalRef(element);
+		if (failed)
+		{
+			return;
+		}
 	}
 }
 
@@ -74,7 +84,10 @@ jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVec
 	}
 	jobject javaObjInstance = env->NewObject(ExternTypesJniCache::javaClassMyVector3D, ExternTypesJniCache::javaClassMyVector3DCtor);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Vector3D.");
-	checkJniError(errorMsgAlloc);
+	if (checkJniErrorOccured(errorMsgAlloc))
+	{
+		return nullptr;
+	}
 
 	// do the serialization field by field: e.g. for int type field
 	// jfieldID jFieldId_firstField = env->GetFieldID(ExternTypesJniCache::javaClassMyVector3D, "jFieldId_firstField", "I");
@@ -92,20 +105,27 @@ jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, 
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, ExternTypesJniCache::javaClassMyVector3D, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Vector3D jarray.");
-	checkJniError(errorMsgAlloc);
+	if (checkJniErrorOccured(errorMsgAlloc))
+	{
+		return nullptr;
+	}
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
 		jobject element = makeJavaMyVector3D(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when trying to set element of Vector3D array.");
-		checkJniError(errorMsg);
+		auto failed = checkJniErrorOccured(errorMsg);
 		env->DeleteLocalRef(element);
+		if (failed)
+		{
+			return nullptr;
+		}
 	}
 	return javaArray;
 }
 
-void ExternTypesDataJavaConverter::checkJniError(const TCHAR* Msg)
+bool ExternTypesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	if (env->ExceptionCheck())
@@ -113,7 +133,9 @@ void ExternTypesDataJavaConverter::checkJniError(const TCHAR* Msg)
 		env->ExceptionDescribe(); // logs in java
 		env->ExceptionClear();
 		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("%s"), Msg);
+		return true;
 	}
+	return false;
 }
 
 #endif

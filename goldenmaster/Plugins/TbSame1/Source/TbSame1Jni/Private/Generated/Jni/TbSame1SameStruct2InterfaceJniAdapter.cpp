@@ -60,7 +60,7 @@ void UTbSame1SameStruct2InterfaceJniAdapter::Initialize(FSubsystemCollectionBase
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1jniservice/SameStruct2InterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSame1JavaServiceStarter; class not found");
-	TbSame1DataJavaConverter::checkJniError(errorMsgCls);
+	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -68,7 +68,7 @@ void UTbSame1SameStruct2InterfaceJniAdapter::Initialize(FSubsystemCollectionBase
 	auto functionSignature = "(Landroid/content/Context;)LtbSame1/tbSame1_api/ISameStruct2Interface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("TbSame1JavaServiceStarter::start; method not found");
-	TbSame1DataJavaConverter::checkJniError(errorMsgMethodId);
+	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -76,7 +76,7 @@ void UTbSame1SameStruct2InterfaceJniAdapter::Initialize(FSubsystemCollectionBase
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("TbSame1JavaServiceStarter failed to call start method");
-	TbSame1DataJavaConverter::checkJniError(errorMsgCall);
+	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -99,18 +99,18 @@ void UTbSame1SameStruct2InterfaceJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1jniservice/SameStruct2InterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSame1JavaServiceStarter; class not found");
-	TbSame1DataJavaConverter::checkJniError(errorMsgCls);
+	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("TbSame1JavaServiceStarter::stop; method not found");
-		TbSame1DataJavaConverter::checkJniError(errorMsgMethodId);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbSame1JavaServiceStarter failed to call stop");
-			TbSame1DataJavaConverter::checkJniError(errorMsgCall);
+			TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
 		else
 		{
@@ -166,7 +166,7 @@ void UTbSame1SameStruct2InterfaceJniAdapter::callJniServiceReady(bool isServiceR
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, TbSame1JniCache::serviceClassSameStruct2InterfaceReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbSame1/tbSame1jniservice/SameStruct2InterfaceJniService:nativeServiceReady(Z)V CLASS not found");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -192,7 +192,7 @@ void UTbSame1SameStruct2InterfaceJniAdapter::OnSig1Signal(const FTbSame1Struct1&
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param1);
 		static const TCHAR* errorMsg = TEXT("tbSame1/tbSame1jniservice/SameStruct2InterfaceJniService failed to call onSig1 (LtbSame1/tbSame1_api/Struct1;)V");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 	}
 #endif
@@ -220,7 +220,7 @@ void UTbSame1SameStruct2InterfaceJniAdapter::OnSig2Signal(const FTbSame1Struct1&
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param1, jlocal_Param2);
 		static const TCHAR* errorMsg = TEXT("tbSame1/tbSame1jniservice/SameStruct2InterfaceJniService failed to call onSig2 (LtbSame1/tbSame1_api/Struct1;LtbSame1/tbSame1_api/Struct2;)V");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 		Env->DeleteLocalRef(jlocal_Param2);
 	}
@@ -248,7 +248,7 @@ void UTbSame1SameStruct2InterfaceJniAdapter::OnProp1Changed(const FTbSame1Struct
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop1);
 		Env->DeleteLocalRef(jlocal_Prop1);
 		static const TCHAR* errorMsg = TEXT("tbSame1/tbSame1jniservice/SameStruct2InterfaceJniService failed to call onProp1Changed ((LtbSame1/tbSame1_api/Struct2;)V)V");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -274,7 +274,7 @@ void UTbSame1SameStruct2InterfaceJniAdapter::OnProp2Changed(const FTbSame1Struct
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop2);
 		Env->DeleteLocalRef(jlocal_Prop2);
 		static const TCHAR* errorMsg = TEXT("tbSame1/tbSame1jniservice/SameStruct2InterfaceJniService failed to call onProp2Changed ((LtbSame1/tbSame1_api/Struct2;)V)V");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }

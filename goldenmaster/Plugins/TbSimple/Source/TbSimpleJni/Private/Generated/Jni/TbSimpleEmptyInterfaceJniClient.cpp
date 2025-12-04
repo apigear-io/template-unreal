@@ -184,14 +184,20 @@ bool UTbSimpleEmptyInterfaceJniClient::_bindToService(FString servicePackage, FS
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
-		static const TCHAR* errorMsgPackage = TEXT("failed to craete java string for package in call bind on tbSimple/tbSimplejniclient/EmptyInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgPackage);
+		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbSimple/tbSimplejniclient/EmptyInterfaceJniClient");
+		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		{
+			return false;
+		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for connection id in call bind on tbSimple/tbSimplejniclient/EmptyInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbSimple/tbSimplejniclient/EmptyInterfaceJniClient");
+		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		{
+			return false;
+		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbSimple/tbSimplejniclient/EmptyInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		return res;
 	}
 	else
@@ -219,7 +225,7 @@ void UTbSimpleEmptyInterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbSimple/tbSimplejniclient/EmptyInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 	else
 	{

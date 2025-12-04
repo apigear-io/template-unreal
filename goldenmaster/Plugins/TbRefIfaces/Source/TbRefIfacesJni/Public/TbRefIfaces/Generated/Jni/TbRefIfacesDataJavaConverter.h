@@ -52,7 +52,7 @@ public:
 
 	static TScriptInterface<ITbRefIfacesParentIfInterface> getCppInstanceTbRefIfacesParentIf();
 
-	static void checkJniError(const TCHAR* Msg);
+	static bool checkJniErrorOccured(const TCHAR* Msg);
 };
 
 #endif

@@ -112,7 +112,7 @@ public:
 
 	static TScriptInterface<ITestbed1StructArray2InterfaceInterface> getCppInstanceTestbed1StructArray2Interface();
 
-	static void checkJniError(const TCHAR* Msg);
+	static bool checkJniErrorOccured(const TCHAR* Msg);
 };
 
 #endif

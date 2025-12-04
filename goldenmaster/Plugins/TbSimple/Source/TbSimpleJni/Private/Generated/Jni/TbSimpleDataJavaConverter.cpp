@@ -77,7 +77,10 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaVoidInterfaceArray(JNIEnv* env, 
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassVoidInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_void_interface.");
-	checkJniError(errorMsg);
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -127,7 +130,10 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaSimpleInterfaceArray(JNIEnv* env
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassSimpleInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_interface.");
-	checkJniError(errorMsg);
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -177,7 +183,10 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaSimpleArrayInterfaceArray(JNIEnv
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassSimpleArrayInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_array_interface.");
-	checkJniError(errorMsg);
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -227,7 +236,10 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaNoPropertiesInterfaceArray(JNIEn
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassNoPropertiesInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_no_properties_interface.");
-	checkJniError(errorMsg);
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -277,7 +289,10 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaNoOperationsInterfaceArray(JNIEn
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassNoOperationsInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_no_operations_interface.");
-	checkJniError(errorMsg);
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -327,7 +342,10 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaNoSignalsInterfaceArray(JNIEnv* 
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassNoSignalsInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_no_signals_interface.");
-	checkJniError(errorMsg);
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -377,7 +395,10 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaEmptyInterfaceArray(JNIEnv* env,
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbSimpleJniCache::javaClassEmptyInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_empty_interface.");
-	checkJniError(errorMsg);
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -391,7 +412,7 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> TbSimpleDataJavaConverter::ge
 	return wrapped;
 }
 
-void TbSimpleDataJavaConverter::checkJniError(const TCHAR* Msg)
+bool TbSimpleDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	if (env->ExceptionCheck())
@@ -399,7 +420,9 @@ void TbSimpleDataJavaConverter::checkJniError(const TCHAR* Msg)
 		env->ExceptionDescribe(); // logs in java
 		env->ExceptionClear();
 		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("%s"), Msg);
+		return true;
 	}
+	return false;
 }
 
 #endif

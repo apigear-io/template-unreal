@@ -74,7 +74,10 @@ jobjectArray TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(JNIEnv* en
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbRefIfacesJniCache::javaClassSimpleLocalIf, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_local_if.");
-	checkJniError(errorMsg);
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -124,7 +127,10 @@ jobjectArray TbRefIfacesDataJavaConverter::makeJavaParentIfArray(JNIEnv* env, co
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, TbRefIfacesJniCache::javaClassParentIf, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_parent_if.");
-	checkJniError(errorMsg);
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -138,7 +144,7 @@ TScriptInterface<ITbRefIfacesParentIfInterface> TbRefIfacesDataJavaConverter::ge
 	return wrapped;
 }
 
-void TbRefIfacesDataJavaConverter::checkJniError(const TCHAR* Msg)
+bool TbRefIfacesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	if (env->ExceptionCheck())
@@ -146,7 +152,9 @@ void TbRefIfacesDataJavaConverter::checkJniError(const TCHAR* Msg)
 		env->ExceptionDescribe(); // logs in java
 		env->ExceptionClear();
 		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("%s"), Msg);
+		return true;
 	}
+	return false;
 }
 
 #endif

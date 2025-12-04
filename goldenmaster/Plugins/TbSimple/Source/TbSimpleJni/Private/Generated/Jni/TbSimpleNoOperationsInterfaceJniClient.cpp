@@ -218,7 +218,7 @@ void UTbSimpleNoOperationsInterfaceJniClient::SetPropBool(bool bInPropBool)
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, bInPropBool);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropBool on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -262,7 +262,7 @@ void UTbSimpleNoOperationsInterfaceJniClient::SetPropInt(int32 InPropInt)
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropInt);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropInt on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -296,14 +296,20 @@ bool UTbSimpleNoOperationsInterfaceJniClient::_bindToService(FString servicePack
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
-		static const TCHAR* errorMsgPackage = TEXT("failed to craete java string for package in call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgPackage);
+		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
+		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		{
+			return false;
+		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for connection id in call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
+		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		{
+			return false;
+		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		return res;
 	}
 	else
@@ -331,7 +337,7 @@ void UTbSimpleNoOperationsInterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 	else
 	{
@@ -376,11 +382,6 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_n
 		return;
 	}
 
-	if (gUTbSimpleNoOperationsInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigVoid: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	gUTbSimpleNoOperationsInterfaceJniClientHandle->_GetPublisher()->BroadcastSigVoidSignal();
 }
 
@@ -393,11 +394,6 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_n
 		return;
 	}
 
-	if (gUTbSimpleNoOperationsInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	gUTbSimpleNoOperationsInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(paramBool);
 }
 

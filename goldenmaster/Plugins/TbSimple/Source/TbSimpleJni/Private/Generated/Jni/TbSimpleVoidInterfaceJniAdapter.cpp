@@ -59,7 +59,7 @@ void UTbSimpleVoidInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Coll
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/VoidInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSimpleJavaServiceStarter; class not found");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgCls);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -67,7 +67,7 @@ void UTbSimpleVoidInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Coll
 	auto functionSignature = "(Landroid/content/Context;)LtbSimple/tbSimple_api/IVoidInterface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("TbSimpleJavaServiceStarter::start; method not found");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgMethodId);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -75,7 +75,7 @@ void UTbSimpleVoidInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Coll
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("TbSimpleJavaServiceStarter failed to call start method");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgCall);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -98,18 +98,18 @@ void UTbSimpleVoidInterfaceJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/VoidInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSimpleJavaServiceStarter; class not found");
-	TbSimpleDataJavaConverter::checkJniError(errorMsgCls);
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("TbSimpleJavaServiceStarter::stop; method not found");
-		TbSimpleDataJavaConverter::checkJniError(errorMsgMethodId);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbSimpleJavaServiceStarter failed to call stop");
-			TbSimpleDataJavaConverter::checkJniError(errorMsgCall);
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
 		else
 		{
@@ -165,7 +165,7 @@ void UTbSimpleVoidInterfaceJniAdapter::callJniServiceReady(bool isServiceReady)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, TbSimpleJniCache::serviceClassVoidInterfaceReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/VoidInterfaceJniService:nativeServiceReady(Z)V CLASS not found");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -190,7 +190,7 @@ void UTbSimpleVoidInterfaceJniAdapter::OnSigVoidSignal()
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/VoidInterfaceJniService failed to call onSigVoid ()V");
-		TbSimpleDataJavaConverter::checkJniError(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }

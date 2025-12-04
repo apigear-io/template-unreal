@@ -222,7 +222,7 @@ void UTbSame1SameStruct2InterfaceJniClient::SetProp1(const FTbSame1Struct2& InPr
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop1);
 		Env->DeleteLocalRef(jlocal_Prop1);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp1 on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -269,7 +269,7 @@ void UTbSame1SameStruct2InterfaceJniClient::SetProp2(const FTbSame1Struct2& InPr
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop2);
 		Env->DeleteLocalRef(jlocal_Prop2);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp2 on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -299,14 +299,14 @@ FTbSame1Struct1 UTbSame1SameStruct2InterfaceJniClient::Func1(const FTbSame1Struc
 	{
 		auto id = gUTbSame1SameStruct2InterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call func1Async on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-		TbSame1DataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId);
 		jobject jlocal_Param1 = TbSame1DataJavaConverter::makeJavaStruct1(Env, InParam1);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
 
 		static const TCHAR* errorMsg = TEXT("failed to call func1Async on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 	}
 	else
@@ -342,15 +342,15 @@ FTbSame1Struct1 UTbSame1SameStruct2InterfaceJniClient::Func2(const FTbSame1Struc
 	{
 		auto id = gUTbSame1SameStruct2InterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for id in call func2Async on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-		TbSame1DataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId);
 		jobject jlocal_Param1 = TbSame1DataJavaConverter::makeJavaStruct1(Env, InParam1);
 		jobject jlocal_Param2 = TbSame1DataJavaConverter::makeJavaStruct2(Env, InParam2);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1, jlocal_Param2);
 
 		static const TCHAR* errorMsg = TEXT("failed to call func2Async on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 		Env->DeleteLocalRef(jlocal_Param2);
 	}
@@ -391,14 +391,20 @@ bool UTbSame1SameStruct2InterfaceJniClient::_bindToService(FString servicePackag
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
-		static const TCHAR* errorMsgPackage = TEXT("failed to craete java string for package in call bind on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-		TbSame1DataJavaConverter::checkJniError(errorMsgPackage);
+		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
+		if (TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		{
+			return false;
+		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
-		static const TCHAR* errorMsgId = TEXT("failed to craete java string for connection id in call bind on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-		TbSame1DataJavaConverter::checkJniError(errorMsgId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
+		if (TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+		{
+			return false;
+		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		return res;
 	}
 	else
@@ -426,7 +432,7 @@ void UTbSame1SameStruct2InterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniError(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 	else
 	{
@@ -477,11 +483,6 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	FTbSame1Struct1 local_param1 = FTbSame1Struct1();
 	TbSame1DataJavaConverter::fillStruct1(Env, param1, local_param1);
 
-	if (gUTbSame1SameStruct2InterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	gUTbSame1SameStruct2InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(local_param1);
 }
 
@@ -498,11 +499,6 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	FTbSame1Struct2 local_param2 = FTbSame1Struct2();
 	TbSame1DataJavaConverter::fillStruct2(Env, param2, local_param2);
 
-	if (gUTbSame1SameStruct2InterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	gUTbSame1SameStruct2InterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(local_param1, local_param2);
 }
 
@@ -510,8 +506,11 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 {
 	UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Verbose, TEXT("Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnFunc1Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFunc1 for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniError(errorMsgId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc1 for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
+	if (TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	FTbSame1Struct1 cpp_result = FTbSame1Struct1();
 	TbSame1DataJavaConverter::fillStruct1(Env, result, cpp_result);
@@ -524,8 +523,11 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 {
 	UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Verbose, TEXT("Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnFunc2Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
-	static const TCHAR* errorMsgId = TEXT("failed to craete java string for call id in call nativeOnFunc2 for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniError(errorMsgId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc2 for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
+	if (TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	FTbSame1Struct1 cpp_result = FTbSame1Struct1();
 	TbSame1DataJavaConverter::fillStruct1(Env, result, cpp_result);
