@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbIfaceimport/Generated/OLink/TbIfaceimportEmptyIfOLinkClient.h"
+#include "TbIfaceimport/Generated/Core/TbIfaceimportPropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -35,6 +36,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+
 DEFINE_LOG_CATEGORY(LogTbIfaceimportEmptyIfOLinkClient);
 
 UTbIfaceimportEmptyIfOLinkClient::UTbIfaceimportEmptyIfOLinkClient()

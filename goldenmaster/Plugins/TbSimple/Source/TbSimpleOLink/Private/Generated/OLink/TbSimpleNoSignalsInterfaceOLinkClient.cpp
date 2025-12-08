@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbSimple/Generated/OLink/TbSimpleNoSignalsInterfaceOLinkClient.h"
+#include "TbSimple/Generated/Core/TbSimplePropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -35,16 +36,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include <atomic>
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbSimpleNoSignalsInterfacePropertiesData
-{
-	std::atomic<bool> bPropBool{false};
-	std::atomic<int32> PropInt{0};
-};
 DEFINE_LOG_CATEGORY(LogTbSimpleNoSignalsInterfaceOLinkClient);
 
 UTbSimpleNoSignalsInterfaceOLinkClient::UTbSimpleNoSignalsInterfaceOLinkClient()

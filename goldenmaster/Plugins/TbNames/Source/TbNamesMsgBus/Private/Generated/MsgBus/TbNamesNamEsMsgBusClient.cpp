@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbNames/Generated/MsgBus/TbNamesNamEsMsgBusClient.h"
 #include "TbNames/Generated/MsgBus/TbNamesNamEsMsgBusMessages.h"
+#include "TbNames/Generated/Core/TbNamesPropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,23 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbNamesSettings.h"
-#include <atomic>
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbNamesNamEsPropertiesMsgBusData
-{
-	std::atomic<bool> bSwitch{false};
-	std::atomic<int32> SomeProperty{0};
-	std::atomic<int32> SomePoperty2{0};
-	std::atomic<ETbNamesEnum_With_Under_scores> EnumProperty{ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue};
-};
 DEFINE_LOG_CATEGORY(LogTbNamesNamEsMsgBusClient);
 
 UTbNamesNamEsMsgBusClient::UTbNamesNamEsMsgBusClient()
 	: UAbstractTbNamesNamEs()
-	, _SentData(MakePimpl<TbNamesNamEsPropertiesMsgBusData>())
+	, _SentData(MakePimpl<TbNamesNamEsPropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

@@ -64,7 +64,7 @@ struct FTbRefIfacesParentIfStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfStatsUpdatedDelegate, FTbRefIfacesParentIfStats, Stats);
 
-struct TbRefIfacesParentIfPropertiesMsgBusData;
+struct TbRefIfacesParentIfPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesParentIfMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfConnectionStatusChangedDelegate, bool /* IsConnected */);
@@ -168,7 +168,7 @@ private:
 	void OnImportedIfMethodListReply(const FTbRefIfacesParentIfImportedIfMethodListReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
-	TPimplPtr<TbRefIfacesParentIfPropertiesMsgBusData> _SentData;
+	TPimplPtr<TbRefIfacesParentIfPropertiesData> _SentData;
 
 	TMap<FGuid, void*> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;

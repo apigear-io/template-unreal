@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbRefIfaces/Generated/OLink/TbRefIfacesSimpleLocalIfOLinkClient.h"
+#include "TbRefIfaces/Generated/Core/TbRefIfacesPropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -36,15 +37,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include <atomic>
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbRefIfacesSimpleLocalIfPropertiesData
-{
-	std::atomic<int32> IntProperty{0};
-};
 DEFINE_LOG_CATEGORY(LogTbRefIfacesSimpleLocalIfOLinkClient);
 
 UTbRefIfacesSimpleLocalIfOLinkClient::UTbRefIfacesSimpleLocalIfOLinkClient()

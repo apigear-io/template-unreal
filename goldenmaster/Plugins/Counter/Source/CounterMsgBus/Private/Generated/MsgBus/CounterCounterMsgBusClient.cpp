@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "Counter/Generated/MsgBus/CounterCounterMsgBusClient.h"
 #include "Counter/Generated/MsgBus/CounterCounterMsgBusMessages.h"
+#include "Counter/Generated/Core/CounterPropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,27 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "CounterSettings.h"
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct CounterCounterPropertiesMsgBusData
-{
-	FCriticalSection VectorMutex;
-	FCustomTypesVector3D Vector{FCustomTypesVector3D()};
-	FCriticalSection ExternVectorMutex;
-	FVector ExternVector{FVector(0.f, 0.f, 0.f)};
-	FCriticalSection VectorArrayMutex;
-	TArray<FCustomTypesVector3D> VectorArray{TArray<FCustomTypesVector3D>()};
-	FCriticalSection ExternVectorArrayMutex;
-	TArray<FVector> ExternVectorArray{TArray<FVector>()};
-};
 DEFINE_LOG_CATEGORY(LogCounterCounterMsgBusClient);
 
 UCounterCounterMsgBusClient::UCounterCounterMsgBusClient()
 	: UAbstractCounterCounter()
-	, _SentData(MakePimpl<CounterCounterPropertiesMsgBusData>())
+	, _SentData(MakePimpl<CounterCounterPropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

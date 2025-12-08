@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "Testbed2/Generated/MsgBus/Testbed2ManyParamInterfaceMsgBusClient.h"
 #include "Testbed2/Generated/MsgBus/Testbed2ManyParamInterfaceMsgBusMessages.h"
+#include "Testbed2/Generated/Core/Testbed2PropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,23 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "Testbed2Settings.h"
-#include <atomic>
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct Testbed2ManyParamInterfacePropertiesMsgBusData
-{
-	std::atomic<int32> Prop1{0};
-	std::atomic<int32> Prop2{0};
-	std::atomic<int32> Prop3{0};
-	std::atomic<int32> Prop4{0};
-};
 DEFINE_LOG_CATEGORY(LogTestbed2ManyParamInterfaceMsgBusClient);
 
 UTestbed2ManyParamInterfaceMsgBusClient::UTestbed2ManyParamInterfaceMsgBusClient()
 	: UAbstractTestbed2ManyParamInterface()
-	, _SentData(MakePimpl<Testbed2ManyParamInterfacePropertiesMsgBusData>())
+	, _SentData(MakePimpl<Testbed2ManyParamInterfacePropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

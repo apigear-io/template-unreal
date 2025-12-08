@@ -55,7 +55,7 @@ struct FTbRefIfacesSimpleLocalIfStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesSimpleLocalIfStatsUpdatedDelegate, FTbRefIfacesSimpleLocalIfStats, Stats);
 
-struct TbRefIfacesSimpleLocalIfPropertiesMsgBusData;
+struct TbRefIfacesSimpleLocalIfPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesSimpleLocalIfMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesSimpleLocalIfConnectionStatusChangedDelegate, bool /* IsConnected */);
@@ -135,7 +135,7 @@ private:
 	void OnIntMethodReply(const FTbRefIfacesSimpleLocalIfIntMethodReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
-	TPimplPtr<TbRefIfacesSimpleLocalIfPropertiesMsgBusData> _SentData;
+	TPimplPtr<TbRefIfacesSimpleLocalIfPropertiesData> _SentData;
 
 	TMap<FGuid, void*> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;

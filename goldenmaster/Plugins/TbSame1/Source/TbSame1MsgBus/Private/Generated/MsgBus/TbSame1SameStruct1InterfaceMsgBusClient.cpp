@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbSame1/Generated/MsgBus/TbSame1SameStruct1InterfaceMsgBusClient.h"
 #include "TbSame1/Generated/MsgBus/TbSame1SameStruct1InterfaceMsgBusMessages.h"
+#include "TbSame1/Generated/Core/TbSame1PropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,21 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbSame1Settings.h"
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbSame1SameStruct1InterfacePropertiesMsgBusData
-{
-	FCriticalSection Prop1Mutex;
-	FTbSame1Struct1 Prop1{FTbSame1Struct1()};
-};
 DEFINE_LOG_CATEGORY(LogTbSame1SameStruct1InterfaceMsgBusClient);
 
 UTbSame1SameStruct1InterfaceMsgBusClient::UTbSame1SameStruct1InterfaceMsgBusClient()
 	: UAbstractTbSame1SameStruct1Interface()
-	, _SentData(MakePimpl<TbSame1SameStruct1InterfacePropertiesMsgBusData>())
+	, _SentData(MakePimpl<TbSame1SameStruct1InterfacePropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

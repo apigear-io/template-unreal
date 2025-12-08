@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbIfaceimport/Generated/MsgBus/TbIfaceimportEmptyIfMsgBusClient.h"
 #include "TbIfaceimport/Generated/MsgBus/TbIfaceimportEmptyIfMsgBusMessages.h"
+#include "TbIfaceimport/Generated/Core/TbIfaceimportPropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,6 +31,7 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbIfaceimportSettings.h"
+
 DEFINE_LOG_CATEGORY(LogTbIfaceimportEmptyIfMsgBusClient);
 
 UTbIfaceimportEmptyIfMsgBusClient::UTbIfaceimportEmptyIfMsgBusClient()

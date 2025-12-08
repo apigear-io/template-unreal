@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbSimple/Generated/MsgBus/TbSimpleSimpleArrayInterfaceMsgBusClient.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleSimpleArrayInterfaceMsgBusMessages.h"
+#include "TbSimple/Generated/Core/TbSimplePropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,37 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbSimpleSettings.h"
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbSimpleSimpleArrayInterfacePropertiesMsgBusData
-{
-	FCriticalSection PropBoolMutex;
-	TArray<bool> PropBool{TArray<bool>()};
-	FCriticalSection PropIntMutex;
-	TArray<int32> PropInt{TArray<int32>()};
-	FCriticalSection PropInt32Mutex;
-	TArray<int32> PropInt32{TArray<int32>()};
-	FCriticalSection PropInt64Mutex;
-	TArray<int64> PropInt64{TArray<int64>()};
-	FCriticalSection PropFloatMutex;
-	TArray<float> PropFloat{TArray<float>()};
-	FCriticalSection PropFloat32Mutex;
-	TArray<float> PropFloat32{TArray<float>()};
-	FCriticalSection PropFloat64Mutex;
-	TArray<double> PropFloat64{TArray<double>()};
-	FCriticalSection PropStringMutex;
-	TArray<FString> PropString{TArray<FString>()};
-	FCriticalSection PropReadOnlyStringMutex;
-	FString PropReadOnlyString{FString()};
-};
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleArrayInterfaceMsgBusClient);
 
 UTbSimpleSimpleArrayInterfaceMsgBusClient::UTbSimpleSimpleArrayInterfaceMsgBusClient()
 	: UAbstractTbSimpleSimpleArrayInterface()
-	, _SentData(MakePimpl<TbSimpleSimpleArrayInterfacePropertiesMsgBusData>())
+	, _SentData(MakePimpl<TbSimpleSimpleArrayInterfacePropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbRefIfaces/Generated/MsgBus/TbRefIfacesParentIfMsgBusClient.h"
 #include "TbRefIfaces/Generated/MsgBus/TbRefIfacesParentIfMsgBusMessages.h"
+#include "TbRefIfaces/Generated/Core/TbRefIfacesPropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,27 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbRefIfacesSettings.h"
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbRefIfacesParentIfPropertiesMsgBusData
-{
-	FCriticalSection LocalIfMutex;
-	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIf{TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>()};
-	FCriticalSection LocalIfListMutex;
-	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList{TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>()};
-	FCriticalSection ImportedIfMutex;
-	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIf{TScriptInterface<ITbIfaceimportEmptyIfInterface>()};
-	FCriticalSection ImportedIfListMutex;
-	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList{TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>()};
-};
 DEFINE_LOG_CATEGORY(LogTbRefIfacesParentIfMsgBusClient);
 
 UTbRefIfacesParentIfMsgBusClient::UTbRefIfacesParentIfMsgBusClient()
 	: UAbstractTbRefIfacesParentIf()
-	, _SentData(MakePimpl<TbRefIfacesParentIfPropertiesMsgBusData>())
+	, _SentData(MakePimpl<TbRefIfacesParentIfPropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

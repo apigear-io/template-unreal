@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "Testbed2/Generated/OLink/Testbed2NestedStruct1InterfaceOLinkClient.h"
+#include "Testbed2/Generated/Core/Testbed2PropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -35,16 +36,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct Testbed2NestedStruct1InterfacePropertiesData
-{
-	FCriticalSection Prop1Mutex;
-	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
-};
 DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct1InterfaceOLinkClient);
 
 UTestbed2NestedStruct1InterfaceOLinkClient::UTestbed2NestedStruct1InterfaceOLinkClient()

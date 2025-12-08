@@ -64,7 +64,7 @@ struct FTbEnumEnumInterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceStatsUpdatedDelegate, FTbEnumEnumInterfaceStats, Stats);
 
-struct TbEnumEnumInterfacePropertiesMsgBusData;
+struct TbEnumEnumInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);
@@ -168,7 +168,7 @@ private:
 	void OnFunc3Reply(const FTbEnumEnumInterfaceFunc3ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
-	TPimplPtr<TbEnumEnumInterfacePropertiesMsgBusData> _SentData;
+	TPimplPtr<TbEnumEnumInterfacePropertiesData> _SentData;
 
 	TMap<FGuid, void*> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;

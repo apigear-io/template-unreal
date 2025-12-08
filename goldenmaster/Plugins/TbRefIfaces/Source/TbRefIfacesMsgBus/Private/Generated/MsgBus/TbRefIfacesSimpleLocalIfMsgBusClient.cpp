@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbRefIfaces/Generated/MsgBus/TbRefIfacesSimpleLocalIfMsgBusClient.h"
 #include "TbRefIfaces/Generated/MsgBus/TbRefIfacesSimpleLocalIfMsgBusMessages.h"
+#include "TbRefIfaces/Generated/Core/TbRefIfacesPropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,20 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbRefIfacesSettings.h"
-#include <atomic>
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbRefIfacesSimpleLocalIfPropertiesMsgBusData
-{
-	std::atomic<int32> IntProperty{0};
-};
 DEFINE_LOG_CATEGORY(LogTbRefIfacesSimpleLocalIfMsgBusClient);
 
 UTbRefIfacesSimpleLocalIfMsgBusClient::UTbRefIfacesSimpleLocalIfMsgBusClient()
 	: UAbstractTbRefIfacesSimpleLocalIf()
-	, _SentData(MakePimpl<TbRefIfacesSimpleLocalIfPropertiesMsgBusData>())
+	, _SentData(MakePimpl<TbRefIfacesSimpleLocalIfPropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

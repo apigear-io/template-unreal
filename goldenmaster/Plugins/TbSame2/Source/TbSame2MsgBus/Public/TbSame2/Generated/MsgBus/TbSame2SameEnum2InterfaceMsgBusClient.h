@@ -58,7 +58,7 @@ struct FTbSame2SameEnum2InterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameEnum2InterfaceStatsUpdatedDelegate, FTbSame2SameEnum2InterfaceStats, Stats);
 
-struct TbSame2SameEnum2InterfacePropertiesMsgBusData;
+struct TbSame2SameEnum2InterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2SameEnum2InterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbSame2SameEnum2InterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);
@@ -146,7 +146,7 @@ private:
 	void OnFunc2Reply(const FTbSame2SameEnum2InterfaceFunc2ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
-	TPimplPtr<TbSame2SameEnum2InterfacePropertiesMsgBusData> _SentData;
+	TPimplPtr<TbSame2SameEnum2InterfacePropertiesData> _SentData;
 
 	TMap<FGuid, void*> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;

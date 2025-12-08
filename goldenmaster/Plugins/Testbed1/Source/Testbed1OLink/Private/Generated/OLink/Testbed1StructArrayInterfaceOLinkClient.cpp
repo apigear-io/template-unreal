@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "Testbed1/Generated/OLink/Testbed1StructArrayInterfaceOLinkClient.h"
+#include "Testbed1/Generated/Core/Testbed1PropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -35,24 +36,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct Testbed1StructArrayInterfacePropertiesData
-{
-	FCriticalSection PropBoolMutex;
-	TArray<FTestbed1StructBool> PropBool{TArray<FTestbed1StructBool>()};
-	FCriticalSection PropIntMutex;
-	TArray<FTestbed1StructInt> PropInt{TArray<FTestbed1StructInt>()};
-	FCriticalSection PropFloatMutex;
-	TArray<FTestbed1StructFloat> PropFloat{TArray<FTestbed1StructFloat>()};
-	FCriticalSection PropStringMutex;
-	TArray<FTestbed1StructString> PropString{TArray<FTestbed1StructString>()};
-	FCriticalSection PropEnumMutex;
-	TArray<ETestbed1Enum0> PropEnum{TArray<ETestbed1Enum0>()};
-};
 DEFINE_LOG_CATEGORY(LogTestbed1StructArrayInterfaceOLinkClient);
 
 UTestbed1StructArrayInterfaceOLinkClient::UTestbed1StructArrayInterfaceOLinkClient()

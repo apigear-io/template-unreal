@@ -61,7 +61,7 @@ struct FCounterCounterStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterStatsUpdatedDelegate, FCounterCounterStats, Stats);
 
-struct CounterCounterPropertiesMsgBusData;
+struct CounterCounterPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounterMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FCounterCounterConnectionStatusChangedDelegate, bool /* IsConnected */);
@@ -162,7 +162,7 @@ private:
 	void OnDecrementArrayReply(const FCounterCounterDecrementArrayReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
-	TPimplPtr<CounterCounterPropertiesMsgBusData> _SentData;
+	TPimplPtr<CounterCounterPropertiesData> _SentData;
 
 	TMap<FGuid, void*> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;

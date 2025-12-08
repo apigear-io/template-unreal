@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbSimple/Generated/OLink/TbSimpleSimpleInterfaceOLinkClient.h"
+#include "TbSimple/Generated/Core/TbSimplePropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -35,24 +36,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include <atomic>
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbSimpleSimpleInterfacePropertiesData
-{
-	std::atomic<bool> bPropBool{false};
-	std::atomic<int32> PropInt{0};
-	std::atomic<int32> PropInt32{0};
-	std::atomic<int64> PropInt64{0LL};
-	std::atomic<float> PropFloat{0.0f};
-	std::atomic<float> PropFloat32{0.0f};
-	std::atomic<double> PropFloat64{0.0};
-	FCriticalSection PropStringMutex;
-	FString PropString{FString()};
-};
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleInterfaceOLinkClient);
 
 UTbSimpleSimpleInterfaceOLinkClient::UTbSimpleSimpleInterfaceOLinkClient()

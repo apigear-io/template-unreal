@@ -60,7 +60,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$Iface}}StatsUpdatedDelegate, F{{
 
 {{- if len .Interface.Properties }}
 
-struct {{$Iface}}PropertiesMsgBusData;
+struct {{$Iface}}PropertiesData;
 {{- end}}
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}MsgBusClient, Log, All);
 
@@ -157,7 +157,7 @@ private:
 {{- if len .Interface.Properties }}
 
 	// member variable to store the last sent data
-	TPimplPtr<{{$Iface}}PropertiesMsgBusData> _SentData;
+	TPimplPtr<{{$Iface}}PropertiesData> _SentData;
 {{- end}}
 
 {{- if len .Interface.Operations }}

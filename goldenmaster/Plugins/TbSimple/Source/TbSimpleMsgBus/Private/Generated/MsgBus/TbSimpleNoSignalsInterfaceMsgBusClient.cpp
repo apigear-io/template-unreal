@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbSimple/Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusClient.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleNoSignalsInterfaceMsgBusMessages.h"
+#include "TbSimple/Generated/Core/TbSimplePropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,21 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbSimpleSettings.h"
-#include <atomic>
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbSimpleNoSignalsInterfacePropertiesMsgBusData
-{
-	std::atomic<bool> bPropBool{false};
-	std::atomic<int32> PropInt{0};
-};
 DEFINE_LOG_CATEGORY(LogTbSimpleNoSignalsInterfaceMsgBusClient);
 
 UTbSimpleNoSignalsInterfaceMsgBusClient::UTbSimpleNoSignalsInterfaceMsgBusClient()
 	: UAbstractTbSimpleNoSignalsInterface()
-	, _SentData(MakePimpl<TbSimpleNoSignalsInterfacePropertiesMsgBusData>())
+	, _SentData(MakePimpl<TbSimpleNoSignalsInterfacePropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }
