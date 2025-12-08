@@ -38,8 +38,6 @@ public class TbSame2Core : ModuleRules
 				"Engine",
 				"Messaging",
 				"JsonUtilities",
-				"ApiGearOLink",
-				"OLinkProtocolLibrary",
 			}
 			);
 			

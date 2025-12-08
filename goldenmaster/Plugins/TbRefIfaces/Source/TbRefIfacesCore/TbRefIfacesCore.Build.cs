@@ -38,8 +38,6 @@ public class TbRefIfacesCore : ModuleRules
 				"Engine",
 				"Messaging",
 				"JsonUtilities",
-				"ApiGearOLink",
-				"OLinkProtocolLibrary",
 				"TbIfaceimportCore"
 			}
 			);

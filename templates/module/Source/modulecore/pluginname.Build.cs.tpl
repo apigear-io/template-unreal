@@ -48,10 +48,6 @@ public class {{$ModuleName}}Core : ModuleRules
 				"Messaging",
 {{- end }}
 				"JsonUtilities",
-{{- if .Features.olink }}
-				"ApiGearOLink",
-				"OLinkProtocolLibrary",
-{{- end }}
 {{- range $idx, $elem := .Module.Imports }}
 {{- if $idx}}, {{ end }}
 				"{{Camel .Name}}Core"

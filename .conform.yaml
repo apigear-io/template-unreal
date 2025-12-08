@@ -28,6 +28,7 @@ policies:
         scopes:
           - "apigear"
           - "api"
+          - "core"
           - "olink"
           - "msgbus"
           - "plugin"
