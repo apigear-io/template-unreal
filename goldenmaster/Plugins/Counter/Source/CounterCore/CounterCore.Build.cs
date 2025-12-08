@@ -38,8 +38,6 @@ public class CounterCore : ModuleRules
 				"Engine",
 				"Messaging",
 				"JsonUtilities",
-				"ApiGearOLink",
-				"OLinkProtocolLibrary",
 				"CustomTypesCore", 
 				"ExternTypesCore"
 			}

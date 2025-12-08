@@ -38,8 +38,6 @@ public class Testbed2Core : ModuleRules
 				"Engine",
 				"Messaging",
 				"JsonUtilities",
-				"ApiGearOLink",
-				"OLinkProtocolLibrary",
 			}
 			);
 			

@@ -38,8 +38,6 @@ public class TbSimpleCore : ModuleRules
 				"Engine",
 				"Messaging",
 				"JsonUtilities",
-				"ApiGearOLink",
-				"OLinkProtocolLibrary",
 			}
 			);
 			

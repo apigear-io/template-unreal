@@ -38,8 +38,6 @@ public class ExternTypesCore : ModuleRules
 				"Engine",
 				"Messaging",
 				"JsonUtilities",
-				"ApiGearOLink",
-				"OLinkProtocolLibrary",
 			}
 			);
 			
