@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "Testbed1/Generated/MsgBus/Testbed1StructArray2InterfaceMsgBusClient.h"
 #include "Testbed1/Generated/MsgBus/Testbed1StructArray2InterfaceMsgBusMessages.h"
+#include "Testbed1/Generated/Core/Testbed1PropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,29 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "Testbed1Settings.h"
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct Testbed1StructArray2InterfacePropertiesMsgBusData
-{
-	FCriticalSection PropBoolMutex;
-	FTestbed1StructBoolWithArray PropBool{FTestbed1StructBoolWithArray()};
-	FCriticalSection PropIntMutex;
-	FTestbed1StructIntWithArray PropInt{FTestbed1StructIntWithArray()};
-	FCriticalSection PropFloatMutex;
-	FTestbed1StructFloatWithArray PropFloat{FTestbed1StructFloatWithArray()};
-	FCriticalSection PropStringMutex;
-	FTestbed1StructStringWithArray PropString{FTestbed1StructStringWithArray()};
-	FCriticalSection PropEnumMutex;
-	FTestbed1StructEnumWithArray PropEnum{FTestbed1StructEnumWithArray()};
-};
 DEFINE_LOG_CATEGORY(LogTestbed1StructArray2InterfaceMsgBusClient);
 
 UTestbed1StructArray2InterfaceMsgBusClient::UTestbed1StructArray2InterfaceMsgBusClient()
 	: UAbstractTestbed1StructArray2Interface()
-	, _SentData(MakePimpl<Testbed1StructArray2InterfacePropertiesMsgBusData>())
+	, _SentData(MakePimpl<Testbed1StructArray2InterfacePropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

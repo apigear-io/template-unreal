@@ -77,7 +77,7 @@ struct FTbSimpleSimpleArrayInterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfaceStatsUpdatedDelegate, FTbSimpleSimpleArrayInterfaceStats, Stats);
 
-struct TbSimpleSimpleArrayInterfacePropertiesMsgBusData;
+struct TbSimpleSimpleArrayInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleArrayInterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);
@@ -216,7 +216,7 @@ private:
 	void OnFuncStringReply(const FTbSimpleSimpleArrayInterfaceFuncStringReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
-	TPimplPtr<TbSimpleSimpleArrayInterfacePropertiesMsgBusData> _SentData;
+	TPimplPtr<TbSimpleSimpleArrayInterfacePropertiesData> _SentData;
 
 	TMap<FGuid, void*> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;

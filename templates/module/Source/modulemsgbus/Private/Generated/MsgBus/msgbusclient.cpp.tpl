@@ -16,6 +16,7 @@
 
 #include "{{$ModuleName}}/Generated/MsgBus/{{$Iface}}MsgBusClient.h"
 #include "{{$ModuleName}}/Generated/MsgBus/{{$Iface}}MsgBusMessages.h"
+#include "{{$ModuleName}}/Generated/Core/{{$ModuleName}}PropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -25,38 +26,6 @@
 #include "MessageEndpoint.h"
 #include "{{$ModuleName}}Settings.h"
 
-{{- if len .Interface.Properties }}
-    {{- $shouldIncludeAtomic := 0 -}}
-    {{- $shouldIncludeMutex := 0 -}}
-{{- range $i, $e := .Interface.Properties }}
-	{{- if ( ueIsStdSimpleType . ) }}
-	{{- $shouldIncludeAtomic = 1}}
-	{{- else}}
-	{{- $shouldIncludeMutex = 1}}
-	{{- end}}
-{{- end}}
-{{- if (eq $shouldIncludeAtomic  1) }}
-#include <atomic>
-{{- end}}
-{{- if (eq $shouldIncludeMutex 1) }}
-#include "HAL/CriticalSection.h"
-{{- end}}
-
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct {{$Iface}}PropertiesMsgBusData
-{
-{{- range $i, $e := .Interface.Properties }}
-	{{- if ( ueIsStdSimpleType . ) }}
-	std::atomic<{{ueReturn "" .}}> {{ueVar "" .}}{ {{- ueDefault "" . -}} };
-	{{- else }}
-	FCriticalSection {{ueVar "" .}}Mutex;
-	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
-	{{- end }}
-{{- end }}
-};
-{{- end }}
 DEFINE_LOG_CATEGORY(Log{{$Iface}}MsgBusClient);
 {{ if .Interface.Description }}
 /**
@@ -66,7 +35,7 @@ DEFINE_LOG_CATEGORY(Log{{$Iface}}MsgBusClient);
 {{$Class}}::{{$Class}}()
 	: {{$abstractclass}}()
 {{- if len .Interface.Properties }}
-	, _SentData(MakePimpl<{{$Iface}}PropertiesMsgBusData>())
+	, _SentData(MakePimpl<{{$Iface}}PropertiesData>())
 {{- end }}
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);

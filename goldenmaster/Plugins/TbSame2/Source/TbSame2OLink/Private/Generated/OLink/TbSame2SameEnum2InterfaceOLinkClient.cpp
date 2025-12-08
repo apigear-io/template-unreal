@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbSame2/Generated/OLink/TbSame2SameEnum2InterfaceOLinkClient.h"
+#include "TbSame2/Generated/Core/TbSame2PropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -35,16 +36,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include <atomic>
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbSame2SameEnum2InterfacePropertiesData
-{
-	std::atomic<ETbSame2Enum1> Prop1{ETbSame2Enum1::TS2E1_Value1};
-	std::atomic<ETbSame2Enum2> Prop2{ETbSame2Enum2::TS2E2_Value1};
-};
 DEFINE_LOG_CATEGORY(LogTbSame2SameEnum2InterfaceOLinkClient);
 
 UTbSame2SameEnum2InterfaceOLinkClient::UTbSame2SameEnum2InterfaceOLinkClient()

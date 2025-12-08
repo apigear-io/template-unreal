@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "Counter/Generated/OLink/CounterCounterOLinkClient.h"
+#include "Counter/Generated/Core/CounterPropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -37,22 +38,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct CounterCounterPropertiesData
-{
-	FCriticalSection VectorMutex;
-	FCustomTypesVector3D Vector{FCustomTypesVector3D()};
-	FCriticalSection ExternVectorMutex;
-	FVector ExternVector{FVector(0.f, 0.f, 0.f)};
-	FCriticalSection VectorArrayMutex;
-	TArray<FCustomTypesVector3D> VectorArray{TArray<FCustomTypesVector3D>()};
-	FCriticalSection ExternVectorArrayMutex;
-	TArray<FVector> ExternVectorArray{TArray<FVector>()};
-};
 DEFINE_LOG_CATEGORY(LogCounterCounterOLinkClient);
 
 UCounterCounterOLinkClient::UCounterCounterOLinkClient()

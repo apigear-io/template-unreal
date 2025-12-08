@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbSame2/Generated/MsgBus/TbSame2SameEnum2InterfaceMsgBusClient.h"
 #include "TbSame2/Generated/MsgBus/TbSame2SameEnum2InterfaceMsgBusMessages.h"
+#include "TbSame2/Generated/Core/TbSame2PropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,21 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbSame2Settings.h"
-#include <atomic>
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbSame2SameEnum2InterfacePropertiesMsgBusData
-{
-	std::atomic<ETbSame2Enum1> Prop1{ETbSame2Enum1::TS2E1_Value1};
-	std::atomic<ETbSame2Enum2> Prop2{ETbSame2Enum2::TS2E2_Value1};
-};
 DEFINE_LOG_CATEGORY(LogTbSame2SameEnum2InterfaceMsgBusClient);
 
 UTbSame2SameEnum2InterfaceMsgBusClient::UTbSame2SameEnum2InterfaceMsgBusClient()
 	: UAbstractTbSame2SameEnum2Interface()
-	, _SentData(MakePimpl<TbSame2SameEnum2InterfacePropertiesMsgBusData>())
+	, _SentData(MakePimpl<TbSame2SameEnum2InterfacePropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

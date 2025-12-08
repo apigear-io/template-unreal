@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbSame1/Generated/OLink/TbSame1SameStruct2InterfaceOLinkClient.h"
+#include "TbSame1/Generated/Core/TbSame1PropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -35,18 +36,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbSame1SameStruct2InterfacePropertiesData
-{
-	FCriticalSection Prop1Mutex;
-	FTbSame1Struct2 Prop1{FTbSame1Struct2()};
-	FCriticalSection Prop2Mutex;
-	FTbSame1Struct2 Prop2{FTbSame1Struct2()};
-};
 DEFINE_LOG_CATEGORY(LogTbSame1SameStruct2InterfaceOLinkClient);
 
 UTbSame1SameStruct2InterfaceOLinkClient::UTbSame1SameStruct2InterfaceOLinkClient()

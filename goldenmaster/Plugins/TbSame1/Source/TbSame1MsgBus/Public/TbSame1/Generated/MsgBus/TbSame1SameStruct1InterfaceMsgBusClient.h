@@ -55,7 +55,7 @@ struct FTbSame1SameStruct1InterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct1InterfaceStatsUpdatedDelegate, FTbSame1SameStruct1InterfaceStats, Stats);
 
-struct TbSame1SameStruct1InterfacePropertiesMsgBusData;
+struct TbSame1SameStruct1InterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameStruct1InterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbSame1SameStruct1InterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);
@@ -135,7 +135,7 @@ private:
 	void OnFunc1Reply(const FTbSame1SameStruct1InterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
-	TPimplPtr<TbSame1SameStruct1InterfacePropertiesMsgBusData> _SentData;
+	TPimplPtr<TbSame1SameStruct1InterfacePropertiesData> _SentData;
 
 	TMap<FGuid, void*> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;

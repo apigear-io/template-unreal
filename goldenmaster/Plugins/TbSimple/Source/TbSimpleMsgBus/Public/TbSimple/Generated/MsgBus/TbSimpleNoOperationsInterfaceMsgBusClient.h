@@ -56,7 +56,7 @@ struct FTbSimpleNoOperationsInterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoOperationsInterfaceStatsUpdatedDelegate, FTbSimpleNoOperationsInterfaceStats, Stats);
 
-struct TbSimpleNoOperationsInterfacePropertiesMsgBusData;
+struct TbSimpleNoOperationsInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoOperationsInterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleNoOperationsInterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);
@@ -139,5 +139,5 @@ private:
 	void OnPropIntChanged(const FTbSimpleNoOperationsInterfacePropIntChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
-	TPimplPtr<TbSimpleNoOperationsInterfacePropertiesMsgBusData> _SentData;
+	TPimplPtr<TbSimpleNoOperationsInterfacePropertiesData> _SentData;
 };

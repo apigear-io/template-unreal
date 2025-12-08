@@ -56,7 +56,7 @@ struct FTestbed2NestedStruct1InterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct1InterfaceStatsUpdatedDelegate, FTestbed2NestedStruct1InterfaceStats, Stats);
 
-struct Testbed2NestedStruct1InterfacePropertiesMsgBusData;
+struct Testbed2NestedStruct1InterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct1InterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2NestedStruct1InterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);
@@ -141,7 +141,7 @@ private:
 	void OnFunc1Reply(const FTestbed2NestedStruct1InterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
-	TPimplPtr<Testbed2NestedStruct1InterfacePropertiesMsgBusData> _SentData;
+	TPimplPtr<Testbed2NestedStruct1InterfacePropertiesData> _SentData;
 
 	TMap<FGuid, void*> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;

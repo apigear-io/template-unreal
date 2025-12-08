@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbEnum/Generated/OLink/TbEnumEnumInterfaceOLinkClient.h"
+#include "TbEnum/Generated/Core/TbEnumPropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -35,18 +36,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include <atomic>
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbEnumEnumInterfacePropertiesData
-{
-	std::atomic<ETbEnumEnum0> Prop0{ETbEnumEnum0::TEE0_Value0};
-	std::atomic<ETbEnumEnum1> Prop1{ETbEnumEnum1::TEE1_Value1};
-	std::atomic<ETbEnumEnum2> Prop2{ETbEnumEnum2::TEE2_Value2};
-	std::atomic<ETbEnumEnum3> Prop3{ETbEnumEnum3::TEE3_Value3};
-};
 DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceOLinkClient);
 
 UTbEnumEnumInterfaceOLinkClient::UTbEnumEnumInterfaceOLinkClient()

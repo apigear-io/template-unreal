@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbEnum/Generated/MsgBus/TbEnumEnumInterfaceMsgBusClient.h"
 #include "TbEnum/Generated/MsgBus/TbEnumEnumInterfaceMsgBusMessages.h"
+#include "TbEnum/Generated/Core/TbEnumPropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,23 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbEnumSettings.h"
-#include <atomic>
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbEnumEnumInterfacePropertiesMsgBusData
-{
-	std::atomic<ETbEnumEnum0> Prop0{ETbEnumEnum0::TEE0_Value0};
-	std::atomic<ETbEnumEnum1> Prop1{ETbEnumEnum1::TEE1_Value1};
-	std::atomic<ETbEnumEnum2> Prop2{ETbEnumEnum2::TEE2_Value2};
-	std::atomic<ETbEnumEnum3> Prop3{ETbEnumEnum3::TEE3_Value3};
-};
 DEFINE_LOG_CATEGORY(LogTbEnumEnumInterfaceMsgBusClient);
 
 UTbEnumEnumInterfaceMsgBusClient::UTbEnumEnumInterfaceMsgBusClient()
 	: UAbstractTbEnumEnumInterface()
-	, _SentData(MakePimpl<TbEnumEnumInterfacePropertiesMsgBusData>())
+	, _SentData(MakePimpl<TbEnumEnumInterfacePropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

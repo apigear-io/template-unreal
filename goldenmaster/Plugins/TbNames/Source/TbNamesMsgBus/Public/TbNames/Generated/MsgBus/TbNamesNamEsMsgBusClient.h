@@ -58,7 +58,7 @@ struct FTbNamesNamEsStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsStatsUpdatedDelegate, FTbNamesNamEsStats, Stats);
 
-struct TbNamesNamEsPropertiesMsgBusData;
+struct TbNamesNamEsPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesNamEsMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsConnectionStatusChangedDelegate, bool /* IsConnected */);
@@ -152,7 +152,7 @@ private:
 	void OnEnumPropertyChanged(const FTbNamesNamEsEnumPropertyChangedMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context);
 
 	// member variable to store the last sent data
-	TPimplPtr<TbNamesNamEsPropertiesMsgBusData> _SentData;
+	TPimplPtr<TbNamesNamEsPropertiesData> _SentData;
 
 	TMap<FGuid, void*> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;

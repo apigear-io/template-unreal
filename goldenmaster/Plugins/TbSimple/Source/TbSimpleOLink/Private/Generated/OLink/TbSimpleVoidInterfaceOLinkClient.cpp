@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbSimple/Generated/OLink/TbSimpleVoidInterfaceOLinkClient.h"
+#include "TbSimple/Generated/Core/TbSimplePropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -35,6 +36,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
+
 DEFINE_LOG_CATEGORY(LogTbSimpleVoidInterfaceOLinkClient);
 
 UTbSimpleVoidInterfaceOLinkClient::UTbSimpleVoidInterfaceOLinkClient()

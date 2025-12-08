@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbSimple/Generated/OLink/TbSimpleSimpleArrayInterfaceOLinkClient.h"
+#include "TbSimple/Generated/Core/TbSimplePropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -35,32 +36,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbSimpleSimpleArrayInterfacePropertiesData
-{
-	FCriticalSection PropBoolMutex;
-	TArray<bool> PropBool{TArray<bool>()};
-	FCriticalSection PropIntMutex;
-	TArray<int32> PropInt{TArray<int32>()};
-	FCriticalSection PropInt32Mutex;
-	TArray<int32> PropInt32{TArray<int32>()};
-	FCriticalSection PropInt64Mutex;
-	TArray<int64> PropInt64{TArray<int64>()};
-	FCriticalSection PropFloatMutex;
-	TArray<float> PropFloat{TArray<float>()};
-	FCriticalSection PropFloat32Mutex;
-	TArray<float> PropFloat32{TArray<float>()};
-	FCriticalSection PropFloat64Mutex;
-	TArray<double> PropFloat64{TArray<double>()};
-	FCriticalSection PropStringMutex;
-	TArray<FString> PropString{TArray<FString>()};
-	FCriticalSection PropReadOnlyStringMutex;
-	FString PropReadOnlyString{FString()};
-};
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleArrayInterfaceOLinkClient);
 
 UTbSimpleSimpleArrayInterfaceOLinkClient::UTbSimpleSimpleArrayInterfaceOLinkClient()

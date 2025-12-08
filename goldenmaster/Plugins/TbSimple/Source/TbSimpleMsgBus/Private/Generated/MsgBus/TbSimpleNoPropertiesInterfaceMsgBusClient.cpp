@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbSimple/Generated/MsgBus/TbSimpleNoPropertiesInterfaceMsgBusClient.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleNoPropertiesInterfaceMsgBusMessages.h"
+#include "TbSimple/Generated/Core/TbSimplePropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,6 +31,7 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbSimpleSettings.h"
+
 DEFINE_LOG_CATEGORY(LogTbSimpleNoPropertiesInterfaceMsgBusClient);
 
 UTbSimpleNoPropertiesInterfaceMsgBusClient::UTbSimpleNoPropertiesInterfaceMsgBusClient()

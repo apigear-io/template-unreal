@@ -21,6 +21,7 @@ limitations under the License.
 ///////////////////////////////
 
 #include "TbRefIfaces/Generated/OLink/TbRefIfacesParentIfOLinkClient.h"
+#include "TbRefIfaces/Generated/Core/TbRefIfacesPropertiesData.h"
 #include "ApiGearSettings.h"
 #include "ApiGearOLink.h"
 #include "Async/Async.h"
@@ -36,22 +37,7 @@ THIRD_PARTY_INCLUDES_START
 #include "olink/clientnode.h"
 #include "olink/iobjectsink.h"
 THIRD_PARTY_INCLUDES_END
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbRefIfacesParentIfPropertiesData
-{
-	FCriticalSection LocalIfMutex;
-	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIf{TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>()};
-	FCriticalSection LocalIfListMutex;
-	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList{TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>()};
-	FCriticalSection ImportedIfMutex;
-	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIf{TScriptInterface<ITbIfaceimportEmptyIfInterface>()};
-	FCriticalSection ImportedIfListMutex;
-	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList{TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>()};
-};
 DEFINE_LOG_CATEGORY(LogTbRefIfacesParentIfOLinkClient);
 
 UTbRefIfacesParentIfOLinkClient::UTbRefIfacesParentIfOLinkClient()

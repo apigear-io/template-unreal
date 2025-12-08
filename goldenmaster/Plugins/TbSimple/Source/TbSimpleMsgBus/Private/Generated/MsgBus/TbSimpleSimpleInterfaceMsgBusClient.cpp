@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "TbSimple/Generated/MsgBus/TbSimpleSimpleInterfaceMsgBusClient.h"
 #include "TbSimple/Generated/MsgBus/TbSimpleSimpleInterfaceMsgBusMessages.h"
+#include "TbSimple/Generated/Core/TbSimplePropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,29 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "TbSimpleSettings.h"
-#include <atomic>
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct TbSimpleSimpleInterfacePropertiesMsgBusData
-{
-	std::atomic<bool> bPropBool{false};
-	std::atomic<int32> PropInt{0};
-	std::atomic<int32> PropInt32{0};
-	std::atomic<int64> PropInt64{0LL};
-	std::atomic<float> PropFloat{0.0f};
-	std::atomic<float> PropFloat32{0.0f};
-	std::atomic<double> PropFloat64{0.0};
-	FCriticalSection PropStringMutex;
-	FString PropString{FString()};
-};
 DEFINE_LOG_CATEGORY(LogTbSimpleSimpleInterfaceMsgBusClient);
 
 UTbSimpleSimpleInterfaceMsgBusClient::UTbSimpleSimpleInterfaceMsgBusClient()
 	: UAbstractTbSimpleSimpleInterface()
-	, _SentData(MakePimpl<TbSimpleSimpleInterfacePropertiesMsgBusData>())
+	, _SentData(MakePimpl<TbSimpleSimpleInterfacePropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }

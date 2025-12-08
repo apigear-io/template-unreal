@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "Testbed2/Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusClient.h"
 #include "Testbed2/Generated/MsgBus/Testbed2NestedStruct3InterfaceMsgBusMessages.h"
+#include "Testbed2/Generated/Core/Testbed2PropertiesData.h"
 #include "Async/Async.h"
 #include "Engine/World.h"
 #include "Misc/DateTime.h"
@@ -30,25 +31,12 @@ limitations under the License.
 #include "MessageEndpointBuilder.h"
 #include "MessageEndpoint.h"
 #include "Testbed2Settings.h"
-#include "HAL/CriticalSection.h"
 
-/**
-   \brief data structure to hold the last sent property values
-*/
-struct Testbed2NestedStruct3InterfacePropertiesMsgBusData
-{
-	FCriticalSection Prop1Mutex;
-	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
-	FCriticalSection Prop2Mutex;
-	FTestbed2NestedStruct2 Prop2{FTestbed2NestedStruct2()};
-	FCriticalSection Prop3Mutex;
-	FTestbed2NestedStruct3 Prop3{FTestbed2NestedStruct3()};
-};
 DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct3InterfaceMsgBusClient);
 
 UTestbed2NestedStruct3InterfaceMsgBusClient::UTestbed2NestedStruct3InterfaceMsgBusClient()
 	: UAbstractTestbed2NestedStruct3Interface()
-	, _SentData(MakePimpl<Testbed2NestedStruct3InterfacePropertiesMsgBusData>())
+	, _SentData(MakePimpl<Testbed2NestedStruct3InterfacePropertiesData>())
 {
 	PingRTTBuffer.SetNumZeroed(PING_RTT_BUFFER_SIZE);
 }
