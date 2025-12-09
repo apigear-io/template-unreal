@@ -298,7 +298,6 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
 		env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
 		static const TCHAR* errorMsg{{$cppFieldName}}Set = TEXT("failed when seting field for {{$structName}}.{{$cppFieldName}}");
 		checkJniErrorOccured(errorMsg{{$cppFieldName}}Set);
-		// in UE 5.6 no need for new local ref
 	{{- else if .IsPrimitive }}
 		env->Set{{jniToEnvNameType .}}Field(javaObjInstance, jFieldId_{{snake .Name}}, {{$in_cppStructName}}.{{$cppFieldName}});
 		static const TCHAR* errorMsg{{$cppFieldName}}Set = TEXT("failed when seting field for {{$structName}}.{{$cppFieldName}}");

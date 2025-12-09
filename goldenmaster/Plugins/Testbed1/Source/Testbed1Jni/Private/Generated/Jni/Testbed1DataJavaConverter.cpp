@@ -418,7 +418,6 @@ jobject Testbed1DataJavaConverter::makeJavaStructString(JNIEnv* env, const FTest
 		env->SetObjectField(javaObjInstance, jFieldId_field_string, l_fieldString);
 		static const TCHAR* errorMsgfieldStringSet = TEXT("failed when seting field for out_struct_string.fieldString");
 		checkJniErrorOccured(errorMsgfieldStringSet);
-		// in UE 5.6 no need for new local ref
 	}
 	else
 	{
