@@ -36,7 +36,6 @@ public class TbIfaceimportCore : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
-				"Messaging",
 				"JsonUtilities",
 			}
 			);

@@ -36,7 +36,6 @@ public class TbNamesCore : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
-				"Messaging",
 				"JsonUtilities",
 			}
 			);

@@ -36,7 +36,6 @@ public class Testbed1Core : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
-				"Messaging",
 				"JsonUtilities",
 			}
 			);

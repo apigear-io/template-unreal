@@ -36,7 +36,6 @@ public class CounterCore : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
-				"Messaging",
 				"JsonUtilities",
 				"CustomTypesCore", 
 				"ExternTypesCore"

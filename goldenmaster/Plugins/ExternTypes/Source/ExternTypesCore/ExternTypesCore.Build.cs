@@ -36,7 +36,6 @@ public class ExternTypesCore : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
-				"Messaging",
 				"JsonUtilities",
 			}
 			);

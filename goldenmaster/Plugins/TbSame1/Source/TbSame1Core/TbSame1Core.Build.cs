@@ -36,7 +36,6 @@ public class TbSame1Core : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
-				"Messaging",
 				"JsonUtilities",
 			}
 			);

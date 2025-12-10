@@ -36,7 +36,6 @@ public class CustomTypesCore : ModuleRules
 				"ApiGear",
 				"Projects",
 				"Engine",
-				"Messaging",
 				"JsonUtilities",
 			}
 			);

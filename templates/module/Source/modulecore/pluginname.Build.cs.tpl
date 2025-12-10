@@ -44,9 +44,6 @@ public class {{$ModuleName}}Core : ModuleRules
 {{- end }}
 				"Projects",
 				"Engine",
-{{- if .Features.msgbus }}
-				"Messaging",
-{{- end }}
 				"JsonUtilities",
 {{- range $idx, $elem := .Module.Imports }}
 {{- if $idx}}, {{ end }}
