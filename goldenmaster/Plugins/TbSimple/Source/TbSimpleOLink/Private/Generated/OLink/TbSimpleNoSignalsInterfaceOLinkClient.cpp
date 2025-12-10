@@ -247,7 +247,7 @@ TFuture<bool> UTbSimpleNoSignalsInterfaceOLinkClient::FuncBoolAsync(bool bParamB
 		}
 		else
 		{
-			UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkClient, Error, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(false);
 		}
 	});

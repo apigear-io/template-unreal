@@ -43,7 +43,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleI
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
 	}
 
 	const auto propIntIter = j.find("propInt");
@@ -53,7 +53,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleI
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
 	}
 
 	const auto propInt32Iter = j.find("propInt32");
@@ -63,7 +63,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleI
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt32' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propInt32' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
 	}
 
 	const auto propInt64Iter = j.find("propInt64");
@@ -73,7 +73,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleI
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt64' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propInt64' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
 	}
 
 	const auto propFloatIter = j.find("propFloat");
@@ -83,7 +83,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleI
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propFloat' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
 	}
 
 	const auto propFloat32Iter = j.find("propFloat32");
@@ -93,7 +93,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleI
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat32' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propFloat32' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
 	}
 
 	const auto propFloat64Iter = j.find("propFloat64");
@@ -103,7 +103,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleI
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat64' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propFloat64' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
 	}
 
 	const auto propStringIter = j.find("propString");
@@ -113,7 +113,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleI
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propString' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propString' missing or type mismatch in ITbSimpleSimpleInterfaceInterface -> ignore"));
 	}
 }
 
@@ -141,7 +141,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleA
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
 	}
 
 	const auto propIntIter = j.find("propInt");
@@ -151,7 +151,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleA
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
 	}
 
 	const auto propInt32Iter = j.find("propInt32");
@@ -161,7 +161,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleA
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt32' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propInt32' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
 	}
 
 	const auto propInt64Iter = j.find("propInt64");
@@ -171,7 +171,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleA
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt64' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propInt64' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
 	}
 
 	const auto propFloatIter = j.find("propFloat");
@@ -181,7 +181,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleA
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propFloat' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
 	}
 
 	const auto propFloat32Iter = j.find("propFloat32");
@@ -191,7 +191,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleA
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat32' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propFloat32' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
 	}
 
 	const auto propFloat64Iter = j.find("propFloat64");
@@ -201,7 +201,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleA
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propFloat64' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propFloat64' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
 	}
 
 	const auto propStringIter = j.find("propString");
@@ -211,7 +211,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleSimpleA
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propString' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propString' missing or type mismatch in ITbSimpleSimpleArrayInterfaceInterface -> ignore"));
 	}
 }
 
@@ -257,7 +257,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleNoOpera
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleNoOperationsInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleNoOperationsInterfaceInterface -> ignore"));
 	}
 
 	const auto propIntIter = j.find("propInt");
@@ -267,7 +267,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleNoOpera
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleNoOperationsInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleNoOperationsInterfaceInterface -> ignore"));
 	}
 }
 
@@ -295,7 +295,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleNoSigna
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleNoSignalsInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propBool' missing or type mismatch in ITbSimpleNoSignalsInterfaceInterface -> ignore"));
 	}
 
 	const auto propIntIter = j.find("propInt");
@@ -305,7 +305,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSimpleNoSigna
 	}
 	else
 	{
-		UE_LOG(LogTbSimple, Verbose, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleNoSignalsInterfaceInterface -> ignore"));
+		UE_LOG(LogTbSimple, Error, TEXT("from_json: interface property 'propInt' missing or type mismatch in ITbSimpleNoSignalsInterfaceInterface -> ignore"));
 	}
 }
 

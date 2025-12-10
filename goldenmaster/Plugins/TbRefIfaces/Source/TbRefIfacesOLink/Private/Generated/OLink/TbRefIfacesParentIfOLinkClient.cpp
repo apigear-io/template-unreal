@@ -294,7 +294,7 @@ TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParent
 		}
 		else
 		{
-			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("LocalIfMethodAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("LocalIfMethodAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
 		}
 	});
@@ -334,7 +334,7 @@ TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> UTbRefIfac
 		}
 		else
 		{
-			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("LocalIfMethodListAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("LocalIfMethodListAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
 		}
 	});
@@ -374,7 +374,7 @@ TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOL
 		}
 		else
 		{
-			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("ImportedIfMethodAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("ImportedIfMethodAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
 		}
 	});
@@ -414,7 +414,7 @@ TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> UTbRefIfacesPa
 		}
 		else
 		{
-			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Warning, TEXT("ImportedIfMethodListAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbRefIfacesParentIfOLinkClient, Error, TEXT("ImportedIfMethodListAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
 		}
 	});

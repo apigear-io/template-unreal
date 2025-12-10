@@ -17,7 +17,7 @@ static void from_json(const nlohmann::json& j, FTestbed2Struct1& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2Struct1 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2Struct1 -> using default value"));
 	}
 }
 
@@ -35,7 +35,7 @@ static void from_json(const nlohmann::json& j, FTestbed2Struct2& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2Struct2 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2Struct2 -> using default value"));
 	}
 
 	const auto field2Iter = j.find("field2");
@@ -45,7 +45,7 @@ static void from_json(const nlohmann::json& j, FTestbed2Struct2& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field2' missing or type mismatch in FTestbed2Struct2 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field2' missing or type mismatch in FTestbed2Struct2 -> using default value"));
 	}
 }
 
@@ -63,7 +63,7 @@ static void from_json(const nlohmann::json& j, FTestbed2Struct3& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2Struct3 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2Struct3 -> using default value"));
 	}
 
 	const auto field2Iter = j.find("field2");
@@ -73,7 +73,7 @@ static void from_json(const nlohmann::json& j, FTestbed2Struct3& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field2' missing or type mismatch in FTestbed2Struct3 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field2' missing or type mismatch in FTestbed2Struct3 -> using default value"));
 	}
 
 	const auto field3Iter = j.find("field3");
@@ -83,7 +83,7 @@ static void from_json(const nlohmann::json& j, FTestbed2Struct3& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field3' missing or type mismatch in FTestbed2Struct3 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field3' missing or type mismatch in FTestbed2Struct3 -> using default value"));
 	}
 }
 
@@ -101,7 +101,7 @@ static void from_json(const nlohmann::json& j, FTestbed2Struct4& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2Struct4 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2Struct4 -> using default value"));
 	}
 
 	const auto field2Iter = j.find("field2");
@@ -111,7 +111,7 @@ static void from_json(const nlohmann::json& j, FTestbed2Struct4& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field2' missing or type mismatch in FTestbed2Struct4 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field2' missing or type mismatch in FTestbed2Struct4 -> using default value"));
 	}
 
 	const auto field3Iter = j.find("field3");
@@ -121,7 +121,7 @@ static void from_json(const nlohmann::json& j, FTestbed2Struct4& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field3' missing or type mismatch in FTestbed2Struct4 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field3' missing or type mismatch in FTestbed2Struct4 -> using default value"));
 	}
 
 	const auto field4Iter = j.find("field4");
@@ -131,7 +131,7 @@ static void from_json(const nlohmann::json& j, FTestbed2Struct4& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field4' missing or type mismatch in FTestbed2Struct4 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field4' missing or type mismatch in FTestbed2Struct4 -> using default value"));
 	}
 }
 
@@ -149,7 +149,7 @@ static void from_json(const nlohmann::json& j, FTestbed2NestedStruct1& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2NestedStruct1 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2NestedStruct1 -> using default value"));
 	}
 }
 
@@ -167,7 +167,7 @@ static void from_json(const nlohmann::json& j, FTestbed2NestedStruct2& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2NestedStruct2 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2NestedStruct2 -> using default value"));
 	}
 
 	const auto field2Iter = j.find("field2");
@@ -177,7 +177,7 @@ static void from_json(const nlohmann::json& j, FTestbed2NestedStruct2& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field2' missing or type mismatch in FTestbed2NestedStruct2 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field2' missing or type mismatch in FTestbed2NestedStruct2 -> using default value"));
 	}
 }
 
@@ -195,7 +195,7 @@ static void from_json(const nlohmann::json& j, FTestbed2NestedStruct3& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2NestedStruct3 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field1' missing or type mismatch in FTestbed2NestedStruct3 -> using default value"));
 	}
 
 	const auto field2Iter = j.find("field2");
@@ -205,7 +205,7 @@ static void from_json(const nlohmann::json& j, FTestbed2NestedStruct3& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field2' missing or type mismatch in FTestbed2NestedStruct3 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field2' missing or type mismatch in FTestbed2NestedStruct3 -> using default value"));
 	}
 
 	const auto field3Iter = j.find("field3");
@@ -215,7 +215,7 @@ static void from_json(const nlohmann::json& j, FTestbed2NestedStruct3& p)
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: struct field 'field3' missing or type mismatch in FTestbed2NestedStruct3 -> using default value"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: struct field 'field3' missing or type mismatch in FTestbed2NestedStruct3 -> using default value"));
 	}
 }
 
@@ -238,7 +238,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed2ManyPar
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITestbed2ManyParamInterfaceInterface -> ignore"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITestbed2ManyParamInterfaceInterface -> ignore"));
 	}
 
 	const auto prop2Iter = j.find("prop2");
@@ -248,7 +248,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed2ManyPar
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: interface property 'prop2' missing or type mismatch in ITestbed2ManyParamInterfaceInterface -> ignore"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: interface property 'prop2' missing or type mismatch in ITestbed2ManyParamInterfaceInterface -> ignore"));
 	}
 
 	const auto prop3Iter = j.find("prop3");
@@ -258,7 +258,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed2ManyPar
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: interface property 'prop3' missing or type mismatch in ITestbed2ManyParamInterfaceInterface -> ignore"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: interface property 'prop3' missing or type mismatch in ITestbed2ManyParamInterfaceInterface -> ignore"));
 	}
 
 	const auto prop4Iter = j.find("prop4");
@@ -268,7 +268,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed2ManyPar
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: interface property 'prop4' missing or type mismatch in ITestbed2ManyParamInterfaceInterface -> ignore"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: interface property 'prop4' missing or type mismatch in ITestbed2ManyParamInterfaceInterface -> ignore"));
 	}
 }
 
@@ -296,7 +296,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed2NestedS
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITestbed2NestedStruct1InterfaceInterface -> ignore"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITestbed2NestedStruct1InterfaceInterface -> ignore"));
 	}
 }
 
@@ -324,7 +324,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed2NestedS
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITestbed2NestedStruct2InterfaceInterface -> ignore"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITestbed2NestedStruct2InterfaceInterface -> ignore"));
 	}
 
 	const auto prop2Iter = j.find("prop2");
@@ -334,7 +334,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed2NestedS
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: interface property 'prop2' missing or type mismatch in ITestbed2NestedStruct2InterfaceInterface -> ignore"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: interface property 'prop2' missing or type mismatch in ITestbed2NestedStruct2InterfaceInterface -> ignore"));
 	}
 }
 
@@ -362,7 +362,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed2NestedS
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITestbed2NestedStruct3InterfaceInterface -> ignore"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITestbed2NestedStruct3InterfaceInterface -> ignore"));
 	}
 
 	const auto prop2Iter = j.find("prop2");
@@ -372,7 +372,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed2NestedS
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: interface property 'prop2' missing or type mismatch in ITestbed2NestedStruct3InterfaceInterface -> ignore"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: interface property 'prop2' missing or type mismatch in ITestbed2NestedStruct3InterfaceInterface -> ignore"));
 	}
 
 	const auto prop3Iter = j.find("prop3");
@@ -382,7 +382,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITestbed2NestedS
 	}
 	else
 	{
-		UE_LOG(LogTestbed2, Verbose, TEXT("from_json: interface property 'prop3' missing or type mismatch in ITestbed2NestedStruct3InterfaceInterface -> ignore"));
+		UE_LOG(LogTestbed2, Error, TEXT("from_json: interface property 'prop3' missing or type mismatch in ITestbed2NestedStruct3InterfaceInterface -> ignore"));
 	}
 }
 

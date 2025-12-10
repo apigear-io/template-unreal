@@ -204,7 +204,7 @@ TFuture<int32> UTbRefIfacesSimpleLocalIfOLinkClient::IntMethodAsync(int32 Param)
 		}
 		else
 		{
-			UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Warning, TEXT("IntMethodAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkClient, Error, TEXT("IntMethodAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(0);
 		}
 	});

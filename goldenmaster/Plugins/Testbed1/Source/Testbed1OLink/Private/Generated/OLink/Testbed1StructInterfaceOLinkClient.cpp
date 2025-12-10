@@ -293,7 +293,7 @@ TFuture<FTestbed1StructBool> UTestbed1StructInterfaceOLinkClient::FuncBoolAsync(
 		}
 		else
 		{
-			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(FTestbed1StructBool());
 		}
 	});
@@ -333,7 +333,7 @@ TFuture<FTestbed1StructInt> UTestbed1StructInterfaceOLinkClient::FuncIntAsync(co
 		}
 		else
 		{
-			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(FTestbed1StructInt());
 		}
 	});
@@ -373,7 +373,7 @@ TFuture<FTestbed1StructFloat> UTestbed1StructInterfaceOLinkClient::FuncFloatAsyn
 		}
 		else
 		{
-			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(FTestbed1StructFloat());
 		}
 	});
@@ -413,7 +413,7 @@ TFuture<FTestbed1StructString> UTestbed1StructInterfaceOLinkClient::FuncStringAs
 		}
 		else
 		{
-			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Warning, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed1StructInterfaceOLinkClient, Error, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(FTestbed1StructString());
 		}
 	});
