@@ -19,36 +19,36 @@ limitations under the License.
 
 void TbSame1SameStruct1InterfacePropertiesData::SetProp1(const FTbSame1Struct1& InProp1)
 {
-	FScopeLock Lock(&(Prop1CS));
+	FWriteScopeLock WriteLock(Prop1Lock);
 	Prop1 = InProp1;
 }
 
 FTbSame1Struct1 TbSame1SameStruct1InterfacePropertiesData::GetProp1() const
 {
-	FScopeLock Lock(&(Prop1CS));
+	FReadScopeLock ReadLock(Prop1Lock);
 	return Prop1;
 }
 
 void TbSame1SameStruct2InterfacePropertiesData::SetProp1(const FTbSame1Struct2& InProp1)
 {
-	FScopeLock Lock(&(Prop1CS));
+	FWriteScopeLock WriteLock(Prop1Lock);
 	Prop1 = InProp1;
 }
 
 FTbSame1Struct2 TbSame1SameStruct2InterfacePropertiesData::GetProp1() const
 {
-	FScopeLock Lock(&(Prop1CS));
+	FReadScopeLock ReadLock(Prop1Lock);
 	return Prop1;
 }
 
 void TbSame1SameStruct2InterfacePropertiesData::SetProp2(const FTbSame1Struct2& InProp2)
 {
-	FScopeLock Lock(&(Prop2CS));
+	FWriteScopeLock WriteLock(Prop2Lock);
 	Prop2 = InProp2;
 }
 
 FTbSame1Struct2 TbSame1SameStruct2InterfacePropertiesData::GetProp2() const
 {
-	FScopeLock Lock(&(Prop2CS));
+	FReadScopeLock ReadLock(Prop2Lock);
 	return Prop2;
 }

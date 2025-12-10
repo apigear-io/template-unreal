@@ -19,48 +19,48 @@ limitations under the License.
 
 void CounterCounterPropertiesData::SetVector(const FCustomTypesVector3D& InVector)
 {
-	FScopeLock Lock(&(VectorCS));
+	FWriteScopeLock WriteLock(VectorLock);
 	Vector = InVector;
 }
 
 FCustomTypesVector3D CounterCounterPropertiesData::GetVector() const
 {
-	FScopeLock Lock(&(VectorCS));
+	FReadScopeLock ReadLock(VectorLock);
 	return Vector;
 }
 
 void CounterCounterPropertiesData::SetExternVector(const FVector& InExternVector)
 {
-	FScopeLock Lock(&(ExternVectorCS));
+	FWriteScopeLock WriteLock(ExternVectorLock);
 	ExternVector = InExternVector;
 }
 
 FVector CounterCounterPropertiesData::GetExternVector() const
 {
-	FScopeLock Lock(&(ExternVectorCS));
+	FReadScopeLock ReadLock(ExternVectorLock);
 	return ExternVector;
 }
 
 void CounterCounterPropertiesData::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
-	FScopeLock Lock(&(VectorArrayCS));
+	FWriteScopeLock WriteLock(VectorArrayLock);
 	VectorArray = InVectorArray;
 }
 
 TArray<FCustomTypesVector3D> CounterCounterPropertiesData::GetVectorArray() const
 {
-	FScopeLock Lock(&(VectorArrayCS));
+	FReadScopeLock ReadLock(VectorArrayLock);
 	return VectorArray;
 }
 
 void CounterCounterPropertiesData::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
-	FScopeLock Lock(&(ExternVectorArrayCS));
+	FWriteScopeLock WriteLock(ExternVectorArrayLock);
 	ExternVectorArray = InExternVectorArray;
 }
 
 TArray<FVector> CounterCounterPropertiesData::GetExternVectorArray() const
 {
-	FScopeLock Lock(&(ExternVectorArrayCS));
+	FReadScopeLock ReadLock(ExternVectorArrayLock);
 	return ExternVectorArray;
 }

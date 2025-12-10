@@ -19,168 +19,168 @@ limitations under the License.
 
 void Testbed1StructInterfacePropertiesData::SetPropBool(const FTestbed1StructBool& InPropBool)
 {
-	FScopeLock Lock(&(PropBoolCS));
+	FWriteScopeLock WriteLock(PropBoolLock);
 	PropBool = InPropBool;
 }
 
 FTestbed1StructBool Testbed1StructInterfacePropertiesData::GetPropBool() const
 {
-	FScopeLock Lock(&(PropBoolCS));
+	FReadScopeLock ReadLock(PropBoolLock);
 	return PropBool;
 }
 
 void Testbed1StructInterfacePropertiesData::SetPropInt(const FTestbed1StructInt& InPropInt)
 {
-	FScopeLock Lock(&(PropIntCS));
+	FWriteScopeLock WriteLock(PropIntLock);
 	PropInt = InPropInt;
 }
 
 FTestbed1StructInt Testbed1StructInterfacePropertiesData::GetPropInt() const
 {
-	FScopeLock Lock(&(PropIntCS));
+	FReadScopeLock ReadLock(PropIntLock);
 	return PropInt;
 }
 
 void Testbed1StructInterfacePropertiesData::SetPropFloat(const FTestbed1StructFloat& InPropFloat)
 {
-	FScopeLock Lock(&(PropFloatCS));
+	FWriteScopeLock WriteLock(PropFloatLock);
 	PropFloat = InPropFloat;
 }
 
 FTestbed1StructFloat Testbed1StructInterfacePropertiesData::GetPropFloat() const
 {
-	FScopeLock Lock(&(PropFloatCS));
+	FReadScopeLock ReadLock(PropFloatLock);
 	return PropFloat;
 }
 
 void Testbed1StructInterfacePropertiesData::SetPropString(const FTestbed1StructString& InPropString)
 {
-	FScopeLock Lock(&(PropStringCS));
+	FWriteScopeLock WriteLock(PropStringLock);
 	PropString = InPropString;
 }
 
 FTestbed1StructString Testbed1StructInterfacePropertiesData::GetPropString() const
 {
-	FScopeLock Lock(&(PropStringCS));
+	FReadScopeLock ReadLock(PropStringLock);
 	return PropString;
 }
 
 void Testbed1StructArrayInterfacePropertiesData::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
 {
-	FScopeLock Lock(&(PropBoolCS));
+	FWriteScopeLock WriteLock(PropBoolLock);
 	PropBool = InPropBool;
 }
 
 TArray<FTestbed1StructBool> Testbed1StructArrayInterfacePropertiesData::GetPropBool() const
 {
-	FScopeLock Lock(&(PropBoolCS));
+	FReadScopeLock ReadLock(PropBoolLock);
 	return PropBool;
 }
 
 void Testbed1StructArrayInterfacePropertiesData::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
 {
-	FScopeLock Lock(&(PropIntCS));
+	FWriteScopeLock WriteLock(PropIntLock);
 	PropInt = InPropInt;
 }
 
 TArray<FTestbed1StructInt> Testbed1StructArrayInterfacePropertiesData::GetPropInt() const
 {
-	FScopeLock Lock(&(PropIntCS));
+	FReadScopeLock ReadLock(PropIntLock);
 	return PropInt;
 }
 
 void Testbed1StructArrayInterfacePropertiesData::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
-	FScopeLock Lock(&(PropFloatCS));
+	FWriteScopeLock WriteLock(PropFloatLock);
 	PropFloat = InPropFloat;
 }
 
 TArray<FTestbed1StructFloat> Testbed1StructArrayInterfacePropertiesData::GetPropFloat() const
 {
-	FScopeLock Lock(&(PropFloatCS));
+	FReadScopeLock ReadLock(PropFloatLock);
 	return PropFloat;
 }
 
 void Testbed1StructArrayInterfacePropertiesData::SetPropString(const TArray<FTestbed1StructString>& InPropString)
 {
-	FScopeLock Lock(&(PropStringCS));
+	FWriteScopeLock WriteLock(PropStringLock);
 	PropString = InPropString;
 }
 
 TArray<FTestbed1StructString> Testbed1StructArrayInterfacePropertiesData::GetPropString() const
 {
-	FScopeLock Lock(&(PropStringCS));
+	FReadScopeLock ReadLock(PropStringLock);
 	return PropString;
 }
 
 void Testbed1StructArrayInterfacePropertiesData::SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum)
 {
-	FScopeLock Lock(&(PropEnumCS));
+	FWriteScopeLock WriteLock(PropEnumLock);
 	PropEnum = InPropEnum;
 }
 
 TArray<ETestbed1Enum0> Testbed1StructArrayInterfacePropertiesData::GetPropEnum() const
 {
-	FScopeLock Lock(&(PropEnumCS));
+	FReadScopeLock ReadLock(PropEnumLock);
 	return PropEnum;
 }
 
 void Testbed1StructArray2InterfacePropertiesData::SetPropBool(const FTestbed1StructBoolWithArray& InPropBool)
 {
-	FScopeLock Lock(&(PropBoolCS));
+	FWriteScopeLock WriteLock(PropBoolLock);
 	PropBool = InPropBool;
 }
 
 FTestbed1StructBoolWithArray Testbed1StructArray2InterfacePropertiesData::GetPropBool() const
 {
-	FScopeLock Lock(&(PropBoolCS));
+	FReadScopeLock ReadLock(PropBoolLock);
 	return PropBool;
 }
 
 void Testbed1StructArray2InterfacePropertiesData::SetPropInt(const FTestbed1StructIntWithArray& InPropInt)
 {
-	FScopeLock Lock(&(PropIntCS));
+	FWriteScopeLock WriteLock(PropIntLock);
 	PropInt = InPropInt;
 }
 
 FTestbed1StructIntWithArray Testbed1StructArray2InterfacePropertiesData::GetPropInt() const
 {
-	FScopeLock Lock(&(PropIntCS));
+	FReadScopeLock ReadLock(PropIntLock);
 	return PropInt;
 }
 
 void Testbed1StructArray2InterfacePropertiesData::SetPropFloat(const FTestbed1StructFloatWithArray& InPropFloat)
 {
-	FScopeLock Lock(&(PropFloatCS));
+	FWriteScopeLock WriteLock(PropFloatLock);
 	PropFloat = InPropFloat;
 }
 
 FTestbed1StructFloatWithArray Testbed1StructArray2InterfacePropertiesData::GetPropFloat() const
 {
-	FScopeLock Lock(&(PropFloatCS));
+	FReadScopeLock ReadLock(PropFloatLock);
 	return PropFloat;
 }
 
 void Testbed1StructArray2InterfacePropertiesData::SetPropString(const FTestbed1StructStringWithArray& InPropString)
 {
-	FScopeLock Lock(&(PropStringCS));
+	FWriteScopeLock WriteLock(PropStringLock);
 	PropString = InPropString;
 }
 
 FTestbed1StructStringWithArray Testbed1StructArray2InterfacePropertiesData::GetPropString() const
 {
-	FScopeLock Lock(&(PropStringCS));
+	FReadScopeLock ReadLock(PropStringLock);
 	return PropString;
 }
 
 void Testbed1StructArray2InterfacePropertiesData::SetPropEnum(const FTestbed1StructEnumWithArray& InPropEnum)
 {
-	FScopeLock Lock(&(PropEnumCS));
+	FWriteScopeLock WriteLock(PropEnumLock);
 	PropEnum = InPropEnum;
 }
 
 FTestbed1StructEnumWithArray Testbed1StructArray2InterfacePropertiesData::GetPropEnum() const
 {
-	FScopeLock Lock(&(PropEnumCS));
+	FReadScopeLock ReadLock(PropEnumLock);
 	return PropEnum;
 }

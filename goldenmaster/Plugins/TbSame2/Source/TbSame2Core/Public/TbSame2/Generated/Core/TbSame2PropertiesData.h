@@ -17,7 +17,7 @@ limitations under the License.
 */
 #pragma once
 #include <atomic>
-#include "HAL/CriticalSection.h"
+#include "Misc/ScopeRWLock.h"
 #include "TbSame2/Generated/api/TbSame2_data.h"
 
 /**
@@ -35,7 +35,7 @@ public:
 	FTbSame2Struct1 GetProp1() const;
 
 private:
-	mutable FCriticalSection Prop1CS;
+	mutable FRWLock Prop1Lock;
 	FTbSame2Struct1 Prop1{FTbSame2Struct1()};
 };
 
@@ -56,9 +56,9 @@ public:
 	FTbSame2Struct2 GetProp2() const;
 
 private:
-	mutable FCriticalSection Prop1CS;
+	mutable FRWLock Prop1Lock;
 	FTbSame2Struct2 Prop1{FTbSame2Struct2()};
-	mutable FCriticalSection Prop2CS;
+	mutable FRWLock Prop2Lock;
 	FTbSame2Struct2 Prop2{FTbSame2Struct2()};
 };
 
