@@ -233,7 +233,7 @@ TFuture<FTbSame1Struct1> UTbSame1SameStruct2InterfaceOLinkClient::Func1Async(con
 		}
 		else
 		{
-			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Func1Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(FTbSame1Struct1());
 		}
 	});
@@ -273,7 +273,7 @@ TFuture<FTbSame1Struct1> UTbSame1SameStruct2InterfaceOLinkClient::Func2Async(con
 		}
 		else
 		{
-			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Warning, TEXT("Func2Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkClient, Error, TEXT("Func2Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(FTbSame1Struct1());
 		}
 	});

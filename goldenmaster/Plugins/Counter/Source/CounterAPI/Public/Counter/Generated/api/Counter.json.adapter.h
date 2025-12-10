@@ -21,7 +21,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ICounterCounterI
 	}
 	else
 	{
-		UE_LOG(LogCounter, Verbose, TEXT("from_json: interface property 'vector' missing or type mismatch in ICounterCounterInterface -> ignore"));
+		UE_LOG(LogCounter, Error, TEXT("from_json: interface property 'vector' missing or type mismatch in ICounterCounterInterface -> ignore"));
 	}
 
 	const auto extern_vectorIter = j.find("extern_vector");
@@ -31,7 +31,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ICounterCounterI
 	}
 	else
 	{
-		UE_LOG(LogCounter, Verbose, TEXT("from_json: interface property 'extern_vector' missing or type mismatch in ICounterCounterInterface -> ignore"));
+		UE_LOG(LogCounter, Error, TEXT("from_json: interface property 'extern_vector' missing or type mismatch in ICounterCounterInterface -> ignore"));
 	}
 
 	const auto vectorArrayIter = j.find("vectorArray");
@@ -41,7 +41,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ICounterCounterI
 	}
 	else
 	{
-		UE_LOG(LogCounter, Verbose, TEXT("from_json: interface property 'vectorArray' missing or type mismatch in ICounterCounterInterface -> ignore"));
+		UE_LOG(LogCounter, Error, TEXT("from_json: interface property 'vectorArray' missing or type mismatch in ICounterCounterInterface -> ignore"));
 	}
 
 	const auto extern_vectorArrayIter = j.find("extern_vectorArray");
@@ -51,7 +51,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ICounterCounterI
 	}
 	else
 	{
-		UE_LOG(LogCounter, Verbose, TEXT("from_json: interface property 'extern_vectorArray' missing or type mismatch in ICounterCounterInterface -> ignore"));
+		UE_LOG(LogCounter, Error, TEXT("from_json: interface property 'extern_vectorArray' missing or type mismatch in ICounterCounterInterface -> ignore"));
 	}
 }
 

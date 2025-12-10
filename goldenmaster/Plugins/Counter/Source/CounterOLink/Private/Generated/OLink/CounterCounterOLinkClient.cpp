@@ -295,7 +295,7 @@ TFuture<FVector> UCounterCounterOLinkClient::IncrementAsync(const FVector& Vec)
 		}
 		else
 		{
-			UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("IncrementAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("IncrementAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(FVector(0.f, 0.f, 0.f));
 		}
 	});
@@ -335,7 +335,7 @@ TFuture<TArray<FVector>> UCounterCounterOLinkClient::IncrementArrayAsync(const T
 		}
 		else
 		{
-			UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("IncrementArrayAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("IncrementArrayAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TArray<FVector>());
 		}
 	});
@@ -375,7 +375,7 @@ TFuture<FCustomTypesVector3D> UCounterCounterOLinkClient::DecrementAsync(const F
 		}
 		else
 		{
-			UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("DecrementAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("DecrementAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(FCustomTypesVector3D());
 		}
 	});
@@ -415,7 +415,7 @@ TFuture<TArray<FCustomTypesVector3D>> UCounterCounterOLinkClient::DecrementArray
 		}
 		else
 		{
-			UE_LOG(LogCounterCounterOLinkClient, Warning, TEXT("DecrementArrayAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogCounterCounterOLinkClient, Error, TEXT("DecrementArrayAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TArray<FCustomTypesVector3D>());
 		}
 	});

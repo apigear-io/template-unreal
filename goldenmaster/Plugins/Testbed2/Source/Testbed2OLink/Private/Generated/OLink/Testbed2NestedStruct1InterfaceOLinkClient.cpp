@@ -217,7 +217,7 @@ TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct1InterfaceOLinkClient::Func
 		}
 		else
 		{
-			UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Warning, TEXT("FuncNoParamsAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Error, TEXT("FuncNoParamsAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(FTestbed2NestedStruct1());
 		}
 	});
@@ -257,7 +257,7 @@ TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct1InterfaceOLinkClient::Func
 		}
 		else
 		{
-			UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkClient, Error, TEXT("Func1Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(FTestbed2NestedStruct1());
 		}
 	});

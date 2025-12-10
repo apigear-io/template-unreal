@@ -21,7 +21,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbRefIfacesSimp
 	}
 	else
 	{
-		UE_LOG(LogTbRefIfaces, Verbose, TEXT("from_json: interface property 'intProperty' missing or type mismatch in ITbRefIfacesSimpleLocalIfInterface -> ignore"));
+		UE_LOG(LogTbRefIfaces, Error, TEXT("from_json: interface property 'intProperty' missing or type mismatch in ITbRefIfacesSimpleLocalIfInterface -> ignore"));
 	}
 }
 
@@ -49,7 +49,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbRefIfacesPare
 	}
 	else
 	{
-		UE_LOG(LogTbRefIfaces, Verbose, TEXT("from_json: interface property 'localIf' missing or type mismatch in ITbRefIfacesParentIfInterface -> ignore"));
+		UE_LOG(LogTbRefIfaces, Error, TEXT("from_json: interface property 'localIf' missing or type mismatch in ITbRefIfacesParentIfInterface -> ignore"));
 	}
 
 	const auto localIfListIter = j.find("localIfList");
@@ -59,7 +59,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbRefIfacesPare
 	}
 	else
 	{
-		UE_LOG(LogTbRefIfaces, Verbose, TEXT("from_json: interface property 'localIfList' missing or type mismatch in ITbRefIfacesParentIfInterface -> ignore"));
+		UE_LOG(LogTbRefIfaces, Error, TEXT("from_json: interface property 'localIfList' missing or type mismatch in ITbRefIfacesParentIfInterface -> ignore"));
 	}
 
 	const auto importedIfIter = j.find("importedIf");
@@ -69,7 +69,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbRefIfacesPare
 	}
 	else
 	{
-		UE_LOG(LogTbRefIfaces, Verbose, TEXT("from_json: interface property 'importedIf' missing or type mismatch in ITbRefIfacesParentIfInterface -> ignore"));
+		UE_LOG(LogTbRefIfaces, Error, TEXT("from_json: interface property 'importedIf' missing or type mismatch in ITbRefIfacesParentIfInterface -> ignore"));
 	}
 
 	const auto importedIfListIter = j.find("importedIfList");
@@ -79,7 +79,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbRefIfacesPare
 	}
 	else
 	{
-		UE_LOG(LogTbRefIfaces, Verbose, TEXT("from_json: interface property 'importedIfList' missing or type mismatch in ITbRefIfacesParentIfInterface -> ignore"));
+		UE_LOG(LogTbRefIfaces, Error, TEXT("from_json: interface property 'importedIfList' missing or type mismatch in ITbRefIfacesParentIfInterface -> ignore"));
 	}
 }
 

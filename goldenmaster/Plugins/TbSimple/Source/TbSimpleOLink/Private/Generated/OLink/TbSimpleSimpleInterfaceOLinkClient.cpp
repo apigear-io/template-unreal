@@ -427,7 +427,7 @@ TFuture<bool> UTbSimpleSimpleInterfaceOLinkClient::FuncNoParamsAsync()
 		}
 		else
 		{
-			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncNoParamsAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncNoParamsAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(false);
 		}
 	});
@@ -467,7 +467,7 @@ TFuture<bool> UTbSimpleSimpleInterfaceOLinkClient::FuncBoolAsync(bool bParamBool
 		}
 		else
 		{
-			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(false);
 		}
 	});
@@ -507,7 +507,7 @@ TFuture<int32> UTbSimpleSimpleInterfaceOLinkClient::FuncIntAsync(int32 ParamInt)
 		}
 		else
 		{
-			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(0);
 		}
 	});
@@ -547,7 +547,7 @@ TFuture<int32> UTbSimpleSimpleInterfaceOLinkClient::FuncInt32Async(int32 ParamIn
 		}
 		else
 		{
-			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncInt32Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncInt32Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(0);
 		}
 	});
@@ -587,7 +587,7 @@ TFuture<int64> UTbSimpleSimpleInterfaceOLinkClient::FuncInt64Async(int64 ParamIn
 		}
 		else
 		{
-			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncInt64Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncInt64Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(0LL);
 		}
 	});
@@ -627,7 +627,7 @@ TFuture<float> UTbSimpleSimpleInterfaceOLinkClient::FuncFloatAsync(float ParamFl
 		}
 		else
 		{
-			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(0.0f);
 		}
 	});
@@ -667,7 +667,7 @@ TFuture<float> UTbSimpleSimpleInterfaceOLinkClient::FuncFloat32Async(float Param
 		}
 		else
 		{
-			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncFloat32Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncFloat32Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(0.0f);
 		}
 	});
@@ -707,7 +707,7 @@ TFuture<double> UTbSimpleSimpleInterfaceOLinkClient::FuncFloat64Async(double Par
 		}
 		else
 		{
-			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncFloat64Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncFloat64Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(0.0);
 		}
 	});
@@ -747,7 +747,7 @@ TFuture<FString> UTbSimpleSimpleInterfaceOLinkClient::FuncStringAsync(const FStr
 		}
 		else
 		{
-			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Warning, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkClient, Error, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(FString());
 		}
 	});
