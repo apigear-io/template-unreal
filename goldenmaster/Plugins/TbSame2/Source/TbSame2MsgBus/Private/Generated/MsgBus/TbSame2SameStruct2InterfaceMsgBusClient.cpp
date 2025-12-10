@@ -184,10 +184,7 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::OnConnectionInit(const FTbSame2Sa
 	{
 		Prop1 = InMessage.Prop1;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop1Mutex));
-			_SentData->Prop1 = Prop1;
-		}
+		_SentData->SetProp1(Prop1);
 		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 
@@ -196,10 +193,7 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::OnConnectionInit(const FTbSame2Sa
 	{
 		Prop2 = InMessage.Prop2;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop2Mutex));
-			_SentData->Prop2 = Prop2;
-		}
+		_SentData->SetProp2(Prop2);
 		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 
@@ -328,12 +322,9 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::SetProp1(const FTbSame2Struct2& I
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetProp1() == InProp1)
 	{
-		FScopeLock Lock(&(_SentData->Prop1Mutex));
-		if (_SentData->Prop1 == InProp1)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSame2SameStruct2InterfaceSetProp1RequestMessage();
@@ -344,8 +335,7 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::SetProp1(const FTbSame2Struct2& I
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->Prop1Mutex));
-	_SentData->Prop1 = InProp1;
+	_SentData->SetProp1(InProp1);
 }
 
 FTbSame2Struct2 UTbSame2SameStruct2InterfaceMsgBusClient::GetProp2() const
@@ -369,12 +359,9 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::SetProp2(const FTbSame2Struct2& I
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetProp2() == InProp2)
 	{
-		FScopeLock Lock(&(_SentData->Prop2Mutex));
-		if (_SentData->Prop2 == InProp2)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSame2SameStruct2InterfaceSetProp2RequestMessage();
@@ -385,8 +372,7 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::SetProp2(const FTbSame2Struct2& I
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->Prop2Mutex));
-	_SentData->Prop2 = InProp2;
+	_SentData->SetProp2(InProp2);
 }
 
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceMsgBusClient::Func1(const FTbSame2Struct1& InParam1)
@@ -489,10 +475,7 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::OnProp1Changed(const FTbSame2Same
 	{
 		Prop1 = InMessage.Prop1;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop1Mutex));
-			_SentData->Prop1 = Prop1;
-		}
+		_SentData->SetProp1(Prop1);
 		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
@@ -510,10 +493,7 @@ void UTbSame2SameStruct2InterfaceMsgBusClient::OnProp2Changed(const FTbSame2Same
 	{
 		Prop2 = InMessage.Prop2;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop2Mutex));
-			_SentData->Prop2 = Prop2;
-		}
+		_SentData->SetProp2(Prop2);
 		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }

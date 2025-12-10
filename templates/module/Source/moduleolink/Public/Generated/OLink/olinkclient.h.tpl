@@ -24,7 +24,7 @@ THIRD_PARTY_INCLUDES_END
 
 {{- if len .Interface.Properties }}
 
-struct {{$Iface}}PropertiesData;
+class {{$Iface}}PropertiesData;
 {{- end}}
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}OLinkClient, Log, All);
 

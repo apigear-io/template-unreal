@@ -64,7 +64,7 @@ struct FTbRefIfacesParentIfStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfStatsUpdatedDelegate, FTbRefIfacesParentIfStats, Stats);
 
-struct TbRefIfacesParentIfPropertiesData;
+class TbRefIfacesParentIfPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesParentIfMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesParentIfConnectionStatusChangedDelegate, bool /* IsConnected */);

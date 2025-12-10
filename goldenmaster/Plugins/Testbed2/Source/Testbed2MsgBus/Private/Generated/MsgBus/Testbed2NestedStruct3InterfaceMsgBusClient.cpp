@@ -187,10 +187,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	{
 		Prop1 = InMessage.Prop1;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop1Mutex));
-			_SentData->Prop1 = Prop1;
-		}
+		_SentData->SetProp1(Prop1);
 		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 
@@ -199,10 +196,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	{
 		Prop2 = InMessage.Prop2;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop2Mutex));
-			_SentData->Prop2 = Prop2;
-		}
+		_SentData->SetProp2(Prop2);
 		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 
@@ -211,10 +205,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnConnectionInit(const FTestbe
 	{
 		Prop3 = InMessage.Prop3;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop3Mutex));
-			_SentData->Prop3 = Prop3;
-		}
+		_SentData->SetProp3(Prop3);
 		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 
@@ -343,12 +334,9 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp1(const FTestbed2Nested
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetProp1() == InProp1)
 	{
-		FScopeLock Lock(&(_SentData->Prop1Mutex));
-		if (_SentData->Prop1 == InProp1)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed2NestedStruct3InterfaceSetProp1RequestMessage();
@@ -359,8 +347,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp1(const FTestbed2Nested
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->Prop1Mutex));
-	_SentData->Prop1 = InProp1;
+	_SentData->SetProp1(InProp1);
 }
 
 FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceMsgBusClient::GetProp2() const
@@ -384,12 +371,9 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp2(const FTestbed2Nested
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetProp2() == InProp2)
 	{
-		FScopeLock Lock(&(_SentData->Prop2Mutex));
-		if (_SentData->Prop2 == InProp2)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed2NestedStruct3InterfaceSetProp2RequestMessage();
@@ -400,8 +384,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp2(const FTestbed2Nested
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->Prop2Mutex));
-	_SentData->Prop2 = InProp2;
+	_SentData->SetProp2(InProp2);
 }
 
 FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceMsgBusClient::GetProp3() const
@@ -425,12 +408,9 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp3(const FTestbed2Nested
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetProp3() == InProp3)
 	{
-		FScopeLock Lock(&(_SentData->Prop3Mutex));
-		if (_SentData->Prop3 == InProp3)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed2NestedStruct3InterfaceSetProp3RequestMessage();
@@ -441,8 +421,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::SetProp3(const FTestbed2Nested
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->Prop3Mutex));
-	_SentData->Prop3 = InProp3;
+	_SentData->SetProp3(InProp3);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceMsgBusClient::Func1(const FTestbed2NestedStruct1& InParam1)
@@ -590,10 +569,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnProp1Changed(const FTestbed2
 	{
 		Prop1 = InMessage.Prop1;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop1Mutex));
-			_SentData->Prop1 = Prop1;
-		}
+		_SentData->SetProp1(Prop1);
 		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
@@ -611,10 +587,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnProp2Changed(const FTestbed2
 	{
 		Prop2 = InMessage.Prop2;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop2Mutex));
-			_SentData->Prop2 = Prop2;
-		}
+		_SentData->SetProp2(Prop2);
 		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
@@ -632,10 +605,7 @@ void UTestbed2NestedStruct3InterfaceMsgBusClient::OnProp3Changed(const FTestbed2
 	{
 		Prop3 = InMessage.Prop3;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop3Mutex));
-			_SentData->Prop3 = Prop3;
-		}
+		_SentData->SetProp3(Prop3);
 		_GetPublisher()->BroadcastProp3Changed(Prop3);
 	}
 }

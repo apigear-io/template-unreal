@@ -58,7 +58,7 @@ struct FTbSame2SameEnum2InterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSame2SameEnum2InterfaceStatsUpdatedDelegate, FTbSame2SameEnum2InterfaceStats, Stats);
 
-struct TbSame2SameEnum2InterfacePropertiesData;
+class TbSame2SameEnum2InterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2SameEnum2InterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbSame2SameEnum2InterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);

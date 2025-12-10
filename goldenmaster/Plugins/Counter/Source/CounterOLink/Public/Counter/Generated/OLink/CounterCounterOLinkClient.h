@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Templates/PimplPtr.h"
 #include "CounterCounterOLinkClient.generated.h"
 
-struct CounterCounterPropertiesData;
+class CounterCounterPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounterOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)

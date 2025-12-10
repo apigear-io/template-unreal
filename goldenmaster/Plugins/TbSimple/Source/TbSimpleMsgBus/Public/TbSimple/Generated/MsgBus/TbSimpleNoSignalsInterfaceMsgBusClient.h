@@ -55,7 +55,7 @@ struct FTbSimpleNoSignalsInterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleNoSignalsInterfaceStatsUpdatedDelegate, FTbSimpleNoSignalsInterfaceStats, Stats);
 
-struct TbSimpleNoSignalsInterfacePropertiesData;
+class TbSimpleNoSignalsInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoSignalsInterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleNoSignalsInterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);

@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Templates/PimplPtr.h"
 #include "TbRefIfacesSimpleLocalIfOLinkClient.generated.h"
 
-struct TbRefIfacesSimpleLocalIfPropertiesData;
+class TbRefIfacesSimpleLocalIfPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesSimpleLocalIfOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)

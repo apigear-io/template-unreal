@@ -203,10 +203,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	{
 		PropBool = InMessage.PropBool;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropBoolMutex));
-			_SentData->PropBool = PropBool;
-		}
+		_SentData->SetPropBool(PropBool);
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 
@@ -215,10 +212,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	{
 		PropInt = InMessage.PropInt;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropIntMutex));
-			_SentData->PropInt = PropInt;
-		}
+		_SentData->SetPropInt(PropInt);
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 
@@ -227,10 +221,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	{
 		PropInt32 = InMessage.PropInt32;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropInt32Mutex));
-			_SentData->PropInt32 = PropInt32;
-		}
+		_SentData->SetPropInt32(PropInt32);
 		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 
@@ -239,10 +230,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	{
 		PropInt64 = InMessage.PropInt64;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropInt64Mutex));
-			_SentData->PropInt64 = PropInt64;
-		}
+		_SentData->SetPropInt64(PropInt64);
 		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 
@@ -251,10 +239,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	{
 		PropFloat = InMessage.PropFloat;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloatMutex));
-			_SentData->PropFloat = PropFloat;
-		}
+		_SentData->SetPropFloat(PropFloat);
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 
@@ -263,10 +248,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	{
 		PropFloat32 = InMessage.PropFloat32;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloat32Mutex));
-			_SentData->PropFloat32 = PropFloat32;
-		}
+		_SentData->SetPropFloat32(PropFloat32);
 		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 
@@ -275,10 +257,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	{
 		PropFloat64 = InMessage.PropFloat64;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloat64Mutex));
-			_SentData->PropFloat64 = PropFloat64;
-		}
+		_SentData->SetPropFloat64(PropFloat64);
 		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 
@@ -287,10 +266,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	{
 		PropString = InMessage.PropString;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropStringMutex));
-			_SentData->PropString = PropString;
-		}
+		_SentData->SetPropString(PropString);
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 
@@ -299,10 +275,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnConnectionInit(const FTbSimple
 	{
 		PropReadOnlyString = InMessage.PropReadOnlyString;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropReadOnlyStringMutex));
-			_SentData->PropReadOnlyString = PropReadOnlyString;
-		}
+		_SentData->SetPropReadOnlyString(PropReadOnlyString);
 		_GetPublisher()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
 	}
 
@@ -431,12 +404,9 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropBool(const TArray<bool>& 
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropBool() == InPropBool)
 	{
-		FScopeLock Lock(&(_SentData->PropBoolMutex));
-		if (_SentData->PropBool == InPropBool)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceSetPropBoolRequestMessage();
@@ -447,8 +417,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropBool(const TArray<bool>& 
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropBoolMutex));
-	_SentData->PropBool = InPropBool;
+	_SentData->SetPropBool(InPropBool);
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceMsgBusClient::GetPropInt() const
@@ -472,12 +441,9 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropInt(const TArray<int32>& 
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropInt() == InPropInt)
 	{
-		FScopeLock Lock(&(_SentData->PropIntMutex));
-		if (_SentData->PropInt == InPropInt)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceSetPropIntRequestMessage();
@@ -488,8 +454,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropInt(const TArray<int32>& 
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropIntMutex));
-	_SentData->PropInt = InPropInt;
+	_SentData->SetPropInt(InPropInt);
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceMsgBusClient::GetPropInt32() const
@@ -513,12 +478,9 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropInt32(const TArray<int32>
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropInt32() == InPropInt32)
 	{
-		FScopeLock Lock(&(_SentData->PropInt32Mutex));
-		if (_SentData->PropInt32 == InPropInt32)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceSetPropInt32RequestMessage();
@@ -529,8 +491,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropInt32(const TArray<int32>
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropInt32Mutex));
-	_SentData->PropInt32 = InPropInt32;
+	_SentData->SetPropInt32(InPropInt32);
 }
 
 TArray<int64> UTbSimpleSimpleArrayInterfaceMsgBusClient::GetPropInt64() const
@@ -554,12 +515,9 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropInt64(const TArray<int64>
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropInt64() == InPropInt64)
 	{
-		FScopeLock Lock(&(_SentData->PropInt64Mutex));
-		if (_SentData->PropInt64 == InPropInt64)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceSetPropInt64RequestMessage();
@@ -570,8 +528,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropInt64(const TArray<int64>
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropInt64Mutex));
-	_SentData->PropInt64 = InPropInt64;
+	_SentData->SetPropInt64(InPropInt64);
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceMsgBusClient::GetPropFloat() const
@@ -595,12 +552,9 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropFloat(const TArray<float>
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropFloat() == InPropFloat)
 	{
-		FScopeLock Lock(&(_SentData->PropFloatMutex));
-		if (_SentData->PropFloat == InPropFloat)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceSetPropFloatRequestMessage();
@@ -611,8 +565,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropFloat(const TArray<float>
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropFloatMutex));
-	_SentData->PropFloat = InPropFloat;
+	_SentData->SetPropFloat(InPropFloat);
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceMsgBusClient::GetPropFloat32() const
@@ -636,12 +589,9 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropFloat32(const TArray<floa
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropFloat32() == InPropFloat32)
 	{
-		FScopeLock Lock(&(_SentData->PropFloat32Mutex));
-		if (_SentData->PropFloat32 == InPropFloat32)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceSetPropFloat32RequestMessage();
@@ -652,8 +602,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropFloat32(const TArray<floa
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropFloat32Mutex));
-	_SentData->PropFloat32 = InPropFloat32;
+	_SentData->SetPropFloat32(InPropFloat32);
 }
 
 TArray<double> UTbSimpleSimpleArrayInterfaceMsgBusClient::GetPropFloat64() const
@@ -677,12 +626,9 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropFloat64(const TArray<doub
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropFloat64() == InPropFloat64)
 	{
-		FScopeLock Lock(&(_SentData->PropFloat64Mutex));
-		if (_SentData->PropFloat64 == InPropFloat64)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceSetPropFloat64RequestMessage();
@@ -693,8 +639,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropFloat64(const TArray<doub
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropFloat64Mutex));
-	_SentData->PropFloat64 = InPropFloat64;
+	_SentData->SetPropFloat64(InPropFloat64);
 }
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceMsgBusClient::GetPropString() const
@@ -718,12 +663,9 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropString(const TArray<FStri
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropString() == InPropString)
 	{
-		FScopeLock Lock(&(_SentData->PropStringMutex));
-		if (_SentData->PropString == InPropString)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSimpleSimpleArrayInterfaceSetPropStringRequestMessage();
@@ -734,8 +676,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::SetPropString(const TArray<FStri
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropStringMutex));
-	_SentData->PropString = InPropString;
+	_SentData->SetPropString(InPropString);
 }
 
 FString UTbSimpleSimpleArrayInterfaceMsgBusClient::GetPropReadOnlyString() const
@@ -1100,10 +1041,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropBoolChanged(const FTbSimpl
 	{
 		PropBool = InMessage.PropBool;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropBoolMutex));
-			_SentData->PropBool = PropBool;
-		}
+		_SentData->SetPropBool(PropBool);
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 }
@@ -1121,10 +1059,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropIntChanged(const FTbSimple
 	{
 		PropInt = InMessage.PropInt;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropIntMutex));
-			_SentData->PropInt = PropInt;
-		}
+		_SentData->SetPropInt(PropInt);
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
@@ -1142,10 +1077,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropInt32Changed(const FTbSimp
 	{
 		PropInt32 = InMessage.PropInt32;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropInt32Mutex));
-			_SentData->PropInt32 = PropInt32;
-		}
+		_SentData->SetPropInt32(PropInt32);
 		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 }
@@ -1163,10 +1095,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropInt64Changed(const FTbSimp
 	{
 		PropInt64 = InMessage.PropInt64;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropInt64Mutex));
-			_SentData->PropInt64 = PropInt64;
-		}
+		_SentData->SetPropInt64(PropInt64);
 		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 }
@@ -1184,10 +1113,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropFloatChanged(const FTbSimp
 	{
 		PropFloat = InMessage.PropFloat;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloatMutex));
-			_SentData->PropFloat = PropFloat;
-		}
+		_SentData->SetPropFloat(PropFloat);
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
@@ -1205,10 +1131,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropFloat32Changed(const FTbSi
 	{
 		PropFloat32 = InMessage.PropFloat32;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloat32Mutex));
-			_SentData->PropFloat32 = PropFloat32;
-		}
+		_SentData->SetPropFloat32(PropFloat32);
 		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 }
@@ -1226,10 +1149,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropFloat64Changed(const FTbSi
 	{
 		PropFloat64 = InMessage.PropFloat64;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloat64Mutex));
-			_SentData->PropFloat64 = PropFloat64;
-		}
+		_SentData->SetPropFloat64(PropFloat64);
 		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 }
@@ -1247,10 +1167,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropStringChanged(const FTbSim
 	{
 		PropString = InMessage.PropString;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropStringMutex));
-			_SentData->PropString = PropString;
-		}
+		_SentData->SetPropString(PropString);
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
@@ -1268,10 +1185,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropReadOnlyStringChanged(cons
 	{
 		PropReadOnlyString = InMessage.PropReadOnlyString;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropReadOnlyStringMutex));
-			_SentData->PropReadOnlyString = PropReadOnlyString;
-		}
+		_SentData->SetPropReadOnlyString(PropReadOnlyString);
 		_GetPublisher()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
 	}
 }

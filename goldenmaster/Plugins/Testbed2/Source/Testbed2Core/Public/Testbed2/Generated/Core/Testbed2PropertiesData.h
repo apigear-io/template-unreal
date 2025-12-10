@@ -18,47 +18,92 @@ limitations under the License.
 #pragma once
 #include <atomic>
 #include "HAL/CriticalSection.h"
+#include "Testbed2/Generated/api/Testbed2_data.h"
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct Testbed2ManyParamInterfacePropertiesData
+class TESTBED2CORE_API Testbed2ManyParamInterfacePropertiesData
 {
+public:
 	std::atomic<int32> Prop1{0};
 	std::atomic<int32> Prop2{0};
 	std::atomic<int32> Prop3{0};
 	std::atomic<int32> Prop4{0};
+
+private:
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct Testbed2NestedStruct1InterfacePropertiesData
+class TESTBED2CORE_API Testbed2NestedStruct1InterfacePropertiesData
 {
-	FCriticalSection Prop1Mutex;
+public:
+	void SetProp1(const FTestbed2NestedStruct1& InProp1);
+	FTestbed2NestedStruct1 GetProp1() const;
+
+private:
+	mutable FCriticalSection Prop1CS;
 	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct Testbed2NestedStruct2InterfacePropertiesData
+class TESTBED2CORE_API Testbed2NestedStruct2InterfacePropertiesData
 {
-	FCriticalSection Prop1Mutex;
+public:
+	void SetProp1(const FTestbed2NestedStruct1& InProp1);
+	FTestbed2NestedStruct1 GetProp1() const;
+	void SetProp2(const FTestbed2NestedStruct2& InProp2);
+	FTestbed2NestedStruct2 GetProp2() const;
+
+private:
+	mutable FCriticalSection Prop1CS;
 	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
-	FCriticalSection Prop2Mutex;
+	mutable FCriticalSection Prop2CS;
 	FTestbed2NestedStruct2 Prop2{FTestbed2NestedStruct2()};
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct Testbed2NestedStruct3InterfacePropertiesData
+class TESTBED2CORE_API Testbed2NestedStruct3InterfacePropertiesData
 {
-	FCriticalSection Prop1Mutex;
+public:
+	void SetProp1(const FTestbed2NestedStruct1& InProp1);
+	FTestbed2NestedStruct1 GetProp1() const;
+	void SetProp2(const FTestbed2NestedStruct2& InProp2);
+	FTestbed2NestedStruct2 GetProp2() const;
+	void SetProp3(const FTestbed2NestedStruct3& InProp3);
+	FTestbed2NestedStruct3 GetProp3() const;
+
+private:
+	mutable FCriticalSection Prop1CS;
 	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
-	FCriticalSection Prop2Mutex;
+	mutable FCriticalSection Prop2CS;
 	FTestbed2NestedStruct2 Prop2{FTestbed2NestedStruct2()};
-	FCriticalSection Prop3Mutex;
+	mutable FCriticalSection Prop3CS;
 	FTestbed2NestedStruct3 Prop3{FTestbed2NestedStruct3()};
 };

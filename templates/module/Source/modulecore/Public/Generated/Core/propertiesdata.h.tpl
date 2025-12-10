@@ -42,9 +42,31 @@ limitations under the License.
 #include "HAL/CriticalSection.h"
 {{- end}}
 
+{{- $includes := getEmptyStringList}}
+{{- range .Module.Interfaces }}
+{{- range .Properties }}
+    {{- if eq .KindType "interface"}}
+        {{- $moduleName :=  "" }}
+        {{- if ne .Import "" }}
+            {{- $moduleName = Camel .Import }}
+        {{- else }}
+            {{- $moduleName = Camel .Module.Name }}
+        {{- end }}
+        {{- $includeName :=  printf "\"%s/Generated/api/%s%sInterface.h\"" $moduleName $moduleName .Type }}
+        {{- $includes = (appendList $includes $includeName) }}
+    {{- end }}
+{{- end }}
+{{- end }}
+
+{{- $includes = unique $includes }}
+{{- range $includes }}
+#include {{ .}}
+{{- end }}
+
 {{- if (eq $anyProperties 1)}}
+#include "{{$ModuleName}}/Generated/api/{{$ModuleName}}_data.h"
 {{- range .Module.Imports }}
-#include "{{Camel .Name}}/Generated/api/{{Camel .Name}}_apig.h"
+#include "{{Camel .Name}}/Generated/api/{{Camel .Name}}_data.h"
 {{- end }}
 
 {{- range .Module.Interfaces }}
@@ -53,15 +75,29 @@ limitations under the License.
 {{- if len .Properties }}
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct {{$Iface}}PropertiesData
+class {{ $API_MACRO }} {{$Iface}}PropertiesData
 {
+public:
 {{- range $i, $e := .Properties }}
 	{{- if ( ueIsStdSimpleType . ) }}
 	std::atomic<{{ueReturn "" .}}> {{ueVar "" .}}{ {{- ueDefault "" . -}} };
 	{{- else }}
-	FCriticalSection {{ueVar "" .}}Mutex;
+	void Set{{ueVar "" .}}({{ueParam "In" .}});
+	{{ueReturn "" .}} Get{{ueVar "" .}}() const;
+	{{- end }}
+{{- end }}
+
+private:
+{{- range $i, $e := .Properties }}
+	{{- if not ( ueIsStdSimpleType . ) }}
+	mutable FCriticalSection {{ueVar "" .}}CS;
 	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
 	{{- end }}
 {{- end }}

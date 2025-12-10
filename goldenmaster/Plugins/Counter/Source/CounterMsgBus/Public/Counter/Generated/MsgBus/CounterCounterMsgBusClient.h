@@ -61,7 +61,7 @@ struct FCounterCounterStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterCounterStatsUpdatedDelegate, FCounterCounterStats, Stats);
 
-struct CounterCounterPropertiesData;
+class CounterCounterPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounterMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FCounterCounterConnectionStatusChangedDelegate, bool /* IsConnected */);

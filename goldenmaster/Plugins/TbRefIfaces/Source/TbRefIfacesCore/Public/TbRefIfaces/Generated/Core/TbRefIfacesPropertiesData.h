@@ -18,27 +18,54 @@ limitations under the License.
 #pragma once
 #include <atomic>
 #include "HAL/CriticalSection.h"
-#include "TbIfaceimport/Generated/api/TbIfaceimport_apig.h"
+#include "TbIfaceimport/Generated/api/TbIfaceimportEmptyIfInterface.h"
+#include "TbRefIfaces/Generated/api/TbRefIfacesSimpleLocalIfInterface.h"
+#include "TbRefIfaces/Generated/api/TbRefIfaces_data.h"
+#include "TbIfaceimport/Generated/api/TbIfaceimport_data.h"
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbRefIfacesSimpleLocalIfPropertiesData
+class TBREFIFACESCORE_API TbRefIfacesSimpleLocalIfPropertiesData
 {
+public:
 	std::atomic<int32> IntProperty{0};
+
+private:
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbRefIfacesParentIfPropertiesData
+class TBREFIFACESCORE_API TbRefIfacesParentIfPropertiesData
 {
-	FCriticalSection LocalIfMutex;
+public:
+	void SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf);
+	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> GetLocalIf() const;
+	void SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList);
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> GetLocalIfList() const;
+	void SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf);
+	TScriptInterface<ITbIfaceimportEmptyIfInterface> GetImportedIf() const;
+	void SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList);
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> GetImportedIfList() const;
+
+private:
+	mutable FCriticalSection LocalIfCS;
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIf{TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>()};
-	FCriticalSection LocalIfListMutex;
+	mutable FCriticalSection LocalIfListCS;
 	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList{TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>()};
-	FCriticalSection ImportedIfMutex;
+	mutable FCriticalSection ImportedIfCS;
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIf{TScriptInterface<ITbIfaceimportEmptyIfInterface>()};
-	FCriticalSection ImportedIfListMutex;
+	mutable FCriticalSection ImportedIfListCS;
 	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList{TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>()};
 };

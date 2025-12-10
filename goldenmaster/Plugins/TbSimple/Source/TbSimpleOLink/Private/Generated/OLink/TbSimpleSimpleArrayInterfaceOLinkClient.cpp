@@ -162,17 +162,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropBool(const TArray<bool>& I
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropBool() == InPropBool)
 	{
-		FScopeLock Lock(&(_SentData->PropBoolMutex));
-		if (_SentData->PropBool == InPropBool)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropBool);
-	FScopeLock Lock(&(_SentData->PropBoolMutex));
-	_SentData->PropBool = InPropBool;
+	_SentData->SetPropBool(InPropBool);
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt() const
@@ -196,17 +192,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt(const TArray<int32>& I
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropInt() == InPropInt)
 	{
-		FScopeLock Lock(&(_SentData->PropIntMutex));
-		if (_SentData->PropInt == InPropInt)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt);
-	FScopeLock Lock(&(_SentData->PropIntMutex));
-	_SentData->PropInt = InPropInt;
+	_SentData->SetPropInt(InPropInt);
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt32() const
@@ -230,17 +222,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt32(const TArray<int32>&
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropInt32() == InPropInt32)
 	{
-		FScopeLock Lock(&(_SentData->PropInt32Mutex));
-		if (_SentData->PropInt32 == InPropInt32)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt32");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt32);
-	FScopeLock Lock(&(_SentData->PropInt32Mutex));
-	_SentData->PropInt32 = InPropInt32;
+	_SentData->SetPropInt32(InPropInt32);
 }
 
 TArray<int64> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropInt64() const
@@ -264,17 +252,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropInt64(const TArray<int64>&
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropInt64() == InPropInt64)
 	{
-		FScopeLock Lock(&(_SentData->PropInt64Mutex));
-		if (_SentData->PropInt64 == InPropInt64)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt64");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt64);
-	FScopeLock Lock(&(_SentData->PropInt64Mutex));
-	_SentData->PropInt64 = InPropInt64;
+	_SentData->SetPropInt64(InPropInt64);
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat() const
@@ -298,17 +282,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat(const TArray<float>&
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropFloat() == InPropFloat)
 	{
-		FScopeLock Lock(&(_SentData->PropFloatMutex));
-		if (_SentData->PropFloat == InPropFloat)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat);
-	FScopeLock Lock(&(_SentData->PropFloatMutex));
-	_SentData->PropFloat = InPropFloat;
+	_SentData->SetPropFloat(InPropFloat);
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat32() const
@@ -332,17 +312,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat32(const TArray<float
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropFloat32() == InPropFloat32)
 	{
-		FScopeLock Lock(&(_SentData->PropFloat32Mutex));
-		if (_SentData->PropFloat32 == InPropFloat32)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat32");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat32);
-	FScopeLock Lock(&(_SentData->PropFloat32Mutex));
-	_SentData->PropFloat32 = InPropFloat32;
+	_SentData->SetPropFloat32(InPropFloat32);
 }
 
 TArray<double> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropFloat64() const
@@ -366,17 +342,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropFloat64(const TArray<doubl
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropFloat64() == InPropFloat64)
 	{
-		FScopeLock Lock(&(_SentData->PropFloat64Mutex));
-		if (_SentData->PropFloat64 == InPropFloat64)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat64");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat64);
-	FScopeLock Lock(&(_SentData->PropFloat64Mutex));
-	_SentData->PropFloat64 = InPropFloat64;
+	_SentData->SetPropFloat64(InPropFloat64);
 }
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropString() const
@@ -400,17 +372,13 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::SetPropString(const TArray<FStrin
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropString() == InPropString)
 	{
-		FScopeLock Lock(&(_SentData->PropStringMutex));
-		if (_SentData->PropString == InPropString)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropString);
-	FScopeLock Lock(&(_SentData->PropStringMutex));
-	_SentData->PropString = InPropString;
+	_SentData->SetPropString(InPropString);
 }
 
 FString UTbSimpleSimpleArrayInterfaceOLinkClient::GetPropReadOnlyString() const
@@ -751,10 +719,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	{
 		PropBool = fields["propBool"].get<TArray<bool>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropBoolMutex));
-			_SentData->PropBool = PropBool;
-		}
+		_SentData->SetPropBool(PropBool);
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 
@@ -763,10 +728,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	{
 		PropInt = fields["propInt"].get<TArray<int32>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropIntMutex));
-			_SentData->PropInt = PropInt;
-		}
+		_SentData->SetPropInt(PropInt);
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 
@@ -775,10 +737,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	{
 		PropInt32 = fields["propInt32"].get<TArray<int32>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropInt32Mutex));
-			_SentData->PropInt32 = PropInt32;
-		}
+		_SentData->SetPropInt32(PropInt32);
 		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 	}
 
@@ -787,10 +746,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	{
 		PropInt64 = fields["propInt64"].get<TArray<int64>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropInt64Mutex));
-			_SentData->PropInt64 = PropInt64;
-		}
+		_SentData->SetPropInt64(PropInt64);
 		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 	}
 
@@ -799,10 +755,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	{
 		PropFloat = fields["propFloat"].get<TArray<float>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloatMutex));
-			_SentData->PropFloat = PropFloat;
-		}
+		_SentData->SetPropFloat(PropFloat);
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 
@@ -811,10 +764,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	{
 		PropFloat32 = fields["propFloat32"].get<TArray<float>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloat32Mutex));
-			_SentData->PropFloat32 = PropFloat32;
-		}
+		_SentData->SetPropFloat32(PropFloat32);
 		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 	}
 
@@ -823,10 +773,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	{
 		PropFloat64 = fields["propFloat64"].get<TArray<double>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloat64Mutex));
-			_SentData->PropFloat64 = PropFloat64;
-		}
+		_SentData->SetPropFloat64(PropFloat64);
 		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 	}
 
@@ -835,10 +782,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	{
 		PropString = fields["propString"].get<TArray<FString>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropStringMutex));
-			_SentData->PropString = PropString;
-		}
+		_SentData->SetPropString(PropString);
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 
@@ -847,10 +791,7 @@ void UTbSimpleSimpleArrayInterfaceOLinkClient::applyState(const nlohmann::json& 
 	{
 		PropReadOnlyString = fields["propReadOnlyString"].get<FString>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropReadOnlyStringMutex));
-			_SentData->PropReadOnlyString = PropReadOnlyString;
-		}
+		_SentData->SetPropReadOnlyString(PropReadOnlyString);
 		_GetPublisher()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
 	}
 }

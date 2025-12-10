@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Templates/PimplPtr.h"
 #include "TbSimpleSimpleInterfaceOLinkClient.generated.h"
 
-struct TbSimpleSimpleInterfacePropertiesData;
+class TbSimpleSimpleInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
