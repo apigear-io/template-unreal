@@ -19,48 +19,48 @@ limitations under the License.
 
 void TbRefIfacesParentIfPropertiesData::SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
 {
-	FScopeLock Lock(&(LocalIfCS));
+	FWriteScopeLock WriteLock(LocalIfLock);
 	LocalIf = InLocalIf;
 }
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> TbRefIfacesParentIfPropertiesData::GetLocalIf() const
 {
-	FScopeLock Lock(&(LocalIfCS));
+	FReadScopeLock ReadLock(LocalIfLock);
 	return LocalIf;
 }
 
 void TbRefIfacesParentIfPropertiesData::SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
 {
-	FScopeLock Lock(&(LocalIfListCS));
+	FWriteScopeLock WriteLock(LocalIfListLock);
 	LocalIfList = InLocalIfList;
 }
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> TbRefIfacesParentIfPropertiesData::GetLocalIfList() const
 {
-	FScopeLock Lock(&(LocalIfListCS));
+	FReadScopeLock ReadLock(LocalIfListLock);
 	return LocalIfList;
 }
 
 void TbRefIfacesParentIfPropertiesData::SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
-	FScopeLock Lock(&(ImportedIfCS));
+	FWriteScopeLock WriteLock(ImportedIfLock);
 	ImportedIf = InImportedIf;
 }
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> TbRefIfacesParentIfPropertiesData::GetImportedIf() const
 {
-	FScopeLock Lock(&(ImportedIfCS));
+	FReadScopeLock ReadLock(ImportedIfLock);
 	return ImportedIf;
 }
 
 void TbRefIfacesParentIfPropertiesData::SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
 {
-	FScopeLock Lock(&(ImportedIfListCS));
+	FWriteScopeLock WriteLock(ImportedIfListLock);
 	ImportedIfList = InImportedIfList;
 }
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> TbRefIfacesParentIfPropertiesData::GetImportedIfList() const
 {
-	FScopeLock Lock(&(ImportedIfListCS));
+	FReadScopeLock ReadLock(ImportedIfListLock);
 	return ImportedIfList;
 }

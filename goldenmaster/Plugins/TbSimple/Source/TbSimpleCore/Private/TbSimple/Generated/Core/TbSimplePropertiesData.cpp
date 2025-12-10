@@ -19,120 +19,120 @@ limitations under the License.
 
 void TbSimpleSimpleInterfacePropertiesData::SetPropString(const FString& InPropString)
 {
-	FScopeLock Lock(&(PropStringCS));
+	FWriteScopeLock WriteLock(PropStringLock);
 	PropString = InPropString;
 }
 
 FString TbSimpleSimpleInterfacePropertiesData::GetPropString() const
 {
-	FScopeLock Lock(&(PropStringCS));
+	FReadScopeLock ReadLock(PropStringLock);
 	return PropString;
 }
 
 void TbSimpleSimpleArrayInterfacePropertiesData::SetPropBool(const TArray<bool>& InPropBool)
 {
-	FScopeLock Lock(&(PropBoolCS));
+	FWriteScopeLock WriteLock(PropBoolLock);
 	PropBool = InPropBool;
 }
 
 TArray<bool> TbSimpleSimpleArrayInterfacePropertiesData::GetPropBool() const
 {
-	FScopeLock Lock(&(PropBoolCS));
+	FReadScopeLock ReadLock(PropBoolLock);
 	return PropBool;
 }
 
 void TbSimpleSimpleArrayInterfacePropertiesData::SetPropInt(const TArray<int32>& InPropInt)
 {
-	FScopeLock Lock(&(PropIntCS));
+	FWriteScopeLock WriteLock(PropIntLock);
 	PropInt = InPropInt;
 }
 
 TArray<int32> TbSimpleSimpleArrayInterfacePropertiesData::GetPropInt() const
 {
-	FScopeLock Lock(&(PropIntCS));
+	FReadScopeLock ReadLock(PropIntLock);
 	return PropInt;
 }
 
 void TbSimpleSimpleArrayInterfacePropertiesData::SetPropInt32(const TArray<int32>& InPropInt32)
 {
-	FScopeLock Lock(&(PropInt32CS));
+	FWriteScopeLock WriteLock(PropInt32Lock);
 	PropInt32 = InPropInt32;
 }
 
 TArray<int32> TbSimpleSimpleArrayInterfacePropertiesData::GetPropInt32() const
 {
-	FScopeLock Lock(&(PropInt32CS));
+	FReadScopeLock ReadLock(PropInt32Lock);
 	return PropInt32;
 }
 
 void TbSimpleSimpleArrayInterfacePropertiesData::SetPropInt64(const TArray<int64>& InPropInt64)
 {
-	FScopeLock Lock(&(PropInt64CS));
+	FWriteScopeLock WriteLock(PropInt64Lock);
 	PropInt64 = InPropInt64;
 }
 
 TArray<int64> TbSimpleSimpleArrayInterfacePropertiesData::GetPropInt64() const
 {
-	FScopeLock Lock(&(PropInt64CS));
+	FReadScopeLock ReadLock(PropInt64Lock);
 	return PropInt64;
 }
 
 void TbSimpleSimpleArrayInterfacePropertiesData::SetPropFloat(const TArray<float>& InPropFloat)
 {
-	FScopeLock Lock(&(PropFloatCS));
+	FWriteScopeLock WriteLock(PropFloatLock);
 	PropFloat = InPropFloat;
 }
 
 TArray<float> TbSimpleSimpleArrayInterfacePropertiesData::GetPropFloat() const
 {
-	FScopeLock Lock(&(PropFloatCS));
+	FReadScopeLock ReadLock(PropFloatLock);
 	return PropFloat;
 }
 
 void TbSimpleSimpleArrayInterfacePropertiesData::SetPropFloat32(const TArray<float>& InPropFloat32)
 {
-	FScopeLock Lock(&(PropFloat32CS));
+	FWriteScopeLock WriteLock(PropFloat32Lock);
 	PropFloat32 = InPropFloat32;
 }
 
 TArray<float> TbSimpleSimpleArrayInterfacePropertiesData::GetPropFloat32() const
 {
-	FScopeLock Lock(&(PropFloat32CS));
+	FReadScopeLock ReadLock(PropFloat32Lock);
 	return PropFloat32;
 }
 
 void TbSimpleSimpleArrayInterfacePropertiesData::SetPropFloat64(const TArray<double>& InPropFloat64)
 {
-	FScopeLock Lock(&(PropFloat64CS));
+	FWriteScopeLock WriteLock(PropFloat64Lock);
 	PropFloat64 = InPropFloat64;
 }
 
 TArray<double> TbSimpleSimpleArrayInterfacePropertiesData::GetPropFloat64() const
 {
-	FScopeLock Lock(&(PropFloat64CS));
+	FReadScopeLock ReadLock(PropFloat64Lock);
 	return PropFloat64;
 }
 
 void TbSimpleSimpleArrayInterfacePropertiesData::SetPropString(const TArray<FString>& InPropString)
 {
-	FScopeLock Lock(&(PropStringCS));
+	FWriteScopeLock WriteLock(PropStringLock);
 	PropString = InPropString;
 }
 
 TArray<FString> TbSimpleSimpleArrayInterfacePropertiesData::GetPropString() const
 {
-	FScopeLock Lock(&(PropStringCS));
+	FReadScopeLock ReadLock(PropStringLock);
 	return PropString;
 }
 
 void TbSimpleSimpleArrayInterfacePropertiesData::SetPropReadOnlyString(const FString& InPropReadOnlyString)
 {
-	FScopeLock Lock(&(PropReadOnlyStringCS));
+	FWriteScopeLock WriteLock(PropReadOnlyStringLock);
 	PropReadOnlyString = InPropReadOnlyString;
 }
 
 FString TbSimpleSimpleArrayInterfacePropertiesData::GetPropReadOnlyString() const
 {
-	FScopeLock Lock(&(PropReadOnlyStringCS));
+	FReadScopeLock ReadLock(PropReadOnlyStringLock);
 	return PropReadOnlyString;
 }

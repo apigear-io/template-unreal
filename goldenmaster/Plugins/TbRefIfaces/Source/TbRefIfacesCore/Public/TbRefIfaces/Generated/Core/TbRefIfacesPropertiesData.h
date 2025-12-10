@@ -17,7 +17,7 @@ limitations under the License.
 */
 #pragma once
 #include <atomic>
-#include "HAL/CriticalSection.h"
+#include "Misc/ScopeRWLock.h"
 #include "TbIfaceimport/Generated/api/TbIfaceimportEmptyIfInterface.h"
 #include "TbRefIfaces/Generated/api/TbRefIfacesSimpleLocalIfInterface.h"
 #include "TbRefIfaces/Generated/api/TbRefIfaces_data.h"
@@ -60,12 +60,12 @@ public:
 	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> GetImportedIfList() const;
 
 private:
-	mutable FCriticalSection LocalIfCS;
+	mutable FRWLock LocalIfLock;
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIf{TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>()};
-	mutable FCriticalSection LocalIfListCS;
+	mutable FRWLock LocalIfListLock;
 	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfList{TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>()};
-	mutable FCriticalSection ImportedIfCS;
+	mutable FRWLock ImportedIfLock;
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIf{TScriptInterface<ITbIfaceimportEmptyIfInterface>()};
-	mutable FCriticalSection ImportedIfListCS;
+	mutable FRWLock ImportedIfListLock;
 	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfList{TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>()};
 };

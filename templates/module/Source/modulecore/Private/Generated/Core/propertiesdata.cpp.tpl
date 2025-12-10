@@ -27,13 +27,13 @@ limitations under the License.
 {{- nl }}
 void {{$Iface}}PropertiesData::Set{{ueVar "" .}}({{ueParam "In" .}})
 {
-	FScopeLock Lock(&({{ueVar "" .}}CS));
+	FWriteScopeLock WriteLock({{ueVar "" .}}Lock);
 	{{ueVar "" .}} = {{ueVar "In" .}};
 }
 
 {{ueReturn "" .}} {{$Iface}}PropertiesData::Get{{ueVar "" .}}() const
 {
-	FScopeLock Lock(&({{ueVar "" .}}CS));
+	FReadScopeLock ReadLock({{ueVar "" .}}Lock);
 	return {{ueVar "" .}};
 }
 {{- end }}

@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
-#include "HAL/CriticalSection.h"
+#include "Misc/ScopeRWLock.h"
 #include "Counter/Generated/api/Counter_data.h"
 #include "CustomTypes/Generated/api/CustomTypes_data.h"
 #include "ExternTypes/Generated/api/ExternTypes_data.h"
@@ -42,12 +42,12 @@ public:
 	TArray<FVector> GetExternVectorArray() const;
 
 private:
-	mutable FCriticalSection VectorCS;
+	mutable FRWLock VectorLock;
 	FCustomTypesVector3D Vector{FCustomTypesVector3D()};
-	mutable FCriticalSection ExternVectorCS;
+	mutable FRWLock ExternVectorLock;
 	FVector ExternVector{FVector(0.f, 0.f, 0.f)};
-	mutable FCriticalSection VectorArrayCS;
+	mutable FRWLock VectorArrayLock;
 	TArray<FCustomTypesVector3D> VectorArray{TArray<FCustomTypesVector3D>()};
-	mutable FCriticalSection ExternVectorArrayCS;
+	mutable FRWLock ExternVectorArrayLock;
 	TArray<FVector> ExternVectorArray{TArray<FVector>()};
 };

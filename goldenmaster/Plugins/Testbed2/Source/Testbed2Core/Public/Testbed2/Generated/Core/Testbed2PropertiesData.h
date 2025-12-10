@@ -17,7 +17,7 @@ limitations under the License.
 */
 #pragma once
 #include <atomic>
-#include "HAL/CriticalSection.h"
+#include "Misc/ScopeRWLock.h"
 #include "Testbed2/Generated/api/Testbed2_data.h"
 
 /**
@@ -54,7 +54,7 @@ public:
 	FTestbed2NestedStruct1 GetProp1() const;
 
 private:
-	mutable FCriticalSection Prop1CS;
+	mutable FRWLock Prop1Lock;
 	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
 };
 
@@ -75,9 +75,9 @@ public:
 	FTestbed2NestedStruct2 GetProp2() const;
 
 private:
-	mutable FCriticalSection Prop1CS;
+	mutable FRWLock Prop1Lock;
 	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
-	mutable FCriticalSection Prop2CS;
+	mutable FRWLock Prop2Lock;
 	FTestbed2NestedStruct2 Prop2{FTestbed2NestedStruct2()};
 };
 
@@ -100,10 +100,10 @@ public:
 	FTestbed2NestedStruct3 GetProp3() const;
 
 private:
-	mutable FCriticalSection Prop1CS;
+	mutable FRWLock Prop1Lock;
 	FTestbed2NestedStruct1 Prop1{FTestbed2NestedStruct1()};
-	mutable FCriticalSection Prop2CS;
+	mutable FRWLock Prop2Lock;
 	FTestbed2NestedStruct2 Prop2{FTestbed2NestedStruct2()};
-	mutable FCriticalSection Prop3CS;
+	mutable FRWLock Prop3Lock;
 	FTestbed2NestedStruct3 Prop3{FTestbed2NestedStruct3()};
 };

@@ -39,7 +39,7 @@ limitations under the License.
 #include <atomic>
 {{- end}}
 {{- if (eq $shouldIncludeMutex 1) }}
-#include "HAL/CriticalSection.h"
+#include "Misc/ScopeRWLock.h"
 {{- end}}
 
 {{- $includes := getEmptyStringList}}
@@ -97,7 +97,7 @@ public:
 private:
 {{- range $i, $e := .Properties }}
 	{{- if not ( ueIsStdSimpleType . ) }}
-	mutable FCriticalSection {{ueVar "" .}}CS;
+	mutable FRWLock {{ueVar "" .}}Lock;
 	{{ueReturn "" .}} {{ueVar "" .}}{ {{- ueDefault "" . -}} };
 	{{- end }}
 {{- end }}

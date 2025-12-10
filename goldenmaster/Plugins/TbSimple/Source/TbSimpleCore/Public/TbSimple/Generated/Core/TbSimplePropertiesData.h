@@ -17,7 +17,7 @@ limitations under the License.
 */
 #pragma once
 #include <atomic>
-#include "HAL/CriticalSection.h"
+#include "Misc/ScopeRWLock.h"
 #include "TbSimple/Generated/api/TbSimple_data.h"
 
 /**
@@ -42,7 +42,7 @@ public:
 	FString GetPropString() const;
 
 private:
-	mutable FCriticalSection PropStringCS;
+	mutable FRWLock PropStringLock;
 	FString PropString{FString()};
 };
 
@@ -77,23 +77,23 @@ public:
 	FString GetPropReadOnlyString() const;
 
 private:
-	mutable FCriticalSection PropBoolCS;
+	mutable FRWLock PropBoolLock;
 	TArray<bool> PropBool{TArray<bool>()};
-	mutable FCriticalSection PropIntCS;
+	mutable FRWLock PropIntLock;
 	TArray<int32> PropInt{TArray<int32>()};
-	mutable FCriticalSection PropInt32CS;
+	mutable FRWLock PropInt32Lock;
 	TArray<int32> PropInt32{TArray<int32>()};
-	mutable FCriticalSection PropInt64CS;
+	mutable FRWLock PropInt64Lock;
 	TArray<int64> PropInt64{TArray<int64>()};
-	mutable FCriticalSection PropFloatCS;
+	mutable FRWLock PropFloatLock;
 	TArray<float> PropFloat{TArray<float>()};
-	mutable FCriticalSection PropFloat32CS;
+	mutable FRWLock PropFloat32Lock;
 	TArray<float> PropFloat32{TArray<float>()};
-	mutable FCriticalSection PropFloat64CS;
+	mutable FRWLock PropFloat64Lock;
 	TArray<double> PropFloat64{TArray<double>()};
-	mutable FCriticalSection PropStringCS;
+	mutable FRWLock PropStringLock;
 	TArray<FString> PropString{TArray<FString>()};
-	mutable FCriticalSection PropReadOnlyStringCS;
+	mutable FRWLock PropReadOnlyStringLock;
 	FString PropReadOnlyString{FString()};
 };
 

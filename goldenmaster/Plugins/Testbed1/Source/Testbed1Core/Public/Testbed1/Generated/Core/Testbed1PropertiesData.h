@@ -16,7 +16,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
-#include "HAL/CriticalSection.h"
+#include "Misc/ScopeRWLock.h"
 #include "Testbed1/Generated/api/Testbed1_data.h"
 
 /**
@@ -40,13 +40,13 @@ public:
 	FTestbed1StructString GetPropString() const;
 
 private:
-	mutable FCriticalSection PropBoolCS;
+	mutable FRWLock PropBoolLock;
 	FTestbed1StructBool PropBool{FTestbed1StructBool()};
-	mutable FCriticalSection PropIntCS;
+	mutable FRWLock PropIntLock;
 	FTestbed1StructInt PropInt{FTestbed1StructInt()};
-	mutable FCriticalSection PropFloatCS;
+	mutable FRWLock PropFloatLock;
 	FTestbed1StructFloat PropFloat{FTestbed1StructFloat()};
-	mutable FCriticalSection PropStringCS;
+	mutable FRWLock PropStringLock;
 	FTestbed1StructString PropString{FTestbed1StructString()};
 };
 
@@ -73,15 +73,15 @@ public:
 	TArray<ETestbed1Enum0> GetPropEnum() const;
 
 private:
-	mutable FCriticalSection PropBoolCS;
+	mutable FRWLock PropBoolLock;
 	TArray<FTestbed1StructBool> PropBool{TArray<FTestbed1StructBool>()};
-	mutable FCriticalSection PropIntCS;
+	mutable FRWLock PropIntLock;
 	TArray<FTestbed1StructInt> PropInt{TArray<FTestbed1StructInt>()};
-	mutable FCriticalSection PropFloatCS;
+	mutable FRWLock PropFloatLock;
 	TArray<FTestbed1StructFloat> PropFloat{TArray<FTestbed1StructFloat>()};
-	mutable FCriticalSection PropStringCS;
+	mutable FRWLock PropStringLock;
 	TArray<FTestbed1StructString> PropString{TArray<FTestbed1StructString>()};
-	mutable FCriticalSection PropEnumCS;
+	mutable FRWLock PropEnumLock;
 	TArray<ETestbed1Enum0> PropEnum{TArray<ETestbed1Enum0>()};
 };
 
@@ -108,14 +108,14 @@ public:
 	FTestbed1StructEnumWithArray GetPropEnum() const;
 
 private:
-	mutable FCriticalSection PropBoolCS;
+	mutable FRWLock PropBoolLock;
 	FTestbed1StructBoolWithArray PropBool{FTestbed1StructBoolWithArray()};
-	mutable FCriticalSection PropIntCS;
+	mutable FRWLock PropIntLock;
 	FTestbed1StructIntWithArray PropInt{FTestbed1StructIntWithArray()};
-	mutable FCriticalSection PropFloatCS;
+	mutable FRWLock PropFloatLock;
 	FTestbed1StructFloatWithArray PropFloat{FTestbed1StructFloatWithArray()};
-	mutable FCriticalSection PropStringCS;
+	mutable FRWLock PropStringLock;
 	FTestbed1StructStringWithArray PropString{FTestbed1StructStringWithArray()};
-	mutable FCriticalSection PropEnumCS;
+	mutable FRWLock PropEnumLock;
 	FTestbed1StructEnumWithArray PropEnum{FTestbed1StructEnumWithArray()};
 };

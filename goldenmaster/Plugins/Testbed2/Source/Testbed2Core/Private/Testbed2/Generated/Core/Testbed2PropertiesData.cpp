@@ -19,72 +19,72 @@ limitations under the License.
 
 void Testbed2NestedStruct1InterfacePropertiesData::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
-	FScopeLock Lock(&(Prop1CS));
+	FWriteScopeLock WriteLock(Prop1Lock);
 	Prop1 = InProp1;
 }
 
 FTestbed2NestedStruct1 Testbed2NestedStruct1InterfacePropertiesData::GetProp1() const
 {
-	FScopeLock Lock(&(Prop1CS));
+	FReadScopeLock ReadLock(Prop1Lock);
 	return Prop1;
 }
 
 void Testbed2NestedStruct2InterfacePropertiesData::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
-	FScopeLock Lock(&(Prop1CS));
+	FWriteScopeLock WriteLock(Prop1Lock);
 	Prop1 = InProp1;
 }
 
 FTestbed2NestedStruct1 Testbed2NestedStruct2InterfacePropertiesData::GetProp1() const
 {
-	FScopeLock Lock(&(Prop1CS));
+	FReadScopeLock ReadLock(Prop1Lock);
 	return Prop1;
 }
 
 void Testbed2NestedStruct2InterfacePropertiesData::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
-	FScopeLock Lock(&(Prop2CS));
+	FWriteScopeLock WriteLock(Prop2Lock);
 	Prop2 = InProp2;
 }
 
 FTestbed2NestedStruct2 Testbed2NestedStruct2InterfacePropertiesData::GetProp2() const
 {
-	FScopeLock Lock(&(Prop2CS));
+	FReadScopeLock ReadLock(Prop2Lock);
 	return Prop2;
 }
 
 void Testbed2NestedStruct3InterfacePropertiesData::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
-	FScopeLock Lock(&(Prop1CS));
+	FWriteScopeLock WriteLock(Prop1Lock);
 	Prop1 = InProp1;
 }
 
 FTestbed2NestedStruct1 Testbed2NestedStruct3InterfacePropertiesData::GetProp1() const
 {
-	FScopeLock Lock(&(Prop1CS));
+	FReadScopeLock ReadLock(Prop1Lock);
 	return Prop1;
 }
 
 void Testbed2NestedStruct3InterfacePropertiesData::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
-	FScopeLock Lock(&(Prop2CS));
+	FWriteScopeLock WriteLock(Prop2Lock);
 	Prop2 = InProp2;
 }
 
 FTestbed2NestedStruct2 Testbed2NestedStruct3InterfacePropertiesData::GetProp2() const
 {
-	FScopeLock Lock(&(Prop2CS));
+	FReadScopeLock ReadLock(Prop2Lock);
 	return Prop2;
 }
 
 void Testbed2NestedStruct3InterfacePropertiesData::SetProp3(const FTestbed2NestedStruct3& InProp3)
 {
-	FScopeLock Lock(&(Prop3CS));
+	FWriteScopeLock WriteLock(Prop3Lock);
 	Prop3 = InProp3;
 }
 
 FTestbed2NestedStruct3 Testbed2NestedStruct3InterfacePropertiesData::GetProp3() const
 {
-	FScopeLock Lock(&(Prop3CS));
+	FReadScopeLock ReadLock(Prop3Lock);
 	return Prop3;
 }
