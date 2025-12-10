@@ -162,17 +162,13 @@ void UTestbed1StructInterfaceOLinkClient::SetPropBool(const FTestbed1StructBool&
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropBool() == InPropBool)
 	{
-		FScopeLock Lock(&(_SentData->PropBoolMutex));
-		if (_SentData->PropBool == InPropBool)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propBool");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropBool);
-	FScopeLock Lock(&(_SentData->PropBoolMutex));
-	_SentData->PropBool = InPropBool;
+	_SentData->SetPropBool(InPropBool);
 }
 
 FTestbed1StructInt UTestbed1StructInterfaceOLinkClient::GetPropInt() const
@@ -196,17 +192,13 @@ void UTestbed1StructInterfaceOLinkClient::SetPropInt(const FTestbed1StructInt& I
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropInt() == InPropInt)
 	{
-		FScopeLock Lock(&(_SentData->PropIntMutex));
-		if (_SentData->PropInt == InPropInt)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propInt");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropInt);
-	FScopeLock Lock(&(_SentData->PropIntMutex));
-	_SentData->PropInt = InPropInt;
+	_SentData->SetPropInt(InPropInt);
 }
 
 FTestbed1StructFloat UTestbed1StructInterfaceOLinkClient::GetPropFloat() const
@@ -230,17 +222,13 @@ void UTestbed1StructInterfaceOLinkClient::SetPropFloat(const FTestbed1StructFloa
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropFloat() == InPropFloat)
 	{
-		FScopeLock Lock(&(_SentData->PropFloatMutex));
-		if (_SentData->PropFloat == InPropFloat)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propFloat");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropFloat);
-	FScopeLock Lock(&(_SentData->PropFloatMutex));
-	_SentData->PropFloat = InPropFloat;
+	_SentData->SetPropFloat(InPropFloat);
 }
 
 FTestbed1StructString UTestbed1StructInterfaceOLinkClient::GetPropString() const
@@ -264,17 +252,13 @@ void UTestbed1StructInterfaceOLinkClient::SetPropString(const FTestbed1StructStr
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropString() == InPropString)
 	{
-		FScopeLock Lock(&(_SentData->PropStringMutex));
-		if (_SentData->PropString == InPropString)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "propString");
 	m_sink->GetNode()->setRemoteProperty(memberId, InPropString);
-	FScopeLock Lock(&(_SentData->PropStringMutex));
-	_SentData->PropString = InPropString;
+	_SentData->SetPropString(InPropString);
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceOLinkClient::FuncBool(const FTestbed1StructBool& ParamBool)
@@ -450,10 +434,7 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 	{
 		PropBool = fields["propBool"].get<FTestbed1StructBool>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropBoolMutex));
-			_SentData->PropBool = PropBool;
-		}
+		_SentData->SetPropBool(PropBool);
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 
@@ -462,10 +443,7 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 	{
 		PropInt = fields["propInt"].get<FTestbed1StructInt>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropIntMutex));
-			_SentData->PropInt = PropInt;
-		}
+		_SentData->SetPropInt(PropInt);
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 
@@ -474,10 +452,7 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 	{
 		PropFloat = fields["propFloat"].get<FTestbed1StructFloat>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloatMutex));
-			_SentData->PropFloat = PropFloat;
-		}
+		_SentData->SetPropFloat(PropFloat);
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 
@@ -486,10 +461,7 @@ void UTestbed1StructInterfaceOLinkClient::applyState(const nlohmann::json& field
 	{
 		PropString = fields["propString"].get<FTestbed1StructString>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropStringMutex));
-			_SentData->PropString = PropString;
-		}
+		_SentData->SetPropString(PropString);
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }

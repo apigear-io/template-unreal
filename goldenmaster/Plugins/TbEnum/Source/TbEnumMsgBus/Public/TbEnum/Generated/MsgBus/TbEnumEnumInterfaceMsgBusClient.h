@@ -64,7 +64,7 @@ struct FTbEnumEnumInterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceStatsUpdatedDelegate, FTbEnumEnumInterfaceStats, Stats);
 
-struct TbEnumEnumInterfacePropertiesData;
+class TbEnumEnumInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbEnumEnumInterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);

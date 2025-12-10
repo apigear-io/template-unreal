@@ -17,52 +17,105 @@ limitations under the License.
 */
 #pragma once
 #include "HAL/CriticalSection.h"
+#include "Testbed1/Generated/api/Testbed1_data.h"
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct Testbed1StructInterfacePropertiesData
+class TESTBED1CORE_API Testbed1StructInterfacePropertiesData
 {
-	FCriticalSection PropBoolMutex;
+public:
+	void SetPropBool(const FTestbed1StructBool& InPropBool);
+	FTestbed1StructBool GetPropBool() const;
+	void SetPropInt(const FTestbed1StructInt& InPropInt);
+	FTestbed1StructInt GetPropInt() const;
+	void SetPropFloat(const FTestbed1StructFloat& InPropFloat);
+	FTestbed1StructFloat GetPropFloat() const;
+	void SetPropString(const FTestbed1StructString& InPropString);
+	FTestbed1StructString GetPropString() const;
+
+private:
+	mutable FCriticalSection PropBoolCS;
 	FTestbed1StructBool PropBool{FTestbed1StructBool()};
-	FCriticalSection PropIntMutex;
+	mutable FCriticalSection PropIntCS;
 	FTestbed1StructInt PropInt{FTestbed1StructInt()};
-	FCriticalSection PropFloatMutex;
+	mutable FCriticalSection PropFloatCS;
 	FTestbed1StructFloat PropFloat{FTestbed1StructFloat()};
-	FCriticalSection PropStringMutex;
+	mutable FCriticalSection PropStringCS;
 	FTestbed1StructString PropString{FTestbed1StructString()};
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct Testbed1StructArrayInterfacePropertiesData
+class TESTBED1CORE_API Testbed1StructArrayInterfacePropertiesData
 {
-	FCriticalSection PropBoolMutex;
+public:
+	void SetPropBool(const TArray<FTestbed1StructBool>& InPropBool);
+	TArray<FTestbed1StructBool> GetPropBool() const;
+	void SetPropInt(const TArray<FTestbed1StructInt>& InPropInt);
+	TArray<FTestbed1StructInt> GetPropInt() const;
+	void SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat);
+	TArray<FTestbed1StructFloat> GetPropFloat() const;
+	void SetPropString(const TArray<FTestbed1StructString>& InPropString);
+	TArray<FTestbed1StructString> GetPropString() const;
+	void SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum);
+	TArray<ETestbed1Enum0> GetPropEnum() const;
+
+private:
+	mutable FCriticalSection PropBoolCS;
 	TArray<FTestbed1StructBool> PropBool{TArray<FTestbed1StructBool>()};
-	FCriticalSection PropIntMutex;
+	mutable FCriticalSection PropIntCS;
 	TArray<FTestbed1StructInt> PropInt{TArray<FTestbed1StructInt>()};
-	FCriticalSection PropFloatMutex;
+	mutable FCriticalSection PropFloatCS;
 	TArray<FTestbed1StructFloat> PropFloat{TArray<FTestbed1StructFloat>()};
-	FCriticalSection PropStringMutex;
+	mutable FCriticalSection PropStringCS;
 	TArray<FTestbed1StructString> PropString{TArray<FTestbed1StructString>()};
-	FCriticalSection PropEnumMutex;
+	mutable FCriticalSection PropEnumCS;
 	TArray<ETestbed1Enum0> PropEnum{TArray<ETestbed1Enum0>()};
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct Testbed1StructArray2InterfacePropertiesData
+class TESTBED1CORE_API Testbed1StructArray2InterfacePropertiesData
 {
-	FCriticalSection PropBoolMutex;
+public:
+	void SetPropBool(const FTestbed1StructBoolWithArray& InPropBool);
+	FTestbed1StructBoolWithArray GetPropBool() const;
+	void SetPropInt(const FTestbed1StructIntWithArray& InPropInt);
+	FTestbed1StructIntWithArray GetPropInt() const;
+	void SetPropFloat(const FTestbed1StructFloatWithArray& InPropFloat);
+	FTestbed1StructFloatWithArray GetPropFloat() const;
+	void SetPropString(const FTestbed1StructStringWithArray& InPropString);
+	FTestbed1StructStringWithArray GetPropString() const;
+	void SetPropEnum(const FTestbed1StructEnumWithArray& InPropEnum);
+	FTestbed1StructEnumWithArray GetPropEnum() const;
+
+private:
+	mutable FCriticalSection PropBoolCS;
 	FTestbed1StructBoolWithArray PropBool{FTestbed1StructBoolWithArray()};
-	FCriticalSection PropIntMutex;
+	mutable FCriticalSection PropIntCS;
 	FTestbed1StructIntWithArray PropInt{FTestbed1StructIntWithArray()};
-	FCriticalSection PropFloatMutex;
+	mutable FCriticalSection PropFloatCS;
 	FTestbed1StructFloatWithArray PropFloat{FTestbed1StructFloatWithArray()};
-	FCriticalSection PropStringMutex;
+	mutable FCriticalSection PropStringCS;
 	FTestbed1StructStringWithArray PropString{FTestbed1StructStringWithArray()};
-	FCriticalSection PropEnumMutex;
+	mutable FCriticalSection PropEnumCS;
 	FTestbed1StructEnumWithArray PropEnum{FTestbed1StructEnumWithArray()};
 };

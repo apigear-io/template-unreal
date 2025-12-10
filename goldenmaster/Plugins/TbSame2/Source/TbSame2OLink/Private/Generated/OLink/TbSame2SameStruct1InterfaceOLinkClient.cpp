@@ -162,17 +162,13 @@ void UTbSame2SameStruct1InterfaceOLinkClient::SetProp1(const FTbSame2Struct1& In
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetProp1() == InProp1)
 	{
-		FScopeLock Lock(&(_SentData->Prop1Mutex));
-		if (_SentData->Prop1 == InProp1)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "prop1");
 	m_sink->GetNode()->setRemoteProperty(memberId, InProp1);
-	FScopeLock Lock(&(_SentData->Prop1Mutex));
-	_SentData->Prop1 = InProp1;
+	_SentData->SetProp1(InProp1);
 }
 
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceOLinkClient::Func1(const FTbSame2Struct1& Param1)
@@ -228,10 +224,7 @@ void UTbSame2SameStruct1InterfaceOLinkClient::applyState(const nlohmann::json& f
 	{
 		Prop1 = fields["prop1"].get<FTbSame2Struct1>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->Prop1Mutex));
-			_SentData->Prop1 = Prop1;
-		}
+		_SentData->SetProp1(Prop1);
 		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }

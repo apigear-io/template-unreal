@@ -190,10 +190,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnConnectionInit(const FTestbed1Struc
 	{
 		PropBool = InMessage.PropBool;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropBoolMutex));
-			_SentData->PropBool = PropBool;
-		}
+		_SentData->SetPropBool(PropBool);
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 
@@ -202,10 +199,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnConnectionInit(const FTestbed1Struc
 	{
 		PropInt = InMessage.PropInt;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropIntMutex));
-			_SentData->PropInt = PropInt;
-		}
+		_SentData->SetPropInt(PropInt);
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 
@@ -214,10 +208,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnConnectionInit(const FTestbed1Struc
 	{
 		PropFloat = InMessage.PropFloat;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloatMutex));
-			_SentData->PropFloat = PropFloat;
-		}
+		_SentData->SetPropFloat(PropFloat);
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 
@@ -226,10 +217,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnConnectionInit(const FTestbed1Struc
 	{
 		PropString = InMessage.PropString;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropStringMutex));
-			_SentData->PropString = PropString;
-		}
+		_SentData->SetPropString(PropString);
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 
@@ -358,12 +346,9 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropBool(const FTestbed1StructBool
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropBool() == InPropBool)
 	{
-		FScopeLock Lock(&(_SentData->PropBoolMutex));
-		if (_SentData->PropBool == InPropBool)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed1StructInterfaceSetPropBoolRequestMessage();
@@ -374,8 +359,7 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropBool(const FTestbed1StructBool
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropBoolMutex));
-	_SentData->PropBool = InPropBool;
+	_SentData->SetPropBool(InPropBool);
 }
 
 FTestbed1StructInt UTestbed1StructInterfaceMsgBusClient::GetPropInt() const
@@ -399,12 +383,9 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropInt(const FTestbed1StructInt& 
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropInt() == InPropInt)
 	{
-		FScopeLock Lock(&(_SentData->PropIntMutex));
-		if (_SentData->PropInt == InPropInt)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed1StructInterfaceSetPropIntRequestMessage();
@@ -415,8 +396,7 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropInt(const FTestbed1StructInt& 
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropIntMutex));
-	_SentData->PropInt = InPropInt;
+	_SentData->SetPropInt(InPropInt);
 }
 
 FTestbed1StructFloat UTestbed1StructInterfaceMsgBusClient::GetPropFloat() const
@@ -440,12 +420,9 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropFloat(const FTestbed1StructFlo
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropFloat() == InPropFloat)
 	{
-		FScopeLock Lock(&(_SentData->PropFloatMutex));
-		if (_SentData->PropFloat == InPropFloat)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed1StructInterfaceSetPropFloatRequestMessage();
@@ -456,8 +433,7 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropFloat(const FTestbed1StructFlo
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropFloatMutex));
-	_SentData->PropFloat = InPropFloat;
+	_SentData->SetPropFloat(InPropFloat);
 }
 
 FTestbed1StructString UTestbed1StructInterfaceMsgBusClient::GetPropString() const
@@ -481,12 +457,9 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropString(const FTestbed1StructSt
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropString() == InPropString)
 	{
-		FScopeLock Lock(&(_SentData->PropStringMutex));
-		if (_SentData->PropString == InPropString)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed1StructInterfaceSetPropStringRequestMessage();
@@ -497,8 +470,7 @@ void UTestbed1StructInterfaceMsgBusClient::SetPropString(const FTestbed1StructSt
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropStringMutex));
-	_SentData->PropString = InPropString;
+	_SentData->SetPropString(InPropString);
 }
 
 FTestbed1StructBool UTestbed1StructInterfaceMsgBusClient::FuncBool(const FTestbed1StructBool& InParamBool)
@@ -686,10 +658,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnPropBoolChanged(const FTestbed1Stru
 	{
 		PropBool = InMessage.PropBool;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropBoolMutex));
-			_SentData->PropBool = PropBool;
-		}
+		_SentData->SetPropBool(PropBool);
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 }
@@ -707,10 +676,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnPropIntChanged(const FTestbed1Struc
 	{
 		PropInt = InMessage.PropInt;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropIntMutex));
-			_SentData->PropInt = PropInt;
-		}
+		_SentData->SetPropInt(PropInt);
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
@@ -728,10 +694,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnPropFloatChanged(const FTestbed1Str
 	{
 		PropFloat = InMessage.PropFloat;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloatMutex));
-			_SentData->PropFloat = PropFloat;
-		}
+		_SentData->SetPropFloat(PropFloat);
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
@@ -749,10 +712,7 @@ void UTestbed1StructInterfaceMsgBusClient::OnPropStringChanged(const FTestbed1St
 	{
 		PropString = InMessage.PropString;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropStringMutex));
-			_SentData->PropString = PropString;
-		}
+		_SentData->SetPropString(PropString);
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }

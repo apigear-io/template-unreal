@@ -64,7 +64,7 @@ struct FTestbed2ManyParamInterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceStatsUpdatedDelegate, FTestbed2ManyParamInterfaceStats, Stats);
 
-struct Testbed2ManyParamInterfacePropertiesData;
+class Testbed2ManyParamInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed2ManyParamInterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);

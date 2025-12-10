@@ -193,10 +193,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnConnectionInit(const FTestbed1
 	{
 		PropBool = InMessage.PropBool;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropBoolMutex));
-			_SentData->PropBool = PropBool;
-		}
+		_SentData->SetPropBool(PropBool);
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 
@@ -205,10 +202,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnConnectionInit(const FTestbed1
 	{
 		PropInt = InMessage.PropInt;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropIntMutex));
-			_SentData->PropInt = PropInt;
-		}
+		_SentData->SetPropInt(PropInt);
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 
@@ -217,10 +211,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnConnectionInit(const FTestbed1
 	{
 		PropFloat = InMessage.PropFloat;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloatMutex));
-			_SentData->PropFloat = PropFloat;
-		}
+		_SentData->SetPropFloat(PropFloat);
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 
@@ -229,10 +220,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnConnectionInit(const FTestbed1
 	{
 		PropString = InMessage.PropString;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropStringMutex));
-			_SentData->PropString = PropString;
-		}
+		_SentData->SetPropString(PropString);
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 
@@ -241,10 +229,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnConnectionInit(const FTestbed1
 	{
 		PropEnum = InMessage.PropEnum;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropEnumMutex));
-			_SentData->PropEnum = PropEnum;
-		}
+		_SentData->SetPropEnum(PropEnum);
 		_GetPublisher()->BroadcastPropEnumChanged(PropEnum);
 	}
 
@@ -373,12 +358,9 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropBool(const TArray<FTestbe
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropBool() == InPropBool)
 	{
-		FScopeLock Lock(&(_SentData->PropBoolMutex));
-		if (_SentData->PropBool == InPropBool)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed1StructArrayInterfaceSetPropBoolRequestMessage();
@@ -389,8 +371,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropBool(const TArray<FTestbe
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropBoolMutex));
-	_SentData->PropBool = InPropBool;
+	_SentData->SetPropBool(InPropBool);
 }
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceMsgBusClient::GetPropInt() const
@@ -414,12 +395,9 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropInt(const TArray<FTestbed
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropInt() == InPropInt)
 	{
-		FScopeLock Lock(&(_SentData->PropIntMutex));
-		if (_SentData->PropInt == InPropInt)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed1StructArrayInterfaceSetPropIntRequestMessage();
@@ -430,8 +408,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropInt(const TArray<FTestbed
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropIntMutex));
-	_SentData->PropInt = InPropInt;
+	_SentData->SetPropInt(InPropInt);
 }
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceMsgBusClient::GetPropFloat() const
@@ -455,12 +432,9 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropFloat(const TArray<FTestb
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropFloat() == InPropFloat)
 	{
-		FScopeLock Lock(&(_SentData->PropFloatMutex));
-		if (_SentData->PropFloat == InPropFloat)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed1StructArrayInterfaceSetPropFloatRequestMessage();
@@ -471,8 +445,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropFloat(const TArray<FTestb
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropFloatMutex));
-	_SentData->PropFloat = InPropFloat;
+	_SentData->SetPropFloat(InPropFloat);
 }
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceMsgBusClient::GetPropString() const
@@ -496,12 +469,9 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropString(const TArray<FTest
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropString() == InPropString)
 	{
-		FScopeLock Lock(&(_SentData->PropStringMutex));
-		if (_SentData->PropString == InPropString)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed1StructArrayInterfaceSetPropStringRequestMessage();
@@ -512,8 +482,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropString(const TArray<FTest
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropStringMutex));
-	_SentData->PropString = InPropString;
+	_SentData->SetPropString(InPropString);
 }
 
 TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceMsgBusClient::GetPropEnum() const
@@ -537,12 +506,9 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropEnum(const TArray<ETestbe
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropEnum() == InPropEnum)
 	{
-		FScopeLock Lock(&(_SentData->PropEnumMutex));
-		if (_SentData->PropEnum == InPropEnum)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTestbed1StructArrayInterfaceSetPropEnumRequestMessage();
@@ -553,8 +519,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::SetPropEnum(const TArray<ETestbe
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropEnumMutex));
-	_SentData->PropEnum = InPropEnum;
+	_SentData->SetPropEnum(InPropEnum);
 }
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceMsgBusClient::FuncBool(const TArray<FTestbed1StructBool>& InParamBool)
@@ -785,10 +750,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropBoolChanged(const FTestbed
 	{
 		PropBool = InMessage.PropBool;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropBoolMutex));
-			_SentData->PropBool = PropBool;
-		}
+		_SentData->SetPropBool(PropBool);
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 }
@@ -806,10 +768,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropIntChanged(const FTestbed1
 	{
 		PropInt = InMessage.PropInt;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropIntMutex));
-			_SentData->PropInt = PropInt;
-		}
+		_SentData->SetPropInt(PropInt);
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
@@ -827,10 +786,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropFloatChanged(const FTestbe
 	{
 		PropFloat = InMessage.PropFloat;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropFloatMutex));
-			_SentData->PropFloat = PropFloat;
-		}
+		_SentData->SetPropFloat(PropFloat);
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
@@ -848,10 +804,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropStringChanged(const FTestb
 	{
 		PropString = InMessage.PropString;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropStringMutex));
-			_SentData->PropString = PropString;
-		}
+		_SentData->SetPropString(PropString);
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
@@ -869,10 +822,7 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropEnumChanged(const FTestbed
 	{
 		PropEnum = InMessage.PropEnum;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropEnumMutex));
-			_SentData->PropEnum = PropEnum;
-		}
+		_SentData->SetPropEnum(PropEnum);
 		_GetPublisher()->BroadcastPropEnumChanged(PropEnum);
 	}
 }

@@ -58,7 +58,7 @@ struct FTbNamesNamEsStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsStatsUpdatedDelegate, FTbNamesNamEsStats, Stats);
 
-struct TbNamesNamEsPropertiesData;
+class TbNamesNamEsPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesNamEsMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbNamesNamEsConnectionStatusChangedDelegate, bool /* IsConnected */);

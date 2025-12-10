@@ -193,10 +193,7 @@ void {{$Class}}::OnConnectionInit(const F{{$Iface}}InitMessage& InMessage, const
 		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
 		// reset sent data to the current state
 		{{- if not ( ueIsStdSimpleType . )}}
-		{
-			FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
-			_SentData->{{ueVar "" .}} = {{ueVar "" .}};
-		}
+		_SentData->Set{{ueVar "" .}}({{ueVar "" .}});
 		{{- else}}
 		_SentData->{{ueVar "" .}} = {{ueVar "" .}};
 		{{- end }}
@@ -334,12 +331,9 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 
 	// only send change requests if the value wasn't already sent -> reduce network load
 {{- if not ( ueIsStdSimpleType . )}}
+	if (_SentData->Get{{ueVar "" .}}() == {{ueVar "In" .}})
 	{
-		FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
-		if (_SentData->{{ueVar "" .}} == {{ueVar "In" .}})
-		{
-			return;
-		}
+		return;
 	}
 {{- else}}
 	if (_SentData->{{ueVar "" .}} == {{ueVar "In" .}})
@@ -357,9 +351,10 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 {{- if not ( ueIsStdSimpleType . ) }}
-	FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
-{{- end }}
+	_SentData->Set{{ueVar "" .}}({{ueVar "In" .}});
+{{- else }}
 	_SentData->{{ueVar "" .}} = {{ueVar "In" .}};
+{{- end }}
 }
 {{- end }}
 {{- end }}
@@ -463,10 +458,7 @@ void {{$Class}}::On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}
 		{{ueVar "" .}} = InMessage.{{ueVar "" .}};
 		// reset sent data to the current state
 		{{- if not ( ueIsStdSimpleType . )}}
-		{
-			FScopeLock Lock(&(_SentData->{{ueVar "" .}}Mutex));
-			_SentData->{{ueVar "" .}} = {{ueVar "" .}};
-		}
+		_SentData->Set{{ueVar "" .}}({{ueVar "" .}});
 		{{- else}}
 		_SentData->{{ueVar "" .}} = {{ueVar "" .}};
 		{{- end }}

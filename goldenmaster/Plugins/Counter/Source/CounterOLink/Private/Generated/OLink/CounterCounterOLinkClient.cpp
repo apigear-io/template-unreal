@@ -164,17 +164,13 @@ void UCounterCounterOLinkClient::SetVector(const FCustomTypesVector3D& InVector)
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetVector() == InVector)
 	{
-		FScopeLock Lock(&(_SentData->VectorMutex));
-		if (_SentData->Vector == InVector)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "vector");
 	m_sink->GetNode()->setRemoteProperty(memberId, InVector);
-	FScopeLock Lock(&(_SentData->VectorMutex));
-	_SentData->Vector = InVector;
+	_SentData->SetVector(InVector);
 }
 
 FVector UCounterCounterOLinkClient::GetExternVector() const
@@ -198,17 +194,13 @@ void UCounterCounterOLinkClient::SetExternVector(const FVector& InExternVector)
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetExternVector() == InExternVector)
 	{
-		FScopeLock Lock(&(_SentData->ExternVectorMutex));
-		if (_SentData->ExternVector == InExternVector)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "extern_vector");
 	m_sink->GetNode()->setRemoteProperty(memberId, InExternVector);
-	FScopeLock Lock(&(_SentData->ExternVectorMutex));
-	_SentData->ExternVector = InExternVector;
+	_SentData->SetExternVector(InExternVector);
 }
 
 TArray<FCustomTypesVector3D> UCounterCounterOLinkClient::GetVectorArray() const
@@ -232,17 +224,13 @@ void UCounterCounterOLinkClient::SetVectorArray(const TArray<FCustomTypesVector3
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetVectorArray() == InVectorArray)
 	{
-		FScopeLock Lock(&(_SentData->VectorArrayMutex));
-		if (_SentData->VectorArray == InVectorArray)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "vectorArray");
 	m_sink->GetNode()->setRemoteProperty(memberId, InVectorArray);
-	FScopeLock Lock(&(_SentData->VectorArrayMutex));
-	_SentData->VectorArray = InVectorArray;
+	_SentData->SetVectorArray(InVectorArray);
 }
 
 TArray<FVector> UCounterCounterOLinkClient::GetExternVectorArray() const
@@ -266,17 +254,13 @@ void UCounterCounterOLinkClient::SetExternVectorArray(const TArray<FVector>& InE
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetExternVectorArray() == InExternVectorArray)
 	{
-		FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
-		if (_SentData->ExternVectorArray == InExternVectorArray)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "extern_vectorArray");
 	m_sink->GetNode()->setRemoteProperty(memberId, InExternVectorArray);
-	FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
-	_SentData->ExternVectorArray = InExternVectorArray;
+	_SentData->SetExternVectorArray(InExternVectorArray);
 }
 
 FVector UCounterCounterOLinkClient::Increment(const FVector& Vec)
@@ -452,10 +436,7 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 	{
 		Vector = fields["vector"].get<FCustomTypesVector3D>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->VectorMutex));
-			_SentData->Vector = Vector;
-		}
+		_SentData->SetVector(Vector);
 		_GetPublisher()->BroadcastVectorChanged(Vector);
 	}
 
@@ -464,10 +445,7 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 	{
 		ExternVector = fields["extern_vector"].get<FVector>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->ExternVectorMutex));
-			_SentData->ExternVector = ExternVector;
-		}
+		_SentData->SetExternVector(ExternVector);
 		_GetPublisher()->BroadcastExternVectorChanged(ExternVector);
 	}
 
@@ -476,10 +454,7 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 	{
 		VectorArray = fields["vectorArray"].get<TArray<FCustomTypesVector3D>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->VectorArrayMutex));
-			_SentData->VectorArray = VectorArray;
-		}
+		_SentData->SetVectorArray(VectorArray);
 		_GetPublisher()->BroadcastVectorArrayChanged(VectorArray);
 	}
 
@@ -488,10 +463,7 @@ void UCounterCounterOLinkClient::applyState(const nlohmann::json& fields)
 	{
 		ExternVectorArray = fields["extern_vectorArray"].get<TArray<FVector>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->ExternVectorArrayMutex));
-			_SentData->ExternVectorArray = ExternVectorArray;
-		}
+		_SentData->SetExternVectorArray(ExternVectorArray);
 		_GetPublisher()->BroadcastExternVectorArrayChanged(ExternVectorArray);
 	}
 }

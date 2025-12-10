@@ -18,12 +18,19 @@ limitations under the License.
 #pragma once
 #include <atomic>
 #include "HAL/CriticalSection.h"
+#include "TbSimple/Generated/api/TbSimple_data.h"
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbSimpleSimpleInterfacePropertiesData
+class TBSIMPLECORE_API TbSimpleSimpleInterfacePropertiesData
 {
+public:
 	std::atomic<bool> bPropBool{false};
 	std::atomic<int32> PropInt{0};
 	std::atomic<int32> PropInt32{0};
@@ -31,49 +38,95 @@ struct TbSimpleSimpleInterfacePropertiesData
 	std::atomic<float> PropFloat{0.0f};
 	std::atomic<float> PropFloat32{0.0f};
 	std::atomic<double> PropFloat64{0.0};
-	FCriticalSection PropStringMutex;
+	void SetPropString(const FString& InPropString);
+	FString GetPropString() const;
+
+private:
+	mutable FCriticalSection PropStringCS;
 	FString PropString{FString()};
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbSimpleSimpleArrayInterfacePropertiesData
+class TBSIMPLECORE_API TbSimpleSimpleArrayInterfacePropertiesData
 {
-	FCriticalSection PropBoolMutex;
+public:
+	void SetPropBool(const TArray<bool>& InPropBool);
+	TArray<bool> GetPropBool() const;
+	void SetPropInt(const TArray<int32>& InPropInt);
+	TArray<int32> GetPropInt() const;
+	void SetPropInt32(const TArray<int32>& InPropInt32);
+	TArray<int32> GetPropInt32() const;
+	void SetPropInt64(const TArray<int64>& InPropInt64);
+	TArray<int64> GetPropInt64() const;
+	void SetPropFloat(const TArray<float>& InPropFloat);
+	TArray<float> GetPropFloat() const;
+	void SetPropFloat32(const TArray<float>& InPropFloat32);
+	TArray<float> GetPropFloat32() const;
+	void SetPropFloat64(const TArray<double>& InPropFloat64);
+	TArray<double> GetPropFloat64() const;
+	void SetPropString(const TArray<FString>& InPropString);
+	TArray<FString> GetPropString() const;
+	void SetPropReadOnlyString(const FString& InPropReadOnlyString);
+	FString GetPropReadOnlyString() const;
+
+private:
+	mutable FCriticalSection PropBoolCS;
 	TArray<bool> PropBool{TArray<bool>()};
-	FCriticalSection PropIntMutex;
+	mutable FCriticalSection PropIntCS;
 	TArray<int32> PropInt{TArray<int32>()};
-	FCriticalSection PropInt32Mutex;
+	mutable FCriticalSection PropInt32CS;
 	TArray<int32> PropInt32{TArray<int32>()};
-	FCriticalSection PropInt64Mutex;
+	mutable FCriticalSection PropInt64CS;
 	TArray<int64> PropInt64{TArray<int64>()};
-	FCriticalSection PropFloatMutex;
+	mutable FCriticalSection PropFloatCS;
 	TArray<float> PropFloat{TArray<float>()};
-	FCriticalSection PropFloat32Mutex;
+	mutable FCriticalSection PropFloat32CS;
 	TArray<float> PropFloat32{TArray<float>()};
-	FCriticalSection PropFloat64Mutex;
+	mutable FCriticalSection PropFloat64CS;
 	TArray<double> PropFloat64{TArray<double>()};
-	FCriticalSection PropStringMutex;
+	mutable FCriticalSection PropStringCS;
 	TArray<FString> PropString{TArray<FString>()};
-	FCriticalSection PropReadOnlyStringMutex;
+	mutable FCriticalSection PropReadOnlyStringCS;
 	FString PropReadOnlyString{FString()};
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbSimpleNoOperationsInterfacePropertiesData
+class TBSIMPLECORE_API TbSimpleNoOperationsInterfacePropertiesData
 {
+public:
 	std::atomic<bool> bPropBool{false};
 	std::atomic<int32> PropInt{0};
+
+private:
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbSimpleNoSignalsInterfacePropertiesData
+class TBSIMPLECORE_API TbSimpleNoSignalsInterfacePropertiesData
 {
+public:
 	std::atomic<bool> bPropBool{false};
 	std::atomic<int32> PropInt{0};
+
+private:
 };

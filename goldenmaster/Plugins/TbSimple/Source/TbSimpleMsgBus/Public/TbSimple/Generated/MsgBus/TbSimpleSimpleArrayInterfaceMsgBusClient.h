@@ -77,7 +77,7 @@ struct FTbSimpleSimpleArrayInterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfaceStatsUpdatedDelegate, FTbSimpleSimpleArrayInterfaceStats, Stats);
 
-struct TbSimpleSimpleArrayInterfacePropertiesData;
+class TbSimpleSimpleArrayInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleArrayInterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbSimpleSimpleArrayInterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);

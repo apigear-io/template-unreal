@@ -163,17 +163,13 @@ void UTbRefIfacesParentIfOLinkClient::SetLocalIf(const TScriptInterface<ITbRefIf
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetLocalIf() == InLocalIf)
 	{
-		FScopeLock Lock(&(_SentData->LocalIfMutex));
-		if (_SentData->LocalIf == InLocalIf)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIf");
 	m_sink->GetNode()->setRemoteProperty(memberId, InLocalIf);
-	FScopeLock Lock(&(_SentData->LocalIfMutex));
-	_SentData->LocalIf = InLocalIf;
+	_SentData->SetLocalIf(InLocalIf);
 }
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfOLinkClient::GetLocalIfList() const
@@ -197,17 +193,13 @@ void UTbRefIfacesParentIfOLinkClient::SetLocalIfList(const TArray<TScriptInterfa
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetLocalIfList() == InLocalIfList)
 	{
-		FScopeLock Lock(&(_SentData->LocalIfListMutex));
-		if (_SentData->LocalIfList == InLocalIfList)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "localIfList");
 	m_sink->GetNode()->setRemoteProperty(memberId, InLocalIfList);
-	FScopeLock Lock(&(_SentData->LocalIfListMutex));
-	_SentData->LocalIfList = InLocalIfList;
+	_SentData->SetLocalIfList(InLocalIfList);
 }
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfOLinkClient::GetImportedIf() const
@@ -231,17 +223,13 @@ void UTbRefIfacesParentIfOLinkClient::SetImportedIf(const TScriptInterface<ITbIf
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetImportedIf() == InImportedIf)
 	{
-		FScopeLock Lock(&(_SentData->ImportedIfMutex));
-		if (_SentData->ImportedIf == InImportedIf)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIf");
 	m_sink->GetNode()->setRemoteProperty(memberId, InImportedIf);
-	FScopeLock Lock(&(_SentData->ImportedIfMutex));
-	_SentData->ImportedIf = InImportedIf;
+	_SentData->SetImportedIf(InImportedIf);
 }
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfOLinkClient::GetImportedIfList() const
@@ -265,17 +253,13 @@ void UTbRefIfacesParentIfOLinkClient::SetImportedIfList(const TArray<TScriptInte
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetImportedIfList() == InImportedIfList)
 	{
-		FScopeLock Lock(&(_SentData->ImportedIfListMutex));
-		if (_SentData->ImportedIfList == InImportedIfList)
-		{
-			return;
-		}
+		return;
 	}
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "importedIfList");
 	m_sink->GetNode()->setRemoteProperty(memberId, InImportedIfList);
-	FScopeLock Lock(&(_SentData->ImportedIfListMutex));
-	_SentData->ImportedIfList = InImportedIfList;
+	_SentData->SetImportedIfList(InImportedIfList);
 }
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfOLinkClient::LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
@@ -451,10 +435,7 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 	{
 		LocalIf = fields["localIf"].get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->LocalIfMutex));
-			_SentData->LocalIf = LocalIf;
-		}
+		_SentData->SetLocalIf(LocalIf);
 		_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 	}
 
@@ -463,10 +444,7 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 	{
 		LocalIfList = fields["localIfList"].get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->LocalIfListMutex));
-			_SentData->LocalIfList = LocalIfList;
-		}
+		_SentData->SetLocalIfList(LocalIfList);
 		_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 	}
 
@@ -475,10 +453,7 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 	{
 		ImportedIf = fields["importedIf"].get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->ImportedIfMutex));
-			_SentData->ImportedIf = ImportedIf;
-		}
+		_SentData->SetImportedIf(ImportedIf);
 		_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 	}
 
@@ -487,10 +462,7 @@ void UTbRefIfacesParentIfOLinkClient::applyState(const nlohmann::json& fields)
 	{
 		ImportedIfList = fields["importedIfList"].get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->ImportedIfListMutex));
-			_SentData->ImportedIfList = ImportedIfList;
-		}
+		_SentData->SetImportedIfList(ImportedIfList);
 		_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }

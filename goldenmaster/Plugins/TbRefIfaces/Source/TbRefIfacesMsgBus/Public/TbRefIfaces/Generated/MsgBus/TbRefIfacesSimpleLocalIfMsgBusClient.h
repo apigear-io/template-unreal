@@ -55,7 +55,7 @@ struct FTbRefIfacesSimpleLocalIfStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesSimpleLocalIfStatsUpdatedDelegate, FTbRefIfacesSimpleLocalIfStats, Stats);
 
-struct TbRefIfacesSimpleLocalIfPropertiesData;
+class TbRefIfacesSimpleLocalIfPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesSimpleLocalIfMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesSimpleLocalIfConnectionStatusChangedDelegate, bool /* IsConnected */);

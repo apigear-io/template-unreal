@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Templates/PimplPtr.h"
 #include "Testbed2ManyParamInterfaceOLinkClient.generated.h"
 
-struct Testbed2ManyParamInterfacePropertiesData;
+class Testbed2ManyParamInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)

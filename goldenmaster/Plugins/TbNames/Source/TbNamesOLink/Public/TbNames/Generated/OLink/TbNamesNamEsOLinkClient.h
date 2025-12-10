@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Templates/PimplPtr.h"
 #include "TbNamesNamEsOLinkClient.generated.h"
 
-struct TbNamesNamEsPropertiesData;
+class TbNamesNamEsPropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesNamEsOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)

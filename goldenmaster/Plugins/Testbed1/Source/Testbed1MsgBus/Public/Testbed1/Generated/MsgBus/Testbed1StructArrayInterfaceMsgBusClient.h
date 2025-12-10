@@ -67,7 +67,7 @@ struct FTestbed1StructArrayInterfaceStats
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceStatsUpdatedDelegate, FTestbed1StructArrayInterfaceStats, Stats);
 
-struct Testbed1StructArrayInterfacePropertiesData;
+class Testbed1StructArrayInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArrayInterfaceMsgBusClient, Log, All);
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FTestbed1StructArrayInterfaceConnectionStatusChangedDelegate, bool /* IsConnected */);

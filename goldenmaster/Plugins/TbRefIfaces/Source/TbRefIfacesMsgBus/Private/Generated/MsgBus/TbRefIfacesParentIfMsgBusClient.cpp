@@ -190,10 +190,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnConnectionInit(const FTbRefIfacesParent
 	{
 		LocalIf = InMessage.LocalIf;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->LocalIfMutex));
-			_SentData->LocalIf = LocalIf;
-		}
+		_SentData->SetLocalIf(LocalIf);
 		_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 	}
 
@@ -202,10 +199,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnConnectionInit(const FTbRefIfacesParent
 	{
 		LocalIfList = InMessage.LocalIfList;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->LocalIfListMutex));
-			_SentData->LocalIfList = LocalIfList;
-		}
+		_SentData->SetLocalIfList(LocalIfList);
 		_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 	}
 
@@ -214,10 +208,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnConnectionInit(const FTbRefIfacesParent
 	{
 		ImportedIf = InMessage.ImportedIf;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->ImportedIfMutex));
-			_SentData->ImportedIf = ImportedIf;
-		}
+		_SentData->SetImportedIf(ImportedIf);
 		_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 	}
 
@@ -226,10 +217,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnConnectionInit(const FTbRefIfacesParent
 	{
 		ImportedIfList = InMessage.ImportedIfList;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->ImportedIfListMutex));
-			_SentData->ImportedIfList = ImportedIfList;
-		}
+		_SentData->SetImportedIfList(ImportedIfList);
 		_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 
@@ -358,12 +346,9 @@ void UTbRefIfacesParentIfMsgBusClient::SetLocalIf(const TScriptInterface<ITbRefI
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetLocalIf() == InLocalIf)
 	{
-		FScopeLock Lock(&(_SentData->LocalIfMutex));
-		if (_SentData->LocalIf == InLocalIf)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbRefIfacesParentIfSetLocalIfRequestMessage();
@@ -374,8 +359,7 @@ void UTbRefIfacesParentIfMsgBusClient::SetLocalIf(const TScriptInterface<ITbRefI
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->LocalIfMutex));
-	_SentData->LocalIf = InLocalIf;
+	_SentData->SetLocalIf(InLocalIf);
 }
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfMsgBusClient::GetLocalIfList() const
@@ -399,12 +383,9 @@ void UTbRefIfacesParentIfMsgBusClient::SetLocalIfList(const TArray<TScriptInterf
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetLocalIfList() == InLocalIfList)
 	{
-		FScopeLock Lock(&(_SentData->LocalIfListMutex));
-		if (_SentData->LocalIfList == InLocalIfList)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbRefIfacesParentIfSetLocalIfListRequestMessage();
@@ -415,8 +396,7 @@ void UTbRefIfacesParentIfMsgBusClient::SetLocalIfList(const TArray<TScriptInterf
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->LocalIfListMutex));
-	_SentData->LocalIfList = InLocalIfList;
+	_SentData->SetLocalIfList(InLocalIfList);
 }
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfMsgBusClient::GetImportedIf() const
@@ -440,12 +420,9 @@ void UTbRefIfacesParentIfMsgBusClient::SetImportedIf(const TScriptInterface<ITbI
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetImportedIf() == InImportedIf)
 	{
-		FScopeLock Lock(&(_SentData->ImportedIfMutex));
-		if (_SentData->ImportedIf == InImportedIf)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbRefIfacesParentIfSetImportedIfRequestMessage();
@@ -456,8 +433,7 @@ void UTbRefIfacesParentIfMsgBusClient::SetImportedIf(const TScriptInterface<ITbI
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->ImportedIfMutex));
-	_SentData->ImportedIf = InImportedIf;
+	_SentData->SetImportedIf(InImportedIf);
 }
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfMsgBusClient::GetImportedIfList() const
@@ -481,12 +457,9 @@ void UTbRefIfacesParentIfMsgBusClient::SetImportedIfList(const TArray<TScriptInt
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetImportedIfList() == InImportedIfList)
 	{
-		FScopeLock Lock(&(_SentData->ImportedIfListMutex));
-		if (_SentData->ImportedIfList == InImportedIfList)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbRefIfacesParentIfSetImportedIfListRequestMessage();
@@ -497,8 +470,7 @@ void UTbRefIfacesParentIfMsgBusClient::SetImportedIfList(const TArray<TScriptInt
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->ImportedIfListMutex));
-	_SentData->ImportedIfList = InImportedIfList;
+	_SentData->SetImportedIfList(InImportedIfList);
 }
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfMsgBusClient::LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
@@ -686,10 +658,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfChanged(const FTbRefIfacesParent
 	{
 		LocalIf = InMessage.LocalIf;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->LocalIfMutex));
-			_SentData->LocalIf = LocalIf;
-		}
+		_SentData->SetLocalIf(LocalIf);
 		_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 	}
 }
@@ -707,10 +676,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnLocalIfListChanged(const FTbRefIfacesPa
 	{
 		LocalIfList = InMessage.LocalIfList;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->LocalIfListMutex));
-			_SentData->LocalIfList = LocalIfList;
-		}
+		_SentData->SetLocalIfList(LocalIfList);
 		_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 	}
 }
@@ -728,10 +694,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfChanged(const FTbRefIfacesPar
 	{
 		ImportedIf = InMessage.ImportedIf;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->ImportedIfMutex));
-			_SentData->ImportedIf = ImportedIf;
-		}
+		_SentData->SetImportedIf(ImportedIf);
 		_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 	}
 }
@@ -749,10 +712,7 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfListChanged(const FTbRefIface
 	{
 		ImportedIfList = InMessage.ImportedIfList;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->ImportedIfListMutex));
-			_SentData->ImportedIfList = ImportedIfList;
-		}
+		_SentData->SetImportedIfList(ImportedIfList);
 		_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }

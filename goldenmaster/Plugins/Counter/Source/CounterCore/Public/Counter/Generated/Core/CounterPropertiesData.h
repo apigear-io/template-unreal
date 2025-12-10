@@ -17,20 +17,37 @@ limitations under the License.
 */
 #pragma once
 #include "HAL/CriticalSection.h"
-#include "CustomTypes/Generated/api/CustomTypes_apig.h"
-#include "ExternTypes/Generated/api/ExternTypes_apig.h"
+#include "Counter/Generated/api/Counter_data.h"
+#include "CustomTypes/Generated/api/CustomTypes_data.h"
+#include "ExternTypes/Generated/api/ExternTypes_data.h"
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct CounterCounterPropertiesData
+class COUNTERCORE_API CounterCounterPropertiesData
 {
-	FCriticalSection VectorMutex;
+public:
+	void SetVector(const FCustomTypesVector3D& InVector);
+	FCustomTypesVector3D GetVector() const;
+	void SetExternVector(const FVector& InExternVector);
+	FVector GetExternVector() const;
+	void SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray);
+	TArray<FCustomTypesVector3D> GetVectorArray() const;
+	void SetExternVectorArray(const TArray<FVector>& InExternVectorArray);
+	TArray<FVector> GetExternVectorArray() const;
+
+private:
+	mutable FCriticalSection VectorCS;
 	FCustomTypesVector3D Vector{FCustomTypesVector3D()};
-	FCriticalSection ExternVectorMutex;
+	mutable FCriticalSection ExternVectorCS;
 	FVector ExternVector{FVector(0.f, 0.f, 0.f)};
-	FCriticalSection VectorArrayMutex;
+	mutable FCriticalSection VectorArrayCS;
 	TArray<FCustomTypesVector3D> VectorArray{TArray<FCustomTypesVector3D>()};
-	FCriticalSection ExternVectorArrayMutex;
+	mutable FCriticalSection ExternVectorArrayCS;
 	TArray<FVector> ExternVectorArray{TArray<FVector>()};
 };

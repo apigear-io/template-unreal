@@ -18,40 +18,79 @@ limitations under the License.
 #pragma once
 #include <atomic>
 #include "HAL/CriticalSection.h"
+#include "TbSame1/Generated/api/TbSame1_data.h"
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbSame1SameStruct1InterfacePropertiesData
+class TBSAME1CORE_API TbSame1SameStruct1InterfacePropertiesData
 {
-	FCriticalSection Prop1Mutex;
+public:
+	void SetProp1(const FTbSame1Struct1& InProp1);
+	FTbSame1Struct1 GetProp1() const;
+
+private:
+	mutable FCriticalSection Prop1CS;
 	FTbSame1Struct1 Prop1{FTbSame1Struct1()};
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbSame1SameStruct2InterfacePropertiesData
+class TBSAME1CORE_API TbSame1SameStruct2InterfacePropertiesData
 {
-	FCriticalSection Prop1Mutex;
+public:
+	void SetProp1(const FTbSame1Struct2& InProp1);
+	FTbSame1Struct2 GetProp1() const;
+	void SetProp2(const FTbSame1Struct2& InProp2);
+	FTbSame1Struct2 GetProp2() const;
+
+private:
+	mutable FCriticalSection Prop1CS;
 	FTbSame1Struct2 Prop1{FTbSame1Struct2()};
-	FCriticalSection Prop2Mutex;
+	mutable FCriticalSection Prop2CS;
 	FTbSame1Struct2 Prop2{FTbSame1Struct2()};
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbSame1SameEnum1InterfacePropertiesData
+class TBSAME1CORE_API TbSame1SameEnum1InterfacePropertiesData
 {
+public:
 	std::atomic<ETbSame1Enum1> Prop1{ETbSame1Enum1::TS1E1_Value1};
+
+private:
 };
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbSame1SameEnum2InterfacePropertiesData
+class TBSAME1CORE_API TbSame1SameEnum2InterfacePropertiesData
 {
+public:
 	std::atomic<ETbSame1Enum1> Prop1{ETbSame1Enum1::TS1E1_Value1};
 	std::atomic<ETbSame1Enum2> Prop2{ETbSame1Enum2::TS1E2_Value1};
+
+private:
 };

@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Templates/PimplPtr.h"
 #include "TbSimpleNoSignalsInterfaceOLinkClient.generated.h"
 
-struct TbSimpleNoSignalsInterfacePropertiesData;
+class TbSimpleNoSignalsInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoSignalsInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)

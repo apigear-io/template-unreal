@@ -60,7 +60,7 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$Iface}}StatsUpdatedDelegate, F{{
 
 {{- if len .Interface.Properties }}
 
-struct {{$Iface}}PropertiesData;
+class {{$Iface}}PropertiesData;
 {{- end}}
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}MsgBusClient, Log, All);
 

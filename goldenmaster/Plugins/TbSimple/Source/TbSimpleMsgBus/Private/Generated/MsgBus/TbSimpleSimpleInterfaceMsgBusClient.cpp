@@ -266,10 +266,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnConnectionInit(const FTbSimpleSimpl
 	{
 		PropString = InMessage.PropString;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropStringMutex));
-			_SentData->PropString = PropString;
-		}
+		_SentData->SetPropString(PropString);
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 
@@ -657,12 +654,9 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropString(const FString& InPropSt
 	}
 
 	// only send change requests if the value wasn't already sent -> reduce network load
+	if (_SentData->GetPropString() == InPropString)
 	{
-		FScopeLock Lock(&(_SentData->PropStringMutex));
-		if (_SentData->PropString == InPropString)
-		{
-			return;
-		}
+		return;
 	}
 
 	auto msg = new FTbSimpleSimpleInterfaceSetPropStringRequestMessage();
@@ -673,8 +667,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::SetPropString(const FString& InPropSt
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-	FScopeLock Lock(&(_SentData->PropStringMutex));
-	_SentData->PropString = InPropString;
+	_SentData->SetPropString(InPropString);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::FuncNoReturnValue(bool bInParamBool)
@@ -1211,10 +1204,7 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropStringChanged(const FTbSimpleSi
 	{
 		PropString = InMessage.PropString;
 		// reset sent data to the current state
-		{
-			FScopeLock Lock(&(_SentData->PropStringMutex));
-			_SentData->PropString = PropString;
-		}
+		_SentData->SetPropString(PropString);
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }

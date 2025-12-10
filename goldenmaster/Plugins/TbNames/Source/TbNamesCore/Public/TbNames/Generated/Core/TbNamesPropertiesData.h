@@ -17,14 +17,23 @@ limitations under the License.
 */
 #pragma once
 #include <atomic>
+#include "TbNames/Generated/api/TbNames_data.h"
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbNamesNamEsPropertiesData
+class TBNAMESCORE_API TbNamesNamEsPropertiesData
 {
+public:
 	std::atomic<bool> bSwitch{false};
 	std::atomic<int32> SomeProperty{0};
 	std::atomic<int32> SomePoperty2{0};
 	std::atomic<ETbNamesEnum_With_Under_scores> EnumProperty{ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue};
+
+private:
 };

@@ -17,14 +17,23 @@ limitations under the License.
 */
 #pragma once
 #include <atomic>
+#include "TbEnum/Generated/api/TbEnum_data.h"
 
 /**
-	\brief data structure to hold the last sent property values
+	\brief data structure to hold interface property values
+
+	This can be used for caching, e.g. last sent value over the network.
+
+	Simple atomic types are directly exposed for read, write.
+	All other properties expose setter, getter functions to wrap thread-safety functionality.
 */
-struct TbEnumEnumInterfacePropertiesData
+class TBENUMCORE_API TbEnumEnumInterfacePropertiesData
 {
+public:
 	std::atomic<ETbEnumEnum0> Prop0{ETbEnumEnum0::TEE0_Value0};
 	std::atomic<ETbEnumEnum1> Prop1{ETbEnumEnum1::TEE1_Value1};
 	std::atomic<ETbEnumEnum2> Prop2{ETbEnumEnum2::TEE2_Value2};
 	std::atomic<ETbEnumEnum3> Prop3{ETbEnumEnum3::TEE3_Value3};
+
+private:
 };

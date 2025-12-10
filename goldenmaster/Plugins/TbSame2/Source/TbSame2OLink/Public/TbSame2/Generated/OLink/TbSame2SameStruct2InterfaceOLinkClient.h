@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Templates/PimplPtr.h"
 #include "TbSame2SameStruct2InterfaceOLinkClient.generated.h"
 
-struct TbSame2SameStruct2InterfacePropertiesData;
+class TbSame2SameStruct2InterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2SameStruct2InterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)

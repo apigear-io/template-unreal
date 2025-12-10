@@ -27,7 +27,7 @@ THIRD_PARTY_INCLUDES_END
 #include "Templates/PimplPtr.h"
 #include "TbEnumEnumInterfaceOLinkClient.generated.h"
 
-struct TbEnumEnumInterfacePropertiesData;
+class TbEnumEnumInterfacePropertiesData;
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceOLinkClient, Log, All);
 
 UCLASS(NotBlueprintable, BlueprintType)
