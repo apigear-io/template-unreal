@@ -17,7 +17,7 @@ static void from_json(const nlohmann::json& j, FTbSame2Struct1& p)
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: struct field 'field1' missing or type mismatch in FTbSame2Struct1 -> using default value"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: struct field 'field1' missing or type mismatch in FTbSame2Struct1 -> using default value"));
 	}
 
 	const auto field2Iter = j.find("field2");
@@ -27,7 +27,7 @@ static void from_json(const nlohmann::json& j, FTbSame2Struct1& p)
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: struct field 'field2' missing or type mismatch in FTbSame2Struct1 -> using default value"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: struct field 'field2' missing or type mismatch in FTbSame2Struct1 -> using default value"));
 	}
 
 	const auto field3Iter = j.find("field3");
@@ -37,7 +37,7 @@ static void from_json(const nlohmann::json& j, FTbSame2Struct1& p)
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: struct field 'field3' missing or type mismatch in FTbSame2Struct1 -> using default value"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: struct field 'field3' missing or type mismatch in FTbSame2Struct1 -> using default value"));
 	}
 }
 
@@ -55,7 +55,7 @@ static void from_json(const nlohmann::json& j, FTbSame2Struct2& p)
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: struct field 'field1' missing or type mismatch in FTbSame2Struct2 -> using default value"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: struct field 'field1' missing or type mismatch in FTbSame2Struct2 -> using default value"));
 	}
 
 	const auto field2Iter = j.find("field2");
@@ -65,7 +65,7 @@ static void from_json(const nlohmann::json& j, FTbSame2Struct2& p)
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: struct field 'field2' missing or type mismatch in FTbSame2Struct2 -> using default value"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: struct field 'field2' missing or type mismatch in FTbSame2Struct2 -> using default value"));
 	}
 
 	const auto field3Iter = j.find("field3");
@@ -75,7 +75,7 @@ static void from_json(const nlohmann::json& j, FTbSame2Struct2& p)
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: struct field 'field3' missing or type mismatch in FTbSame2Struct2 -> using default value"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: struct field 'field3' missing or type mismatch in FTbSame2Struct2 -> using default value"));
 	}
 }
 
@@ -98,7 +98,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSame2SameStru
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITbSame2SameStruct1InterfaceInterface -> ignore"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITbSame2SameStruct1InterfaceInterface -> ignore"));
 	}
 }
 
@@ -126,7 +126,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSame2SameStru
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITbSame2SameStruct2InterfaceInterface -> ignore"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITbSame2SameStruct2InterfaceInterface -> ignore"));
 	}
 
 	const auto prop2Iter = j.find("prop2");
@@ -136,7 +136,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSame2SameStru
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: interface property 'prop2' missing or type mismatch in ITbSame2SameStruct2InterfaceInterface -> ignore"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: interface property 'prop2' missing or type mismatch in ITbSame2SameStruct2InterfaceInterface -> ignore"));
 	}
 }
 
@@ -164,7 +164,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSame2SameEnum
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITbSame2SameEnum1InterfaceInterface -> ignore"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITbSame2SameEnum1InterfaceInterface -> ignore"));
 	}
 }
 
@@ -192,7 +192,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSame2SameEnum
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITbSame2SameEnum2InterfaceInterface -> ignore"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: interface property 'prop1' missing or type mismatch in ITbSame2SameEnum2InterfaceInterface -> ignore"));
 	}
 
 	const auto prop2Iter = j.find("prop2");
@@ -202,7 +202,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbSame2SameEnum
 	}
 	else
 	{
-		UE_LOG(LogTbSame2, Verbose, TEXT("from_json: interface property 'prop2' missing or type mismatch in ITbSame2SameEnum2InterfaceInterface -> ignore"));
+		UE_LOG(LogTbSame2, Error, TEXT("from_json: interface property 'prop2' missing or type mismatch in ITbSame2SameEnum2InterfaceInterface -> ignore"));
 	}
 }
 

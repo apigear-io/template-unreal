@@ -19,7 +19,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbNamesNamEsInt
 	}
 	else
 	{
-		UE_LOG(LogTbNames, Verbose, TEXT("from_json: interface property 'Switch' missing or type mismatch in ITbNamesNamEsInterface -> ignore"));
+		UE_LOG(LogTbNames, Error, TEXT("from_json: interface property 'Switch' missing or type mismatch in ITbNamesNamEsInterface -> ignore"));
 	}
 
 	const auto SOME_PROPERTYIter = j.find("SOME_PROPERTY");
@@ -29,7 +29,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbNamesNamEsInt
 	}
 	else
 	{
-		UE_LOG(LogTbNames, Verbose, TEXT("from_json: interface property 'SOME_PROPERTY' missing or type mismatch in ITbNamesNamEsInterface -> ignore"));
+		UE_LOG(LogTbNames, Error, TEXT("from_json: interface property 'SOME_PROPERTY' missing or type mismatch in ITbNamesNamEsInterface -> ignore"));
 	}
 
 	const auto Some_Poperty2Iter = j.find("Some_Poperty2");
@@ -39,7 +39,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbNamesNamEsInt
 	}
 	else
 	{
-		UE_LOG(LogTbNames, Verbose, TEXT("from_json: interface property 'Some_Poperty2' missing or type mismatch in ITbNamesNamEsInterface -> ignore"));
+		UE_LOG(LogTbNames, Error, TEXT("from_json: interface property 'Some_Poperty2' missing or type mismatch in ITbNamesNamEsInterface -> ignore"));
 	}
 
 	const auto enum_propertyIter = j.find("enum_property");
@@ -49,7 +49,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<ITbNamesNamEsInt
 	}
 	else
 	{
-		UE_LOG(LogTbNames, Verbose, TEXT("from_json: interface property 'enum_property' missing or type mismatch in ITbNamesNamEsInterface -> ignore"));
+		UE_LOG(LogTbNames, Error, TEXT("from_json: interface property 'enum_property' missing or type mismatch in ITbNamesNamEsInterface -> ignore"));
 	}
 }
 

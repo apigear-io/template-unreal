@@ -293,7 +293,7 @@ TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func1Async(int32 Param1)
 		}
 		else
 		{
-			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func1Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(0);
 		}
 	});
@@ -333,7 +333,7 @@ TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func2Async(int32 Param1, 
 		}
 		else
 		{
-			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Warning, TEXT("Func2Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func2Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(0);
 		}
 	});
@@ -373,7 +373,7 @@ TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func3Async(int32 Param1, 
 		}
 		else
 		{
-			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Warning, TEXT("Func3Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func3Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(0);
 		}
 	});
@@ -413,7 +413,7 @@ TFuture<int32> UTestbed2ManyParamInterfaceOLinkClient::Func4Async(int32 Param1, 
 		}
 		else
 		{
-			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Warning, TEXT("Func4Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed2ManyParamInterfaceOLinkClient, Error, TEXT("Func4Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(0);
 		}
 	});

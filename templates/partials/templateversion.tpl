@@ -1,3 +1,3 @@
 {{- define "templateversion" -}}
-4.0.0-alpha.3
+4.0.0-beta
 {{- end -}}

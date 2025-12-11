@@ -293,7 +293,7 @@ TFuture<ETbEnumEnum0> UTbEnumEnumInterfaceOLinkClient::Func0Async(ETbEnumEnum0 P
 		}
 		else
 		{
-			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("Func0Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func0Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(ETbEnumEnum0::TEE0_Value0);
 		}
 	});
@@ -333,7 +333,7 @@ TFuture<ETbEnumEnum1> UTbEnumEnumInterfaceOLinkClient::Func1Async(ETbEnumEnum1 P
 		}
 		else
 		{
-			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func1Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(ETbEnumEnum1::TEE1_Value1);
 		}
 	});
@@ -373,7 +373,7 @@ TFuture<ETbEnumEnum2> UTbEnumEnumInterfaceOLinkClient::Func2Async(ETbEnumEnum2 P
 		}
 		else
 		{
-			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("Func2Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func2Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(ETbEnumEnum2::TEE2_Value2);
 		}
 	});
@@ -413,7 +413,7 @@ TFuture<ETbEnumEnum3> UTbEnumEnumInterfaceOLinkClient::Func3Async(ETbEnumEnum3 P
 		}
 		else
 		{
-			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Warning, TEXT("Func3Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbEnumEnumInterfaceOLinkClient, Error, TEXT("Func3Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(ETbEnumEnum3::TEE3_Value3);
 		}
 	});

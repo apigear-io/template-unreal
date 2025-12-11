@@ -266,7 +266,7 @@ TFuture<{{$returnVal}}> {{$Class}}::{{Camel .Name}}Async({{ueParams "" .Params}}
 		}
 		else
 		{
-			UE_LOG(Log{{$Iface}}OLinkClient, Warning, TEXT("{{Camel .Name}}Async: invalid return value type or null -> returning default"));
+			UE_LOG(Log{{$Iface}}OLinkClient, Error, TEXT("{{Camel .Name}}Async: invalid return value type or null -> returning default"));
 			Promise->SetValue({{ ueDefault "" .Return }});
 		}
 	});

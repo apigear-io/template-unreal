@@ -13,7 +13,7 @@ static void from_json(const nlohmann::json& j, FCustomTypesVector3D& p)
 	}
 	else
 	{
-		UE_LOG(LogCustomTypes, Verbose, TEXT("from_json: struct field 'x' missing or type mismatch in FCustomTypesVector3D -> using default value"));
+		UE_LOG(LogCustomTypes, Error, TEXT("from_json: struct field 'x' missing or type mismatch in FCustomTypesVector3D -> using default value"));
 	}
 
 	const auto yIter = j.find("y");
@@ -23,7 +23,7 @@ static void from_json(const nlohmann::json& j, FCustomTypesVector3D& p)
 	}
 	else
 	{
-		UE_LOG(LogCustomTypes, Verbose, TEXT("from_json: struct field 'y' missing or type mismatch in FCustomTypesVector3D -> using default value"));
+		UE_LOG(LogCustomTypes, Error, TEXT("from_json: struct field 'y' missing or type mismatch in FCustomTypesVector3D -> using default value"));
 	}
 
 	const auto zIter = j.find("z");
@@ -33,7 +33,7 @@ static void from_json(const nlohmann::json& j, FCustomTypesVector3D& p)
 	}
 	else
 	{
-		UE_LOG(LogCustomTypes, Verbose, TEXT("from_json: struct field 'z' missing or type mismatch in FCustomTypesVector3D -> using default value"));
+		UE_LOG(LogCustomTypes, Error, TEXT("from_json: struct field 'z' missing or type mismatch in FCustomTypesVector3D -> using default value"));
 	}
 }
 

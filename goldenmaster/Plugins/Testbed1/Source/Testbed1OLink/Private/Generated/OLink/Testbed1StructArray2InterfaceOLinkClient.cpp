@@ -323,7 +323,7 @@ TFuture<TArray<FTestbed1StructBool>> UTestbed1StructArray2InterfaceOLinkClient::
 		}
 		else
 		{
-			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Warning, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("FuncBoolAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TArray<FTestbed1StructBool>());
 		}
 	});
@@ -363,7 +363,7 @@ TFuture<TArray<FTestbed1StructInt>> UTestbed1StructArray2InterfaceOLinkClient::F
 		}
 		else
 		{
-			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Warning, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("FuncIntAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TArray<FTestbed1StructInt>());
 		}
 	});
@@ -403,7 +403,7 @@ TFuture<TArray<FTestbed1StructFloat>> UTestbed1StructArray2InterfaceOLinkClient:
 		}
 		else
 		{
-			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Warning, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("FuncFloatAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TArray<FTestbed1StructFloat>());
 		}
 	});
@@ -443,7 +443,7 @@ TFuture<TArray<FTestbed1StructString>> UTestbed1StructArray2InterfaceOLinkClient
 		}
 		else
 		{
-			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Warning, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("FuncStringAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TArray<FTestbed1StructString>());
 		}
 	});
@@ -483,7 +483,7 @@ TFuture<TArray<ETestbed1Enum0>> UTestbed1StructArray2InterfaceOLinkClient::FuncE
 		}
 		else
 		{
-			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Warning, TEXT("FuncEnumAsync: invalid return value type or null -> returning default"));
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkClient, Error, TEXT("FuncEnumAsync: invalid return value type or null -> returning default"));
 			Promise->SetValue(TArray<ETestbed1Enum0>());
 		}
 	});

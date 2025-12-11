@@ -51,7 +51,7 @@ static void from_json(const nlohmann::json& j, {{$class}}& p)
 	}
 	else
 	{
-		UE_LOG(Log{{$ModuleName}}, Verbose, TEXT("from_json: struct field '{{.Name}}' missing or type mismatch in {{$class}} -> using default value"));
+		UE_LOG(Log{{$ModuleName}}, Error, TEXT("from_json: struct field '{{.Name}}' missing or type mismatch in {{$class}} -> using default value"));
 	}
 {{- end }}
 }
@@ -105,7 +105,7 @@ static void from_json(const nlohmann::json& j, TScriptInterface<{{$class}}>& p)
 	}
 	else
 	{
-		UE_LOG(Log{{$ModuleName}}, Verbose, TEXT("from_json: interface property '{{.Name}}' missing or type mismatch in {{$class}} -> ignore"));
+		UE_LOG(Log{{$ModuleName}}, Error, TEXT("from_json: interface property '{{.Name}}' missing or type mismatch in {{$class}} -> ignore"));
 	}
 {{- end }}
 {{- end }}

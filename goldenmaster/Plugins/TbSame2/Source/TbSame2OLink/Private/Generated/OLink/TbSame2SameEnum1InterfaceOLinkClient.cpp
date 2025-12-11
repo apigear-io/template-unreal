@@ -203,7 +203,7 @@ TFuture<ETbSame2Enum1> UTbSame2SameEnum1InterfaceOLinkClient::Func1Async(ETbSame
 		}
 		else
 		{
-			UE_LOG(LogTbSame2SameEnum1InterfaceOLinkClient, Warning, TEXT("Func1Async: invalid return value type or null -> returning default"));
+			UE_LOG(LogTbSame2SameEnum1InterfaceOLinkClient, Error, TEXT("Func1Async: invalid return value type or null -> returning default"));
 			Promise->SetValue(ETbSame2Enum1::TS2E1_Value1);
 		}
 	});
