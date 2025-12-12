@@ -156,20 +156,26 @@ private:
 
 namespace
 {
-
-{{$Class}}* g{{$Class}}Handle = nullptr;
+{{- $BaseClass := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
+TFunction<U{{$BaseClass}}Publisher()> gGet{{$Class}}PublisherEmpty = []()
+{
+	UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("get publisher function used but not set "));
+	retunr nullptr;
+};
+TFunction<U{{$BaseClass}}Publisher()> gGet{{$Class}}Publisher =  gGet{{$Class}}PublisherEmpty;
+FCriticalSection gGet{{$Class}}PublisherCS;
 TFunction<void(bool)> g{{$Class}}notifyIsReady = [](bool value)
 {
 	(void)value;
 	UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("notifyIsReady used but not set "));
 };
 {{- range .Interface.Properties }}
-TFunction<void({{ueReturn "" .}})> g{{$Class}}On{{Camel .Name}}ChangedEmpty = []({{ueReturn "" .}} value)
+TFunction<void({{ueReturn "" .}})> g{{$Class}}Set{{Camel .Name}}InternalEmpty = []({{ueReturn "" .}} value)
 {
 	(void)value;
 	UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("on{{Camel .Name}}Changed used but not set "));
 };
-TFunction<void({{ueReturn "" .}})> g{{$Class}}On{{Camel .Name}}Changed = g{{$Class}}On{{Camel .Name}}ChangedEmpty;
+TFunction<void({{ueReturn "" .}})> g{{$Class}}Set{{Camel .Name}}Internal = g{{$Class}}Set{{Camel .Name}}InternalEmpty;
 {{- end}}
 
 {{$Class}}MethodHelper g{{$Class}}methodHelper;
@@ -196,7 +202,14 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("Init"));
 	Super::Initialize(Collection);
 
-	g{{$Class}}Handle = this;
+	{
+		FScopeLock Lock(&gGet{{$Class}}PublisherCS);
+		gGet{{$Class}}Publisher = [this]()
+		{
+			return _GetPublisher();
+		};
+	}
+	Lock.
 	g{{$Class}}notifyIsReady = [this](bool value)
 	{
 		b_isReady = value;
@@ -208,10 +221,9 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	};
 
 	{{- range .Interface.Properties }}
-	g{{$Class}}On{{Camel .Name}}Changed = [this]({{ueParam "In" . }})
+	g{{$Class}}Set{{Camel .Name}}Internal = [this]({{ueParam "In" . }})
 	{
 		{{ueVar "" .}} = {{ueVar "In" .}};
-		_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 	};
 	{{- end}}
 
@@ -244,10 +256,12 @@ void {{$Class}}::Deinitialize()
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("notifyIsReady used but not set "));
 	};
 	{{- range .Interface.Properties}}
-	g{{$Class}}On{{Camel .Name}}Changed = g{{$Class}}On{{Camel .Name}}ChangedEmpty;
+	g{{$Class}}Set{{Camel .Name}}Internal = g{{$Class}}OSet{{Camel .Name}}InternalEmpty;
 	{{- end}}
-
-	g{{$Class}}Handle = nullptr;
+	{
+		FScopeLock Lock(&gGet{{$Class}}PublisherCS);
+		gGet{{$Class}}Publisher = gGet{{$Class}}PublisherEmpty;
+	}
 	Super::Deinitialize();
 }
 
@@ -480,21 +494,26 @@ bool {{$Class}}::_IsReady() const
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed(JNIEnv* Env, jclass Clazz, {{jniJavaParam "" . }})
 {
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed"));
-	if (g{{$Class}}Handle == nullptr)
-	{
-		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	{{- template "convert_to_local_cpp_value_java_param" . }}
 	{{- $hasLocalVar := or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}
 	{{- $local_value := printf "local_%s" (snake .Name) }}
 
+
 	{{- if $hasLocalVar }}
-	g{{$Class}}On{{Camel .Name}}Changed({{$local_value}});
+	g{{$Class}}Set{{Camel .Name}}Internal({{$local_value}});
 	{{- else}}
-	g{{$Class}}On{{Camel .Name}}Changed({{$javaPropName}});
+	g{{$Class}}Set{{Camel .Name}}Internal({{$javaPropName}});
 	{{- end}}
+	FScopeLock Lock(&gGet{{$Class}}PublisherCS);
+	auto publisher = gGet{{$Class}}Publisher();
+	if (publisher == nullptr)
+	{
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed: could not get publisher to broadcast the property "));
+		return;
+	}
+
+	publisher->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 }
 {{- end}}
 
@@ -502,18 +521,21 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed(JNIEnv* En
 
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jclass Clazz{{if len (.Params)}}, {{end}}{{jniJavaParams "" .Params }})
 {
-	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}"));
-	if (g{{$Class}}Handle == nullptr)
-	{
-		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
-
 {{- range .Params -}}
 	{{- template "convert_to_local_cpp_value_java_param" . }}
 {{- end }}
 
-	g{{$Class}}Handle->_GetPublisher()->Broadcast{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
+	FScopeLock Lock(&gGet{{$Class}}PublisherCS);
+
+	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}"));
+	auto publisher = gGet{{$Class}}Publisher();
+	if (publisher == nullptr)
+	{
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}: could not get publisher to broadcast signal "));
+		return;
+	}
+	
+	publisher->Broadcast{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
 	{{- if $idx}}, {{ end -}}
 	{{- $local_value := printf "local_%s" (snake .Name) -}}
 	{{- if or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}{{$local_value -}}
