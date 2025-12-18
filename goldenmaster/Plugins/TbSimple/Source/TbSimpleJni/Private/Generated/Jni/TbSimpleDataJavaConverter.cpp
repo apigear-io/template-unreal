@@ -37,6 +37,8 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+DEFINE_LOG_CATEGORY(LogTbSimpleDataJavaConverter_JNI);
 jclass TbSimpleDataJavaConverter::jVoidInterface = nullptr;
 
 void TbSimpleDataJavaConverter::fillVoidInterface(JNIEnv* env, jobject input, TScriptInterface<ITbSimpleVoidInterfaceInterface> out_void_interface)
@@ -388,6 +390,19 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> TbSimpleDataJavaConverter::ge
 	return wrapped;
 }
 
+bool TbSimpleDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
+		return true;
+	}
+	return false;
+}
+
 void TbSimpleDataJavaConverter::cleanJavaReferences()
 {
 	FScopeLock Lock(&initMutex);
@@ -419,12 +434,26 @@ void TbSimpleDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jVoidInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/IVoidInterface");
+	static const TCHAR* errorMsgVoidInterface= TEXT("failed to get tbSimple/tbSimple_api/IVoidInterface");
+	checkJniErrorOccured(errorMsgVoidInterface);
 	jSimpleInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/ISimpleInterface");
+	static const TCHAR* errorMsgSimpleInterface= TEXT("failed to get tbSimple/tbSimple_api/ISimpleInterface");
+	checkJniErrorOccured(errorMsgSimpleInterface);
 	jSimpleArrayInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/ISimpleArrayInterface");
+	static const TCHAR* errorMsgSimpleArrayInterface= TEXT("failed to get tbSimple/tbSimple_api/ISimpleArrayInterface");
+	checkJniErrorOccured(errorMsgSimpleArrayInterface);
 	jNoPropertiesInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoPropertiesInterface");
+	static const TCHAR* errorMsgNoPropertiesInterface= TEXT("failed to get tbSimple/tbSimple_api/INoPropertiesInterface");
+	checkJniErrorOccured(errorMsgNoPropertiesInterface);
 	jNoOperationsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoOperationsInterface");
+	static const TCHAR* errorMsgNoOperationsInterface= TEXT("failed to get tbSimple/tbSimple_api/INoOperationsInterface");
+	checkJniErrorOccured(errorMsgNoOperationsInterface);
 	jNoSignalsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoSignalsInterface");
+	static const TCHAR* errorMsgNoSignalsInterface= TEXT("failed to get tbSimple/tbSimple_api/INoSignalsInterface");
+	checkJniErrorOccured(errorMsgNoSignalsInterface);
 	jEmptyInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/IEmptyInterface");
+	static const TCHAR* errorMsgEmptyInterface= TEXT("failed to get tbSimple/tbSimple_api/IEmptyInterface");
+	checkJniErrorOccured(errorMsgEmptyInterface);
 	m_isInitialized = true;
 }
 
