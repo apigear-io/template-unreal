@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbRefIfaces/TbRefIfacesJni.h"
 #include "TbRefIfaces/Generated/TbRefIfacesFactory.h"
+#include "TbRefIfaces/Generated/Jni/TbRefIfacesDataJavaConverter.h"
 #include "Engine/Engine.h"
 #include "TbRefIfacesSettings.h"
 #include "Modules/ModuleManager.h"
@@ -31,6 +32,9 @@ void FTbRefIfacesJniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+	#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	TbRefIfacesDataJavaConverter::cleanJavaReferences();
+	#endif
 }
 
 IMPLEMENT_MODULE(FTbRefIfacesJniModule, TbRefIfacesJni)

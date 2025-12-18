@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "ExternTypes/ExternTypesJni.h"
 #include "ExternTypes/Generated/ExternTypesFactory.h"
+#include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
 #include "Engine/Engine.h"
 #include "ExternTypesSettings.h"
 #include "Modules/ModuleManager.h"
@@ -31,6 +32,9 @@ void FExternTypesJniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+	#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	ExternTypesDataJavaConverter::cleanJavaReferences();
+	#endif
 }
 
 IMPLEMENT_MODULE(FExternTypesJniModule, ExternTypesJni)

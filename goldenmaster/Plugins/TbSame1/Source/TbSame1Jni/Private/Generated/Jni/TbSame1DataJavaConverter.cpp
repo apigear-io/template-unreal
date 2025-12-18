@@ -36,9 +36,11 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+jclass TbSame1DataJavaConverter::jStruct1 = nullptr;
 void TbSame1DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame1Struct1& out_struct1)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStruct1;
 
 	jfieldID jFieldId_field1 = env->GetFieldID(cls, "field1", "I");
 	out_struct1.field1 = env->GetIntField(input, jFieldId_field1);
@@ -52,6 +54,7 @@ void TbSame1DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame1S
 
 void TbSame1DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTbSame1Struct1>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -65,7 +68,8 @@ void TbSame1DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input,
 
 jobject TbSame1DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame1Struct1& in_struct1)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Struct1");
+	ensureInitialized();
+	jclass javaClass = jStruct1;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -82,7 +86,8 @@ jobject TbSame1DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame1Str
 
 jobjectArray TbSame1DataJavaConverter::makeJavaStruct1Array(JNIEnv* env, const TArray<FTbSame1Struct1>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Struct1");
+	ensureInitialized();
+	jclass javaStruct = jStruct1;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -95,9 +100,11 @@ jobjectArray TbSame1DataJavaConverter::makeJavaStruct1Array(JNIEnv* env, const T
 	return javaArray;
 }
 
+jclass TbSame1DataJavaConverter::jStruct2 = nullptr;
 void TbSame1DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame1Struct2& out_struct2)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStruct2;
 
 	jfieldID jFieldId_field1 = env->GetFieldID(cls, "field1", "I");
 	out_struct2.field1 = env->GetIntField(input, jFieldId_field1);
@@ -111,6 +118,7 @@ void TbSame1DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame1S
 
 void TbSame1DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTbSame1Struct2>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -124,7 +132,8 @@ void TbSame1DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input,
 
 jobject TbSame1DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame1Struct2& in_struct2)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Struct2");
+	ensureInitialized();
+	jclass javaClass = jStruct2;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -141,7 +150,8 @@ jobject TbSame1DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame1Str
 
 jobjectArray TbSame1DataJavaConverter::makeJavaStruct2Array(JNIEnv* env, const TArray<FTbSame1Struct2>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Struct2");
+	ensureInitialized();
+	jclass javaStruct = jStruct2;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -153,10 +163,11 @@ jobjectArray TbSame1DataJavaConverter::makeJavaStruct2Array(JNIEnv* env, const T
 	}
 	return javaArray;
 }
+jclass TbSame1DataJavaConverter::jEnum1 = nullptr;
 
 void TbSame1DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETbSame1Enum1>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum1");
+	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -170,7 +181,8 @@ void TbSame1DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, T
 ETbSame1Enum1 TbSame1DataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 {
 	ETbSame1Enum1 cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum1");
+	ensureInitialized();
+	jclass javaStruct = jEnum1;
 	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
 	int int_value = env->CallIntMethod(input, getValueMethod);
 	UTbSame1Library::toTbSame1Enum1(cppEnumValue, int_value);
@@ -179,7 +191,8 @@ ETbSame1Enum1 TbSame1DataJavaConverter::getEnum1Value(JNIEnv* env, jobject input
 
 jobjectArray TbSame1DataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TArray<ETbSame1Enum1>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum1");
+	ensureInitialized();
+	jclass javaStruct = jEnum1;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -194,7 +207,8 @@ jobjectArray TbSame1DataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TAr
 
 jobject TbSame1DataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbSame1Enum1 value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum1");
+	ensureInitialized();
+	jclass javaStruct = jEnum1;
 	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)LtbSame1/tbSame1_api/Enum1;");
 	if (!fromValueMethod)
 		return nullptr;
@@ -202,10 +216,11 @@ jobject TbSame1DataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbSame1Enum1 value
 	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
 	return javaObj;
 }
+jclass TbSame1DataJavaConverter::jEnum2 = nullptr;
 
 void TbSame1DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETbSame1Enum2>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum2");
+	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -219,7 +234,8 @@ void TbSame1DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, T
 ETbSame1Enum2 TbSame1DataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 {
 	ETbSame1Enum2 cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum2");
+	ensureInitialized();
+	jclass javaStruct = jEnum2;
 	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
 	int int_value = env->CallIntMethod(input, getValueMethod);
 	UTbSame1Library::toTbSame1Enum2(cppEnumValue, int_value);
@@ -228,7 +244,8 @@ ETbSame1Enum2 TbSame1DataJavaConverter::getEnum2Value(JNIEnv* env, jobject input
 
 jobjectArray TbSame1DataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TArray<ETbSame1Enum2>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum2");
+	ensureInitialized();
+	jclass javaStruct = jEnum2;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -243,7 +260,8 @@ jobjectArray TbSame1DataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TAr
 
 jobject TbSame1DataJavaConverter::makeJavaEnum2(JNIEnv* env, ETbSame1Enum2 value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum2");
+	ensureInitialized();
+	jclass javaStruct = jEnum2;
 	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)LtbSame1/tbSame1_api/Enum2;");
 	if (!fromValueMethod)
 		return nullptr;
@@ -251,9 +269,11 @@ jobject TbSame1DataJavaConverter::makeJavaEnum2(JNIEnv* env, ETbSame1Enum2 value
 	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
 	return javaObj;
 }
+jclass TbSame1DataJavaConverter::jSameStruct1Interface = nullptr;
 
 void TbSame1DataJavaConverter::fillSameStruct1Interface(JNIEnv* env, jobject input, TScriptInterface<ITbSame1SameStruct1InterfaceInterface> out_same_struct1_interface)
 {
+	ensureInitialized();
 	if (!input || !out_same_struct1_interface)
 	{
 		return;
@@ -263,11 +283,13 @@ void TbSame1DataJavaConverter::fillSameStruct1Interface(JNIEnv* env, jobject inp
 
 void TbSame1DataJavaConverter::fillSameStruct1InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSame1SameStruct1InterfaceInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSame1DataJavaConverter::makeJavaSameStruct1Interface(JNIEnv* env, const TScriptInterface<ITbSame1SameStruct1InterfaceInterface> out_same_struct1_interface)
 {
+	ensureInitialized();
 	if (!out_same_struct1_interface)
 	{
 		return nullptr;
@@ -280,7 +302,8 @@ jobject TbSame1DataJavaConverter::makeJavaSameStruct1Interface(JNIEnv* env, cons
 
 jobjectArray TbSame1DataJavaConverter::makeJavaSameStruct1InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame1SameStruct1InterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameStruct1Interface");
+	ensureInitialized();
+	jclass javaClass = jSameStruct1Interface;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -289,15 +312,18 @@ jobjectArray TbSame1DataJavaConverter::makeJavaSameStruct1InterfaceArray(JNIEnv*
 
 TScriptInterface<ITbSame1SameStruct1InterfaceInterface> TbSame1DataJavaConverter::getCppInstanceTbSame1SameStruct1Interface()
 {
+	ensureInitialized();
 	UTbSame1SameStruct1InterfaceImplementation* Impl = NewObject<UTbSame1SameStruct1InterfaceImplementation>();
 	TScriptInterface<ITbSame1SameStruct1InterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITbSame1SameStruct1InterfaceInterface>(Impl));
 	return wrapped;
 }
+jclass TbSame1DataJavaConverter::jSameStruct2Interface = nullptr;
 
 void TbSame1DataJavaConverter::fillSameStruct2Interface(JNIEnv* env, jobject input, TScriptInterface<ITbSame1SameStruct2InterfaceInterface> out_same_struct2_interface)
 {
+	ensureInitialized();
 	if (!input || !out_same_struct2_interface)
 	{
 		return;
@@ -307,11 +333,13 @@ void TbSame1DataJavaConverter::fillSameStruct2Interface(JNIEnv* env, jobject inp
 
 void TbSame1DataJavaConverter::fillSameStruct2InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSame1SameStruct2InterfaceInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSame1DataJavaConverter::makeJavaSameStruct2Interface(JNIEnv* env, const TScriptInterface<ITbSame1SameStruct2InterfaceInterface> out_same_struct2_interface)
 {
+	ensureInitialized();
 	if (!out_same_struct2_interface)
 	{
 		return nullptr;
@@ -324,7 +352,8 @@ jobject TbSame1DataJavaConverter::makeJavaSameStruct2Interface(JNIEnv* env, cons
 
 jobjectArray TbSame1DataJavaConverter::makeJavaSameStruct2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame1SameStruct2InterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameStruct2Interface");
+	ensureInitialized();
+	jclass javaClass = jSameStruct2Interface;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -333,15 +362,18 @@ jobjectArray TbSame1DataJavaConverter::makeJavaSameStruct2InterfaceArray(JNIEnv*
 
 TScriptInterface<ITbSame1SameStruct2InterfaceInterface> TbSame1DataJavaConverter::getCppInstanceTbSame1SameStruct2Interface()
 {
+	ensureInitialized();
 	UTbSame1SameStruct2InterfaceImplementation* Impl = NewObject<UTbSame1SameStruct2InterfaceImplementation>();
 	TScriptInterface<ITbSame1SameStruct2InterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITbSame1SameStruct2InterfaceInterface>(Impl));
 	return wrapped;
 }
+jclass TbSame1DataJavaConverter::jSameEnum1Interface = nullptr;
 
 void TbSame1DataJavaConverter::fillSameEnum1Interface(JNIEnv* env, jobject input, TScriptInterface<ITbSame1SameEnum1InterfaceInterface> out_same_enum1_interface)
 {
+	ensureInitialized();
 	if (!input || !out_same_enum1_interface)
 	{
 		return;
@@ -351,11 +383,13 @@ void TbSame1DataJavaConverter::fillSameEnum1Interface(JNIEnv* env, jobject input
 
 void TbSame1DataJavaConverter::fillSameEnum1InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSame1SameEnum1InterfaceInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSame1DataJavaConverter::makeJavaSameEnum1Interface(JNIEnv* env, const TScriptInterface<ITbSame1SameEnum1InterfaceInterface> out_same_enum1_interface)
 {
+	ensureInitialized();
 	if (!out_same_enum1_interface)
 	{
 		return nullptr;
@@ -368,7 +402,8 @@ jobject TbSame1DataJavaConverter::makeJavaSameEnum1Interface(JNIEnv* env, const 
 
 jobjectArray TbSame1DataJavaConverter::makeJavaSameEnum1InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame1SameEnum1InterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameEnum1Interface");
+	ensureInitialized();
+	jclass javaClass = jSameEnum1Interface;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -377,15 +412,18 @@ jobjectArray TbSame1DataJavaConverter::makeJavaSameEnum1InterfaceArray(JNIEnv* e
 
 TScriptInterface<ITbSame1SameEnum1InterfaceInterface> TbSame1DataJavaConverter::getCppInstanceTbSame1SameEnum1Interface()
 {
+	ensureInitialized();
 	UTbSame1SameEnum1InterfaceImplementation* Impl = NewObject<UTbSame1SameEnum1InterfaceImplementation>();
 	TScriptInterface<ITbSame1SameEnum1InterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITbSame1SameEnum1InterfaceInterface>(Impl));
 	return wrapped;
 }
+jclass TbSame1DataJavaConverter::jSameEnum2Interface = nullptr;
 
 void TbSame1DataJavaConverter::fillSameEnum2Interface(JNIEnv* env, jobject input, TScriptInterface<ITbSame1SameEnum2InterfaceInterface> out_same_enum2_interface)
 {
+	ensureInitialized();
 	if (!input || !out_same_enum2_interface)
 	{
 		return;
@@ -395,11 +433,13 @@ void TbSame1DataJavaConverter::fillSameEnum2Interface(JNIEnv* env, jobject input
 
 void TbSame1DataJavaConverter::fillSameEnum2InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSame1SameEnum2InterfaceInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSame1DataJavaConverter::makeJavaSameEnum2Interface(JNIEnv* env, const TScriptInterface<ITbSame1SameEnum2InterfaceInterface> out_same_enum2_interface)
 {
+	ensureInitialized();
 	if (!out_same_enum2_interface)
 	{
 		return nullptr;
@@ -412,7 +452,8 @@ jobject TbSame1DataJavaConverter::makeJavaSameEnum2Interface(JNIEnv* env, const 
 
 jobjectArray TbSame1DataJavaConverter::makeJavaSameEnum2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame1SameEnum2InterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameEnum2Interface");
+	ensureInitialized();
+	jclass javaClass = jSameEnum2Interface;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -421,11 +462,57 @@ jobjectArray TbSame1DataJavaConverter::makeJavaSameEnum2InterfaceArray(JNIEnv* e
 
 TScriptInterface<ITbSame1SameEnum2InterfaceInterface> TbSame1DataJavaConverter::getCppInstanceTbSame1SameEnum2Interface()
 {
+	ensureInitialized();
 	UTbSame1SameEnum2InterfaceImplementation* Impl = NewObject<UTbSame1SameEnum2InterfaceImplementation>();
 	TScriptInterface<ITbSame1SameEnum2InterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITbSame1SameEnum2InterfaceInterface>(Impl));
 	return wrapped;
+}
+
+void TbSame1DataJavaConverter::cleanJavaReferences()
+{
+	FScopeLock Lock(&initMutex);
+	m_isInitialized = false;
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	env->DeleteGlobalRef(jStruct1);
+	env->DeleteGlobalRef(jStruct2);
+	env->DeleteGlobalRef(jEnum1);
+	env->DeleteGlobalRef(jEnum2);
+	env->DeleteGlobalRef(jSameStruct1Interface);
+	env->DeleteGlobalRef(jSameStruct2Interface);
+	env->DeleteGlobalRef(jSameEnum1Interface);
+	env->DeleteGlobalRef(jSameEnum2Interface);
+}
+
+FCriticalSection TbSame1DataJavaConverter::initMutex;
+
+bool TbSame1DataJavaConverter::m_isInitialized = false;
+
+void TbSame1DataJavaConverter::ensureInitialized()
+{
+	if (m_isInitialized)
+	{
+		return;
+	}
+	FScopeLock Lock(&initMutex);
+	if (m_isInitialized)
+	{
+		return;
+	}
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jStruct1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Struct1");
+	jStruct2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Struct2");
+	jEnum1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum1");
+	jEnum2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum2");
+	jSameStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameStruct1Interface");
+	jSameStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameStruct2Interface");
+	jSameEnum1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameEnum1Interface");
+	jSameEnum2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameEnum2Interface");
+	m_isInitialized = true;
+}
+
+}
 }
 
 #endif
