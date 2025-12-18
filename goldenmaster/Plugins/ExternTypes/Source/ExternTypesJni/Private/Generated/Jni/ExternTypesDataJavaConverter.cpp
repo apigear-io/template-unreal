@@ -84,7 +84,7 @@ jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVec
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for org/apache/commons/math3/geometry/euclidean/threed/Vector3D.");
 	// Make sure either that the extern class has default ctor or provide proper signature and arguments.
 	static const jmethodID ctor = getMethod(jMyVector3D, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -171,7 +171,7 @@ void ExternTypesDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jMyVector3D = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
-	static const TCHAR* errorMsgMyVector3D= TEXT("failed to get org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	static const TCHAR* errorMsgMyVector3D = TEXT("failed to get org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
 	checkJniErrorOccured(errorMsgMyVector3D);
 	m_isInitialized = true;
 }
