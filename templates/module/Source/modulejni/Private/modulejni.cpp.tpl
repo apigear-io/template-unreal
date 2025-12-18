@@ -22,6 +22,7 @@ limitations under the License.
 
 #include "{{$ModuleName}}/{{$ModuleName}}Jni.h"
 #include "{{$ModuleName}}/Generated/{{$ModuleName}}Factory.h"
+#include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}DataJavaConverter.h"
 #include "Engine/Engine.h"
 #include "{{$ModuleName}}Settings.h"
 #include "Modules/ModuleManager.h"
@@ -36,6 +37,10 @@ void {{$class}}::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+	#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	{{- $converterName := printf "%sDataJavaConverter" $ModuleName}}
+	{{$converterName}}::cleanJavaReferences();
+	#endif
 }
 
 IMPLEMENT_MODULE({{$class}}, {{$ModuleName}}Jni)

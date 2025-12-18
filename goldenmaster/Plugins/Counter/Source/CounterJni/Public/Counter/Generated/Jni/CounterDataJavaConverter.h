@@ -22,6 +22,7 @@ limitations under the License.
 #include "Counter/Generated/api/Counter_apig.h"
 #if PLATFORM_ANDROID
 
+#include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
@@ -33,17 +34,23 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
-#include "Engine/Engine.h"
-
 class COUNTERAPI_API CounterDataJavaConverter
 {
 public:
+	static jclass jCounter;
 	static void fillCounter(JNIEnv* env, jobject input, TScriptInterface<ICounterCounterInterface> out_counter);
 	static void fillCounterArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ICounterCounterInterface>>& out_array);
 	static jobject makeJavaCounter(JNIEnv* env, const TScriptInterface<ICounterCounterInterface> out_counter);
 	static jobjectArray makeJavaCounterArray(JNIEnv* env, const TArray<TScriptInterface<ICounterCounterInterface>>& cppArray);
 
 	static TScriptInterface<ICounterCounterInterface> getCppInstanceCounterCounter();
+
+	static void cleanJavaReferences();
+
+private:
+	static FCriticalSection initMutex;
+	static void ensureInitialized();
+	static bool m_isInitialized;
 };
 
 #endif

@@ -32,10 +32,11 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+jclass TbNamesDataJavaConverter::jEnumWithUnderScores = nullptr;
 
 void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobjectArray input, TArray<ETbNamesEnum_With_Under_scores>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
+	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -49,7 +50,8 @@ void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobject
 ETbNamesEnum_With_Under_scores TbNamesDataJavaConverter::getEnumWithUnderScoresValue(JNIEnv* env, jobject input)
 {
 	ETbNamesEnum_With_Under_scores cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
+	ensureInitialized();
+	jclass javaStruct = jEnumWithUnderScores;
 	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
 	int int_value = env->CallIntMethod(input, getValueMethod);
 	UTbNamesLibrary::toTbNamesEnum_With_Under_scores(cppEnumValue, int_value);
@@ -58,7 +60,8 @@ ETbNamesEnum_With_Under_scores TbNamesDataJavaConverter::getEnumWithUnderScoresV
 
 jobjectArray TbNamesDataJavaConverter::makeJavaEnumWithUnderScoresArray(JNIEnv* env, const TArray<ETbNamesEnum_With_Under_scores>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
+	ensureInitialized();
+	jclass javaStruct = jEnumWithUnderScores;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -73,7 +76,8 @@ jobjectArray TbNamesDataJavaConverter::makeJavaEnumWithUnderScoresArray(JNIEnv* 
 
 jobject TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(JNIEnv* env, ETbNamesEnum_With_Under_scores value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
+	ensureInitialized();
+	jclass javaStruct = jEnumWithUnderScores;
 	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)LtbNames/tbNames_api/EnumWithUnderScores;");
 	if (!fromValueMethod)
 		return nullptr;
@@ -81,9 +85,11 @@ jobject TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(JNIEnv* env, ETbNa
 	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
 	return javaObj;
 }
+jclass TbNamesDataJavaConverter::jNamEs = nullptr;
 
 void TbNamesDataJavaConverter::fillNamEs(JNIEnv* env, jobject input, TScriptInterface<ITbNamesNamEsInterface> out_nam_es)
 {
+	ensureInitialized();
 	if (!input || !out_nam_es)
 	{
 		return;
@@ -93,11 +99,13 @@ void TbNamesDataJavaConverter::fillNamEs(JNIEnv* env, jobject input, TScriptInte
 
 void TbNamesDataJavaConverter::fillNamEsArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbNamesNamEsInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbNamesDataJavaConverter::makeJavaNamEs(JNIEnv* env, const TScriptInterface<ITbNamesNamEsInterface> out_nam_es)
 {
+	ensureInitialized();
 	if (!out_nam_es)
 	{
 		return nullptr;
@@ -110,7 +118,8 @@ jobject TbNamesDataJavaConverter::makeJavaNamEs(JNIEnv* env, const TScriptInterf
 
 jobjectArray TbNamesDataJavaConverter::makeJavaNamEsArray(JNIEnv* env, const TArray<TScriptInterface<ITbNamesNamEsInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/INamEs");
+	ensureInitialized();
+	jclass javaClass = jNamEs;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -119,11 +128,45 @@ jobjectArray TbNamesDataJavaConverter::makeJavaNamEsArray(JNIEnv* env, const TAr
 
 TScriptInterface<ITbNamesNamEsInterface> TbNamesDataJavaConverter::getCppInstanceTbNamesNamEs()
 {
+	ensureInitialized();
 	UTbNamesNamEsImplementation* Impl = NewObject<UTbNamesNamEsImplementation>();
 	TScriptInterface<ITbNamesNamEsInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITbNamesNamEsInterface>(Impl));
 	return wrapped;
+}
+
+void TbNamesDataJavaConverter::cleanJavaReferences()
+{
+	FScopeLock Lock(&initMutex);
+	m_isInitialized = false;
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	env->DeleteGlobalRef(jEnumWithUnderScores);
+	env->DeleteGlobalRef(jNamEs);
+}
+
+FCriticalSection TbNamesDataJavaConverter::initMutex;
+
+bool TbNamesDataJavaConverter::m_isInitialized = false;
+
+void TbNamesDataJavaConverter::ensureInitialized()
+{
+	if (m_isInitialized)
+	{
+		return;
+	}
+	FScopeLock Lock(&initMutex);
+	if (m_isInitialized)
+	{
+		return;
+	}
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jEnumWithUnderScores = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
+	jNamEs = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/INamEs");
+	m_isInitialized = true;
+}
+
+}
 }
 
 #endif
