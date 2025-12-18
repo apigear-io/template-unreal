@@ -34,9 +34,11 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+jclass TbRefIfacesDataJavaConverter::jSimpleLocalIf = nullptr;
 
 void TbRefIfacesDataJavaConverter::fillSimpleLocalIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if)
 {
+	ensureInitialized();
 	if (!input || !out_simple_local_if)
 	{
 		return;
@@ -46,11 +48,13 @@ void TbRefIfacesDataJavaConverter::fillSimpleLocalIf(JNIEnv* env, jobject input,
 
 void TbRefIfacesDataJavaConverter::fillSimpleLocalIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if)
 {
+	ensureInitialized();
 	if (!out_simple_local_if)
 	{
 		return nullptr;
@@ -63,7 +67,8 @@ jobject TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(JNIEnv* env, const T
 
 jobjectArray TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
+	ensureInitialized();
+	jclass javaClass = jSimpleLocalIf;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -72,15 +77,18 @@ jobjectArray TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(JNIEnv* en
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> TbRefIfacesDataJavaConverter::getCppInstanceTbRefIfacesSimpleLocalIf()
 {
+	ensureInitialized();
 	UTbRefIfacesSimpleLocalIfImplementation* Impl = NewObject<UTbRefIfacesSimpleLocalIfImplementation>();
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITbRefIfacesSimpleLocalIfInterface>(Impl));
 	return wrapped;
 }
+jclass TbRefIfacesDataJavaConverter::jParentIf = nullptr;
 
 void TbRefIfacesDataJavaConverter::fillParentIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if)
 {
+	ensureInitialized();
 	if (!input || !out_parent_if)
 	{
 		return;
@@ -90,11 +98,13 @@ void TbRefIfacesDataJavaConverter::fillParentIf(JNIEnv* env, jobject input, TScr
 
 void TbRefIfacesDataJavaConverter::fillParentIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbRefIfacesDataJavaConverter::makeJavaParentIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if)
 {
+	ensureInitialized();
 	if (!out_parent_if)
 	{
 		return nullptr;
@@ -107,7 +117,8 @@ jobject TbRefIfacesDataJavaConverter::makeJavaParentIf(JNIEnv* env, const TScrip
 
 jobjectArray TbRefIfacesDataJavaConverter::makeJavaParentIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
+	ensureInitialized();
+	jclass javaClass = jParentIf;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -116,11 +127,45 @@ jobjectArray TbRefIfacesDataJavaConverter::makeJavaParentIfArray(JNIEnv* env, co
 
 TScriptInterface<ITbRefIfacesParentIfInterface> TbRefIfacesDataJavaConverter::getCppInstanceTbRefIfacesParentIf()
 {
+	ensureInitialized();
 	UTbRefIfacesParentIfImplementation* Impl = NewObject<UTbRefIfacesParentIfImplementation>();
 	TScriptInterface<ITbRefIfacesParentIfInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITbRefIfacesParentIfInterface>(Impl));
 	return wrapped;
+}
+
+void TbRefIfacesDataJavaConverter::cleanJavaReferences()
+{
+	FScopeLock Lock(&initMutex);
+	m_isInitialized = false;
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	env->DeleteGlobalRef(jSimpleLocalIf);
+	env->DeleteGlobalRef(jParentIf);
+}
+
+FCriticalSection TbRefIfacesDataJavaConverter::initMutex;
+
+bool TbRefIfacesDataJavaConverter::m_isInitialized = false;
+
+void TbRefIfacesDataJavaConverter::ensureInitialized()
+{
+	if (m_isInitialized)
+	{
+		return;
+	}
+	FScopeLock Lock(&initMutex);
+	if (m_isInitialized)
+	{
+		return;
+	}
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
+	jParentIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
+	m_isInitialized = true;
+}
+
+}
 }
 
 #endif

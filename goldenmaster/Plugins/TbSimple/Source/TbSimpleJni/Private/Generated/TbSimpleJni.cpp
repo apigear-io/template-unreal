@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbSimple/TbSimpleJni.h"
 #include "TbSimple/Generated/TbSimpleFactory.h"
+#include "TbSimple/Generated/Jni/TbSimpleDataJavaConverter.h"
 #include "Engine/Engine.h"
 #include "TbSimpleSettings.h"
 #include "Modules/ModuleManager.h"
@@ -31,6 +32,9 @@ void FTbSimpleJniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+	#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	TbSimpleDataJavaConverter::cleanJavaReferences();
+	#endif
 }
 
 IMPLEMENT_MODULE(FTbSimpleJniModule, TbSimpleJni)

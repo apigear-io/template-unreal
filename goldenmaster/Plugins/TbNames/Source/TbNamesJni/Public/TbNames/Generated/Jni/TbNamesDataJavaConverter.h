@@ -20,6 +20,7 @@ limitations under the License.
 #include "TbNames/Generated/api/TbNames_apig.h"
 #if PLATFORM_ANDROID
 
+#include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
@@ -31,22 +32,29 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
-#include "Engine/Engine.h"
-
 class TBNAMESAPI_API TbNamesDataJavaConverter
 {
 public:
+	static jclass jEnumWithUnderScores;
 	static void fillEnumWithUnderScoresArray(JNIEnv* env, jobjectArray input, TArray<ETbNamesEnum_With_Under_scores>& out_array);
 	static ETbNamesEnum_With_Under_scores getEnumWithUnderScoresValue(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnumWithUnderScoresArray(JNIEnv* env, const TArray<ETbNamesEnum_With_Under_scores>& cppArray);
 	static jobject makeJavaEnumWithUnderScores(JNIEnv* env, ETbNamesEnum_With_Under_scores value);
 
+	static jclass jNamEs;
 	static void fillNamEs(JNIEnv* env, jobject input, TScriptInterface<ITbNamesNamEsInterface> out_nam_es);
 	static void fillNamEsArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbNamesNamEsInterface>>& out_array);
 	static jobject makeJavaNamEs(JNIEnv* env, const TScriptInterface<ITbNamesNamEsInterface> out_nam_es);
 	static jobjectArray makeJavaNamEsArray(JNIEnv* env, const TArray<TScriptInterface<ITbNamesNamEsInterface>>& cppArray);
 
 	static TScriptInterface<ITbNamesNamEsInterface> getCppInstanceTbNamesNamEs();
+
+	static void cleanJavaReferences();
+
+private:
+	static FCriticalSection initMutex;
+	static void ensureInitialized();
+	static bool m_isInitialized;
 };
 
 #endif

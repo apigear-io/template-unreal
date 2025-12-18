@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbIfaceimport/TbIfaceimportJni.h"
 #include "TbIfaceimport/Generated/TbIfaceimportFactory.h"
+#include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
 #include "Engine/Engine.h"
 #include "TbIfaceimportSettings.h"
 #include "Modules/ModuleManager.h"
@@ -31,6 +32,9 @@ void FTbIfaceimportJniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+	#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	TbIfaceimportDataJavaConverter::cleanJavaReferences();
+	#endif
 }
 
 IMPLEMENT_MODULE(FTbIfaceimportJniModule, TbIfaceimportJni)

@@ -20,6 +20,7 @@ limitations under the License.
 #include "Testbed2/Generated/api/Testbed2_apig.h"
 #if PLATFORM_ANDROID
 
+#include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
@@ -31,55 +32,64 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
-#include "Engine/Engine.h"
-
 class TESTBED2API_API Testbed2DataJavaConverter
 {
 public:
+	static jclass jStruct1;
 	static void fillStruct1(JNIEnv* env, jobject input, FTestbed2Struct1& out_struct1);
 	static void fillStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct1>& out_array);
 	static jobject makeJavaStruct1(JNIEnv* env, const FTestbed2Struct1& out_struct1);
 	static jobjectArray makeJavaStruct1Array(JNIEnv* env, const TArray<FTestbed2Struct1>& cppArray);
+	static jclass jStruct2;
 	static void fillStruct2(JNIEnv* env, jobject input, FTestbed2Struct2& out_struct2);
 	static void fillStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct2>& out_array);
 	static jobject makeJavaStruct2(JNIEnv* env, const FTestbed2Struct2& out_struct2);
 	static jobjectArray makeJavaStruct2Array(JNIEnv* env, const TArray<FTestbed2Struct2>& cppArray);
+	static jclass jStruct3;
 	static void fillStruct3(JNIEnv* env, jobject input, FTestbed2Struct3& out_struct3);
 	static void fillStruct3Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct3>& out_array);
 	static jobject makeJavaStruct3(JNIEnv* env, const FTestbed2Struct3& out_struct3);
 	static jobjectArray makeJavaStruct3Array(JNIEnv* env, const TArray<FTestbed2Struct3>& cppArray);
+	static jclass jStruct4;
 	static void fillStruct4(JNIEnv* env, jobject input, FTestbed2Struct4& out_struct4);
 	static void fillStruct4Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct4>& out_array);
 	static jobject makeJavaStruct4(JNIEnv* env, const FTestbed2Struct4& out_struct4);
 	static jobjectArray makeJavaStruct4Array(JNIEnv* env, const TArray<FTestbed2Struct4>& cppArray);
+	static jclass jNestedStruct1;
 	static void fillNestedStruct1(JNIEnv* env, jobject input, FTestbed2NestedStruct1& out_nested_struct1);
 	static void fillNestedStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2NestedStruct1>& out_array);
 	static jobject makeJavaNestedStruct1(JNIEnv* env, const FTestbed2NestedStruct1& out_nested_struct1);
 	static jobjectArray makeJavaNestedStruct1Array(JNIEnv* env, const TArray<FTestbed2NestedStruct1>& cppArray);
+	static jclass jNestedStruct2;
 	static void fillNestedStruct2(JNIEnv* env, jobject input, FTestbed2NestedStruct2& out_nested_struct2);
 	static void fillNestedStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2NestedStruct2>& out_array);
 	static jobject makeJavaNestedStruct2(JNIEnv* env, const FTestbed2NestedStruct2& out_nested_struct2);
 	static jobjectArray makeJavaNestedStruct2Array(JNIEnv* env, const TArray<FTestbed2NestedStruct2>& cppArray);
+	static jclass jNestedStruct3;
 	static void fillNestedStruct3(JNIEnv* env, jobject input, FTestbed2NestedStruct3& out_nested_struct3);
 	static void fillNestedStruct3Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2NestedStruct3>& out_array);
 	static jobject makeJavaNestedStruct3(JNIEnv* env, const FTestbed2NestedStruct3& out_nested_struct3);
 	static jobjectArray makeJavaNestedStruct3Array(JNIEnv* env, const TArray<FTestbed2NestedStruct3>& cppArray);
 
+	static jclass jEnum1;
 	static void fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETestbed2Enum1>& out_array);
 	static ETestbed2Enum1 getEnum1Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnum1Array(JNIEnv* env, const TArray<ETestbed2Enum1>& cppArray);
 	static jobject makeJavaEnum1(JNIEnv* env, ETestbed2Enum1 value);
 
+	static jclass jEnum2;
 	static void fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETestbed2Enum2>& out_array);
 	static ETestbed2Enum2 getEnum2Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnum2Array(JNIEnv* env, const TArray<ETestbed2Enum2>& cppArray);
 	static jobject makeJavaEnum2(JNIEnv* env, ETestbed2Enum2 value);
 
+	static jclass jEnum3;
 	static void fillEnum3Array(JNIEnv* env, jobjectArray input, TArray<ETestbed2Enum3>& out_array);
 	static ETestbed2Enum3 getEnum3Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnum3Array(JNIEnv* env, const TArray<ETestbed2Enum3>& cppArray);
 	static jobject makeJavaEnum3(JNIEnv* env, ETestbed2Enum3 value);
 
+	static jclass jManyParamInterface;
 	static void fillManyParamInterface(JNIEnv* env, jobject input, TScriptInterface<ITestbed2ManyParamInterfaceInterface> out_many_param_interface);
 	static void fillManyParamInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITestbed2ManyParamInterfaceInterface>>& out_array);
 	static jobject makeJavaManyParamInterface(JNIEnv* env, const TScriptInterface<ITestbed2ManyParamInterfaceInterface> out_many_param_interface);
@@ -87,6 +97,7 @@ public:
 
 	static TScriptInterface<ITestbed2ManyParamInterfaceInterface> getCppInstanceTestbed2ManyParamInterface();
 
+	static jclass jNestedStruct1Interface;
 	static void fillNestedStruct1Interface(JNIEnv* env, jobject input, TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> out_nested_struct1_interface);
 	static void fillNestedStruct1InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITestbed2NestedStruct1InterfaceInterface>>& out_array);
 	static jobject makeJavaNestedStruct1Interface(JNIEnv* env, const TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> out_nested_struct1_interface);
@@ -94,6 +105,7 @@ public:
 
 	static TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> getCppInstanceTestbed2NestedStruct1Interface();
 
+	static jclass jNestedStruct2Interface;
 	static void fillNestedStruct2Interface(JNIEnv* env, jobject input, TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> out_nested_struct2_interface);
 	static void fillNestedStruct2InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITestbed2NestedStruct2InterfaceInterface>>& out_array);
 	static jobject makeJavaNestedStruct2Interface(JNIEnv* env, const TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> out_nested_struct2_interface);
@@ -101,12 +113,20 @@ public:
 
 	static TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> getCppInstanceTestbed2NestedStruct2Interface();
 
+	static jclass jNestedStruct3Interface;
 	static void fillNestedStruct3Interface(JNIEnv* env, jobject input, TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> out_nested_struct3_interface);
 	static void fillNestedStruct3InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceInterface>>& out_array);
 	static jobject makeJavaNestedStruct3Interface(JNIEnv* env, const TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> out_nested_struct3_interface);
 	static jobjectArray makeJavaNestedStruct3InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed2NestedStruct3InterfaceInterface>>& cppArray);
 
 	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> getCppInstanceTestbed2NestedStruct3Interface();
+
+	static void cleanJavaReferences();
+
+private:
+	static FCriticalSection initMutex;
+	static void ensureInitialized();
+	static bool m_isInitialized;
 };
 
 #endif

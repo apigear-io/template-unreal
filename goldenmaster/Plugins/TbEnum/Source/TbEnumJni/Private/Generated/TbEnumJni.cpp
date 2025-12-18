@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "TbEnum/TbEnumJni.h"
 #include "TbEnum/Generated/TbEnumFactory.h"
+#include "TbEnum/Generated/Jni/TbEnumDataJavaConverter.h"
 #include "Engine/Engine.h"
 #include "TbEnumSettings.h"
 #include "Modules/ModuleManager.h"
@@ -31,6 +32,9 @@ void FTbEnumJniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+	#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	TbEnumDataJavaConverter::cleanJavaReferences();
+	#endif
 }
 
 IMPLEMENT_MODULE(FTbEnumJniModule, TbEnumJni)
