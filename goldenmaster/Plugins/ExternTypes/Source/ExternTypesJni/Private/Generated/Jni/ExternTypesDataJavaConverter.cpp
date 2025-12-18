@@ -32,9 +32,11 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+jclass ExternTypesDataJavaConverter::jMyVector3D = nullptr;
 void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jMyVector3D;
 
 	// do the serialization field by field: e.g. for int type field
 	// jfieldID jFieldId_firstField = env->GetFieldID(cls, "firstField", "I");
@@ -43,6 +45,7 @@ void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FV
 
 void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray input, TArray<FVector>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -56,7 +59,8 @@ void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray
 
 jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVector& out_my_vector3_d)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	ensureInitialized();
+	jclass javaClass = jMyVector3D;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -68,7 +72,8 @@ jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVec
 
 jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, const TArray<FVector>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	ensureInitialized();
+	jclass javaClass = jMyVector3D;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -79,6 +84,37 @@ jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, 
 		env->DeleteLocalRef(element);
 	}
 	return javaArray;
+}
+
+void ExternTypesDataJavaConverter::cleanJavaReferences()
+{
+	FScopeLock Lock(&initMutex);
+	m_isInitialized = false;
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	env->DeleteGlobalRef(jMyVector3D);
+}
+
+FCriticalSection ExternTypesDataJavaConverter::initMutex;
+
+bool ExternTypesDataJavaConverter::m_isInitialized = false;
+
+void ExternTypesDataJavaConverter::ensureInitialized()
+{
+	if (m_isInitialized)
+	{
+		return;
+	}
+	FScopeLock Lock(&initMutex);
+	if (m_isInitialized)
+	{
+		return;
+	}
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jMyVector3D = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	m_isInitialized = true;
+}
+
+}
 }
 
 #endif
