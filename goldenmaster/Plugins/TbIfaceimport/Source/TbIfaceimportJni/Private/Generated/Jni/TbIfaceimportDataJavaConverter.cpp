@@ -33,6 +33,7 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 DEFINE_LOG_CATEGORY(LogTbIfaceimportDataJavaConverter_JNI);
+
 jclass TbIfaceimportDataJavaConverter::jEmptyIf = nullptr;
 
 void TbIfaceimportDataJavaConverter::fillEmptyIf(JNIEnv* env, jobject input, TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if)
@@ -67,9 +68,18 @@ jobject TbIfaceimportDataJavaConverter::makeJavaEmptyIf(JNIEnv* env, const TScri
 jobjectArray TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& cppArray)
 {
 	ensureInitialized();
-	jclass javaClass = jEmptyIf;
+	if (!jEmptyIf)
+	{
+		UE_LOG(LogTbIfaceimportDataJavaConverter_JNI, Warning, TEXT("IEmptyIf not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, jEmptyIf, nullptr);
+	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_empty_if.");
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -127,7 +137,28 @@ void TbIfaceimportDataJavaConverter::ensureInitialized()
 	m_isInitialized = true;
 }
 
+jmethodID TbIfaceimportDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jmethodID method = env->GetMethodID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return method;
 }
+
+jmethodID TbIfaceimportDataJavaConverter::getStaticMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jmethodID method = env->GetStaticMethodID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return method;
+}
+
+jfieldID TbIfaceimportDataJavaConverter::getFieldId(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jfieldID field = env->GetFieldID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return field;
 }
 
 #endif
