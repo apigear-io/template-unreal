@@ -34,6 +34,8 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+DEFINE_LOG_CATEGORY(LogTbRefIfacesDataJavaConverter_JNI);
 jclass TbRefIfacesDataJavaConverter::jSimpleLocalIf = nullptr;
 
 void TbRefIfacesDataJavaConverter::fillSimpleLocalIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if)
@@ -135,6 +137,19 @@ TScriptInterface<ITbRefIfacesParentIfInterface> TbRefIfacesDataJavaConverter::ge
 	return wrapped;
 }
 
+bool TbRefIfacesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
+		return true;
+	}
+	return false;
+}
+
 void TbRefIfacesDataJavaConverter::cleanJavaReferences()
 {
 	FScopeLock Lock(&initMutex);
@@ -161,7 +176,11 @@ void TbRefIfacesDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
+	static const TCHAR* errorMsgSimpleLocalIf= TEXT("failed to get tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
+	checkJniErrorOccured(errorMsgSimpleLocalIf);
 	jParentIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
+	static const TCHAR* errorMsgParentIf= TEXT("failed to get tbRefIfaces/tbRefIfaces_api/IParentIf");
+	checkJniErrorOccured(errorMsgParentIf);
 	m_isInitialized = true;
 }
 
