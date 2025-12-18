@@ -31,6 +31,7 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumDataJavaConverter_JNI, Log, All);
 
 class TBENUMAPI_API TbEnumDataJavaConverter
 {
@@ -67,6 +68,7 @@ public:
 
 	static TScriptInterface<ITbEnumEnumInterfaceInterface> getCppInstanceTbEnumEnumInterface();
 
+	static bool checkJniErrorOccured(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:
