@@ -117,7 +117,7 @@ jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCusto
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_vector3_d.");
 	static const jmethodID ctor = getMethod(jVector3D, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -243,7 +243,7 @@ void CustomTypesDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jVector3D = FAndroidApplication::FindJavaClassGlobalRef("customTypes/customTypes_api/Vector3D");
-	static const TCHAR* errorMsgVector3D= TEXT("failed to get customTypes/customTypes_api/Vector3D");
+	static const TCHAR* errorMsgVector3D = TEXT("failed to get customTypes/customTypes_api/Vector3D");
 	checkJniErrorOccured(errorMsgVector3D);
 	m_isInitialized = true;
 }

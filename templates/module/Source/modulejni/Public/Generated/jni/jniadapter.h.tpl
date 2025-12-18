@@ -57,8 +57,6 @@ private:
 
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	// Class object of the used java service.
-	jclass m_javaJniServiceClass = nullptr;
 	// Java instance object reference. The object is created on java service start.
 	jobject m_javaJniServiceInstance = nullptr;
 #endif

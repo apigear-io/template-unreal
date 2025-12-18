@@ -214,7 +214,7 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for {{$structName}}.");
 	static const jmethodID ctor = getMethod({{$cachedStruct}}, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -619,7 +619,7 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$exCppTyp
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for {{$fullJavaClassType}}.");
 	// Make sure either that the extern class has default ctor or provide proper signature and arguments.
 	static const jmethodID ctor = getMethod({{$cachedClass}}, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -723,21 +723,21 @@ void {{$className }}::ensureInitialized()
 {{- range .Module.Structs }}
 	{{- $javaClassTypeName := Camel .Name}}
 	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
-	static const TCHAR* errorMsg{{Camel .Name}}= TEXT("failed to get {{$packageName}}/{{$javaClassTypeName}}");
+	static const TCHAR* errorMsg{{Camel .Name}} = TEXT("failed to get {{$packageName}}/{{$javaClassTypeName}}");
 	checkJniErrorOccured(errorMsg{{Camel .Name}});
 {{- end }}
 
 {{- range .Module.Enums }}
 {{- $javaClassTypeName := Camel .Name}}
 	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
-	static const TCHAR* errorMsg{{Camel .Name}}= TEXT("failed to get {{$packageName}}/{{$javaClassTypeName}}");
+	static const TCHAR* errorMsg{{Camel .Name}} = TEXT("failed to get {{$packageName}}/{{$javaClassTypeName}}");
 	checkJniErrorOccured(errorMsg{{Camel .Name}});
 {{- end }}
 
 {{- range .Module.Interfaces }}
 {{- $fullJavaClassType := printf "%s/%s_api/I%s" $jmoduleName $jmoduleName (Camel .Name) }}
 	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
-	static const TCHAR* errorMsg{{Camel .Name}}= TEXT("failed to get {{$fullJavaClassType}}");
+	static const TCHAR* errorMsg{{Camel .Name}} = TEXT("failed to get {{$fullJavaClassType}}");
 	checkJniErrorOccured(errorMsg{{Camel .Name}});
 {{- end }}
 
@@ -749,7 +749,7 @@ void {{$className }}::ensureInitialized()
 {{- $fullJavaClassType = printf "%s/%s" $prefix $fullJavaClassType }}
 {{- end }}
 	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
-	static const TCHAR* errorMsg{{Camel .Name}}= TEXT("failed to get {{$fullJavaClassType}}");
+	static const TCHAR* errorMsg{{Camel .Name}} = TEXT("failed to get {{$fullJavaClassType}}");
 	checkJniErrorOccured(errorMsg{{Camel .Name}});
 {{- end }}
 	m_isInitialized = true;
