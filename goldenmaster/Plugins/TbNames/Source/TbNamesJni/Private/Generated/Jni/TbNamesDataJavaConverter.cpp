@@ -232,10 +232,10 @@ void TbNamesDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jEnumWithUnderScores = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
-	static const TCHAR* errorMsgEnumWithUnderScores= TEXT("failed to get tbNames/tbNames_api/EnumWithUnderScores");
+	static const TCHAR* errorMsgEnumWithUnderScores = TEXT("failed to get tbNames/tbNames_api/EnumWithUnderScores");
 	checkJniErrorOccured(errorMsgEnumWithUnderScores);
 	jNamEs = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/INamEs");
-	static const TCHAR* errorMsgNamEs= TEXT("failed to get tbNames/tbNames_api/INamEs");
+	static const TCHAR* errorMsgNamEs = TEXT("failed to get tbNames/tbNames_api/INamEs");
 	checkJniErrorOccured(errorMsgNamEs);
 	m_isInitialized = true;
 }

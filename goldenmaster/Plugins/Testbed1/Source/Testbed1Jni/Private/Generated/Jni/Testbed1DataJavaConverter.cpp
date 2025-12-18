@@ -92,7 +92,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructBool(JNIEnv* env, const FTestbe
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_bool.");
 	static const jmethodID ctor = getMethod(jStructBool, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -207,7 +207,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructInt(JNIEnv* env, const FTestbed
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_int.");
 	static const jmethodID ctor = getMethod(jStructInt, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -322,7 +322,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructFloat(JNIEnv* env, const FTestb
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_float.");
 	static const jmethodID ctor = getMethod(jStructFloat, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -440,7 +440,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructString(JNIEnv* env, const FTest
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_string.");
 	static const jmethodID ctor = getMethod(jStructString, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -561,7 +561,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructStruct(JNIEnv* env, const FTest
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_struct.");
 	static const jmethodID ctor = getMethod(jStructStruct, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -679,7 +679,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructEnum(JNIEnv* env, const FTestbe
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_enum.");
 	static const jmethodID ctor = getMethod(jStructEnum, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -810,7 +810,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructBoolWithArray(JNIEnv* env, cons
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_bool_with_array.");
 	static const jmethodID ctor = getMethod(jStructBoolWithArray, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -949,7 +949,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructIntWithArray(JNIEnv* env, const
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_int_with_array.");
 	static const jmethodID ctor = getMethod(jStructIntWithArray, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -1082,7 +1082,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructFloatWithArray(JNIEnv* env, con
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_float_with_array.");
 	static const jmethodID ctor = getMethod(jStructFloatWithArray, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -1211,7 +1211,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructStringWithArray(JNIEnv* env, co
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_string_with_array.");
 	static const jmethodID ctor = getMethod(jStructStringWithArray, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -1339,7 +1339,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructStructWithArray(JNIEnv* env, co
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_struct_with_array.");
 	static const jmethodID ctor = getMethod(jStructStructWithArray, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -1458,7 +1458,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructEnumWithArray(JNIEnv* env, cons
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_enum_with_array.");
 	static const jmethodID ctor = getMethod(jStructEnumWithArray, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -1851,52 +1851,52 @@ void Testbed1DataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jStructBool = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBool");
-	static const TCHAR* errorMsgStructBool= TEXT("failed to get testbed1/testbed1_api/StructBool");
+	static const TCHAR* errorMsgStructBool = TEXT("failed to get testbed1/testbed1_api/StructBool");
 	checkJniErrorOccured(errorMsgStructBool);
 	jStructInt = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructInt");
-	static const TCHAR* errorMsgStructInt= TEXT("failed to get testbed1/testbed1_api/StructInt");
+	static const TCHAR* errorMsgStructInt = TEXT("failed to get testbed1/testbed1_api/StructInt");
 	checkJniErrorOccured(errorMsgStructInt);
 	jStructFloat = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloat");
-	static const TCHAR* errorMsgStructFloat= TEXT("failed to get testbed1/testbed1_api/StructFloat");
+	static const TCHAR* errorMsgStructFloat = TEXT("failed to get testbed1/testbed1_api/StructFloat");
 	checkJniErrorOccured(errorMsgStructFloat);
 	jStructString = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructString");
-	static const TCHAR* errorMsgStructString= TEXT("failed to get testbed1/testbed1_api/StructString");
+	static const TCHAR* errorMsgStructString = TEXT("failed to get testbed1/testbed1_api/StructString");
 	checkJniErrorOccured(errorMsgStructString);
 	jStructStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStruct");
-	static const TCHAR* errorMsgStructStruct= TEXT("failed to get testbed1/testbed1_api/StructStruct");
+	static const TCHAR* errorMsgStructStruct = TEXT("failed to get testbed1/testbed1_api/StructStruct");
 	checkJniErrorOccured(errorMsgStructStruct);
 	jStructEnum = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnum");
-	static const TCHAR* errorMsgStructEnum= TEXT("failed to get testbed1/testbed1_api/StructEnum");
+	static const TCHAR* errorMsgStructEnum = TEXT("failed to get testbed1/testbed1_api/StructEnum");
 	checkJniErrorOccured(errorMsgStructEnum);
 	jStructBoolWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBoolWithArray");
-	static const TCHAR* errorMsgStructBoolWithArray= TEXT("failed to get testbed1/testbed1_api/StructBoolWithArray");
+	static const TCHAR* errorMsgStructBoolWithArray = TEXT("failed to get testbed1/testbed1_api/StructBoolWithArray");
 	checkJniErrorOccured(errorMsgStructBoolWithArray);
 	jStructIntWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructIntWithArray");
-	static const TCHAR* errorMsgStructIntWithArray= TEXT("failed to get testbed1/testbed1_api/StructIntWithArray");
+	static const TCHAR* errorMsgStructIntWithArray = TEXT("failed to get testbed1/testbed1_api/StructIntWithArray");
 	checkJniErrorOccured(errorMsgStructIntWithArray);
 	jStructFloatWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloatWithArray");
-	static const TCHAR* errorMsgStructFloatWithArray= TEXT("failed to get testbed1/testbed1_api/StructFloatWithArray");
+	static const TCHAR* errorMsgStructFloatWithArray = TEXT("failed to get testbed1/testbed1_api/StructFloatWithArray");
 	checkJniErrorOccured(errorMsgStructFloatWithArray);
 	jStructStringWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStringWithArray");
-	static const TCHAR* errorMsgStructStringWithArray= TEXT("failed to get testbed1/testbed1_api/StructStringWithArray");
+	static const TCHAR* errorMsgStructStringWithArray = TEXT("failed to get testbed1/testbed1_api/StructStringWithArray");
 	checkJniErrorOccured(errorMsgStructStringWithArray);
 	jStructStructWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStructWithArray");
-	static const TCHAR* errorMsgStructStructWithArray= TEXT("failed to get testbed1/testbed1_api/StructStructWithArray");
+	static const TCHAR* errorMsgStructStructWithArray = TEXT("failed to get testbed1/testbed1_api/StructStructWithArray");
 	checkJniErrorOccured(errorMsgStructStructWithArray);
 	jStructEnumWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnumWithArray");
-	static const TCHAR* errorMsgStructEnumWithArray= TEXT("failed to get testbed1/testbed1_api/StructEnumWithArray");
+	static const TCHAR* errorMsgStructEnumWithArray = TEXT("failed to get testbed1/testbed1_api/StructEnumWithArray");
 	checkJniErrorOccured(errorMsgStructEnumWithArray);
 	jEnum0 = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
-	static const TCHAR* errorMsgEnum0= TEXT("failed to get testbed1/testbed1_api/Enum0");
+	static const TCHAR* errorMsgEnum0 = TEXT("failed to get testbed1/testbed1_api/Enum0");
 	checkJniErrorOccured(errorMsgEnum0);
 	jStructInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructInterface");
-	static const TCHAR* errorMsgStructInterface= TEXT("failed to get testbed1/testbed1_api/IStructInterface");
+	static const TCHAR* errorMsgStructInterface = TEXT("failed to get testbed1/testbed1_api/IStructInterface");
 	checkJniErrorOccured(errorMsgStructInterface);
 	jStructArrayInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArrayInterface");
-	static const TCHAR* errorMsgStructArrayInterface= TEXT("failed to get testbed1/testbed1_api/IStructArrayInterface");
+	static const TCHAR* errorMsgStructArrayInterface = TEXT("failed to get testbed1/testbed1_api/IStructArrayInterface");
 	checkJniErrorOccured(errorMsgStructArrayInterface);
 	jStructArray2Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArray2Interface");
-	static const TCHAR* errorMsgStructArray2Interface= TEXT("failed to get testbed1/testbed1_api/IStructArray2Interface");
+	static const TCHAR* errorMsgStructArray2Interface = TEXT("failed to get testbed1/testbed1_api/IStructArray2Interface");
 	checkJniErrorOccured(errorMsgStructArray2Interface);
 	m_isInitialized = true;
 }
