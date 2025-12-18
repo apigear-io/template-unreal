@@ -21,6 +21,7 @@ limitations under the License.
 #include "TbRefIfaces/Generated/api/TbRefIfaces_apig.h"
 #if PLATFORM_ANDROID
 
+#include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
@@ -32,11 +33,10 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
-#include "Engine/Engine.h"
-
 class TBREFIFACESAPI_API TbRefIfacesDataJavaConverter
 {
 public:
+	static jclass jSimpleLocalIf;
 	static void fillSimpleLocalIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if);
 	static void fillSimpleLocalIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& out_array);
 	static jobject makeJavaSimpleLocalIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if);
@@ -44,12 +44,20 @@ public:
 
 	static TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> getCppInstanceTbRefIfacesSimpleLocalIf();
 
+	static jclass jParentIf;
 	static void fillParentIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if);
 	static void fillParentIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& out_array);
 	static jobject makeJavaParentIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if);
 	static jobjectArray makeJavaParentIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& cppArray);
 
 	static TScriptInterface<ITbRefIfacesParentIfInterface> getCppInstanceTbRefIfacesParentIf();
+
+	static void cleanJavaReferences();
+
+private:
+	static FCriticalSection initMutex;
+	static void ensureInitialized();
+	static bool m_isInitialized;
 };
 
 #endif

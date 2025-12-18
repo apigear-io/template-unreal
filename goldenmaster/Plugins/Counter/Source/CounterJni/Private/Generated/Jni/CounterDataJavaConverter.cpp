@@ -35,9 +35,11 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+jclass CounterDataJavaConverter::jCounter = nullptr;
 
 void CounterDataJavaConverter::fillCounter(JNIEnv* env, jobject input, TScriptInterface<ICounterCounterInterface> out_counter)
 {
+	ensureInitialized();
 	if (!input || !out_counter)
 	{
 		return;
@@ -47,11 +49,13 @@ void CounterDataJavaConverter::fillCounter(JNIEnv* env, jobject input, TScriptIn
 
 void CounterDataJavaConverter::fillCounterArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ICounterCounterInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject CounterDataJavaConverter::makeJavaCounter(JNIEnv* env, const TScriptInterface<ICounterCounterInterface> out_counter)
 {
+	ensureInitialized();
 	if (!out_counter)
 	{
 		return nullptr;
@@ -64,7 +68,8 @@ jobject CounterDataJavaConverter::makeJavaCounter(JNIEnv* env, const TScriptInte
 
 jobjectArray CounterDataJavaConverter::makeJavaCounterArray(JNIEnv* env, const TArray<TScriptInterface<ICounterCounterInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
+	ensureInitialized();
+	jclass javaClass = jCounter;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -73,11 +78,43 @@ jobjectArray CounterDataJavaConverter::makeJavaCounterArray(JNIEnv* env, const T
 
 TScriptInterface<ICounterCounterInterface> CounterDataJavaConverter::getCppInstanceCounterCounter()
 {
+	ensureInitialized();
 	UCounterCounterImplementation* Impl = NewObject<UCounterCounterImplementation>();
 	TScriptInterface<ICounterCounterInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ICounterCounterInterface>(Impl));
 	return wrapped;
+}
+
+void CounterDataJavaConverter::cleanJavaReferences()
+{
+	FScopeLock Lock(&initMutex);
+	m_isInitialized = false;
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	env->DeleteGlobalRef(jCounter);
+}
+
+FCriticalSection CounterDataJavaConverter::initMutex;
+
+bool CounterDataJavaConverter::m_isInitialized = false;
+
+void CounterDataJavaConverter::ensureInitialized()
+{
+	if (m_isInitialized)
+	{
+		return;
+	}
+	FScopeLock Lock(&initMutex);
+	if (m_isInitialized)
+	{
+		return;
+	}
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
+	m_isInitialized = true;
+}
+
+}
 }
 
 #endif
