@@ -32,9 +32,11 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+jclass CustomTypesDataJavaConverter::jVector3D = nullptr;
 void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCustomTypesVector3D& out_vector3_d)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jVector3D;
 
 	jfieldID jFieldId_x = env->GetFieldID(cls, "x", "F");
 	out_vector3_d.x = env->GetFloatField(input, jFieldId_x);
@@ -48,6 +50,7 @@ void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCus
 
 void CustomTypesDataJavaConverter::fillVector3DArray(JNIEnv* env, jobjectArray input, TArray<FCustomTypesVector3D>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -61,7 +64,8 @@ void CustomTypesDataJavaConverter::fillVector3DArray(JNIEnv* env, jobjectArray i
 
 jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCustomTypesVector3D& in_vector3_d)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("customTypes/customTypes_api/Vector3D");
+	ensureInitialized();
+	jclass javaClass = jVector3D;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -78,7 +82,8 @@ jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCusto
 
 jobjectArray CustomTypesDataJavaConverter::makeJavaVector3DArray(JNIEnv* env, const TArray<FCustomTypesVector3D>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("customTypes/customTypes_api/Vector3D");
+	ensureInitialized();
+	jclass javaStruct = jVector3D;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -89,6 +94,37 @@ jobjectArray CustomTypesDataJavaConverter::makeJavaVector3DArray(JNIEnv* env, co
 		env->DeleteLocalRef(element);
 	}
 	return javaArray;
+}
+
+void CustomTypesDataJavaConverter::cleanJavaReferences()
+{
+	FScopeLock Lock(&initMutex);
+	m_isInitialized = false;
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	env->DeleteGlobalRef(jVector3D);
+}
+
+FCriticalSection CustomTypesDataJavaConverter::initMutex;
+
+bool CustomTypesDataJavaConverter::m_isInitialized = false;
+
+void CustomTypesDataJavaConverter::ensureInitialized()
+{
+	if (m_isInitialized)
+	{
+		return;
+	}
+	FScopeLock Lock(&initMutex);
+	if (m_isInitialized)
+	{
+		return;
+	}
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jVector3D = FAndroidApplication::FindJavaClassGlobalRef("customTypes/customTypes_api/Vector3D");
+	m_isInitialized = true;
+}
+
+}
 }
 
 #endif

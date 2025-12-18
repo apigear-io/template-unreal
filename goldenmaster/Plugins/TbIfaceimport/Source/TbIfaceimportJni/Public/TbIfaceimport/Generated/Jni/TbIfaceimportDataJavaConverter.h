@@ -20,6 +20,7 @@ limitations under the License.
 #include "TbIfaceimport/Generated/api/TbIfaceimport_apig.h"
 #if PLATFORM_ANDROID
 
+#include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
@@ -31,17 +32,23 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
-#include "Engine/Engine.h"
-
 class TBIFACEIMPORTAPI_API TbIfaceimportDataJavaConverter
 {
 public:
+	static jclass jEmptyIf;
 	static void fillEmptyIf(JNIEnv* env, jobject input, TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if);
 	static void fillEmptyIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& out_array);
 	static jobject makeJavaEmptyIf(JNIEnv* env, const TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if);
 	static jobjectArray makeJavaEmptyIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& cppArray);
 
 	static TScriptInterface<ITbIfaceimportEmptyIfInterface> getCppInstanceTbIfaceimportEmptyIf();
+
+	static void cleanJavaReferences();
+
+private:
+	static FCriticalSection initMutex;
+	static void ensureInitialized();
+	static bool m_isInitialized;
 };
 
 #endif

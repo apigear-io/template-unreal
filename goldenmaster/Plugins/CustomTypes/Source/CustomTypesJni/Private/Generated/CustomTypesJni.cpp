@@ -17,6 +17,7 @@ limitations under the License.
 
 #include "CustomTypes/CustomTypesJni.h"
 #include "CustomTypes/Generated/CustomTypesFactory.h"
+#include "CustomTypes/Generated/Jni/CustomTypesDataJavaConverter.h"
 #include "Engine/Engine.h"
 #include "CustomTypesSettings.h"
 #include "Modules/ModuleManager.h"
@@ -31,6 +32,9 @@ void FCustomTypesJniModule::ShutdownModule()
 {
 	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
 	// we call this function before unloading the module.
+	#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	CustomTypesDataJavaConverter::cleanJavaReferences();
+	#endif
 }
 
 IMPLEMENT_MODULE(FCustomTypesJniModule, CustomTypesJni)
