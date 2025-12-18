@@ -19,6 +19,7 @@ limitations under the License.
 #include "CustomTypes/Generated/api/CustomTypes_data.h"
 #if PLATFORM_ANDROID
 
+#include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
@@ -30,15 +31,21 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
-#include "Engine/Engine.h"
-
 class CUSTOMTYPESAPI_API CustomTypesDataJavaConverter
 {
 public:
+	static jclass jVector3D;
 	static void fillVector3D(JNIEnv* env, jobject input, FCustomTypesVector3D& out_vector3_d);
 	static void fillVector3DArray(JNIEnv* env, jobjectArray input, TArray<FCustomTypesVector3D>& out_array);
 	static jobject makeJavaVector3D(JNIEnv* env, const FCustomTypesVector3D& out_vector3_d);
 	static jobjectArray makeJavaVector3DArray(JNIEnv* env, const TArray<FCustomTypesVector3D>& cppArray);
+
+	static void cleanJavaReferences();
+
+private:
+	static FCriticalSection initMutex;
+	static void ensureInitialized();
+	static bool m_isInitialized;
 };
 
 #endif

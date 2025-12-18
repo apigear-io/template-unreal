@@ -20,6 +20,7 @@ limitations under the License.
 #include "Runtime/Core/Public/Math/Vector.h"
 #if PLATFORM_ANDROID
 
+#include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
@@ -31,15 +32,21 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
-#include "Engine/Engine.h"
-
 class EXTERNTYPESAPI_API ExternTypesDataJavaConverter
 {
 public:
+	static jclass jMyVector3D;
 	static void fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d);
 	static void fillMyVector3DArray(JNIEnv* env, jobjectArray input, TArray<FVector>& out_array);
 	static jobject makeJavaMyVector3D(JNIEnv* env, const FVector& out_my_vector3_d);
 	static jobjectArray makeJavaMyVector3DArray(JNIEnv* env, const TArray<FVector>& cppArray);
+
+	static void cleanJavaReferences();
+
+private:
+	static FCriticalSection initMutex;
+	static void ensureInitialized();
+	static bool m_isInitialized;
 };
 
 #endif

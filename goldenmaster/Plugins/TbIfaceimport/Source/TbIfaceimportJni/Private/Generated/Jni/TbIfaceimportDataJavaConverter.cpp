@@ -31,9 +31,11 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+jclass TbIfaceimportDataJavaConverter::jEmptyIf = nullptr;
 
 void TbIfaceimportDataJavaConverter::fillEmptyIf(JNIEnv* env, jobject input, TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if)
 {
+	ensureInitialized();
 	if (!input || !out_empty_if)
 	{
 		return;
@@ -43,11 +45,13 @@ void TbIfaceimportDataJavaConverter::fillEmptyIf(JNIEnv* env, jobject input, TSc
 
 void TbIfaceimportDataJavaConverter::fillEmptyIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbIfaceimportDataJavaConverter::makeJavaEmptyIf(JNIEnv* env, const TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if)
 {
+	ensureInitialized();
 	if (!out_empty_if)
 	{
 		return nullptr;
@@ -60,7 +64,8 @@ jobject TbIfaceimportDataJavaConverter::makeJavaEmptyIf(JNIEnv* env, const TScri
 
 jobjectArray TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
+	ensureInitialized();
+	jclass javaClass = jEmptyIf;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -69,11 +74,43 @@ jobjectArray TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(JNIEnv* env, c
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> TbIfaceimportDataJavaConverter::getCppInstanceTbIfaceimportEmptyIf()
 {
+	ensureInitialized();
 	UTbIfaceimportEmptyIfImplementation* Impl = NewObject<UTbIfaceimportEmptyIfImplementation>();
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITbIfaceimportEmptyIfInterface>(Impl));
 	return wrapped;
+}
+
+void TbIfaceimportDataJavaConverter::cleanJavaReferences()
+{
+	FScopeLock Lock(&initMutex);
+	m_isInitialized = false;
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	env->DeleteGlobalRef(jEmptyIf);
+}
+
+FCriticalSection TbIfaceimportDataJavaConverter::initMutex;
+
+bool TbIfaceimportDataJavaConverter::m_isInitialized = false;
+
+void TbIfaceimportDataJavaConverter::ensureInitialized()
+{
+	if (m_isInitialized)
+	{
+		return;
+	}
+	FScopeLock Lock(&initMutex);
+	if (m_isInitialized)
+	{
+		return;
+	}
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
+	m_isInitialized = true;
+}
+
+}
 }
 
 #endif

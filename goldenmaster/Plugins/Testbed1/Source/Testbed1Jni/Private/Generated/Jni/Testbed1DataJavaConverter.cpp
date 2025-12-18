@@ -35,9 +35,11 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+jclass Testbed1DataJavaConverter::jStructBool = nullptr;
 void Testbed1DataJavaConverter::fillStructBool(JNIEnv* env, jobject input, FTestbed1StructBool& out_struct_bool)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructBool;
 
 	jfieldID jFieldId_field_bool = env->GetFieldID(cls, "fieldBool", "Z");
 	out_struct_bool.fieldBool = env->GetBooleanField(input, jFieldId_field_bool);
@@ -45,6 +47,7 @@ void Testbed1DataJavaConverter::fillStructBool(JNIEnv* env, jobject input, FTest
 
 void Testbed1DataJavaConverter::fillStructBoolArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructBool>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -58,7 +61,8 @@ void Testbed1DataJavaConverter::fillStructBoolArray(JNIEnv* env, jobjectArray in
 
 jobject Testbed1DataJavaConverter::makeJavaStructBool(JNIEnv* env, const FTestbed1StructBool& in_struct_bool)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBool");
+	ensureInitialized();
+	jclass javaClass = jStructBool;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -69,7 +73,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructBool(JNIEnv* env, const FTestbe
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolArray(JNIEnv* env, const TArray<FTestbed1StructBool>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBool");
+	ensureInitialized();
+	jclass javaStruct = jStructBool;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -82,9 +87,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolArray(JNIEnv* env, con
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructInt = nullptr;
 void Testbed1DataJavaConverter::fillStructInt(JNIEnv* env, jobject input, FTestbed1StructInt& out_struct_int)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructInt;
 
 	jfieldID jFieldId_field_int = env->GetFieldID(cls, "fieldInt", "I");
 	out_struct_int.fieldInt = env->GetIntField(input, jFieldId_field_int);
@@ -92,6 +99,7 @@ void Testbed1DataJavaConverter::fillStructInt(JNIEnv* env, jobject input, FTestb
 
 void Testbed1DataJavaConverter::fillStructIntArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructInt>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -105,7 +113,8 @@ void Testbed1DataJavaConverter::fillStructIntArray(JNIEnv* env, jobjectArray inp
 
 jobject Testbed1DataJavaConverter::makeJavaStructInt(JNIEnv* env, const FTestbed1StructInt& in_struct_int)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructInt");
+	ensureInitialized();
+	jclass javaClass = jStructInt;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -116,7 +125,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructInt(JNIEnv* env, const FTestbed
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructIntArray(JNIEnv* env, const TArray<FTestbed1StructInt>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructInt");
+	ensureInitialized();
+	jclass javaStruct = jStructInt;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -129,9 +139,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructIntArray(JNIEnv* env, cons
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructFloat = nullptr;
 void Testbed1DataJavaConverter::fillStructFloat(JNIEnv* env, jobject input, FTestbed1StructFloat& out_struct_float)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructFloat;
 
 	jfieldID jFieldId_field_float = env->GetFieldID(cls, "fieldFloat", "F");
 	out_struct_float.fieldFloat = env->GetFloatField(input, jFieldId_field_float);
@@ -139,6 +151,7 @@ void Testbed1DataJavaConverter::fillStructFloat(JNIEnv* env, jobject input, FTes
 
 void Testbed1DataJavaConverter::fillStructFloatArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructFloat>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -152,7 +165,8 @@ void Testbed1DataJavaConverter::fillStructFloatArray(JNIEnv* env, jobjectArray i
 
 jobject Testbed1DataJavaConverter::makeJavaStructFloat(JNIEnv* env, const FTestbed1StructFloat& in_struct_float)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloat");
+	ensureInitialized();
+	jclass javaClass = jStructFloat;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -163,7 +177,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructFloat(JNIEnv* env, const FTestb
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatArray(JNIEnv* env, const TArray<FTestbed1StructFloat>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloat");
+	ensureInitialized();
+	jclass javaStruct = jStructFloat;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -176,9 +191,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatArray(JNIEnv* env, co
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructString = nullptr;
 void Testbed1DataJavaConverter::fillStructString(JNIEnv* env, jobject input, FTestbed1StructString& out_struct_string)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructString;
 
 	jfieldID jFieldId_field_string = env->GetFieldID(cls, "fieldString", "Ljava/lang/String;");
 	jstring field_string_value = (jstring)env->GetObjectField(input, jFieldId_field_string);
@@ -187,6 +204,7 @@ void Testbed1DataJavaConverter::fillStructString(JNIEnv* env, jobject input, FTe
 
 void Testbed1DataJavaConverter::fillStructStringArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructString>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -200,7 +218,8 @@ void Testbed1DataJavaConverter::fillStructStringArray(JNIEnv* env, jobjectArray 
 
 jobject Testbed1DataJavaConverter::makeJavaStructString(JNIEnv* env, const FTestbed1StructString& in_struct_string)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructString");
+	ensureInitialized();
+	jclass javaClass = jStructString;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -214,7 +233,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructString(JNIEnv* env, const FTest
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStringArray(JNIEnv* env, const TArray<FTestbed1StructString>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructString");
+	ensureInitialized();
+	jclass javaStruct = jStructString;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -227,9 +247,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStringArray(JNIEnv* env, c
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructStruct = nullptr;
 void Testbed1DataJavaConverter::fillStructStruct(JNIEnv* env, jobject input, FTestbed1StructStruct& out_struct_struct)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructStruct;
 
 	jfieldID jFieldId_field_string = env->GetFieldID(cls, "fieldString", "Ltestbed1/testbed1_api/StructString;");
 	jobject field_string_value = env->GetObjectField(input, jFieldId_field_string);
@@ -239,6 +261,7 @@ void Testbed1DataJavaConverter::fillStructStruct(JNIEnv* env, jobject input, FTe
 
 void Testbed1DataJavaConverter::fillStructStructArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStruct>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -252,7 +275,8 @@ void Testbed1DataJavaConverter::fillStructStructArray(JNIEnv* env, jobjectArray 
 
 jobject Testbed1DataJavaConverter::makeJavaStructStruct(JNIEnv* env, const FTestbed1StructStruct& in_struct_struct)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStruct");
+	ensureInitialized();
+	jclass javaClass = jStructStruct;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -265,7 +289,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructStruct(JNIEnv* env, const FTest
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStructArray(JNIEnv* env, const TArray<FTestbed1StructStruct>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStruct");
+	ensureInitialized();
+	jclass javaStruct = jStructStruct;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -278,9 +303,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStructArray(JNIEnv* env, c
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructEnum = nullptr;
 void Testbed1DataJavaConverter::fillStructEnum(JNIEnv* env, jobject input, FTestbed1StructEnum& out_struct_enum)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructEnum;
 
 	jfieldID jFieldId_field_enum = env->GetFieldID(cls, "fieldEnum", "Ltestbed1/testbed1_api/Enum0;");
 	jobject field_enum_value = env->GetObjectField(input, jFieldId_field_enum);
@@ -289,6 +316,7 @@ void Testbed1DataJavaConverter::fillStructEnum(JNIEnv* env, jobject input, FTest
 
 void Testbed1DataJavaConverter::fillStructEnumArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructEnum>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -302,7 +330,8 @@ void Testbed1DataJavaConverter::fillStructEnumArray(JNIEnv* env, jobjectArray in
 
 jobject Testbed1DataJavaConverter::makeJavaStructEnum(JNIEnv* env, const FTestbed1StructEnum& in_struct_enum)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnum");
+	ensureInitialized();
+	jclass javaClass = jStructEnum;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -315,7 +344,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructEnum(JNIEnv* env, const FTestbe
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumArray(JNIEnv* env, const TArray<FTestbed1StructEnum>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnum");
+	ensureInitialized();
+	jclass javaStruct = jStructEnum;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -328,9 +358,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumArray(JNIEnv* env, con
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructBoolWithArray = nullptr;
 void Testbed1DataJavaConverter::fillStructBoolWithArray(JNIEnv* env, jobject input, FTestbed1StructBoolWithArray& out_struct_bool_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructBoolWithArray;
 
 	jfieldID jFieldId_field_bool = env->GetFieldID(cls, "fieldBool", "[Z");
 	jbooleanArray field_bool_value = (jbooleanArray)env->GetObjectField(input, jFieldId_field_bool);
@@ -348,6 +380,7 @@ void Testbed1DataJavaConverter::fillStructBoolWithArray(JNIEnv* env, jobject inp
 
 void Testbed1DataJavaConverter::fillStructBoolWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructBoolWithArray>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -361,7 +394,8 @@ void Testbed1DataJavaConverter::fillStructBoolWithArrayArray(JNIEnv* env, jobjec
 
 jobject Testbed1DataJavaConverter::makeJavaStructBoolWithArray(JNIEnv* env, const FTestbed1StructBoolWithArray& in_struct_bool_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBoolWithArray");
+	ensureInitialized();
+	jclass javaClass = jStructBoolWithArray;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -382,7 +416,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructBoolWithArray(JNIEnv* env, cons
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructBoolWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBoolWithArray");
+	ensureInitialized();
+	jclass javaStruct = jStructBoolWithArray;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -395,9 +430,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolWithArrayArray(JNIEnv*
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructIntWithArray = nullptr;
 void Testbed1DataJavaConverter::fillStructIntWithArray(JNIEnv* env, jobject input, FTestbed1StructIntWithArray& out_struct_int_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructIntWithArray;
 
 	jfieldID jFieldId_field_int = env->GetFieldID(cls, "fieldInt", "[I");
 	jintArray field_int_value = (jintArray)env->GetObjectField(input, jFieldId_field_int);
@@ -409,6 +446,7 @@ void Testbed1DataJavaConverter::fillStructIntWithArray(JNIEnv* env, jobject inpu
 
 void Testbed1DataJavaConverter::fillStructIntWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructIntWithArray>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -422,7 +460,8 @@ void Testbed1DataJavaConverter::fillStructIntWithArrayArray(JNIEnv* env, jobject
 
 jobject Testbed1DataJavaConverter::makeJavaStructIntWithArray(JNIEnv* env, const FTestbed1StructIntWithArray& in_struct_int_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructIntWithArray");
+	ensureInitialized();
+	jclass javaClass = jStructIntWithArray;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -440,7 +479,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructIntWithArray(JNIEnv* env, const
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructIntWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructIntWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructIntWithArray");
+	ensureInitialized();
+	jclass javaStruct = jStructIntWithArray;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -453,9 +493,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructIntWithArrayArray(JNIEnv* 
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructFloatWithArray = nullptr;
 void Testbed1DataJavaConverter::fillStructFloatWithArray(JNIEnv* env, jobject input, FTestbed1StructFloatWithArray& out_struct_float_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructFloatWithArray;
 
 	jfieldID jFieldId_field_float = env->GetFieldID(cls, "fieldFloat", "[F");
 	jfloatArray field_float_value = (jfloatArray)env->GetObjectField(input, jFieldId_field_float);
@@ -467,6 +509,7 @@ void Testbed1DataJavaConverter::fillStructFloatWithArray(JNIEnv* env, jobject in
 
 void Testbed1DataJavaConverter::fillStructFloatWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructFloatWithArray>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -480,7 +523,8 @@ void Testbed1DataJavaConverter::fillStructFloatWithArrayArray(JNIEnv* env, jobje
 
 jobject Testbed1DataJavaConverter::makeJavaStructFloatWithArray(JNIEnv* env, const FTestbed1StructFloatWithArray& in_struct_float_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloatWithArray");
+	ensureInitialized();
+	jclass javaClass = jStructFloatWithArray;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -498,7 +542,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructFloatWithArray(JNIEnv* env, con
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructFloatWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloatWithArray");
+	ensureInitialized();
+	jclass javaStruct = jStructFloatWithArray;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -511,9 +556,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatWithArrayArray(JNIEnv
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructStringWithArray = nullptr;
 void Testbed1DataJavaConverter::fillStructStringWithArray(JNIEnv* env, jobject input, FTestbed1StructStringWithArray& out_struct_string_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructStringWithArray;
 
 	jfieldID jFieldId_field_string = env->GetFieldID(cls, "fieldString", "[Ljava/lang/String;");
 	jobjectArray field_string_value = (jobjectArray)env->GetObjectField(input, jFieldId_field_string);
@@ -523,6 +570,7 @@ void Testbed1DataJavaConverter::fillStructStringWithArray(JNIEnv* env, jobject i
 
 void Testbed1DataJavaConverter::fillStructStringWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStringWithArray>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -536,7 +584,8 @@ void Testbed1DataJavaConverter::fillStructStringWithArrayArray(JNIEnv* env, jobj
 
 jobject Testbed1DataJavaConverter::makeJavaStructStringWithArray(JNIEnv* env, const FTestbed1StructStringWithArray& in_struct_string_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStringWithArray");
+	ensureInitialized();
+	jclass javaClass = jStructStringWithArray;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -556,7 +605,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructStringWithArray(JNIEnv* env, co
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStringWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructStringWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStringWithArray");
+	ensureInitialized();
+	jclass javaStruct = jStructStringWithArray;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -569,9 +619,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStringWithArrayArray(JNIEn
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructStructWithArray = nullptr;
 void Testbed1DataJavaConverter::fillStructStructWithArray(JNIEnv* env, jobject input, FTestbed1StructStructWithArray& out_struct_struct_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructStructWithArray;
 
 	jfieldID jFieldId_field_struct = env->GetFieldID(cls, "fieldStruct", "[Ltestbed1/testbed1_api/StructStringWithArray;");
 	jobjectArray field_struct_value = (jobjectArray)env->GetObjectField(input, jFieldId_field_struct);
@@ -581,6 +633,7 @@ void Testbed1DataJavaConverter::fillStructStructWithArray(JNIEnv* env, jobject i
 
 void Testbed1DataJavaConverter::fillStructStructWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStructWithArray>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -594,7 +647,8 @@ void Testbed1DataJavaConverter::fillStructStructWithArrayArray(JNIEnv* env, jobj
 
 jobject Testbed1DataJavaConverter::makeJavaStructStructWithArray(JNIEnv* env, const FTestbed1StructStructWithArray& in_struct_struct_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStructWithArray");
+	ensureInitialized();
+	jclass javaClass = jStructStructWithArray;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -607,7 +661,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructStructWithArray(JNIEnv* env, co
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStructWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructStructWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStructWithArray");
+	ensureInitialized();
+	jclass javaStruct = jStructStructWithArray;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -620,9 +675,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStructWithArrayArray(JNIEn
 	return javaArray;
 }
 
+jclass Testbed1DataJavaConverter::jStructEnumWithArray = nullptr;
 void Testbed1DataJavaConverter::fillStructEnumWithArray(JNIEnv* env, jobject input, FTestbed1StructEnumWithArray& out_struct_enum_with_array)
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = jStructEnumWithArray;
 
 	jfieldID jFieldId_field_enum = env->GetFieldID(cls, "fieldEnum", "[Ltestbed1/testbed1_api/Enum0;");
 	jobjectArray field_enum_value = (jobjectArray)env->GetObjectField(input, jFieldId_field_enum);
@@ -632,6 +689,7 @@ void Testbed1DataJavaConverter::fillStructEnumWithArray(JNIEnv* env, jobject inp
 
 void Testbed1DataJavaConverter::fillStructEnumWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructEnumWithArray>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -645,7 +703,8 @@ void Testbed1DataJavaConverter::fillStructEnumWithArrayArray(JNIEnv* env, jobjec
 
 jobject Testbed1DataJavaConverter::makeJavaStructEnumWithArray(JNIEnv* env, const FTestbed1StructEnumWithArray& in_struct_enum_with_array)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnumWithArray");
+	ensureInitialized();
+	jclass javaClass = jStructEnumWithArray;
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -658,7 +717,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructEnumWithArray(JNIEnv* env, cons
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructEnumWithArray>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnumWithArray");
+	ensureInitialized();
+	jclass javaStruct = jStructEnumWithArray;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -670,10 +730,11 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumWithArrayArray(JNIEnv*
 	}
 	return javaArray;
 }
+jclass Testbed1DataJavaConverter::jEnum0 = nullptr;
 
 void Testbed1DataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TArray<ETestbed1Enum0>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
+	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -687,7 +748,8 @@ void Testbed1DataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, 
 ETestbed1Enum0 Testbed1DataJavaConverter::getEnum0Value(JNIEnv* env, jobject input)
 {
 	ETestbed1Enum0 cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
+	ensureInitialized();
+	jclass javaStruct = jEnum0;
 	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
 	int int_value = env->CallIntMethod(input, getValueMethod);
 	UTestbed1Library::toTestbed1Enum0(cppEnumValue, int_value);
@@ -696,7 +758,8 @@ ETestbed1Enum0 Testbed1DataJavaConverter::getEnum0Value(JNIEnv* env, jobject inp
 
 jobjectArray Testbed1DataJavaConverter::makeJavaEnum0Array(JNIEnv* env, const TArray<ETestbed1Enum0>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
+	ensureInitialized();
+	jclass javaStruct = jEnum0;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -711,7 +774,8 @@ jobjectArray Testbed1DataJavaConverter::makeJavaEnum0Array(JNIEnv* env, const TA
 
 jobject Testbed1DataJavaConverter::makeJavaEnum0(JNIEnv* env, ETestbed1Enum0 value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
+	ensureInitialized();
+	jclass javaStruct = jEnum0;
 	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)Ltestbed1/testbed1_api/Enum0;");
 	if (!fromValueMethod)
 		return nullptr;
@@ -719,9 +783,11 @@ jobject Testbed1DataJavaConverter::makeJavaEnum0(JNIEnv* env, ETestbed1Enum0 val
 	jobject javaObj = env->CallStaticObjectMethod(javaStruct, fromValueMethod, int_value);
 	return javaObj;
 }
+jclass Testbed1DataJavaConverter::jStructInterface = nullptr;
 
 void Testbed1DataJavaConverter::fillStructInterface(JNIEnv* env, jobject input, TScriptInterface<ITestbed1StructInterfaceInterface> out_struct_interface)
 {
+	ensureInitialized();
 	if (!input || !out_struct_interface)
 	{
 		return;
@@ -731,11 +797,13 @@ void Testbed1DataJavaConverter::fillStructInterface(JNIEnv* env, jobject input, 
 
 void Testbed1DataJavaConverter::fillStructInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITestbed1StructInterfaceInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject Testbed1DataJavaConverter::makeJavaStructInterface(JNIEnv* env, const TScriptInterface<ITestbed1StructInterfaceInterface> out_struct_interface)
 {
+	ensureInitialized();
 	if (!out_struct_interface)
 	{
 		return nullptr;
@@ -748,7 +816,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructInterface(JNIEnv* env, const TS
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed1StructInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructInterface");
+	ensureInitialized();
+	jclass javaClass = jStructInterface;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -757,15 +826,18 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructInterfaceArray(JNIEnv* env
 
 TScriptInterface<ITestbed1StructInterfaceInterface> Testbed1DataJavaConverter::getCppInstanceTestbed1StructInterface()
 {
+	ensureInitialized();
 	UTestbed1StructInterfaceImplementation* Impl = NewObject<UTestbed1StructInterfaceImplementation>();
 	TScriptInterface<ITestbed1StructInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITestbed1StructInterfaceInterface>(Impl));
 	return wrapped;
 }
+jclass Testbed1DataJavaConverter::jStructArrayInterface = nullptr;
 
 void Testbed1DataJavaConverter::fillStructArrayInterface(JNIEnv* env, jobject input, TScriptInterface<ITestbed1StructArrayInterfaceInterface> out_struct_array_interface)
 {
+	ensureInitialized();
 	if (!input || !out_struct_array_interface)
 	{
 		return;
@@ -775,11 +847,13 @@ void Testbed1DataJavaConverter::fillStructArrayInterface(JNIEnv* env, jobject in
 
 void Testbed1DataJavaConverter::fillStructArrayInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITestbed1StructArrayInterfaceInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject Testbed1DataJavaConverter::makeJavaStructArrayInterface(JNIEnv* env, const TScriptInterface<ITestbed1StructArrayInterfaceInterface> out_struct_array_interface)
 {
+	ensureInitialized();
 	if (!out_struct_array_interface)
 	{
 		return nullptr;
@@ -792,7 +866,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructArrayInterface(JNIEnv* env, con
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructArrayInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed1StructArrayInterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArrayInterface");
+	ensureInitialized();
+	jclass javaClass = jStructArrayInterface;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -801,15 +876,18 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructArrayInterfaceArray(JNIEnv
 
 TScriptInterface<ITestbed1StructArrayInterfaceInterface> Testbed1DataJavaConverter::getCppInstanceTestbed1StructArrayInterface()
 {
+	ensureInitialized();
 	UTestbed1StructArrayInterfaceImplementation* Impl = NewObject<UTestbed1StructArrayInterfaceImplementation>();
 	TScriptInterface<ITestbed1StructArrayInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITestbed1StructArrayInterfaceInterface>(Impl));
 	return wrapped;
 }
+jclass Testbed1DataJavaConverter::jStructArray2Interface = nullptr;
 
 void Testbed1DataJavaConverter::fillStructArray2Interface(JNIEnv* env, jobject input, TScriptInterface<ITestbed1StructArray2InterfaceInterface> out_struct_array2_interface)
 {
+	ensureInitialized();
 	if (!input || !out_struct_array2_interface)
 	{
 		return;
@@ -819,11 +897,13 @@ void Testbed1DataJavaConverter::fillStructArray2Interface(JNIEnv* env, jobject i
 
 void Testbed1DataJavaConverter::fillStructArray2InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITestbed1StructArray2InterfaceInterface>>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject Testbed1DataJavaConverter::makeJavaStructArray2Interface(JNIEnv* env, const TScriptInterface<ITestbed1StructArray2InterfaceInterface> out_struct_array2_interface)
 {
+	ensureInitialized();
 	if (!out_struct_array2_interface)
 	{
 		return nullptr;
@@ -836,7 +916,8 @@ jobject Testbed1DataJavaConverter::makeJavaStructArray2Interface(JNIEnv* env, co
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructArray2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed1StructArray2InterfaceInterface>>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArray2Interface");
+	ensureInitialized();
+	jclass javaClass = jStructArray2Interface;
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -845,11 +926,73 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructArray2InterfaceArray(JNIEn
 
 TScriptInterface<ITestbed1StructArray2InterfaceInterface> Testbed1DataJavaConverter::getCppInstanceTestbed1StructArray2Interface()
 {
+	ensureInitialized();
 	UTestbed1StructArray2InterfaceImplementation* Impl = NewObject<UTestbed1StructArray2InterfaceImplementation>();
 	TScriptInterface<ITestbed1StructArray2InterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
 	wrapped.SetInterface(Cast<ITestbed1StructArray2InterfaceInterface>(Impl));
 	return wrapped;
+}
+
+void Testbed1DataJavaConverter::cleanJavaReferences()
+{
+	FScopeLock Lock(&initMutex);
+	m_isInitialized = false;
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	env->DeleteGlobalRef(jStructBool);
+	env->DeleteGlobalRef(jStructInt);
+	env->DeleteGlobalRef(jStructFloat);
+	env->DeleteGlobalRef(jStructString);
+	env->DeleteGlobalRef(jStructStruct);
+	env->DeleteGlobalRef(jStructEnum);
+	env->DeleteGlobalRef(jStructBoolWithArray);
+	env->DeleteGlobalRef(jStructIntWithArray);
+	env->DeleteGlobalRef(jStructFloatWithArray);
+	env->DeleteGlobalRef(jStructStringWithArray);
+	env->DeleteGlobalRef(jStructStructWithArray);
+	env->DeleteGlobalRef(jStructEnumWithArray);
+	env->DeleteGlobalRef(jEnum0);
+	env->DeleteGlobalRef(jStructInterface);
+	env->DeleteGlobalRef(jStructArrayInterface);
+	env->DeleteGlobalRef(jStructArray2Interface);
+}
+
+FCriticalSection Testbed1DataJavaConverter::initMutex;
+
+bool Testbed1DataJavaConverter::m_isInitialized = false;
+
+void Testbed1DataJavaConverter::ensureInitialized()
+{
+	if (m_isInitialized)
+	{
+		return;
+	}
+	FScopeLock Lock(&initMutex);
+	if (m_isInitialized)
+	{
+		return;
+	}
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jStructBool = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBool");
+	jStructInt = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructInt");
+	jStructFloat = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloat");
+	jStructString = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructString");
+	jStructStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStruct");
+	jStructEnum = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnum");
+	jStructBoolWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBoolWithArray");
+	jStructIntWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructIntWithArray");
+	jStructFloatWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloatWithArray");
+	jStructStringWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStringWithArray");
+	jStructStructWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStructWithArray");
+	jStructEnumWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnumWithArray");
+	jEnum0 = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
+	jStructInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructInterface");
+	jStructArrayInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArrayInterface");
+	jStructArray2Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArray2Interface");
+	m_isInitialized = true;
+}
+
+}
 }
 
 #endif
