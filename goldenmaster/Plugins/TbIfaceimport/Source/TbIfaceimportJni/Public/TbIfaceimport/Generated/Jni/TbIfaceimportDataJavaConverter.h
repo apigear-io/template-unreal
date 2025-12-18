@@ -31,6 +31,7 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+DECLARE_LOG_CATEGORY_EXTERN(LogTbIfaceimportDataJavaConverter_JNI, Log, All);
 
 class TBIFACEIMPORTAPI_API TbIfaceimportDataJavaConverter
 {
@@ -43,6 +44,7 @@ public:
 
 	static TScriptInterface<ITbIfaceimportEmptyIfInterface> getCppInstanceTbIfaceimportEmptyIf();
 
+	static bool checkJniErrorOccured(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:

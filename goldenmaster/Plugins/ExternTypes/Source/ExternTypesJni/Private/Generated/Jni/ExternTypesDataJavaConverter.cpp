@@ -32,6 +32,8 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+DEFINE_LOG_CATEGORY(LogExternTypesDataJavaConverter_JNI);
+
 jclass ExternTypesDataJavaConverter::jMyVector3D = nullptr;
 void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d)
 {
@@ -86,6 +88,19 @@ jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, 
 	return javaArray;
 }
 
+bool ExternTypesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
+		return true;
+	}
+	return false;
+}
+
 void ExternTypesDataJavaConverter::cleanJavaReferences()
 {
 	FScopeLock Lock(&initMutex);
@@ -111,6 +126,8 @@ void ExternTypesDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jMyVector3D = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	static const TCHAR* errorMsgMyVector3D= TEXT("failed to get org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	checkJniErrorOccured(errorMsgMyVector3D);
 	m_isInitialized = true;
 }
 

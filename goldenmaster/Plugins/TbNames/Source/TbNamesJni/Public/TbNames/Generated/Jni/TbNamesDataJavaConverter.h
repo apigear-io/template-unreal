@@ -31,6 +31,7 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesDataJavaConverter_JNI, Log, All);
 
 class TBNAMESAPI_API TbNamesDataJavaConverter
 {
@@ -49,6 +50,7 @@ public:
 
 	static TScriptInterface<ITbNamesNamEsInterface> getCppInstanceTbNamesNamEs();
 
+	static bool checkJniErrorOccured(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:

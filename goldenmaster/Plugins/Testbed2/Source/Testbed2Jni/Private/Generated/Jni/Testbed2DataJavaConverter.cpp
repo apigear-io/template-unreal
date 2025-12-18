@@ -36,6 +36,8 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+DEFINE_LOG_CATEGORY(LogTestbed2DataJavaConverter_JNI);
+
 jclass Testbed2DataJavaConverter::jStruct1 = nullptr;
 void Testbed2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTestbed2Struct1& out_struct1)
 {
@@ -837,6 +839,19 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> Testbed2DataJavaConve
 	return wrapped;
 }
 
+bool Testbed2DataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTestbed2DataJavaConverter_JNI, Error, TEXT("%s"), Msg);
+		return true;
+	}
+	return false;
+}
+
 void Testbed2DataJavaConverter::cleanJavaReferences()
 {
 	FScopeLock Lock(&initMutex);
@@ -875,19 +890,47 @@ void Testbed2DataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jStruct1 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Struct1");
+	static const TCHAR* errorMsgStruct1= TEXT("failed to get testbed2/testbed2_api/Struct1");
+	checkJniErrorOccured(errorMsgStruct1);
 	jStruct2 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Struct2");
+	static const TCHAR* errorMsgStruct2= TEXT("failed to get testbed2/testbed2_api/Struct2");
+	checkJniErrorOccured(errorMsgStruct2);
 	jStruct3 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Struct3");
+	static const TCHAR* errorMsgStruct3= TEXT("failed to get testbed2/testbed2_api/Struct3");
+	checkJniErrorOccured(errorMsgStruct3);
 	jStruct4 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Struct4");
+	static const TCHAR* errorMsgStruct4= TEXT("failed to get testbed2/testbed2_api/Struct4");
+	checkJniErrorOccured(errorMsgStruct4);
 	jNestedStruct1 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/NestedStruct1");
+	static const TCHAR* errorMsgNestedStruct1= TEXT("failed to get testbed2/testbed2_api/NestedStruct1");
+	checkJniErrorOccured(errorMsgNestedStruct1);
 	jNestedStruct2 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/NestedStruct2");
+	static const TCHAR* errorMsgNestedStruct2= TEXT("failed to get testbed2/testbed2_api/NestedStruct2");
+	checkJniErrorOccured(errorMsgNestedStruct2);
 	jNestedStruct3 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/NestedStruct3");
+	static const TCHAR* errorMsgNestedStruct3= TEXT("failed to get testbed2/testbed2_api/NestedStruct3");
+	checkJniErrorOccured(errorMsgNestedStruct3);
 	jEnum1 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Enum1");
+	static const TCHAR* errorMsgEnum1= TEXT("failed to get testbed2/testbed2_api/Enum1");
+	checkJniErrorOccured(errorMsgEnum1);
 	jEnum2 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Enum2");
+	static const TCHAR* errorMsgEnum2= TEXT("failed to get testbed2/testbed2_api/Enum2");
+	checkJniErrorOccured(errorMsgEnum2);
 	jEnum3 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Enum3");
+	static const TCHAR* errorMsgEnum3= TEXT("failed to get testbed2/testbed2_api/Enum3");
+	checkJniErrorOccured(errorMsgEnum3);
 	jManyParamInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/IManyParamInterface");
+	static const TCHAR* errorMsgManyParamInterface= TEXT("failed to get testbed2/testbed2_api/IManyParamInterface");
+	checkJniErrorOccured(errorMsgManyParamInterface);
 	jNestedStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/INestedStruct1Interface");
+	static const TCHAR* errorMsgNestedStruct1Interface= TEXT("failed to get testbed2/testbed2_api/INestedStruct1Interface");
+	checkJniErrorOccured(errorMsgNestedStruct1Interface);
 	jNestedStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/INestedStruct2Interface");
+	static const TCHAR* errorMsgNestedStruct2Interface= TEXT("failed to get testbed2/testbed2_api/INestedStruct2Interface");
+	checkJniErrorOccured(errorMsgNestedStruct2Interface);
 	jNestedStruct3Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/INestedStruct3Interface");
+	static const TCHAR* errorMsgNestedStruct3Interface= TEXT("failed to get testbed2/testbed2_api/INestedStruct3Interface");
+	checkJniErrorOccured(errorMsgNestedStruct3Interface);
 	m_isInitialized = true;
 }
 

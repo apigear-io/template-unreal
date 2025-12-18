@@ -32,6 +32,8 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+DEFINE_LOG_CATEGORY(LogTbNamesDataJavaConverter_JNI);
 jclass TbNamesDataJavaConverter::jEnumWithUnderScores = nullptr;
 
 void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobjectArray input, TArray<ETbNamesEnum_With_Under_scores>& out_array)
@@ -136,6 +138,19 @@ TScriptInterface<ITbNamesNamEsInterface> TbNamesDataJavaConverter::getCppInstanc
 	return wrapped;
 }
 
+bool TbNamesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
+		return true;
+	}
+	return false;
+}
+
 void TbNamesDataJavaConverter::cleanJavaReferences()
 {
 	FScopeLock Lock(&initMutex);
@@ -162,7 +177,11 @@ void TbNamesDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jEnumWithUnderScores = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
+	static const TCHAR* errorMsgEnumWithUnderScores= TEXT("failed to get tbNames/tbNames_api/EnumWithUnderScores");
+	checkJniErrorOccured(errorMsgEnumWithUnderScores);
 	jNamEs = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/INamEs");
+	static const TCHAR* errorMsgNamEs= TEXT("failed to get tbNames/tbNames_api/INamEs");
+	checkJniErrorOccured(errorMsgNamEs);
 	m_isInitialized = true;
 }
 

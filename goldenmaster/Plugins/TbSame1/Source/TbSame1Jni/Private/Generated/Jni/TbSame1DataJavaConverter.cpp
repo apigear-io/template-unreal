@@ -36,6 +36,8 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+DEFINE_LOG_CATEGORY(LogTbSame1DataJavaConverter_JNI);
+
 jclass TbSame1DataJavaConverter::jStruct1 = nullptr;
 void TbSame1DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame1Struct1& out_struct1)
 {
@@ -470,6 +472,19 @@ TScriptInterface<ITbSame1SameEnum2InterfaceInterface> TbSame1DataJavaConverter::
 	return wrapped;
 }
 
+bool TbSame1DataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbSame1DataJavaConverter_JNI, Error, TEXT("%s"), Msg);
+		return true;
+	}
+	return false;
+}
+
 void TbSame1DataJavaConverter::cleanJavaReferences()
 {
 	FScopeLock Lock(&initMutex);
@@ -502,13 +517,29 @@ void TbSame1DataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jStruct1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Struct1");
+	static const TCHAR* errorMsgStruct1= TEXT("failed to get tbSame1/tbSame1_api/Struct1");
+	checkJniErrorOccured(errorMsgStruct1);
 	jStruct2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Struct2");
+	static const TCHAR* errorMsgStruct2= TEXT("failed to get tbSame1/tbSame1_api/Struct2");
+	checkJniErrorOccured(errorMsgStruct2);
 	jEnum1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum1");
+	static const TCHAR* errorMsgEnum1= TEXT("failed to get tbSame1/tbSame1_api/Enum1");
+	checkJniErrorOccured(errorMsgEnum1);
 	jEnum2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/Enum2");
+	static const TCHAR* errorMsgEnum2= TEXT("failed to get tbSame1/tbSame1_api/Enum2");
+	checkJniErrorOccured(errorMsgEnum2);
 	jSameStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameStruct1Interface");
+	static const TCHAR* errorMsgSameStruct1Interface= TEXT("failed to get tbSame1/tbSame1_api/ISameStruct1Interface");
+	checkJniErrorOccured(errorMsgSameStruct1Interface);
 	jSameStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameStruct2Interface");
+	static const TCHAR* errorMsgSameStruct2Interface= TEXT("failed to get tbSame1/tbSame1_api/ISameStruct2Interface");
+	checkJniErrorOccured(errorMsgSameStruct2Interface);
 	jSameEnum1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameEnum1Interface");
+	static const TCHAR* errorMsgSameEnum1Interface= TEXT("failed to get tbSame1/tbSame1_api/ISameEnum1Interface");
+	checkJniErrorOccured(errorMsgSameEnum1Interface);
 	jSameEnum2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1_api/ISameEnum2Interface");
+	static const TCHAR* errorMsgSameEnum2Interface= TEXT("failed to get tbSame1/tbSame1_api/ISameEnum2Interface");
+	checkJniErrorOccured(errorMsgSameEnum2Interface);
 	m_isInitialized = true;
 }
 
