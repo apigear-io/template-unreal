@@ -1,7 +1,7 @@
 {{/* Copyright Epic Games, Inc. All Rights Reserved */}}
 {{- $API_MACRO := printf "%sAPI_API" (CAMEL .Module.Name) }}
 {{- $ModuleName := Camel .Module.Name -}}
-{{- $moduleName := camel .Module.Name -}}
+{{- $jmoduleName := camel .Module.Name -}}
 {{- $Category := printf "ApiGear|%s" $ModuleName }}
 {{- $features := .Features }}
 /**
@@ -69,12 +69,15 @@ limitations under the License.
 
 {{- range .Module.Structs }}
 
+{{- $cachedStruct := printf "j%s" (Camel .Name) }}
 {{- $structType := printf "F%s%s" $ModuleName .Name }}
 {{- $structName := printf "out_%s" (snake .Name)}}
 
+jclass {{$className }}::{{$cachedStruct}} = nullptr;
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$structType}}& {{$structName}})
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = {{$cachedStruct}};
 
 {{- range .Fields }}
 	{{- $cppFieldName := .Name}}
@@ -144,6 +147,7 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$structType}}>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -156,13 +160,14 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 }
 
 {{- $in_cppStructName := printf "in_%s" (snake .Name)}}
-{{- $api_package_name := printf "%s_api" (camel $moduleName) }}
-{{- $packageName := printf "%s/%s_api" (camel $moduleName) (camel $moduleName)}}
+{{- $api_package_name := printf "%s_api" $jmoduleName }}
+{{- $packageName := printf "%s/%s_api" $jmoduleName $jmoduleName}}
 {{- $javaClassTypeName := Camel .Name}}
 
 jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structType}}& {{$in_cppStructName}})
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	ensureInitialized();
+	jclass javaClass = {{$cachedStruct}};
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -242,7 +247,8 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
 
 jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$structType}}>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	ensureInitialized();
+	jclass javaStruct = {{$cachedStruct}};
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -261,12 +267,14 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 {{- $cpp_class := printf "E%s%s" $ModuleName .Name }}
 
 {{- $in_cppStructName := printf "out_%s" (snake .Name)}}
-{{- $packageName := printf "%s/%s_api" (camel $moduleName) (camel $moduleName)}}
+{{- $packageName := printf "%s/%s_api" $jmoduleName $jmoduleName}}
 {{- $javaClassTypeName := Camel .Name}}
+{{- $cachedEnum := printf "j%s" (Camel .Name) }}
+jclass {{$className }}::{{$cachedEnum}} = nullptr;
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	for (jsize i = 0; i < len; ++i)
@@ -280,7 +288,8 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 {{$cpp_class}} {{$className }}::get{{Camel .Name }}Value(JNIEnv* env, jobject input)
 {
 	{{$cpp_class}} cppEnumValue;
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	ensureInitialized();
+	jclass javaStruct = {{$cachedEnum}};
 	jmethodID getValueMethod = env->GetMethodID(javaStruct, "getValue", "()I");
 	int int_value = env->CallIntMethod(input, getValueMethod);
 	{{- $toEnumFuncName := printf "U%sLibrary::to%s%s" $ModuleName $ModuleName .Name }}
@@ -290,7 +299,8 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 
 jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$cpp_class}}>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	ensureInitialized();
+	jclass javaStruct = {{$cachedEnum}};
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -305,7 +315,8 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 
 jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, {{$cpp_class}} value)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	ensureInitialized();
+	jclass javaStruct = {{$cachedEnum}};
 	jmethodID fromValueMethod = env->GetStaticMethodID(javaStruct, "fromValue", "(I)L{{$packageName}}/{{$javaClassTypeName}};");
 	if (!fromValueMethod)
 		return nullptr;
@@ -319,10 +330,13 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, {{$cpp_class}} va
 
 {{- $ifType := printf "TScriptInterface<I%s%sInterface>" $ModuleName (Camel .Name) }}
 {{- $ifName := printf "out_%s" (snake .Name)}}
-{{- $fullJavaClassType := printf "%s/%s_api/I%s" (camel $moduleName) (camel $moduleName) (Camel .Name) }}
+{{- $cachedClass:= printf "j%s" (Camel .Name) }}
+{{- $fullJavaClassType := printf "%s/%s_api/I%s" $jmoduleName $jmoduleName (Camel .Name) }}
+jclass {{$className }}::{{$cachedClass}} = nullptr;
 
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$ifType}} {{$ifName}})
 {
+	ensureInitialized();
 	if (!input || !{{$ifName}})
 	{
 		return;
@@ -332,6 +346,7 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$ifType
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$ifType}}>& out_array)
 {
+	ensureInitialized();
 	// currently not supported, stub function generated for possible custom implementation
 }
 
@@ -339,6 +354,7 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 
 jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$ifType}} {{$in_cppIfName}})
 {
+	ensureInitialized();
 	if (!{{$in_cppIfName}})
 	{
 		return nullptr;
@@ -351,7 +367,8 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$ifType}}
 
 jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$ifType}}>& cppArray)
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
+	ensureInitialized();
+	jclass javaClass = {{$cachedClass}};
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
 	// Currently not supported, stub function generated for possible custom implementation.
@@ -360,6 +377,7 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 
 {{$ifType}} {{$className }}::getCppInstance{{$ModuleName}}{{Camel .Name }}()
 {
+	ensureInitialized();
 	{{- if $features.stubs }}
 	{{- $Class := printf "U%s%sImplementation" $ModuleName (Camel .Name)}}
 	{{$Class}}* Impl = NewObject<{{$Class}}>();
@@ -388,10 +406,13 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 {{- if ne $prefix "" }}
 {{- $fullJavaClassType = printf "%s/%s" $prefix $fullJavaClassType }}
 {{- end }}
+{{- $cachedClass:= printf "j%s" (Camel .Name) }}
 
+jclass {{$className }}::{{$cachedClass}} = nullptr;
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exCppType}}& {{$exName}})
 {
-	jclass cls = env->GetObjectClass(input);
+	ensureInitialized();
+	jclass cls = {{$cachedClass}};
 
 	// do the serialization field by field: e.g. for int type field
 	// jfieldID jFieldId_firstField = env->GetFieldID(cls, "firstField", "I");
@@ -400,6 +421,7 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exCppT
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$exCppType}}>& out_array)
 {
+	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
@@ -415,7 +437,8 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 
 jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$exCppType}}& {{$in_cppExName}})
 {
-	jclass javaClass = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
+	ensureInitialized();
+	jclass javaClass = {{$cachedClass}};
 	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
 	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
@@ -427,7 +450,8 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$exCppTyp
 
 jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$exCppType}}>& cppArray)
 {
-	jclass javaStruct = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
+	ensureInitialized();
+	jclass javaClass = {{$cachedClass}};
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
 
@@ -441,5 +465,72 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 }
 
 {{- end }}
+
+void {{$className}}::cleanJavaReferences()
+{
+	FScopeLock Lock(&initMutex);
+	m_isInitialized = false;
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+{{- range .Module.Structs }}
+	env->DeleteGlobalRef(j{{Camel .Name}});
+{{- end }}
+{{- range .Module.Enums }}
+	env->DeleteGlobalRef(j{{Camel .Name}});
+{{- end }}
+{{- range .Module.Interfaces }}
+	env->DeleteGlobalRef(j{{Camel .Name}});
+{{- end }}
+{{- range .Module.Externs }}
+	env->DeleteGlobalRef(j{{Camel .Name}});
+{{- end }}
+}
+
+FCriticalSection {{$className }}::initMutex;
+
+bool {{$className }}::m_isInitialized = false;
+
+void {{$className }}::ensureInitialized()
+{
+	if (m_isInitialized)
+	{
+		return;
+	}
+	FScopeLock Lock(&initMutex);
+	if (m_isInitialized)
+	{
+		return;
+	}
+
+	{{- $packageName := printf "%s/%s_api" $jmoduleName $jmoduleName }}
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+{{- range .Module.Structs }}
+	{{- $javaClassTypeName := Camel .Name}}
+	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+{{- end }}
+
+{{- range .Module.Enums }}
+{{- $javaClassTypeName := Camel .Name}}
+	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+{{- end }}
+
+{{- range .Module.Interfaces }}
+{{- $fullJavaClassType := printf "%s/%s_api/I%s" $jmoduleName $jmoduleName (Camel .Name) }}
+	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
+{{- end }}
+
+{{- range .Module.Externs }}
+{{- $extJava := (javaExtern .) }}
+{{- $fullJavaClassType := $extJava.Name }}
+{{- $prefix := (replace ($extJava.Package) "." "/" ) }}
+{{- if ne $prefix "" }}
+{{- $fullJavaClassType = printf "%s/%s" $prefix $fullJavaClassType }}
+{{- end }}
+	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
+{{- end }}
+	m_isInitialized = true;
+}
+
+}
+}
 
 #endif
