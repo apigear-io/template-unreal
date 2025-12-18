@@ -35,65 +35,172 @@ limitations under the License.
 DEFINE_LOG_CATEGORY(LogCustomTypesDataJavaConverter_JNI);
 
 jclass CustomTypesDataJavaConverter::jVector3D = nullptr;
+
 void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCustomTypesVector3D& out_vector3_d)
 {
 	ensureInitialized();
-	jclass cls = jVector3D;
 
-	jfieldID jFieldId_x = env->GetFieldID(cls, "x", "F");
-	out_vector3_d.x = env->GetFloatField(input, jFieldId_x);
+	static const TCHAR* errorMsgFindx = TEXT("failed when trying to field x F for FCustomTypesVector3D");
+	static const jfieldID jFieldId_x = getFieldId(jVector3D, "x", "F", errorMsgFindx);
 
-	jfieldID jFieldId_y = env->GetFieldID(cls, "y", "F");
-	out_vector3_d.y = env->GetFloatField(input, jFieldId_y);
+	if (jFieldId_x)
+	{
+		out_vector3_d.x = env->GetFloatField(input, jFieldId_x);
+		static const TCHAR* errorMsgx = TEXT("failed when getting the jFieldId_x for out_vector3_d.x");
+		checkJniErrorOccured(errorMsgx);
+	}
+	else
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("x field in FCustomTypesVector3D not found"));
+	}
 
-	jfieldID jFieldId_z = env->GetFieldID(cls, "z", "F");
-	out_vector3_d.z = env->GetFloatField(input, jFieldId_z);
+	static const TCHAR* errorMsgFindy = TEXT("failed when trying to field y F for FCustomTypesVector3D");
+	static const jfieldID jFieldId_y = getFieldId(jVector3D, "y", "F", errorMsgFindy);
+
+	if (jFieldId_y)
+	{
+		out_vector3_d.y = env->GetFloatField(input, jFieldId_y);
+		static const TCHAR* errorMsgy = TEXT("failed when getting the jFieldId_y for out_vector3_d.y");
+		checkJniErrorOccured(errorMsgy);
+	}
+	else
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("y field in FCustomTypesVector3D not found"));
+	}
+
+	static const TCHAR* errorMsgFindz = TEXT("failed when trying to field z F for FCustomTypesVector3D");
+	static const jfieldID jFieldId_z = getFieldId(jVector3D, "z", "F", errorMsgFindz);
+
+	if (jFieldId_z)
+	{
+		out_vector3_d.z = env->GetFloatField(input, jFieldId_z);
+		static const TCHAR* errorMsgz = TEXT("failed when getting the jFieldId_z for out_vector3_d.z");
+		checkJniErrorOccured(errorMsgz);
+	}
+	else
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("z field in FCustomTypesVector3D not found"));
+	}
 }
 
 void CustomTypesDataJavaConverter::fillVector3DArray(JNIEnv* env, jobjectArray input, TArray<FCustomTypesVector3D>& out_array)
 {
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
+	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_vector3_d array.");
+	if (checkJniErrorOccured(errorMsgLen))
+	{
+		return;
+	}
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
 	for (jsize i = 0; i < len; ++i)
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
-		fillVector3D(env, element, out_array[i]);
+		static const TCHAR* errorMsg = TEXT("failed when trying to get element of out_vector3_d array.");
+		auto failed = checkJniErrorOccured(errorMsg);
+		if (!failed)
+		{
+			fillVector3D(env, element, out_array[i]);
+		}
 		env->DeleteLocalRef(element);
+		if (failed)
+		{
+			return;
+		}
 	}
 }
 
 jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCustomTypesVector3D& in_vector3_d)
 {
 	ensureInitialized();
-	jclass javaClass = jVector3D;
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
 
-	jfieldID jFieldId_x = env->GetFieldID(javaClass, "x", "F");
-	env->SetFloatField(javaObjInstance, jFieldId_x, in_vector3_d.x);
+	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_vector3_d.");
+	static const jmethodID ctor = getMethod(jVector3D, "<init>", "()V", errorMsgCtor);
+	if (ctor == nullptr )
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(jVector3D, ctor);
+	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_vector3_d.");
+	if (checkJniErrorOccured(errorMsgObj))
+	{
+		return nullptr;
+	}
 
-	jfieldID jFieldId_y = env->GetFieldID(javaClass, "y", "F");
-	env->SetFloatField(javaObjInstance, jFieldId_y, in_vector3_d.y);
+	static const TCHAR* errorMsgFindx = TEXT("failed when trying to field x F for FCustomTypesVector3D");
+	static const jfieldID jFieldId_x = getFieldId(jVector3D, "x", "F", errorMsgFindx);
 
-	jfieldID jFieldId_z = env->GetFieldID(javaClass, "z", "F");
-	env->SetFloatField(javaObjInstance, jFieldId_z, in_vector3_d.z);
+	if (jFieldId_x != nullptr)
+	{
+		env->SetFloatField(javaObjInstance, jFieldId_x, in_vector3_d.x);
+		static const TCHAR* errorMsgxSet = TEXT("failed when seting field for out_vector3_d.x");
+		checkJniErrorOccured(errorMsgxSet);
+	}
+	else
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("x field in FCustomTypesVector3D not found"));
+	}
+
+	static const TCHAR* errorMsgFindy = TEXT("failed when trying to field y F for FCustomTypesVector3D");
+	static const jfieldID jFieldId_y = getFieldId(jVector3D, "y", "F", errorMsgFindy);
+
+	if (jFieldId_y != nullptr)
+	{
+		env->SetFloatField(javaObjInstance, jFieldId_y, in_vector3_d.y);
+		static const TCHAR* errorMsgySet = TEXT("failed when seting field for out_vector3_d.y");
+		checkJniErrorOccured(errorMsgySet);
+	}
+	else
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("y field in FCustomTypesVector3D not found"));
+	}
+
+	static const TCHAR* errorMsgFindz = TEXT("failed when trying to field z F for FCustomTypesVector3D");
+	static const jfieldID jFieldId_z = getFieldId(jVector3D, "z", "F", errorMsgFindz);
+
+	if (jFieldId_z != nullptr)
+	{
+		env->SetFloatField(javaObjInstance, jFieldId_z, in_vector3_d.z);
+		static const TCHAR* errorMsgzSet = TEXT("failed when seting field for out_vector3_d.z");
+		checkJniErrorOccured(errorMsgzSet);
+	}
+	else
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("z field in FCustomTypesVector3D not found"));
+	}
 	return javaObjInstance;
 }
 
 jobjectArray CustomTypesDataJavaConverter::makeJavaVector3DArray(JNIEnv* env, const TArray<FCustomTypesVector3D>& cppArray)
 {
 	ensureInitialized();
-	jclass javaStruct = jVector3D;
+	if (jVector3D == nullptr)
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("FCustomTypesVector3D not found"));
+		return nullptr;
+	}
+
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, jVector3D, nullptr);
+	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_vector3_d.");
+	if (checkJniErrorOccured(errorMsgAlloc))
+	{
+		return nullptr;
+	}
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
 		jobject element = makeJavaVector3D(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
+		static const TCHAR* errorMsg = TEXT("failed when setting an element for out_vector3_d jarray.");
+		auto failed = checkJniErrorOccured(errorMsg);
 		env->DeleteLocalRef(element);
+		if (failed)
+		{
+			return nullptr;
+		}
 	}
 	return javaArray;
 }
@@ -141,7 +248,28 @@ void CustomTypesDataJavaConverter::ensureInitialized()
 	m_isInitialized = true;
 }
 
+jmethodID CustomTypesDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jmethodID method = env->GetMethodID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return method;
 }
+
+jmethodID CustomTypesDataJavaConverter::getStaticMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jmethodID method = env->GetStaticMethodID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return method;
+}
+
+jfieldID CustomTypesDataJavaConverter::getFieldId(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jfieldID field = env->GetFieldID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return field;
 }
 
 #endif
