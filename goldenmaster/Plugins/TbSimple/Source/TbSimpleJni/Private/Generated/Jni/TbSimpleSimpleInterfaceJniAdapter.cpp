@@ -45,6 +45,139 @@ namespace
 {
 UTbSimpleSimpleInterfaceJniAdapter* gUTbSimpleSimpleInterfaceJniAdapterHandle = nullptr;
 }
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+class UTbSimpleSimpleInterfaceJniAdapterCache
+{
+public:
+	static jclass javaService;
+	static jmethodID ReadyMethodID;
+	static jmethodID PropBoolChangedMethodID;
+	static jmethodID PropIntChangedMethodID;
+	static jmethodID PropInt32ChangedMethodID;
+	static jmethodID PropInt64ChangedMethodID;
+	static jmethodID PropFloatChangedMethodID;
+	static jmethodID PropFloat32ChangedMethodID;
+	static jmethodID PropFloat64ChangedMethodID;
+	static jmethodID PropStringChangedMethodID;
+	static jmethodID SigBoolSignalMethodID;
+	static jmethodID SigIntSignalMethodID;
+	static jmethodID SigInt32SignalMethodID;
+	static jmethodID SigInt64SignalMethodID;
+	static jmethodID SigFloatSignalMethodID;
+	static jmethodID SigFloat32SignalMethodID;
+	static jmethodID SigFloat64SignalMethodID;
+	static jmethodID SigStringSignalMethodID;
+
+	static void init();
+	static void clear();
+};
+
+jclass UTbSimpleSimpleInterfaceJniAdapterCache::javaService = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::ReadyMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::PropBoolChangedMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::PropIntChangedMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::PropInt32ChangedMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::PropInt64ChangedMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::PropFloatChangedMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::PropFloat32ChangedMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::PropFloat64ChangedMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::PropStringChangedMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::SigBoolSignalMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::SigIntSignalMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::SigInt32SignalMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::SigInt64SignalMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::SigFloatSignalMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::SigFloat32SignalMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::SigFloat64SignalMethodID = nullptr;
+jmethodID UTbSimpleSimpleInterfaceJniAdapterCache::SigStringSignalMethodID = nullptr;
+
+void UTbSimpleSimpleInterfaceJniAdapterCache::init()
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+
+	javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	PropBoolChangedMethodID = env->GetMethodID(javaService, "onPropBoolChanged", "(Z)V");
+	static const TCHAR* errorMsgPropBoolChanged = TEXT("failed to get java onPropBoolChanged, (Z)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolChanged);
+	PropIntChangedMethodID = env->GetMethodID(javaService, "onPropIntChanged", "(I)V");
+	static const TCHAR* errorMsgPropIntChanged = TEXT("failed to get java onPropIntChanged, (I)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntChanged);
+	PropInt32ChangedMethodID = env->GetMethodID(javaService, "onPropInt32Changed", "(I)V");
+	static const TCHAR* errorMsgPropInt32Changed = TEXT("failed to get java onPropInt32Changed, (I)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt32Changed);
+	PropInt64ChangedMethodID = env->GetMethodID(javaService, "onPropInt64Changed", "(J)V");
+	static const TCHAR* errorMsgPropInt64Changed = TEXT("failed to get java onPropInt64Changed, (J)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt64Changed);
+	PropFloatChangedMethodID = env->GetMethodID(javaService, "onPropFloatChanged", "(F)V");
+	static const TCHAR* errorMsgPropFloatChanged = TEXT("failed to get java onPropFloatChanged, (F)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloatChanged);
+	PropFloat32ChangedMethodID = env->GetMethodID(javaService, "onPropFloat32Changed", "(F)V");
+	static const TCHAR* errorMsgPropFloat32Changed = TEXT("failed to get java onPropFloat32Changed, (F)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat32Changed);
+	PropFloat64ChangedMethodID = env->GetMethodID(javaService, "onPropFloat64Changed", "(D)V");
+	static const TCHAR* errorMsgPropFloat64Changed = TEXT("failed to get java onPropFloat64Changed, (D)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat64Changed);
+	PropStringChangedMethodID = env->GetMethodID(javaService, "onPropStringChanged", "(Ljava/lang/String;)V");
+	static const TCHAR* errorMsgPropStringChanged = TEXT("failed to get java onPropStringChanged, (Ljava/lang/String;)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropStringChanged);
+	SigBoolSignalMethodID = env->GetMethodID(javaService, "onSigBool", "(Z)V");
+	static const TCHAR* errorMsgSigBoolSignal = TEXT("failed to get java onSigBool, (Z)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigBoolSignal);
+	SigIntSignalMethodID = env->GetMethodID(javaService, "onSigInt", "(I)V");
+	static const TCHAR* errorMsgSigIntSignal = TEXT("failed to get java onSigInt, (I)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigIntSignal);
+	SigInt32SignalMethodID = env->GetMethodID(javaService, "onSigInt32", "(I)V");
+	static const TCHAR* errorMsgSigInt32Signal = TEXT("failed to get java onSigInt32, (I)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigInt32Signal);
+	SigInt64SignalMethodID = env->GetMethodID(javaService, "onSigInt64", "(J)V");
+	static const TCHAR* errorMsgSigInt64Signal = TEXT("failed to get java onSigInt64, (J)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigInt64Signal);
+	SigFloatSignalMethodID = env->GetMethodID(javaService, "onSigFloat", "(F)V");
+	static const TCHAR* errorMsgSigFloatSignal = TEXT("failed to get java onSigFloat, (F)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloatSignal);
+	SigFloat32SignalMethodID = env->GetMethodID(javaService, "onSigFloat32", "(F)V");
+	static const TCHAR* errorMsgSigFloat32Signal = TEXT("failed to get java onSigFloat32, (F)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloat32Signal);
+	SigFloat64SignalMethodID = env->GetMethodID(javaService, "onSigFloat64", "(D)V");
+	static const TCHAR* errorMsgSigFloat64Signal = TEXT("failed to get java onSigFloat64, (D)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloat64Signal);
+	SigStringSignalMethodID = env->GetMethodID(javaService, "onSigString", "(Ljava/lang/String;)V");
+	static const TCHAR* errorMsgSigStringSignal = TEXT("failed to get java onSigString, (Ljava/lang/String;)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigStringSignal);
+}
+
+void UTbSimpleSimpleInterfaceJniAdapterCache::clear()
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	env->DeleteGlobalRef(javaService);
+	javaService = nullptr;
+	ReadyMethodID = nullptr;
+	PropBoolChangedMethodID = nullptr;
+	PropIntChangedMethodID = nullptr;
+	PropInt32ChangedMethodID = nullptr;
+	PropInt64ChangedMethodID = nullptr;
+	PropFloatChangedMethodID = nullptr;
+	PropFloat32ChangedMethodID = nullptr;
+	PropFloat64ChangedMethodID = nullptr;
+	PropStringChangedMethodID = nullptr;
+	SigBoolSignalMethodID = nullptr;
+	SigIntSignalMethodID = nullptr;
+	SigInt32SignalMethodID = nullptr;
+	SigInt64SignalMethodID = nullptr;
+	SigFloatSignalMethodID = nullptr;
+	SigFloat32SignalMethodID = nullptr;
+	SigFloat64SignalMethodID = nullptr;
+	SigStringSignalMethodID = nullptr;
+}
+
+#endif
 UTbSimpleSimpleInterfaceJniAdapter::UTbSimpleSimpleInterfaceJniAdapter()
 {
 }
@@ -55,26 +188,30 @@ void UTbSimpleSimpleInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Co
 	gUTbSimpleSimpleInterfaceJniAdapterHandle = this;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+	UTbSimpleSimpleInterfaceJniAdapterCache::init();
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/SimpleInterfaceJniServiceStarter");
+	static const TCHAR* errorMsgCls = TEXT("TbSimpleJavaServiceStarter; class not found");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:start; CLASS not found"));
 		return;
 	}
 	auto functionSignature = "(Landroid/content/Context;)LtbSimple/tbSimple_api/ISimpleInterface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
+	static const TCHAR* errorMsgMethodId = TEXT("TbSimpleJavaServiceStarter::start; method not found");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:start; method not found"));
 		return;
 	}
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
-
+	static const TCHAR* errorMsgCall = TEXT("TbSimpleJavaServiceStarter failed to call start method");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
+	Env->DeleteGlobalRef(BridgeClass);
 #endif
 #endif
 }
@@ -85,7 +222,6 @@ void UTbSimpleSimpleInterfaceJniAdapter::Deinitialize()
 	gUTbSimpleSimpleInterfaceJniAdapterHandle = nullptr;
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
-	m_javaJniServiceClass = nullptr;
 	if (m_javaJniServiceInstance)
 	{
 		FAndroidApplication::GetJavaEnv()->DeleteGlobalRef(m_javaJniServiceInstance);
@@ -94,24 +230,27 @@ void UTbSimpleSimpleInterfaceJniAdapter::Deinitialize()
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/SimpleInterfaceJniServiceStarter");
+	static const TCHAR* errorMsgCls = TEXT("TbSimpleJavaServiceStarter; class not found");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
+		static const TCHAR* errorMsgMethodId = TEXT("TbSimpleJavaServiceStarter::stop; method not found");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal's activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
+			static const TCHAR* errorMsgCall = TEXT("TbSimpleJavaServiceStarter failed to call stop");
+			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
 		else
 		{
-			UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:stop; method not found, failed to stop service"));
 			return;
 		}
+		Env->DeleteGlobalRef(BridgeClass);
 	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("TbSimpleJavaServiceStarter:stop; CLASS not found, failed to stop service"));
-	}
+	UTbSimpleSimpleInterfaceJniAdapterCache::clear();
 #endif
 #endif
 	Super::Deinitialize();
@@ -152,22 +291,15 @@ void UTbSimpleSimpleInterfaceJniAdapter::callJniServiceReady(bool isServiceReady
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceClass || !m_javaJniServiceInstance)
+		if (!m_javaJniServiceInstance || !UTbSimpleSimpleInterfaceJniAdapterCache::ReadyMethodID)
 		{
-			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:nativeServiceReady(Z)V CLASS not found"));
+			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "nativeServiceReady", "(Z)V");
-
-		if (MethodID != nullptr)
-		{
-			FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, isServiceReady);
-		}
-		else
-		{
-			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:nativeServiceReady(Z)V not found "));
-		}
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTbSimpleSimpleInterfaceJniAdapterCache::ReadyMethodID, isServiceReady);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:nativeServiceReady(Z)V CLASS not found");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -178,12 +310,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigBoolSignal(bool bParamBool)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::onSigBool "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigBool (Z)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigBool", "(Z)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::SigBoolSignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigBool (Z)V not found"));
@@ -191,6 +323,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigBoolSignal(bool bParamBool)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bParamBool);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigBool (Z)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -201,12 +335,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigIntSignal(int32 ParamInt)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::onSigInt "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigInt (I)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigInt", "(I)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::SigIntSignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigInt (I)V not found"));
@@ -214,6 +348,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigIntSignal(int32 ParamInt)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamInt);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigInt (I)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -224,12 +360,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigInt32Signal(int32 ParamInt32)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::onSigInt32 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigInt32 (I)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigInt32", "(I)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::SigInt32SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigInt32 (I)V not found"));
@@ -237,6 +373,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigInt32Signal(int32 ParamInt32)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamInt32);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigInt32 (I)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -247,12 +385,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigInt64Signal(int64 ParamInt64)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::onSigInt64 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigInt64 (J)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigInt64", "(J)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::SigInt64SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigInt64 (J)V not found"));
@@ -260,6 +398,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigInt64Signal(int64 ParamInt64)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamInt64);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigInt64 (J)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -270,12 +410,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigFloatSignal(float ParamFloat)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::onSigFloat "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigFloat (F)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigFloat", "(F)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::SigFloatSignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigFloat (F)V not found"));
@@ -283,6 +423,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigFloatSignal(float ParamFloat)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamFloat);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigFloat (F)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -293,12 +435,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigFloat32Signal(float ParamFloat32)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::onSigFloat32 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigFloat32 (F)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigFloat32", "(F)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::SigFloat32SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigFloat32 (F)V not found"));
@@ -306,6 +448,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigFloat32Signal(float ParamFloat32)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamFloat32);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigFloat32 (F)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -316,12 +460,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigFloat64Signal(double ParamFloat64)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::onSigFloat64 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigFloat64 (D)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigFloat64", "(D)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::SigFloat64SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigFloat64 (D)V not found"));
@@ -329,6 +473,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigFloat64Signal(double ParamFloat64)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamFloat64);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigFloat64 (D)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -339,21 +485,25 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigStringSignal(const FString& ParamS
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::onSigString "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr || m_javaJniServiceInstance == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigString (Ljava/lang/String;)V CLASS not found"));
 			return;
 		}
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onSigString", "(Ljava/lang/String;)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::SigStringSignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onSigString (Ljava/lang/String;)V not found"));
 			return;
 		}
 		auto jlocal_ParamStringWrapped = FJavaHelper::ToJavaString(Env, ParamString);
+		static const TCHAR* errorMsgjlocal_ParamString = TEXT("failed converting to jstring jlocal_ParamString");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_ParamString);
 		jstring jlocal_ParamString = static_cast<jstring>(Env->NewLocalRef(*jlocal_ParamStringWrapped));
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamString);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigString (Ljava/lang/String;)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamString);
 	}
 #endif
@@ -364,13 +514,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropBoolChanged(bool bPropBool)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::OnPropBool "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService::onPropBoolChanged(Z)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropBoolChanged", "(Z)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::PropBoolChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onPropBoolChanged(Z)V not found"));
@@ -378,6 +527,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropBoolChanged(bool bPropBool)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bPropBool);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropBoolChanged ((Z)V)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -387,13 +538,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropIntChanged(int32 PropInt)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::OnPropInt "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService::onPropIntChanged(I)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropIntChanged", "(I)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::PropIntChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onPropIntChanged(I)V not found"));
@@ -401,6 +551,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropIntChanged(int32 PropInt)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropInt);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropIntChanged ((I)V)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -410,13 +562,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropInt32Changed(int32 PropInt32)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::OnPropInt32 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService::onPropInt32Changed(I)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropInt32Changed", "(I)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::PropInt32ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onPropInt32Changed(I)V not found"));
@@ -424,6 +575,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropInt32Changed(int32 PropInt32)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropInt32);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropInt32Changed ((I)V)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -433,13 +586,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropInt64Changed(int64 PropInt64)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::OnPropInt64 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService::onPropInt64Changed(J)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropInt64Changed", "(J)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::PropInt64ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onPropInt64Changed(J)V not found"));
@@ -447,6 +599,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropInt64Changed(int64 PropInt64)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropInt64);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropInt64Changed ((J)V)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -456,13 +610,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropFloatChanged(float PropFloat)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::OnPropFloat "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService::onPropFloatChanged(F)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropFloatChanged", "(F)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::PropFloatChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onPropFloatChanged(F)V not found"));
@@ -470,6 +623,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropFloatChanged(float PropFloat)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropFloat);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropFloatChanged ((F)V)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -479,13 +634,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropFloat32Changed(float PropFloat32)
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::OnPropFloat32 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService::onPropFloat32Changed(F)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropFloat32Changed", "(F)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::PropFloat32ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onPropFloat32Changed(F)V not found"));
@@ -493,6 +647,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropFloat32Changed(float PropFloat32)
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropFloat32);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropFloat32Changed ((F)V)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -502,13 +658,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropFloat64Changed(double PropFloat64
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::OnPropFloat64 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService::onPropFloat64Changed(D)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropFloat64Changed", "(D)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::PropFloat64ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onPropFloat64Changed(D)V not found"));
@@ -516,6 +671,8 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropFloat64Changed(double PropFloat64
 		}
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropFloat64);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropFloat64Changed ((D)V)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -525,13 +682,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropStringChanged(const FString& Prop
 	UE_LOG(LogTbSimpleSimpleInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleSimpleInterfaceJniAdapter::OnPropString "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniServiceClass == nullptr)
+		if (UTbSimpleSimpleInterfaceJniAdapterCache::javaService == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService::onPropStringChanged(Ljava/lang/String;)V CLASS not found"));
 			return;
 		}
-
-		static const jmethodID MethodID = Env->GetMethodID(m_javaJniServiceClass, "onPropStringChanged", "(Ljava/lang/String;)V");
+		jmethodID MethodID = UTbSimpleSimpleInterfaceJniAdapterCache::PropStringChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:onPropStringChanged(Ljava/lang/String;)V not found"));
@@ -539,9 +695,13 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropStringChanged(const FString& Prop
 		}
 
 		auto jlocal_PropStringWrapped = FJavaHelper::ToJavaString(Env, PropString);
+		static const TCHAR* errorMsgjlocal_PropString = TEXT("failed converting to jstring jlocal_PropString");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropString);
 		jstring jlocal_PropString = static_cast<jstring>(Env->NewLocalRef(*jlocal_PropStringWrapped));
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropString);
 		Env->DeleteLocalRef(jlocal_PropString);
+		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropStringChanged ((Ljava/lang/String;)V)V");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -751,6 +911,8 @@ JNI_METHOD jstring Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_na
 	{
 		auto result = service->FuncString(local_param_string);
 		auto jresultWrapped = FJavaHelper::ToJavaString(Env, result);
+		static const TCHAR* errorMsgjresult = TEXT("failed to convert to jstring in call nativeFuncString for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjresult);
 		jstring jresult = static_cast<jstring>(Env->NewLocalRef(*jresultWrapped));
 		return jresult;
 	}
@@ -1076,6 +1238,8 @@ JNI_METHOD jstring Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_na
 		auto PropString = service->GetPropString();
 
 		auto jlocal_PropStringWrapped = FJavaHelper::ToJavaString(Env, PropString);
+		static const TCHAR* errorMsgjlocal_PropString = TEXT("failed converting to jstring jlocal_PropString");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropString);
 		jstring jlocal_PropString = static_cast<jstring>(Env->NewLocalRef(*jlocal_PropStringWrapped));
 		return jlocal_PropString;
 	}

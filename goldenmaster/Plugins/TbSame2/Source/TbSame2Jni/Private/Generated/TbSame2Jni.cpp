@@ -30,11 +30,11 @@ void FTbSame2JniModule::StartupModule()
 
 void FTbSame2JniModule::ShutdownModule()
 {
-	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
-	// we call this function before unloading the module.
-	#if PLATFORM_ANDROID && USE_ANDROID_JNI
+// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
+// we call this function before unloading the module.
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 	TbSame2DataJavaConverter::cleanJavaReferences();
-	#endif
+#endif
 }
 
 IMPLEMENT_MODULE(FTbSame2JniModule, TbSame2Jni)
