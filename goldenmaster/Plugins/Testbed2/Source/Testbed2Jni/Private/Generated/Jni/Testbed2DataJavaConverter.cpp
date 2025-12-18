@@ -93,7 +93,7 @@ jobject Testbed2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTestbed2S
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct1.");
 	static const jmethodID ctor = getMethod(jStruct1, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -222,7 +222,7 @@ jobject Testbed2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTestbed2S
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct2.");
 	static const jmethodID ctor = getMethod(jStruct2, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -379,7 +379,7 @@ jobject Testbed2DataJavaConverter::makeJavaStruct3(JNIEnv* env, const FTestbed2S
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct3.");
 	static const jmethodID ctor = getMethod(jStruct3, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -564,7 +564,7 @@ jobject Testbed2DataJavaConverter::makeJavaStruct4(JNIEnv* env, const FTestbed2S
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct4.");
 	static const jmethodID ctor = getMethod(jStruct4, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -723,7 +723,7 @@ jobject Testbed2DataJavaConverter::makeJavaNestedStruct1(JNIEnv* env, const FTes
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_nested_struct1.");
 	static const jmethodID ctor = getMethod(jNestedStruct1, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -858,7 +858,7 @@ jobject Testbed2DataJavaConverter::makeJavaNestedStruct2(JNIEnv* env, const FTes
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_nested_struct2.");
 	static const jmethodID ctor = getMethod(jNestedStruct2, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -1025,7 +1025,7 @@ jobject Testbed2DataJavaConverter::makeJavaNestedStruct3(JNIEnv* env, const FTes
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_nested_struct3.");
 	static const jmethodID ctor = getMethod(jNestedStruct3, "<init>", "()V", errorMsgCtor);
-	if (ctor == nullptr )
+	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
@@ -1704,46 +1704,46 @@ void Testbed2DataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jStruct1 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Struct1");
-	static const TCHAR* errorMsgStruct1= TEXT("failed to get testbed2/testbed2_api/Struct1");
+	static const TCHAR* errorMsgStruct1 = TEXT("failed to get testbed2/testbed2_api/Struct1");
 	checkJniErrorOccured(errorMsgStruct1);
 	jStruct2 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Struct2");
-	static const TCHAR* errorMsgStruct2= TEXT("failed to get testbed2/testbed2_api/Struct2");
+	static const TCHAR* errorMsgStruct2 = TEXT("failed to get testbed2/testbed2_api/Struct2");
 	checkJniErrorOccured(errorMsgStruct2);
 	jStruct3 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Struct3");
-	static const TCHAR* errorMsgStruct3= TEXT("failed to get testbed2/testbed2_api/Struct3");
+	static const TCHAR* errorMsgStruct3 = TEXT("failed to get testbed2/testbed2_api/Struct3");
 	checkJniErrorOccured(errorMsgStruct3);
 	jStruct4 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Struct4");
-	static const TCHAR* errorMsgStruct4= TEXT("failed to get testbed2/testbed2_api/Struct4");
+	static const TCHAR* errorMsgStruct4 = TEXT("failed to get testbed2/testbed2_api/Struct4");
 	checkJniErrorOccured(errorMsgStruct4);
 	jNestedStruct1 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/NestedStruct1");
-	static const TCHAR* errorMsgNestedStruct1= TEXT("failed to get testbed2/testbed2_api/NestedStruct1");
+	static const TCHAR* errorMsgNestedStruct1 = TEXT("failed to get testbed2/testbed2_api/NestedStruct1");
 	checkJniErrorOccured(errorMsgNestedStruct1);
 	jNestedStruct2 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/NestedStruct2");
-	static const TCHAR* errorMsgNestedStruct2= TEXT("failed to get testbed2/testbed2_api/NestedStruct2");
+	static const TCHAR* errorMsgNestedStruct2 = TEXT("failed to get testbed2/testbed2_api/NestedStruct2");
 	checkJniErrorOccured(errorMsgNestedStruct2);
 	jNestedStruct3 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/NestedStruct3");
-	static const TCHAR* errorMsgNestedStruct3= TEXT("failed to get testbed2/testbed2_api/NestedStruct3");
+	static const TCHAR* errorMsgNestedStruct3 = TEXT("failed to get testbed2/testbed2_api/NestedStruct3");
 	checkJniErrorOccured(errorMsgNestedStruct3);
 	jEnum1 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Enum1");
-	static const TCHAR* errorMsgEnum1= TEXT("failed to get testbed2/testbed2_api/Enum1");
+	static const TCHAR* errorMsgEnum1 = TEXT("failed to get testbed2/testbed2_api/Enum1");
 	checkJniErrorOccured(errorMsgEnum1);
 	jEnum2 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Enum2");
-	static const TCHAR* errorMsgEnum2= TEXT("failed to get testbed2/testbed2_api/Enum2");
+	static const TCHAR* errorMsgEnum2 = TEXT("failed to get testbed2/testbed2_api/Enum2");
 	checkJniErrorOccured(errorMsgEnum2);
 	jEnum3 = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/Enum3");
-	static const TCHAR* errorMsgEnum3= TEXT("failed to get testbed2/testbed2_api/Enum3");
+	static const TCHAR* errorMsgEnum3 = TEXT("failed to get testbed2/testbed2_api/Enum3");
 	checkJniErrorOccured(errorMsgEnum3);
 	jManyParamInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/IManyParamInterface");
-	static const TCHAR* errorMsgManyParamInterface= TEXT("failed to get testbed2/testbed2_api/IManyParamInterface");
+	static const TCHAR* errorMsgManyParamInterface = TEXT("failed to get testbed2/testbed2_api/IManyParamInterface");
 	checkJniErrorOccured(errorMsgManyParamInterface);
 	jNestedStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/INestedStruct1Interface");
-	static const TCHAR* errorMsgNestedStruct1Interface= TEXT("failed to get testbed2/testbed2_api/INestedStruct1Interface");
+	static const TCHAR* errorMsgNestedStruct1Interface = TEXT("failed to get testbed2/testbed2_api/INestedStruct1Interface");
 	checkJniErrorOccured(errorMsgNestedStruct1Interface);
 	jNestedStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/INestedStruct2Interface");
-	static const TCHAR* errorMsgNestedStruct2Interface= TEXT("failed to get testbed2/testbed2_api/INestedStruct2Interface");
+	static const TCHAR* errorMsgNestedStruct2Interface = TEXT("failed to get testbed2/testbed2_api/INestedStruct2Interface");
 	checkJniErrorOccured(errorMsgNestedStruct2Interface);
 	jNestedStruct3Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2_api/INestedStruct3Interface");
-	static const TCHAR* errorMsgNestedStruct3Interface= TEXT("failed to get testbed2/testbed2_api/INestedStruct3Interface");
+	static const TCHAR* errorMsgNestedStruct3Interface = TEXT("failed to get testbed2/testbed2_api/INestedStruct3Interface");
 	checkJniErrorOccured(errorMsgNestedStruct3Interface);
 	m_isInitialized = true;
 }
