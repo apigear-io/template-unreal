@@ -35,6 +35,8 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+DEFINE_LOG_CATEGORY(LogCounterDataJavaConverter_JNI);
 jclass CounterDataJavaConverter::jCounter = nullptr;
 
 void CounterDataJavaConverter::fillCounter(JNIEnv* env, jobject input, TScriptInterface<ICounterCounterInterface> out_counter)
@@ -86,6 +88,19 @@ TScriptInterface<ICounterCounterInterface> CounterDataJavaConverter::getCppInsta
 	return wrapped;
 }
 
+bool CounterDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogCounterDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
+		return true;
+	}
+	return false;
+}
+
 void CounterDataJavaConverter::cleanJavaReferences()
 {
 	FScopeLock Lock(&initMutex);
@@ -111,6 +126,8 @@ void CounterDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
+	static const TCHAR* errorMsgCounter= TEXT("failed to get counter/counter_api/ICounter");
+	checkJniErrorOccured(errorMsgCounter);
 	m_isInitialized = true;
 }
 

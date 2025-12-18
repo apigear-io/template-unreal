@@ -32,6 +32,8 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+DEFINE_LOG_CATEGORY(LogTbEnumDataJavaConverter_JNI);
 jclass TbEnumDataJavaConverter::jEnum0 = nullptr;
 
 void TbEnumDataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum0>& out_array)
@@ -295,6 +297,19 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> TbEnumDataJavaConverter::getCppI
 	return wrapped;
 }
 
+bool TbEnumDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
+		return true;
+	}
+	return false;
+}
+
 void TbEnumDataJavaConverter::cleanJavaReferences()
 {
 	FScopeLock Lock(&initMutex);
@@ -324,10 +339,20 @@ void TbEnumDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jEnum0 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum0");
+	static const TCHAR* errorMsgEnum0= TEXT("failed to get tbEnum/tbEnum_api/Enum0");
+	checkJniErrorOccured(errorMsgEnum0);
 	jEnum1 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum1");
+	static const TCHAR* errorMsgEnum1= TEXT("failed to get tbEnum/tbEnum_api/Enum1");
+	checkJniErrorOccured(errorMsgEnum1);
 	jEnum2 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum2");
+	static const TCHAR* errorMsgEnum2= TEXT("failed to get tbEnum/tbEnum_api/Enum2");
+	checkJniErrorOccured(errorMsgEnum2);
 	jEnum3 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum3");
+	static const TCHAR* errorMsgEnum3= TEXT("failed to get tbEnum/tbEnum_api/Enum3");
+	checkJniErrorOccured(errorMsgEnum3);
 	jEnumInterface = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/IEnumInterface");
+	static const TCHAR* errorMsgEnumInterface= TEXT("failed to get tbEnum/tbEnum_api/IEnumInterface");
+	checkJniErrorOccured(errorMsgEnumInterface);
 	m_isInitialized = true;
 }
 

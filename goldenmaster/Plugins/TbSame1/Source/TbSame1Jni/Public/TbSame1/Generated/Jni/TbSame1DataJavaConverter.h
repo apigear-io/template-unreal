@@ -31,6 +31,7 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1DataJavaConverter_JNI, Log, All);
 
 class TBSAME1API_API TbSame1DataJavaConverter
 {
@@ -90,6 +91,7 @@ public:
 
 	static TScriptInterface<ITbSame1SameEnum2InterfaceInterface> getCppInstanceTbSame1SameEnum2Interface();
 
+	static bool checkJniErrorOccured(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:

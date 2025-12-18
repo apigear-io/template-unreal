@@ -31,6 +31,7 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2DataJavaConverter_JNI, Log, All);
 
 class TESTBED2API_API Testbed2DataJavaConverter
 {
@@ -121,6 +122,7 @@ public:
 
 	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> getCppInstanceTestbed2NestedStruct3Interface();
 
+	static bool checkJniErrorOccured(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:

@@ -33,6 +33,7 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+DECLARE_LOG_CATEGORY_EXTERN(LogCounterDataJavaConverter_JNI, Log, All);
 
 class COUNTERAPI_API CounterDataJavaConverter
 {
@@ -45,6 +46,7 @@ public:
 
 	static TScriptInterface<ICounterCounterInterface> getCppInstanceCounterCounter();
 
+	static bool checkJniErrorOccured(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:
