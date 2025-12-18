@@ -36,6 +36,7 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 DEFINE_LOG_CATEGORY(LogTbRefIfacesDataJavaConverter_JNI);
+
 jclass TbRefIfacesDataJavaConverter::jSimpleLocalIf = nullptr;
 
 void TbRefIfacesDataJavaConverter::fillSimpleLocalIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if)
@@ -70,9 +71,18 @@ jobject TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(JNIEnv* env, const T
 jobjectArray TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& cppArray)
 {
 	ensureInitialized();
-	jclass javaClass = jSimpleLocalIf;
+	if (!jSimpleLocalIf)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("ISimpleLocalIf not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, jSimpleLocalIf, nullptr);
+	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_local_if.");
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -86,6 +96,7 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> TbRefIfacesDataJavaConverte
 	wrapped.SetInterface(Cast<ITbRefIfacesSimpleLocalIfInterface>(Impl));
 	return wrapped;
 }
+
 jclass TbRefIfacesDataJavaConverter::jParentIf = nullptr;
 
 void TbRefIfacesDataJavaConverter::fillParentIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if)
@@ -120,9 +131,18 @@ jobject TbRefIfacesDataJavaConverter::makeJavaParentIf(JNIEnv* env, const TScrip
 jobjectArray TbRefIfacesDataJavaConverter::makeJavaParentIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& cppArray)
 {
 	ensureInitialized();
-	jclass javaClass = jParentIf;
+	if (!jParentIf)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("IParentIf not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaClass, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, jParentIf, nullptr);
+	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_parent_if.");
+	if (checkJniErrorOccured(errorMsg))
+	{
+		return nullptr;
+	}
 	// Currently not supported, stub function generated for possible custom implementation.
 	return javaArray;
 }
@@ -184,7 +204,28 @@ void TbRefIfacesDataJavaConverter::ensureInitialized()
 	m_isInitialized = true;
 }
 
+jmethodID TbRefIfacesDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jmethodID method = env->GetMethodID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return method;
 }
+
+jmethodID TbRefIfacesDataJavaConverter::getStaticMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jmethodID method = env->GetStaticMethodID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return method;
+}
+
+jfieldID TbRefIfacesDataJavaConverter::getFieldId(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jfieldID field = env->GetFieldID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return field;
 }
 
 #endif
