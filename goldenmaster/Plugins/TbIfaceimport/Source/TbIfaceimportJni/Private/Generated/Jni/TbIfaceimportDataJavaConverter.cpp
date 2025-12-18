@@ -31,6 +31,8 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+DEFINE_LOG_CATEGORY(LogTbIfaceimportDataJavaConverter_JNI);
 jclass TbIfaceimportDataJavaConverter::jEmptyIf = nullptr;
 
 void TbIfaceimportDataJavaConverter::fillEmptyIf(JNIEnv* env, jobject input, TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if)
@@ -82,6 +84,19 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> TbIfaceimportDataJavaConverter:
 	return wrapped;
 }
 
+bool TbIfaceimportDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogTbIfaceimportDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
+		return true;
+	}
+	return false;
+}
+
 void TbIfaceimportDataJavaConverter::cleanJavaReferences()
 {
 	FScopeLock Lock(&initMutex);
@@ -107,6 +122,8 @@ void TbIfaceimportDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
+	static const TCHAR* errorMsgEmptyIf= TEXT("failed to get tbIfaceimport/tbIfaceimport_api/IEmptyIf");
+	checkJniErrorOccured(errorMsgEmptyIf);
 	m_isInitialized = true;
 }
 
