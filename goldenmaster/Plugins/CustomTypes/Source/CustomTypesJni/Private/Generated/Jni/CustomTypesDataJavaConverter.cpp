@@ -32,6 +32,8 @@ limitations under the License.
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+DEFINE_LOG_CATEGORY(LogCustomTypesDataJavaConverter_JNI);
+
 jclass CustomTypesDataJavaConverter::jVector3D = nullptr;
 void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCustomTypesVector3D& out_vector3_d)
 {
@@ -96,6 +98,19 @@ jobjectArray CustomTypesDataJavaConverter::makeJavaVector3DArray(JNIEnv* env, co
 	return javaArray;
 }
 
+bool CustomTypesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	if (env->ExceptionCheck())
+	{
+		env->ExceptionDescribe(); // logs in java
+		env->ExceptionClear();
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
+		return true;
+	}
+	return false;
+}
+
 void CustomTypesDataJavaConverter::cleanJavaReferences()
 {
 	FScopeLock Lock(&initMutex);
@@ -121,6 +136,8 @@ void CustomTypesDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jVector3D = FAndroidApplication::FindJavaClassGlobalRef("customTypes/customTypes_api/Vector3D");
+	static const TCHAR* errorMsgVector3D= TEXT("failed to get customTypes/customTypes_api/Vector3D");
+	checkJniErrorOccured(errorMsgVector3D);
 	m_isInitialized = true;
 }
 

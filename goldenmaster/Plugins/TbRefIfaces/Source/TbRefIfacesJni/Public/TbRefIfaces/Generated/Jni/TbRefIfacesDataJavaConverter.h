@@ -32,6 +32,7 @@ limitations under the License.
 #endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesDataJavaConverter_JNI, Log, All);
 
 class TBREFIFACESAPI_API TbRefIfacesDataJavaConverter
 {
@@ -52,6 +53,7 @@ public:
 
 	static TScriptInterface<ITbRefIfacesParentIfInterface> getCppInstanceTbRefIfacesParentIf();
 
+	static bool checkJniErrorOccured(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:
