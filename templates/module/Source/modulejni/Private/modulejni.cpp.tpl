@@ -35,12 +35,12 @@ void {{$class}}::StartupModule()
 
 void {{$class}}::ShutdownModule()
 {
-	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
-	// we call this function before unloading the module.
-	#if PLATFORM_ANDROID && USE_ANDROID_JNI
+// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
+// we call this function before unloading the module.
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 	{{- $converterName := printf "%sDataJavaConverter" $ModuleName}}
 	{{$converterName}}::cleanJavaReferences();
-	#endif
+#endif
 }
 
 IMPLEMENT_MODULE({{$class}}, {{$ModuleName}}Jni)

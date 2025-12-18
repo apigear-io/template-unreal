@@ -136,7 +136,7 @@ void CounterDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
-	static const TCHAR* errorMsgCounter= TEXT("failed to get counter/counter_api/ICounter");
+	static const TCHAR* errorMsgCounter = TEXT("failed to get counter/counter_api/ICounter");
 	checkJniErrorOccured(errorMsgCounter);
 	m_isInitialized = true;
 }

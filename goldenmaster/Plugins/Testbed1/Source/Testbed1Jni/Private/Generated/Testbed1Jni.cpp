@@ -30,11 +30,11 @@ void FTestbed1JniModule::StartupModule()
 
 void FTestbed1JniModule::ShutdownModule()
 {
-	// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
-	// we call this function before unloading the module.
-	#if PLATFORM_ANDROID && USE_ANDROID_JNI
+// This function may be called during shutdown to clean up your module.  For modules that support dynamic reloading,
+// we call this function before unloading the module.
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
 	Testbed1DataJavaConverter::cleanJavaReferences();
-	#endif
+#endif
 }
 
 IMPLEMENT_MODULE(FTestbed1JniModule, Testbed1Jni)

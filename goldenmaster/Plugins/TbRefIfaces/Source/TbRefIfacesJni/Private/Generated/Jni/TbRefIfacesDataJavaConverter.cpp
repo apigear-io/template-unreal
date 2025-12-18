@@ -196,10 +196,10 @@ void TbRefIfacesDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
-	static const TCHAR* errorMsgSimpleLocalIf= TEXT("failed to get tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
+	static const TCHAR* errorMsgSimpleLocalIf = TEXT("failed to get tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
 	checkJniErrorOccured(errorMsgSimpleLocalIf);
 	jParentIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
-	static const TCHAR* errorMsgParentIf= TEXT("failed to get tbRefIfaces/tbRefIfaces_api/IParentIf");
+	static const TCHAR* errorMsgParentIf = TEXT("failed to get tbRefIfaces/tbRefIfaces_api/IParentIf");
 	checkJniErrorOccured(errorMsgParentIf);
 	m_isInitialized = true;
 }

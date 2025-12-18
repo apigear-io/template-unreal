@@ -76,6 +76,76 @@ private:
 	FCriticalSection ReplyPromisesMapCS;
 };
 
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+class UTbSimpleNoSignalsInterfaceJniClientCache
+{
+public:
+	static jclass clientClassNoSignalsInterface;
+	static jmethodID clientClassNoSignalsInterfaceCtor;
+	static jmethodID PropBoolSetterId;
+	static jmethodID PropIntSetterId;
+	static jmethodID FuncVoidAsyncMethodID;
+	static jmethodID FuncBoolAsyncMethodID;
+	static jmethodID BindMethodID;
+	static jmethodID UnbindMethodID;
+	static void init();
+	static void clear();
+};
+
+jclass UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterface = nullptr;
+jmethodID UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterfaceCtor = nullptr;
+jmethodID UTbSimpleNoSignalsInterfaceJniClientCache::BindMethodID = nullptr;
+jmethodID UTbSimpleNoSignalsInterfaceJniClientCache::UnbindMethodID = nullptr;
+jmethodID UTbSimpleNoSignalsInterfaceJniClientCache::PropBoolSetterId = nullptr;
+jmethodID UTbSimpleNoSignalsInterfaceJniClientCache::PropIntSetterId = nullptr;
+jmethodID UTbSimpleNoSignalsInterfaceJniClientCache::FuncVoidAsyncMethodID = nullptr;
+jmethodID UTbSimpleNoSignalsInterfaceJniClientCache::FuncBoolAsyncMethodID = nullptr;
+
+void UTbSimpleNoSignalsInterfaceJniClientCache::init()
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+
+	clientClassNoSignalsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	PropBoolSetterId = env->GetMethodID(clientClassNoSignalsInterface, "setPropBool", "(Z)V");
+	static const TCHAR* errorMsgPropBoolSetter = TEXT("failed to get java setPropBool, Z)V for tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolSetter);
+	PropIntSetterId = env->GetMethodID(clientClassNoSignalsInterface, "setPropInt", "(I)V");
+	static const TCHAR* errorMsgPropIntSetter = TEXT("failed to get java setPropInt, I)V for tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntSetter);
+	FuncVoidAsyncMethodID = env->GetMethodID(clientClassNoSignalsInterface, "funcVoidAsync", "(Ljava/lang/String;)V");
+	static const TCHAR* errorMsgFuncVoidAsyncMethod = TEXT("failed to get java funcVoidAsync, (Ljava/lang/String;)V for tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncVoidAsyncMethod);
+	FuncBoolAsyncMethodID = env->GetMethodID(clientClassNoSignalsInterface, "funcBoolAsync", "(Ljava/lang/String;Z)V");
+	static const TCHAR* errorMsgFuncBoolAsyncMethod = TEXT("failed to get java funcBoolAsync, (Ljava/lang/String;Z)V for tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncBoolAsyncMethod);
+	clientClassNoSignalsInterfaceCtor = env->GetMethodID(clientClassNoSignalsInterface, "<init>", "()V");
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	BindMethodID = env->GetMethodID(clientClassNoSignalsInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	UnbindMethodID = env->GetMethodID(clientClassNoSignalsInterface, "unbind", "()V");
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+}
+
+void UTbSimpleNoSignalsInterfaceJniClientCache::clear()
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	env->DeleteGlobalRef(clientClassNoSignalsInterface);
+	clientClassNoSignalsInterface = nullptr;
+	clientClassNoSignalsInterfaceCtor = nullptr;
+	BindMethodID = nullptr;
+	UnbindMethodID = nullptr;
+	PropBoolSetterId = nullptr;
+	PropIntSetterId = nullptr;
+	FuncVoidAsyncMethodID = nullptr;
+	FuncBoolAsyncMethodID = nullptr;
+}
+#endif
+
 namespace
 {
 
@@ -144,10 +214,14 @@ void UTbSimpleNoSignalsInterfaceJniClient::Initialize(FSubsystemCollectionBase& 
 	};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+	UTbSimpleNoSignalsInterfaceJniClientCache::init();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	m_javaJniClientClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
-	jmethodID constructor = Env->GetMethodID(m_javaJniClientClass, "<init>", "()V");
-	jobject localRef = Env->NewObject(m_javaJniClientClass, constructor);
+	if (UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterfaceCtor == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("Java Client Class tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient not found"));
+		return;
+	}
+	jobject localRef = Env->NewObject(UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterface, UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterfaceCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -157,13 +231,6 @@ void UTbSimpleNoSignalsInterfaceJniClient::Deinitialize()
 {
 	UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Verbose, TEXT("deinit"));
 	_unbind();
-#if PLATFORM_ANDROID && USE_ANDROID_JNI
-	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	Env->DeleteGlobalRef(m_javaJniClientInstance);
-	m_javaJniClientClass = nullptr;
-	m_javaJniClientInstance = nullptr;
-#endif
-
 	gUTbSimpleNoSignalsInterfaceJniClientnotifyIsReady = [](bool value)
 	{
 		(void)value;
@@ -171,6 +238,13 @@ void UTbSimpleNoSignalsInterfaceJniClient::Deinitialize()
 	};
 	gUTbSimpleNoSignalsInterfaceJniClientOnPropBoolChanged = gUTbSimpleNoSignalsInterfaceJniClientOnPropBoolChangedEmpty;
 	gUTbSimpleNoSignalsInterfaceJniClientOnPropIntChanged = gUTbSimpleNoSignalsInterfaceJniClientOnPropIntChangedEmpty;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	Env->DeleteGlobalRef(m_javaJniClientInstance);
+	m_javaJniClientInstance = nullptr;
+	UTbSimpleNoSignalsInterfaceJniClientCache::clear();
+#endif
 
 	gUTbSimpleNoSignalsInterfaceJniClientHandle = nullptr;
 	Super::Deinitialize();
@@ -202,18 +276,20 @@ void UTbSimpleNoSignalsInterfaceJniClient::SetPropBool(bool bInPropBool)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniClientClass == nullptr)
+		if (UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterface == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:setPropBool (Z)V CLASS not found"));
 			return;
 		}
-		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropBool", "(Z)V");
+		jmethodID MethodID = UTbSimpleNoSignalsInterfaceJniClientCache::PropBoolSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:setPropBool (Z)V not found"));
 			return;
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, bInPropBool);
+		static const TCHAR* errorMsg = TEXT("failed to call setPropBool on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -244,18 +320,20 @@ void UTbSimpleNoSignalsInterfaceJniClient::SetPropInt(int32 InPropInt)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (m_javaJniClientClass == nullptr)
+		if (UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterface == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:setPropInt (I)V CLASS not found"));
 			return;
 		}
-		static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "setPropInt", "(I)V");
+		jmethodID MethodID = UTbSimpleNoSignalsInterfaceJniClientCache::PropIntSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:setPropInt (I)V not found"));
 			return;
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropInt);
+		static const TCHAR* errorMsg = TEXT("failed to call setPropInt on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
 }
@@ -273,19 +351,24 @@ void UTbSimpleNoSignalsInterfaceJniClient::FuncVoid()
 	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (m_javaJniClientClass == nullptr)
+	if (UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterface == nullptr)
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:funcVoidAsync:(Ljava/lang/String;)V CLASS not found"));
 		return;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcVoidAsync", "(Ljava/lang/String;)V");
+	jmethodID MethodID = UTbSimpleNoSignalsInterfaceJniClientCache::FuncVoidAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		FGuid id = FGuid::NewGuid();
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcVoidAsync on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
+
+		static const TCHAR* errorMsg = TEXT("failed to call funcVoidAsync on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 	else
 	{
@@ -309,19 +392,24 @@ bool UTbSimpleNoSignalsInterfaceJniClient::FuncBool(bool bInParamBool)
 	TPromise<bool> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (m_javaJniClientClass == nullptr)
+	if (UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterface == nullptr)
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Z)V CLASS not found"));
 		return false;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "funcBoolAsync", "(Ljava/lang/String;Z)V");
+	jmethodID MethodID = UTbSimpleNoSignalsInterfaceJniClientCache::FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbSimpleNoSignalsInterfaceJniClientmethodHelper.StorePromise(Promise);
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInParamBool);
+
+		static const TCHAR* errorMsg = TEXT("failed to call funcBoolAsync on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 	else
 	{
@@ -350,18 +438,30 @@ bool UTbSimpleNoSignalsInterfaceJniClient::_bindToService(FString servicePackage
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (m_javaJniClientClass == nullptr)
+	if (UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterface == nullptr)
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	jmethodID MethodID = UTbSimpleNoSignalsInterfaceJniClientCache::BindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
+		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		{
+			return false;
+		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
+		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		{
+			return false;
+		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
+		static const TCHAR* errorMsg = TEXT("failed to call bind on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		return res;
 	}
 	else
@@ -379,15 +479,17 @@ void UTbSimpleNoSignalsInterfaceJniClient::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (m_javaJniClientClass == nullptr)
+	if (UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterface == nullptr)
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:unbind:()V CLASS not found"));
 		return;
 	}
-	static jmethodID MethodID = Env->GetMethodID(m_javaJniClientClass, "unbind", "()V");
+	jmethodID MethodID = UTbSimpleNoSignalsInterfaceJniClientCache::UnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
+		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient.");
+		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 	else
 	{
@@ -427,6 +529,11 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nati
 {
 	UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nativeOnFuncVoidResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncVoid for tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 	FGuid::Parse(callIdString, guid);
 	UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nativeOnFuncVoidResult for id %s"), *(guid.ToString(EGuidFormats::Digits)));
@@ -436,6 +543,11 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nati
 {
 	UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nativeOnFuncBoolResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncBool for tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return;
+	}
 	FGuid guid;
 
 	FGuid::Parse(callIdString, guid);

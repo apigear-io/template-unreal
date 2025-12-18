@@ -132,7 +132,7 @@ void TbIfaceimportDataJavaConverter::ensureInitialized()
 	}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
-	static const TCHAR* errorMsgEmptyIf= TEXT("failed to get tbIfaceimport/tbIfaceimport_api/IEmptyIf");
+	static const TCHAR* errorMsgEmptyIf = TEXT("failed to get tbIfaceimport/tbIfaceimport_api/IEmptyIf");
 	checkJniErrorOccured(errorMsgEmptyIf);
 	m_isInitialized = true;
 }
