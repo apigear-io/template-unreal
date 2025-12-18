@@ -35,13 +35,18 @@ limitations under the License.
 DEFINE_LOG_CATEGORY(LogExternTypesDataJavaConverter_JNI);
 
 jclass ExternTypesDataJavaConverter::jMyVector3D = nullptr;
+
 void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d)
 {
 	ensureInitialized();
-	jclass cls = jMyVector3D;
+	if (!jMyVector3D)
+	{
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("org/apache/commons/math3/geometry/euclidean/threed/Vector3D not found"));
+		return;
+	}
 
 	// do the serialization field by field: e.g. for int type field
-	// jfieldID jFieldId_firstField = env->GetFieldID(cls, "firstField", "I");
+	// static const jfieldID jFieldId_firstField = env->GetFieldID(cls, "firstField", "I");
 	// out_my_vector3_d.FirstField = env->GetIntField(input, jFieldId_firstField);
 }
 
@@ -49,25 +54,50 @@ void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray
 {
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
+	static const TCHAR* errorMsgLen = TEXT("failed when trying to get len of Vector3D jarray.");
+	if (checkJniErrorOccured(errorMsgLen))
+	{
+		return;
+	}
 	out_array.Reserve(len);
 	out_array.AddDefaulted(len);
 	for (jsize i = 0; i < len; ++i)
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
-		fillMyVector3D(env, element, out_array[i]);
+		static const TCHAR* errorMsg = TEXT("failed when trying to get element of Vector3D jarray.");
+		auto failed = checkJniErrorOccured(errorMsg);
+		if (!failed)
+		{
+			fillMyVector3D(env, element, out_array[i]);
+		}
 		env->DeleteLocalRef(element);
+		if (failed)
+		{
+			return;
+		}
 	}
 }
 
 jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVector& out_my_vector3_d)
 {
 	ensureInitialized();
-	jclass javaClass = jMyVector3D;
-	jmethodID ctor = env->GetMethodID(javaClass, "<init>", "()V");
-	jobject javaObjInstance = env->NewObject(javaClass, ctor);
+	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for org/apache/commons/math3/geometry/euclidean/threed/Vector3D.");
+	// Make sure either that the extern class has default ctor or provide proper signature and arguments.
+	static const jmethodID ctor = getMethod(jMyVector3D, "<init>", "()V", errorMsgCtor);
+	if (ctor == nullptr )
+	{
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
+		return nullptr;
+	}
+	jobject javaObjInstance = env->NewObject(jMyVector3D, ctor);
+	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Vector3D.");
+	if (checkJniErrorOccured(errorMsgAlloc))
+	{
+		return nullptr;
+	}
 
 	// do the serialization field by field: e.g. for int type field
-	// jfieldID jFieldId_firstField = env->GetFieldID(javaClass, "jFieldId_firstField", "I");
+	// jfieldID jFieldId_firstField = getField(jMyVector3D, "jFieldId_firstField", "I", "Error Message in case java exception");
 	// env->SetIntField(javaObjInstance, jFieldId_firstField, out_my_vector3_d.FirstField);
 	return javaObjInstance;
 }
@@ -75,15 +105,30 @@ jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVec
 jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, const TArray<FVector>& cppArray)
 {
 	ensureInitialized();
-	jclass javaClass = jMyVector3D;
+	if (!jMyVector3D)
+	{
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("org/apache/commons/math3/geometry/euclidean/threed/Vector3D not found"));
+		return nullptr;
+	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, javaStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, jMyVector3D, nullptr);
+	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Vector3D jarray.");
+	if (checkJniErrorOccured(errorMsgAlloc))
+	{
+		return nullptr;
+	}
 
 	for (jsize i = 0; i < arraySize; ++i)
 	{
 		jobject element = makeJavaMyVector3D(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
+		static const TCHAR* errorMsg = TEXT("failed when trying to set element of Vector3D array.");
+		auto failed = checkJniErrorOccured(errorMsg);
 		env->DeleteLocalRef(element);
+		if (failed)
+		{
+			return nullptr;
+		}
 	}
 	return javaArray;
 }
@@ -131,7 +176,28 @@ void ExternTypesDataJavaConverter::ensureInitialized()
 	m_isInitialized = true;
 }
 
+jmethodID ExternTypesDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jmethodID method = env->GetMethodID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return method;
 }
+
+jmethodID ExternTypesDataJavaConverter::getStaticMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jmethodID method = env->GetStaticMethodID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return method;
+}
+
+jfieldID ExternTypesDataJavaConverter::getFieldId(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
+{
+	JNIEnv* env = FAndroidApplication::GetJavaEnv();
+	jfieldID field = env->GetFieldID(cls, name, signature);
+	checkJniErrorOccured(errorMsgInfo);
+	return field;
 }
 
 #endif
