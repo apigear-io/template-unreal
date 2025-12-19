@@ -457,11 +457,10 @@ jobject Testbed1DataJavaConverter::makeJavaStructString(JNIEnv* env, const FTest
 
 	if (jFieldId_field_string != nullptr)
 	{
-		auto l_fieldStringWrapper = FJavaHelper::ToJavaString(env, in_struct_string.fieldString);
+		auto l_fieldStringWrapped = FJavaHelper::ToJavaString(env, in_struct_string.fieldString);
 		static const TCHAR* errorMsgfieldStringStr = TEXT("failed when converting to jstring out_struct_string.fieldString");
 		checkJniErrorOccured(errorMsgfieldStringStr);
-		jstring l_fieldString = static_cast<jstring>(env->NewLocalRef(*l_fieldStringWrapper));
-		env->SetObjectField(javaObjInstance, jFieldId_field_string, l_fieldString);
+		env->SetObjectField(javaObjInstance, jFieldId_field_string, *l_fieldStringWrapped);
 		static const TCHAR* errorMsgfieldStringSet = TEXT("failed when seting field for out_struct_string.fieldString");
 		checkJniErrorOccured(errorMsgfieldStringSet);
 	}
