@@ -300,11 +300,10 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
 		checkJniErrorOccured(errorMsg{{$cppFieldName}}Set);
 		env->DeleteLocalRef({{$tmpObjName}});
 	{{- else if eq .KindType "string"}}
-		auto {{$tmpObjName}}Wrapper = FJavaHelper::ToJavaString(env, {{$in_cppStructName}}.{{$cppFieldName}});
+		auto {{$tmpObjName}}Wrapped = FJavaHelper::ToJavaString(env, {{$in_cppStructName}}.{{$cppFieldName}});
 		static const TCHAR* errorMsg{{$cppFieldName}}Str = TEXT("failed when converting to jstring {{$structName}}.{{$cppFieldName}}");
 		checkJniErrorOccured(errorMsg{{$cppFieldName}}Str);
-		jstring {{$tmpObjName}} = static_cast<jstring>(env->NewLocalRef(*{{$tmpObjName}}Wrapper));
-		env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, {{$tmpObjName}});
+		env->SetObjectField(javaObjInstance, jFieldId_{{snake .Name}}, *{{$tmpObjName}}Wrapped);
 		static const TCHAR* errorMsg{{$cppFieldName}}Set = TEXT("failed when seting field for {{$structName}}.{{$cppFieldName}}");
 		checkJniErrorOccured(errorMsg{{$cppFieldName}}Set);
 	{{- else if .IsPrimitive }}
