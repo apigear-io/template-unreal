@@ -40,4 +40,8 @@ FTbSame1Struct2 TBSAME1CORE_API createTestFTbSame1Struct2();
 
 TArray<FTbSame1Struct2> TBSAME1CORE_API createTestFTbSame1Struct2Array();
 
+TArray<ETbSame1Enum1> TBSAME1CORE_API createTestFTbSame1Enum1Array();
+
+TArray<ETbSame1Enum2> TBSAME1CORE_API createTestFTbSame1Enum2Array();
+
 #endif // WITH_DEV_AUTOMATION_TESTS

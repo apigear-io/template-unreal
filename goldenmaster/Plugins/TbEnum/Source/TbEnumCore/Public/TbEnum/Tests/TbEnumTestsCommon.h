@@ -32,4 +32,12 @@ inline constexpr int TbEnumTestFilterMask = EAutomationTestFlags::ApplicationCon
 constexpr int TbEnumTestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
 #endif
 
+TArray<ETbEnumEnum0> TBENUMCORE_API createTestFTbEnumEnum0Array();
+
+TArray<ETbEnumEnum1> TBENUMCORE_API createTestFTbEnumEnum1Array();
+
+TArray<ETbEnumEnum2> TBENUMCORE_API createTestFTbEnumEnum2Array();
+
+TArray<ETbEnumEnum3> TBENUMCORE_API createTestFTbEnumEnum3Array();
+
 #endif // WITH_DEV_AUTOMATION_TESTS
