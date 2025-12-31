@@ -45,7 +45,7 @@ DEFINE_LOG_CATEGORY(LogTbRefIfacesParentIf_JNI);
 
 namespace
 {
-UTbRefIfacesParentIfJniAdapter* gUTbRefIfacesParentIfJniAdapterHandle = nullptr;
+std::atomic<ITbRefIfacesParentIfJniAdapterAccessor*> gUTbRefIfacesParentIfJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -139,7 +139,7 @@ UTbRefIfacesParentIfJniAdapter::UTbRefIfacesParentIfJniAdapter()
 void UTbRefIfacesParentIfJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTbRefIfacesParentIfJniAdapterHandle = this;
+	gUTbRefIfacesParentIfJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbRefIfacesParentIfJniAdapterCache::init();
@@ -173,7 +173,7 @@ void UTbRefIfacesParentIfJniAdapter::Initialize(FSubsystemCollectionBase& Collec
 void UTbRefIfacesParentIfJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTbRefIfacesParentIfJniAdapterHandle = nullptr;
+	gUTbRefIfacesParentIfJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -212,23 +212,26 @@ void UTbRefIfacesParentIfJniAdapter::Deinitialize()
 
 void UTbRefIfacesParentIfJniAdapter::setBackendService(TScriptInterface<ITbRefIfacesParentIfInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesParentIf"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbRefIfacesParentIf is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesParentIf"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesParentIf"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbRefIfacesParentIf is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesParentIf"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -482,20 +485,28 @@ void UTbRefIfacesParentIfJniAdapter::OnImportedIfListChanged(const TArray<TScrip
 #endif
 }
 
+TScriptInterface<ITbRefIfacesParentIfInterface> UTbRefIfacesParentIfJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethod(JNIEnv* Env, jclass Clazz, jobject param)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethod"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethod: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	// interfaces are currently not supported. TbRefIfacesDataJavaConverter does not fill element.
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> local_param = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIf(Env, param, local_param);
 
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethod, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->LocalIfMethod(local_param);
@@ -512,16 +523,18 @@ JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nat
 JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethodList(JNIEnv* Env, jclass Clazz, jobjectArray param)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethodList"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethodList: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> local_param = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 	// interfaces are currently not supported. TbRefIfacesDataJavaConverter does not fill the array.
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIfArray(Env, param, local_param);
 
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethodList, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->LocalIfMethodList(local_param);
@@ -538,16 +551,18 @@ JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniServic
 JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethod(JNIEnv* Env, jclass Clazz, jobject param)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethod"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethod: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	// interfaces are currently not supported. TbIfaceimportDataJavaConverter does not fill element.
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> local_param = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	TbIfaceimportDataJavaConverter::fillEmptyIf(Env, param, local_param);
 
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethod, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->ImportedIfMethod(local_param);
@@ -564,16 +579,18 @@ JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nat
 JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethodList(JNIEnv* Env, jclass Clazz, jobjectArray param)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethodList"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethodList: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> local_param = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 	// interfaces are currently not supported. TbIfaceimportDataJavaConverter does not fill the array.
 	TbIfaceimportDataJavaConverter::fillEmptyIfArray(Env, param, local_param);
 
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethodList, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->ImportedIfMethodList(local_param);
@@ -590,17 +607,19 @@ JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniServic
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetLocalIf(JNIEnv* Env, jclass Clazz, jobject localIf)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetLocalIf"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetLocalIf: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	// interfaces are currently not supported. TbRefIfacesDataJavaConverter does not fill element.
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> local_local_if = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIf(Env, localIf, local_local_if);
 
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetLocalIf, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetLocalIf(local_local_if);
@@ -614,12 +633,15 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_native
 JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetLocalIf(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetLocalIf"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetLocalIf: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetLocalIf, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto LocalIf = service->GetLocalIf();
@@ -637,17 +659,19 @@ JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nat
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetLocalIfList(JNIEnv* Env, jclass Clazz, jobjectArray localIfList)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetLocalIfList"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetLocalIfList: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> local_local_if_list = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 	// interfaces are currently not supported. TbRefIfacesDataJavaConverter does not fill the array.
 	TbRefIfacesDataJavaConverter::fillSimpleLocalIfArray(Env, localIfList, local_local_if_list);
 
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetLocalIfList, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetLocalIfList(local_local_if_list);
@@ -661,12 +685,15 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_native
 JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetLocalIfList(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetLocalIfList"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetLocalIfList: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetLocalIfList, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto LocalIfList = service->GetLocalIfList();
@@ -684,17 +711,19 @@ JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniServic
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetImportedIf(JNIEnv* Env, jclass Clazz, jobject importedIf)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetImportedIf"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetImportedIf: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	// interfaces are currently not supported. TbIfaceimportDataJavaConverter does not fill element.
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> local_imported_if = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	TbIfaceimportDataJavaConverter::fillEmptyIf(Env, importedIf, local_imported_if);
 
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetImportedIf, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetImportedIf(local_imported_if);
@@ -708,12 +737,15 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_native
 JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetImportedIf(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetImportedIf"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetImportedIf: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetImportedIf, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto ImportedIf = service->GetImportedIf();
@@ -731,17 +763,19 @@ JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nat
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetImportedIfList(JNIEnv* Env, jclass Clazz, jobjectArray importedIfList)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetImportedIfList"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetImportedIfList: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> local_imported_if_list = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 	// interfaces are currently not supported. TbIfaceimportDataJavaConverter does not fill the array.
 	TbIfaceimportDataJavaConverter::fillEmptyIfArray(Env, importedIfList, local_imported_if_list);
 
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeSetImportedIfList, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetImportedIfList(local_imported_if_list);
@@ -755,12 +789,15 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_native
 JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetImportedIfList(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbRefIfacesParentIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetImportedIfList"));
-	if (gUTbRefIfacesParentIfJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetImportedIfList: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeGetImportedIfList, UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbRefIfacesParentIfJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto ImportedIfList = service->GetImportedIfList();

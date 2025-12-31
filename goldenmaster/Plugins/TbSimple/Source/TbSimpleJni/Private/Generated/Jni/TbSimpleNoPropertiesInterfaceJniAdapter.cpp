@@ -43,7 +43,7 @@ DEFINE_LOG_CATEGORY(LogTbSimpleNoPropertiesInterface_JNI);
 
 namespace
 {
-UTbSimpleNoPropertiesInterfaceJniAdapter* gUTbSimpleNoPropertiesInterfaceJniAdapterHandle = nullptr;
+std::atomic<ITbSimpleNoPropertiesInterfaceJniAdapterAccessor*> gUTbSimpleNoPropertiesInterfaceJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -101,7 +101,7 @@ UTbSimpleNoPropertiesInterfaceJniAdapter::UTbSimpleNoPropertiesInterfaceJniAdapt
 void UTbSimpleNoPropertiesInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTbSimpleNoPropertiesInterfaceJniAdapterHandle = this;
+	gUTbSimpleNoPropertiesInterfaceJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbSimpleNoPropertiesInterfaceJniAdapterCache::init();
@@ -135,7 +135,7 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::Initialize(FSubsystemCollectionBa
 void UTbSimpleNoPropertiesInterfaceJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTbSimpleNoPropertiesInterfaceJniAdapterHandle = nullptr;
+	gUTbSimpleNoPropertiesInterfaceJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -174,23 +174,26 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::Deinitialize()
 
 void UTbSimpleNoPropertiesInterfaceJniAdapter::setBackendService(TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTbSimpleNoPropertiesInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleNoPropertiesInterface is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTbSimpleNoPropertiesInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoPropertiesInterface"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoPropertiesInterface"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleNoPropertiesInterface is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTbSimpleNoPropertiesInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoPropertiesInterface"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -270,17 +273,25 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::OnSigBoolSignal(bool bParamBool)
 #endif
 }
 
+TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> UTbSimpleNoPropertiesInterfaceJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniService_nativeFuncVoid(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbSimpleNoPropertiesInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniService_nativeFuncVoid"));
-	if (gUTbSimpleNoPropertiesInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoPropertiesInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoPropertiesInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniService_nativeFuncVoid: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoPropertiesInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniService_nativeFuncVoid, UTbSimpleNoPropertiesInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbSimpleNoPropertiesInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->FuncVoid();
@@ -295,13 +306,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniService
 JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniService_nativeFuncBool(JNIEnv* Env, jclass Clazz, jboolean paramBool)
 {
 	UE_LOG(LogTbSimpleNoPropertiesInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniService_nativeFuncBool"));
-	if (gUTbSimpleNoPropertiesInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoPropertiesInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoPropertiesInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniService_nativeFuncBool: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoPropertiesInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniService_nativeFuncBool, UTbSimpleNoPropertiesInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return false;
 	}
 
-	auto service = gUTbSimpleNoPropertiesInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->FuncBool(paramBool);

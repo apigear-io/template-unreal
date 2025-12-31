@@ -46,7 +46,7 @@ DEFINE_LOG_CATEGORY(LogCounterCounter_JNI);
 
 namespace
 {
-UCounterCounterJniAdapter* gUCounterCounterJniAdapterHandle = nullptr;
+std::atomic<ICounterCounterJniAdapterAccessor*> gUCounterCounterJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -122,7 +122,7 @@ UCounterCounterJniAdapter::UCounterCounterJniAdapter()
 void UCounterCounterJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUCounterCounterJniAdapterHandle = this;
+	gUCounterCounterJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UCounterCounterJniAdapterCache::init();
@@ -156,7 +156,7 @@ void UCounterCounterJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 void UCounterCounterJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUCounterCounterJniAdapterHandle = nullptr;
+	gUCounterCounterJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -195,23 +195,26 @@ void UCounterCounterJniAdapter::Deinitialize()
 
 void UCounterCounterJniAdapter::setBackendService(TScriptInterface<ICounterCounterInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface CounterCounter is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface CounterCounter is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -378,19 +381,27 @@ void UCounterCounterJniAdapter::OnExternVectorArrayChanged(const TArray<FVector>
 #endif
 }
 
+TScriptInterface<ICounterCounterInterface> UCounterCounterJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeIncrement(JNIEnv* Env, jclass Clazz, jobject vec)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrement"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrement: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	FVector local_vec = FVector(0.f, 0.f, 0.f);
 	ExternTypesDataJavaConverter::fillMyVector3D(Env, vec, local_vec);
 
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrement, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Increment(local_vec);
@@ -406,15 +417,17 @@ JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeIncrem
 JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeIncrementArray(JNIEnv* Env, jclass Clazz, jobjectArray vec)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrementArray"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrementArray: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	TArray<FVector> local_vec = TArray<FVector>();
 	ExternTypesDataJavaConverter::fillMyVector3DArray(Env, vec, local_vec);
 
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrementArray, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->IncrementArray(local_vec);
@@ -430,15 +443,17 @@ JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeI
 JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeDecrement(JNIEnv* Env, jclass Clazz, jobject vec)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrement"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrement: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	FCustomTypesVector3D local_vec = FCustomTypesVector3D();
 	CustomTypesDataJavaConverter::fillVector3D(Env, vec, local_vec);
 
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrement, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Decrement(local_vec);
@@ -454,15 +469,17 @@ JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeDecrem
 JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeDecrementArray(JNIEnv* Env, jclass Clazz, jobjectArray vec)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrementArray"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrementArray: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	TArray<FCustomTypesVector3D> local_vec = TArray<FCustomTypesVector3D>();
 	CustomTypesDataJavaConverter::fillVector3DArray(Env, vec, local_vec);
 
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrementArray, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->DecrementArray(local_vec);
@@ -478,16 +495,18 @@ JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeD
 JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetVector(JNIEnv* Env, jclass Clazz, jobject vector)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetVector"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetVector: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	FCustomTypesVector3D local_vector = FCustomTypesVector3D();
 	CustomTypesDataJavaConverter::fillVector3D(Env, vector, local_vector);
 
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetVector, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetVector(local_vector);
@@ -501,12 +520,15 @@ JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetVector
 JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeGetVector(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetVector"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetVector: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetVector, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Vector = service->GetVector();
@@ -523,16 +545,18 @@ JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeGetVec
 JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetExternVector(JNIEnv* Env, jclass Clazz, jobject extern_vector)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetExternVector"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetExternVector: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	FVector local_extern_vector = FVector(0.f, 0.f, 0.f);
 	ExternTypesDataJavaConverter::fillMyVector3D(Env, extern_vector, local_extern_vector);
 
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetExternVector, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetExternVector(local_extern_vector);
@@ -546,12 +570,15 @@ JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetExtern
 JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeGetExternVector(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetExternVector"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetExternVector: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetExternVector, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto ExternVector = service->GetExternVector();
@@ -568,16 +595,18 @@ JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeGetExt
 JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetVectorArray(JNIEnv* Env, jclass Clazz, jobjectArray vectorArray)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetVectorArray"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetVectorArray: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	TArray<FCustomTypesVector3D> local_vector_array = TArray<FCustomTypesVector3D>();
 	CustomTypesDataJavaConverter::fillVector3DArray(Env, vectorArray, local_vector_array);
 
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetVectorArray, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetVectorArray(local_vector_array);
@@ -591,12 +620,15 @@ JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetVector
 JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeGetVectorArray(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetVectorArray"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetVectorArray: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetVectorArray, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto VectorArray = service->GetVectorArray();
@@ -613,16 +645,18 @@ JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeG
 JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetExternVectorArray(JNIEnv* Env, jclass Clazz, jobjectArray extern_vectorArray)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetExternVectorArray"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetExternVectorArray: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	TArray<FVector> local_extern_vector_array = TArray<FVector>();
 	ExternTypesDataJavaConverter::fillMyVector3DArray(Env, extern_vectorArray, local_extern_vector_array);
 
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeSetExternVectorArray, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetExternVectorArray(local_extern_vector_array);
@@ -636,12 +670,15 @@ JNI_METHOD void Java_counter_counterjniservice_CounterJniService_nativeSetExtern
 JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeGetExternVectorArray(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetExternVectorArray"));
-	if (gUCounterCounterJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetExternVectorArray: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeGetExternVectorArray, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUCounterCounterJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto ExternVectorArray = service->GetExternVectorArray();

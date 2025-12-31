@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleVoidInterface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbSimpleVoidInterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITbSimpleVoidInterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbSimpleVoidInterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbSimpleVoidInterfaceInterface
  */
 UCLASS(BlueprintType)
-class TBSIMPLEJNI_API UTbSimpleVoidInterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSimpleVoidInterfaceSubscriberInterface
+class TBSIMPLEJNI_API UTbSimpleVoidInterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSimpleVoidInterfaceSubscriberInterface, public ITbSimpleVoidInterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbSimpleVoidInterfaceJniAdapter();
 	virtual ~UTbSimpleVoidInterfaceJniAdapter() = default;
 
@@ -67,6 +78,10 @@ private:
 #endif
 #endif
 	void OnSigVoidSignal() override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbSimpleVoidInterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|VoidInterface")
