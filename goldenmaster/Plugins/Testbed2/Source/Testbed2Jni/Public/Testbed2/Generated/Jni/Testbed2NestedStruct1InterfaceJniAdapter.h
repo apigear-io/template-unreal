@@ -11,6 +11,7 @@
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -21,14 +22,24 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct1Interface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITestbed2NestedStruct1InterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITestbed2NestedStruct1InterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITestbed2NestedStruct1InterfaceInterface
  */
 UCLASS(BlueprintType)
-class TESTBED2JNI_API UTestbed2NestedStruct1InterfaceJniAdapter : public UGameInstanceSubsystem, public ITestbed2NestedStruct1InterfaceSubscriberInterface
+class TESTBED2JNI_API UTestbed2NestedStruct1InterfaceJniAdapter : public UGameInstanceSubsystem, public ITestbed2NestedStruct1InterfaceSubscriberInterface, public ITestbed2NestedStruct1InterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTestbed2NestedStruct1InterfaceJniAdapter();
 	virtual ~UTestbed2NestedStruct1InterfaceJniAdapter() = default;
 
@@ -55,6 +66,10 @@ private:
 	void OnSig1Signal(const FTestbed2NestedStruct1& Param1) override;
 
 	void OnProp1Changed(const FTestbed2NestedStruct1& Prop1) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|NestedStruct1Interface")
