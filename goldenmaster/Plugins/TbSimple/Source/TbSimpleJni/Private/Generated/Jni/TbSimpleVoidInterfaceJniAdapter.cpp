@@ -43,7 +43,7 @@ DEFINE_LOG_CATEGORY(LogTbSimpleVoidInterface_JNI);
 
 namespace
 {
-UTbSimpleVoidInterfaceJniAdapter* gUTbSimpleVoidInterfaceJniAdapterHandle = nullptr;
+std::atomic<ITbSimpleVoidInterfaceJniAdapterAccessor*> gUTbSimpleVoidInterfaceJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -95,7 +95,7 @@ UTbSimpleVoidInterfaceJniAdapter::UTbSimpleVoidInterfaceJniAdapter()
 void UTbSimpleVoidInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTbSimpleVoidInterfaceJniAdapterHandle = this;
+	gUTbSimpleVoidInterfaceJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbSimpleVoidInterfaceJniAdapterCache::init();
@@ -129,7 +129,7 @@ void UTbSimpleVoidInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Coll
 void UTbSimpleVoidInterfaceJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTbSimpleVoidInterfaceJniAdapterHandle = nullptr;
+	gUTbSimpleVoidInterfaceJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -168,23 +168,26 @@ void UTbSimpleVoidInterfaceJniAdapter::Deinitialize()
 
 void UTbSimpleVoidInterfaceJniAdapter::setBackendService(TScriptInterface<ITbSimpleVoidInterfaceInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTbSimpleVoidInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleVoidInterface is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTbSimpleVoidInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleVoidInterface"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleVoidInterface is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTbSimpleVoidInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleVoidInterface"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -239,17 +242,25 @@ void UTbSimpleVoidInterfaceJniAdapter::OnSigVoidSignal()
 #endif
 }
 
+TScriptInterface<ITbSimpleVoidInterfaceInterface> UTbSimpleVoidInterfaceJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeFuncVoid(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbSimpleVoidInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeFuncVoid"));
-	if (gUTbSimpleVoidInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleVoidInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeFuncVoid: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeFuncVoid, UTbSimpleVoidInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbSimpleVoidInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->FuncVoid();

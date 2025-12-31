@@ -44,7 +44,7 @@ DEFINE_LOG_CATEGORY(LogTestbed2ManyParamInterface_JNI);
 
 namespace
 {
-UTestbed2ManyParamInterfaceJniAdapter* gUTestbed2ManyParamInterfaceJniAdapterHandle = nullptr;
+std::atomic<ITestbed2ManyParamInterfaceJniAdapterAccessor*> gUTestbed2ManyParamInterfaceJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -138,7 +138,7 @@ UTestbed2ManyParamInterfaceJniAdapter::UTestbed2ManyParamInterfaceJniAdapter()
 void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTestbed2ManyParamInterfaceJniAdapterHandle = this;
+	gUTestbed2ManyParamInterfaceJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTestbed2ManyParamInterfaceJniAdapterCache::init();
@@ -172,7 +172,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 void UTestbed2ManyParamInterfaceJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTestbed2ManyParamInterfaceJniAdapterHandle = nullptr;
+	gUTestbed2ManyParamInterfaceJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -211,23 +211,26 @@ void UTestbed2ManyParamInterfaceJniAdapter::Deinitialize()
 
 void UTestbed2ManyParamInterfaceJniAdapter::setBackendService(TScriptInterface<ITestbed2ManyParamInterfaceInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface Testbed2ManyParamInterface is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2ManyParamInterface"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface Testbed2ManyParamInterface is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2ManyParamInterface"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -453,17 +456,25 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp4Changed(int32 Prop4)
 #endif
 }
 
+TScriptInterface<ITestbed2ManyParamInterfaceInterface> UTestbed2ManyParamInterfaceJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc1(JNIEnv* Env, jclass Clazz, jint param1)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc1"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc1: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc1, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
 
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func1(param1);
@@ -478,13 +489,15 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc2(JNIEnv* Env, jclass Clazz, jint param1, jint param2)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc2"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc2: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc2, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
 
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func2(param1, param2);
@@ -499,13 +512,15 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc3(JNIEnv* Env, jclass Clazz, jint param1, jint param2, jint param3)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc3"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc3: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc3, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
 
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func3(param1, param2, param3);
@@ -520,13 +535,15 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc4(JNIEnv* Env, jclass Clazz, jint param1, jint param2, jint param3, jint param4)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc4"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc4: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc4, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
 
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func4(param1, param2, param3, param4);
@@ -541,13 +558,15 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp1(JNIEnv* Env, jclass Clazz, jint prop1)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp1"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp1: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp1, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp1(prop1);
@@ -561,12 +580,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp1(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp1"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp1: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp1, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop1 = service->GetProp1();
@@ -581,13 +603,15 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp2(JNIEnv* Env, jclass Clazz, jint prop2)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp2"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp2: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp2, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp2(prop2);
@@ -601,12 +625,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp2(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp2"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp2: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp2, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop2 = service->GetProp2();
@@ -621,13 +648,15 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp3(JNIEnv* Env, jclass Clazz, jint prop3)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp3"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp3: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp3, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp3(prop3);
@@ -641,12 +670,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp3(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp3"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp3: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp3, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop3 = service->GetProp3();
@@ -661,13 +693,15 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp4(JNIEnv* Env, jclass Clazz, jint prop4)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp4"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp4: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeSetProp4, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp4(prop4);
@@ -681,12 +715,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp4(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp4"));
-	if (gUTestbed2ManyParamInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp4: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeGetProp4, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
-	auto service = gUTestbed2ManyParamInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop4 = service->GetProp4();

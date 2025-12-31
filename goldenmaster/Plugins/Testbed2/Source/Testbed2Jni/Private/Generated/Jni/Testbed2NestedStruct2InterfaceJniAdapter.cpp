@@ -44,7 +44,7 @@ DEFINE_LOG_CATEGORY(LogTestbed2NestedStruct2Interface_JNI);
 
 namespace
 {
-UTestbed2NestedStruct2InterfaceJniAdapter* gUTestbed2NestedStruct2InterfaceJniAdapterHandle = nullptr;
+std::atomic<ITestbed2NestedStruct2InterfaceJniAdapterAccessor*> gUTestbed2NestedStruct2InterfaceJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -114,7 +114,7 @@ UTestbed2NestedStruct2InterfaceJniAdapter::UTestbed2NestedStruct2InterfaceJniAda
 void UTestbed2NestedStruct2InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTestbed2NestedStruct2InterfaceJniAdapterHandle = this;
+	gUTestbed2NestedStruct2InterfaceJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTestbed2NestedStruct2InterfaceJniAdapterCache::init();
@@ -148,7 +148,7 @@ void UTestbed2NestedStruct2InterfaceJniAdapter::Initialize(FSubsystemCollectionB
 void UTestbed2NestedStruct2InterfaceJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTestbed2NestedStruct2InterfaceJniAdapterHandle = nullptr;
+	gUTestbed2NestedStruct2InterfaceJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -187,23 +187,26 @@ void UTestbed2NestedStruct2InterfaceJniAdapter::Deinitialize()
 
 void UTestbed2NestedStruct2InterfaceJniAdapter::setBackendService(TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTestbed2NestedStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct2Interface"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2NestedStruct2InterfaceSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface Testbed2NestedStruct2Interface is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTestbed2NestedStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct2Interface"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2NestedStruct2InterfaceSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2NestedStruct2Interface"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2NestedStruct2InterfaceSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface Testbed2NestedStruct2Interface is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTestbed2NestedStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2NestedStruct2Interface"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2NestedStruct2InterfaceSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -341,19 +344,27 @@ void UTestbed2NestedStruct2InterfaceJniAdapter::OnProp2Changed(const FTestbed2Ne
 #endif
 }
 
+TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> UTestbed2NestedStruct2InterfaceJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
 	UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc1"));
-	if (gUTestbed2NestedStruct2InterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc1: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	FTestbed2NestedStruct1 local_param1 = FTestbed2NestedStruct1();
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, param1, local_param1);
 
-	auto service = gUTestbed2NestedStruct2InterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTestbed2NestedStruct2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc1, UTestbed2NestedStruct2InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func1(local_param1);
@@ -369,17 +380,19 @@ JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniSer
 JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc2(JNIEnv* Env, jclass Clazz, jobject param1, jobject param2)
 {
 	UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc2"));
-	if (gUTestbed2NestedStruct2InterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc2: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	FTestbed2NestedStruct1 local_param1 = FTestbed2NestedStruct1();
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, param1, local_param1);
 	FTestbed2NestedStruct2 local_param2 = FTestbed2NestedStruct2();
 	Testbed2DataJavaConverter::fillNestedStruct2(Env, param2, local_param2);
 
-	auto service = gUTestbed2NestedStruct2InterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTestbed2NestedStruct2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc2, UTestbed2NestedStruct2InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func2(local_param1, local_param2);
@@ -395,16 +408,18 @@ JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniSer
 JNI_METHOD void Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeSetProp1(JNIEnv* Env, jclass Clazz, jobject prop1)
 {
 	UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeSetProp1"));
-	if (gUTestbed2NestedStruct2InterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeSetProp1: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	FTestbed2NestedStruct1 local_prop1 = FTestbed2NestedStruct1();
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, prop1, local_prop1);
 
-	auto service = gUTestbed2NestedStruct2InterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTestbed2NestedStruct2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeSetProp1, UTestbed2NestedStruct2InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp1(local_prop1);
@@ -418,12 +433,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniServic
 JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeGetProp1(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeGetProp1"));
-	if (gUTestbed2NestedStruct2InterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2NestedStruct2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeGetProp1: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeGetProp1, UTestbed2NestedStruct2InterfaceJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTestbed2NestedStruct2InterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop1 = service->GetProp1();
@@ -440,16 +458,18 @@ JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniSer
 JNI_METHOD void Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeSetProp2(JNIEnv* Env, jclass Clazz, jobject prop2)
 {
 	UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeSetProp2"));
-	if (gUTestbed2NestedStruct2InterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeSetProp2: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	FTestbed2NestedStruct2 local_prop2 = FTestbed2NestedStruct2();
 	Testbed2DataJavaConverter::fillNestedStruct2(Env, prop2, local_prop2);
 
-	auto service = gUTestbed2NestedStruct2InterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTestbed2NestedStruct2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeSetProp2, UTestbed2NestedStruct2InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp2(local_prop2);
@@ -463,12 +483,15 @@ JNI_METHOD void Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniServic
 JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeGetProp2(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Verbose, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeGetProp2"));
-	if (gUTestbed2NestedStruct2InterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTestbed2NestedStruct2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeGetProp2: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeGetProp2, UTestbed2NestedStruct2InterfaceJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTestbed2NestedStruct2InterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop2 = service->GetProp2();

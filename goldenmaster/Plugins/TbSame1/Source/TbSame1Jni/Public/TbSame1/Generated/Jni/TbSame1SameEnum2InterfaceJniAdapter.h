@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameEnum2Interface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbSame1SameEnum2InterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITbSame1SameEnum2InterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbSame1SameEnum2InterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbSame1SameEnum2InterfaceInterface
  */
 UCLASS(BlueprintType)
-class TBSAME1JNI_API UTbSame1SameEnum2InterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSame1SameEnum2InterfaceSubscriberInterface
+class TBSAME1JNI_API UTbSame1SameEnum2InterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSame1SameEnum2InterfaceSubscriberInterface, public ITbSame1SameEnum2InterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbSame1SameEnum2InterfaceJniAdapter();
 	virtual ~UTbSame1SameEnum2InterfaceJniAdapter() = default;
 
@@ -72,6 +83,10 @@ private:
 
 	void OnProp1Changed(ETbSame1Enum1 Prop1) override;
 	void OnProp2Changed(ETbSame1Enum2 Prop2) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbSame1SameEnum2InterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameEnum2Interface")
