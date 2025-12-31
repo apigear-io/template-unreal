@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleArrayInterface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbSimpleSimpleArrayInterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITbSimpleSimpleArrayInterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbSimpleSimpleArrayInterfaceInterface
  */
 UCLASS(BlueprintType)
-class TBSIMPLEJNI_API UTbSimpleSimpleArrayInterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSimpleSimpleArrayInterfaceSubscriberInterface
+class TBSIMPLEJNI_API UTbSimpleSimpleArrayInterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSimpleSimpleArrayInterfaceSubscriberInterface, public ITbSimpleSimpleArrayInterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbSimpleSimpleArrayInterfaceJniAdapter();
 	virtual ~UTbSimpleSimpleArrayInterfaceJniAdapter() = default;
 
@@ -91,6 +102,10 @@ private:
 	void OnPropFloat64Changed(const TArray<double>& PropFloat64) override;
 	void OnPropStringChanged(const TArray<FString>& PropString) override;
 	void OnPropReadOnlyStringChanged(const FString& PropReadOnlyString) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleArrayInterface")

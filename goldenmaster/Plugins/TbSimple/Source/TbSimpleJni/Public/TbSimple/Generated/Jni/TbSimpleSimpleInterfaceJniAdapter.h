@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleInterface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbSimpleSimpleInterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITbSimpleSimpleInterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbSimpleSimpleInterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbSimpleSimpleInterfaceInterface
  */
 UCLASS(BlueprintType)
-class TBSIMPLEJNI_API UTbSimpleSimpleInterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSimpleSimpleInterfaceSubscriberInterface
+class TBSIMPLEJNI_API UTbSimpleSimpleInterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSimpleSimpleInterfaceSubscriberInterface, public ITbSimpleSimpleInterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbSimpleSimpleInterfaceJniAdapter();
 	virtual ~UTbSimpleSimpleInterfaceJniAdapter() = default;
 
@@ -90,6 +101,10 @@ private:
 	void OnPropFloat32Changed(float PropFloat32) override;
 	void OnPropFloat64Changed(double PropFloat64) override;
 	void OnPropStringChanged(const FString& PropString) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbSimpleSimpleInterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSimple|SimpleInterface")

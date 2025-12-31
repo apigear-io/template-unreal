@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameStruct1Interface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbSame1SameStruct1InterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITbSame1SameStruct1InterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbSame1SameStruct1InterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbSame1SameStruct1InterfaceInterface
  */
 UCLASS(BlueprintType)
-class TBSAME1JNI_API UTbSame1SameStruct1InterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSame1SameStruct1InterfaceSubscriberInterface
+class TBSAME1JNI_API UTbSame1SameStruct1InterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSame1SameStruct1InterfaceSubscriberInterface, public ITbSame1SameStruct1InterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbSame1SameStruct1InterfaceJniAdapter();
 	virtual ~UTbSame1SameStruct1InterfaceJniAdapter() = default;
 
@@ -69,6 +80,10 @@ private:
 	void OnSig1Signal(const FTbSame1Struct1& Param1) override;
 
 	void OnProp1Changed(const FTbSame1Struct1& Prop1) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbSame1SameStruct1InterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameStruct1Interface")

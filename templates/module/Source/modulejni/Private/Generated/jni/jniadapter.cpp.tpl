@@ -197,7 +197,7 @@ DEFINE_LOG_CATEGORY(Log{{$Iface}}_JNI);
 
 namespace
 {
-{{$Class}}* g{{$Class}}Handle = nullptr;
+std::atomic<I{{$DisplayName}}JniAdapterAccessor*> g{{$Class}}Handle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -284,7 +284,7 @@ void {{$Class}}Cache::clear()
 void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	g{{$Class}}Handle = this;
+	g{{$Class}}Handle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	{{$Class}}Cache::init();
@@ -318,7 +318,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 void {{$Class}}::Deinitialize()
 {
 	callJniServiceReady(false);
-	g{{$Class}}Handle = nullptr;
+	g{{$Class}}Handle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -357,24 +357,27 @@ void {{$Class}}::Deinitialize()
 
 void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{$IfaceName}}Interface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface {{$Iface}} is not fully implemented"));
+
+		// subscribe to new backend
+	{{- $Service := printf "I%sInterface" $Iface }}
+		BackendService = InService;
 		U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface {{$Iface}} is not fully implemented"));
-
-	// subscribe to new backend
-{{- $Service := printf "I%sInterface" $Iface }}
-	BackendService = InService;
-	U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -501,15 +504,27 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 }
 {{- end }}
 
+TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> {{$Class}}::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 {{- range .Interface.Operations }}
 JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel .Name }}(JNIEnv* Env, jclass Clazz{{- if len (.Params) }}, {{end}}{{jniJavaParams "" .Params }})
 {
 	UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("{{$jniFullFuncPrefix}}_native{{Camel .Name}}"));
-	if (g{{$Class}}Handle == nullptr)
+
+{{- range .Params -}}
+	{{- template "convert_to_local_cpp_value_java_param" . }}
+{{- end }}
+
+	auto jniAccessor = g{{$Class}}Handle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_native{{ Camel .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_native{{ Camel .Name }}, {{$Class}} not valid to use, probably too early or too late."));
 		{{- if .Return.IsVoid }}
 		return;
 		{{- else}}
@@ -517,11 +532,7 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel .N
 		{{- end}}
 	}
 
-{{- range .Params -}}
-	{{- template "convert_to_local_cpp_value_java_param" . }}
-{{- end }}
-
-	auto service = g{{$Class}}Handle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 	{{- $cppropName := "result"}}
@@ -626,11 +637,6 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel .N
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}(JNIEnv* Env, jclass Clazz, {{jniJavaParam "" . }})
 {
 	UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("{{$jniFullFuncPrefix}}_nativeSet{{Camel .Name}}"));
-	if (g{{$Class}}Handle == nullptr)
-	{
-		UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	{{- if or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}
 	{{- nl}}
 	{{- end}}
@@ -638,7 +644,14 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}(JNIEnv* Env, j
 	{{- $hasLocalVar := or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}
 	{{- $local_value := printf "local_%s" (snake .Name) }}
 
-	auto service = g{{$Class}}Handle->getBackendService();
+	auto jniAccessor = g{{$Class}}Handle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}, {{$Class}} not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 	{{- if $hasLocalVar }}
@@ -657,12 +670,15 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeSet{{ Camel .Name }}(JNIEnv* Env, j
 JNI_METHOD {{jniToReturnType .}} {{$jniFullFuncPrefix}}_nativeGet{{ Camel .Name }}(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("{{$jniFullFuncPrefix}}_nativeGet{{Camel .Name}}"));
-	if (g{{$Class}}Handle == nullptr)
+
+	auto jniAccessor = g{{$Class}}Handle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeGet{{Camel .Name }}: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeGet{{Camel .Name }}, {{$Class}} not valid to use, probably too early or too late."));
 		return {{ jniEmptyReturn . }};
 	}
-	auto service = g{{$Class}}Handle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 	{{- $cppropName := ueVar "" .}}
