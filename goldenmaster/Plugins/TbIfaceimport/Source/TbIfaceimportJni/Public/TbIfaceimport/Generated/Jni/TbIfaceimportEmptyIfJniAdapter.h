@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbIfaceimportEmptyIf_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbIfaceimportEmptyIfJniAdapterAccessor
+{
+public:
+	virtual ~ITbIfaceimportEmptyIfJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbIfaceimportEmptyIfInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbIfaceimportEmptyIfInterface
  */
 UCLASS(BlueprintType)
-class TBIFACEIMPORTJNI_API UTbIfaceimportEmptyIfJniAdapter : public UGameInstanceSubsystem, public ITbIfaceimportEmptyIfSubscriberInterface
+class TBIFACEIMPORTJNI_API UTbIfaceimportEmptyIfJniAdapter : public UGameInstanceSubsystem, public ITbIfaceimportEmptyIfSubscriberInterface, public ITbIfaceimportEmptyIfJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbIfaceimportEmptyIfJniAdapter();
 	virtual ~UTbIfaceimportEmptyIfJniAdapter() = default;
 
@@ -66,6 +77,10 @@ private:
 	jobject m_javaJniServiceInstance = nullptr;
 #endif
 #endif
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbIfaceimportEmptyIfInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbIfaceimport|EmptyIf")

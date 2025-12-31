@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITestbed2ManyParamInterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITestbed2ManyParamInterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITestbed2ManyParamInterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITestbed2ManyParamInterfaceInterface
  */
 UCLASS(BlueprintType)
-class TESTBED2JNI_API UTestbed2ManyParamInterfaceJniAdapter : public UGameInstanceSubsystem, public ITestbed2ManyParamInterfaceSubscriberInterface
+class TESTBED2JNI_API UTestbed2ManyParamInterfaceJniAdapter : public UGameInstanceSubsystem, public ITestbed2ManyParamInterfaceSubscriberInterface, public ITestbed2ManyParamInterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTestbed2ManyParamInterfaceJniAdapter();
 	virtual ~UTestbed2ManyParamInterfaceJniAdapter() = default;
 
@@ -78,6 +89,10 @@ private:
 	void OnProp2Changed(int32 Prop2) override;
 	void OnProp3Changed(int32 Prop3) override;
 	void OnProp4Changed(int32 Prop4) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITestbed2ManyParamInterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed2|ManyParamInterface")

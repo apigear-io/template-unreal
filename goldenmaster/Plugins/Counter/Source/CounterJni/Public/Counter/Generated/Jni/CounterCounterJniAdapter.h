@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounter_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ICounterCounterJniAdapterAccessor
+{
+public:
+	virtual ~ICounterCounterJniAdapterAccessor() = default;
+	virtual TScriptInterface<ICounterCounterInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ICounterCounterInterface
  */
 UCLASS(BlueprintType)
-class COUNTERJNI_API UCounterCounterJniAdapter : public UGameInstanceSubsystem, public ICounterCounterSubscriberInterface
+class COUNTERJNI_API UCounterCounterJniAdapter : public UGameInstanceSubsystem, public ICounterCounterSubscriberInterface, public ICounterCounterJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UCounterCounterJniAdapter();
 	virtual ~UCounterCounterJniAdapter() = default;
 
@@ -72,6 +83,10 @@ private:
 	void OnExternVectorChanged(const FVector& ExternVector) override;
 	void OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& VectorArray) override;
 	void OnExternVectorArrayChanged(const TArray<FVector>& ExternVectorArray) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ICounterCounterInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Counter|Counter")

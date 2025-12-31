@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesNamEs_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbNamesNamEsJniAdapterAccessor
+{
+public:
+	virtual ~ITbNamesNamEsJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbNamesNamEsInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbNamesNamEsInterface
  */
 UCLASS(BlueprintType)
-class TBNAMESJNI_API UTbNamesNamEsJniAdapter : public UGameInstanceSubsystem, public ITbNamesNamEsSubscriberInterface
+class TBNAMESJNI_API UTbNamesNamEsJniAdapter : public UGameInstanceSubsystem, public ITbNamesNamEsSubscriberInterface, public ITbNamesNamEsJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbNamesNamEsJniAdapter();
 	virtual ~UTbNamesNamEsJniAdapter() = default;
 
@@ -74,6 +85,10 @@ private:
 	void OnSomePropertyChanged(int32 SomeProperty) override;
 	void OnSomePoperty2Changed(int32 SomePoperty2) override;
 	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbNamesNamEsInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbNames|NamEs")

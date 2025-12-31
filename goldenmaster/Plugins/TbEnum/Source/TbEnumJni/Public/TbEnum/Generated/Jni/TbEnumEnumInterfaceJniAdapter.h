@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbEnumEnumInterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITbEnumEnumInterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbEnumEnumInterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbEnumEnumInterfaceInterface
  */
 UCLASS(BlueprintType)
-class TBENUMJNI_API UTbEnumEnumInterfaceJniAdapter : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceSubscriberInterface
+class TBENUMJNI_API UTbEnumEnumInterfaceJniAdapter : public UGameInstanceSubsystem, public ITbEnumEnumInterfaceSubscriberInterface, public ITbEnumEnumInterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbEnumEnumInterfaceJniAdapter();
 	virtual ~UTbEnumEnumInterfaceJniAdapter() = default;
 
@@ -78,6 +89,10 @@ private:
 	void OnProp1Changed(ETbEnumEnum1 Prop1) override;
 	void OnProp2Changed(ETbEnumEnum2 Prop2) override;
 	void OnProp3Changed(ETbEnumEnum3 Prop3) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbEnumEnumInterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbEnum|EnumInterface")

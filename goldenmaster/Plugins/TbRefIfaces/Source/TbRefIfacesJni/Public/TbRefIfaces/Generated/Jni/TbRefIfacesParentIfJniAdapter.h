@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesParentIf_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbRefIfacesParentIfJniAdapterAccessor
+{
+public:
+	virtual ~ITbRefIfacesParentIfJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbRefIfacesParentIfInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbRefIfacesParentIfInterface
  */
 UCLASS(BlueprintType)
-class TBREFIFACESJNI_API UTbRefIfacesParentIfJniAdapter : public UGameInstanceSubsystem, public ITbRefIfacesParentIfSubscriberInterface
+class TBREFIFACESJNI_API UTbRefIfacesParentIfJniAdapter : public UGameInstanceSubsystem, public ITbRefIfacesParentIfSubscriberInterface, public ITbRefIfacesParentIfJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbRefIfacesParentIfJniAdapter();
 	virtual ~UTbRefIfacesParentIfJniAdapter() = default;
 
@@ -78,6 +89,10 @@ private:
 	void OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& LocalIfList) override;
 	void OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& ImportedIf) override;
 	void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbRefIfacesParentIfInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbRefIfaces|ParentIf")
