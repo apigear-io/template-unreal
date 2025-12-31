@@ -20,6 +20,7 @@
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -30,14 +31,24 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class I{{$DisplayName}}JniAdapterAccessor
+{
+public:
+	virtual ~I{{$DisplayName}}JniAdapterAccessor() = default;
+	virtual TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface
  */
 UCLASS(BlueprintType)
-class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}SubscriberInterface
+class {{ $API_MACRO }} {{$Class}} : public UGameInstanceSubsystem, public I{{$Iface}}SubscriberInterface, public I{{$DisplayName}}JniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit {{$Class}}();
 	virtual ~{{$Class}}() = default;
 
@@ -71,6 +82,10 @@ private:
 {{- range $i, $e := .Interface.Properties }}
 	void On{{Camel .Name}}Changed({{ueParam "" .}}) override;
 {{- end }}
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "{{$Category}}")
