@@ -44,7 +44,7 @@ DEFINE_LOG_CATEGORY(LogTbNamesNamEs_JNI);
 
 namespace
 {
-UTbNamesNamEsJniAdapter* gUTbNamesNamEsJniAdapterHandle = nullptr;
+std::atomic<ITbNamesNamEsJniAdapterAccessor*> gUTbNamesNamEsJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -126,7 +126,7 @@ UTbNamesNamEsJniAdapter::UTbNamesNamEsJniAdapter()
 void UTbNamesNamEsJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTbNamesNamEsJniAdapterHandle = this;
+	gUTbNamesNamEsJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbNamesNamEsJniAdapterCache::init();
@@ -160,7 +160,7 @@ void UTbNamesNamEsJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 void UTbNamesNamEsJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTbNamesNamEsJniAdapterHandle = nullptr;
+	gUTbNamesNamEsJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -199,23 +199,26 @@ void UTbNamesNamEsJniAdapter::Deinitialize()
 
 void UTbNamesNamEsJniAdapter::setBackendService(TScriptInterface<ITbNamesNamEsInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbNamesNamEs is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbNamesNamEs is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -392,17 +395,25 @@ void UTbNamesNamEsJniAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scor
 #endif
 }
 
+TScriptInterface<ITbNamesNamEsInterface> UTbNamesNamEsJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction(JNIEnv* Env, jclass Clazz, jboolean SOME_PARAM)
 {
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction"));
-	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction, UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SomeFunction(SOME_PARAM);
@@ -417,13 +428,15 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunctio
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2(JNIEnv* Env, jclass Clazz, jboolean Some_Param)
 {
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2"));
-	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2, UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SomeFunction2(Some_Param);
@@ -438,13 +451,15 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunctio
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch(JNIEnv* Env, jclass Clazz, jboolean Switch)
 {
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch"));
-	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch, UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetSwitch(Switch);
@@ -458,12 +473,15 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSwitch(J
 JNI_METHOD jboolean Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwitch(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwitch"));
-	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwitch: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwitch, UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
 		return false;
 	}
-	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto bSwitch = service->GetSwitch();
@@ -478,13 +496,15 @@ JNI_METHOD jboolean Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSwit
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProperty(JNIEnv* Env, jclass Clazz, jint SOME_PROPERTY)
 {
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProperty"));
-	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProperty, UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetSomeProperty(SOME_PROPERTY);
@@ -498,12 +518,15 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomeProp
 JNI_METHOD jint Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProperty(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProperty"));
-	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProperty, UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
-	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto SomeProperty = service->GetSomeProperty();
@@ -518,13 +541,15 @@ JNI_METHOD jint Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomeProp
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePoperty2(JNIEnv* Env, jclass Clazz, jint Some_Poperty2)
 {
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePoperty2"));
-	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePoperty2: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePoperty2, UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetSomePoperty2(Some_Poperty2);
@@ -538,12 +563,15 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetSomePope
 JNI_METHOD jint Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePoperty2(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePoperty2"));
-	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePoperty2: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePoperty2, UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
-	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto SomePoperty2 = service->GetSomePoperty2();
@@ -558,15 +586,17 @@ JNI_METHOD jint Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetSomePope
 JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProperty(JNIEnv* Env, jclass Clazz, jobject enum_property)
 {
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProperty"));
-	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProperty: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	ETbNamesEnum_With_Under_scores local_enum_property = TbNamesDataJavaConverter::getEnumWithUnderScoresValue(Env, enum_property);
 
-	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProperty, UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetEnumProperty(local_enum_property);
@@ -580,12 +610,15 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSetEnumProp
 JNI_METHOD jobject Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetEnumProperty(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetEnumProperty"));
-	if (gUTbNamesNamEsJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetEnumProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeGetEnumProperty, UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbNamesNamEsJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto EnumProperty = service->GetEnumProperty();

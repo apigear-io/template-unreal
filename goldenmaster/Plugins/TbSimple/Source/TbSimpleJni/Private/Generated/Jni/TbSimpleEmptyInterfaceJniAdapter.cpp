@@ -43,7 +43,7 @@ DEFINE_LOG_CATEGORY(LogTbSimpleEmptyInterface_JNI);
 
 namespace
 {
-UTbSimpleEmptyInterfaceJniAdapter* gUTbSimpleEmptyInterfaceJniAdapterHandle = nullptr;
+std::atomic<ITbSimpleEmptyInterfaceJniAdapterAccessor*> gUTbSimpleEmptyInterfaceJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -89,7 +89,7 @@ UTbSimpleEmptyInterfaceJniAdapter::UTbSimpleEmptyInterfaceJniAdapter()
 void UTbSimpleEmptyInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTbSimpleEmptyInterfaceJniAdapterHandle = this;
+	gUTbSimpleEmptyInterfaceJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbSimpleEmptyInterfaceJniAdapterCache::init();
@@ -123,7 +123,7 @@ void UTbSimpleEmptyInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Col
 void UTbSimpleEmptyInterfaceJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTbSimpleEmptyInterfaceJniAdapterHandle = nullptr;
+	gUTbSimpleEmptyInterfaceJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -162,23 +162,26 @@ void UTbSimpleEmptyInterfaceJniAdapter::Deinitialize()
 
 void UTbSimpleEmptyInterfaceJniAdapter::setBackendService(TScriptInterface<ITbSimpleEmptyInterfaceInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTbSimpleEmptyInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleEmptyInterface"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleEmptyInterfaceSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleEmptyInterface is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTbSimpleEmptyInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleEmptyInterface"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleEmptyInterfaceSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleEmptyInterface"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleEmptyInterfaceSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleEmptyInterface is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTbSimpleEmptyInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleEmptyInterface"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleEmptyInterfaceSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -206,6 +209,12 @@ void UTbSimpleEmptyInterfaceJniAdapter::callJniServiceReady(bool isServiceReady)
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
 #endif
+}
+
+TScriptInterface<ITbSimpleEmptyInterfaceInterface> UTbSimpleEmptyInterfaceJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

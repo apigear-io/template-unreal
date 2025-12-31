@@ -44,7 +44,7 @@ DEFINE_LOG_CATEGORY(LogTbSame1SameEnum2Interface_JNI);
 
 namespace
 {
-UTbSame1SameEnum2InterfaceJniAdapter* gUTbSame1SameEnum2InterfaceJniAdapterHandle = nullptr;
+std::atomic<ITbSame1SameEnum2InterfaceJniAdapterAccessor*> gUTbSame1SameEnum2InterfaceJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -114,7 +114,7 @@ UTbSame1SameEnum2InterfaceJniAdapter::UTbSame1SameEnum2InterfaceJniAdapter()
 void UTbSame1SameEnum2InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTbSame1SameEnum2InterfaceJniAdapterHandle = this;
+	gUTbSame1SameEnum2InterfaceJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbSame1SameEnum2InterfaceJniAdapterCache::init();
@@ -148,7 +148,7 @@ void UTbSame1SameEnum2InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& 
 void UTbSame1SameEnum2InterfaceJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTbSame1SameEnum2InterfaceJniAdapterHandle = nullptr;
+	gUTbSame1SameEnum2InterfaceJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -187,23 +187,26 @@ void UTbSame1SameEnum2InterfaceJniAdapter::Deinitialize()
 
 void UTbSame1SameEnum2InterfaceJniAdapter::setBackendService(TScriptInterface<ITbSame1SameEnum2InterfaceInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTbSame1SameEnum2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameEnum2Interface"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame1SameEnum2InterfaceSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSame1SameEnum2Interface is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTbSame1SameEnum2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame1SameEnum2Interface"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame1SameEnum2InterfaceSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSame1SameEnum2Interface"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSame1SameEnum2InterfaceSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSame1SameEnum2Interface is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTbSame1SameEnum2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSame1SameEnum2Interface"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSame1SameEnum2InterfaceSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -339,18 +342,26 @@ void UTbSame1SameEnum2InterfaceJniAdapter::OnProp2Changed(ETbSame1Enum2 Prop2)
 #endif
 }
 
+TScriptInterface<ITbSame1SameEnum2InterfaceInterface> UTbSame1SameEnum2InterfaceJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
 	UE_LOG(LogTbSame1SameEnum2Interface_JNI, Verbose, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc1"));
-	if (gUTbSame1SameEnum2InterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc1: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	ETbSame1Enum1 local_param1 = TbSame1DataJavaConverter::getEnum1Value(Env, param1);
 
-	auto service = gUTbSame1SameEnum2InterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbSame1SameEnum2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc1, UTbSame1SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func1(local_param1);
@@ -366,15 +377,17 @@ JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_n
 JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc2(JNIEnv* Env, jclass Clazz, jobject param1, jobject param2)
 {
 	UE_LOG(LogTbSame1SameEnum2Interface_JNI, Verbose, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc2"));
-	if (gUTbSame1SameEnum2InterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc2: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	ETbSame1Enum1 local_param1 = TbSame1DataJavaConverter::getEnum1Value(Env, param1);
 	ETbSame1Enum2 local_param2 = TbSame1DataJavaConverter::getEnum2Value(Env, param2);
 
-	auto service = gUTbSame1SameEnum2InterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbSame1SameEnum2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc2, UTbSame1SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func2(local_param1, local_param2);
@@ -390,15 +403,17 @@ JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_n
 JNI_METHOD void Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeSetProp1(JNIEnv* Env, jclass Clazz, jobject prop1)
 {
 	UE_LOG(LogTbSame1SameEnum2Interface_JNI, Verbose, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeSetProp1"));
-	if (gUTbSame1SameEnum2InterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeSetProp1: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	ETbSame1Enum1 local_prop1 = TbSame1DataJavaConverter::getEnum1Value(Env, prop1);
 
-	auto service = gUTbSame1SameEnum2InterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbSame1SameEnum2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeSetProp1, UTbSame1SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp1(local_prop1);
@@ -412,12 +427,15 @@ JNI_METHOD void Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nati
 JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeGetProp1(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbSame1SameEnum2Interface_JNI, Verbose, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeGetProp1"));
-	if (gUTbSame1SameEnum2InterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSame1SameEnum2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeGetProp1: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeGetProp1, UTbSame1SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbSame1SameEnum2InterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop1 = service->GetProp1();
@@ -434,15 +452,17 @@ JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_n
 JNI_METHOD void Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeSetProp2(JNIEnv* Env, jclass Clazz, jobject prop2)
 {
 	UE_LOG(LogTbSame1SameEnum2Interface_JNI, Verbose, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeSetProp2"));
-	if (gUTbSame1SameEnum2InterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeSetProp2: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	ETbSame1Enum2 local_prop2 = TbSame1DataJavaConverter::getEnum2Value(Env, prop2);
 
-	auto service = gUTbSame1SameEnum2InterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbSame1SameEnum2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeSetProp2, UTbSame1SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp2(local_prop2);
@@ -456,12 +476,15 @@ JNI_METHOD void Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nati
 JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeGetProp2(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbSame1SameEnum2Interface_JNI, Verbose, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeGetProp2"));
-	if (gUTbSame1SameEnum2InterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSame1SameEnum2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeGetProp2: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeGetProp2, UTbSame1SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbSame1SameEnum2InterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop2 = service->GetProp2();

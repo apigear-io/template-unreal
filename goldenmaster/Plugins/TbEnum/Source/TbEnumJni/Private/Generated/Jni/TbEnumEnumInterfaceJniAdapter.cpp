@@ -44,7 +44,7 @@ DEFINE_LOG_CATEGORY(LogTbEnumEnumInterface_JNI);
 
 namespace
 {
-UTbEnumEnumInterfaceJniAdapter* gUTbEnumEnumInterfaceJniAdapterHandle = nullptr;
+std::atomic<ITbEnumEnumInterfaceJniAdapterAccessor*> gUTbEnumEnumInterfaceJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -138,7 +138,7 @@ UTbEnumEnumInterfaceJniAdapter::UTbEnumEnumInterfaceJniAdapter()
 void UTbEnumEnumInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTbEnumEnumInterfaceJniAdapterHandle = this;
+	gUTbEnumEnumInterfaceJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbEnumEnumInterfaceJniAdapterCache::init();
@@ -172,7 +172,7 @@ void UTbEnumEnumInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collec
 void UTbEnumEnumInterfaceJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTbEnumEnumInterfaceJniAdapterHandle = nullptr;
+	gUTbEnumEnumInterfaceJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -211,23 +211,26 @@ void UTbEnumEnumInterfaceJniAdapter::Deinitialize()
 
 void UTbEnumEnumInterfaceJniAdapter::setBackendService(TScriptInterface<ITbEnumEnumInterfaceInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTbEnumEnumInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbEnumEnumInterface is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTbEnumEnumInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbEnumEnumInterface"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbEnumEnumInterface is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTbEnumEnumInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbEnumEnumInterface"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -465,18 +468,26 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp3Changed(ETbEnumEnum3 Prop3)
 #endif
 }
 
+TScriptInterface<ITbEnumEnumInterfaceInterface> UTbEnumEnumInterfaceJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc0(JNIEnv* Env, jclass Clazz, jobject param0)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc0"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc0: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	ETbEnumEnum0 local_param0 = TbEnumDataJavaConverter::getEnum0Value(Env, param0);
 
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc0, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func0(local_param0);
@@ -492,14 +503,16 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFu
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc1"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc1: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	ETbEnumEnum1 local_param1 = TbEnumDataJavaConverter::getEnum1Value(Env, param1);
 
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc1, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func1(local_param1);
@@ -515,14 +528,16 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFu
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc2(JNIEnv* Env, jclass Clazz, jobject param2)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc2"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc2: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	ETbEnumEnum2 local_param2 = TbEnumDataJavaConverter::getEnum2Value(Env, param2);
 
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc2, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func2(local_param2);
@@ -538,14 +553,16 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFu
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc3(JNIEnv* Env, jclass Clazz, jobject param3)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc3"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc3: JNI SERVICE ADAPTER NOT FOUND "));
-		return nullptr;
-	}
 	ETbEnumEnum3 local_param3 = TbEnumDataJavaConverter::getEnum3Value(Env, param3);
 
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc3, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return nullptr;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->Func3(local_param3);
@@ -561,15 +578,17 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFu
 JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp0(JNIEnv* Env, jclass Clazz, jobject prop0)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp0"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp0: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	ETbEnumEnum0 local_prop0 = TbEnumDataJavaConverter::getEnum0Value(Env, prop0);
 
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp0, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp0(local_prop0);
@@ -583,12 +602,15 @@ JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetPr
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp0(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp0"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp0: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp0, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop0 = service->GetProp0();
@@ -605,15 +627,17 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGe
 JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp1(JNIEnv* Env, jclass Clazz, jobject prop1)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp1"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp1: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	ETbEnumEnum1 local_prop1 = TbEnumDataJavaConverter::getEnum1Value(Env, prop1);
 
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp1, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp1(local_prop1);
@@ -627,12 +651,15 @@ JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetPr
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp1(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp1"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp1: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp1, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop1 = service->GetProp1();
@@ -649,15 +676,17 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGe
 JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp2(JNIEnv* Env, jclass Clazz, jobject prop2)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp2"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp2: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	ETbEnumEnum2 local_prop2 = TbEnumDataJavaConverter::getEnum2Value(Env, prop2);
 
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp2, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp2(local_prop2);
@@ -671,12 +700,15 @@ JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetPr
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp2(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp2"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp2: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp2, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop2 = service->GetProp2();
@@ -693,15 +725,17 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGe
 JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp3(JNIEnv* Env, jclass Clazz, jobject prop3)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp3"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
-	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp3: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	ETbEnumEnum3 local_prop3 = TbEnumDataJavaConverter::getEnum3Value(Env, prop3);
 
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetProp3, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetProp3(local_prop3);
@@ -715,12 +749,15 @@ JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeSetPr
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp3(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp3"));
-	if (gUTbEnumEnumInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp3: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGetProp3, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return nullptr;
 	}
-	auto service = gUTbEnumEnumInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto Prop3 = service->GetProp3();

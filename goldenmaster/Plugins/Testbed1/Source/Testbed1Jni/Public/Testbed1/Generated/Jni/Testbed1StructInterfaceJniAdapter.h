@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructInterface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITestbed1StructInterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITestbed1StructInterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITestbed1StructInterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITestbed1StructInterfaceInterface
  */
 UCLASS(BlueprintType)
-class TESTBED1JNI_API UTestbed1StructInterfaceJniAdapter : public UGameInstanceSubsystem, public ITestbed1StructInterfaceSubscriberInterface
+class TESTBED1JNI_API UTestbed1StructInterfaceJniAdapter : public UGameInstanceSubsystem, public ITestbed1StructInterfaceSubscriberInterface, public ITestbed1StructInterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTestbed1StructInterfaceJniAdapter();
 	virtual ~UTestbed1StructInterfaceJniAdapter() = default;
 
@@ -78,6 +89,10 @@ private:
 	void OnPropIntChanged(const FTestbed1StructInt& PropInt) override;
 	void OnPropFloatChanged(const FTestbed1StructFloat& PropFloat) override;
 	void OnPropStringChanged(const FTestbed1StructString& PropString) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITestbed1StructInterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructInterface")

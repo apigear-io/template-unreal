@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesSimpleLocalIf_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbRefIfacesSimpleLocalIfJniAdapterAccessor
+{
+public:
+	virtual ~ITbRefIfacesSimpleLocalIfJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbRefIfacesSimpleLocalIfInterface
  */
 UCLASS(BlueprintType)
-class TBREFIFACESJNI_API UTbRefIfacesSimpleLocalIfJniAdapter : public UGameInstanceSubsystem, public ITbRefIfacesSimpleLocalIfSubscriberInterface
+class TBREFIFACESJNI_API UTbRefIfacesSimpleLocalIfJniAdapter : public UGameInstanceSubsystem, public ITbRefIfacesSimpleLocalIfSubscriberInterface, public ITbRefIfacesSimpleLocalIfJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbRefIfacesSimpleLocalIfJniAdapter();
 	virtual ~UTbRefIfacesSimpleLocalIfJniAdapter() = default;
 
@@ -69,6 +80,10 @@ private:
 	void OnIntSignalSignal(int32 Param) override;
 
 	void OnIntPropertyChanged(int32 IntProperty) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbRefIfaces|SimpleLocalIf")

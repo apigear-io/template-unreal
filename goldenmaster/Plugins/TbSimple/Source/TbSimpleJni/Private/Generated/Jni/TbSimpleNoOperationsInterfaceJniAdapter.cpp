@@ -43,7 +43,7 @@ DEFINE_LOG_CATEGORY(LogTbSimpleNoOperationsInterface_JNI);
 
 namespace
 {
-UTbSimpleNoOperationsInterfaceJniAdapter* gUTbSimpleNoOperationsInterfaceJniAdapterHandle = nullptr;
+std::atomic<ITbSimpleNoOperationsInterfaceJniAdapterAccessor*> gUTbSimpleNoOperationsInterfaceJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -113,7 +113,7 @@ UTbSimpleNoOperationsInterfaceJniAdapter::UTbSimpleNoOperationsInterfaceJniAdapt
 void UTbSimpleNoOperationsInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTbSimpleNoOperationsInterfaceJniAdapterHandle = this;
+	gUTbSimpleNoOperationsInterfaceJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbSimpleNoOperationsInterfaceJniAdapterCache::init();
@@ -147,7 +147,7 @@ void UTbSimpleNoOperationsInterfaceJniAdapter::Initialize(FSubsystemCollectionBa
 void UTbSimpleNoOperationsInterfaceJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTbSimpleNoOperationsInterfaceJniAdapterHandle = nullptr;
+	gUTbSimpleNoOperationsInterfaceJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -186,23 +186,26 @@ void UTbSimpleNoOperationsInterfaceJniAdapter::Deinitialize()
 
 void UTbSimpleNoOperationsInterfaceJniAdapter::setBackendService(TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleNoOperationsInterface is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoOperationsInterface"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoOperationsInterface"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleNoOperationsInterface is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoOperationsInterface"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -330,17 +333,25 @@ void UTbSimpleNoOperationsInterfaceJniAdapter::OnPropIntChanged(int32 PropInt)
 #endif
 }
 
+TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> UTbSimpleNoOperationsInterfaceJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeSetPropBool(JNIEnv* Env, jclass Clazz, jboolean propBool)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeSetPropBool"));
-	if (gUTbSimpleNoOperationsInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoOperationsInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeSetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeSetPropBool, UTbSimpleNoOperationsInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbSimpleNoOperationsInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetPropBool(propBool);
@@ -354,12 +365,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService
 JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeGetPropBool(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeGetPropBool"));
-	if (gUTbSimpleNoOperationsInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoOperationsInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeGetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeGetPropBool, UTbSimpleNoOperationsInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return false;
 	}
-	auto service = gUTbSimpleNoOperationsInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto bPropBool = service->GetPropBool();
@@ -374,13 +388,15 @@ JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniSer
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeSetPropInt(JNIEnv* Env, jclass Clazz, jint propInt)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeSetPropInt"));
-	if (gUTbSimpleNoOperationsInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoOperationsInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeSetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeSetPropInt, UTbSimpleNoOperationsInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbSimpleNoOperationsInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetPropInt(propInt);
@@ -394,12 +410,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService
 JNI_METHOD jint Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeGetPropInt(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeGetPropInt"));
-	if (gUTbSimpleNoOperationsInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoOperationsInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeGetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoOperationsInterfaceJniService_nativeGetPropInt, UTbSimpleNoOperationsInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
-	auto service = gUTbSimpleNoOperationsInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto PropInt = service->GetPropInt();

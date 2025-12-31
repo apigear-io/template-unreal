@@ -45,7 +45,7 @@ DEFINE_LOG_CATEGORY(LogTbRefIfacesSimpleLocalIf_JNI);
 
 namespace
 {
-UTbRefIfacesSimpleLocalIfJniAdapter* gUTbRefIfacesSimpleLocalIfJniAdapterHandle = nullptr;
+std::atomic<ITbRefIfacesSimpleLocalIfJniAdapterAccessor*> gUTbRefIfacesSimpleLocalIfJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -103,7 +103,7 @@ UTbRefIfacesSimpleLocalIfJniAdapter::UTbRefIfacesSimpleLocalIfJniAdapter()
 void UTbRefIfacesSimpleLocalIfJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTbRefIfacesSimpleLocalIfJniAdapterHandle = this;
+	gUTbRefIfacesSimpleLocalIfJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbRefIfacesSimpleLocalIfJniAdapterCache::init();
@@ -137,7 +137,7 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Initialize(FSubsystemCollectionBase& C
 void UTbRefIfacesSimpleLocalIfJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTbRefIfacesSimpleLocalIfJniAdapterHandle = nullptr;
+	gUTbRefIfacesSimpleLocalIfJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -176,23 +176,26 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Deinitialize()
 
 void UTbRefIfacesSimpleLocalIfJniAdapter::setBackendService(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbRefIfacesSimpleLocalIf is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesSimpleLocalIf"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbRefIfacesSimpleLocalIf is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesSimpleLocalIf"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -271,17 +274,25 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::OnIntPropertyChanged(int32 IntProperty
 #endif
 }
 
+TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesSimpleLocalIfJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jint Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod(JNIEnv* Env, jclass Clazz, jint param)
 {
 	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod"));
-	if (gUTbRefIfacesSimpleLocalIfJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbRefIfacesSimpleLocalIfJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod, UTbRefIfacesSimpleLocalIfJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
 
-	auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->IntMethod(param);
@@ -296,13 +307,15 @@ JNI_METHOD jint Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_n
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeSetIntProperty(JNIEnv* Env, jclass Clazz, jint intProperty)
 {
 	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeSetIntProperty"));
-	if (gUTbRefIfacesSimpleLocalIfJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbRefIfacesSimpleLocalIfJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeSetIntProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeSetIntProperty, UTbRefIfacesSimpleLocalIfJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetIntProperty(intProperty);
@@ -316,12 +329,15 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_n
 JNI_METHOD jint Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeGetIntProperty(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeGetIntProperty"));
-	if (gUTbRefIfacesSimpleLocalIfJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbRefIfacesSimpleLocalIfJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeGetIntProperty: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeGetIntProperty, UTbRefIfacesSimpleLocalIfJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
-	auto service = gUTbRefIfacesSimpleLocalIfJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto IntProperty = service->GetIntProperty();

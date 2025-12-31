@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArray2Interface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITestbed1StructArray2InterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITestbed1StructArray2InterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITestbed1StructArray2InterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITestbed1StructArray2InterfaceInterface
  */
 UCLASS(BlueprintType)
-class TESTBED1JNI_API UTestbed1StructArray2InterfaceJniAdapter : public UGameInstanceSubsystem, public ITestbed1StructArray2InterfaceSubscriberInterface
+class TESTBED1JNI_API UTestbed1StructArray2InterfaceJniAdapter : public UGameInstanceSubsystem, public ITestbed1StructArray2InterfaceSubscriberInterface, public ITestbed1StructArray2InterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTestbed1StructArray2InterfaceJniAdapter();
 	virtual ~UTestbed1StructArray2InterfaceJniAdapter() = default;
 
@@ -79,6 +90,10 @@ private:
 	void OnPropFloatChanged(const FTestbed1StructFloatWithArray& PropFloat) override;
 	void OnPropStringChanged(const FTestbed1StructStringWithArray& PropString) override;
 	void OnPropEnumChanged(const FTestbed1StructEnumWithArray& PropEnum) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITestbed1StructArray2InterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructArray2Interface")

@@ -43,7 +43,7 @@ DEFINE_LOG_CATEGORY(LogTbSimpleNoSignalsInterface_JNI);
 
 namespace
 {
-UTbSimpleNoSignalsInterfaceJniAdapter* gUTbSimpleNoSignalsInterfaceJniAdapterHandle = nullptr;
+std::atomic<ITbSimpleNoSignalsInterfaceJniAdapterAccessor*> gUTbSimpleNoSignalsInterfaceJniAdapterHandle{nullptr};
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -101,7 +101,7 @@ UTbSimpleNoSignalsInterfaceJniAdapter::UTbSimpleNoSignalsInterfaceJniAdapter()
 void UTbSimpleNoSignalsInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	gUTbSimpleNoSignalsInterfaceJniAdapterHandle = this;
+	gUTbSimpleNoSignalsInterfaceJniAdapterHandle.store(this, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbSimpleNoSignalsInterfaceJniAdapterCache::init();
@@ -135,7 +135,7 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 void UTbSimpleNoSignalsInterfaceJniAdapter::Deinitialize()
 {
 	callJniServiceReady(false);
-	gUTbSimpleNoSignalsInterfaceJniAdapterHandle = nullptr;
+	gUTbSimpleNoSignalsInterfaceJniAdapterHandle.store(nullptr, std::memory_order_release);
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	if (m_javaJniServiceInstance)
@@ -174,23 +174,26 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::Deinitialize()
 
 void UTbSimpleNoSignalsInterfaceJniAdapter::setBackendService(TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> InService)
 {
-	// unsubscribe from old backend
-	if (BackendService != nullptr)
 	{
+		FScopeLock Lock(&BackendServiceCS);
+		// unsubscribe from old backend
+		if (BackendService != nullptr)
+		{
+			UTbSimpleNoSignalsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+			checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoSignalsInterface"));
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoSignalsInterfaceSubscriberInterface>(this));
+		}
+
+		// only set if interface is implemented
+		checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleNoSignalsInterface is not fully implemented"));
+
+		// subscribe to new backend
+		BackendService = InService;
 		UTbSimpleNoSignalsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleNoSignalsInterface"));
-		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoSignalsInterfaceSubscriberInterface>(this));
+		checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoSignalsInterface"));
+		// connect property changed signals or simple events
+		BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleNoSignalsInterfaceSubscriberInterface>(this));
 	}
-
-	// only set if interface is implemented
-	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSimpleNoSignalsInterface is not fully implemented"));
-
-	// subscribe to new backend
-	BackendService = InService;
-	UTbSimpleNoSignalsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleNoSignalsInterface"));
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleNoSignalsInterfaceSubscriberInterface>(this));
 
 	callJniServiceReady(true);
 }
@@ -268,17 +271,25 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::OnPropIntChanged(int32 PropInt)
 #endif
 }
 
+TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> UTbSimpleNoSignalsInterfaceJniAdapter::getBackendServiceForJNI() const
+{
+	FScopeLock Lock(&BackendServiceCS);
+	return BackendService;
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid"));
-	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoSignalsInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid, UTbSimpleNoSignalsInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->FuncVoid();
@@ -293,13 +304,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_na
 JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool(JNIEnv* Env, jclass Clazz, jboolean paramBool)
 {
 	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool"));
-	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoSignalsInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool, UTbSimpleNoSignalsInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return false;
 	}
 
-	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto result = service->FuncBool(paramBool);
@@ -314,13 +327,15 @@ JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniServic
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropBool(JNIEnv* Env, jclass Clazz, jboolean propBool)
 {
 	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropBool"));
-	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoSignalsInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropBool, UTbSimpleNoSignalsInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetPropBool(propBool);
@@ -334,12 +349,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_na
 JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropBool(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropBool"));
-	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoSignalsInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropBool: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropBool, UTbSimpleNoSignalsInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return false;
 	}
-	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto bPropBool = service->GetPropBool();
@@ -354,13 +372,15 @@ JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniServic
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropInt(JNIEnv* Env, jclass Clazz, jint propInt)
 {
 	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropInt"));
-	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoSignalsInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeSetPropInt, UTbSimpleNoSignalsInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return;
 	}
 
-	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		service->SetPropInt(propInt);
@@ -374,12 +394,15 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_na
 JNI_METHOD jint Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropInt(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropInt"));
-	if (gUTbSimpleNoSignalsInterfaceJniAdapterHandle == nullptr)
+
+	auto jniAccessor = gUTbSimpleNoSignalsInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
 	{
-		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropInt: JNI SERVICE ADAPTER NOT FOUND "));
+		UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeGetPropInt, UTbSimpleNoSignalsInterfaceJniAdapter not valid to use, probably too early or too late."));
 		return 0;
 	}
-	auto service = gUTbSimpleNoSignalsInterfaceJniAdapterHandle->getBackendService();
+
+	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
 		auto PropInt = service->GetPropInt();

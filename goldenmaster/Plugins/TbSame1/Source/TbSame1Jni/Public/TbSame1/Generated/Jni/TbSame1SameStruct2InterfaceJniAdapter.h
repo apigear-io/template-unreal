@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1SameStruct2Interface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITbSame1SameStruct2InterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITbSame1SameStruct2InterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITbSame1SameStruct2InterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITbSame1SameStruct2InterfaceInterface
  */
 UCLASS(BlueprintType)
-class TBSAME1JNI_API UTbSame1SameStruct2InterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSame1SameStruct2InterfaceSubscriberInterface
+class TBSAME1JNI_API UTbSame1SameStruct2InterfaceJniAdapter : public UGameInstanceSubsystem, public ITbSame1SameStruct2InterfaceSubscriberInterface, public ITbSame1SameStruct2InterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTbSame1SameStruct2InterfaceJniAdapter();
 	virtual ~UTbSame1SameStruct2InterfaceJniAdapter() = default;
 
@@ -72,6 +83,10 @@ private:
 
 	void OnProp1Changed(const FTbSame1Struct2& Prop1) override;
 	void OnProp2Changed(const FTbSame1Struct2& Prop2) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITbSame1SameStruct2InterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|TbSame1|SameStruct2Interface")

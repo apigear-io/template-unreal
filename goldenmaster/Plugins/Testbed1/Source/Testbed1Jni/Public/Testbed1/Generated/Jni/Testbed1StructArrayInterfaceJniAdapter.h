@@ -25,6 +25,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
+#include "HAL/CriticalSection.h"
 
 #if USE_ANDROID_JNI
 #include <jni.h>
@@ -35,14 +36,24 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArrayInterface_JNI, Log, All);
 
+// Helper interface to expose necessary functions for native Jni function implementations.
+// Main purpose is to allow it in a thread safe way, the native JNI calls are always from JNI thread.
+class ITestbed1StructArrayInterfaceJniAdapterAccessor
+{
+public:
+	virtual ~ITestbed1StructArrayInterfaceJniAdapterAccessor() = default;
+	virtual TScriptInterface<ITestbed1StructArrayInterfaceInterface> getBackendServiceForJNI() const = 0;
+};
+
 /** @brief handles the adaption between the service implementation and the java android Service Backend
  * takes an object of the type ITestbed1StructArrayInterfaceInterface
  */
 UCLASS(BlueprintType)
-class TESTBED1JNI_API UTestbed1StructArrayInterfaceJniAdapter : public UGameInstanceSubsystem, public ITestbed1StructArrayInterfaceSubscriberInterface
+class TESTBED1JNI_API UTestbed1StructArrayInterfaceJniAdapter : public UGameInstanceSubsystem, public ITestbed1StructArrayInterfaceSubscriberInterface, public ITestbed1StructArrayInterfaceJniAdapterAccessor
 {
-	GENERATED_BODY()
 public:
+	GENERATED_BODY()
+
 	explicit UTestbed1StructArrayInterfaceJniAdapter();
 	virtual ~UTestbed1StructArrayInterfaceJniAdapter() = default;
 
@@ -81,6 +92,10 @@ private:
 	void OnPropFloatChanged(const TArray<FTestbed1StructFloat>& PropFloat) override;
 	void OnPropStringChanged(const TArray<FTestbed1StructString>& PropString) override;
 	void OnPropEnumChanged(const TArray<ETestbed1Enum0>& PropEnum) override;
+	// Returns a copy of current backend. Backend may get changed from main thread.
+	TScriptInterface<ITestbed1StructArrayInterfaceInterface> getBackendServiceForJNI() const override;
+
+	mutable FCriticalSection BackendServiceCS;
 
 	/** Holds the service backend, can be exchanged with different implementation during runtime */
 	UPROPERTY(VisibleAnywhere, Category = "ApiGear|Testbed1|StructArrayInterface")
