@@ -137,18 +137,7 @@ void UTbRefIfacesSimpleLocalIfJniClientCache::clear()
 namespace
 {
 
-UTbRefIfacesSimpleLocalIfJniClient* gUTbRefIfacesSimpleLocalIfJniClientHandle = nullptr;
-TFunction<void(bool)> gUTbRefIfacesSimpleLocalIfJniClientnotifyIsReady = [](bool value)
-{
-	(void)value;
-	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-};
-TFunction<void(int32)> gUTbRefIfacesSimpleLocalIfJniClientOnIntPropertyChangedEmpty = [](int32 value)
-{
-	(void)value;
-	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("onIntPropertyChanged used but not set "));
-};
-TFunction<void(int32)> gUTbRefIfacesSimpleLocalIfJniClientOnIntPropertyChanged = gUTbRefIfacesSimpleLocalIfJniClientOnIntPropertyChangedEmpty;
+std::atomic<IUTbRefIfacesSimpleLocalIfJniClientJniAccessor*> gUTbRefIfacesSimpleLocalIfJniClientHandle(nullptr);
 
 UTbRefIfacesSimpleLocalIfJniClientMethodHelper gUTbRefIfacesSimpleLocalIfJniClientmethodHelper;
 
@@ -174,21 +163,7 @@ void UTbRefIfacesSimpleLocalIfJniClient::Initialize(FSubsystemCollectionBase& Co
 	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("Init"));
 	Super::Initialize(Collection);
 
-	gUTbRefIfacesSimpleLocalIfJniClientHandle = this;
-	gUTbRefIfacesSimpleLocalIfJniClientnotifyIsReady = [this](bool value)
-	{
-		b_isReady = value;
-		AsyncTask(ENamedThreads::GameThread, [this]()
-			{
-			_ConnectionStatusChangedBP.Broadcast(b_isReady);
-			_ConnectionStatusChanged.Broadcast(b_isReady);
-		});
-	};
-	gUTbRefIfacesSimpleLocalIfJniClientOnIntPropertyChanged = [this](int32 InIntProperty)
-	{
-		IntProperty = InIntProperty;
-		_GetPublisher()->BroadcastIntPropertyChanged(IntProperty);
-	};
+	gUTbRefIfacesSimpleLocalIfJniClientHandle.store(this, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbRefIfacesSimpleLocalIfJniClientCache::init();
@@ -208,12 +183,8 @@ void UTbRefIfacesSimpleLocalIfJniClient::Deinitialize()
 {
 	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("deinit"));
 	_unbind();
-	gUTbRefIfacesSimpleLocalIfJniClientnotifyIsReady = [](bool value)
-	{
-		(void)value;
-		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-	};
-	gUTbRefIfacesSimpleLocalIfJniClientOnIntPropertyChanged = gUTbRefIfacesSimpleLocalIfJniClientOnIntPropertyChangedEmpty;
+	b_isReady.store(false, std::memory_order_release);
+	gUTbRefIfacesSimpleLocalIfJniClientHandle.store(nullptr, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
@@ -222,7 +193,6 @@ void UTbRefIfacesSimpleLocalIfJniClient::Deinitialize()
 	UTbRefIfacesSimpleLocalIfJniClientCache::clear();
 #endif
 
-	gUTbRefIfacesSimpleLocalIfJniClientHandle = nullptr;
 	Super::Deinitialize();
 }
 int32 UTbRefIfacesSimpleLocalIfJniClient::GetIntProperty() const
@@ -232,7 +202,7 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::GetIntProperty() const
 void UTbRefIfacesSimpleLocalIfJniClient::SetIntProperty(int32 InIntProperty)
 {
 	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:setIntProperty"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -272,7 +242,7 @@ void UTbRefIfacesSimpleLocalIfJniClient::SetIntProperty(int32 InIntProperty)
 int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 {
 	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethod "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -314,7 +284,7 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 bool UTbRefIfacesSimpleLocalIfJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
 	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-	if (b_isReady)
+	if (b_isReady.load(std::memory_order_acquire))
 	{
 		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
 		{
@@ -392,31 +362,55 @@ void UTbRefIfacesSimpleLocalIfJniClient::_unbind()
 
 bool UTbRefIfacesSimpleLocalIfJniClient::_IsReady() const
 {
-	return b_isReady;
+	return b_isReady.load(std::memory_order_acquire);
+}
+void UTbRefIfacesSimpleLocalIfJniClient::OnIntSignalSignal(int32 Param)
+{
+	_GetPublisher()->BroadcastIntSignalSignal(Param);
+}
+
+void UTbRefIfacesSimpleLocalIfJniClient::OnIntPropertyChanged(int32 InIntProperty)
+{
+	IntProperty = InIntProperty;
+	_GetPublisher()->BroadcastIntPropertyChanged(IntProperty);
+}
+
+void UTbRefIfacesSimpleLocalIfJniClient::notifyIsReady(bool isReady)
+{
+	b_isReady.store(isReady, std::memory_order_release);
+	AsyncTask(ENamedThreads::GameThread, [this]()
+		{
+		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
+		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
+	});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntPropertyChanged(JNIEnv* Env, jclass Clazz, jint intProperty)
 {
 	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntPropertyChanged"));
-	if (gUTbRefIfacesSimpleLocalIfJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbRefIfacesSimpleLocalIfJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntPropertyChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	gUTbRefIfacesSimpleLocalIfJniClientOnIntPropertyChanged(intProperty);
+	localJniAccessor->OnIntPropertyChanged(intProperty);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntSignal(JNIEnv* Env, jclass Clazz, jint param)
 {
 	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntSignal"));
-	if (gUTbRefIfacesSimpleLocalIfJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbRefIfacesSimpleLocalIfJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntSignal: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
 
-	gUTbRefIfacesSimpleLocalIfJniClientHandle->_GetPublisher()->BroadcastIntSignalSignal(param);
+	localJniAccessor->OnIntSignalSignal(param);
 }
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntMethodResult(JNIEnv* Env, jclass Clazz, jint result, jstring callId)
@@ -436,10 +430,13 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nat
 
 JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-	AsyncTask(ENamedThreads::GameThread, [value]()
-		{
-		gUTbRefIfacesSimpleLocalIfJniClientnotifyIsReady(value);
-	});
+	auto localJniAccessor = gUTbRefIfacesSimpleLocalIfJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeIsReady: JNI SERVICE ADAPTER is not ready to use."));
+		return;
+	}
+	localJniAccessor->notifyIsReady(value);
 }
 #endif
 

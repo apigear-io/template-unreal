@@ -37,8 +37,25 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleNoOperationsInterfaceClient_JNI, Log, All);
 
+// A helper class that exposes part of UTbSimpleNoOperationsInterfaceJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TBSIMPLEJNI_API IUTbSimpleNoOperationsInterfaceJniClientJniAccessor
+{
+public:
+	virtual void OnSigVoidSignal() = 0;
+
+	virtual void OnSigBoolSignal(bool bParamBool) = 0;
+
+	virtual void OnPropBoolChanged(bool bPropBool) = 0;
+
+	virtual void OnPropIntChanged(int32 PropInt) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TBSIMPLEJNI_API UTbSimpleNoOperationsInterfaceJniClient : public UAbstractTbSimpleNoOperationsInterface
+class TBSIMPLEJNI_API UTbSimpleNoOperationsInterfaceJniClient : public UAbstractTbSimpleNoOperationsInterface, public IUTbSimpleNoOperationsInterfaceJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -80,7 +97,16 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void OnSigVoidSignal() override;
+
+	void OnSigBoolSignal(bool bParamBool) override;
+
+	void OnPropBoolChanged(bool bInPropBool) override;
+
+	void OnPropIntChanged(int32 InPropInt) override;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

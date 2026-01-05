@@ -221,66 +221,7 @@ void UTbSimpleSimpleArrayInterfaceJniClientCache::clear()
 namespace
 {
 
-UTbSimpleSimpleArrayInterfaceJniClient* gUTbSimpleSimpleArrayInterfaceJniClientHandle = nullptr;
-TFunction<void(bool)> gUTbSimpleSimpleArrayInterfaceJniClientnotifyIsReady = [](bool value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-};
-TFunction<void(TArray<bool>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropBoolChangedEmpty = [](TArray<bool> value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("onPropBoolChanged used but not set "));
-};
-TFunction<void(TArray<bool>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropBoolChanged = gUTbSimpleSimpleArrayInterfaceJniClientOnPropBoolChangedEmpty;
-TFunction<void(TArray<int32>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropIntChangedEmpty = [](TArray<int32> value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("onPropIntChanged used but not set "));
-};
-TFunction<void(TArray<int32>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropIntChanged = gUTbSimpleSimpleArrayInterfaceJniClientOnPropIntChangedEmpty;
-TFunction<void(TArray<int32>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt32ChangedEmpty = [](TArray<int32> value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("onPropInt32Changed used but not set "));
-};
-TFunction<void(TArray<int32>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt32Changed = gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt32ChangedEmpty;
-TFunction<void(TArray<int64>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt64ChangedEmpty = [](TArray<int64> value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("onPropInt64Changed used but not set "));
-};
-TFunction<void(TArray<int64>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt64Changed = gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt64ChangedEmpty;
-TFunction<void(TArray<float>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloatChangedEmpty = [](TArray<float> value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("onPropFloatChanged used but not set "));
-};
-TFunction<void(TArray<float>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloatChanged = gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloatChangedEmpty;
-TFunction<void(TArray<float>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat32ChangedEmpty = [](TArray<float> value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("onPropFloat32Changed used but not set "));
-};
-TFunction<void(TArray<float>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat32Changed = gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat32ChangedEmpty;
-TFunction<void(TArray<double>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat64ChangedEmpty = [](TArray<double> value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("onPropFloat64Changed used but not set "));
-};
-TFunction<void(TArray<double>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat64Changed = gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat64ChangedEmpty;
-TFunction<void(TArray<FString>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropStringChangedEmpty = [](TArray<FString> value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("onPropStringChanged used but not set "));
-};
-TFunction<void(TArray<FString>)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropStringChanged = gUTbSimpleSimpleArrayInterfaceJniClientOnPropStringChangedEmpty;
-TFunction<void(FString)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropReadOnlyStringChangedEmpty = [](FString value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("onPropReadOnlyStringChanged used but not set "));
-};
-TFunction<void(FString)> gUTbSimpleSimpleArrayInterfaceJniClientOnPropReadOnlyStringChanged = gUTbSimpleSimpleArrayInterfaceJniClientOnPropReadOnlyStringChangedEmpty;
+std::atomic<IUTbSimpleSimpleArrayInterfaceJniClientJniAccessor*> gUTbSimpleSimpleArrayInterfaceJniClientHandle(nullptr);
 
 UTbSimpleSimpleArrayInterfaceJniClientMethodHelper gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper;
 
@@ -306,61 +247,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::Initialize(FSubsystemCollectionBase
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Init"));
 	Super::Initialize(Collection);
 
-	gUTbSimpleSimpleArrayInterfaceJniClientHandle = this;
-	gUTbSimpleSimpleArrayInterfaceJniClientnotifyIsReady = [this](bool value)
-	{
-		b_isReady = value;
-		AsyncTask(ENamedThreads::GameThread, [this]()
-			{
-			_ConnectionStatusChangedBP.Broadcast(b_isReady);
-			_ConnectionStatusChanged.Broadcast(b_isReady);
-		});
-	};
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropBoolChanged = [this](const TArray<bool>& InPropBool)
-	{
-		PropBool = InPropBool;
-		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
-	};
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropIntChanged = [this](const TArray<int32>& InPropInt)
-	{
-		PropInt = InPropInt;
-		_GetPublisher()->BroadcastPropIntChanged(PropInt);
-	};
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt32Changed = [this](const TArray<int32>& InPropInt32)
-	{
-		PropInt32 = InPropInt32;
-		_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
-	};
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt64Changed = [this](const TArray<int64>& InPropInt64)
-	{
-		PropInt64 = InPropInt64;
-		_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
-	};
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloatChanged = [this](const TArray<float>& InPropFloat)
-	{
-		PropFloat = InPropFloat;
-		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
-	};
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat32Changed = [this](const TArray<float>& InPropFloat32)
-	{
-		PropFloat32 = InPropFloat32;
-		_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
-	};
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat64Changed = [this](const TArray<double>& InPropFloat64)
-	{
-		PropFloat64 = InPropFloat64;
-		_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
-	};
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropStringChanged = [this](const TArray<FString>& InPropString)
-	{
-		PropString = InPropString;
-		_GetPublisher()->BroadcastPropStringChanged(PropString);
-	};
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropReadOnlyStringChanged = [this](const FString& InPropReadOnlyString)
-	{
-		PropReadOnlyString = InPropReadOnlyString;
-		_GetPublisher()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
-	};
+	gUTbSimpleSimpleArrayInterfaceJniClientHandle.store(this, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbSimpleSimpleArrayInterfaceJniClientCache::init();
@@ -380,20 +267,8 @@ void UTbSimpleSimpleArrayInterfaceJniClient::Deinitialize()
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("deinit"));
 	_unbind();
-	gUTbSimpleSimpleArrayInterfaceJniClientnotifyIsReady = [](bool value)
-	{
-		(void)value;
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-	};
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropBoolChanged = gUTbSimpleSimpleArrayInterfaceJniClientOnPropBoolChangedEmpty;
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropIntChanged = gUTbSimpleSimpleArrayInterfaceJniClientOnPropIntChangedEmpty;
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt32Changed = gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt32ChangedEmpty;
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt64Changed = gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt64ChangedEmpty;
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloatChanged = gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloatChangedEmpty;
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat32Changed = gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat32ChangedEmpty;
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat64Changed = gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat64ChangedEmpty;
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropStringChanged = gUTbSimpleSimpleArrayInterfaceJniClientOnPropStringChangedEmpty;
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropReadOnlyStringChanged = gUTbSimpleSimpleArrayInterfaceJniClientOnPropReadOnlyStringChangedEmpty;
+	b_isReady.store(false, std::memory_order_release);
+	gUTbSimpleSimpleArrayInterfaceJniClientHandle.store(nullptr, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
@@ -402,7 +277,6 @@ void UTbSimpleSimpleArrayInterfaceJniClient::Deinitialize()
 	UTbSimpleSimpleArrayInterfaceJniClientCache::clear();
 #endif
 
-	gUTbSimpleSimpleArrayInterfaceJniClientHandle = nullptr;
 	Super::Deinitialize();
 }
 TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::GetPropBool() const
@@ -412,7 +286,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::GetPropBool() const
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropBool(const TArray<bool>& InPropBool)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:setPropBool"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -473,7 +347,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::GetPropInt() const
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt(const TArray<int32>& InPropInt)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:setPropInt"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -528,7 +402,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::GetPropInt32() const
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt32(const TArray<int32>& InPropInt32)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:setPropInt32"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -583,7 +457,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::GetPropInt64() const
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt64(const TArray<int64>& InPropInt64)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:setPropInt64"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -638,7 +512,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::GetPropFloat() const
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat(const TArray<float>& InPropFloat)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:setPropFloat"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -693,7 +567,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::GetPropFloat32() const
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat32(const TArray<float>& InPropFloat32)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:setPropFloat32"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -748,7 +622,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::GetPropFloat64() const
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat64(const TArray<double>& InPropFloat64)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:setPropFloat64"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -803,7 +677,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::GetPropString() const
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropString(const TArray<FString>& InPropString)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:setPropString"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -859,7 +733,7 @@ FString UTbSimpleSimpleArrayInterfaceJniClient::GetPropReadOnlyString() const
 TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::FuncBool(const TArray<bool>& InParamBool)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcBool "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -916,7 +790,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::FuncBool(const TArray<bool>
 TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt(const TArray<int32>& InParamInt)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcInt "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -967,7 +841,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt(const TArray<int32
 TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt32(const TArray<int32>& InParamInt32)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcInt32 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -1018,7 +892,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt32(const TArray<int
 TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt64(const TArray<int64>& InParamInt64)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcInt64 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -1069,7 +943,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt64(const TArray<int
 TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat(const TArray<float>& InParamFloat)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloat "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -1120,7 +994,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat(const TArray<flo
 TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat32(const TArray<float>& InParamFloat32)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloat32 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -1171,7 +1045,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat32(const TArray<f
 TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat64(const TArray<double>& InParamFloat)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloat64 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -1222,7 +1096,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat64(const TArray<
 TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<FString>& InParamString)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcString "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -1275,7 +1149,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<
 bool UTbSimpleSimpleArrayInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-	if (b_isReady)
+	if (b_isReady.load(std::memory_order_acquire))
 	{
 		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
 		{
@@ -1353,18 +1227,116 @@ void UTbSimpleSimpleArrayInterfaceJniClient::_unbind()
 
 bool UTbSimpleSimpleArrayInterfaceJniClient::_IsReady() const
 {
-	return b_isReady;
+	return b_isReady.load(std::memory_order_acquire);
+}
+void UTbSimpleSimpleArrayInterfaceJniClient::OnSigBoolSignal(const TArray<bool>& ParamBool)
+{
+	_GetPublisher()->BroadcastSigBoolSignal(ParamBool);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnSigIntSignal(const TArray<int32>& ParamInt)
+{
+	_GetPublisher()->BroadcastSigIntSignal(ParamInt);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnSigInt32Signal(const TArray<int32>& ParamInt32)
+{
+	_GetPublisher()->BroadcastSigInt32Signal(ParamInt32);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnSigInt64Signal(const TArray<int64>& ParamInt64)
+{
+	_GetPublisher()->BroadcastSigInt64Signal(ParamInt64);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnSigFloatSignal(const TArray<float>& ParamFloat)
+{
+	_GetPublisher()->BroadcastSigFloatSignal(ParamFloat);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnSigFloat32Signal(const TArray<float>& ParamFloa32)
+{
+	_GetPublisher()->BroadcastSigFloat32Signal(ParamFloa32);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnSigFloat64Signal(const TArray<double>& ParamFloat64)
+{
+	_GetPublisher()->BroadcastSigFloat64Signal(ParamFloat64);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnSigStringSignal(const TArray<FString>& ParamString)
+{
+	_GetPublisher()->BroadcastSigStringSignal(ParamString);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnPropBoolChanged(const TArray<bool>& InPropBool)
+{
+	PropBool = InPropBool;
+	_GetPublisher()->BroadcastPropBoolChanged(PropBool);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnPropIntChanged(const TArray<int32>& InPropInt)
+{
+	PropInt = InPropInt;
+	_GetPublisher()->BroadcastPropIntChanged(PropInt);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnPropInt32Changed(const TArray<int32>& InPropInt32)
+{
+	PropInt32 = InPropInt32;
+	_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnPropInt64Changed(const TArray<int64>& InPropInt64)
+{
+	PropInt64 = InPropInt64;
+	_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnPropFloatChanged(const TArray<float>& InPropFloat)
+{
+	PropFloat = InPropFloat;
+	_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnPropFloat32Changed(const TArray<float>& InPropFloat32)
+{
+	PropFloat32 = InPropFloat32;
+	_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnPropFloat64Changed(const TArray<double>& InPropFloat64)
+{
+	PropFloat64 = InPropFloat64;
+	_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnPropStringChanged(const TArray<FString>& InPropString)
+{
+	PropString = InPropString;
+	_GetPublisher()->BroadcastPropStringChanged(PropString);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
+{
+	PropReadOnlyString = InPropReadOnlyString;
+	_GetPublisher()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
+}
+
+void UTbSimpleSimpleArrayInterfaceJniClient::notifyIsReady(bool isReady)
+{
+	b_isReady.store(isReady, std::memory_order_release);
+	AsyncTask(ENamedThreads::GameThread, [this]()
+		{
+		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
+		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
+	});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropBoolChanged(JNIEnv* Env, jclass Clazz, jbooleanArray propBool)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropBoolChanged"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropBoolChanged: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<bool> local_prop_bool = TArray<bool>();
 	jbooleanArray l_javaPropBoolArray = (jbooleanArray)propBool;
 	jsize lenprop_bool = Env->GetArrayLength(l_javaPropBoolArray);
@@ -1381,16 +1353,18 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		local_prop_bool.Add(TempPropBool[i] == JNI_TRUE);
 	}
 	Env->DeleteLocalRef(l_javaPropBoolArray);
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropBoolChanged(local_prop_bool);
+
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropBoolChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	localJniAccessor->OnPropBoolChanged(local_prop_bool);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropIntChanged(JNIEnv* Env, jclass Clazz, jintArray propInt)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropIntChanged"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropIntChanged: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<int32> local_prop_int = TArray<int32>();
 	jintArray l_javaPropIntArray = (jintArray)propInt;
 	jsize lenprop_int = Env->GetArrayLength(l_javaPropIntArray);
@@ -1403,16 +1377,18 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_int);
 		Env->DeleteLocalRef(l_javaPropIntArray);
 	}
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropIntChanged(local_prop_int);
+
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropIntChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	localJniAccessor->OnPropIntChanged(local_prop_int);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt32Changed(JNIEnv* Env, jclass Clazz, jintArray propInt32)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt32Changed"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt32Changed: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<int32> local_prop_int32 = TArray<int32>();
 	jintArray l_javaPropInt32Array = (jintArray)propInt32;
 	jsize lenprop_int32 = Env->GetArrayLength(l_javaPropInt32Array);
@@ -1425,16 +1401,18 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_int32);
 		Env->DeleteLocalRef(l_javaPropInt32Array);
 	}
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt32Changed(local_prop_int32);
+
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt32Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	localJniAccessor->OnPropInt32Changed(local_prop_int32);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt64Changed(JNIEnv* Env, jclass Clazz, jlongArray propInt64)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt64Changed"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt64Changed: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<int64> local_prop_int64 = TArray<int64>();
 	jlongArray l_javaPropInt64Array = (jlongArray)propInt64;
 	jsize lenprop_int64 = Env->GetArrayLength(l_javaPropInt64Array);
@@ -1447,16 +1425,18 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_int64);
 		Env->DeleteLocalRef(l_javaPropInt64Array);
 	}
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropInt64Changed(local_prop_int64);
+
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropInt64Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	localJniAccessor->OnPropInt64Changed(local_prop_int64);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloatChanged(JNIEnv* Env, jclass Clazz, jfloatArray propFloat)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloatChanged"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloatChanged: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<float> local_prop_float = TArray<float>();
 	jfloatArray l_javaPropFloatArray = (jfloatArray)propFloat;
 	jsize lenprop_float = Env->GetArrayLength(l_javaPropFloatArray);
@@ -1469,16 +1449,18 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_float);
 		Env->DeleteLocalRef(l_javaPropFloatArray);
 	}
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloatChanged(local_prop_float);
+
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloatChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	localJniAccessor->OnPropFloatChanged(local_prop_float);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat32Changed(JNIEnv* Env, jclass Clazz, jfloatArray propFloat32)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat32Changed"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat32Changed: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<float> local_prop_float32 = TArray<float>();
 	jfloatArray l_javaPropFloat32Array = (jfloatArray)propFloat32;
 	jsize lenprop_float32 = Env->GetArrayLength(l_javaPropFloat32Array);
@@ -1491,16 +1473,18 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_float32);
 		Env->DeleteLocalRef(l_javaPropFloat32Array);
 	}
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat32Changed(local_prop_float32);
+
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat32Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	localJniAccessor->OnPropFloat32Changed(local_prop_float32);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat64Changed(JNIEnv* Env, jclass Clazz, jdoubleArray propFloat64)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat64Changed"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat64Changed: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<double> local_prop_float64 = TArray<double>();
 	jdoubleArray l_javaPropFloat64Array = (jdoubleArray)propFloat64;
 	jsize lenprop_float64 = Env->GetArrayLength(l_javaPropFloat64Array);
@@ -1513,42 +1497,48 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_float64);
 		Env->DeleteLocalRef(l_javaPropFloat64Array);
 	}
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropFloat64Changed(local_prop_float64);
+
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropFloat64Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	localJniAccessor->OnPropFloat64Changed(local_prop_float64);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropStringChanged(JNIEnv* Env, jclass Clazz, jobjectArray propString)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropStringChanged"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropStringChanged: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<FString> local_prop_string = TArray<FString>();
 	local_prop_string = FJavaHelper::ObjectArrayToFStringTArray(Env, propString);
 	static const TCHAR* errorMsglocal_prop_string = TEXT("failed to convert propString from jstring array");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_prop_string);
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropStringChanged(local_prop_string);
+
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropStringChanged: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+	localJniAccessor->OnPropStringChanged(local_prop_string);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropReadOnlyStringChanged(JNIEnv* Env, jclass Clazz, jstring propReadOnlyString)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropReadOnlyStringChanged"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
+	FString local_prop_read_only_string = FJavaHelper::FStringFromParam(Env, propReadOnlyString);
+
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnPropReadOnlyStringChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	FString local_prop_read_only_string = FJavaHelper::FStringFromParam(Env, propReadOnlyString);
-	gUTbSimpleSimpleArrayInterfaceJniClientOnPropReadOnlyStringChanged(local_prop_read_only_string);
+	localJniAccessor->OnPropReadOnlyStringChanged(local_prop_read_only_string);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigBool(JNIEnv* Env, jclass Clazz, jbooleanArray paramBool)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigBool"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<bool> local_param_bool = TArray<bool>();
 	jbooleanArray l_javaParamBoolArray = (jbooleanArray)paramBool;
 	jsize lenparam_bool = Env->GetArrayLength(l_javaParamBoolArray);
@@ -1566,17 +1556,19 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 	}
 	Env->DeleteLocalRef(l_javaParamBoolArray);
 
-	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(local_param_bool);
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->OnSigBoolSignal(local_param_bool);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt(JNIEnv* Env, jclass Clazz, jintArray paramInt)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<int32> local_param_int = TArray<int32>();
 	jintArray l_javaParamIntArray = (jintArray)paramInt;
 	jsize lenparam_int = Env->GetArrayLength(l_javaParamIntArray);
@@ -1590,17 +1582,19 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		Env->DeleteLocalRef(l_javaParamIntArray);
 	}
 
-	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigIntSignal(local_param_int);
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->OnSigIntSignal(local_param_int);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt32(JNIEnv* Env, jclass Clazz, jintArray paramInt32)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt32"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<int32> local_param_int32 = TArray<int32>();
 	jintArray l_javaParamInt32Array = (jintArray)paramInt32;
 	jsize lenparam_int32 = Env->GetArrayLength(l_javaParamInt32Array);
@@ -1614,17 +1608,19 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		Env->DeleteLocalRef(l_javaParamInt32Array);
 	}
 
-	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt32Signal(local_param_int32);
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt32: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->OnSigInt32Signal(local_param_int32);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt64(JNIEnv* Env, jclass Clazz, jlongArray paramInt64)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt64"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<int64> local_param_int64 = TArray<int64>();
 	jlongArray l_javaParamInt64Array = (jlongArray)paramInt64;
 	jsize lenparam_int64 = Env->GetArrayLength(l_javaParamInt64Array);
@@ -1638,17 +1634,19 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		Env->DeleteLocalRef(l_javaParamInt64Array);
 	}
 
-	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigInt64Signal(local_param_int64);
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigInt64: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->OnSigInt64Signal(local_param_int64);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat(JNIEnv* Env, jclass Clazz, jfloatArray paramFloat)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<float> local_param_float = TArray<float>();
 	jfloatArray l_javaParamFloatArray = (jfloatArray)paramFloat;
 	jsize lenparam_float = Env->GetArrayLength(l_javaParamFloatArray);
@@ -1662,17 +1660,19 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		Env->DeleteLocalRef(l_javaParamFloatArray);
 	}
 
-	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloatSignal(local_param_float);
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->OnSigFloatSignal(local_param_float);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat32(JNIEnv* Env, jclass Clazz, jfloatArray paramFloa32)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat32"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<float> local_param_floa32 = TArray<float>();
 	jfloatArray l_javaParamFloa32Array = (jfloatArray)paramFloa32;
 	jsize lenparam_floa32 = Env->GetArrayLength(l_javaParamFloa32Array);
@@ -1686,17 +1686,19 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		Env->DeleteLocalRef(l_javaParamFloa32Array);
 	}
 
-	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat32Signal(local_param_floa32);
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat32: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->OnSigFloat32Signal(local_param_floa32);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat64(JNIEnv* Env, jclass Clazz, jdoubleArray paramFloat64)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat64"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<double> local_param_float64 = TArray<double>();
 	jdoubleArray l_javaParamFloat64Array = (jdoubleArray)paramFloat64;
 	jsize lenparam_float64 = Env->GetArrayLength(l_javaParamFloat64Array);
@@ -1710,23 +1712,32 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 		Env->DeleteLocalRef(l_javaParamFloat64Array);
 	}
 
-	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigFloat64Signal(local_param_float64);
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigFloat64: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->OnSigFloat64Signal(local_param_float64);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigString(JNIEnv* Env, jclass Clazz, jobjectArray paramString)
 {
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigString"));
-	if (gUTbSimpleSimpleArrayInterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	TArray<FString> local_param_string = TArray<FString>();
 	local_param_string = FJavaHelper::ObjectArrayToFStringTArray(Env, paramString);
 	static const TCHAR* errorMsglocal_param_string = TEXT("failed to convert paramString from jstring array");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsglocal_param_string);
 
-	gUTbSimpleSimpleArrayInterfaceJniClientHandle->_GetPublisher()->BroadcastSigStringSignal(local_param_string);
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnSigString: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->OnSigStringSignal(local_param_string);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeOnFuncBoolResult(JNIEnv* Env, jclass Clazz, jbooleanArray result, jstring callId)
@@ -1945,10 +1956,13 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_na
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-	AsyncTask(ENamedThreads::GameThread, [value]()
-		{
-		gUTbSimpleSimpleArrayInterfaceJniClientnotifyIsReady(value);
-	});
+	auto localJniAccessor = gUTbSimpleSimpleArrayInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_SimpleArrayInterfaceJniClient_nativeIsReady: JNI SERVICE ADAPTER is not ready to use."));
+		return;
+	}
+	localJniAccessor->notifyIsReady(value);
 }
 #endif
 

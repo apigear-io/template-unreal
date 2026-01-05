@@ -162,36 +162,7 @@ void UTbNamesNamEsJniClientCache::clear()
 namespace
 {
 
-UTbNamesNamEsJniClient* gUTbNamesNamEsJniClientHandle = nullptr;
-TFunction<void(bool)> gUTbNamesNamEsJniClientnotifyIsReady = [](bool value)
-{
-	(void)value;
-	UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-};
-TFunction<void(bool)> gUTbNamesNamEsJniClientOnSwitchChangedEmpty = [](bool value)
-{
-	(void)value;
-	UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("onSwitchChanged used but not set "));
-};
-TFunction<void(bool)> gUTbNamesNamEsJniClientOnSwitchChanged = gUTbNamesNamEsJniClientOnSwitchChangedEmpty;
-TFunction<void(int32)> gUTbNamesNamEsJniClientOnSomePropertyChangedEmpty = [](int32 value)
-{
-	(void)value;
-	UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("onSomePropertyChanged used but not set "));
-};
-TFunction<void(int32)> gUTbNamesNamEsJniClientOnSomePropertyChanged = gUTbNamesNamEsJniClientOnSomePropertyChangedEmpty;
-TFunction<void(int32)> gUTbNamesNamEsJniClientOnSomePoperty2ChangedEmpty = [](int32 value)
-{
-	(void)value;
-	UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("onSomePoperty2Changed used but not set "));
-};
-TFunction<void(int32)> gUTbNamesNamEsJniClientOnSomePoperty2Changed = gUTbNamesNamEsJniClientOnSomePoperty2ChangedEmpty;
-TFunction<void(ETbNamesEnum_With_Under_scores)> gUTbNamesNamEsJniClientOnEnumPropertyChangedEmpty = [](ETbNamesEnum_With_Under_scores value)
-{
-	(void)value;
-	UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("onEnumPropertyChanged used but not set "));
-};
-TFunction<void(ETbNamesEnum_With_Under_scores)> gUTbNamesNamEsJniClientOnEnumPropertyChanged = gUTbNamesNamEsJniClientOnEnumPropertyChangedEmpty;
+std::atomic<IUTbNamesNamEsJniClientJniAccessor*> gUTbNamesNamEsJniClientHandle(nullptr);
 
 UTbNamesNamEsJniClientMethodHelper gUTbNamesNamEsJniClientmethodHelper;
 
@@ -217,36 +188,7 @@ void UTbNamesNamEsJniClient::Initialize(FSubsystemCollectionBase& Collection)
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Init"));
 	Super::Initialize(Collection);
 
-	gUTbNamesNamEsJniClientHandle = this;
-	gUTbNamesNamEsJniClientnotifyIsReady = [this](bool value)
-	{
-		b_isReady = value;
-		AsyncTask(ENamedThreads::GameThread, [this]()
-			{
-			_ConnectionStatusChangedBP.Broadcast(b_isReady);
-			_ConnectionStatusChanged.Broadcast(b_isReady);
-		});
-	};
-	gUTbNamesNamEsJniClientOnSwitchChanged = [this](bool bInSwitch)
-	{
-		bSwitch = bInSwitch;
-		_GetPublisher()->BroadcastSwitchChanged(bSwitch);
-	};
-	gUTbNamesNamEsJniClientOnSomePropertyChanged = [this](int32 InSomeProperty)
-	{
-		SomeProperty = InSomeProperty;
-		_GetPublisher()->BroadcastSomePropertyChanged(SomeProperty);
-	};
-	gUTbNamesNamEsJniClientOnSomePoperty2Changed = [this](int32 InSomePoperty2)
-	{
-		SomePoperty2 = InSomePoperty2;
-		_GetPublisher()->BroadcastSomePoperty2Changed(SomePoperty2);
-	};
-	gUTbNamesNamEsJniClientOnEnumPropertyChanged = [this](ETbNamesEnum_With_Under_scores InEnumProperty)
-	{
-		EnumProperty = InEnumProperty;
-		_GetPublisher()->BroadcastEnumPropertyChanged(EnumProperty);
-	};
+	gUTbNamesNamEsJniClientHandle.store(this, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbNamesNamEsJniClientCache::init();
@@ -266,15 +208,8 @@ void UTbNamesNamEsJniClient::Deinitialize()
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("deinit"));
 	_unbind();
-	gUTbNamesNamEsJniClientnotifyIsReady = [](bool value)
-	{
-		(void)value;
-		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-	};
-	gUTbNamesNamEsJniClientOnSwitchChanged = gUTbNamesNamEsJniClientOnSwitchChangedEmpty;
-	gUTbNamesNamEsJniClientOnSomePropertyChanged = gUTbNamesNamEsJniClientOnSomePropertyChangedEmpty;
-	gUTbNamesNamEsJniClientOnSomePoperty2Changed = gUTbNamesNamEsJniClientOnSomePoperty2ChangedEmpty;
-	gUTbNamesNamEsJniClientOnEnumPropertyChanged = gUTbNamesNamEsJniClientOnEnumPropertyChangedEmpty;
+	b_isReady.store(false, std::memory_order_release);
+	gUTbNamesNamEsJniClientHandle.store(nullptr, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
@@ -283,7 +218,6 @@ void UTbNamesNamEsJniClient::Deinitialize()
 	UTbNamesNamEsJniClientCache::clear();
 #endif
 
-	gUTbNamesNamEsJniClientHandle = nullptr;
 	Super::Deinitialize();
 }
 bool UTbNamesNamEsJniClient::GetSwitch() const
@@ -293,7 +227,7 @@ bool UTbNamesNamEsJniClient::GetSwitch() const
 void UTbNamesNamEsJniClient::SetSwitch(bool bInSwitch)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setSwitch"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -337,7 +271,7 @@ int32 UTbNamesNamEsJniClient::GetSomeProperty() const
 void UTbNamesNamEsJniClient::SetSomeProperty(int32 InSomeProperty)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setSomeProperty"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -381,7 +315,7 @@ int32 UTbNamesNamEsJniClient::GetSomePoperty2() const
 void UTbNamesNamEsJniClient::SetSomePoperty2(int32 InSomePoperty2)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setSomePoperty2"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -425,7 +359,7 @@ ETbNamesEnum_With_Under_scores UTbNamesNamEsJniClient::GetEnumProperty() const
 void UTbNamesNamEsJniClient::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setEnumProperty"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -468,7 +402,7 @@ void UTbNamesNamEsJniClient::SetEnumProperty(ETbNamesEnum_With_Under_scores InEn
 void UTbNamesNamEsJniClient::SomeFunction(bool bInSomeParam)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:SOME_FUNCTION "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -508,7 +442,7 @@ void UTbNamesNamEsJniClient::SomeFunction(bool bInSomeParam)
 void UTbNamesNamEsJniClient::SomeFunction2(bool bInSomeParam)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:Some_Function2 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -549,7 +483,7 @@ void UTbNamesNamEsJniClient::SomeFunction2(bool bInSomeParam)
 bool UTbNamesNamEsJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-	if (b_isReady)
+	if (b_isReady.load(std::memory_order_acquire))
 	{
 		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
 		{
@@ -627,74 +561,129 @@ void UTbNamesNamEsJniClient::_unbind()
 
 bool UTbNamesNamEsJniClient::_IsReady() const
 {
-	return b_isReady;
+	return b_isReady.load(std::memory_order_acquire);
+}
+void UTbNamesNamEsJniClient::OnSomeSignalSignal(bool bSomeParam)
+{
+	_GetPublisher()->BroadcastSomeSignalSignal(bSomeParam);
+}
+
+void UTbNamesNamEsJniClient::OnSomeSignal2Signal(bool bSomeParam)
+{
+	_GetPublisher()->BroadcastSomeSignal2Signal(bSomeParam);
+}
+
+void UTbNamesNamEsJniClient::OnSwitchChanged(bool bInSwitch)
+{
+	bSwitch = bInSwitch;
+	_GetPublisher()->BroadcastSwitchChanged(bSwitch);
+}
+
+void UTbNamesNamEsJniClient::OnSomePropertyChanged(int32 InSomeProperty)
+{
+	SomeProperty = InSomeProperty;
+	_GetPublisher()->BroadcastSomePropertyChanged(SomeProperty);
+}
+
+void UTbNamesNamEsJniClient::OnSomePoperty2Changed(int32 InSomePoperty2)
+{
+	SomePoperty2 = InSomePoperty2;
+	_GetPublisher()->BroadcastSomePoperty2Changed(SomePoperty2);
+}
+
+void UTbNamesNamEsJniClient::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty)
+{
+	EnumProperty = InEnumProperty;
+	_GetPublisher()->BroadcastEnumPropertyChanged(EnumProperty);
+}
+
+void UTbNamesNamEsJniClient::notifyIsReady(bool isReady)
+{
+	b_isReady.store(isReady, std::memory_order_release);
+	AsyncTask(ENamedThreads::GameThread, [this]()
+		{
+		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
+		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
+	});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSwitchChanged(JNIEnv* Env, jclass Clazz, jboolean Switch)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSwitchChanged"));
-	if (gUTbNamesNamEsJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbNamesNamEsJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSwitchChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	gUTbNamesNamEsJniClientOnSwitchChanged(Switch);
+	localJniAccessor->OnSwitchChanged(Switch);
 }
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePropertyChanged(JNIEnv* Env, jclass Clazz, jint SOME_PROPERTY)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePropertyChanged"));
-	if (gUTbNamesNamEsJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbNamesNamEsJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePropertyChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	gUTbNamesNamEsJniClientOnSomePropertyChanged(SOME_PROPERTY);
+	localJniAccessor->OnSomePropertyChanged(SOME_PROPERTY);
 }
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePoperty2Changed(JNIEnv* Env, jclass Clazz, jint Some_Poperty2)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePoperty2Changed"));
-	if (gUTbNamesNamEsJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbNamesNamEsJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomePoperty2Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	gUTbNamesNamEsJniClientOnSomePoperty2Changed(Some_Poperty2);
+	localJniAccessor->OnSomePoperty2Changed(Some_Poperty2);
 }
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnEnumPropertyChanged(JNIEnv* Env, jclass Clazz, jobject enum_property)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnEnumPropertyChanged"));
-	if (gUTbNamesNamEsJniClientHandle == nullptr)
+	ETbNamesEnum_With_Under_scores local_enum_property = TbNamesDataJavaConverter::getEnumWithUnderScoresValue(Env, enum_property);
+
+	auto localJniAccessor = gUTbNamesNamEsJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnEnumPropertyChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	ETbNamesEnum_With_Under_scores local_enum_property = TbNamesDataJavaConverter::getEnumWithUnderScoresValue(Env, enum_property);
-	gUTbNamesNamEsJniClientOnEnumPropertyChanged(local_enum_property);
+	localJniAccessor->OnEnumPropertyChanged(local_enum_property);
 }
 
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal(JNIEnv* Env, jclass Clazz, jboolean SOME_PARAM)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal"));
-	if (gUTbNamesNamEsJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbNamesNamEsJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
 
-	gUTbNamesNamEsJniClientHandle->_GetPublisher()->BroadcastSomeSignalSignal(SOME_PARAM);
+	localJniAccessor->OnSomeSignalSignal(SOME_PARAM);
 }
 
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal2(JNIEnv* Env, jclass Clazz, jboolean Some_Param)
 {
 	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal2"));
-	if (gUTbNamesNamEsJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbNamesNamEsJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeSignal2: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
 
-	gUTbNamesNamEsJniClientHandle->_GetPublisher()->BroadcastSomeSignal2Signal(Some_Param);
+	localJniAccessor->OnSomeSignal2Signal(Some_Param);
 }
 
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeFunctionResult(JNIEnv* Env, jclass Clazz, jstring callId)
@@ -727,10 +716,13 @@ JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeOnSomeFunctio
 
 JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-	AsyncTask(ENamedThreads::GameThread, [value]()
-		{
-		gUTbNamesNamEsJniClientnotifyIsReady(value);
-	});
+	auto localJniAccessor = gUTbNamesNamEsJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeIsReady: JNI SERVICE ADAPTER is not ready to use."));
+		return;
+	}
+	localJniAccessor->notifyIsReady(value);
 }
 #endif
 

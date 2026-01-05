@@ -37,8 +37,25 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame2SameStruct2InterfaceClient_JNI, Log, All);
 
+// A helper class that exposes part of UTbSame2SameStruct2InterfaceJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TBSAME2JNI_API IUTbSame2SameStruct2InterfaceJniClientJniAccessor
+{
+public:
+	virtual void OnSig1Signal(const FTbSame2Struct1& Param1) = 0;
+
+	virtual void OnSig2Signal(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) = 0;
+
+	virtual void OnProp1Changed(const FTbSame2Struct2& Prop1) = 0;
+
+	virtual void OnProp2Changed(const FTbSame2Struct2& Prop2) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TBSAME2JNI_API UTbSame2SameStruct2InterfaceJniClient : public UAbstractTbSame2SameStruct2Interface
+class TBSAME2JNI_API UTbSame2SameStruct2InterfaceJniClient : public UAbstractTbSame2SameStruct2Interface, public IUTbSame2SameStruct2InterfaceJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -82,7 +99,16 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void OnSig1Signal(const FTbSame2Struct1& Param1) override;
+
+	void OnSig2Signal(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
+
+	void OnProp1Changed(const FTbSame2Struct2& InProp1) override;
+
+	void OnProp2Changed(const FTbSame2Struct2& InProp2) override;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

@@ -37,8 +37,33 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumEnumInterfaceClient_JNI, Log, All);
 
+// A helper class that exposes part of UTbEnumEnumInterfaceJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TBENUMJNI_API IUTbEnumEnumInterfaceJniClientJniAccessor
+{
+public:
+	virtual void OnSig0Signal(ETbEnumEnum0 Param0) = 0;
+
+	virtual void OnSig1Signal(ETbEnumEnum1 Param1) = 0;
+
+	virtual void OnSig2Signal(ETbEnumEnum2 Param2) = 0;
+
+	virtual void OnSig3Signal(ETbEnumEnum3 Param3) = 0;
+
+	virtual void OnProp0Changed(ETbEnumEnum0 Prop0) = 0;
+
+	virtual void OnProp1Changed(ETbEnumEnum1 Prop1) = 0;
+
+	virtual void OnProp2Changed(ETbEnumEnum2 Prop2) = 0;
+
+	virtual void OnProp3Changed(ETbEnumEnum3 Prop3) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TBENUMJNI_API UTbEnumEnumInterfaceJniClient : public UAbstractTbEnumEnumInterface
+class TBENUMJNI_API UTbEnumEnumInterfaceJniClient : public UAbstractTbEnumEnumInterface, public IUTbEnumEnumInterfaceJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -88,7 +113,24 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void OnSig0Signal(ETbEnumEnum0 Param0) override;
+
+	void OnSig1Signal(ETbEnumEnum1 Param1) override;
+
+	void OnSig2Signal(ETbEnumEnum2 Param2) override;
+
+	void OnSig3Signal(ETbEnumEnum3 Param3) override;
+
+	void OnProp0Changed(ETbEnumEnum0 InProp0) override;
+
+	void OnProp1Changed(ETbEnumEnum1 InProp1) override;
+
+	void OnProp2Changed(ETbEnumEnum2 InProp2) override;
+
+	void OnProp3Changed(ETbEnumEnum3 InProp3) override;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
