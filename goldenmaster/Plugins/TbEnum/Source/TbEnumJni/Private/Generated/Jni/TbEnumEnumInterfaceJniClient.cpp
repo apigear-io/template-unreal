@@ -174,36 +174,7 @@ void UTbEnumEnumInterfaceJniClientCache::clear()
 namespace
 {
 
-UTbEnumEnumInterfaceJniClient* gUTbEnumEnumInterfaceJniClientHandle = nullptr;
-TFunction<void(bool)> gUTbEnumEnumInterfaceJniClientnotifyIsReady = [](bool value)
-{
-	(void)value;
-	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-};
-TFunction<void(ETbEnumEnum0)> gUTbEnumEnumInterfaceJniClientOnProp0ChangedEmpty = [](ETbEnumEnum0 value)
-{
-	(void)value;
-	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("onProp0Changed used but not set "));
-};
-TFunction<void(ETbEnumEnum0)> gUTbEnumEnumInterfaceJniClientOnProp0Changed = gUTbEnumEnumInterfaceJniClientOnProp0ChangedEmpty;
-TFunction<void(ETbEnumEnum1)> gUTbEnumEnumInterfaceJniClientOnProp1ChangedEmpty = [](ETbEnumEnum1 value)
-{
-	(void)value;
-	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("onProp1Changed used but not set "));
-};
-TFunction<void(ETbEnumEnum1)> gUTbEnumEnumInterfaceJniClientOnProp1Changed = gUTbEnumEnumInterfaceJniClientOnProp1ChangedEmpty;
-TFunction<void(ETbEnumEnum2)> gUTbEnumEnumInterfaceJniClientOnProp2ChangedEmpty = [](ETbEnumEnum2 value)
-{
-	(void)value;
-	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("onProp2Changed used but not set "));
-};
-TFunction<void(ETbEnumEnum2)> gUTbEnumEnumInterfaceJniClientOnProp2Changed = gUTbEnumEnumInterfaceJniClientOnProp2ChangedEmpty;
-TFunction<void(ETbEnumEnum3)> gUTbEnumEnumInterfaceJniClientOnProp3ChangedEmpty = [](ETbEnumEnum3 value)
-{
-	(void)value;
-	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("onProp3Changed used but not set "));
-};
-TFunction<void(ETbEnumEnum3)> gUTbEnumEnumInterfaceJniClientOnProp3Changed = gUTbEnumEnumInterfaceJniClientOnProp3ChangedEmpty;
+std::atomic<IUTbEnumEnumInterfaceJniClientJniAccessor*> gUTbEnumEnumInterfaceJniClientHandle(nullptr);
 
 UTbEnumEnumInterfaceJniClientMethodHelper gUTbEnumEnumInterfaceJniClientmethodHelper;
 
@@ -229,36 +200,7 @@ void UTbEnumEnumInterfaceJniClient::Initialize(FSubsystemCollectionBase& Collect
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Init"));
 	Super::Initialize(Collection);
 
-	gUTbEnumEnumInterfaceJniClientHandle = this;
-	gUTbEnumEnumInterfaceJniClientnotifyIsReady = [this](bool value)
-	{
-		b_isReady = value;
-		AsyncTask(ENamedThreads::GameThread, [this]()
-			{
-			_ConnectionStatusChangedBP.Broadcast(b_isReady);
-			_ConnectionStatusChanged.Broadcast(b_isReady);
-		});
-	};
-	gUTbEnumEnumInterfaceJniClientOnProp0Changed = [this](ETbEnumEnum0 InProp0)
-	{
-		Prop0 = InProp0;
-		_GetPublisher()->BroadcastProp0Changed(Prop0);
-	};
-	gUTbEnumEnumInterfaceJniClientOnProp1Changed = [this](ETbEnumEnum1 InProp1)
-	{
-		Prop1 = InProp1;
-		_GetPublisher()->BroadcastProp1Changed(Prop1);
-	};
-	gUTbEnumEnumInterfaceJniClientOnProp2Changed = [this](ETbEnumEnum2 InProp2)
-	{
-		Prop2 = InProp2;
-		_GetPublisher()->BroadcastProp2Changed(Prop2);
-	};
-	gUTbEnumEnumInterfaceJniClientOnProp3Changed = [this](ETbEnumEnum3 InProp3)
-	{
-		Prop3 = InProp3;
-		_GetPublisher()->BroadcastProp3Changed(Prop3);
-	};
+	gUTbEnumEnumInterfaceJniClientHandle.store(this, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbEnumEnumInterfaceJniClientCache::init();
@@ -278,15 +220,8 @@ void UTbEnumEnumInterfaceJniClient::Deinitialize()
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("deinit"));
 	_unbind();
-	gUTbEnumEnumInterfaceJniClientnotifyIsReady = [](bool value)
-	{
-		(void)value;
-		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-	};
-	gUTbEnumEnumInterfaceJniClientOnProp0Changed = gUTbEnumEnumInterfaceJniClientOnProp0ChangedEmpty;
-	gUTbEnumEnumInterfaceJniClientOnProp1Changed = gUTbEnumEnumInterfaceJniClientOnProp1ChangedEmpty;
-	gUTbEnumEnumInterfaceJniClientOnProp2Changed = gUTbEnumEnumInterfaceJniClientOnProp2ChangedEmpty;
-	gUTbEnumEnumInterfaceJniClientOnProp3Changed = gUTbEnumEnumInterfaceJniClientOnProp3ChangedEmpty;
+	b_isReady.store(false, std::memory_order_release);
+	gUTbEnumEnumInterfaceJniClientHandle.store(nullptr, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
@@ -295,7 +230,6 @@ void UTbEnumEnumInterfaceJniClient::Deinitialize()
 	UTbEnumEnumInterfaceJniClientCache::clear();
 #endif
 
-	gUTbEnumEnumInterfaceJniClientHandle = nullptr;
 	Super::Deinitialize();
 }
 ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::GetProp0() const
@@ -305,7 +239,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::GetProp0() const
 void UTbEnumEnumInterfaceJniClient::SetProp0(ETbEnumEnum0 InProp0)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:setProp0"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -352,7 +286,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::GetProp1() const
 void UTbEnumEnumInterfaceJniClient::SetProp1(ETbEnumEnum1 InProp1)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:setProp1"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -399,7 +333,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::GetProp2() const
 void UTbEnumEnumInterfaceJniClient::SetProp2(ETbEnumEnum2 InProp2)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:setProp2"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -446,7 +380,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::GetProp3() const
 void UTbEnumEnumInterfaceJniClient::SetProp3(ETbEnumEnum3 InProp3)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:setProp3"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -489,7 +423,7 @@ void UTbEnumEnumInterfaceJniClient::SetProp3(ETbEnumEnum3 InProp3)
 ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::Func0(ETbEnumEnum0 InParam0)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func0 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -532,7 +466,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::Func0(ETbEnumEnum0 InParam0)
 ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::Func1(ETbEnumEnum1 InParam1)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func1 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -575,7 +509,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::Func1(ETbEnumEnum1 InParam1)
 ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::Func2(ETbEnumEnum2 InParam2)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func2 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -618,7 +552,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::Func2(ETbEnumEnum2 InParam2)
 ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::Func3(ETbEnumEnum3 InParam3)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func3 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -662,7 +596,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::Func3(ETbEnumEnum3 InParam3)
 bool UTbEnumEnumInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-	if (b_isReady)
+	if (b_isReady.load(std::memory_order_acquire))
 	{
 		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
 		{
@@ -740,105 +674,174 @@ void UTbEnumEnumInterfaceJniClient::_unbind()
 
 bool UTbEnumEnumInterfaceJniClient::_IsReady() const
 {
-	return b_isReady;
+	return b_isReady.load(std::memory_order_acquire);
+}
+void UTbEnumEnumInterfaceJniClient::OnSig0Signal(ETbEnumEnum0 Param0)
+{
+	_GetPublisher()->BroadcastSig0Signal(Param0);
+}
+
+void UTbEnumEnumInterfaceJniClient::OnSig1Signal(ETbEnumEnum1 Param1)
+{
+	_GetPublisher()->BroadcastSig1Signal(Param1);
+}
+
+void UTbEnumEnumInterfaceJniClient::OnSig2Signal(ETbEnumEnum2 Param2)
+{
+	_GetPublisher()->BroadcastSig2Signal(Param2);
+}
+
+void UTbEnumEnumInterfaceJniClient::OnSig3Signal(ETbEnumEnum3 Param3)
+{
+	_GetPublisher()->BroadcastSig3Signal(Param3);
+}
+
+void UTbEnumEnumInterfaceJniClient::OnProp0Changed(ETbEnumEnum0 InProp0)
+{
+	Prop0 = InProp0;
+	_GetPublisher()->BroadcastProp0Changed(Prop0);
+}
+
+void UTbEnumEnumInterfaceJniClient::OnProp1Changed(ETbEnumEnum1 InProp1)
+{
+	Prop1 = InProp1;
+	_GetPublisher()->BroadcastProp1Changed(Prop1);
+}
+
+void UTbEnumEnumInterfaceJniClient::OnProp2Changed(ETbEnumEnum2 InProp2)
+{
+	Prop2 = InProp2;
+	_GetPublisher()->BroadcastProp2Changed(Prop2);
+}
+
+void UTbEnumEnumInterfaceJniClient::OnProp3Changed(ETbEnumEnum3 InProp3)
+{
+	Prop3 = InProp3;
+	_GetPublisher()->BroadcastProp3Changed(Prop3);
+}
+
+void UTbEnumEnumInterfaceJniClient::notifyIsReady(bool isReady)
+{
+	b_isReady.store(isReady, std::memory_order_release);
+	AsyncTask(ENamedThreads::GameThread, [this]()
+		{
+		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
+		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
+	});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp0Changed(JNIEnv* Env, jclass Clazz, jobject prop0)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp0Changed"));
-	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	ETbEnumEnum0 local_prop0 = TbEnumDataJavaConverter::getEnum0Value(Env, prop0);
+
+	auto localJniAccessor = gUTbEnumEnumInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp0Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	ETbEnumEnum0 local_prop0 = TbEnumDataJavaConverter::getEnum0Value(Env, prop0);
-	gUTbEnumEnumInterfaceJniClientOnProp0Changed(local_prop0);
+	localJniAccessor->OnProp0Changed(local_prop0);
 }
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp1Changed(JNIEnv* Env, jclass Clazz, jobject prop1)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp1Changed"));
-	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	ETbEnumEnum1 local_prop1 = TbEnumDataJavaConverter::getEnum1Value(Env, prop1);
+
+	auto localJniAccessor = gUTbEnumEnumInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp1Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	ETbEnumEnum1 local_prop1 = TbEnumDataJavaConverter::getEnum1Value(Env, prop1);
-	gUTbEnumEnumInterfaceJniClientOnProp1Changed(local_prop1);
+	localJniAccessor->OnProp1Changed(local_prop1);
 }
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp2Changed(JNIEnv* Env, jclass Clazz, jobject prop2)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp2Changed"));
-	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	ETbEnumEnum2 local_prop2 = TbEnumDataJavaConverter::getEnum2Value(Env, prop2);
+
+	auto localJniAccessor = gUTbEnumEnumInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp2Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	ETbEnumEnum2 local_prop2 = TbEnumDataJavaConverter::getEnum2Value(Env, prop2);
-	gUTbEnumEnumInterfaceJniClientOnProp2Changed(local_prop2);
+	localJniAccessor->OnProp2Changed(local_prop2);
 }
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp3Changed(JNIEnv* Env, jclass Clazz, jobject prop3)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp3Changed"));
-	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	ETbEnumEnum3 local_prop3 = TbEnumDataJavaConverter::getEnum3Value(Env, prop3);
+
+	auto localJniAccessor = gUTbEnumEnumInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnProp3Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	ETbEnumEnum3 local_prop3 = TbEnumDataJavaConverter::getEnum3Value(Env, prop3);
-	gUTbEnumEnumInterfaceJniClientOnProp3Changed(local_prop3);
+	localJniAccessor->OnProp3Changed(local_prop3);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig0(JNIEnv* Env, jclass Clazz, jobject param0)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig0"));
-	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	ETbEnumEnum0 local_param0 = TbEnumDataJavaConverter::getEnum0Value(Env, param0);
+
+	auto localJniAccessor = gUTbEnumEnumInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig0: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	ETbEnumEnum0 local_param0 = TbEnumDataJavaConverter::getEnum0Value(Env, param0);
 
-	gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig0Signal(local_param0);
+	localJniAccessor->OnSig0Signal(local_param0);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig1"));
-	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	ETbEnumEnum1 local_param1 = TbEnumDataJavaConverter::getEnum1Value(Env, param1);
+
+	auto localJniAccessor = gUTbEnumEnumInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	ETbEnumEnum1 local_param1 = TbEnumDataJavaConverter::getEnum1Value(Env, param1);
 
-	gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(local_param1);
+	localJniAccessor->OnSig1Signal(local_param1);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig2(JNIEnv* Env, jclass Clazz, jobject param2)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig2"));
-	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	ETbEnumEnum2 local_param2 = TbEnumDataJavaConverter::getEnum2Value(Env, param2);
+
+	auto localJniAccessor = gUTbEnumEnumInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	ETbEnumEnum2 local_param2 = TbEnumDataJavaConverter::getEnum2Value(Env, param2);
 
-	gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(local_param2);
+	localJniAccessor->OnSig2Signal(local_param2);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig3(JNIEnv* Env, jclass Clazz, jobject param3)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig3"));
-	if (gUTbEnumEnumInterfaceJniClientHandle == nullptr)
+	ETbEnumEnum3 local_param3 = TbEnumDataJavaConverter::getEnum3Value(Env, param3);
+
+	auto localJniAccessor = gUTbEnumEnumInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	ETbEnumEnum3 local_param3 = TbEnumDataJavaConverter::getEnum3Value(Env, param3);
 
-	gUTbEnumEnumInterfaceJniClientHandle->_GetPublisher()->BroadcastSig3Signal(local_param3);
+	localJniAccessor->OnSig3Signal(local_param3);
 }
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc0Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -907,10 +910,13 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc3
 
 JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-	AsyncTask(ENamedThreads::GameThread, [value]()
-		{
-		gUTbEnumEnumInterfaceJniClientnotifyIsReady(value);
-	});
+	auto localJniAccessor = gUTbEnumEnumInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeIsReady: JNI SERVICE ADAPTER is not ready to use."));
+		return;
+	}
+	localJniAccessor->notifyIsReady(value);
 }
 #endif
 

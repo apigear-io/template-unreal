@@ -125,12 +125,7 @@ void UTbIfaceimportEmptyIfJniClientCache::clear()
 namespace
 {
 
-UTbIfaceimportEmptyIfJniClient* gUTbIfaceimportEmptyIfJniClientHandle = nullptr;
-TFunction<void(bool)> gUTbIfaceimportEmptyIfJniClientnotifyIsReady = [](bool value)
-{
-	(void)value;
-	UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-};
+std::atomic<IUTbIfaceimportEmptyIfJniClientJniAccessor*> gUTbIfaceimportEmptyIfJniClientHandle(nullptr);
 
 UTbIfaceimportEmptyIfJniClientMethodHelper gUTbIfaceimportEmptyIfJniClientmethodHelper;
 
@@ -156,16 +151,7 @@ void UTbIfaceimportEmptyIfJniClient::Initialize(FSubsystemCollectionBase& Collec
 	UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Verbose, TEXT("Init"));
 	Super::Initialize(Collection);
 
-	gUTbIfaceimportEmptyIfJniClientHandle = this;
-	gUTbIfaceimportEmptyIfJniClientnotifyIsReady = [this](bool value)
-	{
-		b_isReady = value;
-		AsyncTask(ENamedThreads::GameThread, [this]()
-			{
-			_ConnectionStatusChangedBP.Broadcast(b_isReady);
-			_ConnectionStatusChanged.Broadcast(b_isReady);
-		});
-	};
+	gUTbIfaceimportEmptyIfJniClientHandle.store(this, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbIfaceimportEmptyIfJniClientCache::init();
@@ -185,11 +171,8 @@ void UTbIfaceimportEmptyIfJniClient::Deinitialize()
 {
 	UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Verbose, TEXT("deinit"));
 	_unbind();
-	gUTbIfaceimportEmptyIfJniClientnotifyIsReady = [](bool value)
-	{
-		(void)value;
-		UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-	};
+	b_isReady.store(false, std::memory_order_release);
+	gUTbIfaceimportEmptyIfJniClientHandle.store(nullptr, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
@@ -198,14 +181,13 @@ void UTbIfaceimportEmptyIfJniClient::Deinitialize()
 	UTbIfaceimportEmptyIfJniClientCache::clear();
 #endif
 
-	gUTbIfaceimportEmptyIfJniClientHandle = nullptr;
 	Super::Deinitialize();
 }
 
 bool UTbIfaceimportEmptyIfJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
 	UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-	if (b_isReady)
+	if (b_isReady.load(std::memory_order_acquire))
 	{
 		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
 		{
@@ -283,17 +265,30 @@ void UTbIfaceimportEmptyIfJniClient::_unbind()
 
 bool UTbIfaceimportEmptyIfJniClient::_IsReady() const
 {
-	return b_isReady;
+	return b_isReady.load(std::memory_order_acquire);
+}
+
+void UTbIfaceimportEmptyIfJniClient::notifyIsReady(bool isReady)
+{
+	b_isReady.store(isReady, std::memory_order_release);
+	AsyncTask(ENamedThreads::GameThread, [this]()
+		{
+		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
+		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
+	});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 JNI_METHOD void Java_tbIfaceimport_tbIfaceimportjniclient_EmptyIfJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-	AsyncTask(ENamedThreads::GameThread, [value]()
-		{
-		gUTbIfaceimportEmptyIfJniClientnotifyIsReady(value);
-	});
+	auto localJniAccessor = gUTbIfaceimportEmptyIfJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Warning, TEXT("Java_tbIfaceimport_tbIfaceimportjniclient_EmptyIfJniClient_nativeIsReady: JNI SERVICE ADAPTER is not ready to use."));
+		return;
+	}
+	localJniAccessor->notifyIsReady(value);
 }
 #endif
 

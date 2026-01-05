@@ -243,20 +243,7 @@ void {{$Class}}Cache::clear()
 namespace
 {
 
-{{$Class}}* g{{$Class}}Handle = nullptr;
-TFunction<void(bool)> g{{$Class}}notifyIsReady = [](bool value)
-{
-	(void)value;
-	UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("notifyIsReady used but not set "));
-};
-{{- range .Interface.Properties }}
-TFunction<void({{ueReturn "" .}})> g{{$Class}}On{{Camel .Name}}ChangedEmpty = []({{ueReturn "" .}} value)
-{
-	(void)value;
-	UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("on{{Camel .Name}}Changed used but not set "));
-};
-TFunction<void({{ueReturn "" .}})> g{{$Class}}On{{Camel .Name}}Changed = g{{$Class}}On{{Camel .Name}}ChangedEmpty;
-{{- end}}
+std::atomic<I{{$Class}}JniAccessor*> g{{$Class}}Handle(nullptr);
 
 {{$Class}}MethodHelper g{{$Class}}methodHelper;
 
@@ -282,24 +269,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("Init"));
 	Super::Initialize(Collection);
 
-	g{{$Class}}Handle = this;
-	g{{$Class}}notifyIsReady = [this](bool value)
-	{
-		b_isReady = value;
-		AsyncTask(ENamedThreads::GameThread, [this]()
-			{
-			_ConnectionStatusChangedBP.Broadcast(b_isReady);
-			_ConnectionStatusChanged.Broadcast(b_isReady);
-		});
-	};
-
-	{{- range .Interface.Properties }}
-	g{{$Class}}On{{Camel .Name}}Changed = [this]({{ueParam "In" . }})
-	{
-		{{ueVar "" .}} = {{ueVar "In" .}};
-		_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
-	};
-	{{- end}}
+	g{{$Class}}Handle.store(this, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	{{$Class}}Cache::init();
@@ -319,14 +289,8 @@ void {{$Class}}::Deinitialize()
 {
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("deinit"));
 	_unbind();
-	g{{$Class}}notifyIsReady = [](bool value)
-	{
-		(void)value;
-		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("notifyIsReady used but not set "));
-	};
-	{{- range .Interface.Properties}}
-	g{{$Class}}On{{Camel .Name}}Changed = g{{$Class}}On{{Camel .Name}}ChangedEmpty;
-	{{- end}}
+	b_isReady.store(false, std::memory_order_release);
+	g{{$Class}}Handle.store(nullptr, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
@@ -335,7 +299,6 @@ void {{$Class}}::Deinitialize()
 	{{$Class}}Cache::clear();
 #endif
 
-	g{{$Class}}Handle = nullptr;
 	Super::Deinitialize();
 }
 
@@ -349,7 +312,7 @@ void {{$Class}}::Deinitialize()
 void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$javaClassPath}}/{{$javaClassName}}:set{{Camel .Name}}"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -405,7 +368,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {{ueReturn "" .Return }} {{$Class}}::{{Camel .Name}}({{ueParams "In" .Params}})
 {
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{.Name}} "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -477,7 +440,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 bool {{$Class}}::_bindToService(FString servicePackage, FString connectionId)
 {
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-	if (b_isReady)
+	if (b_isReady.load(std::memory_order_acquire))
 	{
 		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
 		{
@@ -555,7 +518,34 @@ void {{$Class}}::_unbind()
 
 bool {{$Class}}::_IsReady() const
 {
-	return b_isReady;
+	return b_isReady.load(std::memory_order_acquire);
+}
+
+{{- range $i, $e := .Interface.Signals }}
+{{- if $i }}{{nl}}{{ end }}
+void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "" .Params}})
+{
+	_GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "" .Params}});
+}
+{{- end }}
+{{- if and (len .Interface.Properties) (len .Interface.Signals) }}{{ nl }}{{ end }}
+{{- range $i, $e := .Interface.Properties }}
+{{- if $i }}{{nl}}{{ end }}
+void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
+{
+	{{ueVar "" .}} = {{ueVar "In" .}};
+	_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+}
+{{- end }}
+
+void {{$Class}}::notifyIsReady(bool isReady)
+{
+	b_isReady.store(isReady, std::memory_order_release);
+	AsyncTask(ENamedThreads::GameThread, [this]()
+		{
+		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
+		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
+	});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -568,20 +558,22 @@ bool {{$Class}}::_IsReady() const
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed(JNIEnv* Env, jclass Clazz, {{jniJavaParam "" . }})
 {
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed"));
-	if (g{{$Class}}Handle == nullptr)
-	{
-		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 	{{- template "convert_to_local_cpp_value_java_param" . }}
 	{{- $hasLocalVar := or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}
 	{{- $local_value := printf "local_%s" (snake .Name) }}
 
+	auto localJniAccessor = g{{$Class}}Handle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
 	{{- if $hasLocalVar }}
-	g{{$Class}}On{{Camel .Name}}Changed({{$local_value}});
+	localJniAccessor->On{{Camel .Name}}Changed({{$local_value}});
 	{{- else}}
-	g{{$Class}}On{{Camel .Name}}Changed({{$javaPropName}});
+	localJniAccessor->On{{Camel .Name}}Changed({{$javaPropName}});
 	{{- end}}
 }
 {{- end}}
@@ -591,17 +583,19 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Changed(JNIEnv* En
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jclass Clazz{{if len (.Params)}}, {{end}}{{jniJavaParams "" .Params }})
 {
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}"));
-	if (g{{$Class}}Handle == nullptr)
-	{
-		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 
 {{- range .Params -}}
 	{{- template "convert_to_local_cpp_value_java_param" . }}
 {{- end }}
 
-	g{{$Class}}Handle->_GetPublisher()->Broadcast{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
+	auto localJniAccessor = g{{$Class}}Handle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->On{{Camel .Name}}Signal({{- range $idx, $p := .Params -}}
 	{{- if $idx}}, {{ end -}}
 	{{- $local_value := printf "local_%s" (snake .Name) -}}
 	{{- if or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}{{$local_value -}}
@@ -703,10 +697,13 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-	AsyncTask(ENamedThreads::GameThread, [value]()
-		{
-		g{{$Class}}notifyIsReady(value);
-	});
+	auto localJniAccessor = g{{$Class}}Handle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_nativeIsReady: JNI SERVICE ADAPTER is not ready to use."));
+		return;
+	}
+	localJniAccessor->notifyIsReady(value);
 }
 #endif
 

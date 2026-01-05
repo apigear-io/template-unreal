@@ -37,8 +37,29 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesNamEsClient_JNI, Log, All);
 
+// A helper class that exposes part of UTbNamesNamEsJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TBNAMESJNI_API IUTbNamesNamEsJniClientJniAccessor
+{
+public:
+	virtual void OnSomeSignalSignal(bool bSomeParam) = 0;
+
+	virtual void OnSomeSignal2Signal(bool bSomeParam) = 0;
+
+	virtual void OnSwitchChanged(bool bSwitch) = 0;
+
+	virtual void OnSomePropertyChanged(int32 SomeProperty) = 0;
+
+	virtual void OnSomePoperty2Changed(int32 SomePoperty2) = 0;
+
+	virtual void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores EnumProperty) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TBNAMESJNI_API UTbNamesNamEsJniClient : public UAbstractTbNamesNamEs
+class TBNAMESJNI_API UTbNamesNamEsJniClient : public UAbstractTbNamesNamEs, public IUTbNamesNamEsJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -86,7 +107,20 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void OnSomeSignalSignal(bool bSomeParam) override;
+
+	void OnSomeSignal2Signal(bool bSomeParam) override;
+
+	void OnSwitchChanged(bool bInSwitch) override;
+
+	void OnSomePropertyChanged(int32 InSomeProperty) override;
+
+	void OnSomePoperty2Changed(int32 InSomePoperty2) override;
+
+	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty) override;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

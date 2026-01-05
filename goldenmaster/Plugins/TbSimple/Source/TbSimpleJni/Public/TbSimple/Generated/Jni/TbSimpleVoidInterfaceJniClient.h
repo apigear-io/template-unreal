@@ -37,8 +37,19 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleVoidInterfaceClient_JNI, Log, All);
 
+// A helper class that exposes part of UTbSimpleVoidInterfaceJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TBSIMPLEJNI_API IUTbSimpleVoidInterfaceJniClientJniAccessor
+{
+public:
+	virtual void OnSigVoidSignal() = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TBSIMPLEJNI_API UTbSimpleVoidInterfaceJniClient : public UAbstractTbSimpleVoidInterface
+class TBSIMPLEJNI_API UTbSimpleVoidInterfaceJniClient : public UAbstractTbSimpleVoidInterface, public IUTbSimpleVoidInterfaceJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -77,7 +88,10 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void OnSigVoidSignal() override;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

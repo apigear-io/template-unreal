@@ -37,8 +37,51 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleSimpleArrayInterfaceClient_JNI, Log, All);
 
+// A helper class that exposes part of UTbSimpleSimpleArrayInterfaceJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TBSIMPLEJNI_API IUTbSimpleSimpleArrayInterfaceJniClientJniAccessor
+{
+public:
+	virtual void OnSigBoolSignal(const TArray<bool>& ParamBool) = 0;
+
+	virtual void OnSigIntSignal(const TArray<int32>& ParamInt) = 0;
+
+	virtual void OnSigInt32Signal(const TArray<int32>& ParamInt32) = 0;
+
+	virtual void OnSigInt64Signal(const TArray<int64>& ParamInt64) = 0;
+
+	virtual void OnSigFloatSignal(const TArray<float>& ParamFloat) = 0;
+
+	virtual void OnSigFloat32Signal(const TArray<float>& ParamFloa32) = 0;
+
+	virtual void OnSigFloat64Signal(const TArray<double>& ParamFloat64) = 0;
+
+	virtual void OnSigStringSignal(const TArray<FString>& ParamString) = 0;
+
+	virtual void OnPropBoolChanged(const TArray<bool>& PropBool) = 0;
+
+	virtual void OnPropIntChanged(const TArray<int32>& PropInt) = 0;
+
+	virtual void OnPropInt32Changed(const TArray<int32>& PropInt32) = 0;
+
+	virtual void OnPropInt64Changed(const TArray<int64>& PropInt64) = 0;
+
+	virtual void OnPropFloatChanged(const TArray<float>& PropFloat) = 0;
+
+	virtual void OnPropFloat32Changed(const TArray<float>& PropFloat32) = 0;
+
+	virtual void OnPropFloat64Changed(const TArray<double>& PropFloat64) = 0;
+
+	virtual void OnPropStringChanged(const TArray<FString>& PropString) = 0;
+
+	virtual void OnPropReadOnlyStringChanged(const FString& PropReadOnlyString) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TBSIMPLEJNI_API UTbSimpleSimpleArrayInterfaceJniClient : public UAbstractTbSimpleSimpleArrayInterface
+class TBSIMPLEJNI_API UTbSimpleSimpleArrayInterfaceJniClient : public UAbstractTbSimpleSimpleArrayInterface, public IUTbSimpleSimpleArrayInterfaceJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -101,7 +144,42 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void OnSigBoolSignal(const TArray<bool>& ParamBool) override;
+
+	void OnSigIntSignal(const TArray<int32>& ParamInt) override;
+
+	void OnSigInt32Signal(const TArray<int32>& ParamInt32) override;
+
+	void OnSigInt64Signal(const TArray<int64>& ParamInt64) override;
+
+	void OnSigFloatSignal(const TArray<float>& ParamFloat) override;
+
+	void OnSigFloat32Signal(const TArray<float>& ParamFloa32) override;
+
+	void OnSigFloat64Signal(const TArray<double>& ParamFloat64) override;
+
+	void OnSigStringSignal(const TArray<FString>& ParamString) override;
+
+	void OnPropBoolChanged(const TArray<bool>& InPropBool) override;
+
+	void OnPropIntChanged(const TArray<int32>& InPropInt) override;
+
+	void OnPropInt32Changed(const TArray<int32>& InPropInt32) override;
+
+	void OnPropInt64Changed(const TArray<int64>& InPropInt64) override;
+
+	void OnPropFloatChanged(const TArray<float>& InPropFloat) override;
+
+	void OnPropFloat32Changed(const TArray<float>& InPropFloat32) override;
+
+	void OnPropFloat64Changed(const TArray<double>& InPropFloat64) override;
+
+	void OnPropStringChanged(const TArray<FString>& InPropString) override;
+
+	void OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString) override;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

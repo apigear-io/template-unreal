@@ -137,24 +137,7 @@ void UTbSimpleNoOperationsInterfaceJniClientCache::clear()
 namespace
 {
 
-UTbSimpleNoOperationsInterfaceJniClient* gUTbSimpleNoOperationsInterfaceJniClientHandle = nullptr;
-TFunction<void(bool)> gUTbSimpleNoOperationsInterfaceJniClientnotifyIsReady = [](bool value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-};
-TFunction<void(bool)> gUTbSimpleNoOperationsInterfaceJniClientOnPropBoolChangedEmpty = [](bool value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("onPropBoolChanged used but not set "));
-};
-TFunction<void(bool)> gUTbSimpleNoOperationsInterfaceJniClientOnPropBoolChanged = gUTbSimpleNoOperationsInterfaceJniClientOnPropBoolChangedEmpty;
-TFunction<void(int32)> gUTbSimpleNoOperationsInterfaceJniClientOnPropIntChangedEmpty = [](int32 value)
-{
-	(void)value;
-	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("onPropIntChanged used but not set "));
-};
-TFunction<void(int32)> gUTbSimpleNoOperationsInterfaceJniClientOnPropIntChanged = gUTbSimpleNoOperationsInterfaceJniClientOnPropIntChangedEmpty;
+std::atomic<IUTbSimpleNoOperationsInterfaceJniClientJniAccessor*> gUTbSimpleNoOperationsInterfaceJniClientHandle(nullptr);
 
 UTbSimpleNoOperationsInterfaceJniClientMethodHelper gUTbSimpleNoOperationsInterfaceJniClientmethodHelper;
 
@@ -180,26 +163,7 @@ void UTbSimpleNoOperationsInterfaceJniClient::Initialize(FSubsystemCollectionBas
 	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Verbose, TEXT("Init"));
 	Super::Initialize(Collection);
 
-	gUTbSimpleNoOperationsInterfaceJniClientHandle = this;
-	gUTbSimpleNoOperationsInterfaceJniClientnotifyIsReady = [this](bool value)
-	{
-		b_isReady = value;
-		AsyncTask(ENamedThreads::GameThread, [this]()
-			{
-			_ConnectionStatusChangedBP.Broadcast(b_isReady);
-			_ConnectionStatusChanged.Broadcast(b_isReady);
-		});
-	};
-	gUTbSimpleNoOperationsInterfaceJniClientOnPropBoolChanged = [this](bool bInPropBool)
-	{
-		bPropBool = bInPropBool;
-		_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
-	};
-	gUTbSimpleNoOperationsInterfaceJniClientOnPropIntChanged = [this](int32 InPropInt)
-	{
-		PropInt = InPropInt;
-		_GetPublisher()->BroadcastPropIntChanged(PropInt);
-	};
+	gUTbSimpleNoOperationsInterfaceJniClientHandle.store(this, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbSimpleNoOperationsInterfaceJniClientCache::init();
@@ -219,13 +183,8 @@ void UTbSimpleNoOperationsInterfaceJniClient::Deinitialize()
 {
 	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Verbose, TEXT("deinit"));
 	_unbind();
-	gUTbSimpleNoOperationsInterfaceJniClientnotifyIsReady = [](bool value)
-	{
-		(void)value;
-		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-	};
-	gUTbSimpleNoOperationsInterfaceJniClientOnPropBoolChanged = gUTbSimpleNoOperationsInterfaceJniClientOnPropBoolChangedEmpty;
-	gUTbSimpleNoOperationsInterfaceJniClientOnPropIntChanged = gUTbSimpleNoOperationsInterfaceJniClientOnPropIntChangedEmpty;
+	b_isReady.store(false, std::memory_order_release);
+	gUTbSimpleNoOperationsInterfaceJniClientHandle.store(nullptr, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
@@ -234,7 +193,6 @@ void UTbSimpleNoOperationsInterfaceJniClient::Deinitialize()
 	UTbSimpleNoOperationsInterfaceJniClientCache::clear();
 #endif
 
-	gUTbSimpleNoOperationsInterfaceJniClientHandle = nullptr;
 	Super::Deinitialize();
 }
 bool UTbSimpleNoOperationsInterfaceJniClient::GetPropBool() const
@@ -244,7 +202,7 @@ bool UTbSimpleNoOperationsInterfaceJniClient::GetPropBool() const
 void UTbSimpleNoOperationsInterfaceJniClient::SetPropBool(bool bInPropBool)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient:setPropBool"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -288,7 +246,7 @@ int32 UTbSimpleNoOperationsInterfaceJniClient::GetPropInt() const
 void UTbSimpleNoOperationsInterfaceJniClient::SetPropInt(int32 InPropInt)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient:setPropInt"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -329,7 +287,7 @@ void UTbSimpleNoOperationsInterfaceJniClient::SetPropInt(int32 InPropInt)
 bool UTbSimpleNoOperationsInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-	if (b_isReady)
+	if (b_isReady.load(std::memory_order_acquire))
 	{
 		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
 		{
@@ -407,61 +365,103 @@ void UTbSimpleNoOperationsInterfaceJniClient::_unbind()
 
 bool UTbSimpleNoOperationsInterfaceJniClient::_IsReady() const
 {
-	return b_isReady;
+	return b_isReady.load(std::memory_order_acquire);
+}
+void UTbSimpleNoOperationsInterfaceJniClient::OnSigVoidSignal()
+{
+	_GetPublisher()->BroadcastSigVoidSignal();
+}
+
+void UTbSimpleNoOperationsInterfaceJniClient::OnSigBoolSignal(bool bParamBool)
+{
+	_GetPublisher()->BroadcastSigBoolSignal(bParamBool);
+}
+
+void UTbSimpleNoOperationsInterfaceJniClient::OnPropBoolChanged(bool bInPropBool)
+{
+	bPropBool = bInPropBool;
+	_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
+}
+
+void UTbSimpleNoOperationsInterfaceJniClient::OnPropIntChanged(int32 InPropInt)
+{
+	PropInt = InPropInt;
+	_GetPublisher()->BroadcastPropIntChanged(PropInt);
+}
+
+void UTbSimpleNoOperationsInterfaceJniClient::notifyIsReady(bool isReady)
+{
+	b_isReady.store(isReady, std::memory_order_release);
+	AsyncTask(ENamedThreads::GameThread, [this]()
+		{
+		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
+		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
+	});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnPropBoolChanged(JNIEnv* Env, jclass Clazz, jboolean propBool)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnPropBoolChanged"));
-	if (gUTbSimpleNoOperationsInterfaceJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbSimpleNoOperationsInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnPropBoolChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	gUTbSimpleNoOperationsInterfaceJniClientOnPropBoolChanged(propBool);
+	localJniAccessor->OnPropBoolChanged(propBool);
 }
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnPropIntChanged(JNIEnv* Env, jclass Clazz, jint propInt)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnPropIntChanged"));
-	if (gUTbSimpleNoOperationsInterfaceJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbSimpleNoOperationsInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnPropIntChanged: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	gUTbSimpleNoOperationsInterfaceJniClientOnPropIntChanged(propInt);
+	localJniAccessor->OnPropIntChanged(propInt);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigVoid(JNIEnv* Env, jclass Clazz)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigVoid"));
-	if (gUTbSimpleNoOperationsInterfaceJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbSimpleNoOperationsInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigVoid: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
 
-	gUTbSimpleNoOperationsInterfaceJniClientHandle->_GetPublisher()->BroadcastSigVoidSignal();
+	localJniAccessor->OnSigVoidSignal();
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigBool(JNIEnv* Env, jclass Clazz, jboolean paramBool)
 {
 	UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigBool"));
-	if (gUTbSimpleNoOperationsInterfaceJniClientHandle == nullptr)
+
+	auto localJniAccessor = gUTbSimpleNoOperationsInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeOnSigBool: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
 
-	gUTbSimpleNoOperationsInterfaceJniClientHandle->_GetPublisher()->BroadcastSigBoolSignal(paramBool);
+	localJniAccessor->OnSigBoolSignal(paramBool);
 }
 
 JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-	AsyncTask(ENamedThreads::GameThread, [value]()
-		{
-		gUTbSimpleNoOperationsInterfaceJniClientnotifyIsReady(value);
-	});
+	auto localJniAccessor = gUTbSimpleNoOperationsInterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceClient_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniclient_NoOperationsInterfaceJniClient_nativeIsReady: JNI SERVICE ADAPTER is not ready to use."));
+		return;
+	}
+	localJniAccessor->notifyIsReady(value);
 }
 #endif
 
