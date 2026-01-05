@@ -162,30 +162,7 @@ void UTestbed2NestedStruct3InterfaceJniClientCache::clear()
 namespace
 {
 
-UTestbed2NestedStruct3InterfaceJniClient* gUTestbed2NestedStruct3InterfaceJniClientHandle = nullptr;
-TFunction<void(bool)> gUTestbed2NestedStruct3InterfaceJniClientnotifyIsReady = [](bool value)
-{
-	(void)value;
-	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-};
-TFunction<void(FTestbed2NestedStruct1)> gUTestbed2NestedStruct3InterfaceJniClientOnProp1ChangedEmpty = [](FTestbed2NestedStruct1 value)
-{
-	(void)value;
-	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("onProp1Changed used but not set "));
-};
-TFunction<void(FTestbed2NestedStruct1)> gUTestbed2NestedStruct3InterfaceJniClientOnProp1Changed = gUTestbed2NestedStruct3InterfaceJniClientOnProp1ChangedEmpty;
-TFunction<void(FTestbed2NestedStruct2)> gUTestbed2NestedStruct3InterfaceJniClientOnProp2ChangedEmpty = [](FTestbed2NestedStruct2 value)
-{
-	(void)value;
-	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("onProp2Changed used but not set "));
-};
-TFunction<void(FTestbed2NestedStruct2)> gUTestbed2NestedStruct3InterfaceJniClientOnProp2Changed = gUTestbed2NestedStruct3InterfaceJniClientOnProp2ChangedEmpty;
-TFunction<void(FTestbed2NestedStruct3)> gUTestbed2NestedStruct3InterfaceJniClientOnProp3ChangedEmpty = [](FTestbed2NestedStruct3 value)
-{
-	(void)value;
-	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("onProp3Changed used but not set "));
-};
-TFunction<void(FTestbed2NestedStruct3)> gUTestbed2NestedStruct3InterfaceJniClientOnProp3Changed = gUTestbed2NestedStruct3InterfaceJniClientOnProp3ChangedEmpty;
+std::atomic<IUTestbed2NestedStruct3InterfaceJniClientJniAccessor*> gUTestbed2NestedStruct3InterfaceJniClientHandle(nullptr);
 
 UTestbed2NestedStruct3InterfaceJniClientMethodHelper gUTestbed2NestedStruct3InterfaceJniClientmethodHelper;
 
@@ -211,31 +188,7 @@ void UTestbed2NestedStruct3InterfaceJniClient::Initialize(FSubsystemCollectionBa
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("Init"));
 	Super::Initialize(Collection);
 
-	gUTestbed2NestedStruct3InterfaceJniClientHandle = this;
-	gUTestbed2NestedStruct3InterfaceJniClientnotifyIsReady = [this](bool value)
-	{
-		b_isReady = value;
-		AsyncTask(ENamedThreads::GameThread, [this]()
-			{
-			_ConnectionStatusChangedBP.Broadcast(b_isReady);
-			_ConnectionStatusChanged.Broadcast(b_isReady);
-		});
-	};
-	gUTestbed2NestedStruct3InterfaceJniClientOnProp1Changed = [this](const FTestbed2NestedStruct1& InProp1)
-	{
-		Prop1 = InProp1;
-		_GetPublisher()->BroadcastProp1Changed(Prop1);
-	};
-	gUTestbed2NestedStruct3InterfaceJniClientOnProp2Changed = [this](const FTestbed2NestedStruct2& InProp2)
-	{
-		Prop2 = InProp2;
-		_GetPublisher()->BroadcastProp2Changed(Prop2);
-	};
-	gUTestbed2NestedStruct3InterfaceJniClientOnProp3Changed = [this](const FTestbed2NestedStruct3& InProp3)
-	{
-		Prop3 = InProp3;
-		_GetPublisher()->BroadcastProp3Changed(Prop3);
-	};
+	gUTestbed2NestedStruct3InterfaceJniClientHandle.store(this, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTestbed2NestedStruct3InterfaceJniClientCache::init();
@@ -255,14 +208,8 @@ void UTestbed2NestedStruct3InterfaceJniClient::Deinitialize()
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("deinit"));
 	_unbind();
-	gUTestbed2NestedStruct3InterfaceJniClientnotifyIsReady = [](bool value)
-	{
-		(void)value;
-		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-	};
-	gUTestbed2NestedStruct3InterfaceJniClientOnProp1Changed = gUTestbed2NestedStruct3InterfaceJniClientOnProp1ChangedEmpty;
-	gUTestbed2NestedStruct3InterfaceJniClientOnProp2Changed = gUTestbed2NestedStruct3InterfaceJniClientOnProp2ChangedEmpty;
-	gUTestbed2NestedStruct3InterfaceJniClientOnProp3Changed = gUTestbed2NestedStruct3InterfaceJniClientOnProp3ChangedEmpty;
+	b_isReady.store(false, std::memory_order_release);
+	gUTestbed2NestedStruct3InterfaceJniClientHandle.store(nullptr, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
@@ -271,7 +218,6 @@ void UTestbed2NestedStruct3InterfaceJniClient::Deinitialize()
 	UTestbed2NestedStruct3InterfaceJniClientCache::clear();
 #endif
 
-	gUTestbed2NestedStruct3InterfaceJniClientHandle = nullptr;
 	Super::Deinitialize();
 }
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::GetProp1() const
@@ -281,7 +227,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::GetProp1() cons
 void UTestbed2NestedStruct3InterfaceJniClient::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient:setProp1"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -328,7 +274,7 @@ FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceJniClient::GetProp2() cons
 void UTestbed2NestedStruct3InterfaceJniClient::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient:setProp2"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -375,7 +321,7 @@ FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceJniClient::GetProp3() cons
 void UTestbed2NestedStruct3InterfaceJniClient::SetProp3(const FTestbed2NestedStruct3& InProp3)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient:setProp3"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -418,7 +364,7 @@ void UTestbed2NestedStruct3InterfaceJniClient::SetProp3(const FTestbed2NestedStr
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func1(const FTestbed2NestedStruct1& InParam1)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient:func1 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -461,7 +407,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func1(const FTe
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func2(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient:func2 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -506,7 +452,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func2(const FTe
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func3(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient:func3 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -554,7 +500,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func3(const FTe
 bool UTestbed2NestedStruct3InterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-	if (b_isReady)
+	if (b_isReady.load(std::memory_order_acquire))
 	{
 		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
 		{
@@ -632,85 +578,132 @@ void UTestbed2NestedStruct3InterfaceJniClient::_unbind()
 
 bool UTestbed2NestedStruct3InterfaceJniClient::_IsReady() const
 {
-	return b_isReady;
+	return b_isReady.load(std::memory_order_acquire);
+}
+void UTestbed2NestedStruct3InterfaceJniClient::OnSig1Signal(const FTestbed2NestedStruct1& Param1)
+{
+	_GetPublisher()->BroadcastSig1Signal(Param1);
+}
+
+void UTestbed2NestedStruct3InterfaceJniClient::OnSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+{
+	_GetPublisher()->BroadcastSig2Signal(Param1, Param2);
+}
+
+void UTestbed2NestedStruct3InterfaceJniClient::OnSig3Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+{
+	_GetPublisher()->BroadcastSig3Signal(Param1, Param2, Param3);
+}
+
+void UTestbed2NestedStruct3InterfaceJniClient::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
+{
+	Prop1 = InProp1;
+	_GetPublisher()->BroadcastProp1Changed(Prop1);
+}
+
+void UTestbed2NestedStruct3InterfaceJniClient::OnProp2Changed(const FTestbed2NestedStruct2& InProp2)
+{
+	Prop2 = InProp2;
+	_GetPublisher()->BroadcastProp2Changed(Prop2);
+}
+
+void UTestbed2NestedStruct3InterfaceJniClient::OnProp3Changed(const FTestbed2NestedStruct3& InProp3)
+{
+	Prop3 = InProp3;
+	_GetPublisher()->BroadcastProp3Changed(Prop3);
+}
+
+void UTestbed2NestedStruct3InterfaceJniClient::notifyIsReady(bool isReady)
+{
+	b_isReady.store(isReady, std::memory_order_release);
+	AsyncTask(ENamedThreads::GameThread, [this]()
+		{
+		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
+		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
+	});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp1Changed(JNIEnv* Env, jclass Clazz, jobject prop1)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp1Changed"));
-	if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
+	FTestbed2NestedStruct1 local_prop1 = FTestbed2NestedStruct1();
+	Testbed2DataJavaConverter::fillNestedStruct1(Env, prop1, local_prop1);
+
+	auto localJniAccessor = gUTestbed2NestedStruct3InterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp1Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	FTestbed2NestedStruct1 local_prop1 = FTestbed2NestedStruct1();
-	Testbed2DataJavaConverter::fillNestedStruct1(Env, prop1, local_prop1);
-	gUTestbed2NestedStruct3InterfaceJniClientOnProp1Changed(local_prop1);
+	localJniAccessor->OnProp1Changed(local_prop1);
 }
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp2Changed(JNIEnv* Env, jclass Clazz, jobject prop2)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp2Changed"));
-	if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
+	FTestbed2NestedStruct2 local_prop2 = FTestbed2NestedStruct2();
+	Testbed2DataJavaConverter::fillNestedStruct2(Env, prop2, local_prop2);
+
+	auto localJniAccessor = gUTestbed2NestedStruct3InterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp2Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	FTestbed2NestedStruct2 local_prop2 = FTestbed2NestedStruct2();
-	Testbed2DataJavaConverter::fillNestedStruct2(Env, prop2, local_prop2);
-	gUTestbed2NestedStruct3InterfaceJniClientOnProp2Changed(local_prop2);
+	localJniAccessor->OnProp2Changed(local_prop2);
 }
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp3Changed(JNIEnv* Env, jclass Clazz, jobject prop3)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp3Changed"));
-	if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
+	FTestbed2NestedStruct3 local_prop3 = FTestbed2NestedStruct3();
+	Testbed2DataJavaConverter::fillNestedStruct3(Env, prop3, local_prop3);
+
+	auto localJniAccessor = gUTestbed2NestedStruct3InterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnProp3Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	FTestbed2NestedStruct3 local_prop3 = FTestbed2NestedStruct3();
-	Testbed2DataJavaConverter::fillNestedStruct3(Env, prop3, local_prop3);
-	gUTestbed2NestedStruct3InterfaceJniClientOnProp3Changed(local_prop3);
+	localJniAccessor->OnProp3Changed(local_prop3);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig1"));
-	if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
+	FTestbed2NestedStruct1 local_param1 = FTestbed2NestedStruct1();
+	Testbed2DataJavaConverter::fillNestedStruct1(Env, param1, local_param1);
+
+	auto localJniAccessor = gUTestbed2NestedStruct3InterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	FTestbed2NestedStruct1 local_param1 = FTestbed2NestedStruct1();
-	Testbed2DataJavaConverter::fillNestedStruct1(Env, param1, local_param1);
 
-	gUTestbed2NestedStruct3InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(local_param1);
+	localJniAccessor->OnSig1Signal(local_param1);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig2(JNIEnv* Env, jclass Clazz, jobject param1, jobject param2)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig2"));
-	if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	FTestbed2NestedStruct1 local_param1 = FTestbed2NestedStruct1();
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, param1, local_param1);
 	FTestbed2NestedStruct2 local_param2 = FTestbed2NestedStruct2();
 	Testbed2DataJavaConverter::fillNestedStruct2(Env, param2, local_param2);
 
-	gUTestbed2NestedStruct3InterfaceJniClientHandle->_GetPublisher()->BroadcastSig2Signal(local_param1, local_param2);
+	auto localJniAccessor = gUTestbed2NestedStruct3InterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig2: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->OnSig2Signal(local_param1, local_param2);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig3(JNIEnv* Env, jclass Clazz, jobject param1, jobject param2, jobject param3)
 {
 	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig3"));
-	if (gUTestbed2NestedStruct3InterfaceJniClientHandle == nullptr)
-	{
-		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
-		return;
-	}
 	FTestbed2NestedStruct1 local_param1 = FTestbed2NestedStruct1();
 	Testbed2DataJavaConverter::fillNestedStruct1(Env, param1, local_param1);
 	FTestbed2NestedStruct2 local_param2 = FTestbed2NestedStruct2();
@@ -718,7 +711,14 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 	FTestbed2NestedStruct3 local_param3 = FTestbed2NestedStruct3();
 	Testbed2DataJavaConverter::fillNestedStruct3(Env, param3, local_param3);
 
-	gUTestbed2NestedStruct3InterfaceJniClientHandle->_GetPublisher()->BroadcastSig3Signal(local_param1, local_param2, local_param3);
+	auto localJniAccessor = gUTestbed2NestedStruct3InterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnSig3: JNI SERVICE ADAPTER NOT FOUND "));
+		return;
+	}
+
+	localJniAccessor->OnSig3Signal(local_param1, local_param2, local_param3);
 }
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeOnFunc1Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -774,10 +774,13 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_
 
 JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-	AsyncTask(ENamedThreads::GameThread, [value]()
-		{
-		gUTestbed2NestedStruct3InterfaceJniClientnotifyIsReady(value);
-	});
+	auto localJniAccessor = gUTestbed2NestedStruct3InterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("Java_testbed2_testbed2jniclient_NestedStruct3InterfaceJniClient_nativeIsReady: JNI SERVICE ADAPTER is not ready to use."));
+		return;
+	}
+	localJniAccessor->notifyIsReady(value);
 }
 #endif
 

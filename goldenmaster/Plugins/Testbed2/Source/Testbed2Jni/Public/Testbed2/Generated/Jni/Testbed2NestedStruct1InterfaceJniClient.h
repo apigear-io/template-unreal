@@ -37,8 +37,21 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2NestedStruct1InterfaceClient_JNI, Log, All);
 
+// A helper class that exposes part of UTestbed2NestedStruct1InterfaceJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TESTBED2JNI_API IUTestbed2NestedStruct1InterfaceJniClientJniAccessor
+{
+public:
+	virtual void OnSig1Signal(const FTestbed2NestedStruct1& Param1) = 0;
+
+	virtual void OnProp1Changed(const FTestbed2NestedStruct1& Prop1) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TESTBED2JNI_API UTestbed2NestedStruct1InterfaceJniClient : public UAbstractTestbed2NestedStruct1Interface
+class TESTBED2JNI_API UTestbed2NestedStruct1InterfaceJniClient : public UAbstractTestbed2NestedStruct1Interface, public IUTestbed2NestedStruct1InterfaceJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -81,7 +94,12 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void OnSig1Signal(const FTestbed2NestedStruct1& Param1) override;
+
+	void OnProp1Changed(const FTestbed2NestedStruct1& InProp1) override;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

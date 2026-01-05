@@ -37,8 +37,18 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbIfaceimportEmptyIfClient_JNI, Log, All);
 
+// A helper class that exposes part of UTbIfaceimportEmptyIfJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TBIFACEIMPORTJNI_API IUTbIfaceimportEmptyIfJniClientJniAccessor
+{
+public:
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TBIFACEIMPORTJNI_API UTbIfaceimportEmptyIfJniClient : public UAbstractTbIfaceimportEmptyIf
+class TBIFACEIMPORTJNI_API UTbIfaceimportEmptyIfJniClient : public UAbstractTbIfaceimportEmptyIf, public IUTbIfaceimportEmptyIfJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -76,7 +86,9 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
