@@ -37,8 +37,33 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed2ManyParamInterfaceClient_JNI, Log, All);
 
+// A helper class that exposes part of UTestbed2ManyParamInterfaceJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TESTBED2JNI_API IUTestbed2ManyParamInterfaceJniClientJniAccessor
+{
+public:
+	virtual void OnSig1Signal(int32 Param1) = 0;
+
+	virtual void OnSig2Signal(int32 Param1, int32 Param2) = 0;
+
+	virtual void OnSig3Signal(int32 Param1, int32 Param2, int32 Param3) = 0;
+
+	virtual void OnSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4) = 0;
+
+	virtual void OnProp1Changed(int32 Prop1) = 0;
+
+	virtual void OnProp2Changed(int32 Prop2) = 0;
+
+	virtual void OnProp3Changed(int32 Prop3) = 0;
+
+	virtual void OnProp4Changed(int32 Prop4) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TESTBED2JNI_API UTestbed2ManyParamInterfaceJniClient : public UAbstractTestbed2ManyParamInterface
+class TESTBED2JNI_API UTestbed2ManyParamInterfaceJniClient : public UAbstractTestbed2ManyParamInterface, public IUTestbed2ManyParamInterfaceJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -88,7 +113,24 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void OnSig1Signal(int32 Param1) override;
+
+	void OnSig2Signal(int32 Param1, int32 Param2) override;
+
+	void OnSig3Signal(int32 Param1, int32 Param2, int32 Param3) override;
+
+	void OnSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
+
+	void OnProp1Changed(int32 InProp1) override;
+
+	void OnProp2Changed(int32 InProp2) override;
+
+	void OnProp3Changed(int32 InProp3) override;
+
+	void OnProp4Changed(int32 InProp4) override;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

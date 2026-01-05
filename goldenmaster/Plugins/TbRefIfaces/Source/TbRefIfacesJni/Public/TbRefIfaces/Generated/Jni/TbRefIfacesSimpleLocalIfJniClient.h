@@ -37,8 +37,21 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesSimpleLocalIfClient_JNI, Log, All);
 
+// A helper class that exposes part of UTbRefIfacesSimpleLocalIfJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TBREFIFACESJNI_API IUTbRefIfacesSimpleLocalIfJniClientJniAccessor
+{
+public:
+	virtual void OnIntSignalSignal(int32 Param) = 0;
+
+	virtual void OnIntPropertyChanged(int32 IntProperty) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TBREFIFACESJNI_API UTbRefIfacesSimpleLocalIfJniClient : public UAbstractTbRefIfacesSimpleLocalIf
+class TBREFIFACESJNI_API UTbRefIfacesSimpleLocalIfJniClient : public UAbstractTbRefIfacesSimpleLocalIf, public IUTbRefIfacesSimpleLocalIfJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -79,7 +92,12 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void OnIntSignalSignal(int32 Param) override;
+
+	void OnIntPropertyChanged(int32 InIntProperty) override;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

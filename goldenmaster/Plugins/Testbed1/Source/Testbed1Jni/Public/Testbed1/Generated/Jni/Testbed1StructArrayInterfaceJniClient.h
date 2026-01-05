@@ -37,8 +37,37 @@ limitations under the License.
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTestbed1StructArrayInterfaceClient_JNI, Log, All);
 
+// A helper class that exposes part of UTestbed1StructArrayInterfaceJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TESTBED1JNI_API IUTestbed1StructArrayInterfaceJniClientJniAccessor
+{
+public:
+	virtual void OnSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool) = 0;
+
+	virtual void OnSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt) = 0;
+
+	virtual void OnSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat) = 0;
+
+	virtual void OnSigStringSignal(const TArray<FTestbed1StructString>& ParamString) = 0;
+
+	virtual void OnSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum) = 0;
+
+	virtual void OnPropBoolChanged(const TArray<FTestbed1StructBool>& PropBool) = 0;
+
+	virtual void OnPropIntChanged(const TArray<FTestbed1StructInt>& PropInt) = 0;
+
+	virtual void OnPropFloatChanged(const TArray<FTestbed1StructFloat>& PropFloat) = 0;
+
+	virtual void OnPropStringChanged(const TArray<FTestbed1StructString>& PropString) = 0;
+
+	virtual void OnPropEnumChanged(const TArray<ETestbed1Enum0>& PropEnum) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class TESTBED1JNI_API UTestbed1StructArrayInterfaceJniClient : public UAbstractTestbed1StructArrayInterface
+class TESTBED1JNI_API UTestbed1StructArrayInterfaceJniClient : public UAbstractTestbed1StructArrayInterface, public IUTestbed1StructArrayInterfaceJniClientJniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -91,7 +120,28 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+	void OnSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool) override;
+
+	void OnSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt) override;
+
+	void OnSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat) override;
+
+	void OnSigStringSignal(const TArray<FTestbed1StructString>& ParamString) override;
+
+	void OnSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum) override;
+
+	void OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool) override;
+
+	void OnPropIntChanged(const TArray<FTestbed1StructInt>& InPropInt) override;
+
+	void OnPropFloatChanged(const TArray<FTestbed1StructFloat>& InPropFloat) override;
+
+	void OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString) override;
+
+	void OnPropEnumChanged(const TArray<ETestbed1Enum0>& InPropEnum) override;
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

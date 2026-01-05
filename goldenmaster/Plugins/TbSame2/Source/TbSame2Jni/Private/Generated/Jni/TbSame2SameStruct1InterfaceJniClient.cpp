@@ -138,18 +138,7 @@ void UTbSame2SameStruct1InterfaceJniClientCache::clear()
 namespace
 {
 
-UTbSame2SameStruct1InterfaceJniClient* gUTbSame2SameStruct1InterfaceJniClientHandle = nullptr;
-TFunction<void(bool)> gUTbSame2SameStruct1InterfaceJniClientnotifyIsReady = [](bool value)
-{
-	(void)value;
-	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-};
-TFunction<void(FTbSame2Struct1)> gUTbSame2SameStruct1InterfaceJniClientOnProp1ChangedEmpty = [](FTbSame2Struct1 value)
-{
-	(void)value;
-	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("onProp1Changed used but not set "));
-};
-TFunction<void(FTbSame2Struct1)> gUTbSame2SameStruct1InterfaceJniClientOnProp1Changed = gUTbSame2SameStruct1InterfaceJniClientOnProp1ChangedEmpty;
+std::atomic<IUTbSame2SameStruct1InterfaceJniClientJniAccessor*> gUTbSame2SameStruct1InterfaceJniClientHandle(nullptr);
 
 UTbSame2SameStruct1InterfaceJniClientMethodHelper gUTbSame2SameStruct1InterfaceJniClientmethodHelper;
 
@@ -175,21 +164,7 @@ void UTbSame2SameStruct1InterfaceJniClient::Initialize(FSubsystemCollectionBase&
 	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Verbose, TEXT("Init"));
 	Super::Initialize(Collection);
 
-	gUTbSame2SameStruct1InterfaceJniClientHandle = this;
-	gUTbSame2SameStruct1InterfaceJniClientnotifyIsReady = [this](bool value)
-	{
-		b_isReady = value;
-		AsyncTask(ENamedThreads::GameThread, [this]()
-			{
-			_ConnectionStatusChangedBP.Broadcast(b_isReady);
-			_ConnectionStatusChanged.Broadcast(b_isReady);
-		});
-	};
-	gUTbSame2SameStruct1InterfaceJniClientOnProp1Changed = [this](const FTbSame2Struct1& InProp1)
-	{
-		Prop1 = InProp1;
-		_GetPublisher()->BroadcastProp1Changed(Prop1);
-	};
+	gUTbSame2SameStruct1InterfaceJniClientHandle.store(this, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbSame2SameStruct1InterfaceJniClientCache::init();
@@ -209,12 +184,8 @@ void UTbSame2SameStruct1InterfaceJniClient::Deinitialize()
 {
 	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Verbose, TEXT("deinit"));
 	_unbind();
-	gUTbSame2SameStruct1InterfaceJniClientnotifyIsReady = [](bool value)
-	{
-		(void)value;
-		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("notifyIsReady used but not set "));
-	};
-	gUTbSame2SameStruct1InterfaceJniClientOnProp1Changed = gUTbSame2SameStruct1InterfaceJniClientOnProp1ChangedEmpty;
+	b_isReady.store(false, std::memory_order_release);
+	gUTbSame2SameStruct1InterfaceJniClientHandle.store(nullptr, std::memory_order_release);
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
@@ -223,7 +194,6 @@ void UTbSame2SameStruct1InterfaceJniClient::Deinitialize()
 	UTbSame2SameStruct1InterfaceJniClientCache::clear();
 #endif
 
-	gUTbSame2SameStruct1InterfaceJniClientHandle = nullptr;
 	Super::Deinitialize();
 }
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceJniClient::GetProp1() const
@@ -233,7 +203,7 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceJniClient::GetProp1() const
 void UTbSame2SameStruct1InterfaceJniClient::SetProp1(const FTbSame2Struct1& InProp1)
 {
 	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Verbose, TEXT("tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient:setProp1"));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -276,7 +246,7 @@ void UTbSame2SameStruct1InterfaceJniClient::SetProp1(const FTbSame2Struct1& InPr
 FTbSame2Struct1 UTbSame2SameStruct1InterfaceJniClient::Func1(const FTbSame2Struct1& InParam1)
 {
 	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Verbose, TEXT("tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient:func1 "));
-	if (!b_isReady)
+	if (!b_isReady.load(std::memory_order_acquire))
 	{
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
@@ -320,7 +290,7 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceJniClient::Func1(const FTbSame2Struc
 bool UTbSame2SameStruct1InterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {
 	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Verbose, TEXT("Request JNI connection to %s"), *servicePackage);
-	if (b_isReady)
+	if (b_isReady.load(std::memory_order_acquire))
 	{
 		if (servicePackage == m_lastBoundServicePackage && connectionId == m_lastConnectionId)
 		{
@@ -398,35 +368,59 @@ void UTbSame2SameStruct1InterfaceJniClient::_unbind()
 
 bool UTbSame2SameStruct1InterfaceJniClient::_IsReady() const
 {
-	return b_isReady;
+	return b_isReady.load(std::memory_order_acquire);
+}
+void UTbSame2SameStruct1InterfaceJniClient::OnSig1Signal(const FTbSame2Struct1& Param1)
+{
+	_GetPublisher()->BroadcastSig1Signal(Param1);
+}
+
+void UTbSame2SameStruct1InterfaceJniClient::OnProp1Changed(const FTbSame2Struct1& InProp1)
+{
+	Prop1 = InProp1;
+	_GetPublisher()->BroadcastProp1Changed(Prop1);
+}
+
+void UTbSame2SameStruct1InterfaceJniClient::notifyIsReady(bool isReady)
+{
+	b_isReady.store(isReady, std::memory_order_release);
+	AsyncTask(ENamedThreads::GameThread, [this]()
+		{
+		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
+		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
+	});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameStruct1InterfaceJniClient_nativeOnProp1Changed(JNIEnv* Env, jclass Clazz, jobject prop1)
 {
 	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Verbose, TEXT("Java_tbSame2_tbSame2jniclient_SameStruct1InterfaceJniClient_nativeOnProp1Changed"));
-	if (gUTbSame2SameStruct1InterfaceJniClientHandle == nullptr)
+	FTbSame2Struct1 local_prop1 = FTbSame2Struct1();
+	TbSame2DataJavaConverter::fillStruct1(Env, prop1, local_prop1);
+
+	auto localJniAccessor = gUTbSame2SameStruct1InterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("Java_tbSame2_tbSame2jniclient_SameStruct1InterfaceJniClient_nativeOnProp1Changed: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	FTbSame2Struct1 local_prop1 = FTbSame2Struct1();
-	TbSame2DataJavaConverter::fillStruct1(Env, prop1, local_prop1);
-	gUTbSame2SameStruct1InterfaceJniClientOnProp1Changed(local_prop1);
+	localJniAccessor->OnProp1Changed(local_prop1);
 }
 
 JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameStruct1InterfaceJniClient_nativeOnSig1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
 	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Verbose, TEXT("Java_tbSame2_tbSame2jniclient_SameStruct1InterfaceJniClient_nativeOnSig1"));
-	if (gUTbSame2SameStruct1InterfaceJniClientHandle == nullptr)
+	FTbSame2Struct1 local_param1 = FTbSame2Struct1();
+	TbSame2DataJavaConverter::fillStruct1(Env, param1, local_param1);
+
+	auto localJniAccessor = gUTbSame2SameStruct1InterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
 	{
 		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("Java_tbSame2_tbSame2jniclient_SameStruct1InterfaceJniClient_nativeOnSig1: JNI SERVICE ADAPTER NOT FOUND "));
 		return;
 	}
-	FTbSame2Struct1 local_param1 = FTbSame2Struct1();
-	TbSame2DataJavaConverter::fillStruct1(Env, param1, local_param1);
 
-	gUTbSame2SameStruct1InterfaceJniClientHandle->_GetPublisher()->BroadcastSig1Signal(local_param1);
+	localJniAccessor->OnSig1Signal(local_param1);
 }
 
 JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameStruct1InterfaceJniClient_nativeOnFunc1Result(JNIEnv* Env, jclass Clazz, jobject result, jstring callId)
@@ -448,10 +442,13 @@ JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameStruct1InterfaceJniClient_nati
 
 JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameStruct1InterfaceJniClient_nativeIsReady(JNIEnv* Env, jclass Clazz, jboolean value)
 {
-	AsyncTask(ENamedThreads::GameThread, [value]()
-		{
-		gUTbSame2SameStruct1InterfaceJniClientnotifyIsReady(value);
-	});
+	auto localJniAccessor = gUTbSame2SameStruct1InterfaceJniClientHandle.load();
+	if (localJniAccessor == nullptr)
+	{
+		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("Java_tbSame2_tbSame2jniclient_SameStruct1InterfaceJniClient_nativeIsReady: JNI SERVICE ADAPTER is not ready to use."));
+		return;
+	}
+	localJniAccessor->notifyIsReady(value);
 }
 #endif
 
