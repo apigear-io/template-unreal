@@ -121,5 +121,6 @@ if [ $? -ne 0 ]; then exit 1; fi;
 
 
 buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.+.OLink.+.MsgBus.+.Jni."
+
 if [ $buildresult -ne 0 ]; then exit 1; fi;
 if [ ! -f $script_path/index.json ]; then echo "WARNING: no test results found"; else grep '"failed": 0' $script_path/index.json > /dev/null; fi
