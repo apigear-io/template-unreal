@@ -32,8 +32,27 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$Iface}}Client_JNI, Log, All);
 
+// A helper class that exposes part of {{$Class}} to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class {{$API_MACRO}} I{{$Class}}JniAccessor
+{
+public:
+{{- range $i, $e := .Interface.Signals }}
+	{{- if $i }}{{nl}}{{ end }}
+	virtual void On{{Camel .Name}}Signal({{ueParams "" .Params}}) = 0;
+{{- end }}
+{{- if and (len .Interface.Properties) (len .Interface.Signals) }}{{ nl }}{{ end }}
+{{- range $i, $e := .Interface.Properties }}
+	{{- if $i }}{{nl}}{{ end }}
+	virtual void On{{Camel .Name}}Changed({{ueParam "" .}}) = 0;
+{{- end }}
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
 UCLASS(NotBlueprintable, BlueprintType)
-class {{ $API_MACRO }} {{$Class}} : public UAbstract{{Camel .Module.Name}}{{Camel .Interface.Name }}
+class {{ $API_MACRO }} {{$Class}} : public UAbstract{{Camel .Module.Name}}{{Camel .Interface.Name }}, public I{{$Class}}JniAccessor
 {
 	GENERATED_BODY()
 public:
@@ -81,7 +100,18 @@ public:
 	void _unbind();
 
 private:
-	bool b_isReady = false;
+{{- range $i, $e := .Interface.Signals }}
+	{{- if $i }}{{nl}}{{ end }}
+	void On{{Camel .Name}}Signal({{ueParams "" .Params}}) override;
+{{- end }}
+{{- if and (len .Interface.Properties) (len .Interface.Signals) }}{{ nl }}{{ end }}
+{{- range $i, $e := .Interface.Properties }}
+	{{- if $i }}{{nl}}{{ end }}
+	void On{{Camel .Name}}Changed({{ueParam "In" .}}) override;
+{{- end }}
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
