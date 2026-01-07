@@ -580,19 +580,19 @@ bool UTestbed2NestedStruct3InterfaceJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTestbed2NestedStruct3InterfaceJniClient::OnSig1Signal(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct3InterfaceJniClient::OnSig1Signal(const FTestbed2NestedStruct1& InParam1)
 {
-	_GetPublisher()->BroadcastSig1Signal(Param1);
+	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
-void UTestbed2NestedStruct3InterfaceJniClient::OnSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
+void UTestbed2NestedStruct3InterfaceJniClient::OnSig2Signal(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 {
-	_GetPublisher()->BroadcastSig2Signal(Param1, Param2);
+	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
 }
 
-void UTestbed2NestedStruct3InterfaceJniClient::OnSig3Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
+void UTestbed2NestedStruct3InterfaceJniClient::OnSig3Signal(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
 {
-	_GetPublisher()->BroadcastSig3Signal(Param1, Param2, Param3);
+	_GetPublisher()->BroadcastSig3Signal(InParam1, InParam2, InParam3);
 }
 
 void UTestbed2NestedStruct3InterfaceJniClient::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)

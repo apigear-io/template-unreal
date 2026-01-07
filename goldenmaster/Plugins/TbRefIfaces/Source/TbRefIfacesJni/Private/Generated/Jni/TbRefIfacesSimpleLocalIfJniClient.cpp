@@ -364,9 +364,9 @@ bool UTbRefIfacesSimpleLocalIfJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTbRefIfacesSimpleLocalIfJniClient::OnIntSignalSignal(int32 Param)
+void UTbRefIfacesSimpleLocalIfJniClient::OnIntSignalSignal(int32 InParam)
 {
-	_GetPublisher()->BroadcastIntSignalSignal(Param);
+	_GetPublisher()->BroadcastIntSignalSignal(InParam);
 }
 
 void UTbRefIfacesSimpleLocalIfJniClient::OnIntPropertyChanged(int32 InIntProperty)
