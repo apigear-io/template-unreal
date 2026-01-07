@@ -676,24 +676,24 @@ bool UTestbed1StructInterfaceJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTestbed1StructInterfaceJniClient::OnSigBoolSignal(const FTestbed1StructBool& ParamBool)
+void UTestbed1StructInterfaceJniClient::OnSigBoolSignal(const FTestbed1StructBool& InParamBool)
 {
-	_GetPublisher()->BroadcastSigBoolSignal(ParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(InParamBool);
 }
 
-void UTestbed1StructInterfaceJniClient::OnSigIntSignal(const FTestbed1StructInt& ParamInt)
+void UTestbed1StructInterfaceJniClient::OnSigIntSignal(const FTestbed1StructInt& InParamInt)
 {
-	_GetPublisher()->BroadcastSigIntSignal(ParamInt);
+	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
 }
 
-void UTestbed1StructInterfaceJniClient::OnSigFloatSignal(const FTestbed1StructFloat& ParamFloat)
+void UTestbed1StructInterfaceJniClient::OnSigFloatSignal(const FTestbed1StructFloat& InParamFloat)
 {
-	_GetPublisher()->BroadcastSigFloatSignal(ParamFloat);
+	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
 }
 
-void UTestbed1StructInterfaceJniClient::OnSigStringSignal(const FTestbed1StructString& ParamString)
+void UTestbed1StructInterfaceJniClient::OnSigStringSignal(const FTestbed1StructString& InParamString)
 {
-	_GetPublisher()->BroadcastSigStringSignal(ParamString);
+	_GetPublisher()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTestbed1StructInterfaceJniClient::OnPropBoolChanged(const FTestbed1StructBool& InPropBool)

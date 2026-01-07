@@ -563,14 +563,14 @@ bool UTbNamesNamEsJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTbNamesNamEsJniClient::OnSomeSignalSignal(bool bSomeParam)
+void UTbNamesNamEsJniClient::OnSomeSignalSignal(bool bInSomeParam)
 {
-	_GetPublisher()->BroadcastSomeSignalSignal(bSomeParam);
+	_GetPublisher()->BroadcastSomeSignalSignal(bInSomeParam);
 }
 
-void UTbNamesNamEsJniClient::OnSomeSignal2Signal(bool bSomeParam)
+void UTbNamesNamEsJniClient::OnSomeSignal2Signal(bool bInSomeParam)
 {
-	_GetPublisher()->BroadcastSomeSignal2Signal(bSomeParam);
+	_GetPublisher()->BroadcastSomeSignal2Signal(bInSomeParam);
 }
 
 void UTbNamesNamEsJniClient::OnSwitchChanged(bool bInSwitch)

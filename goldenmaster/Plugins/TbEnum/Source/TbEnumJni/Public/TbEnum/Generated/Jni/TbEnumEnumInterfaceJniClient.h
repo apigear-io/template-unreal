@@ -113,13 +113,13 @@ public:
 	void _unbind();
 
 private:
-	void OnSig0Signal(ETbEnumEnum0 Param0) override;
+	void OnSig0Signal(ETbEnumEnum0 InParam0) override;
 
-	void OnSig1Signal(ETbEnumEnum1 Param1) override;
+	void OnSig1Signal(ETbEnumEnum1 InParam1) override;
 
-	void OnSig2Signal(ETbEnumEnum2 Param2) override;
+	void OnSig2Signal(ETbEnumEnum2 InParam2) override;
 
-	void OnSig3Signal(ETbEnumEnum3 Param3) override;
+	void OnSig3Signal(ETbEnumEnum3 InParam3) override;
 
 	void OnProp0Changed(ETbEnumEnum0 InProp0) override;
 

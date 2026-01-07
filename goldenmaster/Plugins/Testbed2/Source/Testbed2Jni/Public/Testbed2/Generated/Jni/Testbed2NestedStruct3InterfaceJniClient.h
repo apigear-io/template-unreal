@@ -106,11 +106,11 @@ public:
 	void _unbind();
 
 private:
-	void OnSig1Signal(const FTestbed2NestedStruct1& Param1) override;
+	void OnSig1Signal(const FTestbed2NestedStruct1& InParam1) override;
 
-	void OnSig2Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+	void OnSig2Signal(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2) override;
 
-	void OnSig3Signal(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3) override;
+	void OnSig3Signal(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3) override;
 
 	void OnProp1Changed(const FTestbed2NestedStruct1& InProp1) override;
 

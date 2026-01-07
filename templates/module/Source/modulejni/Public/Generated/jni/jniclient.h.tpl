@@ -102,7 +102,7 @@ public:
 private:
 {{- range $i, $e := .Interface.Signals }}
 	{{- if $i }}{{nl}}{{ end }}
-	void On{{Camel .Name}}Signal({{ueParams "" .Params}}) override;
+	void On{{Camel .Name}}Signal({{ueParams "In" .Params}}) override;
 {{- end }}
 {{- if and (len .Interface.Properties) (len .Interface.Signals) }}{{ nl }}{{ end }}
 {{- range $i, $e := .Interface.Properties }}

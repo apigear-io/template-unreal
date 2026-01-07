@@ -99,9 +99,9 @@ public:
 	void _unbind();
 
 private:
-	void OnSig1Signal(const FTbSame2Struct1& Param1) override;
+	void OnSig1Signal(const FTbSame2Struct1& InParam1) override;
 
-	void OnSig2Signal(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
+	void OnSig2Signal(const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2) override;
 
 	void OnProp1Changed(const FTbSame2Struct2& InProp1) override;
 
