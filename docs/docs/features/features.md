@@ -57,6 +57,7 @@ Features generate Unreal Engine plugins from your _API_ definition. These can be
 Extended features add connectivity and monitoring capabilities on top of the core API.
 
 - [olink](olink.md) - provides client and server adapters for the [ObjectLink](/docs/protocols/objectlink/intro) protocol. Use this to connect your Unreal application to remote services or the ApiGear simulation tools.
+- [monitor](monitor.md) - generates a middleware layer which logs all API events to the [CLI](/docs/cli/intro) or the [Studio](/docs/studio/intro).
 
 ```mermaid
 graph TD
@@ -71,14 +72,18 @@ graph TD
     subgraph Implementations[" Implementation Layer "]
         Stubs["Stubs<br/>(Local)"]
         OLink["OLink<br/>(Network)"]
+        Monitor["Monitor<br/>(Decorator)"]
     end
 
     App -->|uses| Interface
     Interface -->|implemented by| Stubs
     Interface -->|implemented by| OLink
+    Interface -->|implemented by| Monitor
+    Monitor -.->|wraps| Stubs
+    Monitor -.->|wraps| OLink
 ```
 
-*Overview: Your application programs against the generated API interfaces. Stubs provide local implementations while OLink connects to remote services over the network.*
+*Overview: Your application programs against the generated API interfaces. Stubs provide local implementations, OLink connects to remote services, and Monitor is a decorator that wraps any implementation for tracing.*
 
 ### Internal Features
 
@@ -100,7 +105,7 @@ The _meta_ feature `all` enables all specified features of the template. If you 
 
 ## Folder structure
 
-This graph shows the folder structure generated for a module with the `api`, `stubs`, and `olink` features. Each ApiGear module becomes an Unreal plugin.
+This graph shows the folder structure generated for a module with the `api`, `stubs`, `olink`, and `monitor` features. Each ApiGear module becomes an Unreal plugin.
 
 ```bash
 📂ue_project/Plugins
@@ -119,6 +124,7 @@ This graph shows the folder structure generated for a module with the `api`, `st
  ┃ ┗ 📂Source
  ┃   ┣ 📂IoWorldAPI
  ┃   ┣ 📂IoWorldImplementation
+ ┃   ┣ 📂IoWorldMonitor
  ┃   ┗ 📂IoWorldOLink
 ```
 
