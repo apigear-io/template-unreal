@@ -45,25 +45,7 @@ The following code snippet contains the _API_ definition which is used throughou
 
 ## Features
 
-### Core Features
-
-Features generate Unreal Engine plugins from your _API_ definition. These can be used to implement working services and directly integrate them into your Unreal project.
-
-- [api](api.md) - generates the core interfaces, data types (structs, enums), and abstract base classes. Provides both Blueprint-compatible interfaces and native C++ access.
-- [stubs](stubs.md) - generates ready-to-use implementation stubs as GameInstance Subsystems. Provides a starting point for your business logic and test fixtures for unit testing.
-
-### Extended Features
-
-Extended features add connectivity and monitoring capabilities on top of the core API.
-
-- [olink](olink.md) - provides client and server adapters for the [ObjectLink](/docs/protocols/objectlink/intro) protocol. Use this to connect your Unreal application to remote services or the ApiGear simulation tools.
-- [msgbus](msgbus.md) - provides adapters using Unreal's built-in Message Bus for inter-process communication within the Unreal ecosystem.
-- [monitor](monitor.md) - generates a middleware layer which logs all API events to the [CLI](/docs/cli/intro) or the [Studio](/docs/studio/intro).
-
-### Test Features
-
-- `olink_tests` - test fixtures and specs for OLink client/server functionality.
-- `msgbus_tests` - test fixtures and specs for Message Bus adapters.
+The template provides features across three layers: **Core** (API and implementations), **Extended** (connectivity and monitoring), and **Infrastructure** (plugin support). These features compose to create a complete plugin architecture:
 
 ```mermaid
 graph TD
@@ -82,6 +64,11 @@ graph TD
         Monitor["Monitor<br/>(Decorator)"]
     end
 
+    subgraph Infrastructure[" Plugin Infrastructure "]
+        Plugin["Core & Editor<br/>Modules"]
+        ApiGear["ApiGear<br/>Framework"]
+    end
+
     App -->|uses| Interface
     Interface -->|implemented by| Stubs
     Interface -->|implemented by| OLink
@@ -90,17 +77,59 @@ graph TD
     Monitor -.->|wraps| Stubs
     Monitor -.->|wraps| OLink
     Monitor -.->|wraps| MsgBus
+    OLink -.->|uses| ApiGear
+    Monitor -.->|uses| ApiGear
 ```
 
-*Overview: Your application programs against the generated API interfaces. Stubs provide local implementations, OLink and MsgBus connect to remote services, and Monitor is a decorator that wraps any implementation for tracing.*
+*Your application programs against the generated API interfaces. Stubs provide local implementations, OLink and MsgBus connect to remote services, Monitor wraps any implementation for tracing, and the Infrastructure layer provides settings and connection management.*
+
+### Core Features
+
+Core features generate Unreal Engine plugins from your API definition:
+
+- [api](api.md) - generates the core interfaces, data types (structs, enums), and abstract base classes. Provides both Blueprint-compatible interfaces and native C++ access.
+- [stubs](stubs.md) - generates ready-to-use implementation stubs as GameInstance Subsystems. Provides a starting point for your business logic and test fixtures for unit testing.
+
+### Extended Features
+
+Extended features add connectivity and monitoring capabilities:
+
+- [olink](olink.md) - provides client and server adapters for the [ObjectLink](/docs/protocols/objectlink/intro) protocol. Use this to connect your Unreal application to remote services or the ApiGear simulation tools.
+- [msgbus](msgbus.md) - provides adapters using Unreal's built-in Message Bus for inter-process communication within the Unreal ecosystem.
+- [monitor](monitor.md) - generates a middleware layer which logs all API events to the [CLI](/docs/cli/intro) or the [Studio](/docs/studio/intro).
+
+### Test Features
+
+- `olink_tests` - test fixtures and specs for OLink client/server functionality.
+- `msgbus_tests` - test fixtures and specs for Message Bus adapters.
 
 ### Internal Features
 
 These features are generated automatically when required by other features:
 
-- `apigear` - core ApiGear plugin with connection management, settings, and editor UI. Generated when using OLink or Monitor features.
-- `apigear_olink` - OLink protocol support with client/host connections. Generated when using the OLink feature.
-- `apigear_olinkproto` - ObjectLink protocol library. Generated when using OLink.
+- `plugin` - generates the `{Module}Core` and `{Module}Editor` modules:
+  - **Core module** (`IoWorldCore`): Settings class, implementation factory, and test utilities
+  - **Editor module** (`IoWorldEditor`): Project Settings UI customization
+- `apigear` - core ApiGear plugin with connection management, settings, and editor UI
+- `apigear_olink` - OLink protocol support with client/host connections
+- `apigear_olinkproto` - ObjectLink protocol library
+
+**Module Settings**: When you enable extended features, the Core module's settings class (`UIoWorldSettings`) gains configuration options accessible in Project Settings:
+
+| Setting | Feature | Purpose |
+|---------|---------|---------|
+| `TracerServiceIdentifier` | monitor | Select which backend implementation the monitor traces |
+| `OLinkConnectionIdentifier` | olink | Select which OLink connection the client uses |
+| `MsgBusHeartbeatIntervalMS` | msgbus | Configure heartbeat interval for service discovery |
+
+**Test Utilities**: The Core module includes test helpers for writing your own automation tests:
+
+```cpp
+#include "IoWorld/Tests/IoWorldTestsCommon.h"
+
+FIoWorldMessage TestMsg = createTestFIoWorldMessage();
+TArray<FIoWorldMessage> TestArray = createTestFIoWorldMessageArray();
+```
 
 Each feature can be selected using the solution file or via the command line tool.
 
@@ -132,6 +161,8 @@ This graph shows the folder structure generated for a module with all features e
  ┃ ┣ 📂Config
  ┃ ┗ 📂Source
  ┃   ┣ 📂IoWorldAPI
+ ┃   ┣ 📂IoWorldCore
+ ┃   ┣ 📂IoWorldEditor
  ┃   ┣ 📂IoWorldImplementation
  ┃   ┣ 📂IoWorldMonitor
  ┃   ┣ 📂IoWorldMsgBus
