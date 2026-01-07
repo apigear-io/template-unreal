@@ -20,7 +20,7 @@ The `api` feature is the foundation for code generation. It generates:
 - Signal delegates for reactive programming
 
 :::note
-The `api` feature generates interface definitions only. For a working implementation, also enable the `stubs` feature.
+The `api` feature generates interface definitions only. For a working implementation, also enable the [stubs](stubs.md) feature.
 :::
 
 ## Files overview per module
@@ -304,7 +304,7 @@ The `UAbstractIoWorldHello` class provides a partial implementation:
 - **Async support**: Default implementations that execute synchronous operations on a thread pool
 - **Pure virtual operations**: You must implement the synchronous operation methods
 
-To create your own implementation, extend this class and implement the pure virtual methods. Alternatively, enable the `stubs` feature to generate a ready-to-use implementation.
+To create your own implementation, extend this class and implement the pure virtual methods. Alternatively, enable the [stubs](stubs.md) feature to generate a ready-to-use implementation.
 
 :::note
 The async implementations safely handle object destruction using weak pointers, preventing crashes if the object is destroyed while an async operation is in progress.
@@ -345,7 +345,7 @@ PublicDependencyModuleNames.AddRange(new string[] { "IoWorldAPI" });
 
 ### Access the Interface
 
-Through a subsystem (requires `stubs` feature):
+Through a subsystem (requires [stubs](stubs.md) feature):
 
 ```cpp
 #include "IoWorld/Implementation/IoWorldHello.h"
