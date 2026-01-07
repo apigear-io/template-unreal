@@ -93,7 +93,7 @@ public:
 private:
 	void OnSigVoidSignal() override;
 
-	void OnSigBoolSignal(bool bParamBool) override;
+	void OnSigBoolSignal(bool bInParamBool) override;
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

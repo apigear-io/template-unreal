@@ -94,7 +94,7 @@ public:
 	void _unbind();
 
 private:
-	void OnSig1Signal(const FTestbed2NestedStruct1& Param1) override;
+	void OnSig1Signal(const FTestbed2NestedStruct1& InParam1) override;
 
 	void OnProp1Changed(const FTestbed2NestedStruct1& InProp1) override;
 	void notifyIsReady(bool isReady) override;

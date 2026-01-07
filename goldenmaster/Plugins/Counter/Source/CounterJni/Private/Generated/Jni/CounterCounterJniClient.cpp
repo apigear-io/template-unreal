@@ -675,9 +675,9 @@ bool UCounterCounterJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UCounterCounterJniClient::OnValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray)
+void UCounterCounterJniClient::OnValueChangedSignal(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 {
-	_GetPublisher()->BroadcastValueChangedSignal(Vector, ExternVector, VectorArray, ExternVectorArray);
+	_GetPublisher()->BroadcastValueChangedSignal(InVector, InExternVector, InVectorArray, InExternVectorArray);
 }
 
 void UCounterCounterJniClient::OnVectorChanged(const FCustomTypesVector3D& InVector)

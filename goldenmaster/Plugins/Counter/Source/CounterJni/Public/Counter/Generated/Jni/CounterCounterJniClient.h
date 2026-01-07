@@ -107,7 +107,7 @@ public:
 	void _unbind();
 
 private:
-	void OnValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray) override;
+	void OnValueChangedSignal(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray) override;
 
 	void OnVectorChanged(const FCustomTypesVector3D& InVector) override;
 

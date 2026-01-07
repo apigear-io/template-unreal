@@ -118,13 +118,13 @@ public:
 	void _unbind();
 
 private:
-	void OnSigBoolSignal(const FTestbed1StructBoolWithArray& ParamBool) override;
+	void OnSigBoolSignal(const FTestbed1StructBoolWithArray& InParamBool) override;
 
-	void OnSigIntSignal(const FTestbed1StructIntWithArray& ParamInt) override;
+	void OnSigIntSignal(const FTestbed1StructIntWithArray& InParamInt) override;
 
-	void OnSigFloatSignal(const FTestbed1StructFloatWithArray& ParamFloat) override;
+	void OnSigFloatSignal(const FTestbed1StructFloatWithArray& InParamFloat) override;
 
-	void OnSigStringSignal(const FTestbed1StructStringWithArray& ParamString) override;
+	void OnSigStringSignal(const FTestbed1StructStringWithArray& InParamString) override;
 
 	void OnPropBoolChanged(const FTestbed1StructBoolWithArray& InPropBool) override;
 

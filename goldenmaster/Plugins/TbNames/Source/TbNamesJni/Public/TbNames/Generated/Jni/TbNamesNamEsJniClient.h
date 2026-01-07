@@ -107,9 +107,9 @@ public:
 	void _unbind();
 
 private:
-	void OnSomeSignalSignal(bool bSomeParam) override;
+	void OnSomeSignalSignal(bool bInSomeParam) override;
 
-	void OnSomeSignal2Signal(bool bSomeParam) override;
+	void OnSomeSignal2Signal(bool bInSomeParam) override;
 
 	void OnSwitchChanged(bool bInSwitch) override;
 

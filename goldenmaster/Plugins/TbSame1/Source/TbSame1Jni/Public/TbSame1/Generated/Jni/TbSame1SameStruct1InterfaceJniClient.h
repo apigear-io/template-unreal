@@ -92,7 +92,7 @@ public:
 	void _unbind();
 
 private:
-	void OnSig1Signal(const FTbSame1Struct1& Param1) override;
+	void OnSig1Signal(const FTbSame1Struct1& InParam1) override;
 
 	void OnProp1Changed(const FTbSame1Struct1& InProp1) override;
 	void notifyIsReady(bool isReady) override;

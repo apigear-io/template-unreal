@@ -656,24 +656,24 @@ bool UTestbed2ManyParamInterfaceJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTestbed2ManyParamInterfaceJniClient::OnSig1Signal(int32 Param1)
+void UTestbed2ManyParamInterfaceJniClient::OnSig1Signal(int32 InParam1)
 {
-	_GetPublisher()->BroadcastSig1Signal(Param1);
+	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
-void UTestbed2ManyParamInterfaceJniClient::OnSig2Signal(int32 Param1, int32 Param2)
+void UTestbed2ManyParamInterfaceJniClient::OnSig2Signal(int32 InParam1, int32 InParam2)
 {
-	_GetPublisher()->BroadcastSig2Signal(Param1, Param2);
+	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
 }
 
-void UTestbed2ManyParamInterfaceJniClient::OnSig3Signal(int32 Param1, int32 Param2, int32 Param3)
+void UTestbed2ManyParamInterfaceJniClient::OnSig3Signal(int32 InParam1, int32 InParam2, int32 InParam3)
 {
-	_GetPublisher()->BroadcastSig3Signal(Param1, Param2, Param3);
+	_GetPublisher()->BroadcastSig3Signal(InParam1, InParam2, InParam3);
 }
 
-void UTestbed2ManyParamInterfaceJniClient::OnSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
+void UTestbed2ManyParamInterfaceJniClient::OnSig4Signal(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 {
-	_GetPublisher()->BroadcastSig4Signal(Param1, Param2, Param3, Param4);
+	_GetPublisher()->BroadcastSig4Signal(InParam1, InParam2, InParam3, InParam4);
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnProp1Changed(int32 InProp1)
