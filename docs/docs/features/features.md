@@ -57,7 +57,13 @@ Features generate Unreal Engine plugins from your _API_ definition. These can be
 Extended features add connectivity and monitoring capabilities on top of the core API.
 
 - [olink](olink.md) - provides client and server adapters for the [ObjectLink](/docs/protocols/objectlink/intro) protocol. Use this to connect your Unreal application to remote services or the ApiGear simulation tools.
+- [msgbus](msgbus.md) - provides adapters using Unreal's built-in Message Bus for inter-process communication within the Unreal ecosystem.
 - [monitor](monitor.md) - generates a middleware layer which logs all API events to the [CLI](/docs/cli/intro) or the [Studio](/docs/studio/intro).
+
+### Test Features
+
+- `olink_tests` - test fixtures and specs for OLink client/server functionality.
+- `msgbus_tests` - test fixtures and specs for Message Bus adapters.
 
 ```mermaid
 graph TD
@@ -72,18 +78,21 @@ graph TD
     subgraph Implementations[" Implementation Layer "]
         Stubs["Stubs<br/>(Local)"]
         OLink["OLink<br/>(Network)"]
+        MsgBus["MsgBus<br/>(IPC)"]
         Monitor["Monitor<br/>(Decorator)"]
     end
 
     App -->|uses| Interface
     Interface -->|implemented by| Stubs
     Interface -->|implemented by| OLink
+    Interface -->|implemented by| MsgBus
     Interface -->|implemented by| Monitor
     Monitor -.->|wraps| Stubs
     Monitor -.->|wraps| OLink
+    Monitor -.->|wraps| MsgBus
 ```
 
-*Overview: Your application programs against the generated API interfaces. Stubs provide local implementations, OLink connects to remote services, and Monitor is a decorator that wraps any implementation for tracing.*
+*Overview: Your application programs against the generated API interfaces. Stubs provide local implementations, OLink and MsgBus connect to remote services, and Monitor is a decorator that wraps any implementation for tracing.*
 
 ### Internal Features
 
@@ -105,7 +114,7 @@ The _meta_ feature `all` enables all specified features of the template. If you 
 
 ## Folder structure
 
-This graph shows the folder structure generated for a module with the `api`, `stubs`, `olink`, and `monitor` features. Each ApiGear module becomes an Unreal plugin.
+This graph shows the folder structure generated for a module with all features enabled. Each ApiGear module becomes an Unreal plugin.
 
 ```bash
 📂ue_project/Plugins
@@ -125,6 +134,7 @@ This graph shows the folder structure generated for a module with the `api`, `st
  ┃   ┣ 📂IoWorldAPI
  ┃   ┣ 📂IoWorldImplementation
  ┃   ┣ 📂IoWorldMonitor
+ ┃   ┣ 📂IoWorldMsgBus
  ┃   ┗ 📂IoWorldOLink
 ```
 
