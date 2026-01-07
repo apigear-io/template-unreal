@@ -99,9 +99,9 @@ public:
 	void _unbind();
 
 private:
-	void OnSig1Signal(ETbSame1Enum1 Param1) override;
+	void OnSig1Signal(ETbSame1Enum1 InParam1) override;
 
-	void OnSig2Signal(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
+	void OnSig2Signal(ETbSame1Enum1 InParam1, ETbSame1Enum2 InParam2) override;
 
 	void OnProp1Changed(ETbSame1Enum1 InProp1) override;
 

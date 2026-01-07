@@ -120,15 +120,15 @@ public:
 	void _unbind();
 
 private:
-	void OnSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool) override;
+	void OnSigBoolSignal(const TArray<FTestbed1StructBool>& InParamBool) override;
 
-	void OnSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt) override;
+	void OnSigIntSignal(const TArray<FTestbed1StructInt>& InParamInt) override;
 
-	void OnSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat) override;
+	void OnSigFloatSignal(const TArray<FTestbed1StructFloat>& InParamFloat) override;
 
-	void OnSigStringSignal(const TArray<FTestbed1StructString>& ParamString) override;
+	void OnSigStringSignal(const TArray<FTestbed1StructString>& InParamString) override;
 
-	void OnSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum) override;
+	void OnSigEnumSignal(const TArray<ETestbed1Enum0>& InParamEnum) override;
 
 	void OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool) override;
 

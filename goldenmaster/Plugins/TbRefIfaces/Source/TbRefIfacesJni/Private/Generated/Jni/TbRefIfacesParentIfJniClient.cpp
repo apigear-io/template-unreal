@@ -683,24 +683,24 @@ bool UTbRefIfacesParentIfJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTbRefIfacesParentIfJniClient::OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
+void UTbRefIfacesParentIfJniClient::OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
 {
-	_GetPublisher()->BroadcastLocalIfSignalSignal(Param);
+	_GetPublisher()->BroadcastLocalIfSignalSignal(InParam);
 }
 
-void UTbRefIfacesParentIfJniClient::OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
+void UTbRefIfacesParentIfJniClient::OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
 {
-	_GetPublisher()->BroadcastLocalIfSignalListSignal(Param);
+	_GetPublisher()->BroadcastLocalIfSignalListSignal(InParam);
 }
 
-void UTbRefIfacesParentIfJniClient::OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
+void UTbRefIfacesParentIfJniClient::OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
 {
-	_GetPublisher()->BroadcastImportedIfSignalSignal(Param);
+	_GetPublisher()->BroadcastImportedIfSignalSignal(InParam);
 }
 
-void UTbRefIfacesParentIfJniClient::OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
+void UTbRefIfacesParentIfJniClient::OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
 {
-	_GetPublisher()->BroadcastImportedIfSignalListSignal(Param);
+	_GetPublisher()->BroadcastImportedIfSignalListSignal(InParam);
 }
 
 void UTbRefIfacesParentIfJniClient::OnLocalIfChanged(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)

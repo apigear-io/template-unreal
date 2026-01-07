@@ -465,9 +465,9 @@ bool UTestbed2NestedStruct1InterfaceJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTestbed2NestedStruct1InterfaceJniClient::OnSig1Signal(const FTestbed2NestedStruct1& Param1)
+void UTestbed2NestedStruct1InterfaceJniClient::OnSig1Signal(const FTestbed2NestedStruct1& InParam1)
 {
-	_GetPublisher()->BroadcastSig1Signal(Param1);
+	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
 void UTestbed2NestedStruct1InterfaceJniClient::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)

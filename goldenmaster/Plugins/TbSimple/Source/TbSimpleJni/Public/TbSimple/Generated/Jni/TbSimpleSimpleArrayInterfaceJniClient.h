@@ -144,21 +144,21 @@ public:
 	void _unbind();
 
 private:
-	void OnSigBoolSignal(const TArray<bool>& ParamBool) override;
+	void OnSigBoolSignal(const TArray<bool>& InParamBool) override;
 
-	void OnSigIntSignal(const TArray<int32>& ParamInt) override;
+	void OnSigIntSignal(const TArray<int32>& InParamInt) override;
 
-	void OnSigInt32Signal(const TArray<int32>& ParamInt32) override;
+	void OnSigInt32Signal(const TArray<int32>& InParamInt32) override;
 
-	void OnSigInt64Signal(const TArray<int64>& ParamInt64) override;
+	void OnSigInt64Signal(const TArray<int64>& InParamInt64) override;
 
-	void OnSigFloatSignal(const TArray<float>& ParamFloat) override;
+	void OnSigFloatSignal(const TArray<float>& InParamFloat) override;
 
-	void OnSigFloat32Signal(const TArray<float>& ParamFloa32) override;
+	void OnSigFloat32Signal(const TArray<float>& InParamFloa32) override;
 
-	void OnSigFloat64Signal(const TArray<double>& ParamFloat64) override;
+	void OnSigFloat64Signal(const TArray<double>& InParamFloat64) override;
 
-	void OnSigStringSignal(const TArray<FString>& ParamString) override;
+	void OnSigStringSignal(const TArray<FString>& InParamString) override;
 
 	void OnPropBoolChanged(const TArray<bool>& InPropBool) override;
 

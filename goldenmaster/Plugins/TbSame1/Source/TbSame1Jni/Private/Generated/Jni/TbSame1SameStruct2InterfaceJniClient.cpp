@@ -474,14 +474,14 @@ bool UTbSame1SameStruct2InterfaceJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTbSame1SameStruct2InterfaceJniClient::OnSig1Signal(const FTbSame1Struct1& Param1)
+void UTbSame1SameStruct2InterfaceJniClient::OnSig1Signal(const FTbSame1Struct1& InParam1)
 {
-	_GetPublisher()->BroadcastSig1Signal(Param1);
+	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
-void UTbSame1SameStruct2InterfaceJniClient::OnSig2Signal(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
+void UTbSame1SameStruct2InterfaceJniClient::OnSig2Signal(const FTbSame1Struct1& InParam1, const FTbSame1Struct2& InParam2)
 {
-	_GetPublisher()->BroadcastSig2Signal(Param1, Param2);
+	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
 }
 
 void UTbSame1SameStruct2InterfaceJniClient::OnProp1Changed(const FTbSame1Struct2& InProp1)

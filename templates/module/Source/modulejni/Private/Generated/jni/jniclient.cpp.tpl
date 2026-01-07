@@ -523,9 +523,9 @@ bool {{$Class}}::_IsReady() const
 
 {{- range $i, $e := .Interface.Signals }}
 {{- if $i }}{{nl}}{{ end }}
-void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "" .Params}})
+void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "In" .Params}})
 {
-	_GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "" .Params}});
+	_GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "In" .Params}});
 }
 {{- end }}
 {{- if and (len .Interface.Properties) (len .Interface.Signals) }}{{ nl }}{{ end }}
