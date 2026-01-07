@@ -227,7 +227,7 @@ This appears as an async node in Blueprints with execution pins for completion. 
 
 :::tip
 Use async variants for:
-- Network operations ([OLink](olink.md), MsgBus) to avoid blocking the game thread
+- Network operations ([OLink](olink.md), [MsgBus](msgbus.md)) to avoid blocking the game thread
 - Long-running computations
 - Operations that may take variable time
 :::
