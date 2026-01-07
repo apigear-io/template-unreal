@@ -85,7 +85,7 @@ public:
 private:
 	void OnSigVoidSignal() override;
 
-	void OnSigBoolSignal(bool bParamBool) override;
+	void OnSigBoolSignal(bool bInParamBool) override;
 
 	void OnPropBoolChanged(bool bInPropBool) override;
 

@@ -78,7 +78,7 @@ public:
 	void _unbind();
 
 private:
-	void OnIntSignalSignal(int32 Param) override;
+	void OnIntSignalSignal(int32 InParam) override;
 
 	void OnIntPropertyChanged(int32 InIntProperty) override;
 	void notifyIsReady(bool isReady) override;
