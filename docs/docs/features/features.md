@@ -52,6 +52,12 @@ Features generate Unreal Engine plugins from your _API_ definition. These can be
 - [api](api.md) - generates the core interfaces, data types (structs, enums), and abstract base classes. Provides both Blueprint-compatible interfaces and native C++ access.
 - [stubs](stubs.md) - generates ready-to-use implementation stubs as GameInstance Subsystems. Provides a starting point for your business logic and test fixtures for unit testing.
 
+### Extended Features
+
+Extended features add connectivity and monitoring capabilities on top of the core API.
+
+- [olink](olink.md) - provides client and server adapters for the [ObjectLink](/docs/protocols/objectlink/intro) protocol. Use this to connect your Unreal application to remote services or the ApiGear simulation tools.
+
 ```mermaid
 graph TD
     subgraph Application[" Your Application "]
@@ -64,13 +70,23 @@ graph TD
 
     subgraph Implementations[" Implementation Layer "]
         Stubs["Stubs<br/>(Local)"]
+        OLink["OLink<br/>(Network)"]
     end
 
     App -->|uses| Interface
     Interface -->|implemented by| Stubs
+    Interface -->|implemented by| OLink
 ```
 
-*Overview: Your application programs against the generated API interfaces. Stubs provide ready-to-use implementations.*
+*Overview: Your application programs against the generated API interfaces. Stubs provide local implementations while OLink connects to remote services over the network.*
+
+### Internal Features
+
+These features are generated automatically when required by other features:
+
+- `apigear` - core ApiGear plugin with connection management, settings, and editor UI. Generated when using OLink or Monitor features.
+- `apigear_olink` - OLink protocol support with client/host connections. Generated when using the OLink feature.
+- `apigear_olinkproto` - ObjectLink protocol library. Generated when using OLink.
 
 Each feature can be selected using the solution file or via the command line tool.
 
@@ -84,16 +100,26 @@ The _meta_ feature `all` enables all specified features of the template. If you 
 
 ## Folder structure
 
-This graph shows the folder structure generated for a module with the `api` and `stubs` features. Each ApiGear module becomes an Unreal plugin.
+This graph shows the folder structure generated for a module with the `api`, `stubs`, and `olink` features. Each ApiGear module becomes an Unreal plugin.
 
 ```bash
 📂ue_project/Plugins
- ┗ 📂IoWorld
-   ┣ 📜IoWorld.uplugin
-   ┣ 📂Config
-   ┗ 📂Source
-     ┣ 📂IoWorldAPI
-     ┗ 📂IoWorldImplementation
+ ┣ 📂ApiGear
+ ┃ ┣ 📜apigear.uplugin
+ ┃ ┗ 📂Source
+ ┃   ┣ 📂ApiGear
+ ┃   ┣ 📂ApiGearEditor
+ ┃   ┣ 📂ApiGearOLink
+ ┃   ┗ 📂ThirdParty
+ ┃     ┣ 📂nlohmannJsonLibrary
+ ┃     ┗ 📂OLinkProtocolLibrary
+ ┣ 📂IoWorld
+ ┃ ┣ 📜IoWorld.uplugin
+ ┃ ┣ 📂Config
+ ┃ ┗ 📂Source
+ ┃   ┣ 📂IoWorldAPI
+ ┃   ┣ 📂IoWorldImplementation
+ ┃   ┗ 📂IoWorldOLink
 ```
 
 :::note
