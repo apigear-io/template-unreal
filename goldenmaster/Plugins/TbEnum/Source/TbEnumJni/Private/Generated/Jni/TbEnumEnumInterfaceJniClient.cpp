@@ -676,24 +676,24 @@ bool UTbEnumEnumInterfaceJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTbEnumEnumInterfaceJniClient::OnSig0Signal(ETbEnumEnum0 Param0)
+void UTbEnumEnumInterfaceJniClient::OnSig0Signal(ETbEnumEnum0 InParam0)
 {
-	_GetPublisher()->BroadcastSig0Signal(Param0);
+	_GetPublisher()->BroadcastSig0Signal(InParam0);
 }
 
-void UTbEnumEnumInterfaceJniClient::OnSig1Signal(ETbEnumEnum1 Param1)
+void UTbEnumEnumInterfaceJniClient::OnSig1Signal(ETbEnumEnum1 InParam1)
 {
-	_GetPublisher()->BroadcastSig1Signal(Param1);
+	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
-void UTbEnumEnumInterfaceJniClient::OnSig2Signal(ETbEnumEnum2 Param2)
+void UTbEnumEnumInterfaceJniClient::OnSig2Signal(ETbEnumEnum2 InParam2)
 {
-	_GetPublisher()->BroadcastSig2Signal(Param2);
+	_GetPublisher()->BroadcastSig2Signal(InParam2);
 }
 
-void UTbEnumEnumInterfaceJniClient::OnSig3Signal(ETbEnumEnum3 Param3)
+void UTbEnumEnumInterfaceJniClient::OnSig3Signal(ETbEnumEnum3 InParam3)
 {
-	_GetPublisher()->BroadcastSig3Signal(Param3);
+	_GetPublisher()->BroadcastSig3Signal(InParam3);
 }
 
 void UTbEnumEnumInterfaceJniClient::OnProp0Changed(ETbEnumEnum0 InProp0)

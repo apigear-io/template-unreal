@@ -365,9 +365,9 @@ void UTbSimpleNoPropertiesInterfaceJniClient::OnSigVoidSignal()
 	_GetPublisher()->BroadcastSigVoidSignal();
 }
 
-void UTbSimpleNoPropertiesInterfaceJniClient::OnSigBoolSignal(bool bParamBool)
+void UTbSimpleNoPropertiesInterfaceJniClient::OnSigBoolSignal(bool bInParamBool)
 {
-	_GetPublisher()->BroadcastSigBoolSignal(bParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
 }
 
 void UTbSimpleNoPropertiesInterfaceJniClient::notifyIsReady(bool isReady)

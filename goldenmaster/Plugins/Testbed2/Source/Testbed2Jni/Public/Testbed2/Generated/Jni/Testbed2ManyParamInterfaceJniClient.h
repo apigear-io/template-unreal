@@ -113,13 +113,13 @@ public:
 	void _unbind();
 
 private:
-	void OnSig1Signal(int32 Param1) override;
+	void OnSig1Signal(int32 InParam1) override;
 
-	void OnSig2Signal(int32 Param1, int32 Param2) override;
+	void OnSig2Signal(int32 InParam1, int32 InParam2) override;
 
-	void OnSig3Signal(int32 Param1, int32 Param2, int32 Param3) override;
+	void OnSig3Signal(int32 InParam1, int32 InParam2, int32 InParam3) override;
 
-	void OnSig4Signal(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
+	void OnSig4Signal(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4) override;
 
 	void OnProp1Changed(int32 InProp1) override;
 

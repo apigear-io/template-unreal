@@ -370,9 +370,9 @@ bool UTbSame2SameStruct1InterfaceJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTbSame2SameStruct1InterfaceJniClient::OnSig1Signal(const FTbSame2Struct1& Param1)
+void UTbSame2SameStruct1InterfaceJniClient::OnSig1Signal(const FTbSame2Struct1& InParam1)
 {
-	_GetPublisher()->BroadcastSig1Signal(Param1);
+	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
 void UTbSame2SameStruct1InterfaceJniClient::OnProp1Changed(const FTbSame2Struct1& InProp1)
