@@ -1147,44 +1147,44 @@ bool UTbSimpleSimpleInterfaceJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTbSimpleSimpleInterfaceJniClient::OnSigBoolSignal(bool bParamBool)
+void UTbSimpleSimpleInterfaceJniClient::OnSigBoolSignal(bool bInParamBool)
 {
-	_GetPublisher()->BroadcastSigBoolSignal(bParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
 }
 
-void UTbSimpleSimpleInterfaceJniClient::OnSigIntSignal(int32 ParamInt)
+void UTbSimpleSimpleInterfaceJniClient::OnSigIntSignal(int32 InParamInt)
 {
-	_GetPublisher()->BroadcastSigIntSignal(ParamInt);
+	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
 }
 
-void UTbSimpleSimpleInterfaceJniClient::OnSigInt32Signal(int32 ParamInt32)
+void UTbSimpleSimpleInterfaceJniClient::OnSigInt32Signal(int32 InParamInt32)
 {
-	_GetPublisher()->BroadcastSigInt32Signal(ParamInt32);
+	_GetPublisher()->BroadcastSigInt32Signal(InParamInt32);
 }
 
-void UTbSimpleSimpleInterfaceJniClient::OnSigInt64Signal(int64 ParamInt64)
+void UTbSimpleSimpleInterfaceJniClient::OnSigInt64Signal(int64 InParamInt64)
 {
-	_GetPublisher()->BroadcastSigInt64Signal(ParamInt64);
+	_GetPublisher()->BroadcastSigInt64Signal(InParamInt64);
 }
 
-void UTbSimpleSimpleInterfaceJniClient::OnSigFloatSignal(float ParamFloat)
+void UTbSimpleSimpleInterfaceJniClient::OnSigFloatSignal(float InParamFloat)
 {
-	_GetPublisher()->BroadcastSigFloatSignal(ParamFloat);
+	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
 }
 
-void UTbSimpleSimpleInterfaceJniClient::OnSigFloat32Signal(float ParamFloat32)
+void UTbSimpleSimpleInterfaceJniClient::OnSigFloat32Signal(float InParamFloat32)
 {
-	_GetPublisher()->BroadcastSigFloat32Signal(ParamFloat32);
+	_GetPublisher()->BroadcastSigFloat32Signal(InParamFloat32);
 }
 
-void UTbSimpleSimpleInterfaceJniClient::OnSigFloat64Signal(double ParamFloat64)
+void UTbSimpleSimpleInterfaceJniClient::OnSigFloat64Signal(double InParamFloat64)
 {
-	_GetPublisher()->BroadcastSigFloat64Signal(ParamFloat64);
+	_GetPublisher()->BroadcastSigFloat64Signal(InParamFloat64);
 }
 
-void UTbSimpleSimpleInterfaceJniClient::OnSigStringSignal(const FString& ParamString)
+void UTbSimpleSimpleInterfaceJniClient::OnSigStringSignal(const FString& InParamString)
 {
-	_GetPublisher()->BroadcastSigStringSignal(ParamString);
+	_GetPublisher()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropBoolChanged(bool bInPropBool)

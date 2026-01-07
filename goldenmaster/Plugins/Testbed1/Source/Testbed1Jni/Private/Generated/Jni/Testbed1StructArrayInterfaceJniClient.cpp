@@ -778,29 +778,29 @@ bool UTestbed1StructArrayInterfaceJniClient::_IsReady() const
 {
 	return b_isReady.load(std::memory_order_acquire);
 }
-void UTestbed1StructArrayInterfaceJniClient::OnSigBoolSignal(const TArray<FTestbed1StructBool>& ParamBool)
+void UTestbed1StructArrayInterfaceJniClient::OnSigBoolSignal(const TArray<FTestbed1StructBool>& InParamBool)
 {
-	_GetPublisher()->BroadcastSigBoolSignal(ParamBool);
+	_GetPublisher()->BroadcastSigBoolSignal(InParamBool);
 }
 
-void UTestbed1StructArrayInterfaceJniClient::OnSigIntSignal(const TArray<FTestbed1StructInt>& ParamInt)
+void UTestbed1StructArrayInterfaceJniClient::OnSigIntSignal(const TArray<FTestbed1StructInt>& InParamInt)
 {
-	_GetPublisher()->BroadcastSigIntSignal(ParamInt);
+	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
 }
 
-void UTestbed1StructArrayInterfaceJniClient::OnSigFloatSignal(const TArray<FTestbed1StructFloat>& ParamFloat)
+void UTestbed1StructArrayInterfaceJniClient::OnSigFloatSignal(const TArray<FTestbed1StructFloat>& InParamFloat)
 {
-	_GetPublisher()->BroadcastSigFloatSignal(ParamFloat);
+	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
 }
 
-void UTestbed1StructArrayInterfaceJniClient::OnSigStringSignal(const TArray<FTestbed1StructString>& ParamString)
+void UTestbed1StructArrayInterfaceJniClient::OnSigStringSignal(const TArray<FTestbed1StructString>& InParamString)
 {
-	_GetPublisher()->BroadcastSigStringSignal(ParamString);
+	_GetPublisher()->BroadcastSigStringSignal(InParamString);
 }
 
-void UTestbed1StructArrayInterfaceJniClient::OnSigEnumSignal(const TArray<ETestbed1Enum0>& ParamEnum)
+void UTestbed1StructArrayInterfaceJniClient::OnSigEnumSignal(const TArray<ETestbed1Enum0>& InParamEnum)
 {
-	_GetPublisher()->BroadcastSigEnumSignal(ParamEnum);
+	_GetPublisher()->BroadcastSigEnumSignal(InParamEnum);
 }
 
 void UTestbed1StructArrayInterfaceJniClient::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)

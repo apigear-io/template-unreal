@@ -143,21 +143,21 @@ public:
 	void _unbind();
 
 private:
-	void OnSigBoolSignal(bool bParamBool) override;
+	void OnSigBoolSignal(bool bInParamBool) override;
 
-	void OnSigIntSignal(int32 ParamInt) override;
+	void OnSigIntSignal(int32 InParamInt) override;
 
-	void OnSigInt32Signal(int32 ParamInt32) override;
+	void OnSigInt32Signal(int32 InParamInt32) override;
 
-	void OnSigInt64Signal(int64 ParamInt64) override;
+	void OnSigInt64Signal(int64 InParamInt64) override;
 
-	void OnSigFloatSignal(float ParamFloat) override;
+	void OnSigFloatSignal(float InParamFloat) override;
 
-	void OnSigFloat32Signal(float ParamFloat32) override;
+	void OnSigFloat32Signal(float InParamFloat32) override;
 
-	void OnSigFloat64Signal(double ParamFloat64) override;
+	void OnSigFloat64Signal(double InParamFloat64) override;
 
-	void OnSigStringSignal(const FString& ParamString) override;
+	void OnSigStringSignal(const FString& InParamString) override;
 
 	void OnPropBoolChanged(bool bInPropBool) override;
 
