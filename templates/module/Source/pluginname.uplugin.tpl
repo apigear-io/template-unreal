@@ -61,6 +61,11 @@
 		},
 {{- end }}
 		{
+			"Name": "{{$ModuleName}}Jni",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "{{$ModuleName}}Editor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

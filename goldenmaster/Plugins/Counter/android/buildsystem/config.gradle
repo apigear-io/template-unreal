@@ -1,0 +1,51 @@
+ext {
+    proAAPTConfigs = System.getenv("GRADLE_PRODUCT_AAPT_CONFIG")
+    androidHome = System.getenv("ANDROID_HOME")
+    targetBuildConfigs = System.getenv("TARGET_BUILD_VARIANT")
+    repoRoot = rootProject.projectDir.path + "../"
+	UnrealEngineAARVersion = '1.0.0'
+	
+    config = [
+            versionCode     : 1,
+            versionName     : "1.0",
+            javaJvmVersion  : JavaVersion.VERSION_1_8,
+            sdkVersion      : 33,
+//            toolsVersion    : '29.0.3',
+            minSdkVersion   : 31,
+			ndkVersion		: '25.1.8937393',
+            localLibsDir    : repoRoot + "SharedWithPartners/MakeAAR/aars",
+            AAR_VERSION     : '"05.0.0"',
+			obbCommandLine	: '"-nosound"',
+			obbModuleName	: '""',
+			obbFileLocation	: '""'
+    ]
+
+	
+	if (file("../buildsystem/UnrealAARVersion.xml").exists()) {
+		println "UnrealAARVersion.xml found"
+		def unrealVersion = (new XmlParser()).parse('buildsystem/UnrealAARVersion.xml')
+		unrealVersion.each { values ->
+			project.ext.set("UnrealEngineAARVersion", values.value().toString().replace('[', '').replace(']', ''))
+			project.config.replace("AAR_VERSION", '"' + project.ext.get("UnrealEngineAARVersion") + '"')
+		}
+	}
+	else {
+		println "UnrealAARVersion.xml NOT found"
+	}
+
+	println "UnrealEngineAARVersion = ${UnrealEngineAARVersion}"
+	println "config.AAR_VERSION = ${config.AAR_VERSION}"
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        if ("${project.proAAPTConfigs}" != "null") {
+            def framework_jar_file = "${config.localLibsDir}" + "/framework_intermediates/classes.jar"
+            options.compilerArgs.add("-Xbootclasspath/p:${framework_jar_file}")
+        } else {
+            def framework_jar_file = "${project.androidHome}" + "/platforms/android-29/framework.jar"
+           
+            options.compilerArgs.add("-Xbootclasspath/p:${framework_jar_file}")
+        }
+    }
+}

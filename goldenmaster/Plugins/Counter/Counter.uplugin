@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "CounterJni",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name" : "CounterEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",
