@@ -108,6 +108,32 @@ The `UIoWorldHelloOLinkClient` class implements `IIoWorldHelloInterface` and con
 2. **Operations**: Calls are forwarded to the remote server. The client waits for the response.
 3. **Signals**: When the server emits a signal, the client receives it and broadcasts locally.
 
+```mermaid
+graph TB
+    subgraph Local[" Your Application "]
+        Code[Application Code]
+    end
+
+    subgraph Client[" OLink Client "]
+        Interface["IIoWorldHelloInterface"]
+    end
+
+    subgraph Transport[" WebSocket "]
+        WS((WS))
+    end
+
+    subgraph Remote[" Remote "]
+        Server[OLink Server]
+    end
+
+    Code -->|uses| Interface
+    Interface <-->|requests| WS
+    WS -.->|updates| Interface
+    WS <-->|messages| Server
+```
+
+*The client acts as a **Remote Proxy** - it implements the same interface as the backend service but forwards calls over WebSocket. Properties are cached locally for fast reads.*
+
 ### Properties
 
 Properties are synchronized between client and server:
@@ -258,6 +284,37 @@ The OLink adapter is disabled on mobile platforms (iOS, Android, QNX). Mobile de
 1. **Wraps local implementation**: Takes an existing implementation (e.g., your stub)
 2. **Handles remote requests**: Forwards property changes and operation calls to the wrapped implementation
 3. **Broadcasts updates**: Sends property changes and signals to all connected clients
+
+```mermaid
+graph BT
+    subgraph Local[" Your Backend "]
+        Impl["IIoWorldHelloInterface<br/>(your implementation)"]
+    end
+
+    subgraph Adapter[" OLink Adapter "]
+        Handler[Request Handler]
+    end
+
+    subgraph Transport[" WebSocket "]
+        WS((WS))
+    end
+
+    subgraph Remote[" Remote Clients "]
+        C1[Client 1]
+        C2[Client 2]
+        CN[Client N]
+    end
+
+    Handler -->|calls| Impl
+    Impl -.->|notifies| Handler
+
+    C1 & C2 & CN -->|requests| WS
+    WS -->|forwards| Handler
+    Handler -.->|broadcasts| WS
+    WS -.->|updates| C1 & C2 & CN
+```
+
+*The adapter uses the **Adapter Pattern** - it wraps any `IIoWorldHelloInterface` implementation and exposes it over WebSocket. Multiple clients can connect simultaneously.*
 
 ### Properties
 
