@@ -96,6 +96,9 @@ Extended features add connectivity and monitoring capabilities:
 
 - [olink](olink.md) - provides client and server adapters for the [ObjectLink](/docs/protocols/objectlink/intro) protocol. Use this to connect your Unreal application to remote services or the ApiGear simulation tools.
 - [msgbus](msgbus.md) - provides adapters using Unreal's built-in Message Bus for inter-process communication within the Unreal ecosystem.
+
+> **Choosing between OLink and Message Bus?** See the [comparison guide](msgbus.md#when-to-use-message-bus-vs-olink) for a detailed breakdown.
+
 - [monitor](monitor.md) - generates a middleware layer which logs all API events to the [CLI](/docs/cli/intro) or the [Studio](/docs/studio/intro).
 
 ### Test Features
