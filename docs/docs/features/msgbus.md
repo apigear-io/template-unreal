@@ -11,7 +11,7 @@ import helloWorldModuleComponent from '!!raw-loader!./data/helloworld.module.yam
 
 # Message Bus
 
-The `msgbus` feature provides client and adapter implementations using Unreal Engine's built-in [Message Bus](https://docs.unrealengine.com/5.0/en-US/API/Runtime/Messaging/IMessageBus/) system. This enables:
+The `msgbus` feature provides client and adapter implementations using Unreal Engine's built-in [Message Bus](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Messaging/IMessageBus) system. This enables:
 
 - **Inter-process communication**: Connect Unreal applications running on the same machine
 - **Editor-to-game communication**: Share data between editor tools and PIE sessions
@@ -68,20 +68,6 @@ The following file structure is generated in the `IoWorldMsgBus` module:
  ┗ 📜IoWorldMsgBus.Build.cs
 ```
 
-## Message Protocol
-
-The Message Bus feature uses generated message structures (`IoWorldHelloMsgBusMessages.h`) for communication between client and adapter. These messages handle:
-
-- **Connection lifecycle** - service discovery, initialization, and disconnect
-- **Heartbeat monitoring** - ping/pong messages to detect connection health
-- **Property synchronization** - change requests and notifications
-- **Operation request/response** - calls with correlation IDs for matching replies
-- **Signal broadcasting** - events sent to all connected clients
-
-:::note
-You don't need to interact with these message types directly - they are used internally by the client and adapter classes.
-:::
-
 ## Message Bus Client
 
 The `UIoWorldHelloMsgBusClient` class implements `IIoWorldHelloInterface` and communicates with a remote adapter via Message Bus.
@@ -93,6 +79,32 @@ The `UIoWorldHelloMsgBusClient` class implements `IIoWorldHelloInterface` and co
 3. **Publishes requests**: Sends property change requests and operation calls
 4. **Caches state**: Maintains local copies of properties synchronized from the adapter
 5. **Monitors health**: Tracks connection status with heartbeat ping/pong
+
+```mermaid
+graph TB
+    subgraph Local[" Your Application "]
+        Code[Application Code]
+    end
+
+    subgraph Client[" MsgBus Client "]
+        Interface["IIoWorldHelloInterface"]
+    end
+
+    subgraph Transport[" Message Bus "]
+        Bus((UDP))
+    end
+
+    subgraph Remote[" Remote "]
+        Adapter[MsgBus Adapter]
+    end
+
+    Code -->|uses| Interface
+    Interface <-->|requests| Bus
+    Bus -.->|updates| Interface
+    Bus <-->|messages| Adapter
+```
+
+*The client acts as a **Remote Proxy** - it implements the same interface as the backend service but forwards calls over Message Bus. Properties are cached locally for fast reads.*
 
 ### Connection Management
 
@@ -167,6 +179,37 @@ The `UIoWorldHelloMsgBusAdapter` wraps a local `IIoWorldHelloInterface` implemen
 3. **Handles requests**: Processes property change requests and operation calls from clients
 4. **Broadcasts updates**: Publishes property changes and signals to all subscribed clients
 5. **Tracks clients**: Monitors connected clients and handles timeouts
+
+```mermaid
+graph BT
+    subgraph Local[" Your Backend "]
+        Impl["IIoWorldHelloInterface<br/>(your implementation)"]
+    end
+
+    subgraph Adapter[" MsgBus Adapter "]
+        Handler[Request Handler]
+    end
+
+    subgraph Transport[" Message Bus "]
+        Bus((UDP))
+    end
+
+    subgraph Remote[" Remote Clients "]
+        C1[Client 1]
+        C2[Client 2]
+        CN[Client N]
+    end
+
+    Handler -->|calls| Impl
+    Impl -.->|notifies| Handler
+
+    C1 & C2 & CN -->|requests| Bus
+    Bus -->|forwards| Handler
+    Handler -.->|broadcasts| Bus
+    Bus -.->|updates| C1 & C2 & CN
+```
+
+*The adapter uses the **Adapter Pattern** - it wraps any `IIoWorldHelloInterface` implementation and exposes it over Message Bus. Multiple clients can connect simultaneously.*
 
 ### Connection Management
 
@@ -261,3 +304,88 @@ UnrealEditor-Cmd.exe YourProject.uproject -ExecCmds="Automation RunTests IoWorld
 - For high-frequency updates, consider using direct connections
 - Property changes are only broadcast when values actually change
 - The client tracks sent values to avoid redundant network requests
+
+## Message Protocol
+
+The Message Bus feature uses generated message structures (`IoWorldHelloMsgBusMessages.h`) for communication between client and adapter. These messages handle:
+
+- **Connection lifecycle** - service discovery, initialization, and disconnect
+- **Heartbeat monitoring** - ping/pong messages to detect connection health
+- **Property synchronization** - change requests and notifications
+- **Operation request/response** - calls with correlation IDs for matching replies
+- **Signal broadcasting** - events sent to all connected clients
+
+:::note
+You don't need to interact with these message types directly - they are used internally by the client and adapter classes.
+:::
+
+### Communication Flow
+
+The following diagram shows how messages flow between client and adapter for each type of interaction:
+
+```mermaid
+sequenceDiagram
+    participant App as Application
+    participant Client as MsgBusClient
+    participant Bus as Message Bus
+    participant Adapter as MsgBusAdapter
+    participant Backend as Backend Service
+
+    rect rgb(240, 248, 255)
+        Note over Client,Adapter: Service Discovery & Connection
+        App->>Client: _Connect()
+        Client->>Bus: Publish Discovery Message
+        Bus->>Adapter: Discovery Message
+        Adapter->>Bus: Publish Init Response (current state)
+        Bus->>Client: Init Response
+        Client->>Client: Cache initial properties
+        Client->>App: _ConnectionStatusChanged(true)
+    end
+
+    rect rgb(255, 250, 240)
+        Note over Client,Adapter: Property Synchronization
+        App->>Client: SetLast(newValue)
+        Client->>Bus: Publish Property Change Request
+        Bus->>Adapter: Property Change Request
+        Adapter->>Backend: SetLast(newValue)
+        Backend->>Backend: Update property
+        Backend-->>Adapter: Property Changed
+        Adapter->>Bus: Broadcast Property Changed
+        Bus->>Client: Property Changed Notification
+        Client->>Client: Update cache
+        Client->>App: OnLastChanged delegate
+    end
+
+    rect rgb(240, 255, 240)
+        Note over Client,Adapter: Operation Request/Response
+        App->>Client: Say(msg, when)
+        Client->>Bus: Publish Operation Request (correlationId)
+        Bus->>Adapter: Operation Request
+        Adapter->>Backend: Say(msg, when)
+        Backend-->>Adapter: Return result
+        Adapter->>Bus: Publish Operation Response (correlationId)
+        Bus->>Client: Operation Response
+        Client->>Client: Match correlationId
+        Client-->>App: Return result
+    end
+
+    rect rgb(255, 240, 245)
+        Note over Client,Adapter: Signal Broadcasting
+        Backend->>Backend: Emit JustSaid signal
+        Backend-->>Adapter: OnJustSaid
+        Adapter->>Bus: Broadcast Signal
+        Bus->>Client: Signal Notification
+        Client->>App: OnJustSaidSignal delegate
+    end
+
+    rect rgb(245, 245, 245)
+        Note over Client,Adapter: Heartbeat Monitoring
+        loop Every HeartbeatIntervalMS
+            Client->>Bus: Publish Ping (timestamp)
+            Bus->>Adapter: Ping
+            Adapter->>Bus: Publish Pong (timestamp)
+            Bus->>Client: Pong
+            Client->>Client: Calculate RTT, update stats
+        end
+    end
+```
