@@ -32,4 +32,6 @@ inline constexpr int TbNamesTestFilterMask = EAutomationTestFlags::ApplicationCo
 constexpr int TbNamesTestFilterMask = EAutomationTestFlags::ApplicationContextMask | EAutomationTestFlags::ProductFilter;
 #endif
 
+TArray<ETbNamesEnum_With_Under_scores> TBNAMESCORE_API createTestFTbNamesEnum_With_Under_scoresArray();
+
 #endif // WITH_DEV_AUTOMATION_TESTS

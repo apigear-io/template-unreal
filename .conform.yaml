@@ -37,4 +37,5 @@ policies:
           - "docs"
           - "cli"
           - "deps"
+          - "jni"
         descriptionLength: 72
