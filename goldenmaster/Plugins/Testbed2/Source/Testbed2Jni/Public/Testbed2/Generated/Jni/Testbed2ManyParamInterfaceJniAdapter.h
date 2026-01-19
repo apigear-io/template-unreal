@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 
 #include "Testbed2/Generated/api/Testbed2ManyParamInterfaceInterface.h"
+#include "Testbed2/Generated/Jni/Testbed2JniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
 
@@ -43,6 +44,7 @@ class ITestbed2ManyParamInterfaceJniAdapterAccessor
 public:
 	virtual ~ITestbed2ManyParamInterfaceJniAdapterAccessor() = default;
 	virtual TScriptInterface<ITestbed2ManyParamInterfaceInterface> getBackendServiceForJNI() const = 0;
+	virtual void jniServiceStatusChanged(bool) = 0;
 };
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
@@ -66,6 +68,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed2|ManyParamInterface")
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> getBackendService();
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Jni|Remote", DisplayName = "Jni Service Started")
+	FTestbed2JniServiceStartedDelegateBP _JniServiceStartedBP;
+	FTestbed2JniServiceStartedDelegate _JniServiceStarted;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Jni|Remote", DisplayName = "Jni Service Died")
+	FTestbed2JniServiceDiedDelegateBP _JniServiceDiedBP;
+	FTestbed2JniServiceDiedDelegate _JniServiceDied;
 
 private:
 	// Helper function, wraps calling java service side.
@@ -91,6 +100,7 @@ private:
 	void OnProp4Changed(int32 Prop4) override;
 	// Returns a copy of current backend. Backend may get changed from main thread.
 	TScriptInterface<ITestbed2ManyParamInterfaceInterface> getBackendServiceForJNI() const override;
+	void jniServiceStatusChanged(bool isConnected) override;
 
 	mutable FCriticalSection BackendServiceCS;
 

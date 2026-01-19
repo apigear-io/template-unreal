@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 
 #include "TbEnum/Generated/api/TbEnumEnumInterfaceInterface.h"
+#include "TbEnum/Generated/Jni/TbEnumJniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
 
@@ -43,6 +44,7 @@ class ITbEnumEnumInterfaceJniAdapterAccessor
 public:
 	virtual ~ITbEnumEnumInterfaceJniAdapterAccessor() = default;
 	virtual TScriptInterface<ITbEnumEnumInterfaceInterface> getBackendServiceForJNI() const = 0;
+	virtual void jniServiceStatusChanged(bool) = 0;
 };
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
@@ -66,6 +68,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbEnum|EnumInterface")
 	TScriptInterface<ITbEnumEnumInterfaceInterface> getBackendService();
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Jni|Remote", DisplayName = "Jni Service Started")
+	FTbEnumJniServiceStartedDelegateBP _JniServiceStartedBP;
+	FTbEnumJniServiceStartedDelegate _JniServiceStarted;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Jni|Remote", DisplayName = "Jni Service Died")
+	FTbEnumJniServiceDiedDelegateBP _JniServiceDiedBP;
+	FTbEnumJniServiceDiedDelegate _JniServiceDied;
 
 private:
 	// Helper function, wraps calling java service side.
@@ -91,6 +100,7 @@ private:
 	void OnProp3Changed(ETbEnumEnum3 Prop3) override;
 	// Returns a copy of current backend. Backend may get changed from main thread.
 	TScriptInterface<ITbEnumEnumInterfaceInterface> getBackendServiceForJNI() const override;
+	void jniServiceStatusChanged(bool isConnected) override;
 
 	mutable FCriticalSection BackendServiceCS;
 

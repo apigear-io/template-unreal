@@ -279,6 +279,26 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> UTbSimpleNoPropertiesI
 	return BackendService;
 }
 
+void UTbSimpleNoPropertiesInterfaceJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_JniServiceStartedBP.Broadcast();
+			_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_JniServiceDiedBP.Broadcast();
+			_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniService_nativeFuncVoid(JNIEnv* Env, jclass Clazz)
 {
@@ -325,5 +345,17 @@ JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniSer
 		UE_LOG(LogTbSimpleNoPropertiesInterface_JNI, Warning, TEXT("service not valid"));
 		return false;
 	}
+}
+
+JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTbSimpleNoPropertiesInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoPropertiesInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTbSimpleNoPropertiesInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif

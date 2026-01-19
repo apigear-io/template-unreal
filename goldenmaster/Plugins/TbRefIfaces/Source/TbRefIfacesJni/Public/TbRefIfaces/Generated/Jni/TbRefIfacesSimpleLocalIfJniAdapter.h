@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 
 #include "TbRefIfaces/Generated/api/TbRefIfacesSimpleLocalIfInterface.h"
+#include "TbRefIfaces/Generated/Jni/TbRefIfacesJniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
 
@@ -43,6 +44,7 @@ class ITbRefIfacesSimpleLocalIfJniAdapterAccessor
 public:
 	virtual ~ITbRefIfacesSimpleLocalIfJniAdapterAccessor() = default;
 	virtual TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> getBackendServiceForJNI() const = 0;
+	virtual void jniServiceStatusChanged(bool) = 0;
 };
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
@@ -67,6 +69,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf")
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> getBackendService();
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Jni|Remote", DisplayName = "Jni Service Started")
+	FTbRefIfacesJniServiceStartedDelegateBP _JniServiceStartedBP;
+	FTbRefIfacesJniServiceStartedDelegate _JniServiceStarted;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Jni|Remote", DisplayName = "Jni Service Died")
+	FTbRefIfacesJniServiceDiedDelegateBP _JniServiceDiedBP;
+	FTbRefIfacesJniServiceDiedDelegate _JniServiceDied;
+
 private:
 	// Helper function, wraps calling java service side.
 	void callJniServiceReady(bool isServiceReady);
@@ -82,6 +91,7 @@ private:
 	void OnIntPropertyChanged(int32 IntProperty) override;
 	// Returns a copy of current backend. Backend may get changed from main thread.
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> getBackendServiceForJNI() const override;
+	void jniServiceStatusChanged(bool isConnected) override;
 
 	mutable FCriticalSection BackendServiceCS;
 

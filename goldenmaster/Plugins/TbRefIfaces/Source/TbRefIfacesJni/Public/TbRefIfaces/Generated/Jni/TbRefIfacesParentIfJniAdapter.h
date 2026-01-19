@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 
 #include "TbRefIfaces/Generated/api/TbRefIfacesParentIfInterface.h"
+#include "TbRefIfaces/Generated/Jni/TbRefIfacesJniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
 
@@ -43,6 +44,7 @@ class ITbRefIfacesParentIfJniAdapterAccessor
 public:
 	virtual ~ITbRefIfacesParentIfJniAdapterAccessor() = default;
 	virtual TScriptInterface<ITbRefIfacesParentIfInterface> getBackendServiceForJNI() const = 0;
+	virtual void jniServiceStatusChanged(bool) = 0;
 };
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
@@ -66,6 +68,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf")
 	TScriptInterface<ITbRefIfacesParentIfInterface> getBackendService();
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|ParentIf|Jni|Remote", DisplayName = "Jni Service Started")
+	FTbRefIfacesJniServiceStartedDelegateBP _JniServiceStartedBP;
+	FTbRefIfacesJniServiceStartedDelegate _JniServiceStarted;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|ParentIf|Jni|Remote", DisplayName = "Jni Service Died")
+	FTbRefIfacesJniServiceDiedDelegateBP _JniServiceDiedBP;
+	FTbRefIfacesJniServiceDiedDelegate _JniServiceDied;
 
 private:
 	// Helper function, wraps calling java service side.
@@ -91,6 +100,7 @@ private:
 	void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList) override;
 	// Returns a copy of current backend. Backend may get changed from main thread.
 	TScriptInterface<ITbRefIfacesParentIfInterface> getBackendServiceForJNI() const override;
+	void jniServiceStatusChanged(bool isConnected) override;
 
 	mutable FCriticalSection BackendServiceCS;
 

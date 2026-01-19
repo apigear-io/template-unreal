@@ -387,6 +387,26 @@ TScriptInterface<ICounterCounterInterface> UCounterCounterJniAdapter::getBackend
 	return BackendService;
 }
 
+void UCounterCounterJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_JniServiceStartedBP.Broadcast();
+			_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_JniServiceDiedBP.Broadcast();
+			_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeIncrement(JNIEnv* Env, jclass Clazz, jobject vec)
 {
@@ -691,5 +711,17 @@ JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeG
 		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("service not available, try setting a backend service "));
 		return nullptr;
 	}
+}
+
+JNI_METHOD void Java_counter_counterjniservice_CounterJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif
