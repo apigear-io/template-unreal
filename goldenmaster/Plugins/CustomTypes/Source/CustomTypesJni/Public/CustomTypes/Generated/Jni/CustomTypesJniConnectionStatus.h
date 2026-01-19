@@ -9,6 +9,17 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCustomTypesJniConnectionStatusChangedDelegateBP, bool, IsConnected);
 DECLARE_MULTICAST_DELEGATE_OneParam(FCustomTypesJniConnectionStatusChangedDelegate, bool /* IsSubscribed */);
 
+/** @brief Used when the jni service fully started.
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCustomTypesJniServiceStartedDelegateBP);
+DECLARE_MULTICAST_DELEGATE(FCustomTypesJniServiceStartedDelegate);
+
+/** @brief Used when the jni service died.
+ * Will not occur when when closed intentionally.
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCustomTypesJniServiceDiedDelegateBP);
+DECLARE_MULTICAST_DELEGATE(FCustomTypesJniServiceDiedDelegate);
+
 // Dummy class required for getting the .generated.h file without which the delegates are properly compiled.
 UCLASS()
 class CUSTOMTYPESJNI_API UCustomTypesDelegatesDummy : public UObject

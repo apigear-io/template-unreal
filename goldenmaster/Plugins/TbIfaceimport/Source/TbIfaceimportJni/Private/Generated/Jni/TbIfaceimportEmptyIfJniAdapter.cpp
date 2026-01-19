@@ -217,5 +217,37 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbIfaceimportEmptyIfJniAdapter
 	return BackendService;
 }
 
+void UTbIfaceimportEmptyIfJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_JniServiceStartedBP.Broadcast();
+			_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_JniServiceDiedBP.Broadcast();
+			_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+JNI_METHOD void Java_tbIfaceimport_tbIfaceimportjniservice_EmptyIfJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTbIfaceimportEmptyIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbIfaceimportEmptyIf_JNI, Warning, TEXT("Java_tbIfaceimport_tbIfaceimportjniservice_EmptyIfJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTbIfaceimportEmptyIfJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
+}
 #endif

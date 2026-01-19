@@ -11,6 +11,17 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(F{{$ModuleName}}JniConnectionStatusChangedDelegateBP, bool, IsConnected);
 DECLARE_MULTICAST_DELEGATE_OneParam(F{{$ModuleName}}JniConnectionStatusChangedDelegate, bool /* IsSubscribed */);
 
+/** @brief Used when the jni service fully started.
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(F{{$ModuleName}}JniServiceStartedDelegateBP);
+DECLARE_MULTICAST_DELEGATE(F{{$ModuleName}}JniServiceStartedDelegate);
+
+/** @brief Used when the jni service died.
+ * Will not occur when when closed intentionally.
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(F{{$ModuleName}}JniServiceDiedDelegateBP);
+DECLARE_MULTICAST_DELEGATE(F{{$ModuleName}}JniServiceDiedDelegate);
+
 // Dummy class required for getting the .generated.h file without which the delegates are properly compiled.
 UCLASS()
 class {{ $API_MACRO }} U{{$ModuleName}}DelegatesDummy : public UObject

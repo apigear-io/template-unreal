@@ -283,6 +283,26 @@ TScriptInterface<ITbSame1SameStruct1InterfaceInterface> UTbSame1SameStruct1Inter
 	return BackendService;
 }
 
+void UTbSame1SameStruct1InterfaceJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_JniServiceStartedBP.Broadcast();
+			_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_JniServiceDiedBP.Broadcast();
+			_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameStruct1InterfaceJniService_nativeFunc1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
@@ -359,5 +379,17 @@ JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameStruct1InterfaceJniService
 		UE_LOG(LogTbSame1SameStruct1Interface_JNI, Warning, TEXT("service not available, try setting a backend service "));
 		return nullptr;
 	}
+}
+
+JNI_METHOD void Java_tbSame1_tbSame1jniservice_SameStruct1InterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTbSame1SameStruct1InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbSame1SameStruct1Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameStruct1InterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTbSame1SameStruct1InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif

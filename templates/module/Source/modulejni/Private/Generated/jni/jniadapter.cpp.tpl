@@ -510,6 +510,26 @@ TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> {{$C
 	return BackendService;
 }
 
+void {{$Class}}::jniServiceStatusChanged(bool isConnected)
+{
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_JniServiceStartedBP.Broadcast();
+			_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [this]()
+			{
+			_JniServiceDiedBP.Broadcast();
+			_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 {{- range .Interface.Operations }}
@@ -699,4 +719,19 @@ JNI_METHOD {{jniToReturnType .}} {{$jniFullFuncPrefix}}_nativeGet{{ Camel .Name 
 	}
 }
 {{- end }}
+
+{{- $javaStarterClassName := printf "%sJniServiceStarter" $IfaceName }}
+{{- $jniStarterFullFuncPrefix := ( join "_" (strSlice "Java" ( camel $ModuleNameRaw) $jniservice_name $javaStarterClassName ) ) }}
+
+JNI_METHOD void {{$jniStarterFullFuncPrefix}}_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = g{{$Class}}Handle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniStarterFullFuncPrefix}}_nativeOnAndroidServiceConnectionStatusChanged, {{$Class}} not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
+}
 #endif

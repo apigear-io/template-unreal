@@ -17,6 +17,7 @@ limitations under the License.
 #pragma once
 
 #include "TbSame1/Generated/api/TbSame1SameEnum1InterfaceInterface.h"
+#include "TbSame1/Generated/Jni/TbSame1JniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
 
@@ -43,6 +44,7 @@ class ITbSame1SameEnum1InterfaceJniAdapterAccessor
 public:
 	virtual ~ITbSame1SameEnum1InterfaceJniAdapterAccessor() = default;
 	virtual TScriptInterface<ITbSame1SameEnum1InterfaceInterface> getBackendServiceForJNI() const = 0;
+	virtual void jniServiceStatusChanged(bool) = 0;
 };
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
@@ -67,6 +69,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSame1|SameEnum1Interface")
 	TScriptInterface<ITbSame1SameEnum1InterfaceInterface> getBackendService();
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum1Interface|Jni|Remote", DisplayName = "Jni Service Started")
+	FTbSame1JniServiceStartedDelegateBP _JniServiceStartedBP;
+	FTbSame1JniServiceStartedDelegate _JniServiceStarted;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum1Interface|Jni|Remote", DisplayName = "Jni Service Died")
+	FTbSame1JniServiceDiedDelegateBP _JniServiceDiedBP;
+	FTbSame1JniServiceDiedDelegate _JniServiceDied;
+
 private:
 	// Helper function, wraps calling java service side.
 	void callJniServiceReady(bool isServiceReady);
@@ -82,6 +91,7 @@ private:
 	void OnProp1Changed(ETbSame1Enum1 Prop1) override;
 	// Returns a copy of current backend. Backend may get changed from main thread.
 	TScriptInterface<ITbSame1SameEnum1InterfaceInterface> getBackendServiceForJNI() const override;
+	void jniServiceStatusChanged(bool isConnected) override;
 
 	mutable FCriticalSection BackendServiceCS;
 
