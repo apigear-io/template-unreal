@@ -9,6 +9,17 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FCounterJniConnectionStatusChangedDelegateBP, bool, IsConnected);
 DECLARE_MULTICAST_DELEGATE_OneParam(FCounterJniConnectionStatusChangedDelegate, bool /* IsSubscribed */);
 
+/** @brief Used when the jni service fully started.
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCounterJniServiceStartedDelegateBP);
+DECLARE_MULTICAST_DELEGATE(FCounterJniServiceStartedDelegate);
+
+/** @brief Used when the jni service died.
+ * Will not occur when when closed intentionally.
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FCounterJniServiceDiedDelegateBP);
+DECLARE_MULTICAST_DELEGATE(FCounterJniServiceDiedDelegate);
+
 // Dummy class required for getting the .generated.h file without which the delegates are properly compiled.
 UCLASS()
 class COUNTERJNI_API UCounterDelegatesDummy : public UObject

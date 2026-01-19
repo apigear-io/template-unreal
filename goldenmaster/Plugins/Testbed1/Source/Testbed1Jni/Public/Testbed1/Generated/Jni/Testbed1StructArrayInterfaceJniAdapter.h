@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Testbed1/Generated/api/Testbed1StructArrayInterfaceInterface.h"
+#include "Testbed1/Generated/Jni/Testbed1JniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
 
@@ -29,6 +30,7 @@ class ITestbed1StructArrayInterfaceJniAdapterAccessor
 public:
 	virtual ~ITestbed1StructArrayInterfaceJniAdapterAccessor() = default;
 	virtual TScriptInterface<ITestbed1StructArrayInterfaceInterface> getBackendServiceForJNI() const = 0;
+	virtual void jniServiceStatusChanged(bool) = 0;
 };
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
@@ -52,6 +54,13 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Testbed1|StructArrayInterface")
 	TScriptInterface<ITestbed1StructArrayInterfaceInterface> getBackendService();
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Jni|Remote", DisplayName = "Jni Service Started")
+	FTestbed1JniServiceStartedDelegateBP _JniServiceStartedBP;
+	FTestbed1JniServiceStartedDelegate _JniServiceStarted;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArrayInterface|Jni|Remote", DisplayName = "Jni Service Died")
+	FTestbed1JniServiceDiedDelegateBP _JniServiceDiedBP;
+	FTestbed1JniServiceDiedDelegate _JniServiceDied;
 
 private:
 	// Helper function, wraps calling java service side.
@@ -80,6 +89,7 @@ private:
 	void OnPropEnumChanged(const TArray<ETestbed1Enum0>& PropEnum) override;
 	// Returns a copy of current backend. Backend may get changed from main thread.
 	TScriptInterface<ITestbed1StructArrayInterfaceInterface> getBackendServiceForJNI() const override;
+	void jniServiceStatusChanged(bool isConnected) override;
 
 	mutable FCriticalSection BackendServiceCS;
 

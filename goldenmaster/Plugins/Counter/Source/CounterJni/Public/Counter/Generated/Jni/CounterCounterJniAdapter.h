@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Counter/Generated/api/CounterCounterInterface.h"
+#include "Counter/Generated/Jni/CounterJniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
 
@@ -29,6 +30,7 @@ class ICounterCounterJniAdapterAccessor
 public:
 	virtual ~ICounterCounterJniAdapterAccessor() = default;
 	virtual TScriptInterface<ICounterCounterInterface> getBackendServiceForJNI() const = 0;
+	virtual void jniServiceStatusChanged(bool) = 0;
 };
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
@@ -53,6 +55,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter")
 	TScriptInterface<ICounterCounterInterface> getBackendService();
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Jni|Remote", DisplayName = "Jni Service Started")
+	FCounterJniServiceStartedDelegateBP _JniServiceStartedBP;
+	FCounterJniServiceStartedDelegate _JniServiceStarted;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Jni|Remote", DisplayName = "Jni Service Died")
+	FCounterJniServiceDiedDelegateBP _JniServiceDiedBP;
+	FCounterJniServiceDiedDelegate _JniServiceDied;
+
 private:
 	// Helper function, wraps calling java service side.
 	void callJniServiceReady(bool isServiceReady);
@@ -71,6 +80,7 @@ private:
 	void OnExternVectorArrayChanged(const TArray<FVector>& ExternVectorArray) override;
 	// Returns a copy of current backend. Backend may get changed from main thread.
 	TScriptInterface<ICounterCounterInterface> getBackendServiceForJNI() const override;
+	void jniServiceStatusChanged(bool isConnected) override;
 
 	mutable FCriticalSection BackendServiceCS;
 
