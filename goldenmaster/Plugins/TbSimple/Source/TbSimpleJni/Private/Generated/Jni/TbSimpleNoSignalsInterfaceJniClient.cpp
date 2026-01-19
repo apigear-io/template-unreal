@@ -360,6 +360,7 @@ bool UTbSimpleNoSignalsInterfaceJniClient::FuncBool(bool bInParamBool)
 		return false;
 	}
 	TPromise<bool> Promise;
+	TFuture<bool> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbSimpleNoSignalsInterfaceJniClientCache::FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
@@ -379,7 +380,7 @@ bool UTbSimpleNoSignalsInterfaceJniClient::FuncBool(bool bInParamBool)
 		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
 		Promise.SetValue(false);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return false;
 #endif

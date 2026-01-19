@@ -445,6 +445,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::Func0(ETbEnumEnum0 InParam0)
 		return ETbEnumEnum0::TEE0_Value0;
 	}
 	TPromise<ETbEnumEnum0> Promise;
+	TFuture<ETbEnumEnum0> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func0AsyncMethodID;
 	if (MethodID != nullptr)
@@ -466,7 +467,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::Func0(ETbEnumEnum0 InParam0)
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func0Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V not found"));
 		Promise.SetValue(ETbEnumEnum0::TEE0_Value0);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return ETbEnumEnum0::TEE0_Value0;
 #endif
@@ -491,6 +492,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::Func1(ETbEnumEnum1 InParam1)
 		return ETbEnumEnum1::TEE1_Value1;
 	}
 	TPromise<ETbEnumEnum1> Promise;
+	TFuture<ETbEnumEnum1> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func1AsyncMethodID;
 	if (MethodID != nullptr)
@@ -512,7 +514,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::Func1(ETbEnumEnum1 InParam1)
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func1Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V not found"));
 		Promise.SetValue(ETbEnumEnum1::TEE1_Value1);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return ETbEnumEnum1::TEE1_Value1;
 #endif
@@ -537,6 +539,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::Func2(ETbEnumEnum2 InParam2)
 		return ETbEnumEnum2::TEE2_Value2;
 	}
 	TPromise<ETbEnumEnum2> Promise;
+	TFuture<ETbEnumEnum2> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func2AsyncMethodID;
 	if (MethodID != nullptr)
@@ -558,7 +561,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::Func2(ETbEnumEnum2 InParam2)
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func2Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V not found"));
 		Promise.SetValue(ETbEnumEnum2::TEE2_Value2);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return ETbEnumEnum2::TEE2_Value2;
 #endif
@@ -583,6 +586,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::Func3(ETbEnumEnum3 InParam3)
 		return ETbEnumEnum3::TEE3_Value3;
 	}
 	TPromise<ETbEnumEnum3> Promise;
+	TFuture<ETbEnumEnum3> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func3AsyncMethodID;
 	if (MethodID != nullptr)
@@ -604,7 +608,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::Func3(ETbEnumEnum3 InParam3)
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func3Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V not found"));
 		Promise.SetValue(ETbEnumEnum3::TEE3_Value3);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return ETbEnumEnum3::TEE3_Value3;
 #endif

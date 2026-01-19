@@ -445,6 +445,7 @@ FTestbed1StructBool UTestbed1StructInterfaceJniClient::FuncBool(const FTestbed1S
 		return FTestbed1StructBool();
 	}
 	TPromise<FTestbed1StructBool> Promise;
+	TFuture<FTestbed1StructBool> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTestbed1StructInterfaceJniClientCache::FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
@@ -466,7 +467,7 @@ FTestbed1StructBool UTestbed1StructInterfaceJniClient::FuncBool(const FTestbed1S
 		UE_LOG(LogTestbed1StructInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructBool;)V not found"));
 		Promise.SetValue(FTestbed1StructBool());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return FTestbed1StructBool();
 #endif
@@ -491,6 +492,7 @@ FTestbed1StructInt UTestbed1StructInterfaceJniClient::FuncInt(const FTestbed1Str
 		return FTestbed1StructInt();
 	}
 	TPromise<FTestbed1StructInt> Promise;
+	TFuture<FTestbed1StructInt> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTestbed1StructInterfaceJniClientCache::FuncIntAsyncMethodID;
 	if (MethodID != nullptr)
@@ -512,7 +514,7 @@ FTestbed1StructInt UTestbed1StructInterfaceJniClient::FuncInt(const FTestbed1Str
 		UE_LOG(LogTestbed1StructInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructInterfaceJniClient:funcIntAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructInt;)V not found"));
 		Promise.SetValue(FTestbed1StructInt());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return FTestbed1StructInt();
 #endif
@@ -537,6 +539,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceJniClient::FuncFloat(const FTestbed
 		return FTestbed1StructFloat();
 	}
 	TPromise<FTestbed1StructFloat> Promise;
+	TFuture<FTestbed1StructFloat> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTestbed1StructInterfaceJniClientCache::FuncFloatAsyncMethodID;
 	if (MethodID != nullptr)
@@ -558,7 +561,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceJniClient::FuncFloat(const FTestbed
 		UE_LOG(LogTestbed1StructInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructInterfaceJniClient:funcFloatAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructFloat;)V not found"));
 		Promise.SetValue(FTestbed1StructFloat());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return FTestbed1StructFloat();
 #endif
@@ -583,6 +586,7 @@ FTestbed1StructString UTestbed1StructInterfaceJniClient::FuncString(const FTestb
 		return FTestbed1StructString();
 	}
 	TPromise<FTestbed1StructString> Promise;
+	TFuture<FTestbed1StructString> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTestbed1StructInterfaceJniClientCache::FuncStringAsyncMethodID;
 	if (MethodID != nullptr)
@@ -604,7 +608,7 @@ FTestbed1StructString UTestbed1StructInterfaceJniClient::FuncString(const FTestb
 		UE_LOG(LogTestbed1StructInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructInterfaceJniClient:funcStringAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructString;)V not found"));
 		Promise.SetValue(FTestbed1StructString());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return FTestbed1StructString();
 #endif

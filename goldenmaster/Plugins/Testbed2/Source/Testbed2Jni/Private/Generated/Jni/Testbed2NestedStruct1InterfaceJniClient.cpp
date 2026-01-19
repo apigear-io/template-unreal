@@ -321,6 +321,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceJniClient::FuncNoParams()
 		return FTestbed2NestedStruct1();
 	}
 	TPromise<FTestbed2NestedStruct1> Promise;
+	TFuture<FTestbed2NestedStruct1> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTestbed2NestedStruct1InterfaceJniClientCache::FuncNoParamsAsyncMethodID;
 	if (MethodID != nullptr)
@@ -340,7 +341,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceJniClient::FuncNoParams()
 		UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient:funcNoParamsAsync (Ljava/lang/String;)V not found"));
 		Promise.SetValue(FTestbed2NestedStruct1());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return FTestbed2NestedStruct1();
 #endif
@@ -365,6 +366,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceJniClient::Func1(const FTe
 		return FTestbed2NestedStruct1();
 	}
 	TPromise<FTestbed2NestedStruct1> Promise;
+	TFuture<FTestbed2NestedStruct1> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTestbed2NestedStruct1InterfaceJniClientCache::Func1AsyncMethodID;
 	if (MethodID != nullptr)
@@ -386,7 +388,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceJniClient::Func1(const FTe
 		UE_LOG(LogTestbed2NestedStruct1InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient:func1Async (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V not found"));
 		Promise.SetValue(FTestbed2NestedStruct1());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return FTestbed2NestedStruct1();
 #endif

@@ -389,6 +389,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 	}
 	{{- if not .Return.IsVoid }}
 	TPromise<{{ueReturn "" .Return}}> Promise;
+	TFuture<{{ueReturn "" .Return}}> Future = Promise.GetFuture();
 	{{- end}}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = {{$Class}}Cache::{{Camel .Name}}AsyncMethodID;
@@ -436,7 +437,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 		Promise.SetValue({{ueDefault "" .Return }});
 		{{- end}}
 	}
-	return{{ if not .Return.IsVoid }} Promise.GetFuture().Get() {{- end}};
+	return{{ if not .Return.IsVoid }} Future.Get() {{- end}};
 #else
 	return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
 #endif

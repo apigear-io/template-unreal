@@ -444,6 +444,7 @@ FVector UCounterCounterJniClient::Increment(const FVector& InVec)
 		return FVector(0.f, 0.f, 0.f);
 	}
 	TPromise<FVector> Promise;
+	TFuture<FVector> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UCounterCounterJniClientCache::IncrementAsyncMethodID;
 	if (MethodID != nullptr)
@@ -465,7 +466,7 @@ FVector UCounterCounterJniClient::Increment(const FVector& InVec)
 		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementAsync (Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
 		Promise.SetValue(FVector(0.f, 0.f, 0.f));
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return FVector(0.f, 0.f, 0.f);
 #endif
@@ -490,6 +491,7 @@ TArray<FVector> UCounterCounterJniClient::IncrementArray(const TArray<FVector>& 
 		return TArray<FVector>();
 	}
 	TPromise<TArray<FVector>> Promise;
+	TFuture<TArray<FVector>> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UCounterCounterJniClientCache::IncrementArrayAsyncMethodID;
 	if (MethodID != nullptr)
@@ -511,7 +513,7 @@ TArray<FVector> UCounterCounterJniClient::IncrementArray(const TArray<FVector>& 
 		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementArrayAsync (Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
 		Promise.SetValue(TArray<FVector>());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return TArray<FVector>();
 #endif
@@ -536,6 +538,7 @@ FCustomTypesVector3D UCounterCounterJniClient::Decrement(const FCustomTypesVecto
 		return FCustomTypesVector3D();
 	}
 	TPromise<FCustomTypesVector3D> Promise;
+	TFuture<FCustomTypesVector3D> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UCounterCounterJniClientCache::DecrementAsyncMethodID;
 	if (MethodID != nullptr)
@@ -557,7 +560,7 @@ FCustomTypesVector3D UCounterCounterJniClient::Decrement(const FCustomTypesVecto
 		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementAsync (Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V not found"));
 		Promise.SetValue(FCustomTypesVector3D());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return FCustomTypesVector3D();
 #endif
@@ -582,6 +585,7 @@ TArray<FCustomTypesVector3D> UCounterCounterJniClient::DecrementArray(const TArr
 		return TArray<FCustomTypesVector3D>();
 	}
 	TPromise<TArray<FCustomTypesVector3D>> Promise;
+	TFuture<TArray<FCustomTypesVector3D>> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UCounterCounterJniClientCache::DecrementArrayAsyncMethodID;
 	if (MethodID != nullptr)
@@ -603,7 +607,7 @@ TArray<FCustomTypesVector3D> UCounterCounterJniClient::DecrementArray(const TArr
 		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementArrayAsync (Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V not found"));
 		Promise.SetValue(TArray<FCustomTypesVector3D>());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return TArray<FCustomTypesVector3D>();
 #endif
