@@ -9,6 +9,17 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbRefIfacesJniConnectionStatusChangedDelegateBP, bool, IsConnected);
 DECLARE_MULTICAST_DELEGATE_OneParam(FTbRefIfacesJniConnectionStatusChangedDelegate, bool /* IsSubscribed */);
 
+/** @brief Used when the jni service fully started.
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTbRefIfacesJniServiceStartedDelegateBP);
+DECLARE_MULTICAST_DELEGATE(FTbRefIfacesJniServiceStartedDelegate);
+
+/** @brief Used when the jni service died.
+ * Will not occur when when closed intentionally.
+ */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTbRefIfacesJniServiceDiedDelegateBP);
+DECLARE_MULTICAST_DELEGATE(FTbRefIfacesJniServiceDiedDelegate);
+
 // Dummy class required for getting the .generated.h file without which the delegates are properly compiled.
 UCLASS()
 class TBREFIFACESJNI_API UTbRefIfacesDelegatesDummy : public UObject

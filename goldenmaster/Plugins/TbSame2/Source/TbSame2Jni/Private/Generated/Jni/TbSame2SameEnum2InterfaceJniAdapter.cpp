@@ -168,7 +168,7 @@ void UTbSame2SameEnum2InterfaceJniAdapter::Deinitialize()
 		TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
-			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unrealï¿½s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbSame2JavaServiceStarter failed to call stop");
 			TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCall);
@@ -348,6 +348,35 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> UTbSame2SameEnum2Interface
 	return BackendService;
 }
 
+void UTbSame2SameEnum2InterfaceJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(LogTbSame2SameEnum2Interface_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(LogTbSame2SameEnum2Interface_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_tbSame2_tbSame2jniservice_SameEnum2InterfaceJniService_nativeFunc1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
@@ -497,5 +526,17 @@ JNI_METHOD jobject Java_tbSame2_tbSame2jniservice_SameEnum2InterfaceJniService_n
 		UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("service not available, try setting a backend service "));
 		return nullptr;
 	}
+}
+
+JNI_METHOD void Java_tbSame2_tbSame2jniservice_SameEnum2InterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTbSame2SameEnum2InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame2_tbSame2jniservice_SameEnum2InterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTbSame2SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif

@@ -180,7 +180,7 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::Deinitialize()
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
-			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unrealï¿½s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("Testbed2JavaServiceStarter failed to call stop");
 			Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCall);
@@ -419,6 +419,35 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> UTestbed2NestedStruct
 	return BackendService;
 }
 
+void UTestbed2NestedStruct3InterfaceJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct3InterfaceJniService_nativeFunc1(JNIEnv* Env, jclass Clazz, jobject param1)
 {
@@ -653,5 +682,17 @@ JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct3InterfaceJniSer
 		UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("service not available, try setting a backend service "));
 		return nullptr;
 	}
+}
+
+JNI_METHOD void Java_testbed2_testbed2jniservice_NestedStruct3InterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTestbed2NestedStruct3InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct3InterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTestbed2NestedStruct3InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif
