@@ -12,6 +12,7 @@
 #pragma once
 
 #include "{{$ModuleName}}/Generated/api/{{$Iface}}Interface.h"
+#include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}JniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
 
@@ -38,6 +39,7 @@ class I{{$DisplayName}}JniAdapterAccessor
 public:
 	virtual ~I{{$DisplayName}}JniAdapterAccessor() = default;
 	virtual TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> getBackendServiceForJNI() const = 0;
+	virtual void jniServiceStatusChanged(bool) = 0;
 };
 
 /** @brief handles the adaption between the service implementation and the java android Service Backend
@@ -62,6 +64,13 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "ApiGear|{{Camel .Module.Name}}|{{Camel .Interface.Name}}")
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> getBackendService();
 
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|{{Camel .Module.Name}}|{{$IfaceName}}|Jni|Remote", DisplayName = "Jni Service Started")
+	F{{$ModuleName}}JniServiceStartedDelegateBP _JniServiceStartedBP;
+	F{{$ModuleName}}JniServiceStartedDelegate _JniServiceStarted;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|{{Camel .Module.Name}}|{{$IfaceName}}|Jni|Remote", DisplayName = "Jni Service Died")
+	F{{$ModuleName}}JniServiceDiedDelegateBP _JniServiceDiedBP;
+	F{{$ModuleName}}JniServiceDiedDelegate _JniServiceDied;
+
 private:
 	// Helper function, wraps calling java service side.
 	void callJniServiceReady(bool isServiceReady);
@@ -84,6 +93,7 @@ private:
 {{- end }}
 	// Returns a copy of current backend. Backend may get changed from main thread.
 	TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> getBackendServiceForJNI() const override;
+	void jniServiceStatusChanged(bool isConnected) override;
 
 	mutable FCriticalSection BackendServiceCS;
 

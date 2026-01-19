@@ -248,6 +248,37 @@ TScriptInterface<ITbSimpleVoidInterfaceInterface> UTbSimpleVoidInterfaceJniAdapt
 	return BackendService;
 }
 
+void UTbSimpleVoidInterfaceJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr<UTbSimpleVoidInterfaceJniAdapter> WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr)
+			{
+				UE_LOG(LogTbSimpleVoidInterface_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr)
+			{
+				UE_LOG(LogTbSimpleVoidInterface_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeFuncVoid(JNIEnv* Env, jclass Clazz)
 {
@@ -271,5 +302,17 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeF
 		UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("service not valid"));
 		return;
 	}
+}
+
+JNI_METHOD void Java_tbSimple_tbSimplejniservice_VoidInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTbSimpleVoidInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_VoidInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTbSimpleVoidInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif

@@ -283,6 +283,37 @@ TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> UTestbed2NestedStruct
 	return BackendService;
 }
 
+void UTestbed2NestedStruct1InterfaceJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr<UTestbed2NestedStruct1InterfaceJniAdapter> WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr)
+			{
+				UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr)
+			{
+				UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniService_nativeFuncNoReturnValue(JNIEnv* Env, jclass Clazz, jobject param1)
 {
@@ -408,5 +439,17 @@ JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniSer
 		UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Warning, TEXT("service not available, try setting a backend service "));
 		return nullptr;
 	}
+}
+
+JNI_METHOD void Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTestbed2NestedStruct1InterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct1InterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTestbed2NestedStruct1InterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif

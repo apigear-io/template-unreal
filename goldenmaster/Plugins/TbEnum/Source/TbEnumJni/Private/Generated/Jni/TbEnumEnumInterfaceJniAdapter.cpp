@@ -474,6 +474,37 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> UTbEnumEnumInterfaceJniAdapter::
 	return BackendService;
 }
 
+void UTbEnumEnumInterfaceJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr<UTbEnumEnumInterfaceJniAdapter> WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr)
+			{
+				UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr)
+			{
+				UE_LOG(LogTbEnumEnumInterface_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc0(JNIEnv* Env, jclass Clazz, jobject param0)
 {
@@ -770,5 +801,17 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeGe
 		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
 		return nullptr;
 	}
+}
+
+JNI_METHOD void Java_tbEnum_tbEnumjniservice_EnumInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif

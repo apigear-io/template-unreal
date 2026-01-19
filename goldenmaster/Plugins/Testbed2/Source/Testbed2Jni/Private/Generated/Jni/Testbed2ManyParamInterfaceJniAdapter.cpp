@@ -462,6 +462,37 @@ TScriptInterface<ITestbed2ManyParamInterfaceInterface> UTestbed2ManyParamInterfa
 	return BackendService;
 }
 
+void UTestbed2ManyParamInterfaceJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceJniAdapter> WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr)
+			{
+				UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr)
+			{
+				UE_LOG(LogTestbed2ManyParamInterface_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc1(JNIEnv* Env, jclass Clazz, jint param1)
 {
@@ -734,5 +765,17 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
 		return 0;
 	}
+}
+
+JNI_METHOD void Java_testbed2_testbed2jniservice_ManyParamInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif

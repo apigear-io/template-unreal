@@ -217,5 +217,48 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbIfaceimportEmptyIfJniAdapter
 	return BackendService;
 }
 
+void UTbIfaceimportEmptyIfJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr<UTbIfaceimportEmptyIfJniAdapter> WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr)
+			{
+				UE_LOG(LogTbIfaceimportEmptyIf_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr)
+			{
+				UE_LOG(LogTbIfaceimportEmptyIf_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+
+JNI_METHOD void Java_tbIfaceimport_tbIfaceimportjniservice_EmptyIfJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTbIfaceimportEmptyIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbIfaceimportEmptyIf_JNI, Warning, TEXT("Java_tbIfaceimport_tbIfaceimportjniservice_EmptyIfJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTbIfaceimportEmptyIfJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
+}
 #endif
