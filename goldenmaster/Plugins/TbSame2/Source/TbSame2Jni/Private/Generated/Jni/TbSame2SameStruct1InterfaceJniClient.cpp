@@ -306,6 +306,7 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceJniClient::Func1(const FTbSame2Struc
 		return FTbSame2Struct1();
 	}
 	TPromise<FTbSame2Struct1> Promise;
+	TFuture<FTbSame2Struct1> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->Func1AsyncMethodID;
 	if (MethodID != nullptr)
@@ -327,7 +328,7 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceJniClient::Func1(const FTbSame2Struc
 		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient:func1Async (Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V not found"));
 		Promise.SetValue(FTbSame2Struct1());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return FTbSame2Struct1();
 #endif
