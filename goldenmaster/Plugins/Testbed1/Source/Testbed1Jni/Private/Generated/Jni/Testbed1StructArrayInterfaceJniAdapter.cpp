@@ -204,7 +204,7 @@ void UTestbed1StructArrayInterfaceJniAdapter::Deinitialize()
 		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
-			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unrealï¿½s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("Testbed1JavaServiceStarter failed to call stop");
 			Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgCall);
@@ -541,6 +541,35 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> UTestbed1StructArrayInt
 {
 	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
+}
+
+void UTestbed1StructArrayInterfaceJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(LogTestbed1StructArrayInterface_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -923,5 +952,17 @@ JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArrayInterfaceJni
 		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("service not available, try setting a backend service "));
 		return nullptr;
 	}
+}
+
+JNI_METHOD void Java_testbed1_testbed1jniservice_StructArrayInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTestbed1StructArrayInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArrayInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTestbed1StructArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif

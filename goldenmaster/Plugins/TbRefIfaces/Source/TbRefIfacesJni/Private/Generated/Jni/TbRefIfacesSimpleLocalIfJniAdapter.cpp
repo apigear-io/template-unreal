@@ -157,7 +157,7 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Deinitialize()
 		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
-			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unrealï¿½s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbRefIfacesJavaServiceStarter failed to call stop");
 			TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCall);
@@ -280,6 +280,35 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesSimpleLocalIfJn
 	return BackendService;
 }
 
+void UTbRefIfacesSimpleLocalIfJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD jint Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod(JNIEnv* Env, jclass Clazz, jint param)
 {
@@ -348,5 +377,17 @@ JNI_METHOD jint Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_n
 		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("service not available, try setting a backend service "));
 		return 0;
 	}
+}
+
+JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTbRefIfacesSimpleLocalIfJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTbRefIfacesSimpleLocalIfJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif

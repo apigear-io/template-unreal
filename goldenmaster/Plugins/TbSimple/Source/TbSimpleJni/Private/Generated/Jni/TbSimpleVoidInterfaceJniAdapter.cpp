@@ -149,7 +149,7 @@ void UTbSimpleVoidInterfaceJniAdapter::Deinitialize()
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
-			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unrealï¿½s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbSimpleJavaServiceStarter failed to call stop");
 			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCall);
@@ -248,6 +248,35 @@ TScriptInterface<ITbSimpleVoidInterfaceInterface> UTbSimpleVoidInterfaceJniAdapt
 	return BackendService;
 }
 
+void UTbSimpleVoidInterfaceJniAdapter::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(LogTbSimpleVoidInterface_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(LogTbSimpleVoidInterface_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
+}
+
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 JNI_METHOD void Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeFuncVoid(JNIEnv* Env, jclass Clazz)
 {
@@ -271,5 +300,17 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeF
 		UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("service not valid"));
 		return;
 	}
+}
+
+JNI_METHOD void Java_tbSimple_tbSimplejniservice_VoidInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = gUTbSimpleVoidInterfaceJniAdapterHandle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_VoidInterfaceJniServiceStarter_nativeOnAndroidServiceConnectionStatusChanged, UTbSimpleVoidInterfaceJniAdapter not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
 }
 #endif

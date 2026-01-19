@@ -338,7 +338,7 @@ void {{$Class}}::Deinitialize()
 		{{$localClassConverter}}::checkJniErrorOccured(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
-			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
+			jobject Activity = FJavaWrapper::GameActivityThis; // Unrealï¿½s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("{{Camel .Module.Name}}JavaServiceStarter failed to call stop");
 			{{$localClassConverter}}::checkJniErrorOccured(errorMsgCall);
@@ -508,6 +508,35 @@ TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> {{$C
 {
 	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
+}
+
+void {{$Class}}::jniServiceStatusChanged(bool isConnected)
+{
+	TWeakObjectPtr WeakThis(this);
+	if (isConnected)
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("Attempted to notify service started on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceStartedBP.Broadcast();
+			WeakThis->_JniServiceStarted.Broadcast();
+		});
+	}
+	else
+	{
+		AsyncTask(ENamedThreads::GameThread, [WeakThis]()
+			{
+			if (WeakThis.Get() == nullptr) {
+				UE_LOG(Log{{$Iface}}_JNI, Verbose, TEXT("Attempted to notify service died on JniAdapter which is already dead. Aborting..."));
+				return;
+			}
+			WeakThis->_JniServiceDiedBP.Broadcast();
+			WeakThis->_JniServiceDied.Broadcast();
+		});
+	}
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
@@ -699,4 +728,19 @@ JNI_METHOD {{jniToReturnType .}} {{$jniFullFuncPrefix}}_nativeGet{{ Camel .Name 
 	}
 }
 {{- end }}
+
+{{- $javaStarterClassName := printf "%sJniServiceStarter" $IfaceName }}
+{{- $jniStarterFullFuncPrefix := ( join "_" (strSlice "Java" ( camel $ModuleNameRaw) $jniservice_name $javaStarterClassName ) ) }}
+
+JNI_METHOD void {{$jniStarterFullFuncPrefix}}_nativeOnAndroidServiceConnectionStatusChanged(JNIEnv* Env, jclass Clazz, jboolean value)
+{
+	auto jniAccessor = g{{$Class}}Handle.load();
+	if (!jniAccessor)
+	{
+		UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniStarterFullFuncPrefix}}_nativeOnAndroidServiceConnectionStatusChanged, {{$Class}} not valid to use, probably too early or too late."));
+		return;
+	}
+
+	jniAccessor->jniServiceStatusChanged(value);
+}
 #endif
