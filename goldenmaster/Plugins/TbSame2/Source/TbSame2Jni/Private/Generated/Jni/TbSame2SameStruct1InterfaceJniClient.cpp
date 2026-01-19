@@ -562,10 +562,7 @@ bool UTbSame2SameStruct1InterfaceJniClientMethodHelper::FulfillPromise(const FGu
 
 	if (PromisePtr)
 	{
-		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-			{
-			PromisePtr->SetValue(Value);
-		});
+		PromisePtr->SetValue(Value);
 		return true;
 	}
 	return false;

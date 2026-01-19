@@ -804,10 +804,7 @@ bool {{$Class}}MethodHelper::FulfillPromise(const FGuid& Id, const ResultType& V
 
 	if (PromisePtr)
 	{
-		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-			{
-			PromisePtr->SetValue(Value);
-		});
+		PromisePtr->SetValue(Value);
 		return true;
 	}
 	return false;

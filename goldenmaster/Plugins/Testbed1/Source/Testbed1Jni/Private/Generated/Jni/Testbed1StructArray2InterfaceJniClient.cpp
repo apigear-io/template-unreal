@@ -1330,10 +1330,7 @@ bool UTestbed1StructArray2InterfaceJniClientMethodHelper::FulfillPromise(const F
 
 	if (PromisePtr)
 	{
-		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-			{
-			PromisePtr->SetValue(Value);
-		});
+		PromisePtr->SetValue(Value);
 		return true;
 	}
 	return false;

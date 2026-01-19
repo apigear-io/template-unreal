@@ -768,10 +768,7 @@ bool UTestbed2NestedStruct2InterfaceJniClientMethodHelper::FulfillPromise(const 
 
 	if (PromisePtr)
 	{
-		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-			{
-			PromisePtr->SetValue(Value);
-		});
+		PromisePtr->SetValue(Value);
 		return true;
 	}
 	return false;
