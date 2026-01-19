@@ -764,6 +764,7 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncNoParams()
 		return false;
 	}
 	TPromise<bool> Promise;
+	TFuture<bool> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncNoParamsAsyncMethodID;
 	if (MethodID != nullptr)
@@ -783,7 +784,7 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncNoParams()
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync (Ljava/lang/String;)V not found"));
 		Promise.SetValue(false);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return false;
 #endif
@@ -809,6 +810,7 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncBool(bool bInParamBool)
 		return false;
 	}
 	TPromise<bool> Promise;
+	TFuture<bool> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
@@ -828,7 +830,7 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncBool(bool bInParamBool)
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
 		Promise.SetValue(false);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return false;
 #endif
@@ -854,6 +856,7 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt(int32 InParamInt)
 		return 0;
 	}
 	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncIntAsyncMethodID;
 	if (MethodID != nullptr)
@@ -873,7 +876,7 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt(int32 InParamInt)
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcIntAsync (Ljava/lang/String;I)V not found"));
 		Promise.SetValue(0);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0;
 #endif
@@ -899,6 +902,7 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt32(int32 InParamInt32)
 		return 0;
 	}
 	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncInt32AsyncMethodID;
 	if (MethodID != nullptr)
@@ -918,7 +922,7 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt32(int32 InParamInt32)
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32Async (Ljava/lang/String;I)V not found"));
 		Promise.SetValue(0);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0;
 #endif
@@ -944,6 +948,7 @@ int64 UTbSimpleSimpleInterfaceJniClient::FuncInt64(int64 InParamInt64)
 		return 0LL;
 	}
 	TPromise<int64> Promise;
+	TFuture<int64> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncInt64AsyncMethodID;
 	if (MethodID != nullptr)
@@ -963,7 +968,7 @@ int64 UTbSimpleSimpleInterfaceJniClient::FuncInt64(int64 InParamInt64)
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64Async (Ljava/lang/String;J)V not found"));
 		Promise.SetValue(0LL);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0LL;
 #endif
@@ -989,6 +994,7 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat(float InParamFloat)
 		return 0.0f;
 	}
 	TPromise<float> Promise;
+	TFuture<float> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncFloatAsyncMethodID;
 	if (MethodID != nullptr)
@@ -1008,7 +1014,7 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat(float InParamFloat)
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloatAsync (Ljava/lang/String;F)V not found"));
 		Promise.SetValue(0.0f);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0.0f;
 #endif
@@ -1034,6 +1040,7 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat32(float InParamFloat32)
 		return 0.0f;
 	}
 	TPromise<float> Promise;
+	TFuture<float> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncFloat32AsyncMethodID;
 	if (MethodID != nullptr)
@@ -1053,7 +1060,7 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat32(float InParamFloat32)
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32Async (Ljava/lang/String;F)V not found"));
 		Promise.SetValue(0.0f);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0.0f;
 #endif
@@ -1079,6 +1086,7 @@ double UTbSimpleSimpleInterfaceJniClient::FuncFloat64(double InParamFloat)
 		return 0.0;
 	}
 	TPromise<double> Promise;
+	TFuture<double> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncFloat64AsyncMethodID;
 	if (MethodID != nullptr)
@@ -1098,7 +1106,7 @@ double UTbSimpleSimpleInterfaceJniClient::FuncFloat64(double InParamFloat)
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64Async (Ljava/lang/String;D)V not found"));
 		Promise.SetValue(0.0);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0.0;
 #endif
@@ -1124,6 +1132,7 @@ FString UTbSimpleSimpleInterfaceJniClient::FuncString(const FString& InParamStri
 		return FString();
 	}
 	TPromise<FString> Promise;
+	TFuture<FString> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncStringAsyncMethodID;
 	if (MethodID != nullptr)
@@ -1148,7 +1157,7 @@ FString UTbSimpleSimpleInterfaceJniClient::FuncString(const FString& InParamStri
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcStringAsync (Ljava/lang/String;Ljava/lang/String;)V not found"));
 		Promise.SetValue(FString());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return FString();
 #endif
