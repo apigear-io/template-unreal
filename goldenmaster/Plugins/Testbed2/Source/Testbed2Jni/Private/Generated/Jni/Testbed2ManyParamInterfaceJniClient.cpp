@@ -480,6 +480,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func1(int32 InParam1)
 		return 0;
 	}
 	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->Func1AsyncMethodID;
 	if (MethodID != nullptr)
@@ -499,7 +500,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func1(int32 InParam1)
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1Async (Ljava/lang/String;I)V not found"));
 		Promise.SetValue(0);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0;
 #endif
@@ -525,6 +526,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func2(int32 InParam1, int32 InParam2
 		return 0;
 	}
 	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->Func2AsyncMethodID;
 	if (MethodID != nullptr)
@@ -544,7 +546,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func2(int32 InParam1, int32 InParam2
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2Async (Ljava/lang/String;II)V not found"));
 		Promise.SetValue(0);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0;
 #endif
@@ -570,6 +572,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func3(int32 InParam1, int32 InParam2
 		return 0;
 	}
 	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->Func3AsyncMethodID;
 	if (MethodID != nullptr)
@@ -589,7 +592,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func3(int32 InParam1, int32 InParam2
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3Async (Ljava/lang/String;III)V not found"));
 		Promise.SetValue(0);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0;
 #endif
@@ -615,6 +618,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func4(int32 InParam1, int32 InParam2
 		return 0;
 	}
 	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->Func4AsyncMethodID;
 	if (MethodID != nullptr)
@@ -634,7 +638,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func4(int32 InParam1, int32 InParam2
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4Async (Ljava/lang/String;IIII)V not found"));
 		Promise.SetValue(0);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0;
 #endif

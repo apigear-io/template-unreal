@@ -554,6 +554,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceJniClient::FuncBool(con
 		return TArray<FTestbed1StructBool>();
 	}
 	TPromise<TArray<FTestbed1StructBool>> Promise;
+	TFuture<TArray<FTestbed1StructBool>> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
@@ -575,7 +576,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceJniClient::FuncBool(con
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcBoolAsync (Ljava/lang/String;[Ltestbed1/testbed1_api/StructBool;)V not found"));
 		Promise.SetValue(TArray<FTestbed1StructBool>());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return TArray<FTestbed1StructBool>();
 #endif
@@ -601,6 +602,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceJniClient::FuncInt(const
 		return TArray<FTestbed1StructInt>();
 	}
 	TPromise<TArray<FTestbed1StructInt>> Promise;
+	TFuture<TArray<FTestbed1StructInt>> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncIntAsyncMethodID;
 	if (MethodID != nullptr)
@@ -622,7 +624,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceJniClient::FuncInt(const
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcIntAsync (Ljava/lang/String;[Ltestbed1/testbed1_api/StructInt;)V not found"));
 		Promise.SetValue(TArray<FTestbed1StructInt>());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return TArray<FTestbed1StructInt>();
 #endif
@@ -648,6 +650,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceJniClient::FuncFloat(c
 		return TArray<FTestbed1StructFloat>();
 	}
 	TPromise<TArray<FTestbed1StructFloat>> Promise;
+	TFuture<TArray<FTestbed1StructFloat>> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncFloatAsyncMethodID;
 	if (MethodID != nullptr)
@@ -669,7 +672,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceJniClient::FuncFloat(c
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcFloatAsync (Ljava/lang/String;[Ltestbed1/testbed1_api/StructFloat;)V not found"));
 		Promise.SetValue(TArray<FTestbed1StructFloat>());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return TArray<FTestbed1StructFloat>();
 #endif
@@ -695,6 +698,7 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceJniClient::FuncString
 		return TArray<FTestbed1StructString>();
 	}
 	TPromise<TArray<FTestbed1StructString>> Promise;
+	TFuture<TArray<FTestbed1StructString>> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncStringAsyncMethodID;
 	if (MethodID != nullptr)
@@ -716,7 +720,7 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceJniClient::FuncString
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcStringAsync (Ljava/lang/String;[Ltestbed1/testbed1_api/StructString;)V not found"));
 		Promise.SetValue(TArray<FTestbed1StructString>());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return TArray<FTestbed1StructString>();
 #endif
@@ -742,6 +746,7 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceJniClient::FuncEnum(const TA
 		return TArray<ETestbed1Enum0>();
 	}
 	TPromise<TArray<ETestbed1Enum0>> Promise;
+	TFuture<TArray<ETestbed1Enum0>> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncEnumAsyncMethodID;
 	if (MethodID != nullptr)
@@ -763,7 +768,7 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceJniClient::FuncEnum(const TA
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcEnumAsync (Ljava/lang/String;[Ltestbed1/testbed1_api/Enum0;)V not found"));
 		Promise.SetValue(TArray<ETestbed1Enum0>());
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return TArray<ETestbed1Enum0>();
 #endif

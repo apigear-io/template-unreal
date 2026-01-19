@@ -300,6 +300,7 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::FuncBool(bool bInParamBool)
 		return false;
 	}
 	TPromise<bool> Promise;
+	TFuture<bool> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
@@ -319,7 +320,7 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::FuncBool(bool bInParamBool)
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
 		Promise.SetValue(false);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return false;
 #endif

@@ -302,6 +302,7 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 		return 0;
 	}
 	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->IntMethodAsyncMethodID;
 	if (MethodID != nullptr)
@@ -321,7 +322,7 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync (Ljava/lang/String;I)V not found"));
 		Promise.SetValue(0);
 	}
-	return Promise.GetFuture().Get();
+	return Future.Get();
 #else
 	return 0;
 #endif
