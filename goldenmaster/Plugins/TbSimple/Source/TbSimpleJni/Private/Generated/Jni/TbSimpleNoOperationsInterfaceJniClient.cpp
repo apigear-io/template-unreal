@@ -621,10 +621,7 @@ bool UTbSimpleNoOperationsInterfaceJniClientMethodHelper::FulfillPromise(const F
 
 	if (PromisePtr)
 	{
-		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-			{
-			PromisePtr->SetValue(Value);
-		});
+		PromisePtr->SetValue(Value);
 		return true;
 	}
 	return false;
