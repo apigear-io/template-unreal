@@ -42,6 +42,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -233,6 +234,7 @@ void UTbRefIfacesParentIfJniClient::Deinitialize()
 }
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfJniClient::GetLocalIf() const
 {
+	FReadScopeLock Lock(m_LocalIfRWLock);
 	return LocalIf;
 }
 void UTbRefIfacesParentIfJniClient::SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
@@ -281,6 +283,7 @@ void UTbRefIfacesParentIfJniClient::SetLocalIf(const TScriptInterface<ITbRefIfac
 }
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfJniClient::GetLocalIfList() const
 {
+	FReadScopeLock Lock(m_LocalIfListRWLock);
 	return LocalIfList;
 }
 void UTbRefIfacesParentIfJniClient::SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
@@ -329,6 +332,7 @@ void UTbRefIfacesParentIfJniClient::SetLocalIfList(const TArray<TScriptInterface
 }
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfJniClient::GetImportedIf() const
 {
+	FReadScopeLock Lock(m_ImportedIfRWLock);
 	return ImportedIf;
 }
 void UTbRefIfacesParentIfJniClient::SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
@@ -377,6 +381,7 @@ void UTbRefIfacesParentIfJniClient::SetImportedIf(const TScriptInterface<ITbIfac
 }
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfJniClient::GetImportedIfList() const
 {
+	FReadScopeLock Lock(m_ImportedIfListRWLock);
 	return ImportedIfList;
 }
 void UTbRefIfacesParentIfJniClient::SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
@@ -705,25 +710,37 @@ void UTbRefIfacesParentIfJniClient::OnImportedIfSignalListSignal(const TArray<TS
 
 void UTbRefIfacesParentIfJniClient::OnLocalIfChanged(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
 {
-	LocalIf = InLocalIf;
+	{
+		FWriteScopeLock Lock(m_LocalIfRWLock);
+		LocalIf = InLocalIf;
+	}
 	_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 }
 
 void UTbRefIfacesParentIfJniClient::OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
 {
-	LocalIfList = InLocalIfList;
+	{
+		FWriteScopeLock Lock(m_LocalIfListRWLock);
+		LocalIfList = InLocalIfList;
+	}
 	_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 }
 
 void UTbRefIfacesParentIfJniClient::OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
-	ImportedIf = InImportedIf;
+	{
+		FWriteScopeLock Lock(m_ImportedIfRWLock);
+		ImportedIf = InImportedIf;
+	}
 	_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 }
 
 void UTbRefIfacesParentIfJniClient::OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
 {
-	ImportedIfList = InImportedIfList;
+	{
+		FWriteScopeLock Lock(m_ImportedIfListRWLock);
+		ImportedIfList = InImportedIfList;
+	}
 	_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 }
 

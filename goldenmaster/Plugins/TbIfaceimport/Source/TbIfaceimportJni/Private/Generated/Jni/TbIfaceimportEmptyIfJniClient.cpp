@@ -42,6 +42,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 

@@ -43,6 +43,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -234,6 +235,7 @@ void UTestbed2ManyParamInterfaceJniClient::Deinitialize()
 }
 int32 UTestbed2ManyParamInterfaceJniClient::GetProp1() const
 {
+	FReadScopeLock Lock(m_Prop1RWLock);
 	return Prop1;
 }
 void UTestbed2ManyParamInterfaceJniClient::SetProp1(int32 InProp1)
@@ -278,6 +280,7 @@ void UTestbed2ManyParamInterfaceJniClient::SetProp1(int32 InProp1)
 }
 int32 UTestbed2ManyParamInterfaceJniClient::GetProp2() const
 {
+	FReadScopeLock Lock(m_Prop2RWLock);
 	return Prop2;
 }
 void UTestbed2ManyParamInterfaceJniClient::SetProp2(int32 InProp2)
@@ -322,6 +325,7 @@ void UTestbed2ManyParamInterfaceJniClient::SetProp2(int32 InProp2)
 }
 int32 UTestbed2ManyParamInterfaceJniClient::GetProp3() const
 {
+	FReadScopeLock Lock(m_Prop3RWLock);
 	return Prop3;
 }
 void UTestbed2ManyParamInterfaceJniClient::SetProp3(int32 InProp3)
@@ -366,6 +370,7 @@ void UTestbed2ManyParamInterfaceJniClient::SetProp3(int32 InProp3)
 }
 int32 UTestbed2ManyParamInterfaceJniClient::GetProp4() const
 {
+	FReadScopeLock Lock(m_Prop4RWLock);
 	return Prop4;
 }
 void UTestbed2ManyParamInterfaceJniClient::SetProp4(int32 InProp4)
@@ -678,25 +683,37 @@ void UTestbed2ManyParamInterfaceJniClient::OnSig4Signal(int32 InParam1, int32 In
 
 void UTestbed2ManyParamInterfaceJniClient::OnProp1Changed(int32 InProp1)
 {
-	Prop1 = InProp1;
+	{
+		FWriteScopeLock Lock(m_Prop1RWLock);
+		Prop1 = InProp1;
+	}
 	_GetPublisher()->BroadcastProp1Changed(Prop1);
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnProp2Changed(int32 InProp2)
 {
-	Prop2 = InProp2;
+	{
+		FWriteScopeLock Lock(m_Prop2RWLock);
+		Prop2 = InProp2;
+	}
 	_GetPublisher()->BroadcastProp2Changed(Prop2);
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnProp3Changed(int32 InProp3)
 {
-	Prop3 = InProp3;
+	{
+		FWriteScopeLock Lock(m_Prop3RWLock);
+		Prop3 = InProp3;
+	}
 	_GetPublisher()->BroadcastProp3Changed(Prop3);
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnProp4Changed(int32 InProp4)
 {
-	Prop4 = InProp4;
+	{
+		FWriteScopeLock Lock(m_Prop4RWLock);
+		Prop4 = InProp4;
+	}
 	_GetPublisher()->BroadcastProp4Changed(Prop4);
 }
 

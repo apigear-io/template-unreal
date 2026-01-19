@@ -43,6 +43,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -198,6 +199,7 @@ void UTbSame2SameEnum1InterfaceJniClient::Deinitialize()
 }
 ETbSame2Enum1 UTbSame2SameEnum1InterfaceJniClient::GetProp1() const
 {
+	FReadScopeLock Lock(m_Prop1RWLock);
 	return Prop1;
 }
 void UTbSame2SameEnum1InterfaceJniClient::SetProp1(ETbSame2Enum1 InProp1)
@@ -377,7 +379,10 @@ void UTbSame2SameEnum1InterfaceJniClient::OnSig1Signal(ETbSame2Enum1 InParam1)
 
 void UTbSame2SameEnum1InterfaceJniClient::OnProp1Changed(ETbSame2Enum1 InProp1)
 {
-	Prop1 = InProp1;
+	{
+		FWriteScopeLock Lock(m_Prop1RWLock);
+		Prop1 = InProp1;
+	}
 	_GetPublisher()->BroadcastProp1Changed(Prop1);
 }
 

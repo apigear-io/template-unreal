@@ -43,6 +43,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -246,6 +247,7 @@ void UTestbed1StructArrayInterfaceJniClient::Deinitialize()
 }
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceJniClient::GetPropBool() const
 {
+	FReadScopeLock Lock(m_PropBoolRWLock);
 	return PropBool;
 }
 void UTestbed1StructArrayInterfaceJniClient::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
@@ -293,6 +295,7 @@ void UTestbed1StructArrayInterfaceJniClient::SetPropBool(const TArray<FTestbed1S
 }
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceJniClient::GetPropInt() const
 {
+	FReadScopeLock Lock(m_PropIntRWLock);
 	return PropInt;
 }
 void UTestbed1StructArrayInterfaceJniClient::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
@@ -340,6 +343,7 @@ void UTestbed1StructArrayInterfaceJniClient::SetPropInt(const TArray<FTestbed1St
 }
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceJniClient::GetPropFloat() const
 {
+	FReadScopeLock Lock(m_PropFloatRWLock);
 	return PropFloat;
 }
 void UTestbed1StructArrayInterfaceJniClient::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
@@ -387,6 +391,7 @@ void UTestbed1StructArrayInterfaceJniClient::SetPropFloat(const TArray<FTestbed1
 }
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceJniClient::GetPropString() const
 {
+	FReadScopeLock Lock(m_PropStringRWLock);
 	return PropString;
 }
 void UTestbed1StructArrayInterfaceJniClient::SetPropString(const TArray<FTestbed1StructString>& InPropString)
@@ -434,6 +439,7 @@ void UTestbed1StructArrayInterfaceJniClient::SetPropString(const TArray<FTestbed
 }
 TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceJniClient::GetPropEnum() const
 {
+	FReadScopeLock Lock(m_PropEnumRWLock);
 	return PropEnum;
 }
 void UTestbed1StructArrayInterfaceJniClient::SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum)
@@ -805,31 +811,46 @@ void UTestbed1StructArrayInterfaceJniClient::OnSigEnumSignal(const TArray<ETestb
 
 void UTestbed1StructArrayInterfaceJniClient::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
 {
-	PropBool = InPropBool;
+	{
+		FWriteScopeLock Lock(m_PropBoolRWLock);
+		PropBool = InPropBool;
+	}
 	_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 }
 
 void UTestbed1StructArrayInterfaceJniClient::OnPropIntChanged(const TArray<FTestbed1StructInt>& InPropInt)
 {
-	PropInt = InPropInt;
+	{
+		FWriteScopeLock Lock(m_PropIntRWLock);
+		PropInt = InPropInt;
+	}
 	_GetPublisher()->BroadcastPropIntChanged(PropInt);
 }
 
 void UTestbed1StructArrayInterfaceJniClient::OnPropFloatChanged(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
-	PropFloat = InPropFloat;
+	{
+		FWriteScopeLock Lock(m_PropFloatRWLock);
+		PropFloat = InPropFloat;
+	}
 	_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 }
 
 void UTestbed1StructArrayInterfaceJniClient::OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString)
 {
-	PropString = InPropString;
+	{
+		FWriteScopeLock Lock(m_PropStringRWLock);
+		PropString = InPropString;
+	}
 	_GetPublisher()->BroadcastPropStringChanged(PropString);
 }
 
 void UTestbed1StructArrayInterfaceJniClient::OnPropEnumChanged(const TArray<ETestbed1Enum0>& InPropEnum)
 {
-	PropEnum = InPropEnum;
+	{
+		FWriteScopeLock Lock(m_PropEnumRWLock);
+		PropEnum = InPropEnum;
+	}
 	_GetPublisher()->BroadcastPropEnumChanged(PropEnum);
 }
 

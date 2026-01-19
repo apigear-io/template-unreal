@@ -42,6 +42,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -293,6 +294,7 @@ void UTbSimpleSimpleInterfaceJniClient::Deinitialize()
 }
 bool UTbSimpleSimpleInterfaceJniClient::GetPropBool() const
 {
+	FReadScopeLock Lock(m_PropBoolRWLock);
 	return bPropBool;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropBool(bool bInPropBool)
@@ -337,6 +339,7 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropBool(bool bInPropBool)
 }
 int32 UTbSimpleSimpleInterfaceJniClient::GetPropInt() const
 {
+	FReadScopeLock Lock(m_PropIntRWLock);
 	return PropInt;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropInt(int32 InPropInt)
@@ -381,6 +384,7 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropInt(int32 InPropInt)
 }
 int32 UTbSimpleSimpleInterfaceJniClient::GetPropInt32() const
 {
+	FReadScopeLock Lock(m_PropInt32RWLock);
 	return PropInt32;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropInt32(int32 InPropInt32)
@@ -425,6 +429,7 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropInt32(int32 InPropInt32)
 }
 int64 UTbSimpleSimpleInterfaceJniClient::GetPropInt64() const
 {
+	FReadScopeLock Lock(m_PropInt64RWLock);
 	return PropInt64;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropInt64(int64 InPropInt64)
@@ -469,6 +474,7 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropInt64(int64 InPropInt64)
 }
 float UTbSimpleSimpleInterfaceJniClient::GetPropFloat() const
 {
+	FReadScopeLock Lock(m_PropFloatRWLock);
 	return PropFloat;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropFloat(float InPropFloat)
@@ -513,6 +519,7 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropFloat(float InPropFloat)
 }
 float UTbSimpleSimpleInterfaceJniClient::GetPropFloat32() const
 {
+	FReadScopeLock Lock(m_PropFloat32RWLock);
 	return PropFloat32;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropFloat32(float InPropFloat32)
@@ -557,6 +564,7 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropFloat32(float InPropFloat32)
 }
 double UTbSimpleSimpleInterfaceJniClient::GetPropFloat64() const
 {
+	FReadScopeLock Lock(m_PropFloat64RWLock);
 	return PropFloat64;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropFloat64(double InPropFloat64)
@@ -601,6 +609,7 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropFloat64(double InPropFloat64)
 }
 FString UTbSimpleSimpleInterfaceJniClient::GetPropString() const
 {
+	FReadScopeLock Lock(m_PropStringRWLock);
 	return PropString;
 }
 void UTbSimpleSimpleInterfaceJniClient::SetPropString(const FString& InPropString)
@@ -1189,49 +1198,73 @@ void UTbSimpleSimpleInterfaceJniClient::OnSigStringSignal(const FString& InParam
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropBoolChanged(bool bInPropBool)
 {
-	bPropBool = bInPropBool;
+	{
+		FWriteScopeLock Lock(m_PropBoolRWLock);
+		bPropBool = bInPropBool;
+	}
 	_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropIntChanged(int32 InPropInt)
 {
-	PropInt = InPropInt;
+	{
+		FWriteScopeLock Lock(m_PropIntRWLock);
+		PropInt = InPropInt;
+	}
 	_GetPublisher()->BroadcastPropIntChanged(PropInt);
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropInt32Changed(int32 InPropInt32)
 {
-	PropInt32 = InPropInt32;
+	{
+		FWriteScopeLock Lock(m_PropInt32RWLock);
+		PropInt32 = InPropInt32;
+	}
 	_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropInt64Changed(int64 InPropInt64)
 {
-	PropInt64 = InPropInt64;
+	{
+		FWriteScopeLock Lock(m_PropInt64RWLock);
+		PropInt64 = InPropInt64;
+	}
 	_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropFloatChanged(float InPropFloat)
 {
-	PropFloat = InPropFloat;
+	{
+		FWriteScopeLock Lock(m_PropFloatRWLock);
+		PropFloat = InPropFloat;
+	}
 	_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropFloat32Changed(float InPropFloat32)
 {
-	PropFloat32 = InPropFloat32;
+	{
+		FWriteScopeLock Lock(m_PropFloat32RWLock);
+		PropFloat32 = InPropFloat32;
+	}
 	_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropFloat64Changed(double InPropFloat64)
 {
-	PropFloat64 = InPropFloat64;
+	{
+		FWriteScopeLock Lock(m_PropFloat64RWLock);
+		PropFloat64 = InPropFloat64;
+	}
 	_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropStringChanged(const FString& InPropString)
 {
-	PropString = InPropString;
+	{
+		FWriteScopeLock Lock(m_PropStringRWLock);
+		PropString = InPropString;
+	}
 	_GetPublisher()->BroadcastPropStringChanged(PropString);
 }
 

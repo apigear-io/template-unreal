@@ -43,6 +43,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -210,6 +211,7 @@ void UTestbed2NestedStruct1InterfaceJniClient::Deinitialize()
 }
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceJniClient::GetProp1() const
 {
+	FReadScopeLock Lock(m_Prop1RWLock);
 	return Prop1;
 }
 void UTestbed2NestedStruct1InterfaceJniClient::SetProp1(const FTestbed2NestedStruct1& InProp1)
@@ -472,7 +474,10 @@ void UTestbed2NestedStruct1InterfaceJniClient::OnSig1Signal(const FTestbed2Neste
 
 void UTestbed2NestedStruct1InterfaceJniClient::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
-	Prop1 = InProp1;
+	{
+		FWriteScopeLock Lock(m_Prop1RWLock);
+		Prop1 = InProp1;
+	}
 	_GetPublisher()->BroadcastProp1Changed(Prop1);
 }
 

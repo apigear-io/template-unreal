@@ -43,6 +43,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -210,6 +211,7 @@ void UTbSame2SameEnum2InterfaceJniClient::Deinitialize()
 }
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceJniClient::GetProp1() const
 {
+	FReadScopeLock Lock(m_Prop1RWLock);
 	return Prop1;
 }
 void UTbSame2SameEnum2InterfaceJniClient::SetProp1(ETbSame2Enum1 InProp1)
@@ -257,6 +259,7 @@ void UTbSame2SameEnum2InterfaceJniClient::SetProp1(ETbSame2Enum1 InProp1)
 }
 ETbSame2Enum2 UTbSame2SameEnum2InterfaceJniClient::GetProp2() const
 {
+	FReadScopeLock Lock(m_Prop2RWLock);
 	return Prop2;
 }
 void UTbSame2SameEnum2InterfaceJniClient::SetProp2(ETbSame2Enum2 InProp2)
@@ -486,13 +489,19 @@ void UTbSame2SameEnum2InterfaceJniClient::OnSig2Signal(ETbSame2Enum1 InParam1, E
 
 void UTbSame2SameEnum2InterfaceJniClient::OnProp1Changed(ETbSame2Enum1 InProp1)
 {
-	Prop1 = InProp1;
+	{
+		FWriteScopeLock Lock(m_Prop1RWLock);
+		Prop1 = InProp1;
+	}
 	_GetPublisher()->BroadcastProp1Changed(Prop1);
 }
 
 void UTbSame2SameEnum2InterfaceJniClient::OnProp2Changed(ETbSame2Enum2 InProp2)
 {
-	Prop2 = InProp2;
+	{
+		FWriteScopeLock Lock(m_Prop2RWLock);
+		Prop2 = InProp2;
+	}
 	_GetPublisher()->BroadcastProp2Changed(Prop2);
 }
 

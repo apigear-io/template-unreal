@@ -42,6 +42,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -197,6 +198,7 @@ void UTbRefIfacesSimpleLocalIfJniClient::Deinitialize()
 }
 int32 UTbRefIfacesSimpleLocalIfJniClient::GetIntProperty() const
 {
+	FReadScopeLock Lock(m_IntPropertyRWLock);
 	return IntProperty;
 }
 void UTbRefIfacesSimpleLocalIfJniClient::SetIntProperty(int32 InIntProperty)
@@ -371,7 +373,10 @@ void UTbRefIfacesSimpleLocalIfJniClient::OnIntSignalSignal(int32 InParam)
 
 void UTbRefIfacesSimpleLocalIfJniClient::OnIntPropertyChanged(int32 InIntProperty)
 {
-	IntProperty = InIntProperty;
+	{
+		FWriteScopeLock Lock(m_IntPropertyRWLock);
+		IntProperty = InIntProperty;
+	}
 	_GetPublisher()->BroadcastIntPropertyChanged(IntProperty);
 }
 

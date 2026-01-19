@@ -43,6 +43,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -210,6 +211,7 @@ void UTbSame1SameStruct2InterfaceJniClient::Deinitialize()
 }
 FTbSame1Struct2 UTbSame1SameStruct2InterfaceJniClient::GetProp1() const
 {
+	FReadScopeLock Lock(m_Prop1RWLock);
 	return Prop1;
 }
 void UTbSame1SameStruct2InterfaceJniClient::SetProp1(const FTbSame1Struct2& InProp1)
@@ -257,6 +259,7 @@ void UTbSame1SameStruct2InterfaceJniClient::SetProp1(const FTbSame1Struct2& InPr
 }
 FTbSame1Struct2 UTbSame1SameStruct2InterfaceJniClient::GetProp2() const
 {
+	FReadScopeLock Lock(m_Prop2RWLock);
 	return Prop2;
 }
 void UTbSame1SameStruct2InterfaceJniClient::SetProp2(const FTbSame1Struct2& InProp2)
@@ -486,13 +489,19 @@ void UTbSame1SameStruct2InterfaceJniClient::OnSig2Signal(const FTbSame1Struct1& 
 
 void UTbSame1SameStruct2InterfaceJniClient::OnProp1Changed(const FTbSame1Struct2& InProp1)
 {
-	Prop1 = InProp1;
+	{
+		FWriteScopeLock Lock(m_Prop1RWLock);
+		Prop1 = InProp1;
+	}
 	_GetPublisher()->BroadcastProp1Changed(Prop1);
 }
 
 void UTbSame1SameStruct2InterfaceJniClient::OnProp2Changed(const FTbSame1Struct2& InProp2)
 {
-	Prop2 = InProp2;
+	{
+		FWriteScopeLock Lock(m_Prop2RWLock);
+		Prop2 = InProp2;
+	}
 	_GetPublisher()->BroadcastProp2Changed(Prop2);
 }
 

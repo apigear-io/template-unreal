@@ -42,6 +42,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -233,6 +234,7 @@ void UCounterCounterJniClient::Deinitialize()
 }
 FCustomTypesVector3D UCounterCounterJniClient::GetVector() const
 {
+	FReadScopeLock Lock(m_VectorRWLock);
 	return Vector;
 }
 void UCounterCounterJniClient::SetVector(const FCustomTypesVector3D& InVector)
@@ -280,6 +282,7 @@ void UCounterCounterJniClient::SetVector(const FCustomTypesVector3D& InVector)
 }
 FVector UCounterCounterJniClient::GetExternVector() const
 {
+	FReadScopeLock Lock(m_ExternVectorRWLock);
 	return ExternVector;
 }
 void UCounterCounterJniClient::SetExternVector(const FVector& InExternVector)
@@ -327,6 +330,7 @@ void UCounterCounterJniClient::SetExternVector(const FVector& InExternVector)
 }
 TArray<FCustomTypesVector3D> UCounterCounterJniClient::GetVectorArray() const
 {
+	FReadScopeLock Lock(m_VectorArrayRWLock);
 	return VectorArray;
 }
 void UCounterCounterJniClient::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
@@ -374,6 +378,7 @@ void UCounterCounterJniClient::SetVectorArray(const TArray<FCustomTypesVector3D>
 }
 TArray<FVector> UCounterCounterJniClient::GetExternVectorArray() const
 {
+	FReadScopeLock Lock(m_ExternVectorArrayRWLock);
 	return ExternVectorArray;
 }
 void UCounterCounterJniClient::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
@@ -682,25 +687,37 @@ void UCounterCounterJniClient::OnValueChangedSignal(const FCustomTypesVector3D& 
 
 void UCounterCounterJniClient::OnVectorChanged(const FCustomTypesVector3D& InVector)
 {
-	Vector = InVector;
+	{
+		FWriteScopeLock Lock(m_VectorRWLock);
+		Vector = InVector;
+	}
 	_GetPublisher()->BroadcastVectorChanged(Vector);
 }
 
 void UCounterCounterJniClient::OnExternVectorChanged(const FVector& InExternVector)
 {
-	ExternVector = InExternVector;
+	{
+		FWriteScopeLock Lock(m_ExternVectorRWLock);
+		ExternVector = InExternVector;
+	}
 	_GetPublisher()->BroadcastExternVectorChanged(ExternVector);
 }
 
 void UCounterCounterJniClient::OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
-	VectorArray = InVectorArray;
+	{
+		FWriteScopeLock Lock(m_VectorArrayRWLock);
+		VectorArray = InVectorArray;
+	}
 	_GetPublisher()->BroadcastVectorArrayChanged(VectorArray);
 }
 
 void UCounterCounterJniClient::OnExternVectorArrayChanged(const TArray<FVector>& InExternVectorArray)
 {
-	ExternVectorArray = InExternVectorArray;
+	{
+		FWriteScopeLock Lock(m_ExternVectorArrayRWLock);
+		ExternVectorArray = InExternVectorArray;
+	}
 	_GetPublisher()->BroadcastExternVectorArrayChanged(ExternVectorArray);
 }
 
