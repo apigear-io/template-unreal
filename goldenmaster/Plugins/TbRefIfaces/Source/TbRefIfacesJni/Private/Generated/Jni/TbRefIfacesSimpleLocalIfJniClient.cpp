@@ -294,14 +294,10 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam);
-
-		static const TCHAR* errorMsg = TEXT("failed to call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient.");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		if (!tryCallAsyncJavaIntMethod(id, MethodID, InParam))
+		{
+			return 0;
+		}
 	}
 	else
 	{
@@ -447,6 +443,30 @@ void UTbRefIfacesSimpleLocalIfJniClient::OnIntPropertyChanged(int32 InIntPropert
 			}
 		});
 }
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+bool UTbRefIfacesSimpleLocalIfJniClient::tryCallAsyncJavaIntMethod(FGuid Guid, jmethodID MethodID, int32 InParam)
+{
+	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("call async tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethod"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
+	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam);
+
+	static const TCHAR* errorMsg = TEXT("failed to call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient.");
+	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+
+	return true;
+}
+#endif
 
 void UTbRefIfacesSimpleLocalIfJniClient::notifyIsReady(bool isReady)
 {

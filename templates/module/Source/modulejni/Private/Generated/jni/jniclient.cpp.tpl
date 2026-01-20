@@ -414,35 +414,10 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 		{{- else}}
 		FGuid id = FGuid::NewGuid();
 		{{- end}}
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsgId);
-		{{- range .Params -}}
-		{{ template "convert_to_java_type_in_param" .}}
-		{{- end }}
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString{{- if len (.Params) }}, {{end}}{{- range $idx, $p := .Params -}}{{- if $idx}}, {{ end -}}
-			{{- $javaPropName := Camel .Name}}
-			{{- $cppropName := ueVar "In" .}}
-			{{- $localName := printf "jlocal_%s" $javaPropName }}
-			{{- if .IsArray }}{{$localName}}
-		{{- else if or ( or (eq .KindType "enum") (eq .KindType "string") ) (not .IsPrimitive ) }}{{$localName}}
-		{{- else }}{{$cppropName}}
-		{{- end -}}
-		{{- end -}});
-
-		static const TCHAR* errorMsg = TEXT("failed to call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}.");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
-
-	{{- range $idx, $p := .Params -}}
-		{{- $javaPropName := Camel .Name}}
-		{{- $localName := printf "jlocal_%s" $javaPropName }}
-	{{- if or .IsArray (eq .KindType "enum" ) }}
-		Env->DeleteLocalRef({{$localName}});
-	{{- else if not ( ueIsStdSimpleType .) }}
-		Env->DeleteLocalRef({{$localName}});
-	{{- end }}
-	{{- end }}
+		if (!tryCallAsyncJava{{Camel .Name}}(id, MethodID{{- if len (.Params) }}, {{end}}{{ueVars "In" .Params}}))
+		{
+			return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
+		}
 	}
 	else
 	{
@@ -599,6 +574,54 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 		});
 }
 {{- end }}
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+{{- range $i, $e := .Interface.Operations }}
+{{- if $i }}{{nl}}{{ end }}
+bool {{$Class}}::tryCallAsyncJava{{Camel .Name}}(FGuid Guid, jmethodID MethodID{{- if len (.Params) }}, {{end}}{{ueParams "In" .Params}})
+{
+	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("call async {{$javaClassPath}}/{{$javaClassName}}:{{.Name}}"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}");
+	{{$localClassConverter}}::checkJniErrorOccured(errorMsgId);
+	{{- range .Params -}}
+	{{ template "convert_to_java_type_in_param" .}}
+	{{- end }}
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString{{- if len (.Params) }}, {{end}}{{- range $idx, $p := .Params -}}{{- if $idx}}, {{ end -}}
+		{{- $javaPropName := Camel .Name}}
+		{{- $cppropName := ueVar "In" .}}
+		{{- $localName := printf "jlocal_%s" $javaPropName }}
+		{{- if .IsArray }}{{$localName}}
+	{{- else if or ( or (eq .KindType "enum") (eq .KindType "string") ) (not .IsPrimitive ) }}{{$localName}}
+	{{- else }}{{$cppropName}}
+	{{- end -}}
+	{{- end -}});
+
+	static const TCHAR* errorMsg = TEXT("failed to call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}.");
+	{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
+
+	{{- range $idx, $p := .Params -}}
+		{{- $javaPropName := Camel .Name}}
+		{{- $localName := printf "jlocal_%s" $javaPropName }}
+	{{- if or .IsArray (eq .KindType "enum" ) }}
+		Env->DeleteLocalRef({{$localName}});
+	{{- else if not ( ueIsStdSimpleType .) }}
+		Env->DeleteLocalRef({{$localName}});
+	{{- end }}
+	{{- end }}
+
+	return true;
+}
+{{- end }}
+#endif
 
 void {{$Class}}::notifyIsReady(bool isReady)
 {

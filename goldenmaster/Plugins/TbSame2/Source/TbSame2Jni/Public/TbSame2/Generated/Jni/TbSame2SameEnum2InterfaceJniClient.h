@@ -21,6 +21,7 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame2/Generated/Jni/TbSame2JniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -106,6 +107,12 @@ private:
 	void OnProp1Changed(ETbSame2Enum1 InProp1) override;
 
 	void OnProp2Changed(ETbSame2Enum2 InProp2) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, ETbSame2Enum1 InParam1);
+
+	bool tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodId, ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

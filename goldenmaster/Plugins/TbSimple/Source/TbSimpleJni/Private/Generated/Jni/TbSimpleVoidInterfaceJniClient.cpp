@@ -240,14 +240,10 @@ void UTbSimpleVoidInterfaceJniClient::FuncVoid()
 	if (MethodID != nullptr)
 	{
 		FGuid id = FGuid::NewGuid();
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcVoidAsync on tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
-
-		static const TCHAR* errorMsg = TEXT("failed to call funcVoidAsync on tbSimple/tbSimplejniclient/VoidInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		if (!tryCallAsyncJavaFuncVoid(id, MethodID))
+		{
+			return;
+		}
 	}
 	else
 	{
@@ -367,6 +363,30 @@ void UTbSimpleVoidInterfaceJniClient::OnSigVoidSignal()
 			}
 		});
 }
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+bool UTbSimpleVoidInterfaceJniClient::tryCallAsyncJavaFuncVoid(FGuid Guid, jmethodID MethodID)
+{
+	UE_LOG(LogTbSimpleVoidInterfaceClient_JNI, Verbose, TEXT("call async tbSimple/tbSimplejniclient/VoidInterfaceJniClient:funcVoid"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcVoidAsync on tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
+
+	static const TCHAR* errorMsg = TEXT("failed to call funcVoidAsync on tbSimple/tbSimplejniclient/VoidInterfaceJniClient.");
+	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+
+	return true;
+}
+#endif
 
 void UTbSimpleVoidInterfaceJniClient::notifyIsReady(bool isReady)
 {

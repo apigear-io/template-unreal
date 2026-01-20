@@ -21,6 +21,7 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbRefIfaces/Generated/Jni/TbRefIfacesJniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -95,6 +96,10 @@ private:
 	void OnIntSignalSignal(int32 InParam) override;
 
 	void OnIntPropertyChanged(int32 InIntProperty) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaIntMethod(FGuid Guid, jmethodID MethodId, int32 InParam);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

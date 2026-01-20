@@ -21,6 +21,7 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbRefIfaces/Generated/Jni/TbRefIfacesJniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -128,6 +129,16 @@ private:
 	void OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf) override;
 
 	void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaLocalIfMethod(FGuid Guid, jmethodID MethodId, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam);
+
+	bool tryCallAsyncJavaLocalIfMethodList(FGuid Guid, jmethodID MethodId, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam);
+
+	bool tryCallAsyncJavaImportedIfMethod(FGuid Guid, jmethodID MethodId, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam);
+
+	bool tryCallAsyncJavaImportedIfMethodList(FGuid Guid, jmethodID MethodId, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

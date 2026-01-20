@@ -21,6 +21,7 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2/Generated/Jni/Testbed2JniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -117,6 +118,14 @@ private:
 	void OnProp2Changed(const FTestbed2NestedStruct2& InProp2) override;
 
 	void OnProp3Changed(const FTestbed2NestedStruct3& InProp3) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, const FTestbed2NestedStruct1& InParam1);
+
+	bool tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodId, const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2);
+
+	bool tryCallAsyncJavaFunc3(FGuid Guid, jmethodID MethodId, const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

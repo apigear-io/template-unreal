@@ -484,16 +484,10 @@ ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::Func0(ETbEnumEnum0 InParam0)
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func0Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
-		jobject jlocal_Param0 = TbEnumDataJavaConverter::makeJavaEnum0(Env, InParam0);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param0);
-
-		static const TCHAR* errorMsg = TEXT("failed to call func0Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
-		Env->DeleteLocalRef(jlocal_Param0);
+		if (!tryCallAsyncJavaFunc0(id, MethodID, InParam0))
+		{
+			return ETbEnumEnum0::TEE0_Value0;
+		}
 	}
 	else
 	{
@@ -532,16 +526,10 @@ ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::Func1(ETbEnumEnum1 InParam1)
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
-		jobject jlocal_Param1 = TbEnumDataJavaConverter::makeJavaEnum1(Env, InParam1);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
-
-		static const TCHAR* errorMsg = TEXT("failed to call func1Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
-		Env->DeleteLocalRef(jlocal_Param1);
+		if (!tryCallAsyncJavaFunc1(id, MethodID, InParam1))
+		{
+			return ETbEnumEnum1::TEE1_Value1;
+		}
 	}
 	else
 	{
@@ -580,16 +568,10 @@ ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::Func2(ETbEnumEnum2 InParam2)
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
-		jobject jlocal_Param2 = TbEnumDataJavaConverter::makeJavaEnum2(Env, InParam2);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param2);
-
-		static const TCHAR* errorMsg = TEXT("failed to call func2Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
-		Env->DeleteLocalRef(jlocal_Param2);
+		if (!tryCallAsyncJavaFunc2(id, MethodID, InParam2))
+		{
+			return ETbEnumEnum2::TEE2_Value2;
+		}
 	}
 	else
 	{
@@ -628,16 +610,10 @@ ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::Func3(ETbEnumEnum3 InParam3)
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func3Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
-		jobject jlocal_Param3 = TbEnumDataJavaConverter::makeJavaEnum3(Env, InParam3);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param3);
-
-		static const TCHAR* errorMsg = TEXT("failed to call func3Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
-		Env->DeleteLocalRef(jlocal_Param3);
+		if (!tryCallAsyncJavaFunc3(id, MethodID, InParam3))
+		{
+			return ETbEnumEnum3::TEE3_Value3;
+		}
 	}
 	else
 	{
@@ -930,6 +906,104 @@ void UTbEnumEnumInterfaceJniClient::OnProp3Changed(ETbEnumEnum3 InProp3)
 			}
 		});
 }
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc0(FGuid Guid, jmethodID MethodID, ETbEnumEnum0 InParam0)
+{
+	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("call async tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func0"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func0Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
+	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
+		jobject jlocal_Param0 = TbEnumDataJavaConverter::makeJavaEnum0(Env, InParam0);
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param0);
+
+	static const TCHAR* errorMsg = TEXT("failed to call func0Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
+	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		Env->DeleteLocalRef(jlocal_Param0);
+
+	return true;
+}
+
+bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodID, ETbEnumEnum1 InParam1)
+{
+	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("call async tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func1"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
+	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
+		jobject jlocal_Param1 = TbEnumDataJavaConverter::makeJavaEnum1(Env, InParam1);
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
+
+	static const TCHAR* errorMsg = TEXT("failed to call func1Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
+	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		Env->DeleteLocalRef(jlocal_Param1);
+
+	return true;
+}
+
+bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodID, ETbEnumEnum2 InParam2)
+{
+	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("call async tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func2"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
+	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
+		jobject jlocal_Param2 = TbEnumDataJavaConverter::makeJavaEnum2(Env, InParam2);
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param2);
+
+	static const TCHAR* errorMsg = TEXT("failed to call func2Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
+	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		Env->DeleteLocalRef(jlocal_Param2);
+
+	return true;
+}
+
+bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc3(FGuid Guid, jmethodID MethodID, ETbEnumEnum3 InParam3)
+{
+	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("call async tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func3"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func3Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
+	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
+		jobject jlocal_Param3 = TbEnumDataJavaConverter::makeJavaEnum3(Env, InParam3);
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param3);
+
+	static const TCHAR* errorMsg = TEXT("failed to call func3Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
+	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		Env->DeleteLocalRef(jlocal_Param3);
+
+	return true;
+}
+#endif
 
 void UTbEnumEnumInterfaceJniClient::notifyIsReady(bool isReady)
 {

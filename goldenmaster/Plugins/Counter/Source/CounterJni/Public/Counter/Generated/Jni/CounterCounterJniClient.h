@@ -21,6 +21,7 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Counter/Generated/Jni/CounterJniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -116,6 +117,16 @@ private:
 	void OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& InVectorArray) override;
 
 	void OnExternVectorArrayChanged(const TArray<FVector>& InExternVectorArray) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaIncrement(FGuid Guid, jmethodID MethodId, const FVector& InVec);
+
+	bool tryCallAsyncJavaIncrementArray(FGuid Guid, jmethodID MethodId, const TArray<FVector>& InVec);
+
+	bool tryCallAsyncJavaDecrement(FGuid Guid, jmethodID MethodId, const FCustomTypesVector3D& InVec);
+
+	bool tryCallAsyncJavaDecrementArray(FGuid Guid, jmethodID MethodId, const TArray<FCustomTypesVector3D>& InVec);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};
