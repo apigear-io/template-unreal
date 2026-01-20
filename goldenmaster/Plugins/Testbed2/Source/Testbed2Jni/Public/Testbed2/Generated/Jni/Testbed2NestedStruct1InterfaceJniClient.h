@@ -22,6 +22,7 @@ limitations under the License.
 #include "Testbed2/Generated/Jni/Testbed2JniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -98,6 +99,14 @@ private:
 	void OnSig1Signal(const FTestbed2NestedStruct1& InParam1) override;
 
 	void OnProp1Changed(const FTestbed2NestedStruct1& InProp1) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFuncNoReturnValue(FGuid Guid, jmethodID MethodId, const FTestbed2NestedStruct1& InParam1);
+
+	bool tryCallAsyncJavaFuncNoParams(FGuid Guid, jmethodID MethodId);
+
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, const FTestbed2NestedStruct1& InParam1);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

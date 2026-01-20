@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbSame1/Generated/Jni/TbSame1JniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -107,6 +108,12 @@ private:
 	void OnProp1Changed(const FTbSame1Struct2& InProp1) override;
 
 	void OnProp2Changed(const FTbSame1Struct2& InProp2) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, const FTbSame1Struct1& InParam1);
+
+	bool tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodId, const FTbSame1Struct1& InParam1, const FTbSame1Struct2& InParam2);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

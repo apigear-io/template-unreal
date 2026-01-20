@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbSimple/Generated/Jni/TbSimpleJniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -105,6 +106,9 @@ private:
 	void OnPropBoolChanged(bool bInPropBool) override;
 
 	void OnPropIntChanged(int32 InPropInt) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};
