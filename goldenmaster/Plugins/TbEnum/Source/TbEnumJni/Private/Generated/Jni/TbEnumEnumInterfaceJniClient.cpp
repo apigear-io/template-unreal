@@ -434,7 +434,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::Func0(ETbEnumEnum0 InParam0)
 	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func0AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func0Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -481,7 +481,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::Func1(ETbEnumEnum1 InParam1)
 	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func1AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -528,7 +528,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::Func2(ETbEnumEnum2 InParam2)
 	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func2AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -575,7 +575,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::Func3(ETbEnumEnum3 InParam3)
 	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func3AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func3Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);

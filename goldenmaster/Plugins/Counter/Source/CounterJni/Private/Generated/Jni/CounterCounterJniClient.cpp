@@ -433,7 +433,7 @@ FVector UCounterCounterJniClient::Increment(const FVector& InVec)
 	jmethodID MethodID = UCounterCounterJniClientCache::IncrementAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call incrementAsync on counter/counterjniclient/CounterJniClient");
 		CounterDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -480,7 +480,7 @@ TArray<FVector> UCounterCounterJniClient::IncrementArray(const TArray<FVector>& 
 	jmethodID MethodID = UCounterCounterJniClientCache::IncrementArrayAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call incrementArrayAsync on counter/counterjniclient/CounterJniClient");
 		CounterDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -527,7 +527,7 @@ FCustomTypesVector3D UCounterCounterJniClient::Decrement(const FCustomTypesVecto
 	jmethodID MethodID = UCounterCounterJniClientCache::DecrementAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call decrementAsync on counter/counterjniclient/CounterJniClient");
 		CounterDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -574,7 +574,7 @@ TArray<FCustomTypesVector3D> UCounterCounterJniClient::DecrementArray(const TArr
 	jmethodID MethodID = UCounterCounterJniClientCache::DecrementArrayAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call decrementArrayAsync on counter/counterjniclient/CounterJniClient");
 		CounterDataJavaConverter::checkJniErrorOccured(errorMsgId);

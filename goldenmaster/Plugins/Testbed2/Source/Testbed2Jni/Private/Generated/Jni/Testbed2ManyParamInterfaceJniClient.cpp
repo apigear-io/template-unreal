@@ -422,7 +422,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func1(int32 InParam1)
 	jmethodID MethodID = UTestbed2ManyParamInterfaceJniClientCache::Func1AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -467,7 +467,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func2(int32 InParam1, int32 InParam2
 	jmethodID MethodID = UTestbed2ManyParamInterfaceJniClientCache::Func2AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -512,7 +512,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func3(int32 InParam1, int32 InParam2
 	jmethodID MethodID = UTestbed2ManyParamInterfaceJniClientCache::Func3AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func3Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -557,7 +557,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func4(int32 InParam1, int32 InParam2
 	jmethodID MethodID = UTestbed2ManyParamInterfaceJniClientCache::Func4AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func4Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);

@@ -250,7 +250,7 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 	jmethodID MethodID = UTbRefIfacesSimpleLocalIfJniClientCache::IntMethodAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
 		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);

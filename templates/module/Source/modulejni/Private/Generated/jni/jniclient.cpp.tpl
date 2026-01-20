@@ -380,7 +380,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 	if (MethodID != nullptr)
 	{
 		{{- if not .Return.IsVoid }}
-		auto id = g{{$Class}}methodHelper.StorePromise(Promise);
+		auto id = g{{$Class}}methodHelper.StorePromise(MoveTemp(Promise));
 		{{- else}}
 		FGuid id = FGuid::NewGuid();
 		{{- end}}

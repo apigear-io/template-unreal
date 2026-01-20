@@ -314,7 +314,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceJniClient::Func1(const FTe
 	jmethodID MethodID = UTestbed2NestedStruct2InterfaceJniClientCache::Func1AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed2NestedStruct2InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed2NestedStruct2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -361,7 +361,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceJniClient::Func2(const FTe
 	jmethodID MethodID = UTestbed2NestedStruct2InterfaceJniClientCache::Func2AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed2NestedStruct2InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed2NestedStruct2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
