@@ -408,6 +408,54 @@ bool UTbSimpleNoSignalsInterfaceJniClient::FuncBool(bool bInParamBool)
 	return false;
 #endif
 }
+TFuture<bool> UTbSimpleNoSignalsInterfaceJniClient::FuncBoolAsync(bool bInParamBool)
+{
+	UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:funcBoolAsync"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<bool> Promise;
+		Promise.SetValue(false);
+		return Promise.GetFuture();
+	}
+
+	TPromise<bool> Promise;
+	TFuture<bool> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleNoSignalsInterfaceJniClientCache::clientClassNoSignalsInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Z)V CLASS not found"));
+		Promise.SetValue(false);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleNoSignalsInterfaceJniClientCache::FuncBoolAsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleNoSignalsInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncBool(id, MethodID, bInParamBool))
+		{
+			gUTbSimpleNoSignalsInterfaceJniClientmethodHelper.FulfillPromise(id, false);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
+		Promise.SetValue(false);
+	}
+#else
+	Promise.SetValue(false);
+#endif
+
+	return Future;
+}
 
 bool UTbSimpleNoSignalsInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {

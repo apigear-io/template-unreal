@@ -87,9 +87,13 @@ public:
 
 	// operations
 	virtual ETbEnumEnum0 Func0(ETbEnumEnum0 Param0) override;
+	TFuture<ETbEnumEnum0> Func0Async(ETbEnumEnum0 Param0) override;
 	virtual ETbEnumEnum1 Func1(ETbEnumEnum1 Param1) override;
+	TFuture<ETbEnumEnum1> Func1Async(ETbEnumEnum1 Param1) override;
 	virtual ETbEnumEnum2 Func2(ETbEnumEnum2 Param2) override;
+	TFuture<ETbEnumEnum2> Func2Async(ETbEnumEnum2 Param2) override;
 	virtual ETbEnumEnum3 Func3(ETbEnumEnum3 Param3) override;
+	TFuture<ETbEnumEnum3> Func3Async(ETbEnumEnum3 Param3) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbEnumJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;

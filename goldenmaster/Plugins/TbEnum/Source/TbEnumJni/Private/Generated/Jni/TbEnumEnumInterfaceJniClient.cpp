@@ -500,6 +500,54 @@ ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::Func0(ETbEnumEnum0 InParam0)
 	return ETbEnumEnum0::TEE0_Value0;
 #endif
 }
+TFuture<ETbEnumEnum0> UTbEnumEnumInterfaceJniClient::Func0Async(ETbEnumEnum0 InParam0)
+{
+	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func0Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<ETbEnumEnum0> Promise;
+		Promise.SetValue(ETbEnumEnum0::TEE0_Value0);
+		return Promise.GetFuture();
+	}
+
+	TPromise<ETbEnumEnum0> Promise;
+	TFuture<ETbEnumEnum0> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbEnumEnumInterfaceJniClientCache::clientClassEnumInterface == nullptr)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func0Async:(Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V CLASS not found"));
+		Promise.SetValue(ETbEnumEnum0::TEE0_Value0);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func0AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc0(id, MethodID, InParam0))
+		{
+			gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(id, ETbEnumEnum0::TEE0_Value0);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func0Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V not found"));
+		Promise.SetValue(ETbEnumEnum0::TEE0_Value0);
+	}
+#else
+	Promise.SetValue(ETbEnumEnum0::TEE0_Value0);
+#endif
+
+	return Future;
+}
 ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::Func1(ETbEnumEnum1 InParam1)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func1 "));
@@ -542,6 +590,54 @@ ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::Func1(ETbEnumEnum1 InParam1)
 #else
 	return ETbEnumEnum1::TEE1_Value1;
 #endif
+}
+TFuture<ETbEnumEnum1> UTbEnumEnumInterfaceJniClient::Func1Async(ETbEnumEnum1 InParam1)
+{
+	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func1Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<ETbEnumEnum1> Promise;
+		Promise.SetValue(ETbEnumEnum1::TEE1_Value1);
+		return Promise.GetFuture();
+	}
+
+	TPromise<ETbEnumEnum1> Promise;
+	TFuture<ETbEnumEnum1> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbEnumEnumInterfaceJniClientCache::clientClassEnumInterface == nullptr)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func1Async:(Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V CLASS not found"));
+		Promise.SetValue(ETbEnumEnum1::TEE1_Value1);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func1AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc1(id, MethodID, InParam1))
+		{
+			gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(id, ETbEnumEnum1::TEE1_Value1);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func1Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V not found"));
+		Promise.SetValue(ETbEnumEnum1::TEE1_Value1);
+	}
+#else
+	Promise.SetValue(ETbEnumEnum1::TEE1_Value1);
+#endif
+
+	return Future;
 }
 ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::Func2(ETbEnumEnum2 InParam2)
 {
@@ -586,6 +682,54 @@ ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::Func2(ETbEnumEnum2 InParam2)
 	return ETbEnumEnum2::TEE2_Value2;
 #endif
 }
+TFuture<ETbEnumEnum2> UTbEnumEnumInterfaceJniClient::Func2Async(ETbEnumEnum2 InParam2)
+{
+	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func2Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<ETbEnumEnum2> Promise;
+		Promise.SetValue(ETbEnumEnum2::TEE2_Value2);
+		return Promise.GetFuture();
+	}
+
+	TPromise<ETbEnumEnum2> Promise;
+	TFuture<ETbEnumEnum2> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbEnumEnumInterfaceJniClientCache::clientClassEnumInterface == nullptr)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func2Async:(Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V CLASS not found"));
+		Promise.SetValue(ETbEnumEnum2::TEE2_Value2);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func2AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc2(id, MethodID, InParam2))
+		{
+			gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(id, ETbEnumEnum2::TEE2_Value2);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func2Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V not found"));
+		Promise.SetValue(ETbEnumEnum2::TEE2_Value2);
+	}
+#else
+	Promise.SetValue(ETbEnumEnum2::TEE2_Value2);
+#endif
+
+	return Future;
+}
 ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::Func3(ETbEnumEnum3 InParam3)
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func3 "));
@@ -628,6 +772,54 @@ ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::Func3(ETbEnumEnum3 InParam3)
 #else
 	return ETbEnumEnum3::TEE3_Value3;
 #endif
+}
+TFuture<ETbEnumEnum3> UTbEnumEnumInterfaceJniClient::Func3Async(ETbEnumEnum3 InParam3)
+{
+	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func3Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<ETbEnumEnum3> Promise;
+		Promise.SetValue(ETbEnumEnum3::TEE3_Value3);
+		return Promise.GetFuture();
+	}
+
+	TPromise<ETbEnumEnum3> Promise;
+	TFuture<ETbEnumEnum3> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbEnumEnumInterfaceJniClientCache::clientClassEnumInterface == nullptr)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func3Async:(Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V CLASS not found"));
+		Promise.SetValue(ETbEnumEnum3::TEE3_Value3);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbEnumEnumInterfaceJniClientCache::Func3AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc3(id, MethodID, InParam3))
+		{
+			gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(id, ETbEnumEnum3::TEE3_Value3);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func3Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V not found"));
+		Promise.SetValue(ETbEnumEnum3::TEE3_Value3);
+	}
+#else
+	Promise.SetValue(ETbEnumEnum3::TEE3_Value3);
+#endif
+
+	return Future;
 }
 
 bool UTbEnumEnumInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)

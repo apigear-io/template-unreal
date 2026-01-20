@@ -488,6 +488,54 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func1(int32 InParam1)
 	return 0;
 #endif
 }
+TFuture<int32> UTestbed2ManyParamInterfaceJniClient::Func1Async(int32 InParam1)
+{
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
+	}
+
+	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTestbed2ManyParamInterfaceJniClientCache::clientClassManyParamInterface == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1Async:(Ljava/lang/String;I)V CLASS not found"));
+		Promise.SetValue(0);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTestbed2ManyParamInterfaceJniClientCache::Func1AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc1(id, MethodID, InParam1))
+		{
+			gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(id, 0);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1Async (Ljava/lang/String;I)V not found"));
+		Promise.SetValue(0);
+	}
+#else
+	Promise.SetValue(0);
+#endif
+
+	return Future;
+}
 int32 UTestbed2ManyParamInterfaceJniClient::Func2(int32 InParam1, int32 InParam2)
 {
 	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2 "));
@@ -530,6 +578,54 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func2(int32 InParam1, int32 InParam2
 #else
 	return 0;
 #endif
+}
+TFuture<int32> UTestbed2ManyParamInterfaceJniClient::Func2Async(int32 InParam1, int32 InParam2)
+{
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
+	}
+
+	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTestbed2ManyParamInterfaceJniClientCache::clientClassManyParamInterface == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2Async:(Ljava/lang/String;II)V CLASS not found"));
+		Promise.SetValue(0);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTestbed2ManyParamInterfaceJniClientCache::Func2AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc2(id, MethodID, InParam1, InParam2))
+		{
+			gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(id, 0);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2Async (Ljava/lang/String;II)V not found"));
+		Promise.SetValue(0);
+	}
+#else
+	Promise.SetValue(0);
+#endif
+
+	return Future;
 }
 int32 UTestbed2ManyParamInterfaceJniClient::Func3(int32 InParam1, int32 InParam2, int32 InParam3)
 {
@@ -574,6 +670,54 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func3(int32 InParam1, int32 InParam2
 	return 0;
 #endif
 }
+TFuture<int32> UTestbed2ManyParamInterfaceJniClient::Func3Async(int32 InParam1, int32 InParam2, int32 InParam3)
+{
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
+	}
+
+	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTestbed2ManyParamInterfaceJniClientCache::clientClassManyParamInterface == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3Async:(Ljava/lang/String;III)V CLASS not found"));
+		Promise.SetValue(0);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTestbed2ManyParamInterfaceJniClientCache::Func3AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc3(id, MethodID, InParam1, InParam2, InParam3))
+		{
+			gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(id, 0);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3Async (Ljava/lang/String;III)V not found"));
+		Promise.SetValue(0);
+	}
+#else
+	Promise.SetValue(0);
+#endif
+
+	return Future;
+}
 int32 UTestbed2ManyParamInterfaceJniClient::Func4(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 {
 	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4 "));
@@ -616,6 +760,54 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func4(int32 InParam1, int32 InParam2
 #else
 	return 0;
 #endif
+}
+TFuture<int32> UTestbed2ManyParamInterfaceJniClient::Func4Async(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
+{
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
+	}
+
+	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTestbed2ManyParamInterfaceJniClientCache::clientClassManyParamInterface == nullptr)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4Async:(Ljava/lang/String;IIII)V CLASS not found"));
+		Promise.SetValue(0);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTestbed2ManyParamInterfaceJniClientCache::Func4AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc4(id, MethodID, InParam1, InParam2, InParam3, InParam4))
+		{
+			gUTestbed2ManyParamInterfaceJniClientmethodHelper.FulfillPromise(id, 0);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4Async (Ljava/lang/String;IIII)V not found"));
+		Promise.SetValue(0);
+	}
+#else
+	Promise.SetValue(0);
+#endif
+
+	return Future;
 }
 
 bool UTestbed2ManyParamInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)

@@ -310,6 +310,54 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 	return 0;
 #endif
 }
+TFuture<int32> UTbRefIfacesSimpleLocalIfJniClient::IntMethodAsync(int32 InParam)
+{
+	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
+	}
+
+	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIf == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync:(Ljava/lang/String;I)V CLASS not found"));
+		Promise.SetValue(0);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbRefIfacesSimpleLocalIfJniClientCache::IntMethodAsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaIntMethod(id, MethodID, InParam))
+		{
+			gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.FulfillPromise(id, 0);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync (Ljava/lang/String;I)V not found"));
+		Promise.SetValue(0);
+	}
+#else
+	Promise.SetValue(0);
+#endif
+
+	return Future;
+}
 
 bool UTbRefIfacesSimpleLocalIfJniClient::_bindToService(FString servicePackage, FString connectionId)
 {

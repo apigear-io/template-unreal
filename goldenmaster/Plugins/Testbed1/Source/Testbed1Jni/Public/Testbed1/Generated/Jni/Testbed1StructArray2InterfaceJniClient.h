@@ -91,10 +91,15 @@ public:
 
 	// operations
 	virtual TArray<FTestbed1StructBool> FuncBool(const FTestbed1StructBoolWithArray& ParamBool) override;
+	TFuture<TArray<FTestbed1StructBool>> FuncBoolAsync(const FTestbed1StructBoolWithArray& ParamBool) override;
 	virtual TArray<FTestbed1StructInt> FuncInt(const FTestbed1StructIntWithArray& ParamInt) override;
+	TFuture<TArray<FTestbed1StructInt>> FuncIntAsync(const FTestbed1StructIntWithArray& ParamInt) override;
 	virtual TArray<FTestbed1StructFloat> FuncFloat(const FTestbed1StructFloatWithArray& ParamFloat) override;
+	TFuture<TArray<FTestbed1StructFloat>> FuncFloatAsync(const FTestbed1StructFloatWithArray& ParamFloat) override;
 	virtual TArray<FTestbed1StructString> FuncString(const FTestbed1StructStringWithArray& ParamString) override;
+	TFuture<TArray<FTestbed1StructString>> FuncStringAsync(const FTestbed1StructStringWithArray& ParamString) override;
 	virtual TArray<ETestbed1Enum0> FuncEnum(const FTestbed1StructEnumWithArray& ParamEnum) override;
+	TFuture<TArray<ETestbed1Enum0>> FuncEnumAsync(const FTestbed1StructEnumWithArray& ParamEnum) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArray2Interface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTestbed1JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;

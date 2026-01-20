@@ -81,9 +81,13 @@ public:
 
 	// operations
 	virtual FVector Increment(const FVector& Vec) override;
+	TFuture<FVector> IncrementAsync(const FVector& Vec) override;
 	virtual TArray<FVector> IncrementArray(const TArray<FVector>& Vec) override;
+	TFuture<TArray<FVector>> IncrementArrayAsync(const TArray<FVector>& Vec) override;
 	virtual FCustomTypesVector3D Decrement(const FCustomTypesVector3D& Vec) override;
+	TFuture<FCustomTypesVector3D> DecrementAsync(const FCustomTypesVector3D& Vec) override;
 	virtual TArray<FCustomTypesVector3D> DecrementArray(const TArray<FCustomTypesVector3D>& Vec) override;
+	TFuture<TArray<FCustomTypesVector3D>> DecrementArrayAsync(const TArray<FCustomTypesVector3D>& Vec) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Jni|Remote", DisplayName = "Connection Status Changed")
 	FCounterJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;

@@ -376,6 +376,54 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceJniClient::Func1(const FTbSame2Struc
 	return FTbSame2Struct1();
 #endif
 }
+TFuture<FTbSame2Struct1> UTbSame2SameStruct2InterfaceJniClient::Func1Async(const FTbSame2Struct1& InParam1)
+{
+	UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Verbose, TEXT("tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient:func1Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<FTbSame2Struct1> Promise;
+		Promise.SetValue(FTbSame2Struct1());
+		return Promise.GetFuture();
+	}
+
+	TPromise<FTbSame2Struct1> Promise;
+	TFuture<FTbSame2Struct1> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSame2SameStruct2InterfaceJniClientCache::clientClassSameStruct2Interface == nullptr)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient:func1Async:(Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V CLASS not found"));
+		Promise.SetValue(FTbSame2Struct1());
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSame2SameStruct2InterfaceJniClientCache::Func1AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSame2SameStruct2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc1(id, MethodID, InParam1))
+		{
+			gUTbSame2SameStruct2InterfaceJniClientmethodHelper.FulfillPromise(id, FTbSame2Struct1());
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient:func1Async (Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V not found"));
+		Promise.SetValue(FTbSame2Struct1());
+	}
+#else
+	Promise.SetValue(FTbSame2Struct1());
+#endif
+
+	return Future;
+}
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceJniClient::Func2(const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2)
 {
 	UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Verbose, TEXT("tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient:func2 "));
@@ -418,6 +466,54 @@ FTbSame2Struct1 UTbSame2SameStruct2InterfaceJniClient::Func2(const FTbSame2Struc
 #else
 	return FTbSame2Struct1();
 #endif
+}
+TFuture<FTbSame2Struct1> UTbSame2SameStruct2InterfaceJniClient::Func2Async(const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2)
+{
+	UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Verbose, TEXT("tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient:func2Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<FTbSame2Struct1> Promise;
+		Promise.SetValue(FTbSame2Struct1());
+		return Promise.GetFuture();
+	}
+
+	TPromise<FTbSame2Struct1> Promise;
+	TFuture<FTbSame2Struct1> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSame2SameStruct2InterfaceJniClientCache::clientClassSameStruct2Interface == nullptr)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient:func2Async:(Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;LtbSame2/tbSame2_api/Struct2;)V CLASS not found"));
+		Promise.SetValue(FTbSame2Struct1());
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSame2SameStruct2InterfaceJniClientCache::Func2AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSame2SameStruct2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc2(id, MethodID, InParam1, InParam2))
+		{
+			gUTbSame2SameStruct2InterfaceJniClientmethodHelper.FulfillPromise(id, FTbSame2Struct1());
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameStruct2InterfaceJniClient:func2Async (Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;LtbSame2/tbSame2_api/Struct2;)V not found"));
+		Promise.SetValue(FTbSame2Struct1());
+	}
+#else
+	Promise.SetValue(FTbSame2Struct1());
+#endif
+
+	return Future;
 }
 
 bool UTbSame2SameStruct2InterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)

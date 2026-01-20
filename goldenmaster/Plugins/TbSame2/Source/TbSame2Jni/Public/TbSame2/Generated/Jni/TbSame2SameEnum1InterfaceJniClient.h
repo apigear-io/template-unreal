@@ -69,6 +69,7 @@ public:
 
 	// operations
 	virtual ETbSame2Enum1 Func1(ETbSame2Enum1 Param1) override;
+	TFuture<ETbSame2Enum1> Func1Async(ETbSame2Enum1 Param1) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum1Interface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbSame2JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;

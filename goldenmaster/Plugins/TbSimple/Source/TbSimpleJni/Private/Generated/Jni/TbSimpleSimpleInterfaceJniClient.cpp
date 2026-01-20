@@ -782,6 +782,54 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncNoParams()
 	return false;
 #endif
 }
+TFuture<bool> UTbSimpleSimpleInterfaceJniClient::FuncNoParamsAsync()
+{
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<bool> Promise;
+		Promise.SetValue(false);
+		return Promise.GetFuture();
+	}
+
+	TPromise<bool> Promise;
+	TFuture<bool> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync:(Ljava/lang/String;)V CLASS not found"));
+		Promise.SetValue(false);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncNoParamsAsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncNoParams(id, MethodID))
+		{
+			gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(id, false);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync (Ljava/lang/String;)V not found"));
+		Promise.SetValue(false);
+	}
+#else
+	Promise.SetValue(false);
+#endif
+
+	return Future;
+}
 bool UTbSimpleSimpleInterfaceJniClient::FuncBool(bool bInParamBool)
 {
 	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBool "));
@@ -824,6 +872,54 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncBool(bool bInParamBool)
 #else
 	return false;
 #endif
+}
+TFuture<bool> UTbSimpleSimpleInterfaceJniClient::FuncBoolAsync(bool bInParamBool)
+{
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBoolAsync"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<bool> Promise;
+		Promise.SetValue(false);
+		return Promise.GetFuture();
+	}
+
+	TPromise<bool> Promise;
+	TFuture<bool> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Z)V CLASS not found"));
+		Promise.SetValue(false);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncBoolAsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncBool(id, MethodID, bInParamBool))
+		{
+			gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(id, false);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
+		Promise.SetValue(false);
+	}
+#else
+	Promise.SetValue(false);
+#endif
+
+	return Future;
 }
 int32 UTbSimpleSimpleInterfaceJniClient::FuncInt(int32 InParamInt)
 {
@@ -868,6 +964,54 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt(int32 InParamInt)
 	return 0;
 #endif
 }
+TFuture<int32> UTbSimpleSimpleInterfaceJniClient::FuncIntAsync(int32 InParamInt)
+{
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcIntAsync"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
+	}
+
+	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcIntAsync:(Ljava/lang/String;I)V CLASS not found"));
+		Promise.SetValue(0);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncIntAsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncInt(id, MethodID, InParamInt))
+		{
+			gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(id, 0);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcIntAsync (Ljava/lang/String;I)V not found"));
+		Promise.SetValue(0);
+	}
+#else
+	Promise.SetValue(0);
+#endif
+
+	return Future;
+}
 int32 UTbSimpleSimpleInterfaceJniClient::FuncInt32(int32 InParamInt32)
 {
 	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32 "));
@@ -910,6 +1054,54 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt32(int32 InParamInt32)
 #else
 	return 0;
 #endif
+}
+TFuture<int32> UTbSimpleSimpleInterfaceJniClient::FuncInt32Async(int32 InParamInt32)
+{
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
+	}
+
+	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32Async:(Ljava/lang/String;I)V CLASS not found"));
+		Promise.SetValue(0);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncInt32AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncInt32(id, MethodID, InParamInt32))
+		{
+			gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(id, 0);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32Async (Ljava/lang/String;I)V not found"));
+		Promise.SetValue(0);
+	}
+#else
+	Promise.SetValue(0);
+#endif
+
+	return Future;
 }
 int64 UTbSimpleSimpleInterfaceJniClient::FuncInt64(int64 InParamInt64)
 {
@@ -954,6 +1146,54 @@ int64 UTbSimpleSimpleInterfaceJniClient::FuncInt64(int64 InParamInt64)
 	return 0LL;
 #endif
 }
+TFuture<int64> UTbSimpleSimpleInterfaceJniClient::FuncInt64Async(int64 InParamInt64)
+{
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<int64> Promise;
+		Promise.SetValue(0LL);
+		return Promise.GetFuture();
+	}
+
+	TPromise<int64> Promise;
+	TFuture<int64> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64Async:(Ljava/lang/String;J)V CLASS not found"));
+		Promise.SetValue(0LL);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncInt64AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncInt64(id, MethodID, InParamInt64))
+		{
+			gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(id, 0LL);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64Async (Ljava/lang/String;J)V not found"));
+		Promise.SetValue(0LL);
+	}
+#else
+	Promise.SetValue(0LL);
+#endif
+
+	return Future;
+}
 float UTbSimpleSimpleInterfaceJniClient::FuncFloat(float InParamFloat)
 {
 	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat "));
@@ -996,6 +1236,54 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat(float InParamFloat)
 #else
 	return 0.0f;
 #endif
+}
+TFuture<float> UTbSimpleSimpleInterfaceJniClient::FuncFloatAsync(float InParamFloat)
+{
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloatAsync"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<float> Promise;
+		Promise.SetValue(0.0f);
+		return Promise.GetFuture();
+	}
+
+	TPromise<float> Promise;
+	TFuture<float> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloatAsync:(Ljava/lang/String;F)V CLASS not found"));
+		Promise.SetValue(0.0f);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncFloatAsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncFloat(id, MethodID, InParamFloat))
+		{
+			gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(id, 0.0f);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloatAsync (Ljava/lang/String;F)V not found"));
+		Promise.SetValue(0.0f);
+	}
+#else
+	Promise.SetValue(0.0f);
+#endif
+
+	return Future;
 }
 float UTbSimpleSimpleInterfaceJniClient::FuncFloat32(float InParamFloat32)
 {
@@ -1040,6 +1328,54 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat32(float InParamFloat32)
 	return 0.0f;
 #endif
 }
+TFuture<float> UTbSimpleSimpleInterfaceJniClient::FuncFloat32Async(float InParamFloat32)
+{
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<float> Promise;
+		Promise.SetValue(0.0f);
+		return Promise.GetFuture();
+	}
+
+	TPromise<float> Promise;
+	TFuture<float> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32Async:(Ljava/lang/String;F)V CLASS not found"));
+		Promise.SetValue(0.0f);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncFloat32AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncFloat32(id, MethodID, InParamFloat32))
+		{
+			gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(id, 0.0f);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32Async (Ljava/lang/String;F)V not found"));
+		Promise.SetValue(0.0f);
+	}
+#else
+	Promise.SetValue(0.0f);
+#endif
+
+	return Future;
+}
 double UTbSimpleSimpleInterfaceJniClient::FuncFloat64(double InParamFloat)
 {
 	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64 "));
@@ -1083,6 +1419,54 @@ double UTbSimpleSimpleInterfaceJniClient::FuncFloat64(double InParamFloat)
 	return 0.0;
 #endif
 }
+TFuture<double> UTbSimpleSimpleInterfaceJniClient::FuncFloat64Async(double InParamFloat)
+{
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<double> Promise;
+		Promise.SetValue(0.0);
+		return Promise.GetFuture();
+	}
+
+	TPromise<double> Promise;
+	TFuture<double> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64Async:(Ljava/lang/String;D)V CLASS not found"));
+		Promise.SetValue(0.0);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncFloat64AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncFloat64(id, MethodID, InParamFloat))
+		{
+			gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(id, 0.0);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64Async (Ljava/lang/String;D)V not found"));
+		Promise.SetValue(0.0);
+	}
+#else
+	Promise.SetValue(0.0);
+#endif
+
+	return Future;
+}
 FString UTbSimpleSimpleInterfaceJniClient::FuncString(const FString& InParamString)
 {
 	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcString "));
@@ -1125,6 +1509,54 @@ FString UTbSimpleSimpleInterfaceJniClient::FuncString(const FString& InParamStri
 #else
 	return FString();
 #endif
+}
+TFuture<FString> UTbSimpleSimpleInterfaceJniClient::FuncStringAsync(const FString& InParamString)
+{
+	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcStringAsync"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<FString> Promise;
+		Promise.SetValue(FString());
+		return Promise.GetFuture();
+	}
+
+	TPromise<FString> Promise;
+	TFuture<FString> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcStringAsync:(Ljava/lang/String;Ljava/lang/String;)V CLASS not found"));
+		Promise.SetValue(FString());
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncStringAsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncString(id, MethodID, InParamString))
+		{
+			gUTbSimpleSimpleInterfaceJniClientmethodHelper.FulfillPromise(id, FString());
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcStringAsync (Ljava/lang/String;Ljava/lang/String;)V not found"));
+		Promise.SetValue(FString());
+	}
+#else
+	Promise.SetValue(FString());
+#endif
+
+	return Future;
 }
 
 bool UTbSimpleSimpleInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)

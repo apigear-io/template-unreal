@@ -435,6 +435,57 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 #endif
 }
 
+{{- if not .Return.IsVoid }}
+TFuture<{{ueReturn "" .Return}}> {{$Class}}::{{Camel .Name}}Async({{ueParams "In" .Params}})
+{
+	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{.Name}}Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(Log{{$Iface}}Client_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<{{ueReturn "" .Return}}> Promise;
+		Promise.SetValue({{ ueDefault "" .Return }});
+		return Promise.GetFuture();
+	}
+
+	TPromise<{{ueReturn "" .Return}}> Promise;
+	TFuture<{{ueReturn "" .Return}}> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if ({{$Class}}Cache::{{$clientClass}} == nullptr)
+	{
+		{{- $signatureParams:= jniJavaSignatureParams .Params}}
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async:(Ljava/lang/String;{{$signatureParams}})V CLASS not found"));
+		Promise.SetValue({{ ueDefault "" .Return }});
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = {{$Class}}Cache::{{Camel .Name}}AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = g{{$Class}}methodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJava{{Camel .Name}}(id, MethodID{{- if len (.Params) }}, {{end}}{{ueVars "In" .Params}}))
+		{
+			g{{$Class}}methodHelper.FulfillPromise(id, {{ueDefault "" .Return }});
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async (Ljava/lang/String;{{$signatureParams}})V not found"));
+		Promise.SetValue({{ueDefault "" .Return }});
+	}
+#else
+	Promise.SetValue({{ ueDefault "" .Return }});
+#endif
+
+	return Future;
+}
+{{- end }}
 {{- end }}
 
 bool {{$Class}}::_bindToService(FString servicePackage, FString connectionId)

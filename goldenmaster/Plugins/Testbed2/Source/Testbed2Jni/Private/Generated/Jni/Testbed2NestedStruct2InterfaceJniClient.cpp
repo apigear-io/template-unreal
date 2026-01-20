@@ -376,6 +376,54 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceJniClient::Func1(const FTe
 	return FTestbed2NestedStruct1();
 #endif
 }
+TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct2InterfaceJniClient::Func1Async(const FTestbed2NestedStruct1& InParam1)
+{
+	UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient:func1Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<FTestbed2NestedStruct1> Promise;
+		Promise.SetValue(FTestbed2NestedStruct1());
+		return Promise.GetFuture();
+	}
+
+	TPromise<FTestbed2NestedStruct1> Promise;
+	TFuture<FTestbed2NestedStruct1> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTestbed2NestedStruct2InterfaceJniClientCache::clientClassNestedStruct2Interface == nullptr)
+	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient:func1Async:(Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V CLASS not found"));
+		Promise.SetValue(FTestbed2NestedStruct1());
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTestbed2NestedStruct2InterfaceJniClientCache::Func1AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTestbed2NestedStruct2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc1(id, MethodID, InParam1))
+		{
+			gUTestbed2NestedStruct2InterfaceJniClientmethodHelper.FulfillPromise(id, FTestbed2NestedStruct1());
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient:func1Async (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V not found"));
+		Promise.SetValue(FTestbed2NestedStruct1());
+	}
+#else
+	Promise.SetValue(FTestbed2NestedStruct1());
+#endif
+
+	return Future;
+}
 FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceJniClient::Func2(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 {
 	UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient:func2 "));
@@ -418,6 +466,54 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct2InterfaceJniClient::Func2(const FTe
 #else
 	return FTestbed2NestedStruct1();
 #endif
+}
+TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct2InterfaceJniClient::Func2Async(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
+{
+	UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Verbose, TEXT("testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient:func2Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<FTestbed2NestedStruct1> Promise;
+		Promise.SetValue(FTestbed2NestedStruct1());
+		return Promise.GetFuture();
+	}
+
+	TPromise<FTestbed2NestedStruct1> Promise;
+	TFuture<FTestbed2NestedStruct1> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTestbed2NestedStruct2InterfaceJniClientCache::clientClassNestedStruct2Interface == nullptr)
+	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient:func2Async:(Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V CLASS not found"));
+		Promise.SetValue(FTestbed2NestedStruct1());
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTestbed2NestedStruct2InterfaceJniClientCache::Func2AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTestbed2NestedStruct2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc2(id, MethodID, InParam1, InParam2))
+		{
+			gUTestbed2NestedStruct2InterfaceJniClientmethodHelper.FulfillPromise(id, FTestbed2NestedStruct1());
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient:func2Async (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V not found"));
+		Promise.SetValue(FTestbed2NestedStruct1());
+	}
+#else
+	Promise.SetValue(FTestbed2NestedStruct1());
+#endif
+
+	return Future;
 }
 
 bool UTestbed2NestedStruct2InterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)

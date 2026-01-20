@@ -70,7 +70,9 @@ public:
 	// operations
 	virtual void FuncNoReturnValue(const FTestbed2NestedStruct1& Param1) override;
 	virtual FTestbed2NestedStruct1 FuncNoParams() override;
+	TFuture<FTestbed2NestedStruct1> FuncNoParamsAsync() override;
 	virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
+	TFuture<FTestbed2NestedStruct1> Func1Async(const FTestbed2NestedStruct1& Param1) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct1Interface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTestbed2JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;

@@ -87,9 +87,13 @@ public:
 
 	// operations
 	virtual int32 Func1(int32 Param1) override;
+	TFuture<int32> Func1Async(int32 Param1) override;
 	virtual int32 Func2(int32 Param1, int32 Param2) override;
+	TFuture<int32> Func2Async(int32 Param1, int32 Param2) override;
 	virtual int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
+	TFuture<int32> Func3Async(int32 Param1, int32 Param2, int32 Param3) override;
 	virtual int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
+	TFuture<int32> Func4Async(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTestbed2JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
