@@ -76,6 +76,9 @@ public:
 	// operations
 {{- range $i, $e := .Interface.Operations }}
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
+{{- if not .Return.IsVoid }}
+	TFuture<{{ueReturn "" .Return}}> {{Camel .Name}}Async({{ueParams "" .Params}}) override;
+{{- end }}
 {{- end }}
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|{{Camel .Module.Name}}|{{$IfaceName}}|Jni|Remote", DisplayName = "Connection Status Changed")
