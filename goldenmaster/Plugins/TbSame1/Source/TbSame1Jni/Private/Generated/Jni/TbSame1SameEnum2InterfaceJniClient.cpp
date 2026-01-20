@@ -219,6 +219,8 @@ void UTbSame1SameEnum2InterfaceJniClient::Deinitialize()
 	UTbSame1SameEnum2InterfaceJniClientCache::clear();
 #endif
 
+	gUTbSame1SameEnum2InterfaceJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 ETbSame1Enum1 UTbSame1SameEnum2InterfaceJniClient::GetProp1() const
@@ -343,7 +345,7 @@ ETbSame1Enum1 UTbSame1SameEnum2InterfaceJniClient::Func1(ETbSame1Enum1 InParam1)
 	jmethodID MethodID = Cache->Func1AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSame1SameEnum2InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSame1SameEnum2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on tbSame1/tbSame1jniclient/SameEnum2InterfaceJniClient");
 		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -391,7 +393,7 @@ ETbSame1Enum1 UTbSame1SameEnum2InterfaceJniClient::Func2(ETbSame1Enum1 InParam1,
 	jmethodID MethodID = Cache->Func2AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSame1SameEnum2InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSame1SameEnum2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on tbSame1/tbSame1jniclient/SameEnum2InterfaceJniClient");
 		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId);

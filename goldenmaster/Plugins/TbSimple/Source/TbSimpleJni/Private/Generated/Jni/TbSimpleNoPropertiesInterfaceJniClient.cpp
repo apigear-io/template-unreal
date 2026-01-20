@@ -204,6 +204,8 @@ void UTbSimpleNoPropertiesInterfaceJniClient::Deinitialize()
 	UTbSimpleNoPropertiesInterfaceJniClientCache::clear();
 #endif
 
+	gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 void UTbSimpleNoPropertiesInterfaceJniClient::FuncVoid()
@@ -275,7 +277,7 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::FuncBool(bool bInParamBool)
 	jmethodID MethodID = Cache->FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);

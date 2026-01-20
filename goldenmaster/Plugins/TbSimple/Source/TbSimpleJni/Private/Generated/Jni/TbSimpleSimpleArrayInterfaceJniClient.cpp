@@ -302,6 +302,8 @@ void UTbSimpleSimpleArrayInterfaceJniClient::Deinitialize()
 	UTbSimpleSimpleArrayInterfaceJniClientCache::clear();
 #endif
 
+	gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::GetPropBool() const
@@ -789,7 +791,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::FuncBool(const TArray<bool>
 	jmethodID MethodID = Cache->FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -851,7 +853,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt(const TArray<int32
 	jmethodID MethodID = Cache->FuncIntAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcIntAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -907,7 +909,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt32(const TArray<int
 	jmethodID MethodID = Cache->FuncInt32AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcInt32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -963,7 +965,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt64(const TArray<int
 	jmethodID MethodID = Cache->FuncInt64AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcInt64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -1019,7 +1021,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat(const TArray<flo
 	jmethodID MethodID = Cache->FuncFloatAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloatAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -1075,7 +1077,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat32(const TArray<f
 	jmethodID MethodID = Cache->FuncFloat32AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloat32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -1131,7 +1133,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat64(const TArray<
 	jmethodID MethodID = Cache->FuncFloat64AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloat64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -1187,7 +1189,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<
 	jmethodID MethodID = Cache->FuncStringAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcStringAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);

@@ -233,6 +233,8 @@ void UTbNamesNamEsJniClient::Deinitialize()
 	UTbNamesNamEsJniClientCache::clear();
 #endif
 
+	gUTbNamesNamEsJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 bool UTbNamesNamEsJniClient::GetSwitch() const

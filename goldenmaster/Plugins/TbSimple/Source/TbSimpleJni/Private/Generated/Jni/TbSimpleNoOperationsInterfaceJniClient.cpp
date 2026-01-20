@@ -204,6 +204,8 @@ void UTbSimpleNoOperationsInterfaceJniClient::Deinitialize()
 	UTbSimpleNoOperationsInterfaceJniClientCache::clear();
 #endif
 
+	gUTbSimpleNoOperationsInterfaceJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 bool UTbSimpleNoOperationsInterfaceJniClient::GetPropBool() const
