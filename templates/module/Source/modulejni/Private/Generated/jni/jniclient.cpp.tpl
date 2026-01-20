@@ -460,6 +460,9 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 	else
 	{
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async (Ljava/lang/String;{{$signatureParams}})V not found"));
+		{{- if not .Return.IsVoid }}
+		Promise.SetValue({{ueDefault "" .Return }});
+		{{- end}}
 	}
 #endif
 	return{{ if not .Return.IsVoid }} Promise.GetFuture().Get() {{- end}};

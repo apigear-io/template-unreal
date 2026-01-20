@@ -779,6 +779,7 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncNoParams()
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync (Ljava/lang/String;)V not found"));
+		Promise.SetValue(false);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -821,6 +822,7 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncBool(bool bInParamBool)
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
+		Promise.SetValue(false);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -863,6 +865,7 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt(int32 InParamInt)
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcIntAsync (Ljava/lang/String;I)V not found"));
+		Promise.SetValue(0);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -905,6 +908,7 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt32(int32 InParamInt32)
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32Async (Ljava/lang/String;I)V not found"));
+		Promise.SetValue(0);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -947,6 +951,7 @@ int64 UTbSimpleSimpleInterfaceJniClient::FuncInt64(int64 InParamInt64)
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64Async (Ljava/lang/String;J)V not found"));
+		Promise.SetValue(0LL);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -989,6 +994,7 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat(float InParamFloat)
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloatAsync (Ljava/lang/String;F)V not found"));
+		Promise.SetValue(0.0f);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -1031,6 +1037,7 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat32(float InParamFloat32)
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32Async (Ljava/lang/String;F)V not found"));
+		Promise.SetValue(0.0f);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -1073,6 +1080,7 @@ double UTbSimpleSimpleInterfaceJniClient::FuncFloat64(double InParamFloat)
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64Async (Ljava/lang/String;D)V not found"));
+		Promise.SetValue(0.0);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -1120,6 +1128,7 @@ FString UTbSimpleSimpleInterfaceJniClient::FuncString(const FString& InParamStri
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcStringAsync (Ljava/lang/String;Ljava/lang/String;)V not found"));
+		Promise.SetValue(FString());
 	}
 #endif
 	return Promise.GetFuture().Get();

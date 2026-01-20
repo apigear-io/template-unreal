@@ -501,6 +501,7 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfJniClie
 	else
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:localIfMethodAsync (Ljava/lang/String;LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V not found"));
+		Promise.SetValue(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -546,6 +547,7 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 	else
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:localIfMethodListAsync (Ljava/lang/String;[LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V not found"));
+		Promise.SetValue(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -591,6 +593,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfJniClient::
 	else
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:importedIfMethodAsync (Ljava/lang/String;LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V not found"));
+		Promise.SetValue(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -636,6 +639,7 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfJni
 	else
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:importedIfMethodListAsync (Ljava/lang/String;[LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V not found"));
+		Promise.SetValue(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
 	}
 #endif
 	return Promise.GetFuture().Get();
