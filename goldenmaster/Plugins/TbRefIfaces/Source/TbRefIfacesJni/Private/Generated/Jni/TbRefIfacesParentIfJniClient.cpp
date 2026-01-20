@@ -440,7 +440,6 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfJniClie
 #endif
 		return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	}
-	TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
@@ -448,6 +447,7 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfJniClie
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:localIfMethodAsync:(Ljava/lang/String;LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V CLASS not found"));
 		return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	}
+	TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::LocalIfMethodAsyncMethodID;
 	if (MethodID != nullptr)
@@ -470,8 +470,10 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfJniClie
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:localIfMethodAsync (Ljava/lang/String;LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V not found"));
 		Promise.SetValue(TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
+#endif
 }
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfJniClient::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
 {
@@ -485,7 +487,6 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 #endif
 		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 	}
-	TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
@@ -493,6 +494,7 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:localIfMethodListAsync:(Ljava/lang/String;[LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V CLASS not found"));
 		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 	}
+	TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::LocalIfMethodListAsyncMethodID;
 	if (MethodID != nullptr)
@@ -515,8 +517,10 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:localIfMethodListAsync (Ljava/lang/String;[LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V not found"));
 		Promise.SetValue(TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+#endif
 }
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfJniClient::ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
 {
@@ -530,7 +534,6 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfJniClient::
 #endif
 		return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	}
-	TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
@@ -538,6 +541,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfJniClient::
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:importedIfMethodAsync:(Ljava/lang/String;LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V CLASS not found"));
 		return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	}
+	TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::ImportedIfMethodAsyncMethodID;
 	if (MethodID != nullptr)
@@ -560,8 +564,10 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfJniClient::
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:importedIfMethodAsync (Ljava/lang/String;LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V not found"));
 		Promise.SetValue(TScriptInterface<ITbIfaceimportEmptyIfInterface>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+#endif
 }
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfJniClient::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
 {
@@ -575,7 +581,6 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfJni
 #endif
 		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 	}
-	TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
@@ -583,6 +588,7 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfJni
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:importedIfMethodListAsync:(Ljava/lang/String;[LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V CLASS not found"));
 		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 	}
+	TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::ImportedIfMethodListAsyncMethodID;
 	if (MethodID != nullptr)
@@ -605,8 +611,10 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfJni
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:importedIfMethodListAsync (Ljava/lang/String;[LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V not found"));
 		Promise.SetValue(TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+#endif
 }
 
 bool UTbRefIfacesParentIfJniClient::_bindToService(FString servicePackage, FString connectionId)

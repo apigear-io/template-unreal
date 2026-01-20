@@ -752,7 +752,6 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::FuncBool(const TArray<bool>
 #endif
 		return TArray<bool>();
 	}
-	TPromise<TArray<bool>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbSimpleSimpleArrayInterfaceJniClientCache::clientClassSimpleArrayInterface == nullptr)
@@ -760,6 +759,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::FuncBool(const TArray<bool>
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;[Z)V CLASS not found"));
 		return TArray<bool>();
 	}
+	TPromise<TArray<bool>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbSimpleSimpleArrayInterfaceJniClientCache::FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
@@ -795,8 +795,10 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::FuncBool(const TArray<bool>
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcBoolAsync (Ljava/lang/String;[Z)V not found"));
 		Promise.SetValue(TArray<bool>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<bool>();
+#endif
 }
 TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt(const TArray<int32>& InParamInt)
 {
@@ -810,7 +812,6 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt(const TArray<int32
 #endif
 		return TArray<int32>();
 	}
-	TPromise<TArray<int32>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbSimpleSimpleArrayInterfaceJniClientCache::clientClassSimpleArrayInterface == nullptr)
@@ -818,6 +819,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt(const TArray<int32
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcIntAsync:(Ljava/lang/String;[I)V CLASS not found"));
 		return TArray<int32>();
 	}
+	TPromise<TArray<int32>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbSimpleSimpleArrayInterfaceJniClientCache::FuncIntAsyncMethodID;
 	if (MethodID != nullptr)
@@ -847,8 +849,10 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt(const TArray<int32
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcIntAsync (Ljava/lang/String;[I)V not found"));
 		Promise.SetValue(TArray<int32>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<int32>();
+#endif
 }
 TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt32(const TArray<int32>& InParamInt32)
 {
@@ -862,7 +866,6 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt32(const TArray<int
 #endif
 		return TArray<int32>();
 	}
-	TPromise<TArray<int32>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbSimpleSimpleArrayInterfaceJniClientCache::clientClassSimpleArrayInterface == nullptr)
@@ -870,6 +873,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt32(const TArray<int
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcInt32Async:(Ljava/lang/String;[I)V CLASS not found"));
 		return TArray<int32>();
 	}
+	TPromise<TArray<int32>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbSimpleSimpleArrayInterfaceJniClientCache::FuncInt32AsyncMethodID;
 	if (MethodID != nullptr)
@@ -899,8 +903,10 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt32(const TArray<int
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcInt32Async (Ljava/lang/String;[I)V not found"));
 		Promise.SetValue(TArray<int32>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<int32>();
+#endif
 }
 TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt64(const TArray<int64>& InParamInt64)
 {
@@ -914,7 +920,6 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt64(const TArray<int
 #endif
 		return TArray<int64>();
 	}
-	TPromise<TArray<int64>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbSimpleSimpleArrayInterfaceJniClientCache::clientClassSimpleArrayInterface == nullptr)
@@ -922,6 +927,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt64(const TArray<int
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcInt64Async:(Ljava/lang/String;[J)V CLASS not found"));
 		return TArray<int64>();
 	}
+	TPromise<TArray<int64>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbSimpleSimpleArrayInterfaceJniClientCache::FuncInt64AsyncMethodID;
 	if (MethodID != nullptr)
@@ -951,8 +957,10 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt64(const TArray<int
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcInt64Async (Ljava/lang/String;[J)V not found"));
 		Promise.SetValue(TArray<int64>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<int64>();
+#endif
 }
 TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat(const TArray<float>& InParamFloat)
 {
@@ -966,7 +974,6 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat(const TArray<flo
 #endif
 		return TArray<float>();
 	}
-	TPromise<TArray<float>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbSimpleSimpleArrayInterfaceJniClientCache::clientClassSimpleArrayInterface == nullptr)
@@ -974,6 +981,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat(const TArray<flo
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloatAsync:(Ljava/lang/String;[F)V CLASS not found"));
 		return TArray<float>();
 	}
+	TPromise<TArray<float>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbSimpleSimpleArrayInterfaceJniClientCache::FuncFloatAsyncMethodID;
 	if (MethodID != nullptr)
@@ -1003,8 +1011,10 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat(const TArray<flo
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloatAsync (Ljava/lang/String;[F)V not found"));
 		Promise.SetValue(TArray<float>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<float>();
+#endif
 }
 TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat32(const TArray<float>& InParamFloat32)
 {
@@ -1018,7 +1028,6 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat32(const TArray<f
 #endif
 		return TArray<float>();
 	}
-	TPromise<TArray<float>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbSimpleSimpleArrayInterfaceJniClientCache::clientClassSimpleArrayInterface == nullptr)
@@ -1026,6 +1035,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat32(const TArray<f
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloat32Async:(Ljava/lang/String;[F)V CLASS not found"));
 		return TArray<float>();
 	}
+	TPromise<TArray<float>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbSimpleSimpleArrayInterfaceJniClientCache::FuncFloat32AsyncMethodID;
 	if (MethodID != nullptr)
@@ -1055,8 +1065,10 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat32(const TArray<f
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloat32Async (Ljava/lang/String;[F)V not found"));
 		Promise.SetValue(TArray<float>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<float>();
+#endif
 }
 TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat64(const TArray<double>& InParamFloat)
 {
@@ -1070,7 +1082,6 @@ TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat64(const TArray<
 #endif
 		return TArray<double>();
 	}
-	TPromise<TArray<double>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbSimpleSimpleArrayInterfaceJniClientCache::clientClassSimpleArrayInterface == nullptr)
@@ -1078,6 +1089,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat64(const TArray<
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloat64Async:(Ljava/lang/String;[D)V CLASS not found"));
 		return TArray<double>();
 	}
+	TPromise<TArray<double>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbSimpleSimpleArrayInterfaceJniClientCache::FuncFloat64AsyncMethodID;
 	if (MethodID != nullptr)
@@ -1107,8 +1119,10 @@ TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat64(const TArray<
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloat64Async (Ljava/lang/String;[D)V not found"));
 		Promise.SetValue(TArray<double>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<double>();
+#endif
 }
 TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<FString>& InParamString)
 {
@@ -1122,7 +1136,6 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<
 #endif
 		return TArray<FString>();
 	}
-	TPromise<TArray<FString>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbSimpleSimpleArrayInterfaceJniClientCache::clientClassSimpleArrayInterface == nullptr)
@@ -1130,6 +1143,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcStringAsync:(Ljava/lang/String;[Ljava/lang/String;)V CLASS not found"));
 		return TArray<FString>();
 	}
+	TPromise<TArray<FString>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbSimpleSimpleArrayInterfaceJniClientCache::FuncStringAsyncMethodID;
 	if (MethodID != nullptr)
@@ -1160,8 +1174,10 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcStringAsync (Ljava/lang/String;[Ljava/lang/String;)V not found"));
 		Promise.SetValue(TArray<FString>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<FString>();
+#endif
 }
 
 bool UTbSimpleSimpleArrayInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
