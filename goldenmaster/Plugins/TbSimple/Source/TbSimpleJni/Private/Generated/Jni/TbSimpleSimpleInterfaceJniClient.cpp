@@ -330,6 +330,8 @@ void UTbSimpleSimpleInterfaceJniClient::Deinitialize()
 	UTbSimpleSimpleInterfaceJniClientCache::clear();
 #endif
 
+	gUTbSimpleSimpleInterfaceJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 bool UTbSimpleSimpleInterfaceJniClient::GetPropBool() const
@@ -767,7 +769,7 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncNoParams()
 	jmethodID MethodID = Cache->FuncNoParamsAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcNoParamsAsync on tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -813,7 +815,7 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncBool(bool bInParamBool)
 	jmethodID MethodID = Cache->FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -859,7 +861,7 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt(int32 InParamInt)
 	jmethodID MethodID = Cache->FuncIntAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcIntAsync on tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -905,7 +907,7 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt32(int32 InParamInt32)
 	jmethodID MethodID = Cache->FuncInt32AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcInt32Async on tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -951,7 +953,7 @@ int64 UTbSimpleSimpleInterfaceJniClient::FuncInt64(int64 InParamInt64)
 	jmethodID MethodID = Cache->FuncInt64AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcInt64Async on tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -997,7 +999,7 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat(float InParamFloat)
 	jmethodID MethodID = Cache->FuncFloatAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloatAsync on tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -1043,7 +1045,7 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat32(float InParamFloat32)
 	jmethodID MethodID = Cache->FuncFloat32AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloat32Async on tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -1089,7 +1091,7 @@ double UTbSimpleSimpleInterfaceJniClient::FuncFloat64(double InParamFloat)
 	jmethodID MethodID = Cache->FuncFloat64AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloat64Async on tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -1135,7 +1137,7 @@ FString UTbSimpleSimpleInterfaceJniClient::FuncString(const FString& InParamStri
 	jmethodID MethodID = Cache->FuncStringAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcStringAsync on tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);

@@ -260,6 +260,8 @@ void UTbRefIfacesParentIfJniClient::Deinitialize()
 	UTbRefIfacesParentIfJniClientCache::clear();
 #endif
 
+	gUTbRefIfacesParentIfJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfJniClient::GetLocalIf() const
@@ -484,7 +486,7 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfJniClie
 	jmethodID MethodID = Cache->LocalIfMethodAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call localIfMethodAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -533,7 +535,7 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 	jmethodID MethodID = Cache->LocalIfMethodListAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call localIfMethodListAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -582,7 +584,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfJniClient::
 	jmethodID MethodID = Cache->ImportedIfMethodAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call importedIfMethodAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -631,7 +633,7 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfJni
 	jmethodID MethodID = Cache->ImportedIfMethodListAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call importedIfMethodListAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);

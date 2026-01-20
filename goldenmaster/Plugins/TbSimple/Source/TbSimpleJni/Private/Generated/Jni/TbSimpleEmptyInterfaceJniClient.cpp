@@ -204,6 +204,8 @@ void UTbSimpleEmptyInterfaceJniClient::Deinitialize()
 	UTbSimpleEmptyInterfaceJniClientCache::clear();
 #endif
 
+	gUTbSimpleEmptyInterfaceJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 

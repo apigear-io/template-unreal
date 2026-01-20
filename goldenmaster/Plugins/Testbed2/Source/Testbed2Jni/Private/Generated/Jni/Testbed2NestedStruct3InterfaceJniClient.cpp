@@ -247,6 +247,8 @@ void UTestbed2NestedStruct3InterfaceJniClient::Deinitialize()
 	UTestbed2NestedStruct3InterfaceJniClientCache::clear();
 #endif
 
+	gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::GetProp1() const
@@ -419,7 +421,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func1(const FTe
 	jmethodID MethodID = Cache->Func1AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient");
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -467,7 +469,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func2(const FTe
 	jmethodID MethodID = Cache->Func2AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient");
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -517,7 +519,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func3(const FTe
 	jmethodID MethodID = Cache->Func3AsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed2NestedStruct3InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func3Async on testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient");
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);

@@ -6,6 +6,9 @@
 #include "Containers/Map.h"
 #include "HAL/CriticalSection.h"
 #include "Misc/Guid.h"
+#include "Templates/UniquePtr.h"
+
+#include "Generated/Detail/{{Camel .Module.Name}}PromiseHolder.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(Log{{Camel .Module.Name}}MethodHelper_JNI, Log, All);
 
@@ -17,26 +20,41 @@ public:
     {
     }
 
+	void FlushPendingPromises()
+	{
+		TMap<FGuid, TUniquePtr<I{{Camel .Module.Name}}PromiseHolder>> ReplyPromisesMapCopy;
+		{
+			FScopeLock Lock(&ReplyPromisesMapCS);
+			ReplyPromisesMapCopy = MoveTemp(ReplyPromisesMap);
+		}
+
+		for (auto& Element : ReplyPromisesMapCopy)
+		{
+			Element.Value->FulfillWithDefaultValue();
+		}
+	}
+
 	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& InPromise);
+	FGuid StorePromise(TPromise<ResultType>&& InPromise);
 
 	template <typename ResultType>
 	bool FulfillPromise(const FGuid& InId, const ResultType& InValue);
 
 private:
-	TMap<FGuid, void*> ReplyPromisesMap;
+	TMap<FGuid, TUniquePtr<I{{Camel .Module.Name}}PromiseHolder>> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;
     FString OwnerName;
 };
 
 template <typename ResultType>
-FGuid F{{Camel .Module.Name}}MethodHelper::StorePromise(TPromise<ResultType>& Promise)
+FGuid F{{Camel .Module.Name}}MethodHelper::StorePromise(TPromise<ResultType>&& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
 
     {
         FScopeLock Lock(&ReplyPromisesMapCS);
-        ReplyPromisesMap.Add(Id, &Promise);
+		ReplyPromisesMap.Add(
+			Id, MakeUnique<T{{Camel .Module.Name}}PromiseHolder<ResultType>>(MoveTemp(Promise)));
     }
 
 	UE_LOG(
@@ -59,20 +77,24 @@ bool F{{Camel .Module.Name}}MethodHelper::FulfillPromise(const FGuid& Id, const 
         *(Id.ToString(EGuidFormats::Digits)),
         *OwnerName);
 
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TUniquePtr<T{{Camel .Module.Name}}PromiseHolder<ResultType>> PromiseHolderPtr;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromisesMap.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
+			PromiseHolderPtr.Reset(
+				static_cast<T{{Camel .Module.Name}}PromiseHolder<ResultType>*>(Found->Release()));
 			ReplyPromisesMap.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (PromiseHolderPtr)
 	{
-		PromisePtr->SetValue(Value);
+		PromiseHolderPtr->VisitPromise(
+			[&](TPromise<ResultType>& Promise) {
+				Promise.SetValue(Value);
+			});
 		return true;
 	}
 
