@@ -404,6 +404,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func1(const FTe
 	else
 	{
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient:func1Async (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V not found"));
+		Promise.SetValue(FTestbed2NestedStruct1());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -449,6 +450,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func2(const FTe
 	else
 	{
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient:func2Async (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V not found"));
+		Promise.SetValue(FTestbed2NestedStruct1());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -496,6 +498,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::Func3(const FTe
 	else
 	{
 		UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/NestedStruct3InterfaceJniClient:func3Async (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;Ltestbed2/testbed2_api/NestedStruct3;)V not found"));
+		Promise.SetValue(FTestbed2NestedStruct1());
 	}
 #endif
 	return Promise.GetFuture().Get();

@@ -793,6 +793,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::FuncBool(const TArray<bool>
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcBoolAsync (Ljava/lang/String;[Z)V not found"));
+		Promise.SetValue(TArray<bool>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -844,6 +845,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt(const TArray<int32
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcIntAsync (Ljava/lang/String;[I)V not found"));
+		Promise.SetValue(TArray<int32>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -895,6 +897,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt32(const TArray<int
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcInt32Async (Ljava/lang/String;[I)V not found"));
+		Promise.SetValue(TArray<int32>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -946,6 +949,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt64(const TArray<int
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcInt64Async (Ljava/lang/String;[J)V not found"));
+		Promise.SetValue(TArray<int64>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -997,6 +1001,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat(const TArray<flo
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloatAsync (Ljava/lang/String;[F)V not found"));
+		Promise.SetValue(TArray<float>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -1048,6 +1053,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat32(const TArray<f
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloat32Async (Ljava/lang/String;[F)V not found"));
+		Promise.SetValue(TArray<float>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -1099,6 +1105,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat64(const TArray<
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcFloat64Async (Ljava/lang/String;[D)V not found"));
+		Promise.SetValue(TArray<double>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -1151,6 +1158,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<
 	else
 	{
 		UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient:funcStringAsync (Ljava/lang/String;[Ljava/lang/String;)V not found"));
+		Promise.SetValue(TArray<FString>());
 	}
 #endif
 	return Promise.GetFuture().Get();

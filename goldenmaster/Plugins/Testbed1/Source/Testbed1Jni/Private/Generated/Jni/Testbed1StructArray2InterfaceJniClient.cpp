@@ -524,6 +524,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArray2InterfaceJniClient::FuncBool(co
 	else
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcBoolAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructBoolWithArray;)V not found"));
+		Promise.SetValue(TArray<FTestbed1StructBool>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -567,6 +568,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArray2InterfaceJniClient::FuncInt(cons
 	else
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcIntAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructIntWithArray;)V not found"));
+		Promise.SetValue(TArray<FTestbed1StructInt>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -610,6 +612,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArray2InterfaceJniClient::FuncFloat(
 	else
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcFloatAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructFloatWithArray;)V not found"));
+		Promise.SetValue(TArray<FTestbed1StructFloat>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -653,6 +656,7 @@ TArray<FTestbed1StructString> UTestbed1StructArray2InterfaceJniClient::FuncStrin
 	else
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcStringAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructStringWithArray;)V not found"));
+		Promise.SetValue(TArray<FTestbed1StructString>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -696,6 +700,7 @@ TArray<ETestbed1Enum0> UTestbed1StructArray2InterfaceJniClient::FuncEnum(const F
 	else
 	{
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcEnumAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructEnumWithArray;)V not found"));
+		Promise.SetValue(TArray<ETestbed1Enum0>());
 	}
 #endif
 	return Promise.GetFuture().Get();
