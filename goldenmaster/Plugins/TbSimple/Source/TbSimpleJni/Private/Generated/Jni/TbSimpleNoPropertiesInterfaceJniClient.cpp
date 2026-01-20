@@ -304,6 +304,54 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::FuncBool(bool bInParamBool)
 	return false;
 #endif
 }
+TFuture<bool> UTbSimpleNoPropertiesInterfaceJniClient::FuncBoolAsync(bool bInParamBool)
+{
+	UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBoolAsync"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<bool> Promise;
+		Promise.SetValue(false);
+		return Promise.GetFuture();
+	}
+
+	TPromise<bool> Promise;
+	TFuture<bool> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleNoPropertiesInterfaceJniClientCache::clientClassNoPropertiesInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Z)V CLASS not found"));
+		Promise.SetValue(false);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleNoPropertiesInterfaceJniClientCache::FuncBoolAsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncBool(id, MethodID, bInParamBool))
+		{
+			gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.FulfillPromise(id, false);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
+		Promise.SetValue(false);
+	}
+#else
+	Promise.SetValue(false);
+#endif
+
+	return Future;
+}
 
 bool UTbSimpleNoPropertiesInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {

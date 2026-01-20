@@ -75,7 +75,9 @@ public:
 
 	// operations
 	virtual FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override;
+	TFuture<FTbSame2Struct1> Func1Async(const FTbSame2Struct1& Param1) override;
 	virtual FTbSame2Struct1 Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
+	TFuture<FTbSame2Struct1> Func2Async(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbSame2JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;

@@ -68,6 +68,7 @@ public:
 	// operations
 	virtual void FuncVoid() override;
 	virtual bool FuncBool(bool bParamBool) override;
+	TFuture<bool> FuncBoolAsync(bool bParamBool) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbSimpleJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;

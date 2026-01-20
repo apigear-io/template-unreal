@@ -314,6 +314,54 @@ ETbSame1Enum1 UTbSame1SameEnum1InterfaceJniClient::Func1(ETbSame1Enum1 InParam1)
 	return ETbSame1Enum1::TS1E1_Value1;
 #endif
 }
+TFuture<ETbSame1Enum1> UTbSame1SameEnum1InterfaceJniClient::Func1Async(ETbSame1Enum1 InParam1)
+{
+	UE_LOG(LogTbSame1SameEnum1InterfaceClient_JNI, Verbose, TEXT("tbSame1/tbSame1jniclient/SameEnum1InterfaceJniClient:func1Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSame1SameEnum1InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSame1SameEnum1InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<ETbSame1Enum1> Promise;
+		Promise.SetValue(ETbSame1Enum1::TS1E1_Value1);
+		return Promise.GetFuture();
+	}
+
+	TPromise<ETbSame1Enum1> Promise;
+	TFuture<ETbSame1Enum1> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSame1SameEnum1InterfaceJniClientCache::clientClassSameEnum1Interface == nullptr)
+	{
+		UE_LOG(LogTbSame1SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame1/tbSame1jniclient/SameEnum1InterfaceJniClient:func1Async:(Ljava/lang/String;LtbSame1/tbSame1_api/Enum1;)V CLASS not found"));
+		Promise.SetValue(ETbSame1Enum1::TS1E1_Value1);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSame1SameEnum1InterfaceJniClientCache::Func1AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSame1SameEnum1InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc1(id, MethodID, InParam1))
+		{
+			gUTbSame1SameEnum1InterfaceJniClientmethodHelper.FulfillPromise(id, ETbSame1Enum1::TS1E1_Value1);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSame1SameEnum1InterfaceClient_JNI, Warning, TEXT("tbSame1/tbSame1jniclient/SameEnum1InterfaceJniClient:func1Async (Ljava/lang/String;LtbSame1/tbSame1_api/Enum1;)V not found"));
+		Promise.SetValue(ETbSame1Enum1::TS1E1_Value1);
+	}
+#else
+	Promise.SetValue(ETbSame1Enum1::TS1E1_Value1);
+#endif
+
+	return Future;
+}
 
 bool UTbSame1SameEnum1InterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {

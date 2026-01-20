@@ -314,6 +314,54 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceJniClient::Func1(const FTbSame2Struc
 	return FTbSame2Struct1();
 #endif
 }
+TFuture<FTbSame2Struct1> UTbSame2SameStruct1InterfaceJniClient::Func1Async(const FTbSame2Struct1& InParam1)
+{
+	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Verbose, TEXT("tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient:func1Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<FTbSame2Struct1> Promise;
+		Promise.SetValue(FTbSame2Struct1());
+		return Promise.GetFuture();
+	}
+
+	TPromise<FTbSame2Struct1> Promise;
+	TFuture<FTbSame2Struct1> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSame2SameStruct1InterfaceJniClientCache::clientClassSameStruct1Interface == nullptr)
+	{
+		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient:func1Async:(Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V CLASS not found"));
+		Promise.SetValue(FTbSame2Struct1());
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSame2SameStruct1InterfaceJniClientCache::Func1AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSame2SameStruct1InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFunc1(id, MethodID, InParam1))
+		{
+			gUTbSame2SameStruct1InterfaceJniClientmethodHelper.FulfillPromise(id, FTbSame2Struct1());
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient:func1Async (Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V not found"));
+		Promise.SetValue(FTbSame2Struct1());
+	}
+#else
+	Promise.SetValue(FTbSame2Struct1());
+#endif
+
+	return Future;
+}
 
 bool UTbSame2SameStruct1InterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
 {

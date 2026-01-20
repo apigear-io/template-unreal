@@ -69,6 +69,7 @@ public:
 
 	// operations
 	virtual int32 IntMethod(int32 Param) override;
+	TFuture<int32> IntMethodAsync(int32 Param) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbRefIfacesJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;

@@ -112,14 +112,23 @@ public:
 	// operations
 	virtual void FuncNoReturnValue(bool bParamBool) override;
 	virtual bool FuncNoParams() override;
+	TFuture<bool> FuncNoParamsAsync() override;
 	virtual bool FuncBool(bool bParamBool) override;
+	TFuture<bool> FuncBoolAsync(bool bParamBool) override;
 	virtual int32 FuncInt(int32 ParamInt) override;
+	TFuture<int32> FuncIntAsync(int32 ParamInt) override;
 	virtual int32 FuncInt32(int32 ParamInt32) override;
+	TFuture<int32> FuncInt32Async(int32 ParamInt32) override;
 	virtual int64 FuncInt64(int64 ParamInt64) override;
+	TFuture<int64> FuncInt64Async(int64 ParamInt64) override;
 	virtual float FuncFloat(float ParamFloat) override;
+	TFuture<float> FuncFloatAsync(float ParamFloat) override;
 	virtual float FuncFloat32(float ParamFloat32) override;
+	TFuture<float> FuncFloat32Async(float ParamFloat32) override;
 	virtual double FuncFloat64(double ParamFloat) override;
+	TFuture<double> FuncFloat64Async(double ParamFloat) override;
 	virtual FString FuncString(const FString& ParamString) override;
+	TFuture<FString> FuncStringAsync(const FString& ParamString) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbSimpleJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
