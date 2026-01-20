@@ -325,6 +325,7 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceJniClient::Func1(const FTbSame2Struc
 	else
 	{
 		UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient:func1Async (Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V not found"));
+		Promise.SetValue(FTbSame2Struct1());
 	}
 #endif
 	return Promise.GetFuture().Get();

@@ -319,6 +319,7 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 	else
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync (Ljava/lang/String;I)V not found"));
+		Promise.SetValue(0);
 	}
 #endif
 	return Promise.GetFuture().Get();
