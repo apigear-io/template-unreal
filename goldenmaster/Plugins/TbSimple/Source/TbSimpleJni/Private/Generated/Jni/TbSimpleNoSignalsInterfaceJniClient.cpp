@@ -378,8 +378,10 @@ void UTbSimpleNoSignalsInterfaceJniClient::FuncVoid()
 	{
 		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:funcVoidAsync (Ljava/lang/String;)V not found"));
 	}
-#endif
 	return;
+#else
+	return;
+#endif
 }
 bool UTbSimpleNoSignalsInterfaceJniClient::FuncBool(bool bInParamBool)
 {
@@ -393,7 +395,6 @@ bool UTbSimpleNoSignalsInterfaceJniClient::FuncBool(bool bInParamBool)
 #endif
 		return false;
 	}
-	TPromise<bool> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	auto Cache = UTbSimpleNoSignalsInterfaceJniClientCache::Get();
@@ -402,6 +403,7 @@ bool UTbSimpleNoSignalsInterfaceJniClient::FuncBool(bool bInParamBool)
 		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Z)V CLASS not found"));
 		return false;
 	}
+	TPromise<bool> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
@@ -421,8 +423,10 @@ bool UTbSimpleNoSignalsInterfaceJniClient::FuncBool(bool bInParamBool)
 		UE_LOG(LogTbSimpleNoSignalsInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
 		Promise.SetValue(false);
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return false;
+#endif
 }
 
 bool UTbSimpleNoSignalsInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)

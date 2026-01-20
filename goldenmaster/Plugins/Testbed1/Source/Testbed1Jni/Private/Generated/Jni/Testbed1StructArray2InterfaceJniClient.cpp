@@ -545,7 +545,6 @@ TArray<FTestbed1StructBool> UTestbed1StructArray2InterfaceJniClient::FuncBool(co
 #endif
 		return TArray<FTestbed1StructBool>();
 	}
-	TPromise<TArray<FTestbed1StructBool>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	auto Cache = UTestbed1StructArray2InterfaceJniClientCache::Get();
@@ -554,6 +553,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArray2InterfaceJniClient::FuncBool(co
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Ltestbed1/testbed1_api/StructBoolWithArray;)V CLASS not found"));
 		return TArray<FTestbed1StructBool>();
 	}
+	TPromise<TArray<FTestbed1StructBool>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
@@ -575,8 +575,10 @@ TArray<FTestbed1StructBool> UTestbed1StructArray2InterfaceJniClient::FuncBool(co
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcBoolAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructBoolWithArray;)V not found"));
 		Promise.SetValue(TArray<FTestbed1StructBool>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<FTestbed1StructBool>();
+#endif
 }
 TArray<FTestbed1StructInt> UTestbed1StructArray2InterfaceJniClient::FuncInt(const FTestbed1StructIntWithArray& InParamInt)
 {
@@ -590,7 +592,6 @@ TArray<FTestbed1StructInt> UTestbed1StructArray2InterfaceJniClient::FuncInt(cons
 #endif
 		return TArray<FTestbed1StructInt>();
 	}
-	TPromise<TArray<FTestbed1StructInt>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	auto Cache = UTestbed1StructArray2InterfaceJniClientCache::Get();
@@ -599,6 +600,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArray2InterfaceJniClient::FuncInt(cons
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcIntAsync:(Ljava/lang/String;Ltestbed1/testbed1_api/StructIntWithArray;)V CLASS not found"));
 		return TArray<FTestbed1StructInt>();
 	}
+	TPromise<TArray<FTestbed1StructInt>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncIntAsyncMethodID;
 	if (MethodID != nullptr)
@@ -620,8 +622,10 @@ TArray<FTestbed1StructInt> UTestbed1StructArray2InterfaceJniClient::FuncInt(cons
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcIntAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructIntWithArray;)V not found"));
 		Promise.SetValue(TArray<FTestbed1StructInt>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<FTestbed1StructInt>();
+#endif
 }
 TArray<FTestbed1StructFloat> UTestbed1StructArray2InterfaceJniClient::FuncFloat(const FTestbed1StructFloatWithArray& InParamFloat)
 {
@@ -635,7 +639,6 @@ TArray<FTestbed1StructFloat> UTestbed1StructArray2InterfaceJniClient::FuncFloat(
 #endif
 		return TArray<FTestbed1StructFloat>();
 	}
-	TPromise<TArray<FTestbed1StructFloat>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	auto Cache = UTestbed1StructArray2InterfaceJniClientCache::Get();
@@ -644,6 +647,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArray2InterfaceJniClient::FuncFloat(
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcFloatAsync:(Ljava/lang/String;Ltestbed1/testbed1_api/StructFloatWithArray;)V CLASS not found"));
 		return TArray<FTestbed1StructFloat>();
 	}
+	TPromise<TArray<FTestbed1StructFloat>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncFloatAsyncMethodID;
 	if (MethodID != nullptr)
@@ -665,8 +669,10 @@ TArray<FTestbed1StructFloat> UTestbed1StructArray2InterfaceJniClient::FuncFloat(
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcFloatAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructFloatWithArray;)V not found"));
 		Promise.SetValue(TArray<FTestbed1StructFloat>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<FTestbed1StructFloat>();
+#endif
 }
 TArray<FTestbed1StructString> UTestbed1StructArray2InterfaceJniClient::FuncString(const FTestbed1StructStringWithArray& InParamString)
 {
@@ -680,7 +686,6 @@ TArray<FTestbed1StructString> UTestbed1StructArray2InterfaceJniClient::FuncStrin
 #endif
 		return TArray<FTestbed1StructString>();
 	}
-	TPromise<TArray<FTestbed1StructString>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	auto Cache = UTestbed1StructArray2InterfaceJniClientCache::Get();
@@ -689,6 +694,7 @@ TArray<FTestbed1StructString> UTestbed1StructArray2InterfaceJniClient::FuncStrin
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcStringAsync:(Ljava/lang/String;Ltestbed1/testbed1_api/StructStringWithArray;)V CLASS not found"));
 		return TArray<FTestbed1StructString>();
 	}
+	TPromise<TArray<FTestbed1StructString>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncStringAsyncMethodID;
 	if (MethodID != nullptr)
@@ -710,8 +716,10 @@ TArray<FTestbed1StructString> UTestbed1StructArray2InterfaceJniClient::FuncStrin
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcStringAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructStringWithArray;)V not found"));
 		Promise.SetValue(TArray<FTestbed1StructString>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<FTestbed1StructString>();
+#endif
 }
 TArray<ETestbed1Enum0> UTestbed1StructArray2InterfaceJniClient::FuncEnum(const FTestbed1StructEnumWithArray& InParamEnum)
 {
@@ -725,7 +733,6 @@ TArray<ETestbed1Enum0> UTestbed1StructArray2InterfaceJniClient::FuncEnum(const F
 #endif
 		return TArray<ETestbed1Enum0>();
 	}
-	TPromise<TArray<ETestbed1Enum0>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	auto Cache = UTestbed1StructArray2InterfaceJniClientCache::Get();
@@ -734,6 +741,7 @@ TArray<ETestbed1Enum0> UTestbed1StructArray2InterfaceJniClient::FuncEnum(const F
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcEnumAsync:(Ljava/lang/String;Ltestbed1/testbed1_api/StructEnumWithArray;)V CLASS not found"));
 		return TArray<ETestbed1Enum0>();
 	}
+	TPromise<TArray<ETestbed1Enum0>> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->FuncEnumAsyncMethodID;
 	if (MethodID != nullptr)
@@ -755,8 +763,10 @@ TArray<ETestbed1Enum0> UTestbed1StructArray2InterfaceJniClient::FuncEnum(const F
 		UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArray2InterfaceJniClient:funcEnumAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructEnumWithArray;)V not found"));
 		Promise.SetValue(TArray<ETestbed1Enum0>());
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return TArray<ETestbed1Enum0>();
+#endif
 }
 
 bool UTestbed1StructArray2InterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
