@@ -16,6 +16,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}JniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -109,6 +110,13 @@ private:
 	{{- if $i }}{{nl}}{{ end }}
 	void On{{Camel .Name}}Changed({{ueParam "In" .}}) override;
 {{- end }}
+{{- if or (len .Interface.Properties) (len .Interface.Signals) }}{{ nl }}{{ end }}
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+{{- range $i, $e := .Interface.Operations }}
+{{- if $i }}{{nl}}{{ end }}
+	bool tryCallAsyncJava{{Camel .Name}}(FGuid Guid, jmethodID MethodId{{- if len (.Params) }}, {{end}}{{ueParams "In" .Params}});
+{{- end }}
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

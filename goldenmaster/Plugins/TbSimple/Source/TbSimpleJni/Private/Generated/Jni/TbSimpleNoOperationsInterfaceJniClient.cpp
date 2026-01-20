@@ -490,6 +490,9 @@ void UTbSimpleNoOperationsInterfaceJniClient::OnPropIntChanged(int32 InPropInt)
 		});
 }
 
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#endif
+
 void UTbSimpleNoOperationsInterfaceJniClient::notifyIsReady(bool bInIsReady)
 {
 	b_isReady.store(bInIsReady, std::memory_order_release);

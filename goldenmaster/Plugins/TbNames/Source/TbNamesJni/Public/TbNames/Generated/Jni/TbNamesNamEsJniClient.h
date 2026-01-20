@@ -7,6 +7,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbNames/Generated/Jni/TbNamesJniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -104,6 +105,12 @@ private:
 	void OnSomePoperty2Changed(int32 InSomePoperty2) override;
 
 	void OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaSomeFunction(FGuid Guid, jmethodID MethodId, bool bInSomeParam);
+
+	bool tryCallAsyncJavaSomeFunction2(FGuid Guid, jmethodID MethodId, bool bInSomeParam);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

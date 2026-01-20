@@ -7,6 +7,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed1/Generated/Jni/Testbed1JniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -121,6 +122,18 @@ private:
 	void OnPropStringChanged(const FTestbed1StructStringWithArray& InPropString) override;
 
 	void OnPropEnumChanged(const FTestbed1StructEnumWithArray& InPropEnum) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFuncBool(FGuid Guid, jmethodID MethodId, const FTestbed1StructBoolWithArray& InParamBool);
+
+	bool tryCallAsyncJavaFuncInt(FGuid Guid, jmethodID MethodId, const FTestbed1StructIntWithArray& InParamInt);
+
+	bool tryCallAsyncJavaFuncFloat(FGuid Guid, jmethodID MethodId, const FTestbed1StructFloatWithArray& InParamFloat);
+
+	bool tryCallAsyncJavaFuncString(FGuid Guid, jmethodID MethodId, const FTestbed1StructStringWithArray& InParamString);
+
+	bool tryCallAsyncJavaFuncEnum(FGuid Guid, jmethodID MethodId, const FTestbed1StructEnumWithArray& InParamEnum);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};
