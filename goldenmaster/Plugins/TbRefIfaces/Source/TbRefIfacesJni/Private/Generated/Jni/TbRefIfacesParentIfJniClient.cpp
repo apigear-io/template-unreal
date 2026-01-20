@@ -487,17 +487,10 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfJniClie
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call localIfMethodAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
-		// interfaces are currently not supported. TbRefIfacesDataJavaConverter returns nullptr.
-		jobject jlocal_Param = TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(Env, InParam);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param);
-
-		static const TCHAR* errorMsg = TEXT("failed to call localIfMethodAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient.");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
-		Env->DeleteLocalRef(jlocal_Param);
+		if (!tryCallAsyncJavaLocalIfMethod(id, MethodID, InParam))
+		{
+			return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
+		}
 	}
 	else
 	{
@@ -536,17 +529,10 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call localIfMethodListAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
-		// interfaces are currently not supported. TbRefIfacesDataJavaConverter returns empty array.
-		jobjectArray jlocal_Param = TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(Env, InParam);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param);
-
-		static const TCHAR* errorMsg = TEXT("failed to call localIfMethodListAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient.");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
-		Env->DeleteLocalRef(jlocal_Param);
+		if (!tryCallAsyncJavaLocalIfMethodList(id, MethodID, InParam))
+		{
+			return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+		}
 	}
 	else
 	{
@@ -585,17 +571,10 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfJniClient::
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call importedIfMethodAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
-		// interfaces are currently not supported. TbIfaceimportDataJavaConverter returns nullptr.
-		jobject jlocal_Param = TbIfaceimportDataJavaConverter::makeJavaEmptyIf(Env, InParam);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param);
-
-		static const TCHAR* errorMsg = TEXT("failed to call importedIfMethodAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient.");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
-		Env->DeleteLocalRef(jlocal_Param);
+		if (!tryCallAsyncJavaImportedIfMethod(id, MethodID, InParam))
+		{
+			return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+		}
 	}
 	else
 	{
@@ -634,17 +613,10 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfJni
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call importedIfMethodListAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
-		// interfaces are currently not supported. TbIfaceimportDataJavaConverter returns empty array.
-		jobjectArray jlocal_Param = TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(Env, InParam);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param);
-
-		static const TCHAR* errorMsg = TEXT("failed to call importedIfMethodListAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient.");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
-		Env->DeleteLocalRef(jlocal_Param);
+		if (!tryCallAsyncJavaImportedIfMethodList(id, MethodID, InParam))
+		{
+			return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+		}
 	}
 	else
 	{
@@ -953,6 +925,116 @@ void UTbRefIfacesParentIfJniClient::OnImportedIfListChanged(const TArray<TScript
 		}
 		});
 }
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+bool UTbRefIfacesParentIfJniClient::tryCallAsyncJavaLocalIfMethod(FGuid Guid, jmethodID MethodID, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
+{
+	UE_LOG(LogTbRefIfacesParentIfClient_JNI, Verbose, TEXT("call async tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:localIfMethod"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call localIfMethodAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
+	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	{
+		// interfaces are currently not supported. TbRefIfacesDataJavaConverter returns nullptr.
+		jobject jlocal_Param = TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(Env, InParam);
+
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param);
+
+		static const TCHAR* errorMsg = TEXT("failed to call localIfMethodAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient.");
+		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		Env->DeleteLocalRef(jlocal_Param);
+	}
+
+	return true;
+}
+
+bool UTbRefIfacesParentIfJniClient::tryCallAsyncJavaLocalIfMethodList(FGuid Guid, jmethodID MethodID, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
+{
+	UE_LOG(LogTbRefIfacesParentIfClient_JNI, Verbose, TEXT("call async tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:localIfMethodList"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call localIfMethodListAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
+	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	{
+		// interfaces are currently not supported. TbRefIfacesDataJavaConverter returns empty array.
+		jobjectArray jlocal_Param = TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(Env, InParam);
+
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param);
+
+		static const TCHAR* errorMsg = TEXT("failed to call localIfMethodListAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient.");
+		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		Env->DeleteLocalRef(jlocal_Param);
+	}
+
+	return true;
+}
+
+bool UTbRefIfacesParentIfJniClient::tryCallAsyncJavaImportedIfMethod(FGuid Guid, jmethodID MethodID, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
+{
+	UE_LOG(LogTbRefIfacesParentIfClient_JNI, Verbose, TEXT("call async tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:importedIfMethod"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call importedIfMethodAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
+	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	{
+		// interfaces are currently not supported. TbIfaceimportDataJavaConverter returns nullptr.
+		jobject jlocal_Param = TbIfaceimportDataJavaConverter::makeJavaEmptyIf(Env, InParam);
+
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param);
+
+		static const TCHAR* errorMsg = TEXT("failed to call importedIfMethodAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient.");
+		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		Env->DeleteLocalRef(jlocal_Param);
+	}
+
+	return true;
+}
+
+bool UTbRefIfacesParentIfJniClient::tryCallAsyncJavaImportedIfMethodList(FGuid Guid, jmethodID MethodID, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
+{
+	UE_LOG(LogTbRefIfacesParentIfClient_JNI, Verbose, TEXT("call async tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:importedIfMethodList"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call importedIfMethodListAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
+	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	{
+		// interfaces are currently not supported. TbIfaceimportDataJavaConverter returns empty array.
+		jobjectArray jlocal_Param = TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(Env, InParam);
+
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param);
+
+		static const TCHAR* errorMsg = TEXT("failed to call importedIfMethodListAsync on tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient.");
+		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		Env->DeleteLocalRef(jlocal_Param);
+	}
+
+	return true;
+}
+#endif
 
 void UTbRefIfacesParentIfJniClient::notifyIsReady(bool isReady)
 {

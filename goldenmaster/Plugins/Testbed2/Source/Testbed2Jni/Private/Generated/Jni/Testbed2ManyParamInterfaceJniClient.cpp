@@ -472,14 +472,10 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func1(int32 InParam1)
 	if (MethodID != nullptr)
 	{
 		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1);
-
-		static const TCHAR* errorMsg = TEXT("failed to call func1Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		if (!tryCallAsyncJavaFunc1(id, MethodID, InParam1))
+		{
+			return 0;
+		}
 	}
 	else
 	{
@@ -518,14 +514,10 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func2(int32 InParam1, int32 InParam2
 	if (MethodID != nullptr)
 	{
 		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2);
-
-		static const TCHAR* errorMsg = TEXT("failed to call func2Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		if (!tryCallAsyncJavaFunc2(id, MethodID, InParam1, InParam2))
+		{
+			return 0;
+		}
 	}
 	else
 	{
@@ -564,14 +556,10 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func3(int32 InParam1, int32 InParam2
 	if (MethodID != nullptr)
 	{
 		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func3Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2, InParam3);
-
-		static const TCHAR* errorMsg = TEXT("failed to call func3Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		if (!tryCallAsyncJavaFunc3(id, MethodID, InParam1, InParam2, InParam3))
+		{
+			return 0;
+		}
 	}
 	else
 	{
@@ -610,14 +598,10 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func4(int32 InParam1, int32 InParam2
 	if (MethodID != nullptr)
 	{
 		auto id = gUTestbed2ManyParamInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func4Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2, InParam3, InParam4);
-
-		static const TCHAR* errorMsg = TEXT("failed to call func4Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		if (!tryCallAsyncJavaFunc4(id, MethodID, InParam1, InParam2, InParam3, InParam4))
+		{
+			return 0;
+		}
 	}
 	else
 	{
@@ -926,6 +910,104 @@ void UTestbed2ManyParamInterfaceJniClient::OnProp4Changed(int32 InProp4)
 		}
 		});
 }
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodID, int32 InParam1)
+{
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("call async testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
+	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
+	{
+
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1);
+
+		static const TCHAR* errorMsg = TEXT("failed to call func1Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+	}
+
+	return true;
+}
+
+bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodID, int32 InParam1, int32 InParam2)
+{
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("call async testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
+	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
+	{
+
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2);
+
+		static const TCHAR* errorMsg = TEXT("failed to call func2Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+	}
+
+	return true;
+}
+
+bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc3(FGuid Guid, jmethodID MethodID, int32 InParam1, int32 InParam2, int32 InParam3)
+{
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("call async testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func3Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
+	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
+	{
+
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2, InParam3);
+
+		static const TCHAR* errorMsg = TEXT("failed to call func3Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+	}
+
+	return true;
+}
+
+bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc4(FGuid Guid, jmethodID MethodID, int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
+{
+	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("call async testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func4Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
+	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId);
+	{
+
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2, InParam3, InParam4);
+
+		static const TCHAR* errorMsg = TEXT("failed to call func4Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
+		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+	}
+
+	return true;
+}
+#endif
 
 void UTestbed2ManyParamInterfaceJniClient::notifyIsReady(bool isReady)
 {

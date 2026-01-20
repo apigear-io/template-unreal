@@ -21,6 +21,7 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimple/Generated/Jni/TbSimpleJniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -86,6 +87,8 @@ public:
 	void _unbind();
 
 private:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

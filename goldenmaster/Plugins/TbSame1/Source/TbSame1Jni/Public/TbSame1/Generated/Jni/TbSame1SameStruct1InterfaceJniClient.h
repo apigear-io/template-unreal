@@ -21,6 +21,7 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame1/Generated/Jni/TbSame1JniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -95,6 +96,10 @@ private:
 	void OnSig1Signal(const FTbSame1Struct1& InParam1) override;
 
 	void OnProp1Changed(const FTbSame1Struct1& InProp1) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, const FTbSame1Struct1& InParam1);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

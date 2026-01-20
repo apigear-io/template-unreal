@@ -459,14 +459,10 @@ void UTbNamesNamEsJniClient::SomeFunction(bool bInSomeParam)
 	if (MethodID != nullptr)
 	{
 		FGuid id = FGuid::NewGuid();
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call someFunctionAsync on tbNames/tbNamesjniclient/NamEsJniClient");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInSomeParam);
-
-		static const TCHAR* errorMsg = TEXT("failed to call someFunctionAsync on tbNames/tbNamesjniclient/NamEsJniClient.");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		if (!tryCallAsyncJavaSomeFunction(id, MethodID, bInSomeParam))
+		{
+			return;
+		}
 	}
 	else
 	{
@@ -502,14 +498,10 @@ void UTbNamesNamEsJniClient::SomeFunction2(bool bInSomeParam)
 	if (MethodID != nullptr)
 	{
 		FGuid id = FGuid::NewGuid();
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call someFunction2Async on tbNames/tbNamesjniclient/NamEsJniClient");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInSomeParam);
-
-		static const TCHAR* errorMsg = TEXT("failed to call someFunction2Async on tbNames/tbNamesjniclient/NamEsJniClient.");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		if (!tryCallAsyncJavaSomeFunction2(id, MethodID, bInSomeParam))
+		{
+			return;
+		}
 	}
 	else
 	{
@@ -765,6 +757,56 @@ void UTbNamesNamEsJniClient::OnEnumPropertyChanged(ETbNamesEnum_With_Under_score
 		}
 		});
 }
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+bool UTbNamesNamEsJniClient::tryCallAsyncJavaSomeFunction(FGuid Guid, jmethodID MethodID, bool bInSomeParam)
+{
+	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("call async tbNames/tbNamesjniclient/NamEsJniClient:SOME_FUNCTION"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call someFunctionAsync on tbNames/tbNamesjniclient/NamEsJniClient");
+	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	{
+
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInSomeParam);
+
+		static const TCHAR* errorMsg = TEXT("failed to call someFunctionAsync on tbNames/tbNamesjniclient/NamEsJniClient.");
+		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+	}
+
+	return true;
+}
+
+bool UTbNamesNamEsJniClient::tryCallAsyncJavaSomeFunction2(FGuid Guid, jmethodID MethodID, bool bInSomeParam)
+{
+	UE_LOG(LogTbNamesNamEsClient_JNI, Verbose, TEXT("call async tbNames/tbNamesjniclient/NamEsJniClient:Some_Function2"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call someFunction2Async on tbNames/tbNamesjniclient/NamEsJniClient");
+	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	{
+
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInSomeParam);
+
+		static const TCHAR* errorMsg = TEXT("failed to call someFunction2Async on tbNames/tbNamesjniclient/NamEsJniClient.");
+		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+	}
+
+	return true;
+}
+#endif
 
 void UTbNamesNamEsJniClient::notifyIsReady(bool isReady)
 {

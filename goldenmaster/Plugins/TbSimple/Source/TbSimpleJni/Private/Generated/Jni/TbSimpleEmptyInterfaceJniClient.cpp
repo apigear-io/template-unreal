@@ -295,6 +295,9 @@ bool UTbSimpleEmptyInterfaceJniClient::_IsReady() const
 	return b_isReady.load(std::memory_order_acquire);
 }
 
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#endif
+
 void UTbSimpleEmptyInterfaceJniClient::notifyIsReady(bool isReady)
 {
 	b_isReady.store(isReady, std::memory_order_release);

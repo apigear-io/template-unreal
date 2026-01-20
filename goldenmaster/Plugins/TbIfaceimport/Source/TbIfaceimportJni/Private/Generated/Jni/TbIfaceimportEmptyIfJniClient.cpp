@@ -295,6 +295,9 @@ bool UTbIfaceimportEmptyIfJniClient::_IsReady() const
 	return b_isReady.load(std::memory_order_acquire);
 }
 
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#endif
+
 void UTbIfaceimportEmptyIfJniClient::notifyIsReady(bool isReady)
 {
 	b_isReady.store(isReady, std::memory_order_release);

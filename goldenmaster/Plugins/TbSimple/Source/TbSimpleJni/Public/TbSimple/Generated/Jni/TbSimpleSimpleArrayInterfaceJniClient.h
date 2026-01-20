@@ -21,6 +21,7 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimple/Generated/Jni/TbSimpleJniConnectionStatus.h"
 #include <memory>
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -177,6 +178,24 @@ private:
 	void OnPropStringChanged(const TArray<FString>& InPropString) override;
 
 	void OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFuncBool(FGuid Guid, jmethodID MethodId, const TArray<bool>& InParamBool);
+
+	bool tryCallAsyncJavaFuncInt(FGuid Guid, jmethodID MethodId, const TArray<int32>& InParamInt);
+
+	bool tryCallAsyncJavaFuncInt32(FGuid Guid, jmethodID MethodId, const TArray<int32>& InParamInt32);
+
+	bool tryCallAsyncJavaFuncInt64(FGuid Guid, jmethodID MethodId, const TArray<int64>& InParamInt64);
+
+	bool tryCallAsyncJavaFuncFloat(FGuid Guid, jmethodID MethodId, const TArray<float>& InParamFloat);
+
+	bool tryCallAsyncJavaFuncFloat32(FGuid Guid, jmethodID MethodId, const TArray<float>& InParamFloat32);
+
+	bool tryCallAsyncJavaFuncFloat64(FGuid Guid, jmethodID MethodId, const TArray<double>& InParamFloat);
+
+	bool tryCallAsyncJavaFuncString(FGuid Guid, jmethodID MethodId, const TArray<FString>& InParamString);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};
