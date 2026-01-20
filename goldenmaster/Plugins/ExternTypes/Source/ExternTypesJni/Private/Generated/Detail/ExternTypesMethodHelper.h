@@ -20,6 +20,9 @@ limitations under the License.
 #include "Containers/Map.h"
 #include "HAL/CriticalSection.h"
 #include "Misc/Guid.h"
+#include "Templates/UniquePtr.h"
+
+#include "Generated/Detail/ExternTypesPromiseHolder.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogExternTypesMethodHelper_JNI, Log, All);
 
@@ -31,26 +34,41 @@ public:
 	{
 	}
 
+	void FlushPendingPromises()
+	{
+		TMap<FGuid, TUniquePtr<IExternTypesPromiseHolder>> ReplyPromisesMapCopy;
+		{
+			FScopeLock Lock(&ReplyPromisesMapCS);
+			ReplyPromisesMapCopy = MoveTemp(ReplyPromisesMap);
+		}
+
+		for (auto& Element : ReplyPromisesMapCopy)
+		{
+			Element.Value->FulfillWithDefaultValue();
+		}
+	}
+
 	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& InPromise);
+	FGuid StorePromise(TPromise<ResultType>&& InPromise);
 
 	template <typename ResultType>
 	bool FulfillPromise(const FGuid& InId, const ResultType& InValue);
 
 private:
-	TMap<FGuid, void*> ReplyPromisesMap;
+	TMap<FGuid, TUniquePtr<IExternTypesPromiseHolder>> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;
 	FString OwnerName;
 };
 
 template <typename ResultType>
-FGuid FExternTypesMethodHelper::StorePromise(TPromise<ResultType>& Promise)
+FGuid FExternTypesMethodHelper::StorePromise(TPromise<ResultType>&& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
+		ReplyPromisesMap.Add(
+			Id, MakeUnique<TExternTypesPromiseHolder<ResultType>>(MoveTemp(Promise)));
 	}
 
 	UE_LOG(
@@ -73,20 +91,25 @@ bool FExternTypesMethodHelper::FulfillPromise(const FGuid& Id, const ResultType&
 		*(Id.ToString(EGuidFormats::Digits)),
 		*OwnerName);
 
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TUniquePtr<TExternTypesPromiseHolder<ResultType>> PromiseHolderPtr;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromisesMap.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
+			PromiseHolderPtr.Reset(
+				static_cast<TExternTypesPromiseHolder<ResultType>*>(Found->Release()));
 			ReplyPromisesMap.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (PromiseHolderPtr)
 	{
-		PromisePtr->SetValue(Value);
+		PromiseHolderPtr->VisitPromise(
+			[&](TPromise<ResultType>& Promise)
+			{
+			Promise.SetValue(Value);
+		});
 		return true;
 	}
 

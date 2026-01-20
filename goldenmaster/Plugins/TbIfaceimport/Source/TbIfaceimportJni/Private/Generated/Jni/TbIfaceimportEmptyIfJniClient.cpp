@@ -204,6 +204,8 @@ void UTbIfaceimportEmptyIfJniClient::Deinitialize()
 	UTbIfaceimportEmptyIfJniClientCache::clear();
 #endif
 
+	gUTbIfaceimportEmptyIfJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 

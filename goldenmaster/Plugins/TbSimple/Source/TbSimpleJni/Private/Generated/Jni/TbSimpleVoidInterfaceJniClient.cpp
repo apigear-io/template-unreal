@@ -211,6 +211,8 @@ void UTbSimpleVoidInterfaceJniClient::Deinitialize()
 	UTbSimpleVoidInterfaceJniClientCache::clear();
 #endif
 
+	gUTbSimpleVoidInterfaceJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 void UTbSimpleVoidInterfaceJniClient::FuncVoid()

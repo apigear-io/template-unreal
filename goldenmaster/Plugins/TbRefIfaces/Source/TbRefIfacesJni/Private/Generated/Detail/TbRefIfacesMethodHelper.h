@@ -20,6 +20,9 @@ limitations under the License.
 #include "Containers/Map.h"
 #include "HAL/CriticalSection.h"
 #include "Misc/Guid.h"
+#include "Templates/UniquePtr.h"
+
+#include "Generated/Detail/TbRefIfacesPromiseHolder.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesMethodHelper_JNI, Log, All);
 
@@ -31,26 +34,41 @@ public:
 	{
 	}
 
+	void FlushPendingPromises()
+	{
+		TMap<FGuid, TUniquePtr<ITbRefIfacesPromiseHolder>> ReplyPromisesMapCopy;
+		{
+			FScopeLock Lock(&ReplyPromisesMapCS);
+			ReplyPromisesMapCopy = MoveTemp(ReplyPromisesMap);
+		}
+
+		for (auto& Element : ReplyPromisesMapCopy)
+		{
+			Element.Value->FulfillWithDefaultValue();
+		}
+	}
+
 	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& InPromise);
+	FGuid StorePromise(TPromise<ResultType>&& InPromise);
 
 	template <typename ResultType>
 	bool FulfillPromise(const FGuid& InId, const ResultType& InValue);
 
 private:
-	TMap<FGuid, void*> ReplyPromisesMap;
+	TMap<FGuid, TUniquePtr<ITbRefIfacesPromiseHolder>> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;
 	FString OwnerName;
 };
 
 template <typename ResultType>
-FGuid FTbRefIfacesMethodHelper::StorePromise(TPromise<ResultType>& Promise)
+FGuid FTbRefIfacesMethodHelper::StorePromise(TPromise<ResultType>&& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
+		ReplyPromisesMap.Add(
+			Id, MakeUnique<TTbRefIfacesPromiseHolder<ResultType>>(MoveTemp(Promise)));
 	}
 
 	UE_LOG(
@@ -73,20 +91,25 @@ bool FTbRefIfacesMethodHelper::FulfillPromise(const FGuid& Id, const ResultType&
 		*(Id.ToString(EGuidFormats::Digits)),
 		*OwnerName);
 
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TUniquePtr<TTbRefIfacesPromiseHolder<ResultType>> PromiseHolderPtr;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromisesMap.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
+			PromiseHolderPtr.Reset(
+				static_cast<TTbRefIfacesPromiseHolder<ResultType>*>(Found->Release()));
 			ReplyPromisesMap.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (PromiseHolderPtr)
 	{
-		PromisePtr->SetValue(Value);
+		PromiseHolderPtr->VisitPromise(
+			[&](TPromise<ResultType>& Promise)
+			{
+			Promise.SetValue(Value);
+		});
 		return true;
 	}
 

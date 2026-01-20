@@ -20,6 +20,9 @@ limitations under the License.
 #include "Containers/Map.h"
 #include "HAL/CriticalSection.h"
 #include "Misc/Guid.h"
+#include "Templates/UniquePtr.h"
+
+#include "Generated/Detail/TbSame1PromiseHolder.h"
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTbSame1MethodHelper_JNI, Log, All);
 
@@ -31,26 +34,41 @@ public:
 	{
 	}
 
+	void FlushPendingPromises()
+	{
+		TMap<FGuid, TUniquePtr<ITbSame1PromiseHolder>> ReplyPromisesMapCopy;
+		{
+			FScopeLock Lock(&ReplyPromisesMapCS);
+			ReplyPromisesMapCopy = MoveTemp(ReplyPromisesMap);
+		}
+
+		for (auto& Element : ReplyPromisesMapCopy)
+		{
+			Element.Value->FulfillWithDefaultValue();
+		}
+	}
+
 	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& InPromise);
+	FGuid StorePromise(TPromise<ResultType>&& InPromise);
 
 	template <typename ResultType>
 	bool FulfillPromise(const FGuid& InId, const ResultType& InValue);
 
 private:
-	TMap<FGuid, void*> ReplyPromisesMap;
+	TMap<FGuid, TUniquePtr<ITbSame1PromiseHolder>> ReplyPromisesMap;
 	FCriticalSection ReplyPromisesMapCS;
 	FString OwnerName;
 };
 
 template <typename ResultType>
-FGuid FTbSame1MethodHelper::StorePromise(TPromise<ResultType>& Promise)
+FGuid FTbSame1MethodHelper::StorePromise(TPromise<ResultType>&& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
+		ReplyPromisesMap.Add(
+			Id, MakeUnique<TTbSame1PromiseHolder<ResultType>>(MoveTemp(Promise)));
 	}
 
 	UE_LOG(
@@ -73,20 +91,25 @@ bool FTbSame1MethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Val
 		*(Id.ToString(EGuidFormats::Digits)),
 		*OwnerName);
 
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TUniquePtr<TTbSame1PromiseHolder<ResultType>> PromiseHolderPtr;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromisesMap.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
+			PromiseHolderPtr.Reset(
+				static_cast<TTbSame1PromiseHolder<ResultType>*>(Found->Release()));
 			ReplyPromisesMap.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (PromiseHolderPtr)
 	{
-		PromisePtr->SetValue(Value);
+		PromiseHolderPtr->VisitPromise(
+			[&](TPromise<ResultType>& Promise)
+			{
+			Promise.SetValue(Value);
+		});
 		return true;
 	}
 

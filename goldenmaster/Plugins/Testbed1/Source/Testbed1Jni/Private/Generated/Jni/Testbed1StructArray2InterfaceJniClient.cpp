@@ -275,6 +275,8 @@ void UTestbed1StructArray2InterfaceJniClient::Deinitialize()
 	UTestbed1StructArray2InterfaceJniClientCache::clear();
 #endif
 
+	gUTestbed1StructArray2InterfaceJniClientmethodHelper.FlushPendingPromises();
+
 	Super::Deinitialize();
 }
 FTestbed1StructBoolWithArray UTestbed1StructArray2InterfaceJniClient::GetPropBool() const
@@ -543,7 +545,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArray2InterfaceJniClient::FuncBool(co
 	jmethodID MethodID = Cache->FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed1StructArray2InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed1StructArray2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
 		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -591,7 +593,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArray2InterfaceJniClient::FuncInt(cons
 	jmethodID MethodID = Cache->FuncIntAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed1StructArray2InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed1StructArray2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcIntAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
 		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -639,7 +641,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArray2InterfaceJniClient::FuncFloat(
 	jmethodID MethodID = Cache->FuncFloatAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed1StructArray2InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed1StructArray2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloatAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
 		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -687,7 +689,7 @@ TArray<FTestbed1StructString> UTestbed1StructArray2InterfaceJniClient::FuncStrin
 	jmethodID MethodID = Cache->FuncStringAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed1StructArray2InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed1StructArray2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcStringAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
 		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId);
@@ -735,7 +737,7 @@ TArray<ETestbed1Enum0> UTestbed1StructArray2InterfaceJniClient::FuncEnum(const F
 	jmethodID MethodID = Cache->FuncEnumAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTestbed1StructArray2InterfaceJniClientmethodHelper.StorePromise(Promise);
+		auto id = gUTestbed1StructArray2InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcEnumAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
 		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId);
