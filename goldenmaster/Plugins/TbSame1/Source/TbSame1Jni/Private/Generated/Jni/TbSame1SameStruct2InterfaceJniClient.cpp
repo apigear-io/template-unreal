@@ -387,6 +387,7 @@ FTbSame1Struct1 UTbSame1SameStruct2InterfaceJniClient::Func1(const FTbSame1Struc
 	else
 	{
 		UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Warning, TEXT("tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient:func1Async (Ljava/lang/String;LtbSame1/tbSame1_api/Struct1;)V not found"));
+		Promise.SetValue(FTbSame1Struct1());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -433,6 +434,7 @@ FTbSame1Struct1 UTbSame1SameStruct2InterfaceJniClient::Func2(const FTbSame1Struc
 	else
 	{
 		UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Warning, TEXT("tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient:func2Async (Ljava/lang/String;LtbSame1/tbSame1_api/Struct1;LtbSame1/tbSame1_api/Struct2;)V not found"));
+		Promise.SetValue(FTbSame1Struct1());
 	}
 #endif
 	return Promise.GetFuture().Get();

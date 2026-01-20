@@ -315,6 +315,7 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::FuncBool(bool bInParamBool)
 	else
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
+		Promise.SetValue(false);
 	}
 #endif
 	return Promise.GetFuture().Get();

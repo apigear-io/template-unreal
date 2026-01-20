@@ -573,6 +573,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceJniClient::FuncBool(con
 	else
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcBoolAsync (Ljava/lang/String;[Ltestbed1/testbed1_api/StructBool;)V not found"));
+		Promise.SetValue(TArray<FTestbed1StructBool>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -617,6 +618,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceJniClient::FuncInt(const
 	else
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcIntAsync (Ljava/lang/String;[Ltestbed1/testbed1_api/StructInt;)V not found"));
+		Promise.SetValue(TArray<FTestbed1StructInt>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -661,6 +663,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceJniClient::FuncFloat(c
 	else
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcFloatAsync (Ljava/lang/String;[Ltestbed1/testbed1_api/StructFloat;)V not found"));
+		Promise.SetValue(TArray<FTestbed1StructFloat>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -705,6 +708,7 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceJniClient::FuncString
 	else
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcStringAsync (Ljava/lang/String;[Ltestbed1/testbed1_api/StructString;)V not found"));
+		Promise.SetValue(TArray<FTestbed1StructString>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -749,6 +753,7 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceJniClient::FuncEnum(const TA
 	else
 	{
 		UE_LOG(LogTestbed1StructArrayInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructArrayInterfaceJniClient:funcEnumAsync (Ljava/lang/String;[Ltestbed1/testbed1_api/Enum0;)V not found"));
+		Promise.SetValue(TArray<ETestbed1Enum0>());
 	}
 #endif
 	return Promise.GetFuture().Get();

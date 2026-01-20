@@ -511,6 +511,7 @@ FTestbed1StructBool UTestbed1StructInterfaceJniClient::FuncBool(const FTestbed1S
 	else
 	{
 		UE_LOG(LogTestbed1StructInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructBool;)V not found"));
+		Promise.SetValue(FTestbed1StructBool());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -555,6 +556,7 @@ FTestbed1StructInt UTestbed1StructInterfaceJniClient::FuncInt(const FTestbed1Str
 	else
 	{
 		UE_LOG(LogTestbed1StructInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructInterfaceJniClient:funcIntAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructInt;)V not found"));
+		Promise.SetValue(FTestbed1StructInt());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -599,6 +601,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceJniClient::FuncFloat(const FTestbed
 	else
 	{
 		UE_LOG(LogTestbed1StructInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructInterfaceJniClient:funcFloatAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructFloat;)V not found"));
+		Promise.SetValue(FTestbed1StructFloat());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -643,6 +646,7 @@ FTestbed1StructString UTestbed1StructInterfaceJniClient::FuncString(const FTestb
 	else
 	{
 		UE_LOG(LogTestbed1StructInterfaceClient_JNI, Warning, TEXT("testbed1/testbed1jniclient/StructInterfaceJniClient:funcStringAsync (Ljava/lang/String;Ltestbed1/testbed1_api/StructString;)V not found"));
+		Promise.SetValue(FTestbed1StructString());
 	}
 #endif
 	return Promise.GetFuture().Get();

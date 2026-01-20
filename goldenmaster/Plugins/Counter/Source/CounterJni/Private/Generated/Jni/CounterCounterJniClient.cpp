@@ -510,6 +510,7 @@ FVector UCounterCounterJniClient::Increment(const FVector& InVec)
 	else
 	{
 		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementAsync (Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
+		Promise.SetValue(FVector(0.f, 0.f, 0.f));
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -554,6 +555,7 @@ TArray<FVector> UCounterCounterJniClient::IncrementArray(const TArray<FVector>& 
 	else
 	{
 		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:incrementArrayAsync (Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
+		Promise.SetValue(TArray<FVector>());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -598,6 +600,7 @@ FCustomTypesVector3D UCounterCounterJniClient::Decrement(const FCustomTypesVecto
 	else
 	{
 		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementAsync (Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V not found"));
+		Promise.SetValue(FCustomTypesVector3D());
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -642,6 +645,7 @@ TArray<FCustomTypesVector3D> UCounterCounterJniClient::DecrementArray(const TArr
 	else
 	{
 		UE_LOG(LogCounterCounterClient_JNI, Warning, TEXT("counter/counterjniclient/CounterJniClient:decrementArrayAsync (Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V not found"));
+		Promise.SetValue(TArray<FCustomTypesVector3D>());
 	}
 #endif
 	return Promise.GetFuture().Get();

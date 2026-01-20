@@ -497,6 +497,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func1(int32 InParam1)
 	else
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func1Async (Ljava/lang/String;I)V not found"));
+		Promise.SetValue(0);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -539,6 +540,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func2(int32 InParam1, int32 InParam2
 	else
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func2Async (Ljava/lang/String;II)V not found"));
+		Promise.SetValue(0);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -581,6 +583,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func3(int32 InParam1, int32 InParam2
 	else
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func3Async (Ljava/lang/String;III)V not found"));
+		Promise.SetValue(0);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -623,6 +626,7 @@ int32 UTestbed2ManyParamInterfaceJniClient::Func4(int32 InParam1, int32 InParam2
 	else
 	{
 		UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Warning, TEXT("testbed2/testbed2jniclient/ManyParamInterfaceJniClient:func4Async (Ljava/lang/String;IIII)V not found"));
+		Promise.SetValue(0);
 	}
 #endif
 	return Promise.GetFuture().Get();

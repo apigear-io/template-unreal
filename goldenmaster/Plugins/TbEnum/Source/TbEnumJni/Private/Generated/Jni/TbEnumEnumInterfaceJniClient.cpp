@@ -511,6 +511,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::Func0(ETbEnumEnum0 InParam0)
 	else
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func0Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V not found"));
+		Promise.SetValue(ETbEnumEnum0::TEE0_Value0);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -555,6 +556,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::Func1(ETbEnumEnum1 InParam1)
 	else
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func1Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V not found"));
+		Promise.SetValue(ETbEnumEnum1::TEE1_Value1);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -599,6 +601,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::Func2(ETbEnumEnum2 InParam2)
 	else
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func2Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V not found"));
+		Promise.SetValue(ETbEnumEnum2::TEE2_Value2);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -643,6 +646,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::Func3(ETbEnumEnum3 InParam3)
 	else
 	{
 		UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Warning, TEXT("tbEnum/tbEnumjniclient/EnumInterfaceJniClient:func3Async (Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V not found"));
+		Promise.SetValue(ETbEnumEnum3::TEE3_Value3);
 	}
 #endif
 	return Promise.GetFuture().Get();

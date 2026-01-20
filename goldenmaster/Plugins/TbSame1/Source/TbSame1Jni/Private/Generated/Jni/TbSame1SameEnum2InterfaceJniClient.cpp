@@ -387,6 +387,7 @@ ETbSame1Enum1 UTbSame1SameEnum2InterfaceJniClient::Func1(ETbSame1Enum1 InParam1)
 	else
 	{
 		UE_LOG(LogTbSame1SameEnum2InterfaceClient_JNI, Warning, TEXT("tbSame1/tbSame1jniclient/SameEnum2InterfaceJniClient:func1Async (Ljava/lang/String;LtbSame1/tbSame1_api/Enum1;)V not found"));
+		Promise.SetValue(ETbSame1Enum1::TS1E1_Value1);
 	}
 #endif
 	return Promise.GetFuture().Get();
@@ -433,6 +434,7 @@ ETbSame1Enum1 UTbSame1SameEnum2InterfaceJniClient::Func2(ETbSame1Enum1 InParam1,
 	else
 	{
 		UE_LOG(LogTbSame1SameEnum2InterfaceClient_JNI, Warning, TEXT("tbSame1/tbSame1jniclient/SameEnum2InterfaceJniClient:func2Async (Ljava/lang/String;LtbSame1/tbSame1_api/Enum1;LtbSame1/tbSame1_api/Enum2;)V not found"));
+		Promise.SetValue(ETbSame1Enum1::TS1E1_Value1);
 	}
 #endif
 	return Promise.GetFuture().Get();
