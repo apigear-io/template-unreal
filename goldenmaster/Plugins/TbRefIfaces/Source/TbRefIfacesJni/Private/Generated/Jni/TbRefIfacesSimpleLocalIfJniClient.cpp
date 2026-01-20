@@ -293,7 +293,6 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 #endif
 		return 0;
 	}
-	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	auto Cache = UTbRefIfacesSimpleLocalIfJniClientCache::Get();
@@ -302,6 +301,7 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync:(Ljava/lang/String;I)V CLASS not found"));
 		return 0;
 	}
+	TPromise<int32> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->IntMethodAsyncMethodID;
 	if (MethodID != nullptr)
@@ -321,8 +321,10 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync (Ljava/lang/String;I)V not found"));
 		Promise.SetValue(0);
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return 0;
+#endif
 }
 
 bool UTbRefIfacesSimpleLocalIfJniClient::_bindToService(FString servicePackage, FString connectionId)

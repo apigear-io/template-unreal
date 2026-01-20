@@ -406,9 +406,6 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 #endif
 		return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
 	}
-	{{- if not .Return.IsVoid }}
-	TPromise<{{ueReturn "" .Return}}> Promise;
-	{{- end}}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	auto Cache = {{$Class}}Cache::Get();
@@ -418,6 +415,9 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async:(Ljava/lang/String;{{$signatureParams}})V CLASS not found"));
 		return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
 	}
+	{{- if not .Return.IsVoid }}
+	TPromise<{{ueReturn "" .Return}}> Promise;
+	{{- end}}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->{{Camel .Name}}AsyncMethodID;
 	if (MethodID != nullptr)
@@ -464,8 +464,10 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 		Promise.SetValue({{ueDefault "" .Return }});
 		{{- end}}
 	}
-#endif
 	return{{ if not .Return.IsVoid }} Promise.GetFuture().Get() {{- end}};
+#else
+	return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
+#endif
 }
 
 {{- end }}

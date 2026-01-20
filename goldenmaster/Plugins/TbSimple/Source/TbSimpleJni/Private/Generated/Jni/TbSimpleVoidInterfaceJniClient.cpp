@@ -267,8 +267,10 @@ void UTbSimpleVoidInterfaceJniClient::FuncVoid()
 	{
 		UE_LOG(LogTbSimpleVoidInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/VoidInterfaceJniClient:funcVoidAsync (Ljava/lang/String;)V not found"));
 	}
-#endif
 	return;
+#else
+	return;
+#endif
 }
 
 bool UTbSimpleVoidInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)

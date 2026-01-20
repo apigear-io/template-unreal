@@ -359,7 +359,6 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceJniClient::Func1(ETbSame2Enum1 InParam1)
 #endif
 		return ETbSame2Enum1::TS2E1_Value1;
 	}
-	TPromise<ETbSame2Enum1> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	auto Cache = UTbSame2SameEnum2InterfaceJniClientCache::Get();
@@ -368,6 +367,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceJniClient::Func1(ETbSame2Enum1 InParam1)
 		UE_LOG(LogTbSame2SameEnum2InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient:func1Async:(Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V CLASS not found"));
 		return ETbSame2Enum1::TS2E1_Value1;
 	}
+	TPromise<ETbSame2Enum1> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->Func1AsyncMethodID;
 	if (MethodID != nullptr)
@@ -389,8 +389,10 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceJniClient::Func1(ETbSame2Enum1 InParam1)
 		UE_LOG(LogTbSame2SameEnum2InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient:func1Async (Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;)V not found"));
 		Promise.SetValue(ETbSame2Enum1::TS2E1_Value1);
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return ETbSame2Enum1::TS2E1_Value1;
+#endif
 }
 ETbSame2Enum1 UTbSame2SameEnum2InterfaceJniClient::Func2(ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2)
 {
@@ -404,7 +406,6 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceJniClient::Func2(ETbSame2Enum1 InParam1,
 #endif
 		return ETbSame2Enum1::TS2E1_Value1;
 	}
-	TPromise<ETbSame2Enum1> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	auto Cache = UTbSame2SameEnum2InterfaceJniClientCache::Get();
@@ -413,6 +414,7 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceJniClient::Func2(ETbSame2Enum1 InParam1,
 		UE_LOG(LogTbSame2SameEnum2InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient:func2Async:(Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V CLASS not found"));
 		return ETbSame2Enum1::TS2E1_Value1;
 	}
+	TPromise<ETbSame2Enum1> Promise;
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = Cache->Func2AsyncMethodID;
 	if (MethodID != nullptr)
@@ -436,8 +438,10 @@ ETbSame2Enum1 UTbSame2SameEnum2InterfaceJniClient::Func2(ETbSame2Enum1 InParam1,
 		UE_LOG(LogTbSame2SameEnum2InterfaceClient_JNI, Warning, TEXT("tbSame2/tbSame2jniclient/SameEnum2InterfaceJniClient:func2Async (Ljava/lang/String;LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V not found"));
 		Promise.SetValue(ETbSame2Enum1::TS2E1_Value1);
 	}
-#endif
 	return Promise.GetFuture().Get();
+#else
+	return ETbSame2Enum1::TS2E1_Value1;
+#endif
 }
 
 bool UTbSame2SameEnum2InterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)

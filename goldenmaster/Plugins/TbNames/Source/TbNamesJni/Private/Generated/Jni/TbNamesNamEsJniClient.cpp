@@ -486,8 +486,10 @@ void UTbNamesNamEsJniClient::SomeFunction(bool bInSomeParam)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:someFunctionAsync (Ljava/lang/String;Z)V not found"));
 	}
-#endif
 	return;
+#else
+	return;
+#endif
 }
 void UTbNamesNamEsJniClient::SomeFunction2(bool bInSomeParam)
 {
@@ -527,8 +529,10 @@ void UTbNamesNamEsJniClient::SomeFunction2(bool bInSomeParam)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:someFunction2Async (Ljava/lang/String;Z)V not found"));
 	}
-#endif
 	return;
+#else
+	return;
+#endif
 }
 
 bool UTbNamesNamEsJniClient::_bindToService(FString servicePackage, FString connectionId)
