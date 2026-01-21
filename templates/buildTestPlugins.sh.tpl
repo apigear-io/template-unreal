@@ -1,3 +1,4 @@
+#! /bin/bash
 
 {{- $exports := getEmptyStringList}}
 {{- range .System.Modules }}
@@ -6,7 +7,6 @@
 {{- end }}
 {{- end }}
 {{- $exports = unique $exports}}
-#! /bin/bash
 set -x;
 export script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )";
 echo Script is in $script_path
