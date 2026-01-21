@@ -296,6 +296,7 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 		auto id = gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaIntMethod(id, MethodID, InParam))
 		{
+			gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.FulfillPromise(id, 0);
 			return 0;
 		}
 	}
@@ -457,14 +458,17 @@ bool UTbRefIfacesSimpleLocalIfJniClient::tryCallAsyncJavaIntMethod(FGuid Guid, j
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam);
 
 	static const TCHAR* errorMsg = TEXT("failed to call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient.");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
 
-	return true;
+	return !errorOccurred;
 }
 #endif
 

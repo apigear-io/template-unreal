@@ -486,6 +486,7 @@ ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::Func0(ETbEnumEnum0 InParam0)
 		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFunc0(id, MethodID, InParam0))
 		{
+			gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(id, ETbEnumEnum0::TEE0_Value0);
 			return ETbEnumEnum0::TEE0_Value0;
 		}
 	}
@@ -528,6 +529,7 @@ ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::Func1(ETbEnumEnum1 InParam1)
 		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFunc1(id, MethodID, InParam1))
 		{
+			gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(id, ETbEnumEnum1::TEE1_Value1);
 			return ETbEnumEnum1::TEE1_Value1;
 		}
 	}
@@ -570,6 +572,7 @@ ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::Func2(ETbEnumEnum2 InParam2)
 		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFunc2(id, MethodID, InParam2))
 		{
+			gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(id, ETbEnumEnum2::TEE2_Value2);
 			return ETbEnumEnum2::TEE2_Value2;
 		}
 	}
@@ -612,6 +615,7 @@ ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::Func3(ETbEnumEnum3 InParam3)
 		auto id = gUTbEnumEnumInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFunc3(id, MethodID, InParam3))
 		{
+			gUTbEnumEnumInterfaceJniClientmethodHelper.FulfillPromise(id, ETbEnumEnum3::TEE3_Value3);
 			return ETbEnumEnum3::TEE3_Value3;
 		}
 	}
@@ -920,16 +924,19 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc0(FGuid Guid, jmethodID 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func0Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 		jobject jlocal_Param0 = TbEnumDataJavaConverter::makeJavaEnum0(Env, InParam0);
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param0);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func0Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param0);
 
-	return true;
+	return !errorOccurred;
 }
 
 bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodID, ETbEnumEnum1 InParam1)
@@ -944,16 +951,19 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jmethodID 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 		jobject jlocal_Param1 = TbEnumDataJavaConverter::makeJavaEnum1(Env, InParam1);
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func1Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 
-	return true;
+	return !errorOccurred;
 }
 
 bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodID, ETbEnumEnum2 InParam2)
@@ -968,16 +978,19 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid, jmethodID 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 		jobject jlocal_Param2 = TbEnumDataJavaConverter::makeJavaEnum2(Env, InParam2);
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param2);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func2Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param2);
 
-	return true;
+	return !errorOccurred;
 }
 
 bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc3(FGuid Guid, jmethodID MethodID, ETbEnumEnum3 InParam3)
@@ -992,16 +1005,19 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc3(FGuid Guid, jmethodID 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func3Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 		jobject jlocal_Param3 = TbEnumDataJavaConverter::makeJavaEnum3(Env, InParam3);
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param3);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func3Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param3);
 
-	return true;
+	return !errorOccurred;
 }
 #endif
 

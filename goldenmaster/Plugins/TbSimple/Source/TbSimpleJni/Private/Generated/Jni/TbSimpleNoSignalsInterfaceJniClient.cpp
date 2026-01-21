@@ -394,6 +394,7 @@ bool UTbSimpleNoSignalsInterfaceJniClient::FuncBool(bool bInParamBool)
 		auto id = gUTbSimpleNoSignalsInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncBool(id, MethodID, bInParamBool))
 		{
+			gUTbSimpleNoSignalsInterfaceJniClientmethodHelper.FulfillPromise(id, false);
 			return false;
 		}
 	}
@@ -556,14 +557,17 @@ bool UTbSimpleNoSignalsInterfaceJniClient::tryCallAsyncJavaFuncVoid(FGuid Guid, 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcVoidAsync on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
 
 	static const TCHAR* errorMsg = TEXT("failed to call funcVoidAsync on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient.");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 
-	return true;
+	return !errorOccurred;
 }
 
 bool UTbSimpleNoSignalsInterfaceJniClient::tryCallAsyncJavaFuncBool(FGuid Guid, jmethodID MethodID, bool bInParamBool)
@@ -578,14 +582,17 @@ bool UTbSimpleNoSignalsInterfaceJniClient::tryCallAsyncJavaFuncBool(FGuid Guid, 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInParamBool);
 
 	static const TCHAR* errorMsg = TEXT("failed to call funcBoolAsync on tbSimple/tbSimplejniclient/NoSignalsInterfaceJniClient.");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 
-	return true;
+	return !errorOccurred;
 }
 #endif
 

@@ -485,6 +485,7 @@ FVector UCounterCounterJniClient::Increment(const FVector& InVec)
 		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaIncrement(id, MethodID, InVec))
 		{
+			gUCounterCounterJniClientmethodHelper.FulfillPromise(id, FVector(0.f, 0.f, 0.f));
 			return FVector(0.f, 0.f, 0.f);
 		}
 	}
@@ -527,6 +528,7 @@ TArray<FVector> UCounterCounterJniClient::IncrementArray(const TArray<FVector>& 
 		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaIncrementArray(id, MethodID, InVec))
 		{
+			gUCounterCounterJniClientmethodHelper.FulfillPromise(id, TArray<FVector>());
 			return TArray<FVector>();
 		}
 	}
@@ -569,6 +571,7 @@ FCustomTypesVector3D UCounterCounterJniClient::Decrement(const FCustomTypesVecto
 		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaDecrement(id, MethodID, InVec))
 		{
+			gUCounterCounterJniClientmethodHelper.FulfillPromise(id, FCustomTypesVector3D());
 			return FCustomTypesVector3D();
 		}
 	}
@@ -611,6 +614,7 @@ TArray<FCustomTypesVector3D> UCounterCounterJniClient::DecrementArray(const TArr
 		auto id = gUCounterCounterJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaDecrementArray(id, MethodID, InVec))
 		{
+			gUCounterCounterJniClientmethodHelper.FulfillPromise(id, TArray<FCustomTypesVector3D>());
 			return TArray<FCustomTypesVector3D>();
 		}
 	}
@@ -847,16 +851,19 @@ bool UCounterCounterJniClient::tryCallAsyncJavaIncrement(FGuid Guid, jmethodID M
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call incrementAsync on counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 		jobject jlocal_Vec = ExternTypesDataJavaConverter::makeJavaMyVector3D(Env, InVec);
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
 
 	static const TCHAR* errorMsg = TEXT("failed to call incrementAsync on counter/counterjniclient/CounterJniClient.");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 
-	return true;
+	return !errorOccurred;
 }
 
 bool UCounterCounterJniClient::tryCallAsyncJavaIncrementArray(FGuid Guid, jmethodID MethodID, const TArray<FVector>& InVec)
@@ -871,16 +878,19 @@ bool UCounterCounterJniClient::tryCallAsyncJavaIncrementArray(FGuid Guid, jmetho
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call incrementArrayAsync on counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 		jobjectArray jlocal_Vec = ExternTypesDataJavaConverter::makeJavaMyVector3DArray(Env, InVec);
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
 
 	static const TCHAR* errorMsg = TEXT("failed to call incrementArrayAsync on counter/counterjniclient/CounterJniClient.");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 
-	return true;
+	return !errorOccurred;
 }
 
 bool UCounterCounterJniClient::tryCallAsyncJavaDecrement(FGuid Guid, jmethodID MethodID, const FCustomTypesVector3D& InVec)
@@ -895,16 +905,19 @@ bool UCounterCounterJniClient::tryCallAsyncJavaDecrement(FGuid Guid, jmethodID M
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call decrementAsync on counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 		jobject jlocal_Vec = CustomTypesDataJavaConverter::makeJavaVector3D(Env, InVec);
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
 
 	static const TCHAR* errorMsg = TEXT("failed to call decrementAsync on counter/counterjniclient/CounterJniClient.");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 
-	return true;
+	return !errorOccurred;
 }
 
 bool UCounterCounterJniClient::tryCallAsyncJavaDecrementArray(FGuid Guid, jmethodID MethodID, const TArray<FCustomTypesVector3D>& InVec)
@@ -919,16 +932,19 @@ bool UCounterCounterJniClient::tryCallAsyncJavaDecrementArray(FGuid Guid, jmetho
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call decrementArrayAsync on counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
 		jobjectArray jlocal_Vec = CustomTypesDataJavaConverter::makeJavaVector3DArray(Env, InVec);
 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
 
 	static const TCHAR* errorMsg = TEXT("failed to call decrementArrayAsync on counter/counterjniclient/CounterJniClient.");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 
-	return true;
+	return !errorOccurred;
 }
 #endif
 
