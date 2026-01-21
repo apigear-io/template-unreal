@@ -60,7 +60,7 @@ fi
 # build UE plugin
 buildUEplugin()
 {
-	"$RunUAT_path" BuildPlugin -verbose -Rocket -Plugin=$1 -TargetPlatforms=Linux -StrictIncludes -Package=$2
+	"$RunUAT_path" BuildPlugin -verbose -Rocket -NoEditorTelemetry -WarningsAsErrors -Plugin=$1 -TargetPlatforms=Linux -StrictIncludes -Package=$2
 	buildresult=$?
 }
 

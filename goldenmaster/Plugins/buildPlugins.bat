@@ -41,7 +41,7 @@ if exist "%ApiGearTarget_path%\" (
 )
 
 @REM Build ApiGear plugin
-call :buildUEplugin "%script_path%\ApiGear\ApiGear.uplugin" , "%script_path%build\ApiGear"
+call :buildUEplugin "%script_path%\ApiGear\ApiGear.uplugin" "%script_path%build\ApiGear"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
@@ -52,42 +52,42 @@ if %ERRORLEVEL% GEQ 1 call :cleanup %ERRORLEVEL%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 @REM Building and testing Testbed2 module
-call :buildUEplugin "%script_path%\Testbed2\Testbed2.uplugin" , "%script_path%build\Testbed2"
+call :buildUEplugin "%script_path%\Testbed2\Testbed2.uplugin" "%script_path%build\Testbed2"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
 @REM Building and testing TbEnum module
-call :buildUEplugin "%script_path%\TbEnum\TbEnum.uplugin" , "%script_path%build\TbEnum"
+call :buildUEplugin "%script_path%\TbEnum\TbEnum.uplugin" "%script_path%build\TbEnum"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
 @REM Building and testing TbSame1 module
-call :buildUEplugin "%script_path%\TbSame1\TbSame1.uplugin" , "%script_path%build\TbSame1"
+call :buildUEplugin "%script_path%\TbSame1\TbSame1.uplugin" "%script_path%build\TbSame1"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
 @REM Building and testing TbSame2 module
-call :buildUEplugin "%script_path%\TbSame2\TbSame2.uplugin" , "%script_path%build\TbSame2"
+call :buildUEplugin "%script_path%\TbSame2\TbSame2.uplugin" "%script_path%build\TbSame2"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
 @REM Building and testing TbSimple module
-call :buildUEplugin "%script_path%\TbSimple\TbSimple.uplugin" , "%script_path%build\TbSimple"
+call :buildUEplugin "%script_path%\TbSimple\TbSimple.uplugin" "%script_path%build\TbSimple"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
 @REM Building and testing Testbed1 module
-call :buildUEplugin "%script_path%\Testbed1\Testbed1.uplugin" , "%script_path%build\Testbed1"
+call :buildUEplugin "%script_path%\Testbed1\Testbed1.uplugin" "%script_path%build\Testbed1"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
 @REM Building and testing TbNames module
-call :buildUEplugin "%script_path%\TbNames\TbNames.uplugin" , "%script_path%build\TbNames"
+call :buildUEplugin "%script_path%\TbNames\TbNames.uplugin" "%script_path%build\TbNames"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
 @REM Building and testing CustomTypes module
-call :buildUEplugin "%script_path%\CustomTypes\CustomTypes.uplugin" , "%script_path%build\CustomTypes"
+call :buildUEplugin "%script_path%\CustomTypes\CustomTypes.uplugin" "%script_path%build\CustomTypes"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
@@ -98,7 +98,7 @@ if %ERRORLEVEL% GEQ 1 call :cleanup %ERRORLEVEL%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 @REM Building and testing ExternTypes module
-call :buildUEplugin "%script_path%\ExternTypes\ExternTypes.uplugin" , "%script_path%build\ExternTypes"
+call :buildUEplugin "%script_path%\ExternTypes\ExternTypes.uplugin" "%script_path%build\ExternTypes"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
@@ -109,12 +109,12 @@ if %ERRORLEVEL% GEQ 1 call :cleanup %ERRORLEVEL%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 @REM Building and testing Counter module
-call :buildUEplugin "%script_path%\Counter\Counter.uplugin" , "%script_path%build\Counter"
+call :buildUEplugin "%script_path%\Counter\Counter.uplugin" "%script_path%build\Counter"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
 @REM Building and testing TbIfaceimport module
-call :buildUEplugin "%script_path%\TbIfaceimport\TbIfaceimport.uplugin" , "%script_path%build\TbIfaceimport"
+call :buildUEplugin "%script_path%\TbIfaceimport\TbIfaceimport.uplugin" "%script_path%build\TbIfaceimport"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
@@ -125,7 +125,7 @@ if %ERRORLEVEL% GEQ 1 call :cleanup %ERRORLEVEL%
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 @REM Building and testing TbRefIfaces module
-call :buildUEplugin "%script_path%\TbRefIfaces\TbRefIfaces.uplugin" , "%script_path%build\TbRefIfaces"
+call :buildUEplugin "%script_path%\TbRefIfaces\TbRefIfaces.uplugin" "%script_path%build\TbRefIfaces"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
@@ -138,7 +138,7 @@ exit /b 0
 @REM build UE plugin
 :buildUEplugin
 (
-	"%RunUAT_path%" BuildPlugin -verbose -Rocket -Plugin=%1 -TargetPlatforms=Win64 -StrictIncludes -Package=%2
+	"%RunUAT_path%" BuildPlugin -verbose -Rocket -NoEditorTelemetry -WarningsAsErrors -Plugin=%1 -TargetPlatforms=Win64 -StrictIncludes -Package=%2
 	set buildresult=!ERRORLEVEL!
 )
 exit /b %ERRORLEVEL%

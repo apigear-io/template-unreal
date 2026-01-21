@@ -48,7 +48,7 @@ if exist "%ApiGearTarget_path%\" (
 
 {{ if .Features.apigear -}}
 @REM Build ApiGear plugin
-call :buildUEplugin "%script_path%\ApiGear\ApiGear.uplugin" , "%script_path%build\ApiGear"
+call :buildUEplugin "%script_path%\ApiGear\ApiGear.uplugin" "%script_path%build\ApiGear"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
@@ -60,7 +60,7 @@ if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 {{- end }}
 {{ range .System.Modules}}
 @REM Building and testing {{Camel .Name}} module
-call :buildUEplugin "%script_path%\{{Camel .Name}}\{{Camel .Name}}.uplugin" , "%script_path%build\{{Camel .Name}}"
+call :buildUEplugin "%script_path%\{{Camel .Name}}\{{Camel .Name}}.uplugin" "%script_path%build\{{Camel .Name}}"
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
@@ -82,7 +82,7 @@ exit /b 0
 @REM build UE plugin
 :buildUEplugin
 (
-	"%RunUAT_path%" BuildPlugin -verbose -Rocket -Plugin=%1 -TargetPlatforms=Win64 -StrictIncludes -Package=%2
+	"%RunUAT_path%" BuildPlugin -verbose -Rocket -NoEditorTelemetry -WarningsAsErrors -Plugin=%1 -TargetPlatforms=Win64 -StrictIncludes -Package=%2
 	set buildresult=!ERRORLEVEL!
 )
 exit /b %ERRORLEVEL%
