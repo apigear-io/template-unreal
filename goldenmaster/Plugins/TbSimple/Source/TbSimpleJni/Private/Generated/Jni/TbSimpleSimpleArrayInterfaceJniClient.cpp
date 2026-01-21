@@ -808,6 +808,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::FuncBool(const TArray<bool>
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncBool(id, MethodID, InParamBool))
 		{
+			gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<bool>());
 			return TArray<bool>();
 		}
 	}
@@ -850,6 +851,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt(const TArray<int32
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncInt(id, MethodID, InParamInt))
 		{
+			gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<int32>());
 			return TArray<int32>();
 		}
 	}
@@ -892,6 +894,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt32(const TArray<int
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncInt32(id, MethodID, InParamInt32))
 		{
+			gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<int32>());
 			return TArray<int32>();
 		}
 	}
@@ -934,6 +937,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::FuncInt64(const TArray<int
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncInt64(id, MethodID, InParamInt64))
 		{
+			gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<int64>());
 			return TArray<int64>();
 		}
 	}
@@ -976,6 +980,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat(const TArray<flo
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncFloat(id, MethodID, InParamFloat))
 		{
+			gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<float>());
 			return TArray<float>();
 		}
 	}
@@ -1018,6 +1023,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat32(const TArray<f
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncFloat32(id, MethodID, InParamFloat32))
 		{
+			gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<float>());
 			return TArray<float>();
 		}
 	}
@@ -1060,6 +1066,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::FuncFloat64(const TArray<
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncFloat64(id, MethodID, InParamFloat))
 		{
+			gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<double>());
 			return TArray<double>();
 		}
 	}
@@ -1102,6 +1109,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::FuncString(const TArray<
 		auto id = gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncString(id, MethodID, InParamString))
 		{
+			gUTbSimpleSimpleArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<FString>());
 			return TArray<FString>();
 		}
 	}
@@ -1665,7 +1673,7 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncBool(FGuid Guid
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		auto lenparam_bool = InParamBool.Num();
 		jbooleanArray jlocal_ParamBool = Env->NewBooleanArray(lenparam_bool);
@@ -1686,11 +1694,13 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncBool(FGuid Guid
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamBool);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcBoolAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamBool);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncInt(FGuid Guid, jmethodID MethodID, const TArray<int32>& InParamInt)
@@ -1705,7 +1715,7 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncInt(FGuid Guid,
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcIntAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		auto lenparam_int = InParamInt.Num();
 		jintArray jlocal_ParamInt = Env->NewIntArray(lenparam_int);
@@ -1720,11 +1730,13 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncInt(FGuid Guid,
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamInt);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcIntAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamInt);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncInt32(FGuid Guid, jmethodID MethodID, const TArray<int32>& InParamInt32)
@@ -1739,7 +1751,7 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncInt32(FGuid Gui
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcInt32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		auto lenparam_int32 = InParamInt32.Num();
 		jintArray jlocal_ParamInt32 = Env->NewIntArray(lenparam_int32);
@@ -1754,11 +1766,13 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncInt32(FGuid Gui
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamInt32);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcInt32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamInt32);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncInt64(FGuid Guid, jmethodID MethodID, const TArray<int64>& InParamInt64)
@@ -1773,7 +1787,7 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncInt64(FGuid Gui
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcInt64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		auto lenparam_int64 = InParamInt64.Num();
 		jlongArray jlocal_ParamInt64 = Env->NewLongArray(lenparam_int64);
@@ -1788,11 +1802,13 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncInt64(FGuid Gui
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamInt64);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcInt64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamInt64);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat(FGuid Guid, jmethodID MethodID, const TArray<float>& InParamFloat)
@@ -1807,7 +1823,7 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat(FGuid Gui
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloatAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		auto lenparam_float = InParamFloat.Num();
 		jfloatArray jlocal_ParamFloat = Env->NewFloatArray(lenparam_float);
@@ -1822,11 +1838,13 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat(FGuid Gui
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamFloat);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcFloatAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamFloat);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat32(FGuid Guid, jmethodID MethodID, const TArray<float>& InParamFloat32)
@@ -1841,7 +1859,7 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat32(FGuid G
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloat32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		auto lenparam_float32 = InParamFloat32.Num();
 		jfloatArray jlocal_ParamFloat32 = Env->NewFloatArray(lenparam_float32);
@@ -1856,11 +1874,13 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat32(FGuid G
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamFloat32);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcFloat32Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamFloat32);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat64(FGuid Guid, jmethodID MethodID, const TArray<double>& InParamFloat)
@@ -1875,7 +1895,7 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat64(FGuid G
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloat64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		auto lenparam_float = InParamFloat.Num();
 		jdoubleArray jlocal_ParamFloat = Env->NewDoubleArray(lenparam_float);
@@ -1890,11 +1910,13 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat64(FGuid G
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamFloat);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcFloat64Async on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamFloat);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncString(FGuid Guid, jmethodID MethodID, const TArray<FString>& InParamString)
@@ -1909,7 +1931,7 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncString(FGuid Gu
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcStringAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		TArray<FStringView> InParamStringStringViews;
 		InParamStringStringViews.Reserve(InParamString.Num());
@@ -1925,11 +1947,13 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::tryCallAsyncJavaFuncString(FGuid Gu
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamString);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcStringAsync on tbSimple/tbSimplejniclient/SimpleArrayInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamString);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 #endif
 

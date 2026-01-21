@@ -771,16 +771,18 @@ bool UTbNamesNamEsJniClient::tryCallAsyncJavaSomeFunction(FGuid Guid, jmethodID 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call someFunctionAsync on tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInSomeParam);
 
 		static const TCHAR* errorMsg = TEXT("failed to call someFunctionAsync on tbNames/tbNamesjniclient/NamEsJniClient.");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTbNamesNamEsJniClient::tryCallAsyncJavaSomeFunction2(FGuid Guid, jmethodID MethodID, bool bInSomeParam)
@@ -795,16 +797,18 @@ bool UTbNamesNamEsJniClient::tryCallAsyncJavaSomeFunction2(FGuid Guid, jmethodID
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call someFunction2Async on tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInSomeParam);
 
 		static const TCHAR* errorMsg = TEXT("failed to call someFunction2Async on tbNames/tbNamesjniclient/NamEsJniClient.");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 #endif
 

@@ -379,16 +379,18 @@ bool UTbSimpleVoidInterfaceJniClient::tryCallAsyncJavaFuncVoid(FGuid Guid, jmeth
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcVoidAsync on tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcVoidAsync on tbSimple/tbSimplejniclient/VoidInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 #endif
 

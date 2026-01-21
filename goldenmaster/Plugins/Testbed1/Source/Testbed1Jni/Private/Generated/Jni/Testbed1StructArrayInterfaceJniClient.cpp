@@ -548,6 +548,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceJniClient::FuncBool(con
 		auto id = gUTestbed1StructArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncBool(id, MethodID, InParamBool))
 		{
+			gUTestbed1StructArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<FTestbed1StructBool>());
 			return TArray<FTestbed1StructBool>();
 		}
 	}
@@ -590,6 +591,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceJniClient::FuncInt(const
 		auto id = gUTestbed1StructArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncInt(id, MethodID, InParamInt))
 		{
+			gUTestbed1StructArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<FTestbed1StructInt>());
 			return TArray<FTestbed1StructInt>();
 		}
 	}
@@ -632,6 +634,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceJniClient::FuncFloat(c
 		auto id = gUTestbed1StructArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncFloat(id, MethodID, InParamFloat))
 		{
+			gUTestbed1StructArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<FTestbed1StructFloat>());
 			return TArray<FTestbed1StructFloat>();
 		}
 	}
@@ -674,6 +677,7 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceJniClient::FuncString
 		auto id = gUTestbed1StructArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncString(id, MethodID, InParamString))
 		{
+			gUTestbed1StructArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<FTestbed1StructString>());
 			return TArray<FTestbed1StructString>();
 		}
 	}
@@ -716,6 +720,7 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceJniClient::FuncEnum(const TA
 		auto id = gUTestbed1StructArrayInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFuncEnum(id, MethodID, InParamEnum))
 		{
+			gUTestbed1StructArrayInterfaceJniClientmethodHelper.FulfillPromise(id, TArray<ETestbed1Enum0>());
 			return TArray<ETestbed1Enum0>();
 		}
 	}
@@ -1093,18 +1098,20 @@ bool UTestbed1StructArrayInterfaceJniClient::tryCallAsyncJavaFuncBool(FGuid Guid
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on testbed1/testbed1jniclient/StructArrayInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		jobjectArray jlocal_ParamBool = Testbed1DataJavaConverter::makeJavaStructBoolArray(Env, InParamBool);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamBool);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcBoolAsync on testbed1/testbed1jniclient/StructArrayInterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamBool);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTestbed1StructArrayInterfaceJniClient::tryCallAsyncJavaFuncInt(FGuid Guid, jmethodID MethodID, const TArray<FTestbed1StructInt>& InParamInt)
@@ -1119,18 +1126,20 @@ bool UTestbed1StructArrayInterfaceJniClient::tryCallAsyncJavaFuncInt(FGuid Guid,
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcIntAsync on testbed1/testbed1jniclient/StructArrayInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		jobjectArray jlocal_ParamInt = Testbed1DataJavaConverter::makeJavaStructIntArray(Env, InParamInt);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamInt);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcIntAsync on testbed1/testbed1jniclient/StructArrayInterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamInt);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTestbed1StructArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat(FGuid Guid, jmethodID MethodID, const TArray<FTestbed1StructFloat>& InParamFloat)
@@ -1145,18 +1154,20 @@ bool UTestbed1StructArrayInterfaceJniClient::tryCallAsyncJavaFuncFloat(FGuid Gui
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloatAsync on testbed1/testbed1jniclient/StructArrayInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		jobjectArray jlocal_ParamFloat = Testbed1DataJavaConverter::makeJavaStructFloatArray(Env, InParamFloat);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamFloat);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcFloatAsync on testbed1/testbed1jniclient/StructArrayInterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamFloat);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTestbed1StructArrayInterfaceJniClient::tryCallAsyncJavaFuncString(FGuid Guid, jmethodID MethodID, const TArray<FTestbed1StructString>& InParamString)
@@ -1171,18 +1182,20 @@ bool UTestbed1StructArrayInterfaceJniClient::tryCallAsyncJavaFuncString(FGuid Gu
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcStringAsync on testbed1/testbed1jniclient/StructArrayInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		jobjectArray jlocal_ParamString = Testbed1DataJavaConverter::makeJavaStructStringArray(Env, InParamString);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamString);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcStringAsync on testbed1/testbed1jniclient/StructArrayInterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamString);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 
 bool UTestbed1StructArrayInterfaceJniClient::tryCallAsyncJavaFuncEnum(FGuid Guid, jmethodID MethodID, const TArray<ETestbed1Enum0>& InParamEnum)
@@ -1197,18 +1210,20 @@ bool UTestbed1StructArrayInterfaceJniClient::tryCallAsyncJavaFuncEnum(FGuid Guid
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcEnumAsync on testbed1/testbed1jniclient/StructArrayInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		jobjectArray jlocal_ParamEnum = Testbed1DataJavaConverter::makeJavaEnum0Array(Env, InParamEnum);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamEnum);
 
 		static const TCHAR* errorMsg = TEXT("failed to call funcEnumAsync on testbed1/testbed1jniclient/StructArrayInterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamEnum);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 #endif
 

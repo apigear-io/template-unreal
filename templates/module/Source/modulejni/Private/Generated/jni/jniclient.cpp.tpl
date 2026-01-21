@@ -416,6 +416,9 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 		{{- end}}
 		if (!tryCallAsyncJava{{Camel .Name}}(id, MethodID{{- if len (.Params) }}, {{end}}{{ueVars "In" .Params}}))
 		{
+			{{- if not .Return.IsVoid }}
+			g{{$Class}}methodHelper.FulfillPromise(id, {{ueDefault "" .Return }});
+			{{- end}}
 			return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
 		}
 	}
@@ -594,7 +597,7 @@ bool {{$Class}}::tryCallAsyncJava{{Camel .Name}}(FGuid Guid, jmethodID MethodID{
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgId);
+	if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgId))
 	{
 	{{- range .Params -}}
 		{{ template "convert_to_java_type_in_param" .}}
@@ -611,7 +614,7 @@ bool {{$Class}}::tryCallAsyncJava{{Camel .Name}}(FGuid Guid, jmethodID MethodID{
 		{{- end -}});
 
 		static const TCHAR* errorMsg = TEXT("failed to call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}.");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = {{$localClassConverter}}::checkJniErrorOccured(errorMsg);
 
 	{{- range $idx, $p := .Params -}}
 		{{- $javaPropName := Camel .Name}}
@@ -622,9 +625,11 @@ bool {{$Class}}::tryCallAsyncJava{{Camel .Name}}(FGuid Guid, jmethodID MethodID{
 		Env->DeleteLocalRef({{$localName}});
 	{{- end }}
 	{{- end }}
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 {{- end }}
 #endif

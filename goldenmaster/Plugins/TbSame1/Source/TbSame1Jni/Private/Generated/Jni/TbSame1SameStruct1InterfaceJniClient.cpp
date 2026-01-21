@@ -300,6 +300,7 @@ FTbSame1Struct1 UTbSame1SameStruct1InterfaceJniClient::Func1(const FTbSame1Struc
 		auto id = gUTbSame1SameStruct1InterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
 		if (!tryCallAsyncJavaFunc1(id, MethodID, InParam1))
 		{
+			gUTbSame1SameStruct1InterfaceJniClientmethodHelper.FulfillPromise(id, FTbSame1Struct1());
 			return FTbSame1Struct1();
 		}
 	}
@@ -465,18 +466,20 @@ bool UTbSame1SameStruct1InterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jm
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on tbSame1/tbSame1jniclient/SameStruct1InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId);
+	if (!TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId))
 	{
 		jobject jlocal_Param1 = TbSame1DataJavaConverter::makeJavaStruct1(Env, InParam1);
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
 
 		static const TCHAR* errorMsg = TEXT("failed to call func1Async on tbSame1/tbSame1jniclient/SameStruct1InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
+
+		return !errorOccurred;
 	}
 
-	return true;
+	return false;
 }
 #endif
 
