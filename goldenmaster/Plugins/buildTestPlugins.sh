@@ -1,4 +1,3 @@
-
 #! /bin/bash
 set -x;
 export script_path="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )";
