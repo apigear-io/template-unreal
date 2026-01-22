@@ -2076,18 +2076,30 @@ template <typename ResultType>
 FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
+
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
 		ReplyPromisesMap.Add(Id, &Promise);
 	}
-	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+
+	UE_LOG(
+		LogTbSimpleSimpleInterfaceClient_JNI,
+		Verbose,
+		TEXT(" method store id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	return Id;
 }
 
 template <typename ResultType>
 bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	UE_LOG(
+		LogTbSimpleSimpleInterfaceClient_JNI,
+		Verbose,
+		TEXT(" method resolving id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	TPromise<ResultType>* PromisePtr = nullptr;
 
 	{
@@ -2104,6 +2116,7 @@ bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise(const FGuid& 
 		PromisePtr->SetValue(Value);
 		return true;
 	}
+
 	return false;
 }
 template FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise<FString>(TPromise<FString>& Promise);

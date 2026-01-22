@@ -1056,18 +1056,30 @@ template <typename ResultType>
 FGuid UCounterCounterJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
+
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
 		ReplyPromisesMap.Add(Id, &Promise);
 	}
-	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+
+	UE_LOG(
+		LogCounterCounterClient_JNI,
+		Verbose,
+		TEXT(" method store id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	return Id;
 }
 
 template <typename ResultType>
 bool UCounterCounterJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	UE_LOG(
+		LogCounterCounterClient_JNI,
+		Verbose,
+		TEXT(" method resolving id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	TPromise<ResultType>* PromisePtr = nullptr;
 
 	{
@@ -1084,6 +1096,7 @@ bool UCounterCounterJniClientMethodHelper::FulfillPromise(const FGuid& Id, const
 		PromisePtr->SetValue(Value);
 		return true;
 	}
+
 	return false;
 }
 template FGuid UCounterCounterJniClientMethodHelper::StorePromise<FCustomTypesVector3D>(TPromise<FCustomTypesVector3D>& Promise);

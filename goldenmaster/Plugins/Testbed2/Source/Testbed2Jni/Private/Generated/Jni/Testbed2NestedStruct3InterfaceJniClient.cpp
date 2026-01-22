@@ -979,18 +979,30 @@ template <typename ResultType>
 FGuid UTestbed2NestedStruct3InterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
+
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
 		ReplyPromisesMap.Add(Id, &Promise);
 	}
-	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+
+	UE_LOG(
+		LogTestbed2NestedStruct3InterfaceClient_JNI,
+		Verbose,
+		TEXT(" method store id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	return Id;
 }
 
 template <typename ResultType>
 bool UTestbed2NestedStruct3InterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	UE_LOG(LogTestbed2NestedStruct3InterfaceClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	UE_LOG(
+		LogTestbed2NestedStruct3InterfaceClient_JNI,
+		Verbose,
+		TEXT(" method resolving id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	TPromise<ResultType>* PromisePtr = nullptr;
 
 	{
@@ -1007,6 +1019,7 @@ bool UTestbed2NestedStruct3InterfaceJniClientMethodHelper::FulfillPromise(const 
 		PromisePtr->SetValue(Value);
 		return true;
 	}
+
 	return false;
 }
 template FGuid UTestbed2NestedStruct3InterfaceJniClientMethodHelper::StorePromise<FTestbed2NestedStruct1>(TPromise<FTestbed2NestedStruct1>& Promise);
