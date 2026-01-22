@@ -22,7 +22,11 @@ limitations under the License.
 #include "CounterSettings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/CounterMethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "CounterJni"
+
+DEFINE_LOG_CATEGORY(LogCounterMethodHelper_JNI);
 
 void FCounterJniModule::StartupModule()
 {

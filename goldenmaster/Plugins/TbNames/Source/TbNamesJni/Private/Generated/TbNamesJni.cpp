@@ -22,7 +22,11 @@ limitations under the License.
 #include "TbNamesSettings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/TbNamesMethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "TbNamesJni"
+
+DEFINE_LOG_CATEGORY(LogTbNamesMethodHelper_JNI);
 
 void FTbNamesJniModule::StartupModule()
 {
