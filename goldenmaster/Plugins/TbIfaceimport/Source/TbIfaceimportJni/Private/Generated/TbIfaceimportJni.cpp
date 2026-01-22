@@ -22,7 +22,11 @@ limitations under the License.
 #include "TbIfaceimportSettings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/TbIfaceimportMethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "TbIfaceimportJni"
+
+DEFINE_LOG_CATEGORY(LogTbIfaceimportMethodHelper_JNI);
 
 void FTbIfaceimportJniModule::StartupModule()
 {

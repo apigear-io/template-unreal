@@ -43,6 +43,8 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 
+#include "Generated/Detail/CounterMethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -57,24 +59,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UCounterCounterJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 struct FUCounterCounterJniClientCacheData
@@ -221,7 +205,7 @@ namespace
 
 std::atomic<IUCounterCounterJniClientJniAccessor*> gUCounterCounterJniClientHandle(nullptr);
 
-UCounterCounterJniClientMethodHelper gUCounterCounterJniClientmethodHelper;
+FCounterMethodHelper gUCounterCounterJniClientmethodHelper(TEXT("UCounterCounterJniClient"));
 
 } // namespace
 
@@ -1051,59 +1035,3 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeIsReady(JNI
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UCounterCounterJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
-	}
-
-	UE_LOG(
-		LogCounterCounterClient_JNI,
-		Verbose,
-		TEXT(" method store id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	return Id;
-}
-
-template <typename ResultType>
-bool UCounterCounterJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(
-		LogCounterCounterClient_JNI,
-		Verbose,
-		TEXT(" method resolving id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		PromisePtr->SetValue(Value);
-		return true;
-	}
-
-	return false;
-}
-template FGuid UCounterCounterJniClientMethodHelper::StorePromise<FCustomTypesVector3D>(TPromise<FCustomTypesVector3D>& Promise);
-template bool UCounterCounterJniClientMethodHelper::FulfillPromise<FCustomTypesVector3D>(const FGuid& Id, const FCustomTypesVector3D& Value);
-template FGuid UCounterCounterJniClientMethodHelper::StorePromise<FVector>(TPromise<FVector>& Promise);
-template bool UCounterCounterJniClientMethodHelper::FulfillPromise<FVector>(const FGuid& Id, const FVector& Value);
-template FGuid UCounterCounterJniClientMethodHelper::StorePromise<TArray<FCustomTypesVector3D>>(TPromise<TArray<FCustomTypesVector3D>>& Promise);
-template bool UCounterCounterJniClientMethodHelper::FulfillPromise<TArray<FCustomTypesVector3D>>(const FGuid& Id, const TArray<FCustomTypesVector3D>& Value);
-template FGuid UCounterCounterJniClientMethodHelper::StorePromise<TArray<FVector>>(TPromise<TArray<FVector>>& Promise);
-template bool UCounterCounterJniClientMethodHelper::FulfillPromise<TArray<FVector>>(const FGuid& Id, const TArray<FVector>& Value);

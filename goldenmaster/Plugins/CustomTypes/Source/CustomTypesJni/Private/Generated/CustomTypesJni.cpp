@@ -22,7 +22,11 @@ limitations under the License.
 #include "CustomTypesSettings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/CustomTypesMethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "CustomTypesJni"
+
+DEFINE_LOG_CATEGORY(LogCustomTypesMethodHelper_JNI);
 
 void FCustomTypesJniModule::StartupModule()
 {

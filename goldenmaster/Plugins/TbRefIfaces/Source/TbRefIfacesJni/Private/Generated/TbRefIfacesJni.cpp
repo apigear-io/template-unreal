@@ -22,7 +22,11 @@ limitations under the License.
 #include "TbRefIfacesSettings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/TbRefIfacesMethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "TbRefIfacesJni"
+
+DEFINE_LOG_CATEGORY(LogTbRefIfacesMethodHelper_JNI);
 
 void FTbRefIfacesJniModule::StartupModule()
 {

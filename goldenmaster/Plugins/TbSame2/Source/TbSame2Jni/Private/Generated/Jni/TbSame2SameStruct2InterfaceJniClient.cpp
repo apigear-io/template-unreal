@@ -44,6 +44,8 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 
+#include "Generated/Detail/TbSame2MethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -58,24 +60,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UTbSame2SameStruct2InterfaceJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 struct FUTbSame2SameStruct2InterfaceJniClientCacheData
@@ -194,7 +178,7 @@ namespace
 
 std::atomic<IUTbSame2SameStruct2InterfaceJniClientJniAccessor*> gUTbSame2SameStruct2InterfaceJniClientHandle(nullptr);
 
-UTbSame2SameStruct2InterfaceJniClientMethodHelper gUTbSame2SameStruct2InterfaceJniClientmethodHelper;
+FTbSame2MethodHelper gUTbSame2SameStruct2InterfaceJniClientmethodHelper(TEXT("UTbSame2SameStruct2InterfaceJniClient"));
 
 } // namespace
 
@@ -756,53 +740,3 @@ JNI_METHOD void Java_tbSame2_tbSame2jniclient_SameStruct2InterfaceJniClient_nati
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UTbSame2SameStruct2InterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
-	}
-
-	UE_LOG(
-		LogTbSame2SameStruct2InterfaceClient_JNI,
-		Verbose,
-		TEXT(" method store id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	return Id;
-}
-
-template <typename ResultType>
-bool UTbSame2SameStruct2InterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(
-		LogTbSame2SameStruct2InterfaceClient_JNI,
-		Verbose,
-		TEXT(" method resolving id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		PromisePtr->SetValue(Value);
-		return true;
-	}
-
-	return false;
-}
-template FGuid UTbSame2SameStruct2InterfaceJniClientMethodHelper::StorePromise<FTbSame2Struct1>(TPromise<FTbSame2Struct1>& Promise);
-template bool UTbSame2SameStruct2InterfaceJniClientMethodHelper::FulfillPromise<FTbSame2Struct1>(const FGuid& Id, const FTbSame2Struct1& Value);

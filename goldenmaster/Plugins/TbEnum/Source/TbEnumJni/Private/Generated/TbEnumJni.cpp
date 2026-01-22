@@ -22,7 +22,11 @@ limitations under the License.
 #include "TbEnumSettings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/TbEnumMethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "TbEnumJni"
+
+DEFINE_LOG_CATEGORY(LogTbEnumMethodHelper_JNI);
 
 void FTbEnumJniModule::StartupModule()
 {

@@ -43,6 +43,8 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 
+#include "Generated/Detail/TbSimpleMethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -57,24 +59,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UTbSimpleSimpleInterfaceJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 struct FUTbSimpleSimpleInterfaceJniClientCacheData
@@ -291,7 +275,7 @@ namespace
 
 std::atomic<IUTbSimpleSimpleInterfaceJniClientJniAccessor*> gUTbSimpleSimpleInterfaceJniClientHandle(nullptr);
 
-UTbSimpleSimpleInterfaceJniClientMethodHelper gUTbSimpleSimpleInterfaceJniClientmethodHelper;
+FTbSimpleMethodHelper gUTbSimpleSimpleInterfaceJniClientmethodHelper(TEXT("UTbSimpleSimpleInterfaceJniClient"));
 
 } // namespace
 
@@ -2071,63 +2055,3 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_SimpleInterfaceJniClient_nativeI
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
-	}
-
-	UE_LOG(
-		LogTbSimpleSimpleInterfaceClient_JNI,
-		Verbose,
-		TEXT(" method store id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	return Id;
-}
-
-template <typename ResultType>
-bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(
-		LogTbSimpleSimpleInterfaceClient_JNI,
-		Verbose,
-		TEXT(" method resolving id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		PromisePtr->SetValue(Value);
-		return true;
-	}
-
-	return false;
-}
-template FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise<FString>(TPromise<FString>& Promise);
-template bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise<FString>(const FGuid& Id, const FString& Value);
-template FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise<bool>(TPromise<bool>& Promise);
-template bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise<bool>(const FGuid& Id, const bool& Value);
-template FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise<double>(TPromise<double>& Promise);
-template bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise<double>(const FGuid& Id, const double& Value);
-template FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise<float>(TPromise<float>& Promise);
-template bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise<float>(const FGuid& Id, const float& Value);
-template FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise<int32>(TPromise<int32>& Promise);
-template bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise<int32>(const FGuid& Id, const int32& Value);
-template FGuid UTbSimpleSimpleInterfaceJniClientMethodHelper::StorePromise<int64>(TPromise<int64>& Promise);
-template bool UTbSimpleSimpleInterfaceJniClientMethodHelper::FulfillPromise<int64>(const FGuid& Id, const int64& Value);
