@@ -43,6 +43,8 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 
+#include "Generated/Detail/TbRefIfacesMethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -57,24 +59,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UTbRefIfacesParentIfJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 struct FUTbRefIfacesParentIfJniClientCacheData
@@ -221,7 +205,7 @@ namespace
 
 std::atomic<IUTbRefIfacesParentIfJniClientJniAccessor*> gUTbRefIfacesParentIfJniClientHandle(nullptr);
 
-UTbRefIfacesParentIfJniClientMethodHelper gUTbRefIfacesParentIfJniClientmethodHelper;
+FTbRefIfacesMethodHelper gUTbRefIfacesParentIfJniClientmethodHelper(TEXT("UTbRefIfacesParentIfJniClient"));
 
 } // namespace
 
@@ -1179,59 +1163,3 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_ParentIfJniClient_nativeIs
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UTbRefIfacesParentIfJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
-	}
-
-	UE_LOG(
-		LogTbRefIfacesParentIfClient_JNI,
-		Verbose,
-		TEXT(" method store id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	return Id;
-}
-
-template <typename ResultType>
-bool UTbRefIfacesParentIfJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(
-		LogTbRefIfacesParentIfClient_JNI,
-		Verbose,
-		TEXT(" method resolving id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		PromisePtr->SetValue(Value);
-		return true;
-	}
-
-	return false;
-}
-template FGuid UTbRefIfacesParentIfJniClientMethodHelper::StorePromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>& Promise);
-template bool UTbRefIfacesParentIfJniClientMethodHelper::FulfillPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(const FGuid& Id, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Value);
-template FGuid UTbRefIfacesParentIfJniClientMethodHelper::StorePromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>(TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>& Promise);
-template bool UTbRefIfacesParentIfJniClientMethodHelper::FulfillPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>(const FGuid& Id, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Value);
-template FGuid UTbRefIfacesParentIfJniClientMethodHelper::StorePromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Promise);
-template bool UTbRefIfacesParentIfJniClientMethodHelper::FulfillPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(const FGuid& Id, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Value);
-template FGuid UTbRefIfacesParentIfJniClientMethodHelper::StorePromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Promise);
-template bool UTbRefIfacesParentIfJniClientMethodHelper::FulfillPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(const FGuid& Id, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Value);

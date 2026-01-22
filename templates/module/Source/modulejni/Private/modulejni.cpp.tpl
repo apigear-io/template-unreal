@@ -27,7 +27,11 @@ limitations under the License.
 #include "{{$ModuleName}}Settings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/{{$ModuleName}}MethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "{{$ModuleName}}Jni"
+
+DEFINE_LOG_CATEGORY(Log{{Camel .Module.Name}}MethodHelper_JNI);
 
 void {{$class}}::StartupModule()
 {

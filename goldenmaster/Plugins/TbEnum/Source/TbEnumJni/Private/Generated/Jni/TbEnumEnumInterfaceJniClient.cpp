@@ -44,6 +44,8 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 
+#include "Generated/Detail/TbEnumMethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -58,24 +60,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UTbEnumEnumInterfaceJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 struct FUTbEnumEnumInterfaceJniClientCacheData
@@ -222,7 +206,7 @@ namespace
 
 std::atomic<IUTbEnumEnumInterfaceJniClientJniAccessor*> gUTbEnumEnumInterfaceJniClientHandle(nullptr);
 
-UTbEnumEnumInterfaceJniClientMethodHelper gUTbEnumEnumInterfaceJniClientmethodHelper;
+FTbEnumMethodHelper gUTbEnumEnumInterfaceJniClientmethodHelper(TEXT("UTbEnumEnumInterfaceJniClient"));
 
 } // namespace
 
@@ -1144,59 +1128,3 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeIsReady
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UTbEnumEnumInterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
-	}
-
-	UE_LOG(
-		LogTbEnumEnumInterfaceClient_JNI,
-		Verbose,
-		TEXT(" method store id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	return Id;
-}
-
-template <typename ResultType>
-bool UTbEnumEnumInterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(
-		LogTbEnumEnumInterfaceClient_JNI,
-		Verbose,
-		TEXT(" method resolving id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		PromisePtr->SetValue(Value);
-		return true;
-	}
-
-	return false;
-}
-template FGuid UTbEnumEnumInterfaceJniClientMethodHelper::StorePromise<ETbEnumEnum0>(TPromise<ETbEnumEnum0>& Promise);
-template bool UTbEnumEnumInterfaceJniClientMethodHelper::FulfillPromise<ETbEnumEnum0>(const FGuid& Id, const ETbEnumEnum0& Value);
-template FGuid UTbEnumEnumInterfaceJniClientMethodHelper::StorePromise<ETbEnumEnum1>(TPromise<ETbEnumEnum1>& Promise);
-template bool UTbEnumEnumInterfaceJniClientMethodHelper::FulfillPromise<ETbEnumEnum1>(const FGuid& Id, const ETbEnumEnum1& Value);
-template FGuid UTbEnumEnumInterfaceJniClientMethodHelper::StorePromise<ETbEnumEnum2>(TPromise<ETbEnumEnum2>& Promise);
-template bool UTbEnumEnumInterfaceJniClientMethodHelper::FulfillPromise<ETbEnumEnum2>(const FGuid& Id, const ETbEnumEnum2& Value);
-template FGuid UTbEnumEnumInterfaceJniClientMethodHelper::StorePromise<ETbEnumEnum3>(TPromise<ETbEnumEnum3>& Promise);
-template bool UTbEnumEnumInterfaceJniClientMethodHelper::FulfillPromise<ETbEnumEnum3>(const FGuid& Id, const ETbEnumEnum3& Value);

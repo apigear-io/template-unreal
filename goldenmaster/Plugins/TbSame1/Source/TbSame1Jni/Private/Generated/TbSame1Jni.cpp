@@ -22,7 +22,11 @@ limitations under the License.
 #include "TbSame1Settings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/TbSame1MethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "TbSame1Jni"
+
+DEFINE_LOG_CATEGORY(LogTbSame1MethodHelper_JNI);
 
 void FTbSame1JniModule::StartupModule()
 {

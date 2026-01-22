@@ -44,6 +44,8 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 
+#include "Generated/Detail/Testbed1MethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -58,24 +60,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UTestbed1StructArrayInterfaceJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 struct FUTestbed1StructArrayInterfaceJniClientCacheData
@@ -236,7 +220,7 @@ namespace
 
 std::atomic<IUTestbed1StructArrayInterfaceJniClientJniAccessor*> gUTestbed1StructArrayInterfaceJniClientHandle(nullptr);
 
-UTestbed1StructArrayInterfaceJniClientMethodHelper gUTestbed1StructArrayInterfaceJniClientmethodHelper;
+FTestbed1MethodHelper gUTestbed1StructArrayInterfaceJniClientmethodHelper(TEXT("UTestbed1StructArrayInterfaceJniClient"));
 
 } // namespace
 
@@ -1362,61 +1346,3 @@ JNI_METHOD void Java_testbed1_testbed1jniclient_StructArrayInterfaceJniClient_na
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UTestbed1StructArrayInterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
-	}
-
-	UE_LOG(
-		LogTestbed1StructArrayInterfaceClient_JNI,
-		Verbose,
-		TEXT(" method store id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	return Id;
-}
-
-template <typename ResultType>
-bool UTestbed1StructArrayInterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(
-		LogTestbed1StructArrayInterfaceClient_JNI,
-		Verbose,
-		TEXT(" method resolving id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		PromisePtr->SetValue(Value);
-		return true;
-	}
-
-	return false;
-}
-template FGuid UTestbed1StructArrayInterfaceJniClientMethodHelper::StorePromise<TArray<ETestbed1Enum0>>(TPromise<TArray<ETestbed1Enum0>>& Promise);
-template bool UTestbed1StructArrayInterfaceJniClientMethodHelper::FulfillPromise<TArray<ETestbed1Enum0>>(const FGuid& Id, const TArray<ETestbed1Enum0>& Value);
-template FGuid UTestbed1StructArrayInterfaceJniClientMethodHelper::StorePromise<TArray<FTestbed1StructBool>>(TPromise<TArray<FTestbed1StructBool>>& Promise);
-template bool UTestbed1StructArrayInterfaceJniClientMethodHelper::FulfillPromise<TArray<FTestbed1StructBool>>(const FGuid& Id, const TArray<FTestbed1StructBool>& Value);
-template FGuid UTestbed1StructArrayInterfaceJniClientMethodHelper::StorePromise<TArray<FTestbed1StructFloat>>(TPromise<TArray<FTestbed1StructFloat>>& Promise);
-template bool UTestbed1StructArrayInterfaceJniClientMethodHelper::FulfillPromise<TArray<FTestbed1StructFloat>>(const FGuid& Id, const TArray<FTestbed1StructFloat>& Value);
-template FGuid UTestbed1StructArrayInterfaceJniClientMethodHelper::StorePromise<TArray<FTestbed1StructInt>>(TPromise<TArray<FTestbed1StructInt>>& Promise);
-template bool UTestbed1StructArrayInterfaceJniClientMethodHelper::FulfillPromise<TArray<FTestbed1StructInt>>(const FGuid& Id, const TArray<FTestbed1StructInt>& Value);
-template FGuid UTestbed1StructArrayInterfaceJniClientMethodHelper::StorePromise<TArray<FTestbed1StructString>>(TPromise<TArray<FTestbed1StructString>>& Promise);
-template bool UTestbed1StructArrayInterfaceJniClientMethodHelper::FulfillPromise<TArray<FTestbed1StructString>>(const FGuid& Id, const TArray<FTestbed1StructString>& Value);

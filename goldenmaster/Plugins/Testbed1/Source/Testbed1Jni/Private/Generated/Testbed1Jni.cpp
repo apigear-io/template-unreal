@@ -22,7 +22,11 @@ limitations under the License.
 #include "Testbed1Settings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/Testbed1MethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "Testbed1Jni"
+
+DEFINE_LOG_CATEGORY(LogTestbed1MethodHelper_JNI);
 
 void FTestbed1JniModule::StartupModule()
 {

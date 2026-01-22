@@ -43,6 +43,8 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 
+#include "Generated/Detail/TbSimpleMethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -57,24 +59,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UTbSimpleNoSignalsInterfaceJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 struct FUTbSimpleNoSignalsInterfaceJniClientCacheData
@@ -193,7 +177,7 @@ namespace
 
 std::atomic<IUTbSimpleNoSignalsInterfaceJniClientJniAccessor*> gUTbSimpleNoSignalsInterfaceJniClientHandle(nullptr);
 
-UTbSimpleNoSignalsInterfaceJniClientMethodHelper gUTbSimpleNoSignalsInterfaceJniClientmethodHelper;
+FTbSimpleMethodHelper gUTbSimpleNoSignalsInterfaceJniClientmethodHelper(TEXT("UTbSimpleNoSignalsInterfaceJniClient"));
 
 } // namespace
 
@@ -641,53 +625,3 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoSignalsInterfaceJniClient_nati
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UTbSimpleNoSignalsInterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
-	}
-
-	UE_LOG(
-		LogTbSimpleNoSignalsInterfaceClient_JNI,
-		Verbose,
-		TEXT(" method store id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	return Id;
-}
-
-template <typename ResultType>
-bool UTbSimpleNoSignalsInterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(
-		LogTbSimpleNoSignalsInterfaceClient_JNI,
-		Verbose,
-		TEXT(" method resolving id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		PromisePtr->SetValue(Value);
-		return true;
-	}
-
-	return false;
-}
-template FGuid UTbSimpleNoSignalsInterfaceJniClientMethodHelper::StorePromise<bool>(TPromise<bool>& Promise);
-template bool UTbSimpleNoSignalsInterfaceJniClientMethodHelper::FulfillPromise<bool>(const FGuid& Id, const bool& Value);
