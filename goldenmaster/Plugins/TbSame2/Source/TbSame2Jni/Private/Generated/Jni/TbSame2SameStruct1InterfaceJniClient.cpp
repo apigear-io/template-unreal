@@ -543,18 +543,30 @@ template <typename ResultType>
 FGuid UTbSame2SameStruct1InterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
+
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
 		ReplyPromisesMap.Add(Id, &Promise);
 	}
-	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+
+	UE_LOG(
+		LogTbSame2SameStruct1InterfaceClient_JNI,
+		Verbose,
+		TEXT(" method store id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	return Id;
 }
 
 template <typename ResultType>
 bool UTbSame2SameStruct1InterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	UE_LOG(LogTbSame2SameStruct1InterfaceClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	UE_LOG(
+		LogTbSame2SameStruct1InterfaceClient_JNI,
+		Verbose,
+		TEXT(" method resolving id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	TPromise<ResultType>* PromisePtr = nullptr;
 
 	{
@@ -571,6 +583,7 @@ bool UTbSame2SameStruct1InterfaceJniClientMethodHelper::FulfillPromise(const FGu
 		PromisePtr->SetValue(Value);
 		return true;
 	}
+
 	return false;
 }
 template FGuid UTbSame2SameStruct1InterfaceJniClientMethodHelper::StorePromise<FTbSame2Struct1>(TPromise<FTbSame2Struct1>& Promise);

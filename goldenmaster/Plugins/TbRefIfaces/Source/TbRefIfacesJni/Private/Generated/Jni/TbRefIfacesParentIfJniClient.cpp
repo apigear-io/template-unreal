@@ -1184,18 +1184,30 @@ template <typename ResultType>
 FGuid UTbRefIfacesParentIfJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
+
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
 		ReplyPromisesMap.Add(Id, &Promise);
 	}
-	UE_LOG(LogTbRefIfacesParentIfClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+
+	UE_LOG(
+		LogTbRefIfacesParentIfClient_JNI,
+		Verbose,
+		TEXT(" method store id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	return Id;
 }
 
 template <typename ResultType>
 bool UTbRefIfacesParentIfJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	UE_LOG(LogTbRefIfacesParentIfClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	UE_LOG(
+		LogTbRefIfacesParentIfClient_JNI,
+		Verbose,
+		TEXT(" method resolving id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	TPromise<ResultType>* PromisePtr = nullptr;
 
 	{
@@ -1212,6 +1224,7 @@ bool UTbRefIfacesParentIfJniClientMethodHelper::FulfillPromise(const FGuid& Id, 
 		PromisePtr->SetValue(Value);
 		return true;
 	}
+
 	return false;
 }
 template FGuid UTbRefIfacesParentIfJniClientMethodHelper::StorePromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>& Promise);

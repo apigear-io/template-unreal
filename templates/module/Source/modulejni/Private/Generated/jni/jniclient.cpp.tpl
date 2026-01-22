@@ -787,18 +787,30 @@ template <typename ResultType>
 FGuid {{$Class}}MethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
+
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
 		ReplyPromisesMap.Add(Id, &Promise);
 	}
-	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
+
+	UE_LOG(
+		Log{{$Iface}}Client_JNI,
+		Verbose,
+		TEXT(" method store id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	return Id;
 }
 
 template <typename ResultType>
 bool {{$Class}}MethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
+	UE_LOG(
+		Log{{$Iface}}Client_JNI,
+		Verbose,
+		TEXT(" method resolving id %s"),
+		*(Id.ToString(EGuidFormats::Digits)));
+
 	TPromise<ResultType>* PromisePtr = nullptr;
 
 	{
@@ -815,6 +827,7 @@ bool {{$Class}}MethodHelper::FulfillPromise(const FGuid& Id, const ResultType& V
 		PromisePtr->SetValue(Value);
 		return true;
 	}
+
 	return false;
 }
 {{- $returnTypes := getEmptyStringList}}
