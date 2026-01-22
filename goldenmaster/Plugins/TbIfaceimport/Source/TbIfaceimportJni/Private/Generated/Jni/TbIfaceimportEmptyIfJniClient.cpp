@@ -337,8 +337,10 @@ template <typename ResultType>
 FGuid UTbIfaceimportEmptyIfJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
-	FScopeLock Lock(&ReplyPromisesMapCS);
-	ReplyPromisesMap.Add(Id, &Promise);
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromisesMap.Add(Id, &Promise);
+	}
 	UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
 	return Id;
 }

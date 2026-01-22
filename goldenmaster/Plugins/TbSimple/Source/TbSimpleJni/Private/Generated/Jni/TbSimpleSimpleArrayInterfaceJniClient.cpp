@@ -2432,8 +2432,10 @@ template <typename ResultType>
 FGuid UTbSimpleSimpleArrayInterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
-	FScopeLock Lock(&ReplyPromisesMapCS);
-	ReplyPromisesMap.Add(Id, &Promise);
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromisesMap.Add(Id, &Promise);
+	}
 	UE_LOG(LogTbSimpleSimpleArrayInterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
 	return Id;
 }

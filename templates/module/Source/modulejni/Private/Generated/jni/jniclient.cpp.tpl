@@ -791,8 +791,10 @@ template <typename ResultType>
 FGuid {{$Class}}MethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
-	FScopeLock Lock(&ReplyPromisesMapCS);
-	ReplyPromisesMap.Add(Id, &Promise);
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromisesMap.Add(Id, &Promise);
+	}
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
 	return Id;
 }

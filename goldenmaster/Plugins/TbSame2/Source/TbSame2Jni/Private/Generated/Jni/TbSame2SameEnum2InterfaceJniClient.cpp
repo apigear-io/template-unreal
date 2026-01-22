@@ -754,8 +754,10 @@ template <typename ResultType>
 FGuid UTbSame2SameEnum2InterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
 {
 	FGuid Id = FGuid::NewGuid();
-	FScopeLock Lock(&ReplyPromisesMapCS);
-	ReplyPromisesMap.Add(Id, &Promise);
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromisesMap.Add(Id, &Promise);
+	}
 	UE_LOG(LogTbSame2SameEnum2InterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
 	return Id;
 }
