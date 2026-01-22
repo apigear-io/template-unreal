@@ -116,6 +116,8 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Misc/ScopeRWLock.h"
 
+#include "Generated/Detail/{{$ModuleName}}MethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -132,24 +134,6 @@ limitations under the License.
 #include "GenericPlatform/GenericPlatformMisc.h"
 
 {{- $cachedClass:= printf "javaClass%s" (Camel .Interface.Name) }}
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class {{$Class}}MethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 class {{$Class}}Cache
@@ -246,7 +230,7 @@ namespace
 
 std::atomic<I{{$Class}}JniAccessor*> g{{$Class}}Handle(nullptr);
 
-{{$Class}}MethodHelper g{{$Class}}methodHelper;
+F{{Camel .Module.Name}}MethodHelper g{{$Class}}methodHelper(TEXT("{{$Class}}"));
 
 } // namespace
 
@@ -717,63 +701,3 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeIsReady(JNIEnv* Env, jclass Clazz, 
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid {{$Class}}MethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
-	}
-
-	UE_LOG(
-		Log{{$Iface}}Client_JNI,
-		Verbose,
-		TEXT(" method store id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	return Id;
-}
-
-template <typename ResultType>
-bool {{$Class}}MethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(
-		Log{{$Iface}}Client_JNI,
-		Verbose,
-		TEXT(" method resolving id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		PromisePtr->SetValue(Value);
-		return true;
-	}
-
-	return false;
-}
-{{- $returnTypes := getEmptyStringList}}
-{{- range .Interface.Operations }}
-{{- if not .Return.IsVoid }}
-{{- $type := ueReturn "" .Return }}
-{{- $returnTypes = (appendList $returnTypes $type) }}
-{{- end }}
-{{- end }}
-{{- $returnTypes = unique $returnTypes }}
-{{- range $returnTypes}}
-template FGuid {{$Class}}MethodHelper::StorePromise<{{.}}>(TPromise<{{.}}>& Promise);
-template bool {{$Class}}MethodHelper::FulfillPromise<{{.}}>(const FGuid& Id, const {{.}}& Value);
-{{- end}}

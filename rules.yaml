@@ -512,6 +512,8 @@ features:
             target: "Source/{{Camel .Module.Name}}Jni/Public/{{Camel .Module.Name}}/Generated/Jni/{{Camel .Module.Name}}DataJavaConverter.h"
           - source: "module/Source/modulejni/Public/Generated/jni/jniconnectionstatus.h.tpl"
             target: "Source/{{Camel .Module.Name}}Jni/Public/{{Camel .Module.Name}}//Generated/Jni/{{Camel .Module.Name}}JniConnectionStatus.h"
+          - source: "module/Source/modulejni/Private/Generated/detail/methodhelper.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Detail/{{Camel .Module.Name}}MethodHelper.h"
       - match: interface
         prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
         documents:

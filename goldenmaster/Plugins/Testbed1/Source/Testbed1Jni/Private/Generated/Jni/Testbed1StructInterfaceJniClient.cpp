@@ -45,6 +45,8 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Misc/ScopeRWLock.h"
 
+#include "Generated/Detail/Testbed1MethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -59,24 +61,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UTestbed1StructInterfaceJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 class UTestbed1StructInterfaceJniClientCache
@@ -177,7 +161,7 @@ namespace
 
 std::atomic<IUTestbed1StructInterfaceJniClientJniAccessor*> gUTestbed1StructInterfaceJniClientHandle(nullptr);
 
-UTestbed1StructInterfaceJniClientMethodHelper gUTestbed1StructInterfaceJniClientmethodHelper;
+FTestbed1MethodHelper gUTestbed1StructInterfaceJniClientmethodHelper(TEXT("UTestbed1StructInterfaceJniClient"));
 
 } // namespace
 
@@ -964,59 +948,3 @@ JNI_METHOD void Java_testbed1_testbed1jniclient_StructInterfaceJniClient_nativeI
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UTestbed1StructInterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		ReplyPromisesMap.Add(Id, &Promise);
-	}
-
-	UE_LOG(
-		LogTestbed1StructInterfaceClient_JNI,
-		Verbose,
-		TEXT(" method store id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	return Id;
-}
-
-template <typename ResultType>
-bool UTestbed1StructInterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(
-		LogTestbed1StructInterfaceClient_JNI,
-		Verbose,
-		TEXT(" method resolving id %s"),
-		*(Id.ToString(EGuidFormats::Digits)));
-
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		PromisePtr->SetValue(Value);
-		return true;
-	}
-
-	return false;
-}
-template FGuid UTestbed1StructInterfaceJniClientMethodHelper::StorePromise<FTestbed1StructBool>(TPromise<FTestbed1StructBool>& Promise);
-template bool UTestbed1StructInterfaceJniClientMethodHelper::FulfillPromise<FTestbed1StructBool>(const FGuid& Id, const FTestbed1StructBool& Value);
-template FGuid UTestbed1StructInterfaceJniClientMethodHelper::StorePromise<FTestbed1StructFloat>(TPromise<FTestbed1StructFloat>& Promise);
-template bool UTestbed1StructInterfaceJniClientMethodHelper::FulfillPromise<FTestbed1StructFloat>(const FGuid& Id, const FTestbed1StructFloat& Value);
-template FGuid UTestbed1StructInterfaceJniClientMethodHelper::StorePromise<FTestbed1StructInt>(TPromise<FTestbed1StructInt>& Promise);
-template bool UTestbed1StructInterfaceJniClientMethodHelper::FulfillPromise<FTestbed1StructInt>(const FGuid& Id, const FTestbed1StructInt& Value);
-template FGuid UTestbed1StructInterfaceJniClientMethodHelper::StorePromise<FTestbed1StructString>(TPromise<FTestbed1StructString>& Promise);
-template bool UTestbed1StructInterfaceJniClientMethodHelper::FulfillPromise<FTestbed1StructString>(const FGuid& Id, const FTestbed1StructString& Value);

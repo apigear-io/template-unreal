@@ -22,7 +22,11 @@ limitations under the License.
 #include "ExternTypesSettings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/ExternTypesMethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "ExternTypesJni"
+
+DEFINE_LOG_CATEGORY(LogExternTypesMethodHelper_JNI);
 
 void FExternTypesJniModule::StartupModule()
 {
