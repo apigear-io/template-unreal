@@ -46,4 +46,10 @@ public:
 	FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
 
 	FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock Prop1RWLock;
+	mutable FRWLock Prop2RWLock;
+#endif
 };

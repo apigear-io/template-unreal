@@ -16,6 +16,7 @@ limitations under the License.
 */
 
 #include "TbSimple/Implementation/TbSimpleVoidInterface.h"
+#include "Misc/ScopeRWLock.h"
 
 UTbSimpleVoidInterfaceImplementation::~UTbSimpleVoidInterfaceImplementation() = default;
 

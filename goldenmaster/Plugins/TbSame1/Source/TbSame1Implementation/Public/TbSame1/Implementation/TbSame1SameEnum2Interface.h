@@ -46,4 +46,10 @@ public:
 	ETbSame1Enum1 Func1(ETbSame1Enum1 Param1) override;
 
 	ETbSame1Enum1 Func2(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock Prop1RWLock;
+	mutable FRWLock Prop2RWLock;
+#endif
 };

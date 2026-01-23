@@ -41,4 +41,9 @@ public:
 
 	// operations
 	FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock Prop1RWLock;
+#endif
 };
