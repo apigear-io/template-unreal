@@ -41,4 +41,9 @@ public:
 
 	// operations
 	int32 IntMethod(int32 Param) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock IntPropertyRWLock;
+#endif
 };

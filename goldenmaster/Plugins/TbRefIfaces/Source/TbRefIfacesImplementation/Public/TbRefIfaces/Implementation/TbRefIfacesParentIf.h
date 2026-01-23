@@ -56,4 +56,12 @@ public:
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
 
 	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock LocalIfRWLock;
+	mutable FRWLock LocalIfListRWLock;
+	mutable FRWLock ImportedIfRWLock;
+	mutable FRWLock ImportedIfListRWLock;
+#endif
 };
