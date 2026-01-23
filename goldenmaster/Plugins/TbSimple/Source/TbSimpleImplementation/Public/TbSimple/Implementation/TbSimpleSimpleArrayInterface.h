@@ -78,4 +78,17 @@ public:
 	TArray<double> FuncFloat64(const TArray<double>& ParamFloat) override;
 
 	TArray<FString> FuncString(const TArray<FString>& ParamString) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock PropBoolRWLock;
+	mutable FRWLock PropIntRWLock;
+	mutable FRWLock PropInt32RWLock;
+	mutable FRWLock PropInt64RWLock;
+	mutable FRWLock PropFloatRWLock;
+	mutable FRWLock PropFloat32RWLock;
+	mutable FRWLock PropFloat64RWLock;
+	mutable FRWLock PropStringRWLock;
+	mutable FRWLock PropReadOnlyStringRWLock;
+#endif
 };

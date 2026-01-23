@@ -56,4 +56,12 @@ public:
 	FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
 
 	FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock PropBoolRWLock;
+	mutable FRWLock PropIntRWLock;
+	mutable FRWLock PropFloatRWLock;
+	mutable FRWLock PropStringRWLock;
+#endif
 };

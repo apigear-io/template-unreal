@@ -16,10 +16,14 @@ limitations under the License.
 */
 
 #include "Testbed1/Implementation/Testbed1StructInterface.h"
+#include "Misc/ScopeRWLock.h"
 
 UTestbed1StructInterfaceImplementation::~UTestbed1StructInterfaceImplementation() = default;
 FTestbed1StructBool UTestbed1StructInterfaceImplementation::GetPropBool() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(PropBoolRWLock);
+#endif
 	return PropBool;
 }
 
@@ -28,12 +32,22 @@ void UTestbed1StructInterfaceImplementation::SetPropBool(const FTestbed1StructBo
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.SetPropBool");
 	if (PropBool != InPropBool)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropBoolRWLock);
+			PropBool = InPropBool;
+		}
+#else
 		PropBool = InPropBool;
+#endif
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 }
 FTestbed1StructInt UTestbed1StructInterfaceImplementation::GetPropInt() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(PropIntRWLock);
+#endif
 	return PropInt;
 }
 
@@ -42,12 +56,22 @@ void UTestbed1StructInterfaceImplementation::SetPropInt(const FTestbed1StructInt
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.SetPropInt");
 	if (PropInt != InPropInt)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropIntRWLock);
+			PropInt = InPropInt;
+		}
+#else
 		PropInt = InPropInt;
+#endif
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
 FTestbed1StructFloat UTestbed1StructInterfaceImplementation::GetPropFloat() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(PropFloatRWLock);
+#endif
 	return PropFloat;
 }
 
@@ -56,12 +80,22 @@ void UTestbed1StructInterfaceImplementation::SetPropFloat(const FTestbed1StructF
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.SetPropFloat");
 	if (PropFloat != InPropFloat)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropFloatRWLock);
+			PropFloat = InPropFloat;
+		}
+#else
 		PropFloat = InPropFloat;
+#endif
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 FTestbed1StructString UTestbed1StructInterfaceImplementation::GetPropString() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(PropStringRWLock);
+#endif
 	return PropString;
 }
 
@@ -70,7 +104,14 @@ void UTestbed1StructInterfaceImplementation::SetPropString(const FTestbed1Struct
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructInterface.Impl.SetPropString");
 	if (PropString != InPropString)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropStringRWLock);
+			PropString = InPropString;
+		}
+#else
 		PropString = InPropString;
+#endif
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
@@ -111,22 +152,50 @@ void UTestbed1StructInterfaceImplementation::_ResetProperties()
 {
 	if (PropBool != FTestbed1StructBool())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropBoolRWLock);
+			PropBool = FTestbed1StructBool();
+		}
+#else
 		PropBool = FTestbed1StructBool();
+#endif
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 	if (PropInt != FTestbed1StructInt())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropIntRWLock);
+			PropInt = FTestbed1StructInt();
+		}
+#else
 		PropInt = FTestbed1StructInt();
+#endif
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 	if (PropFloat != FTestbed1StructFloat())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropFloatRWLock);
+			PropFloat = FTestbed1StructFloat();
+		}
+#else
 		PropFloat = FTestbed1StructFloat();
+#endif
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 	if (PropString != FTestbed1StructString())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropStringRWLock);
+			PropString = FTestbed1StructString();
+		}
+#else
 		PropString = FTestbed1StructString();
+#endif
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }

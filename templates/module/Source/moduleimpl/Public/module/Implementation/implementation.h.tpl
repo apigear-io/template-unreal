@@ -56,4 +56,13 @@ public:
 {{- if ne $i 0 }}{{nl}}{{ end }}
 	{{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
 {{- end }}
+{{- if .Features.jni }}
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+{{- range .Interface.Properties }}
+	mutable FRWLock {{ueVar "" .}}RWLock;
+{{- end }}
+#endif
+{{- end }}
 };

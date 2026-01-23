@@ -56,4 +56,12 @@ public:
 	ETbEnumEnum2 Func2(ETbEnumEnum2 Param2) override;
 
 	ETbEnumEnum3 Func3(ETbEnumEnum3 Param3) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock Prop0RWLock;
+	mutable FRWLock Prop1RWLock;
+	mutable FRWLock Prop2RWLock;
+	mutable FRWLock Prop3RWLock;
+#endif
 };
