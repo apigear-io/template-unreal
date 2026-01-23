@@ -16,5 +16,6 @@ limitations under the License.
 */
 
 #include "TbIfaceimport/Implementation/TbIfaceimportEmptyIf.h"
+#include "Misc/ScopeRWLock.h"
 
 UTbIfaceimportEmptyIfImplementation::~UTbIfaceimportEmptyIfImplementation() = default;

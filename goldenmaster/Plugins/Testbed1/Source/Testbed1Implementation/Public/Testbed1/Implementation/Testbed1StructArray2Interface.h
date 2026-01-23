@@ -61,4 +61,13 @@ public:
 	TArray<FTestbed1StructString> FuncString(const FTestbed1StructStringWithArray& ParamString) override;
 
 	TArray<ETestbed1Enum0> FuncEnum(const FTestbed1StructEnumWithArray& ParamEnum) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock PropBoolRWLock;
+	mutable FRWLock PropIntRWLock;
+	mutable FRWLock PropFloatRWLock;
+	mutable FRWLock PropStringRWLock;
+	mutable FRWLock PropEnumRWLock;
+#endif
 };

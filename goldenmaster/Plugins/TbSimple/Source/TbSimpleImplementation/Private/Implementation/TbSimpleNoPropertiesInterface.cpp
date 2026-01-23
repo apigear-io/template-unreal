@@ -16,6 +16,7 @@ limitations under the License.
 */
 
 #include "TbSimple/Implementation/TbSimpleNoPropertiesInterface.h"
+#include "Misc/ScopeRWLock.h"
 
 UTbSimpleNoPropertiesInterfaceImplementation::~UTbSimpleNoPropertiesInterfaceImplementation() = default;
 

@@ -33,4 +33,8 @@ public:
 	void FuncVoid() override;
 
 	bool FuncBool(bool bParamBool) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#endif
 };

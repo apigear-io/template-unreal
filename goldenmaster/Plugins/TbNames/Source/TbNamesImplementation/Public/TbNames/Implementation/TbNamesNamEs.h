@@ -52,4 +52,12 @@ public:
 	void SomeFunction(bool bSomeParam) override;
 
 	void SomeFunction2(bool bSomeParam) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock bSwitchRWLock;
+	mutable FRWLock SomePropertyRWLock;
+	mutable FRWLock SomePoperty2RWLock;
+	mutable FRWLock EnumPropertyRWLock;
+#endif
 };

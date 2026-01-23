@@ -56,4 +56,12 @@ public:
 	int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
 
 	int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock Prop1RWLock;
+	mutable FRWLock Prop2RWLock;
+	mutable FRWLock Prop3RWLock;
+	mutable FRWLock Prop4RWLock;
+#endif
 };
