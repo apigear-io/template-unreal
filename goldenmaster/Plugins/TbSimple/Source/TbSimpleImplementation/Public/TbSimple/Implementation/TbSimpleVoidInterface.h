@@ -16,4 +16,8 @@ public:
 	// properties
 	// operations
 	void FuncVoid() override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#endif
 };

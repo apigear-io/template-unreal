@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #include "TbSimple/Implementation/TbSimpleVoidInterface.h"
+#include "Misc/ScopeRWLock.h"
 
 UTbSimpleVoidInterfaceImplementation::~UTbSimpleVoidInterfaceImplementation() = default;
 

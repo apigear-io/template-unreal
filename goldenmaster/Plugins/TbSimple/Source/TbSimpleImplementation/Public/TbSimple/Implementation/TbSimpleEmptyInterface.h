@@ -15,4 +15,8 @@ public:
 
 	// properties
 	// operations
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#endif
 };
