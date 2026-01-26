@@ -26,9 +26,12 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
 
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
+
+#include "Generated/Detail/TbRefIfacesThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -594,7 +597,31 @@ JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nat
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->LocalIfMethod(local_param);
+		auto optResult = FTbRefIfacesThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>
+			{
+			auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethod (in GameThread), UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethod (in GameThread), UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+			}
+
+			return service->LocalIfMethod(local_param);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethod, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		// interfaces are currently not supported. TbRefIfacesDataJavaConverter returns nullptr.
 		jobject jresult = TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(Env, result);
 		return jresult;
@@ -622,7 +649,31 @@ JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniServic
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->LocalIfMethodList(local_param);
+		auto optResult = FTbRefIfacesThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>
+			{
+			auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethodList (in GameThread), UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethodList (in GameThread), UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
+			}
+
+			return service->LocalIfMethodList(local_param);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeLocalIfMethodList, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		// interfaces are currently not supported. TbRefIfacesDataJavaConverter returns empty array.
 		jobjectArray jresult = TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(Env, result);
 		return jresult;
@@ -650,7 +701,31 @@ JNI_METHOD jobject Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nat
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->ImportedIfMethod(local_param);
+		auto optResult = FTbRefIfacesThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TScriptInterface<ITbIfaceimportEmptyIfInterface>>
+			{
+			auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethod (in GameThread), UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethod (in GameThread), UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+			}
+
+			return service->ImportedIfMethod(local_param);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethod, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		// interfaces are currently not supported. TbIfaceimportDataJavaConverter returns nullptr.
 		jobject jresult = TbIfaceimportDataJavaConverter::makeJavaEmptyIf(Env, result);
 		return jresult;
@@ -678,7 +753,31 @@ JNI_METHOD jobjectArray Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniServic
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->ImportedIfMethodList(local_param);
+		auto optResult = FTbRefIfacesThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>
+			{
+			auto jniAccessor = gUTbRefIfacesParentIfJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethodList (in GameThread), UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethodList (in GameThread), UTbRefIfacesParentIfJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
+			}
+
+			return service->ImportedIfMethodList(local_param);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_ParentIfJniService_nativeImportedIfMethodList, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		// interfaces are currently not supported. TbIfaceimportDataJavaConverter returns empty array.
 		jobjectArray jresult = TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(Env, result);
 		return jresult;

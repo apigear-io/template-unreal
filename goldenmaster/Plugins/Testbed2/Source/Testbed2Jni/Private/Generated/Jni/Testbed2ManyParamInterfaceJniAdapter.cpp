@@ -26,8 +26,11 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
 #include "Testbed2/Generated/api/Testbed2_data.h"
+
+#include "Generated/Detail/Testbed2ThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -562,7 +565,31 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func1(param1);
+		auto optResult = FTestbed2ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<int32>
+			{
+			auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc1 (in GameThread), UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc1 (in GameThread), UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			return service->Func1(param1);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc1, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -585,7 +612,31 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func2(param1, param2);
+		auto optResult = FTestbed2ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<int32>
+			{
+			auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc2 (in GameThread), UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc2 (in GameThread), UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			return service->Func2(param1, param2);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc2, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -608,7 +659,31 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func3(param1, param2, param3);
+		auto optResult = FTestbed2ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<int32>
+			{
+			auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc3 (in GameThread), UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc3 (in GameThread), UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			return service->Func3(param1, param2, param3);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc3, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -631,7 +706,31 @@ JNI_METHOD jint Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_na
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func4(param1, param2, param3, param4);
+		auto optResult = FTestbed2ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<int32>
+			{
+			auto jniAccessor = gUTestbed2ManyParamInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc4 (in GameThread), UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc4 (in GameThread), UTestbed2ManyParamInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			return service->Func4(param1, param2, param3, param4);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_ManyParamInterfaceJniService_nativeFunc4, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else

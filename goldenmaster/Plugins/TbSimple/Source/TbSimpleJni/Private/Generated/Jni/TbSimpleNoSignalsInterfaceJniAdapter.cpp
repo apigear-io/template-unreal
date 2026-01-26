@@ -26,7 +26,10 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
+
+#include "Generated/Detail/TbSimpleThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -365,7 +368,25 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_na
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		service->FuncVoid();
+		FTbSimpleThreadingHelper::RunInGameThreadAndWait(
+			[&]()
+			{
+			auto jniAccessor = gUTbSimpleNoSignalsInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid (in GameThread), UTbSimpleNoSignalsInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return;
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncVoid (in GameThread), UTbSimpleNoSignalsInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return;
+			}
+
+			service->FuncVoid();
+		});
 		return;
 	}
 	else
@@ -388,7 +409,31 @@ JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniServic
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncBool(paramBool);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<bool>
+			{
+			auto jniAccessor = gUTbSimpleNoSignalsInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool (in GameThread), UTbSimpleNoSignalsInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<bool>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool (in GameThread), UTbSimpleNoSignalsInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<bool>();
+			}
+
+			return service->FuncBool(paramBool);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_NoSignalsInterfaceJniService_nativeFuncBool, couldn't get result."));
+			return false;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else

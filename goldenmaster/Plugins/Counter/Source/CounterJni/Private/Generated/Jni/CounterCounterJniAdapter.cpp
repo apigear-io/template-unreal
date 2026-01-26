@@ -26,10 +26,13 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
 
 #include "CustomTypes/Generated/Jni/CustomTypesDataJavaConverter.h"
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
+
+#include "Generated/Detail/CounterThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -483,7 +486,31 @@ JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeIncrem
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Increment(local_vec);
+		auto optResult = FCounterThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<FVector>
+			{
+			auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrement (in GameThread), UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<FVector>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrement (in GameThread), UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<FVector>();
+			}
+
+			return service->Increment(local_vec);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrement, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobject jresult = ExternTypesDataJavaConverter::makeJavaMyVector3D(Env, result);
 		return jresult;
 	}
@@ -509,7 +536,31 @@ JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeI
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->IncrementArray(local_vec);
+		auto optResult = FCounterThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<FVector>>
+			{
+			auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrementArray (in GameThread), UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FVector>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrementArray (in GameThread), UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FVector>>();
+			}
+
+			return service->IncrementArray(local_vec);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeIncrementArray, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobjectArray jresult = ExternTypesDataJavaConverter::makeJavaMyVector3DArray(Env, result);
 		return jresult;
 	}
@@ -535,7 +586,31 @@ JNI_METHOD jobject Java_counter_counterjniservice_CounterJniService_nativeDecrem
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Decrement(local_vec);
+		auto optResult = FCounterThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<FCustomTypesVector3D>
+			{
+			auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrement (in GameThread), UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<FCustomTypesVector3D>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrement (in GameThread), UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<FCustomTypesVector3D>();
+			}
+
+			return service->Decrement(local_vec);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrement, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobject jresult = CustomTypesDataJavaConverter::makeJavaVector3D(Env, result);
 		return jresult;
 	}
@@ -561,7 +636,31 @@ JNI_METHOD jobjectArray Java_counter_counterjniservice_CounterJniService_nativeD
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->DecrementArray(local_vec);
+		auto optResult = FCounterThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<FCustomTypesVector3D>>
+			{
+			auto jniAccessor = gUCounterCounterJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrementArray (in GameThread), UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FCustomTypesVector3D>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrementArray (in GameThread), UCounterCounterJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FCustomTypesVector3D>>();
+			}
+
+			return service->DecrementArray(local_vec);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("Java_counter_counterjniservice_CounterJniService_nativeDecrementArray, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobjectArray jresult = CustomTypesDataJavaConverter::makeJavaVector3DArray(Env, result);
 		return jresult;
 	}

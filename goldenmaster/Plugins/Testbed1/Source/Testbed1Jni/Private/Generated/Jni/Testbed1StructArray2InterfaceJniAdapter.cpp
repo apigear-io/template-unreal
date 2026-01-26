@@ -26,8 +26,11 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
 #include "Testbed1/Generated/api/Testbed1_data.h"
+
+#include "Generated/Detail/Testbed1ThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -614,7 +617,31 @@ JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArray2InterfaceJn
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncBool(local_param_bool);
+		auto optResult = FTestbed1ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<FTestbed1StructBool>>
+			{
+			auto jniAccessor = gUTestbed1StructArray2InterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncBool (in GameThread), UTestbed1StructArray2InterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FTestbed1StructBool>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncBool (in GameThread), UTestbed1StructArray2InterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FTestbed1StructBool>>();
+			}
+
+			return service->FuncBool(local_param_bool);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncBool, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructBoolArray(Env, result);
 		return jresult;
 	}
@@ -640,7 +667,31 @@ JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArray2InterfaceJn
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncInt(local_param_int);
+		auto optResult = FTestbed1ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<FTestbed1StructInt>>
+			{
+			auto jniAccessor = gUTestbed1StructArray2InterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncInt (in GameThread), UTestbed1StructArray2InterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FTestbed1StructInt>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncInt (in GameThread), UTestbed1StructArray2InterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FTestbed1StructInt>>();
+			}
+
+			return service->FuncInt(local_param_int);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncInt, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructIntArray(Env, result);
 		return jresult;
 	}
@@ -666,7 +717,31 @@ JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArray2InterfaceJn
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncFloat(local_param_float);
+		auto optResult = FTestbed1ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<FTestbed1StructFloat>>
+			{
+			auto jniAccessor = gUTestbed1StructArray2InterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncFloat (in GameThread), UTestbed1StructArray2InterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FTestbed1StructFloat>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncFloat (in GameThread), UTestbed1StructArray2InterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FTestbed1StructFloat>>();
+			}
+
+			return service->FuncFloat(local_param_float);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncFloat, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructFloatArray(Env, result);
 		return jresult;
 	}
@@ -692,7 +767,31 @@ JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArray2InterfaceJn
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncString(local_param_string);
+		auto optResult = FTestbed1ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<FTestbed1StructString>>
+			{
+			auto jniAccessor = gUTestbed1StructArray2InterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncString (in GameThread), UTestbed1StructArray2InterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FTestbed1StructString>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncString (in GameThread), UTestbed1StructArray2InterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<FTestbed1StructString>>();
+			}
+
+			return service->FuncString(local_param_string);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncString, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobjectArray jresult = Testbed1DataJavaConverter::makeJavaStructStringArray(Env, result);
 		return jresult;
 	}
@@ -718,7 +817,31 @@ JNI_METHOD jobjectArray Java_testbed1_testbed1jniservice_StructArray2InterfaceJn
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncEnum(local_param_enum);
+		auto optResult = FTestbed1ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<ETestbed1Enum0>>
+			{
+			auto jniAccessor = gUTestbed1StructArray2InterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncEnum (in GameThread), UTestbed1StructArray2InterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<ETestbed1Enum0>>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncEnum (in GameThread), UTestbed1StructArray2InterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<TArray<ETestbed1Enum0>>();
+			}
+
+			return service->FuncEnum(local_param_enum);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTestbed1StructArray2Interface_JNI, Warning, TEXT("Java_testbed1_testbed1jniservice_StructArray2InterfaceJniService_nativeFuncEnum, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobjectArray jresult = Testbed1DataJavaConverter::makeJavaEnum0Array(Env, result);
 		return jresult;
 	}
