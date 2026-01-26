@@ -12,7 +12,10 @@
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
+
+#include "Generated/Detail/TbSimpleThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -817,7 +820,25 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativ
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		service->FuncNoReturnValue(paramBool);
+		FTbSimpleThreadingHelper::RunInGameThreadAndWait(
+			[&]()
+			{
+			auto jniAccessor = gUTbSimpleSimpleInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncNoReturnValue (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return;
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncNoReturnValue (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return;
+			}
+
+			service->FuncNoReturnValue(paramBool);
+		});
 		return;
 	}
 	else
@@ -840,7 +861,31 @@ JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_n
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncNoParams();
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<bool>
+			{
+			auto jniAccessor = gUTbSimpleSimpleInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncNoParams (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<bool>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncNoParams (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<bool>();
+			}
+
+			return service->FuncNoParams();
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncNoParams, couldn't get result."));
+			return false;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -863,7 +908,31 @@ JNI_METHOD jboolean Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_n
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncBool(paramBool);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<bool>
+			{
+			auto jniAccessor = gUTbSimpleSimpleInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncBool (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<bool>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncBool (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<bool>();
+			}
+
+			return service->FuncBool(paramBool);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncBool, couldn't get result."));
+			return false;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -886,7 +955,31 @@ JNI_METHOD jint Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativ
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncInt(paramInt);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<int32>
+			{
+			auto jniAccessor = gUTbSimpleSimpleInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncInt (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncInt (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			return service->FuncInt(paramInt);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncInt, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -909,7 +1002,31 @@ JNI_METHOD jint Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativ
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncInt32(paramInt32);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<int32>
+			{
+			auto jniAccessor = gUTbSimpleSimpleInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncInt32 (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncInt32 (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int32>();
+			}
+
+			return service->FuncInt32(paramInt32);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncInt32, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -932,7 +1049,31 @@ JNI_METHOD jlong Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nati
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncInt64(paramInt64);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<int64>
+			{
+			auto jniAccessor = gUTbSimpleSimpleInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncInt64 (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int64>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncInt64 (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<int64>();
+			}
+
+			return service->FuncInt64(paramInt64);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncInt64, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -955,7 +1096,31 @@ JNI_METHOD jfloat Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nat
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncFloat(paramFloat);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<float>
+			{
+			auto jniAccessor = gUTbSimpleSimpleInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncFloat (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<float>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncFloat (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<float>();
+			}
+
+			return service->FuncFloat(paramFloat);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncFloat, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -978,7 +1143,31 @@ JNI_METHOD jfloat Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nat
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncFloat32(paramFloat32);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<float>
+			{
+			auto jniAccessor = gUTbSimpleSimpleInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncFloat32 (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<float>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncFloat32 (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<float>();
+			}
+
+			return service->FuncFloat32(paramFloat32);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncFloat32, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -1001,7 +1190,31 @@ JNI_METHOD jdouble Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_na
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncFloat64(paramFloat);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<double>
+			{
+			auto jniAccessor = gUTbSimpleSimpleInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncFloat64 (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<double>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncFloat64 (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<double>();
+			}
+
+			return service->FuncFloat64(paramFloat);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncFloat64, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else
@@ -1025,7 +1238,31 @@ JNI_METHOD jstring Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_na
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncString(local_param_string);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<FString>
+			{
+			auto jniAccessor = gUTbSimpleSimpleInterfaceJniAdapterHandle.load();
+			if (!jniAccessor)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncString (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<FString>();
+			}
+
+			auto service = jniAccessor->getBackendServiceForJNI();
+			if (service == nullptr)
+			{
+				UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncString (in GameThread), UTbSimpleSimpleInterfaceJniAdapter not valid to use, probably too early or too late."));
+				return TOptional<FString>();
+			}
+
+			return service->FuncString(local_param_string);
+			});
+		if (!optResult.IsSet())
+		{
+			UE_LOG(LogTbSimpleSimpleInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_nativeFuncString, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		auto jresultWrapped = FJavaHelper::ToJavaString(Env, result);
 		static const TCHAR* errorMsgjresult = TEXT("failed to convert to jstring in call nativeFuncString for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjresult);
