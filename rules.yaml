@@ -516,6 +516,10 @@ features:
             target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Detail/{{Camel .Module.Name}}MethodHelper.h"
           - source: "module/Source/modulejni/Private/Generated/detail/promiseholder.h.tpl"
             target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Detail/{{Camel .Module.Name}}PromiseHolder.h"
+          - source: "module/Source/modulejni/Private/Generated/detail/threadinghelper.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Detail/{{Camel .Module.Name}}ThreadingHelper.h"
+          - source: "module/Source/modulejni/Private/Generated/detail/threadinghelper.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Detail/{{Camel .Module.Name}}ThreadingHelper.cpp"
       - match: interface
         prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
         documents:
