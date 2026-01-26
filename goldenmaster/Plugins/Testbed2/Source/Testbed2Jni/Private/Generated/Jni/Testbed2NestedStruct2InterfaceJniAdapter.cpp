@@ -26,8 +26,11 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
 #include "Testbed2/Generated/api/Testbed2_data.h"
+
+#include "Generated/Detail/Testbed2ThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -442,7 +445,29 @@ JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniSer
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func1(local_param1);
+		auto optResult = FTestbed2ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<FTestbed2NestedStruct1> {
+				auto jniAccessor = gUTestbed2NestedStruct2InterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc1 (in GameThread), UTestbed2NestedStruct2InterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<FTestbed2NestedStruct1>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc1 (in GameThread), UTestbed2NestedStruct2InterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<FTestbed2NestedStruct1>();
+				}
+
+				return service->Func1(local_param1);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc1, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobject jresult = Testbed2DataJavaConverter::makeJavaNestedStruct1(Env, result);
 		return jresult;
 	}
@@ -470,7 +495,29 @@ JNI_METHOD jobject Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniSer
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func2(local_param1, local_param2);
+		auto optResult = FTestbed2ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<FTestbed2NestedStruct1> {
+				auto jniAccessor = gUTestbed2NestedStruct2InterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc2 (in GameThread), UTestbed2NestedStruct2InterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<FTestbed2NestedStruct1>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc2 (in GameThread), UTestbed2NestedStruct2InterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<FTestbed2NestedStruct1>();
+				}
+
+				return service->Func2(local_param1, local_param2);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Warning, TEXT("Java_testbed2_testbed2jniservice_NestedStruct2InterfaceJniService_nativeFunc2, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobject jresult = Testbed2DataJavaConverter::makeJavaNestedStruct1(Env, result);
 		return jresult;
 	}

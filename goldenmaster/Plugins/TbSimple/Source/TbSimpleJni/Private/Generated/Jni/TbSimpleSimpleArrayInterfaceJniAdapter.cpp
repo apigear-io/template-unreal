@@ -26,7 +26,10 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
+
+#include "Generated/Detail/TbSimpleThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -1046,7 +1049,29 @@ JNI_METHOD jbooleanArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJn
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncBool(local_param_bool);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<bool>> {
+				auto jniAccessor = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncBool (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<bool>>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncBool (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<bool>>();
+				}
+
+				return service->FuncBool(local_param_bool);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncBool, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		auto len = result.Num();
 		jbooleanArray jresult = Env->NewBooleanArray(len);
 		static const TCHAR* errorMsgAllocjresult = TEXT("failed to allocate an array in call nativeFuncBool for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
@@ -1096,7 +1121,29 @@ JNI_METHOD jintArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniSer
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncInt(local_param_int);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<int32>> {
+				auto jniAccessor = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncInt (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<int32>>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncInt (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<int32>>();
+				}
+
+				return service->FuncInt(local_param_int);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncInt, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		auto len = result.Num();
 		jintArray jresult = Env->NewIntArray(len);
 		static const TCHAR* errorMsgAllocjresult = TEXT("failed to allocate an array in call nativeFuncInt for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
@@ -1140,7 +1187,29 @@ JNI_METHOD jintArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniSer
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncInt32(local_param_int32);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<int32>> {
+				auto jniAccessor = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncInt32 (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<int32>>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncInt32 (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<int32>>();
+				}
+
+				return service->FuncInt32(local_param_int32);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncInt32, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		auto len = result.Num();
 		jintArray jresult = Env->NewIntArray(len);
 		static const TCHAR* errorMsgAllocjresult = TEXT("failed to allocate an array in call nativeFuncInt32 for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
@@ -1184,7 +1253,29 @@ JNI_METHOD jlongArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniSe
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncInt64(local_param_int64);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<int64>> {
+				auto jniAccessor = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncInt64 (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<int64>>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncInt64 (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<int64>>();
+				}
+
+				return service->FuncInt64(local_param_int64);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncInt64, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		auto len = result.Num();
 		jlongArray jresult = Env->NewLongArray(len);
 		static const TCHAR* errorMsgAllocjresult = TEXT("failed to allocate an array in call nativeFuncInt64 for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
@@ -1228,7 +1319,29 @@ JNI_METHOD jfloatArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniS
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncFloat(local_param_float);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<float>> {
+				auto jniAccessor = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncFloat (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<float>>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncFloat (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<float>>();
+				}
+
+				return service->FuncFloat(local_param_float);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncFloat, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		auto len = result.Num();
 		jfloatArray jresult = Env->NewFloatArray(len);
 		static const TCHAR* errorMsgAllocjresult = TEXT("failed to allocate an array in call nativeFuncFloat for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
@@ -1272,7 +1385,29 @@ JNI_METHOD jfloatArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniS
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncFloat32(local_param_float32);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<float>> {
+				auto jniAccessor = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncFloat32 (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<float>>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncFloat32 (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<float>>();
+				}
+
+				return service->FuncFloat32(local_param_float32);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncFloat32, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		auto len = result.Num();
 		jfloatArray jresult = Env->NewFloatArray(len);
 		static const TCHAR* errorMsgAllocjresult = TEXT("failed to allocate an array in call nativeFuncFloat32 for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
@@ -1316,7 +1451,29 @@ JNI_METHOD jdoubleArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJni
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncFloat64(local_param_float);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<double>> {
+				auto jniAccessor = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncFloat64 (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<double>>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncFloat64 (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<double>>();
+				}
+
+				return service->FuncFloat64(local_param_float);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncFloat64, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		auto len = result.Num();
 		jdoubleArray jresult = Env->NewDoubleArray(len);
 		static const TCHAR* errorMsgAllocjresult = TEXT("failed to allocate an array in call nativeFuncFloat64 for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
@@ -1352,7 +1509,29 @@ JNI_METHOD jobjectArray Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJni
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->FuncString(local_param_string);
+		auto optResult = FTbSimpleThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<TArray<FString>> {
+				auto jniAccessor = gUTbSimpleSimpleArrayInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncString (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<FString>>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncString (in GameThread), UTbSimpleSimpleArrayInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<TArray<FString>>();
+				}
+
+				return service->FuncString(local_param_string);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_SimpleArrayInterfaceJniService_nativeFuncString, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		TArray<FStringView> resultStringViews;
 		resultStringViews.Reserve(result.Num());
 		for (const FString& Str : result)

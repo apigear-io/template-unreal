@@ -26,9 +26,12 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
 
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
+
+#include "Generated/Detail/TbRefIfacesThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -366,7 +369,29 @@ JNI_METHOD jint Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_n
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->IntMethod(param);
+		auto optResult = FTbRefIfacesThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<int32> {
+				auto jniAccessor = gUTbRefIfacesSimpleLocalIfJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod (in GameThread), UTbRefIfacesSimpleLocalIfJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<int32>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod (in GameThread), UTbRefIfacesSimpleLocalIfJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<int32>();
+				}
+
+				return service->IntMethod(param);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("Java_tbRefIfaces_tbRefIfacesjniservice_SimpleLocalIfJniService_nativeIntMethod, couldn't get result."));
+			return 0;
+		}
+		auto result = optResult.GetValue();
 		return result;
 	}
 	else

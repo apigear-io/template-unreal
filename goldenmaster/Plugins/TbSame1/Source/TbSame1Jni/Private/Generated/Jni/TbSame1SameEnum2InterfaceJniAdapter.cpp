@@ -26,8 +26,11 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
 #include "TbSame1/Generated/api/TbSame1_data.h"
+
+#include "Generated/Detail/TbSame1ThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -439,7 +442,29 @@ JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_n
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func1(local_param1);
+		auto optResult = FTbSame1ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<ETbSame1Enum1> {
+				auto jniAccessor = gUTbSame1SameEnum2InterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc1 (in GameThread), UTbSame1SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbSame1Enum1>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc1 (in GameThread), UTbSame1SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbSame1Enum1>();
+				}
+
+				return service->Func1(local_param1);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc1, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobject jresult = TbSame1DataJavaConverter::makeJavaEnum1(Env, result);
 		return jresult;
 	}
@@ -465,7 +490,29 @@ JNI_METHOD jobject Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_n
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func2(local_param1, local_param2);
+		auto optResult = FTbSame1ThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<ETbSame1Enum1> {
+				auto jniAccessor = gUTbSame1SameEnum2InterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc2 (in GameThread), UTbSame1SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbSame1Enum1>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc2 (in GameThread), UTbSame1SameEnum2InterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbSame1Enum1>();
+				}
+
+				return service->Func2(local_param1, local_param2);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbSame1SameEnum2Interface_JNI, Warning, TEXT("Java_tbSame1_tbSame1jniservice_SameEnum2InterfaceJniService_nativeFunc2, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobject jresult = TbSame1DataJavaConverter::makeJavaEnum1(Env, result);
 		return jresult;
 	}

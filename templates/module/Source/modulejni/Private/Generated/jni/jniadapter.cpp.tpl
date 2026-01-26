@@ -158,6 +158,7 @@
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
 
 {{- $includes := getEmptyStringList}}
@@ -181,6 +182,8 @@
 {{- if or (len .Module.Enums) (len .Module.Structs) }}
 #include "{{$ModuleName}}/Generated/api/{{ $ModuleName }}_data.h"
 {{- end }}
+
+#include "Generated/Detail/{{$ModuleName}}ThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -598,17 +601,54 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel .N
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
+		{{- if not .Return.IsVoid }}
+		auto optResult = F{{$ModuleName}}ThreadingHelper::EvalInGameThread
+		{{- else }}
+		F{{$ModuleName}}ThreadingHelper::RunInGameThreadAndWait
+		{{- end }}(
+			[&](){{ if not .Return.IsVoid }} -> TOptional<{{ueReturn "" .Return}}>{{ end }} {
+				auto jniAccessor = g{{$Class}}Handle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_native{{ Camel .Name }} (in GameThread), {{$Class}} not valid to use, probably too early or too late."));
+					{{- if .Return.IsVoid }}
+					return;
+					{{- else}}
+					return TOptional<{{ueReturn "" .Return}}>();
+					{{- end}}
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_native{{ Camel .Name }} (in GameThread), {{$Class}} not valid to use, probably too early or too late."));
+					{{- if .Return.IsVoid }}
+					return;
+					{{- else}}
+					return TOptional<{{ueReturn "" .Return}}>();
+					{{- end}}
+				}
+
+				{{ if not .Return.IsVoid }}return {{ end }}service->{{Camel .Name}}(
+				{{- range $idx, $p := .Params -}}
+					{{- if $idx}}, {{ end -}}
+					{{- $local_value := printf "local_%s" (snake .Name) -}}
+					{{- if or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}{{$local_value -}}
+					{{- else }}{{.Name}}
+					{{- end -}}
+				{{- end -}}
+				);
+			});
+		{{- if not .Return.IsVoid }}
+		if (!optResult.IsSet()) {
+			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$jniFullFuncPrefix}}_native{{ Camel .Name }}, couldn't get result."));
+			return {{ jniEmptyReturn .Return }};
+		}
+		{{- end }}
 	{{- $cppropName := "result"}}
-		{{ if not .Return.IsVoid }}auto {{$cppropName}} = {{ end -}}
-	service->{{Camel .Name}}(
-	{{- range $idx, $p := .Params -}}
-		{{- if $idx}}, {{ end -}}
-		{{- $local_value := printf "local_%s" (snake .Name) -}}
-		{{- if or .IsArray ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}{{$local_value -}}
-		{{- else }}{{.Name}}
-		{{- end -}}
-	{{- end -}}
-	);
+	{{- if not .Return.IsVoid }}
+		auto {{$cppropName}} = optResult.GetValue();
+	{{- end}}
 
 	{{- if .Return.IsVoid }}
 		return;
@@ -660,7 +700,7 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel .N
 		};
 	{{- else }}
 		{{- if eq .Return.KindType "interface" }}
-		// interfaces are currently not supported. {{$javaClassConverter}} returns empty array. 
+		// interfaces are currently not supported. {{$javaClassConverter}} returns empty array.
 		{{- end }}
 		{{jniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}Array(Env, {{$cppropName}});
 	{{- end }}
@@ -671,7 +711,7 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel .N
 		jstring {{$localName}} = static_cast<jstring>(Env->NewLocalRef(*{{$localName}}Wrapped));
 		{{- else if ( or (not (ueIsStdSimpleType .Return)) (eq .Return.KindType "enum" ) ) }}
 		{{- if eq .Return.KindType "interface" }}
-		// interfaces are currently not supported. {{$javaClassConverter}} returns nullptr. 
+		// interfaces are currently not supported. {{$javaClassConverter}} returns nullptr.
 		{{- end }}
 		{{jniToReturnType .Return}} {{$localName}} = {{$javaClassConverter}}::makeJava{{Camel .Return.Type }}(Env, {{$cppropName}});
 		{{- end }}

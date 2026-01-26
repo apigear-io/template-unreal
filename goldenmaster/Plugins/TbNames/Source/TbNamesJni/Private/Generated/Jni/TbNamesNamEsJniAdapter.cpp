@@ -26,8 +26,11 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
 #include "TbNames/Generated/api/TbNames_data.h"
+
+#include "Generated/Detail/TbNamesThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -495,7 +498,24 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunctio
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		service->SomeFunction(SOME_PARAM);
+		FTbNamesThreadingHelper::RunInGameThreadAndWait(
+			[&]() {
+				auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction (in GameThread), UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
+					return;
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction (in GameThread), UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
+					return;
+				}
+
+				service->SomeFunction(SOME_PARAM);
+			});
 		return;
 	}
 	else
@@ -518,7 +538,24 @@ JNI_METHOD void Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunctio
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		service->SomeFunction2(Some_Param);
+		FTbNamesThreadingHelper::RunInGameThreadAndWait(
+			[&]() {
+				auto jniAccessor = gUTbNamesNamEsJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2 (in GameThread), UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
+					return;
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("Java_tbNames_tbNamesjniservice_NamEsJniService_nativeSomeFunction2 (in GameThread), UTbNamesNamEsJniAdapter not valid to use, probably too early or too late."));
+					return;
+				}
+
+				service->SomeFunction2(Some_Param);
+			});
 		return;
 	}
 	else

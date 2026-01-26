@@ -26,7 +26,10 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
+
+#include "Generated/Detail/TbSimpleThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -332,7 +335,24 @@ JNI_METHOD void Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeF
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		service->FuncVoid();
+		FTbSimpleThreadingHelper::RunInGameThreadAndWait(
+			[&]() {
+				auto jniAccessor = gUTbSimpleVoidInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeFuncVoid (in GameThread), UTbSimpleVoidInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return;
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("Java_tbSimple_tbSimplejniservice_VoidInterfaceJniService_nativeFuncVoid (in GameThread), UTbSimpleVoidInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return;
+				}
+
+				service->FuncVoid();
+			});
 		return;
 	}
 	else

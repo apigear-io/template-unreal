@@ -26,8 +26,11 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
 #include "TbEnum/Generated/api/TbEnum_data.h"
+
+#include "Generated/Detail/TbEnumThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
@@ -573,7 +576,29 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFu
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func0(local_param0);
+		auto optResult = FTbEnumThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<ETbEnumEnum0> {
+				auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc0 (in GameThread), UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbEnumEnum0>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc0 (in GameThread), UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbEnumEnum0>();
+				}
+
+				return service->Func0(local_param0);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc0, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobject jresult = TbEnumDataJavaConverter::makeJavaEnum0(Env, result);
 		return jresult;
 	}
@@ -598,7 +623,29 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFu
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func1(local_param1);
+		auto optResult = FTbEnumThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<ETbEnumEnum1> {
+				auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc1 (in GameThread), UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbEnumEnum1>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc1 (in GameThread), UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbEnumEnum1>();
+				}
+
+				return service->Func1(local_param1);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc1, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobject jresult = TbEnumDataJavaConverter::makeJavaEnum1(Env, result);
 		return jresult;
 	}
@@ -623,7 +670,29 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFu
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func2(local_param2);
+		auto optResult = FTbEnumThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<ETbEnumEnum2> {
+				auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc2 (in GameThread), UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbEnumEnum2>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc2 (in GameThread), UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbEnumEnum2>();
+				}
+
+				return service->Func2(local_param2);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc2, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobject jresult = TbEnumDataJavaConverter::makeJavaEnum2(Env, result);
 		return jresult;
 	}
@@ -648,7 +717,29 @@ JNI_METHOD jobject Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFu
 	auto service = jniAccessor->getBackendServiceForJNI();
 	if (service != nullptr)
 	{
-		auto result = service->Func3(local_param3);
+		auto optResult = FTbEnumThreadingHelper::EvalInGameThread(
+			[&]() -> TOptional<ETbEnumEnum3> {
+				auto jniAccessor = gUTbEnumEnumInterfaceJniAdapterHandle.load();
+				if (!jniAccessor)
+				{
+					UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc3 (in GameThread), UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbEnumEnum3>();
+				}
+
+				auto service = jniAccessor->getBackendServiceForJNI();
+				if (service == nullptr)
+				{
+					UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc3 (in GameThread), UTbEnumEnumInterfaceJniAdapter not valid to use, probably too early or too late."));
+					return TOptional<ETbEnumEnum3>();
+				}
+
+				return service->Func3(local_param3);
+			});
+		if (!optResult.IsSet()) {
+			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("Java_tbEnum_tbEnumjniservice_EnumInterfaceJniService_nativeFunc3, couldn't get result."));
+			return nullptr;
+		}
+		auto result = optResult.GetValue();
 		jobject jresult = TbEnumDataJavaConverter::makeJavaEnum3(Env, result);
 		return jresult;
 	}
