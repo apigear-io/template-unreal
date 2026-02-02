@@ -43,12 +43,33 @@ if [ $? -ne 0 ]; then exit 1; fi;
 # function implementations
 #
 
-# build and test plugins
+# Run tests with optional sanitizer
+# Args: project tests sanitizer log_file report_path
 buildTestPlugins()
 {
+	local project=$1
+	local tests=$2
+	local sanitizer=$3
+	local log_file=$4
+	local report_path=$5
+
+	local SANITIZER_FLAGS=""
+
+	echo "=== Running Tests ==="
+	case "$sanitizer" in
+		asan)
+			echo "Enabled: ASan + UBSan"
+			SANITIZER_FLAGS="-EnableASan -EnableUndefinedBehaviorSanitizer"
+			;;
+		tsan)
+			echo "Enabled: TSan"
+			SANITIZER_FLAGS="-EnableThreadSanitizer"
+			;;
+	esac
+
 	# do not use -unattended as this seems to cause some issue when exiting the editor after test run
-	"$RunUAT_path" BuildCookRun -installed -project="$1" -run -RunAutomationTest="$3" -nullrhi -NoP4 -build -verbose -nodebuginfo -log="$2/RunTests.log" -addcmdline="-ReportExportPath=$2 " -Configuration=Test -notools -utf8output
-	buildresult=$?
+	"$RunUAT_path" BuildCookRun -installed $SANITIZER_FLAGS -project="$project" -run -RunAutomationTest="$tests" -nullrhi -NoP4 -build -verbose -WarningsAsErrors -nodebuginfo -NoEditorTelemetry -log="$log_file" -addcmdline="-ReportExportPath=$report_path" -Configuration=Test -notools -utf8output
+	return $?
 }
 
 #
@@ -120,6 +141,54 @@ mkdir -p "$ProjectTarget_path/Plugins/TbRefIfaces" && cp -rf "$script_path/TbRef
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
-buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.+.OLink.+.MsgBus."
-if [ $buildresult -ne 0 ]; then exit 1; fi;
-if [ ! -f $script_path/index.json ]; then echo "WARNING: no test results found"; else grep '"failed": 0' $script_path/index.json > /dev/null; fi
+# Run primary tests (with ASan if enabled)
+SANITIZER=""
+if [ ! -z "$ENABLE_ASAN" ]; then
+	SANITIZER="asan"
+fi
+
+buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" \
+	".Impl.+.OLink.+.MsgBus." \
+	"$SANITIZER" \
+	"$script_path/RunTests.log" \
+	"$script_path"
+
+if [ $? -ne 0 ]; then
+	echo "ERROR: Tests failed"
+	exit 1
+fi
+
+# Check test results
+if [ ! -f "$script_path/index.json" ]; then
+	echo "WARNING: no test results found"
+else
+	grep '"failed": 0' "$script_path/index.json" > /dev/null
+	if [ $? -ne 0 ]; then
+		echo "ERROR: Tests failed (check index.json)"
+		exit 1
+	fi
+fi
+
+# TSan tests (opt-in with ENABLE_TSAN=1)
+# Usage: ENABLE_TSAN=1 ./buildTestPlugins.sh
+if [ ! -z "$ENABLE_TSAN" ]; then
+	buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" \
+		".Impl.+.OLink.+.MsgBus." \
+		"tsan" \
+		"$script_path/RunTests-TSan.log" \
+		"$script_path/tsan-results"
+
+	if [ $? -ne 0 ]; then
+		echo "ERROR: TSan tests failed (threading issues detected)"
+		exit 1
+	fi
+
+	# Check TSan test results
+	if [ -f "$script_path/tsan-results/index.json" ]; then
+		grep '"failed": 0' "$script_path/tsan-results/index.json" > /dev/null
+		if [ $? -ne 0 ]; then
+			echo "ERROR: TSan tests failed (check tsan-results/index.json)"
+			exit 1
+		fi
+	fi
+fi
