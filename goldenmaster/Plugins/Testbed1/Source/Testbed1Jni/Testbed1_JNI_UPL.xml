@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<trace enable="true"/>
+	<init>
+		<log text="android testbed1 init"/>
+	</init>
+
+	<androidManifestUpdates>
+		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> 
+		<addPermission android:name="testbed1.testbed1_android_service.PERMISSION_BIND"/>
+		<addElements tag="queries">
+				<package android:name="testbed1.testbed1_android_service" />
+		</addElements>
+
+		<addElements tag="application"><service 
+			android:name="testbed1.testbed1_android_service.StructInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="testbed1.testbed1_android_service.StructArrayInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service><service 
+			android:name="testbed1.testbed1_android_service.StructArray2InterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service>
+		</addElements>
+
+	</androidManifestUpdates>
+
+	<resourceCopies>
+		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
+		<copyDir src="$S(PluginDir)/../../../../android/testbed1/testbed1_android_service" dst="$S(BuildDir)/JavaLibs/testbed1_android_service" />
+		<copyDir src="$S(PluginDir)/../../../../android/testbed1/testbed1_android_client" dst="$S(BuildDir)/JavaLibs/testbed1_android_client" />
+		<copyDir src="$S(PluginDir)/../../../../android/testbed1/testbed1_api" dst="$S(BuildDir)/JavaLibs/testbed1_api" />
+		<copyDir src="$S(PluginDir)/../../../../android/testbed1/testbed1_android_messenger" dst="$S(BuildDir)/JavaLibs/testbed1_android_messenger" />
+		<copyDir src="$S(PluginDir)/../../../../android/testbed1/testbed1_impl" dst="$S(BuildDir)/JavaLibs/testbed1_impl" />
+		<copyDir src="$S(PluginDir)/../../../../android/testbed1/testbed1jniservice" dst="$S(BuildDir)/src/testbed1jniservice" />
+		<copyDir src="$S(PluginDir)/../../../../android/testbed1/testbed1jniclient" dst="$S(BuildDir)/src/testbed1jniclient" />
+	</resourceCopies>
+
+	<baseBuildGradleAdditions>
+		<addElements tag="buildscript">
+			<insertValue value="apply from: 'buildsystem/config.gradle'"/>
+			<insertValue value="apply from: 'buildsystem/dependencies.gradle'"/>
+			<insertNewline/>
+		</addElements>
+	</baseBuildGradleAdditions>
+
+	<settingsGradleAdditions>
+		<insert>
+			<![CDATA[
+      include ':testbed1_api'
+      include ':testbed1_impl'
+      include ':testbed1_android_service'
+      include ':testbed1_android_client'
+      include ':testbed1_android_messenger'
+    ]]>
+		</insert>
+	
+	</settingsGradleAdditions>
+
+	<buildGradleAdditions>
+		<insert>
+            <![CDATA[
+                dependencies {
+                implementation project(':testbed1_api')
+                implementation project(':testbed1_impl')
+                implementation project(':testbed1_android_service')
+                implementation project(':testbed1_android_client')
+                implementation project(':testbed1_android_messenger')
+                }
+            ]]>
+        </insert>
+		<insert>
+			<![CDATA[
+tasks.configureEach { task ->
+	if (task.name == 'assembleDebug') {
+		task.dependsOn ':testbed1_api:assembleDebug'
+		task.dependsOn ':testbed1_impl:assembleDebug'
+		task.dependsOn ':testbed1_android_service:assembleDebug'
+		task.dependsOn ':testbed1_android_client:assembleDebug'
+		task.dependsOn ':testbed1_android_messenger:assembleDebug'
+	}
+	if (task.name == 'assembleRelease') {
+		task.dependsOn ':testbed1_api:assembleRelease'
+		task.dependsOn ':testbed1_impl:assembleRelease'
+		task.dependsOn ':testbed1_android_service:assembleRelease'
+		task.dependsOn ':testbed1_android_client:assembleRelease'
+		task.dependsOn ':testbed1_android_messenger:assembleRelease'
+	}
+}
+
+]]>
+		</insert>
+	</buildGradleAdditions>
+
+
+	<proguardAdditions>
+		<insert>
+			-keep class testbed1.testbed1jniservice.StructInterfaceJniService {
+			public *;
+			}
+			-keep class testbed1.testbed1jniservice.StructInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class testbed1.testbed1jniclient.StructInterfaceJniClient {
+			public *;
+			}
+			-keep class testbed1.testbed1jniservice.StructArrayInterfaceJniService {
+			public *;
+			}
+			-keep class testbed1.testbed1jniservice.StructArrayInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class testbed1.testbed1jniclient.StructArrayInterfaceJniClient {
+			public *;
+			}
+			-keep class testbed1.testbed1jniservice.StructArray2InterfaceJniService {
+			public *;
+			}
+			-keep class testbed1.testbed1jniservice.StructArray2InterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class testbed1.testbed1jniclient.StructArray2InterfaceJniClient {
+			public *;
+			}
+		</insert>
+	</proguardAdditions>
+
+
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+	</gameActivityClassAdditions>
+
+
+	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
+	<gameActivityOnCreateAdditions>
+		<insert>
+			<![CDATA[
+		]]>
+		</insert>
+	</gameActivityOnCreateAdditions>
+
+
+</root>
