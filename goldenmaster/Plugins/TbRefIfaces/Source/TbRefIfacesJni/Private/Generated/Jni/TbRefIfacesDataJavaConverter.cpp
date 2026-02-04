@@ -117,7 +117,7 @@ jobjectArray TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(JNIEnv* en
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jSimpleLocalIf, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_local_if.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -195,7 +195,7 @@ jobjectArray TbRefIfacesDataJavaConverter::makeJavaParentIfArray(JNIEnv* env, co
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jParentIf, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_parent_if.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -218,7 +218,7 @@ TScriptInterface<ITbRefIfacesParentIfInterface> TbRefIfacesDataJavaConverter::ge
 	return wrapped;
 }
 
-bool TbRefIfacesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	if (env->ExceptionCheck())
@@ -251,14 +251,14 @@ TSharedPtr<FTbRefIfacesDataJavaConverterCacheData, ESPMode::ThreadSafe> TbRefIfa
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	NewData->jSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
 	static const TCHAR* errorMsgSimpleLocalIf = TEXT("failed to get tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
-	if (checkJniErrorOccured(errorMsgSimpleLocalIf))
+	if (CheckJniErrorOccurred(errorMsgSimpleLocalIf))
 	{
 		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("TbRefIfacesDataJavaConverter initialization failed"));
 		return nullptr;
 	}
 	NewData->jParentIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
 	static const TCHAR* errorMsgParentIf = TEXT("failed to get tbRefIfaces/tbRefIfaces_api/IParentIf");
-	if (checkJniErrorOccured(errorMsgParentIf))
+	if (CheckJniErrorOccurred(errorMsgParentIf))
 	{
 		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("TbRefIfacesDataJavaConverter initialization failed"));
 		return nullptr;
@@ -278,7 +278,7 @@ jmethodID TbRefIfacesDataJavaConverter::getMethod(jclass cls, const char* name, 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -286,7 +286,7 @@ jmethodID TbRefIfacesDataJavaConverter::getStaticMethod(jclass cls, const char* 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -294,7 +294,7 @@ jfieldID TbRefIfacesDataJavaConverter::getFieldId(jclass cls, const char* name, 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 

@@ -85,7 +85,7 @@ public:
 
 	static TScriptInterface<ITbSame2SameEnum2InterfaceInterface> getCppInstanceTbSame2SameEnum2Interface();
 
-	static bool checkJniErrorOccured(const TCHAR* Msg);
+	static bool CheckJniErrorOccurred(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:
