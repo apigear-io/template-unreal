@@ -112,109 +112,109 @@ void UTbSimpleSimpleInterfaceJniAdapterCache::init()
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->javaService == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	if (NewData->javaService == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgCls))
 	{
 		return;
 	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->ReadyMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	if (NewData->ReadyMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgReadyMethod))
 	{
 		return;
 	}
 	NewData->PropBoolChangedMethodID = env->GetMethodID(NewData->javaService, "onPropBoolChanged", "(Z)V");
 	static const TCHAR* errorMsgPropBoolChanged = TEXT("failed to get java onPropBoolChanged, (Z)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->PropBoolChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolChanged))
+	if (NewData->PropBoolChangedMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgPropBoolChanged))
 	{
 		return;
 	}
 	NewData->PropIntChangedMethodID = env->GetMethodID(NewData->javaService, "onPropIntChanged", "(I)V");
 	static const TCHAR* errorMsgPropIntChanged = TEXT("failed to get java onPropIntChanged, (I)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->PropIntChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntChanged))
+	if (NewData->PropIntChangedMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgPropIntChanged))
 	{
 		return;
 	}
 	NewData->PropInt32ChangedMethodID = env->GetMethodID(NewData->javaService, "onPropInt32Changed", "(I)V");
 	static const TCHAR* errorMsgPropInt32Changed = TEXT("failed to get java onPropInt32Changed, (I)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->PropInt32ChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt32Changed))
+	if (NewData->PropInt32ChangedMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgPropInt32Changed))
 	{
 		return;
 	}
 	NewData->PropInt64ChangedMethodID = env->GetMethodID(NewData->javaService, "onPropInt64Changed", "(J)V");
 	static const TCHAR* errorMsgPropInt64Changed = TEXT("failed to get java onPropInt64Changed, (J)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->PropInt64ChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt64Changed))
+	if (NewData->PropInt64ChangedMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgPropInt64Changed))
 	{
 		return;
 	}
 	NewData->PropFloatChangedMethodID = env->GetMethodID(NewData->javaService, "onPropFloatChanged", "(F)V");
 	static const TCHAR* errorMsgPropFloatChanged = TEXT("failed to get java onPropFloatChanged, (F)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->PropFloatChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloatChanged))
+	if (NewData->PropFloatChangedMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgPropFloatChanged))
 	{
 		return;
 	}
 	NewData->PropFloat32ChangedMethodID = env->GetMethodID(NewData->javaService, "onPropFloat32Changed", "(F)V");
 	static const TCHAR* errorMsgPropFloat32Changed = TEXT("failed to get java onPropFloat32Changed, (F)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->PropFloat32ChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat32Changed))
+	if (NewData->PropFloat32ChangedMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgPropFloat32Changed))
 	{
 		return;
 	}
 	NewData->PropFloat64ChangedMethodID = env->GetMethodID(NewData->javaService, "onPropFloat64Changed", "(D)V");
 	static const TCHAR* errorMsgPropFloat64Changed = TEXT("failed to get java onPropFloat64Changed, (D)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->PropFloat64ChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat64Changed))
+	if (NewData->PropFloat64ChangedMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgPropFloat64Changed))
 	{
 		return;
 	}
 	NewData->PropStringChangedMethodID = env->GetMethodID(NewData->javaService, "onPropStringChanged", "(Ljava/lang/String;)V");
 	static const TCHAR* errorMsgPropStringChanged = TEXT("failed to get java onPropStringChanged, (Ljava/lang/String;)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->PropStringChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropStringChanged))
+	if (NewData->PropStringChangedMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgPropStringChanged))
 	{
 		return;
 	}
 	NewData->SigBoolSignalMethodID = env->GetMethodID(NewData->javaService, "onSigBool", "(Z)V");
 	static const TCHAR* errorMsgSigBoolSignal = TEXT("failed to get java onSigBool, (Z)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->SigBoolSignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigBoolSignal))
+	if (NewData->SigBoolSignalMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgSigBoolSignal))
 	{
 		return;
 	}
 	NewData->SigIntSignalMethodID = env->GetMethodID(NewData->javaService, "onSigInt", "(I)V");
 	static const TCHAR* errorMsgSigIntSignal = TEXT("failed to get java onSigInt, (I)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->SigIntSignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigIntSignal))
+	if (NewData->SigIntSignalMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgSigIntSignal))
 	{
 		return;
 	}
 	NewData->SigInt32SignalMethodID = env->GetMethodID(NewData->javaService, "onSigInt32", "(I)V");
 	static const TCHAR* errorMsgSigInt32Signal = TEXT("failed to get java onSigInt32, (I)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->SigInt32SignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigInt32Signal))
+	if (NewData->SigInt32SignalMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgSigInt32Signal))
 	{
 		return;
 	}
 	NewData->SigInt64SignalMethodID = env->GetMethodID(NewData->javaService, "onSigInt64", "(J)V");
 	static const TCHAR* errorMsgSigInt64Signal = TEXT("failed to get java onSigInt64, (J)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->SigInt64SignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigInt64Signal))
+	if (NewData->SigInt64SignalMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgSigInt64Signal))
 	{
 		return;
 	}
 	NewData->SigFloatSignalMethodID = env->GetMethodID(NewData->javaService, "onSigFloat", "(F)V");
 	static const TCHAR* errorMsgSigFloatSignal = TEXT("failed to get java onSigFloat, (F)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->SigFloatSignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloatSignal))
+	if (NewData->SigFloatSignalMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgSigFloatSignal))
 	{
 		return;
 	}
 	NewData->SigFloat32SignalMethodID = env->GetMethodID(NewData->javaService, "onSigFloat32", "(F)V");
 	static const TCHAR* errorMsgSigFloat32Signal = TEXT("failed to get java onSigFloat32, (F)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->SigFloat32SignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloat32Signal))
+	if (NewData->SigFloat32SignalMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgSigFloat32Signal))
 	{
 		return;
 	}
 	NewData->SigFloat64SignalMethodID = env->GetMethodID(NewData->javaService, "onSigFloat64", "(D)V");
 	static const TCHAR* errorMsgSigFloat64Signal = TEXT("failed to get java onSigFloat64, (D)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->SigFloat64SignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloat64Signal))
+	if (NewData->SigFloat64SignalMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgSigFloat64Signal))
 	{
 		return;
 	}
 	NewData->SigStringSignalMethodID = env->GetMethodID(NewData->javaService, "onSigString", "(Ljava/lang/String;)V");
 	static const TCHAR* errorMsgSigStringSignal = TEXT("failed to get java onSigString, (Ljava/lang/String;)V for tbSimple/tbSimplejniservice/SimpleInterfaceJniService. Bailing...");
-	if (NewData->SigStringSignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigStringSignal))
+	if (NewData->SigStringSignalMethodID == nullptr || TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgSigStringSignal))
 	{
 		return;
 	}
@@ -251,7 +251,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Co
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/SimpleInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSimpleJavaServiceStarter; class not found");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -259,7 +259,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Co
 	auto functionSignature = "(Landroid/content/Context;)LtbSimple/tbSimple_api/ISimpleInterface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("TbSimpleJavaServiceStarter::start; method not found");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+	TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -267,7 +267,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Co
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("TbSimpleJavaServiceStarter failed to call start method");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCall);
+	TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -290,18 +290,18 @@ void UTbSimpleSimpleInterfaceJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/SimpleInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSimpleJavaServiceStarter; class not found");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("TbSimpleJavaServiceStarter::stop; method not found");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal's activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbSimpleJavaServiceStarter failed to call stop");
-			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCall);
+			TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
@@ -359,7 +359,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::callJniServiceReady(bool isServiceReady
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService:nativeServiceReady(Z)V CLASS not found");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -385,7 +385,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigBoolSignal(bool bParamBool)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bParamBool);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigBool (Z)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -411,7 +411,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigIntSignal(int32 ParamInt)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamInt);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigInt (I)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -437,7 +437,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigInt32Signal(int32 ParamInt32)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamInt32);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigInt32 (I)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -463,7 +463,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigInt64Signal(int64 ParamInt64)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamInt64);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigInt64 (J)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -489,7 +489,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigFloatSignal(float ParamFloat)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamFloat);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigFloat (F)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -515,7 +515,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigFloat32Signal(float ParamFloat32)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamFloat32);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigFloat32 (F)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -541,7 +541,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigFloat64Signal(double ParamFloat64)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, ParamFloat64);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigFloat64 (D)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -566,12 +566,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnSigStringSignal(const FString& ParamS
 		}
 		auto jlocal_ParamStringWrapped = FJavaHelper::ToJavaString(Env, ParamString);
 		static const TCHAR* errorMsgjlocal_ParamString = TEXT("failed converting to jstring jlocal_ParamString");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_ParamString);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgjlocal_ParamString);
 		jstring jlocal_ParamString = static_cast<jstring>(Env->NewLocalRef(*jlocal_ParamStringWrapped));
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamString);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onSigString (Ljava/lang/String;)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamString);
 	}
 #endif
@@ -597,7 +597,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropBoolChanged(bool bPropBool)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bPropBool);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropBoolChanged ((Z)V)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -622,7 +622,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropIntChanged(int32 PropInt)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropInt);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropIntChanged ((I)V)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -647,7 +647,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropInt32Changed(int32 PropInt32)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropInt32);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropInt32Changed ((I)V)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -672,7 +672,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropInt64Changed(int64 PropInt64)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropInt64);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropInt64Changed ((J)V)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -697,7 +697,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropFloatChanged(float PropFloat)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropFloat);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropFloatChanged ((F)V)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -722,7 +722,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropFloat32Changed(float PropFloat32)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropFloat32);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropFloat32Changed ((F)V)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -747,7 +747,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropFloat64Changed(double PropFloat64
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, PropFloat64);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropFloat64Changed ((D)V)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -772,12 +772,12 @@ void UTbSimpleSimpleInterfaceJniAdapter::OnPropStringChanged(const FString& Prop
 
 		auto jlocal_PropStringWrapped = FJavaHelper::ToJavaString(Env, PropString);
 		static const TCHAR* errorMsgjlocal_PropString = TEXT("failed converting to jstring jlocal_PropString");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropString);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgjlocal_PropString);
 		jstring jlocal_PropString = static_cast<jstring>(Env->NewLocalRef(*jlocal_PropStringWrapped));
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropString);
 		Env->DeleteLocalRef(jlocal_PropString);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/SimpleInterfaceJniService failed to call onPropStringChanged ((Ljava/lang/String;)V)V");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -1279,7 +1279,7 @@ JNI_METHOD jstring Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_na
 		auto result = optResult.GetValue();
 		auto jresultWrapped = FJavaHelper::ToJavaString(Env, result);
 		static const TCHAR* errorMsgjresult = TEXT("failed to convert to jstring in call nativeFuncString for tbSimple/tbSimplejniservice/SimpleInterfaceJniService");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjresult);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgjresult);
 		jstring jresult = static_cast<jstring>(Env->NewLocalRef(*jresultWrapped));
 		return jresult;
 	}
@@ -1646,7 +1646,7 @@ JNI_METHOD jstring Java_tbSimple_tbSimplejniservice_SimpleInterfaceJniService_na
 
 		auto jlocal_PropStringWrapped = FJavaHelper::ToJavaString(Env, PropString);
 		static const TCHAR* errorMsgjlocal_PropString = TEXT("failed converting to jstring jlocal_PropString");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgjlocal_PropString);
+		TbSimpleDataJavaConverter::CheckJniErrorOccurred(errorMsgjlocal_PropString);
 		jstring jlocal_PropString = static_cast<jstring>(Env->NewLocalRef(*jlocal_PropStringWrapped));
 		return jlocal_PropString;
 	}

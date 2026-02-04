@@ -71,7 +71,7 @@ void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobject
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of EnumWithUnderScores array.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (CheckJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -79,7 +79,7 @@ void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobject
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of EnumWithUnderScores array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = CheckJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			out_array.Add(getEnumWithUnderScoresValue(env, element));
@@ -107,7 +107,7 @@ ETbNamesEnum_With_Under_scores TbNamesDataJavaConverter::getEnumWithUnderScoresV
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
 		static const TCHAR* errorMsg = TEXT("failed when trying to call getValue method for EnumWithUnderScores.");
-		if (!checkJniErrorOccured(errorMsg))
+		if (!CheckJniErrorOccurred(errorMsg))
 		{
 			UTbNamesLibrary::toTbNamesEnum_With_Under_scores(cppEnumValue, int_value);
 		}
@@ -130,7 +130,7 @@ jobjectArray TbNamesDataJavaConverter::makeJavaEnumWithUnderScoresArray(JNIEnv* 
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEnumWithUnderScores, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate EnumWithUnderScores jarray.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (CheckJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -140,7 +140,7 @@ jobjectArray TbNamesDataJavaConverter::makeJavaEnumWithUnderScoresArray(JNIEnv* 
 		jobject element = makeJavaEnumWithUnderScores(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when trying to set element of EnumWithUnderScores array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = CheckJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -168,7 +168,7 @@ jobject TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(JNIEnv* env, ETbNa
 	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(Cache->jEnumWithUnderScores, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for EnumWithUnderScores.");
-	checkJniErrorOccured(errorMsg);
+	CheckJniErrorOccurred(errorMsg);
 	return javaObj;
 }
 
@@ -227,7 +227,7 @@ jobjectArray TbNamesDataJavaConverter::makeJavaNamEsArray(JNIEnv* env, const TAr
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jNamEs, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_nam_es.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -250,7 +250,7 @@ TScriptInterface<ITbNamesNamEsInterface> TbNamesDataJavaConverter::getCppInstanc
 	return wrapped;
 }
 
-bool TbNamesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool TbNamesDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	if (env->ExceptionCheck())
@@ -283,10 +283,10 @@ TSharedPtr<FTbNamesDataJavaConverterCacheData, ESPMode::ThreadSafe> TbNamesDataJ
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	NewData->jEnumWithUnderScores = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
 	static const TCHAR* errorMsgEnumWithUnderScores = TEXT("failed to get tbNames/tbNames_api/EnumWithUnderScores");
-	checkJniErrorOccured(errorMsgEnumWithUnderScores);
+	CheckJniErrorOccurred(errorMsgEnumWithUnderScores);
 	NewData->jNamEs = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/INamEs");
 	static const TCHAR* errorMsgNamEs = TEXT("failed to get tbNames/tbNames_api/INamEs");
-	checkJniErrorOccured(errorMsgNamEs);
+	CheckJniErrorOccurred(errorMsgNamEs);
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -302,7 +302,7 @@ jmethodID TbNamesDataJavaConverter::getMethod(jclass cls, const char* name, cons
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -310,7 +310,7 @@ jmethodID TbNamesDataJavaConverter::getStaticMethod(jclass cls, const char* name
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -318,7 +318,7 @@ jfieldID TbNamesDataJavaConverter::getFieldId(jclass cls, const char* name, cons
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 

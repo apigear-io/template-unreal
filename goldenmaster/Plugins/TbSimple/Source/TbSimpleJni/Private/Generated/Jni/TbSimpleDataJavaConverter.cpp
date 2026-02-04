@@ -145,7 +145,7 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaVoidInterfaceArray(JNIEnv* env, 
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jVoidInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_void_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -223,7 +223,7 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaSimpleInterfaceArray(JNIEnv* env
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jSimpleInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -301,7 +301,7 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaSimpleArrayInterfaceArray(JNIEnv
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jSimpleArrayInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_array_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -379,7 +379,7 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaNoPropertiesInterfaceArray(JNIEn
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jNoPropertiesInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_no_properties_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -457,7 +457,7 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaNoOperationsInterfaceArray(JNIEn
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jNoOperationsInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_no_operations_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -535,7 +535,7 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaNoSignalsInterfaceArray(JNIEnv* 
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jNoSignalsInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_no_signals_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -613,7 +613,7 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaEmptyInterfaceArray(JNIEnv* env,
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEmptyInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_empty_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -636,7 +636,7 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> TbSimpleDataJavaConverter::ge
 	return wrapped;
 }
 
-bool TbSimpleDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool TbSimpleDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	if (env->ExceptionCheck())
@@ -669,25 +669,25 @@ TSharedPtr<FTbSimpleDataJavaConverterCacheData, ESPMode::ThreadSafe> TbSimpleDat
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	NewData->jVoidInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/IVoidInterface");
 	static const TCHAR* errorMsgVoidInterface = TEXT("failed to get tbSimple/tbSimple_api/IVoidInterface");
-	checkJniErrorOccured(errorMsgVoidInterface);
+	CheckJniErrorOccurred(errorMsgVoidInterface);
 	NewData->jSimpleInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/ISimpleInterface");
 	static const TCHAR* errorMsgSimpleInterface = TEXT("failed to get tbSimple/tbSimple_api/ISimpleInterface");
-	checkJniErrorOccured(errorMsgSimpleInterface);
+	CheckJniErrorOccurred(errorMsgSimpleInterface);
 	NewData->jSimpleArrayInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/ISimpleArrayInterface");
 	static const TCHAR* errorMsgSimpleArrayInterface = TEXT("failed to get tbSimple/tbSimple_api/ISimpleArrayInterface");
-	checkJniErrorOccured(errorMsgSimpleArrayInterface);
+	CheckJniErrorOccurred(errorMsgSimpleArrayInterface);
 	NewData->jNoPropertiesInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoPropertiesInterface");
 	static const TCHAR* errorMsgNoPropertiesInterface = TEXT("failed to get tbSimple/tbSimple_api/INoPropertiesInterface");
-	checkJniErrorOccured(errorMsgNoPropertiesInterface);
+	CheckJniErrorOccurred(errorMsgNoPropertiesInterface);
 	NewData->jNoOperationsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoOperationsInterface");
 	static const TCHAR* errorMsgNoOperationsInterface = TEXT("failed to get tbSimple/tbSimple_api/INoOperationsInterface");
-	checkJniErrorOccured(errorMsgNoOperationsInterface);
+	CheckJniErrorOccurred(errorMsgNoOperationsInterface);
 	NewData->jNoSignalsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoSignalsInterface");
 	static const TCHAR* errorMsgNoSignalsInterface = TEXT("failed to get tbSimple/tbSimple_api/INoSignalsInterface");
-	checkJniErrorOccured(errorMsgNoSignalsInterface);
+	CheckJniErrorOccurred(errorMsgNoSignalsInterface);
 	NewData->jEmptyInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/IEmptyInterface");
 	static const TCHAR* errorMsgEmptyInterface = TEXT("failed to get tbSimple/tbSimple_api/IEmptyInterface");
-	checkJniErrorOccured(errorMsgEmptyInterface);
+	CheckJniErrorOccurred(errorMsgEmptyInterface);
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -703,7 +703,7 @@ jmethodID TbSimpleDataJavaConverter::getMethod(jclass cls, const char* name, con
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -711,7 +711,7 @@ jmethodID TbSimpleDataJavaConverter::getStaticMethod(jclass cls, const char* nam
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -719,7 +719,7 @@ jfieldID TbSimpleDataJavaConverter::getFieldId(jclass cls, const char* name, con
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 

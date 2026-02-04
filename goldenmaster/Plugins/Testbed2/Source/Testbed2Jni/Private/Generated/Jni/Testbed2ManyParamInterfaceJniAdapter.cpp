@@ -105,61 +105,61 @@ void UTestbed2ManyParamInterfaceJniAdapterCache::init()
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/ManyParamInterfaceJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
-	if (NewData->javaService == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	if (NewData->javaService == nullptr || Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgCls))
 	{
 		return;
 	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
-	if (NewData->ReadyMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	if (NewData->ReadyMethodID == nullptr || Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgReadyMethod))
 	{
 		return;
 	}
 	NewData->Prop1ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp1Changed", "(I)V");
 	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
-	if (NewData->Prop1ChangedMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed))
+	if (NewData->Prop1ChangedMethodID == nullptr || Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgProp1Changed))
 	{
 		return;
 	}
 	NewData->Prop2ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp2Changed", "(I)V");
 	static const TCHAR* errorMsgProp2Changed = TEXT("failed to get java onProp2Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
-	if (NewData->Prop2ChangedMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Changed))
+	if (NewData->Prop2ChangedMethodID == nullptr || Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgProp2Changed))
 	{
 		return;
 	}
 	NewData->Prop3ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp3Changed", "(I)V");
 	static const TCHAR* errorMsgProp3Changed = TEXT("failed to get java onProp3Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
-	if (NewData->Prop3ChangedMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp3Changed))
+	if (NewData->Prop3ChangedMethodID == nullptr || Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgProp3Changed))
 	{
 		return;
 	}
 	NewData->Prop4ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp4Changed", "(I)V");
 	static const TCHAR* errorMsgProp4Changed = TEXT("failed to get java onProp4Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
-	if (NewData->Prop4ChangedMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp4Changed))
+	if (NewData->Prop4ChangedMethodID == nullptr || Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgProp4Changed))
 	{
 		return;
 	}
 	NewData->Sig1SignalMethodID = env->GetMethodID(NewData->javaService, "onSig1", "(I)V");
 	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
-	if (NewData->Sig1SignalMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal))
+	if (NewData->Sig1SignalMethodID == nullptr || Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgSig1Signal))
 	{
 		return;
 	}
 	NewData->Sig2SignalMethodID = env->GetMethodID(NewData->javaService, "onSig2", "(II)V");
 	static const TCHAR* errorMsgSig2Signal = TEXT("failed to get java onSig2, (II)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
-	if (NewData->Sig2SignalMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig2Signal))
+	if (NewData->Sig2SignalMethodID == nullptr || Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgSig2Signal))
 	{
 		return;
 	}
 	NewData->Sig3SignalMethodID = env->GetMethodID(NewData->javaService, "onSig3", "(III)V");
 	static const TCHAR* errorMsgSig3Signal = TEXT("failed to get java onSig3, (III)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
-	if (NewData->Sig3SignalMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig3Signal))
+	if (NewData->Sig3SignalMethodID == nullptr || Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgSig3Signal))
 	{
 		return;
 	}
 	NewData->Sig4SignalMethodID = env->GetMethodID(NewData->javaService, "onSig4", "(IIII)V");
 	static const TCHAR* errorMsgSig4Signal = TEXT("failed to get java onSig4, (IIII)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
-	if (NewData->Sig4SignalMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig4Signal))
+	if (NewData->Sig4SignalMethodID == nullptr || Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgSig4Signal))
 	{
 		return;
 	}
@@ -196,7 +196,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/ManyParamInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("Testbed2JavaServiceStarter; class not found");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -204,7 +204,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 	auto functionSignature = "(Landroid/content/Context;)Ltestbed2/testbed2_api/IManyParamInterface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("Testbed2JavaServiceStarter::start; method not found");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+	Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -212,7 +212,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("Testbed2JavaServiceStarter failed to call start method");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCall);
+	Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -235,18 +235,18 @@ void UTestbed2ManyParamInterfaceJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/ManyParamInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("Testbed2JavaServiceStarter; class not found");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("Testbed2JavaServiceStarter::stop; method not found");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+		Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal's activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("Testbed2JavaServiceStarter failed to call stop");
-			Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCall);
+			Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
@@ -304,7 +304,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::callJniServiceReady(bool isServiceRe
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService:nativeServiceReady(Z)V CLASS not found");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -330,7 +330,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig1Signal(int32 Param1)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param1);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onSig1 (I)V");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -356,7 +356,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig2Signal(int32 Param1, int32 Par
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param1, Param2);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onSig2 (II)V");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -382,7 +382,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig3Signal(int32 Param1, int32 Par
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param1, Param2, Param3);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onSig3 (III)V");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -408,7 +408,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnSig4Signal(int32 Param1, int32 Par
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Param1, Param2, Param3, Param4);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onSig4 (IIII)V");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -433,7 +433,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp1Changed(int32 Prop1)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Prop1);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onProp1Changed ((I)V)V");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -458,7 +458,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp2Changed(int32 Prop2)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Prop2);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onProp2Changed ((I)V)V");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -483,7 +483,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp3Changed(int32 Prop3)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Prop3);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onProp3Changed ((I)V)V");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -508,7 +508,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp4Changed(int32 Prop4)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, Prop4);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService failed to call onProp4Changed ((I)V)V");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }

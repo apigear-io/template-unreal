@@ -109,7 +109,7 @@ jobjectArray TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(JNIEnv* env, c
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEmptyIf, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_empty_if.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -132,7 +132,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> TbIfaceimportDataJavaConverter:
 	return wrapped;
 }
 
-bool TbIfaceimportDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool TbIfaceimportDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	if (env->ExceptionCheck())
@@ -165,7 +165,7 @@ TSharedPtr<FTbIfaceimportDataJavaConverterCacheData, ESPMode::ThreadSafe> TbIfac
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	NewData->jEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
 	static const TCHAR* errorMsgEmptyIf = TEXT("failed to get tbIfaceimport/tbIfaceimport_api/IEmptyIf");
-	checkJniErrorOccured(errorMsgEmptyIf);
+	CheckJniErrorOccurred(errorMsgEmptyIf);
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -181,7 +181,7 @@ jmethodID TbIfaceimportDataJavaConverter::getMethod(jclass cls, const char* name
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -189,7 +189,7 @@ jmethodID TbIfaceimportDataJavaConverter::getStaticMethod(jclass cls, const char
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -197,7 +197,7 @@ jfieldID TbIfaceimportDataJavaConverter::getFieldId(jclass cls, const char* name
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 

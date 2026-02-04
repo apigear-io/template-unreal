@@ -65,7 +65,7 @@ public:
 
 	static TScriptInterface<ITbEnumEnumInterfaceInterface> getCppInstanceTbEnumEnumInterface();
 
-	static bool checkJniErrorOccured(const TCHAR* Msg);
+	static bool CheckJniErrorOccurred(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:

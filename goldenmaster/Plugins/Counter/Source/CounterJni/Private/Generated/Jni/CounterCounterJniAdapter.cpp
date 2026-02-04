@@ -104,43 +104,43 @@ void UCounterCounterJniAdapterCache::init()
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniservice/CounterJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java counter/counterjniservice/CounterJniService. Bailing...");
-	if (NewData->javaService == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	if (NewData->javaService == nullptr || CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgCls))
 	{
 		return;
 	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for counter/counterjniservice/CounterJniService. Bailing...");
-	if (NewData->ReadyMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	if (NewData->ReadyMethodID == nullptr || CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgReadyMethod))
 	{
 		return;
 	}
 	NewData->VectorChangedMethodID = env->GetMethodID(NewData->javaService, "onVectorChanged", "(LcustomTypes/customTypes_api/Vector3D;)V");
 	static const TCHAR* errorMsgVectorChanged = TEXT("failed to get java onVectorChanged, (LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniservice/CounterJniService. Bailing...");
-	if (NewData->VectorChangedMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgVectorChanged))
+	if (NewData->VectorChangedMethodID == nullptr || CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgVectorChanged))
 	{
 		return;
 	}
 	NewData->ExternVectorChangedMethodID = env->GetMethodID(NewData->javaService, "onExternVectorChanged", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	static const TCHAR* errorMsgExternVectorChanged = TEXT("failed to get java onExternVectorChanged, (Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniservice/CounterJniService. Bailing...");
-	if (NewData->ExternVectorChangedMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgExternVectorChanged))
+	if (NewData->ExternVectorChangedMethodID == nullptr || CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgExternVectorChanged))
 	{
 		return;
 	}
 	NewData->VectorArrayChangedMethodID = env->GetMethodID(NewData->javaService, "onVectorArrayChanged", "([LcustomTypes/customTypes_api/Vector3D;)V");
 	static const TCHAR* errorMsgVectorArrayChanged = TEXT("failed to get java onVectorArrayChanged, ([LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniservice/CounterJniService. Bailing...");
-	if (NewData->VectorArrayChangedMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgVectorArrayChanged))
+	if (NewData->VectorArrayChangedMethodID == nullptr || CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgVectorArrayChanged))
 	{
 		return;
 	}
 	NewData->ExternVectorArrayChangedMethodID = env->GetMethodID(NewData->javaService, "onExternVectorArrayChanged", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	static const TCHAR* errorMsgExternVectorArrayChanged = TEXT("failed to get java onExternVectorArrayChanged, ([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniservice/CounterJniService. Bailing...");
-	if (NewData->ExternVectorArrayChangedMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgExternVectorArrayChanged))
+	if (NewData->ExternVectorArrayChangedMethodID == nullptr || CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgExternVectorArrayChanged))
 	{
 		return;
 	}
 	NewData->ValueChangedSignalMethodID = env->GetMethodID(NewData->javaService, "onValueChanged", "(LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	static const TCHAR* errorMsgValueChangedSignal = TEXT("failed to get java onValueChanged, (LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniservice/CounterJniService. Bailing...");
-	if (NewData->ValueChangedSignalMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgValueChangedSignal))
+	if (NewData->ValueChangedSignalMethodID == nullptr || CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgValueChangedSignal))
 	{
 		return;
 	}
@@ -177,7 +177,7 @@ void UCounterCounterJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniservice/CounterJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("CounterJavaServiceStarter; class not found");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -185,7 +185,7 @@ void UCounterCounterJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 	auto functionSignature = "(Landroid/content/Context;)Lcounter/counter_api/ICounter;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("CounterJavaServiceStarter::start; method not found");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+	CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -193,7 +193,7 @@ void UCounterCounterJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("CounterJavaServiceStarter failed to call start method");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgCall);
+	CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -216,18 +216,18 @@ void UCounterCounterJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniservice/CounterJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("CounterJavaServiceStarter; class not found");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("CounterJavaServiceStarter::stop; method not found");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+		CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal's activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("CounterJavaServiceStarter failed to call stop");
-			CounterDataJavaConverter::checkJniErrorOccured(errorMsgCall);
+			CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
@@ -285,7 +285,7 @@ void UCounterCounterJniAdapter::callJniServiceReady(bool isServiceReady)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("counter/counterjniservice/CounterJniService:nativeServiceReady(Z)V CLASS not found");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -315,7 +315,7 @@ void UCounterCounterJniAdapter::OnValueChangedSignal(const FCustomTypesVector3D&
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Vector, jlocal_ExternVector, jlocal_VectorArray, jlocal_ExternVectorArray);
 		static const TCHAR* errorMsg = TEXT("counter/counterjniservice/CounterJniService failed to call onValueChanged (LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vector);
 		Env->DeleteLocalRef(jlocal_ExternVector);
 		Env->DeleteLocalRef(jlocal_VectorArray);
@@ -346,7 +346,7 @@ void UCounterCounterJniAdapter::OnVectorChanged(const FCustomTypesVector3D& Vect
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Vector);
 		Env->DeleteLocalRef(jlocal_Vector);
 		static const TCHAR* errorMsg = TEXT("counter/counterjniservice/CounterJniService failed to call onVectorChanged ((LcustomTypes/customTypes_api/Vector3D;)V)V");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -373,7 +373,7 @@ void UCounterCounterJniAdapter::OnExternVectorChanged(const FVector& ExternVecto
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ExternVector);
 		Env->DeleteLocalRef(jlocal_ExternVector);
 		static const TCHAR* errorMsg = TEXT("counter/counterjniservice/CounterJniService failed to call onExternVectorChanged ((Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V)V");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -400,7 +400,7 @@ void UCounterCounterJniAdapter::OnVectorArrayChanged(const TArray<FCustomTypesVe
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_VectorArray);
 		Env->DeleteLocalRef(jlocal_VectorArray);
 		static const TCHAR* errorMsg = TEXT("counter/counterjniservice/CounterJniService failed to call onVectorArrayChanged (([LcustomTypes/customTypes_api/Vector3D;)V)V");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -427,7 +427,7 @@ void UCounterCounterJniAdapter::OnExternVectorArrayChanged(const TArray<FVector>
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ExternVectorArray);
 		Env->DeleteLocalRef(jlocal_ExternVectorArray);
 		static const TCHAR* errorMsg = TEXT("counter/counterjniservice/CounterJniService failed to call onExternVectorArrayChanged (([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V)V");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }

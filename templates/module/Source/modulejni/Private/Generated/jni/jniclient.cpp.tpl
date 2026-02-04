@@ -56,13 +56,13 @@ limitations under the License.
 		}
 		auto {{$localName}}Wrapped = FJavaHelper::ToJavaStringArray(Env, {{$cppropName}}StringViews);
 		static const TCHAR* errorMsg{{$localName}} = TEXT("failed converting {{$cppropName}} to {{$localName}}");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsg{{$localName}});
 		jobjectArray {{$localName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$localName}}Wrapped));
 		{{- else if (eq .KindType "bool")}}
 		auto len{{snake .Name}} = {{$cppropName}}.Num();
 		{{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
 		static const TCHAR* errorMsgAllocate{{$localName}} = TEXT("failed allocate java array when converting {{$cppropName}} to {{$localName}}");
-		if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgAllocate{{$localName}}))
+		if (!{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgAllocate{{$localName}}))
 		{
 			TArray<jboolean> Temp;
 			Temp.SetNumUninitialized(len{{snake .Name}});
@@ -72,13 +72,13 @@ limitations under the License.
 			}
 			Env->SetBooleanArrayRegion({{$localName}}, 0, len{{snake .Name}}, Temp.GetData());
 			static const TCHAR* errorMsg{{$localName}} = TEXT("failed to set java array region when converting {{$cppropName}} to {{$localName}}");
-			{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+			{{$localClassConverter}}::CheckJniErrorOccurred(errorMsg{{$localName}});
 		}
 		{{- else if and (.IsPrimitive ) (not (eq .KindType "enum")) }}
 		auto len{{snake .Name}} = {{$cppropName}}.Num();
 		{{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
 		static const TCHAR* errorMsgAllocate{{$localName}} = TEXT("failed allocate java array when converting {{$cppropName}} to {{$localName}}");
-		if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgAllocate{{$localName}}))
+		if (!{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgAllocate{{$localName}}))
 		{
 			Env->Set{{jniToEnvNameType .}}ArrayRegion({{$localName}}, 0, len{{snake .Name}}, {{ if (eq .KindType "int64") -}}
 			reinterpret_cast<const jlong*>({{$cppropName}}.GetData()));
@@ -86,7 +86,7 @@ limitations under the License.
 		{{$cppropName}}.GetData());
 		{{- end }}
 			static const TCHAR* errorMsg{{$localName}} = TEXT("failed to set java array region when converting {{$cppropName}} to {{$localName}}");
-			{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+			{{$localClassConverter}}::CheckJniErrorOccurred(errorMsg{{$localName}});
 		};
 		{{- else }}
 		{{- if eq .KindType "interface" }}
@@ -98,7 +98,7 @@ limitations under the License.
 		auto {{$localName}}Wrapped = FJavaHelper::ToJavaString(Env, {{$cppropName}});
 		jstring {{$localName}} = static_cast<jstring>(Env->NewLocalRef(*{{$localName}}Wrapped));
 		static const TCHAR* errorMsg{{$localName}} = TEXT("failed {{$cppropName}} to {{$localName}}");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsg{{$localName}});
 	{{- else if ( or (not .IsPrimitive ) (eq .KindType "enum" ) ) }}
 		{{- if eq .KindType "interface" }}
 		// interfaces are currently not supported. {{$javaClassConverter}} returns nullptr.
@@ -195,7 +195,7 @@ void {{$Class}}Cache::init()
 
 	NewData->{{$clientClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClientPath}}/{{$javaClientTypeName}}");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
-	if (NewData->{{$clientClass}} == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsgCls))
+	if (NewData->{{$clientClass}} == nullptr || {{$localClassConverter}}::CheckJniErrorOccurred(errorMsgCls))
 	{
 		return;
 	}
@@ -204,7 +204,7 @@ void {{$Class}}Cache::init()
 	{{- $signatureParam := jniJavaSignatureParam . }}
 	NewData->{{ Camel .Name}}SetterId = env->GetMethodID(NewData->{{$clientClass}}, "set{{Camel .Name}}", "({{$signatureParam}})V");
 	static const TCHAR* errorMsg{{Camel .Name}}Setter = TEXT("failed to get java set{{Camel .Name}}, {{$signatureParam}})V for {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
-	if (NewData->{{ Camel .Name}}SetterId == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Setter))
+	if (NewData->{{ Camel .Name}}SetterId == nullptr || {{$localClassConverter}}::CheckJniErrorOccurred(errorMsg{{Camel .Name}}Setter))
 	{
 		return;
 	}
@@ -214,26 +214,26 @@ void {{$Class}}Cache::init()
 	{{- $signatureParams := jniJavaSignatureParams .Params }}
 	NewData->{{Camel .Name}}AsyncMethodID = env->GetMethodID(NewData->{{$clientClass}}, "{{camel .Name}}Async", "(Ljava/lang/String;{{$signatureParams}})V");
 	static const TCHAR* errorMsg{{Camel .Name}}AsyncMethod = TEXT("failed to get java {{camel .Name}}Async, (Ljava/lang/String;{{$signatureParams}})V for {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
-	if (NewData->{{Camel .Name}}AsyncMethodID == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}AsyncMethod))
+	if (NewData->{{Camel .Name}}AsyncMethodID == nullptr || {{$localClassConverter}}::CheckJniErrorOccurred(errorMsg{{Camel .Name}}AsyncMethod))
 	{
 		return;
 	}
 {{- end }}
 	NewData->{{$clientClass}}Ctor = env->GetMethodID(NewData->{{$clientClass}}, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
-	if (NewData->{{$clientClass}}Ctor == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsgInit))
+	if (NewData->{{$clientClass}}Ctor == nullptr || {{$localClassConverter}}::CheckJniErrorOccurred(errorMsgInit))
 	{
 		return;
 	}
 	NewData->BindMethodID = env->GetMethodID(NewData->{{$clientClass}}, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
-	if (NewData->BindMethodID == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsgBind))
+	if (NewData->BindMethodID == nullptr || {{$localClassConverter}}::CheckJniErrorOccurred(errorMsgBind))
 	{
 		return;
 	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->{{$clientClass}}, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
-	if (NewData->UnbindMethodID == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsgUnbind))
+	if (NewData->UnbindMethodID == nullptr || {{$localClassConverter}}::CheckJniErrorOccurred(errorMsgUnbind))
 	{
 		return;
 	}
@@ -370,7 +370,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, {{$cppropName}});
 		{{- end }}
 		static const TCHAR* errorMsg = TEXT("failed to call set{{Camel .Name}} on {{$javaClassPath}}/{{$javaClassName}}.");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
+		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -519,19 +519,19 @@ bool {{$Class}}::_bindToService(FString servicePackage, FString connectionId)
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on {{$javaClassPath}}/{{$javaClassName}}");
-		if ({{$localClassConverter}}::checkJniErrorOccured(errorMsgPackage))
+		if ({{$localClassConverter}}::CheckJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on {{$javaClassPath}}/{{$javaClassName}}");
-		if ({{$localClassConverter}}::checkJniErrorOccured(errorMsgId))
+		if ({{$localClassConverter}}::CheckJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on {{$javaClassPath}}/{{$javaClassName}}.");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
+		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -560,7 +560,7 @@ void {{$Class}}::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on {{$javaClassPath}}/{{$javaClassName}}.");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
+		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsg);
 	}
 	else
 	{
@@ -648,7 +648,7 @@ bool {{$Class}}::tryCallAsyncJava{{Camel .Name}}(FGuid Guid, jmethodID MethodID{
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}");
-	if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgId))
+	if (!{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgId))
 	{
 	{{- range .Params -}}
 		{{ template "convert_to_java_type_in_param" .}}
@@ -665,7 +665,7 @@ bool {{$Class}}::tryCallAsyncJava{{Camel .Name}}(FGuid Guid, jmethodID MethodID{
 		{{- end -}});
 
 		static const TCHAR* errorMsg = TEXT("failed to call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}.");
-		auto errorOccurred = {{$localClassConverter}}::checkJniErrorOccured(errorMsg);
+		auto errorOccurred = {{$localClassConverter}}::CheckJniErrorOccurred(errorMsg);
 
 	{{- range $idx, $p := .Params -}}
 		{{- $javaPropName := Camel .Name}}
@@ -760,7 +760,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-	if ({{$localClassConverter}}::checkJniErrorOccured(errorMsgId))
+	if ({{$localClassConverter}}::CheckJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -775,19 +775,19 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 	{{- if (eq .Return.KindType "string")}}
 	cpp_result = FJavaHelper::ObjectArrayToFStringTArray(Env, result);
 	static const TCHAR* errorMsgResult = TEXT("failed to convert result from jstring array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgResult);
+	{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgResult);
 	{{- else if (eq .Return.KindType "bool")}}
 	jbooleanArray localArray = (jbooleanArray)result;
 	jsize len = Env->GetArrayLength(localArray);
 	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-	if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgLen))
+	if (!{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgLen))
 	{
 		cpp_result.AddUninitialized(len);
 		TArray<jboolean> Temp;
 		Temp.SetNumUninitialized(len);
 		Env->GetBooleanArrayRegion(localArray, 0, len, Temp.GetData());
 		static const TCHAR* errorMsgResult = TEXT("failed to convert result from boolean array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsgResult);
+		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgResult);
 		for (int i = 0; i < len; i++)
 		{
 			cpp_result[i] = (Temp[i] == JNI_TRUE);
@@ -798,7 +798,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 	{{ jniToReturnType .Return }} localArray = ({{ jniToReturnType .Return }})result;
 	jsize len = Env->GetArrayLength(localArray);
 	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-	if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgLen))
+	if (!{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgLen))
 	{
 		cpp_result.AddUninitialized(len);
 		Env->Get{{jniToEnvNameType .Return}}ArrayRegion(result, 0, len, {{ if (eq .Return.KindType "int64") -}}
@@ -807,7 +807,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 			cpp_result.GetData());
 			{{- end }}
 		static const TCHAR* errorMsgResult = TEXT("failed to convert result from {{jniToEnvNameType .Return}} array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsgResult);
+		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgResult);
 		Env->DeleteLocalRef(localArray);
 	}
 	{{- else }}
@@ -821,7 +821,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 {{- else if (eq .Return.KindType "string")}}
 	FString cpp_result = FJavaHelper::FStringFromParam(Env, result);
 	static const TCHAR* errorMsgResult = TEXT("failed to convert result from jstring in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgResult);
+	{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgResult);
 {{- else if not (ueIsStdSimpleType .Return )}}
 	{{ueReturn "" .Return}} cpp_result = {{ ueDefault "" .Return }};
 	{{- if eq .Return.KindType "interface" }}

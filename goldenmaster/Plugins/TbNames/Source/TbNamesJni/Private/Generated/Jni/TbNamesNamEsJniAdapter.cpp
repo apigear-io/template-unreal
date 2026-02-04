@@ -103,49 +103,49 @@ void UTbNamesNamEsJniAdapterCache::init()
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
-	if (NewData->javaService == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	if (NewData->javaService == nullptr || TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgCls))
 	{
 		return;
 	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
-	if (NewData->ReadyMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	if (NewData->ReadyMethodID == nullptr || TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgReadyMethod))
 	{
 		return;
 	}
 	NewData->SwitchChangedMethodID = env->GetMethodID(NewData->javaService, "onSwitchChanged", "(Z)V");
 	static const TCHAR* errorMsgSwitchChanged = TEXT("failed to get java onSwitchChanged, (Z)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
-	if (NewData->SwitchChangedMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSwitchChanged))
+	if (NewData->SwitchChangedMethodID == nullptr || TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgSwitchChanged))
 	{
 		return;
 	}
 	NewData->SomePropertyChangedMethodID = env->GetMethodID(NewData->javaService, "onSomePropertyChanged", "(I)V");
 	static const TCHAR* errorMsgSomePropertyChanged = TEXT("failed to get java onSomePropertyChanged, (I)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
-	if (NewData->SomePropertyChangedMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePropertyChanged))
+	if (NewData->SomePropertyChangedMethodID == nullptr || TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgSomePropertyChanged))
 	{
 		return;
 	}
 	NewData->SomePoperty2ChangedMethodID = env->GetMethodID(NewData->javaService, "onSomePoperty2Changed", "(I)V");
 	static const TCHAR* errorMsgSomePoperty2Changed = TEXT("failed to get java onSomePoperty2Changed, (I)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
-	if (NewData->SomePoperty2ChangedMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePoperty2Changed))
+	if (NewData->SomePoperty2ChangedMethodID == nullptr || TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgSomePoperty2Changed))
 	{
 		return;
 	}
 	NewData->EnumPropertyChangedMethodID = env->GetMethodID(NewData->javaService, "onEnumPropertyChanged", "(LtbNames/tbNames_api/EnumWithUnderScores;)V");
 	static const TCHAR* errorMsgEnumPropertyChanged = TEXT("failed to get java onEnumPropertyChanged, (LtbNames/tbNames_api/EnumWithUnderScores;)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
-	if (NewData->EnumPropertyChangedMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgEnumPropertyChanged))
+	if (NewData->EnumPropertyChangedMethodID == nullptr || TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgEnumPropertyChanged))
 	{
 		return;
 	}
 	NewData->SomeSignalSignalMethodID = env->GetMethodID(NewData->javaService, "onSomeSignal", "(Z)V");
 	static const TCHAR* errorMsgSomeSignalSignal = TEXT("failed to get java onSomeSignal, (Z)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
-	if (NewData->SomeSignalSignalMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeSignalSignal))
+	if (NewData->SomeSignalSignalMethodID == nullptr || TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgSomeSignalSignal))
 	{
 		return;
 	}
 	NewData->SomeSignal2SignalMethodID = env->GetMethodID(NewData->javaService, "onSomeSignal2", "(Z)V");
 	static const TCHAR* errorMsgSomeSignal2Signal = TEXT("failed to get java onSomeSignal2, (Z)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
-	if (NewData->SomeSignal2SignalMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeSignal2Signal))
+	if (NewData->SomeSignal2SignalMethodID == nullptr || TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgSomeSignal2Signal))
 	{
 		return;
 	}
@@ -182,7 +182,7 @@ void UTbNamesNamEsJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbNamesJavaServiceStarter; class not found");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -190,7 +190,7 @@ void UTbNamesNamEsJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 	auto functionSignature = "(Landroid/content/Context;)LtbNames/tbNames_api/INamEs;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("TbNamesJavaServiceStarter::start; method not found");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+	TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -198,7 +198,7 @@ void UTbNamesNamEsJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("TbNamesJavaServiceStarter failed to call start method");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCall);
+	TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -221,18 +221,18 @@ void UTbNamesNamEsJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbNamesJavaServiceStarter; class not found");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("TbNamesJavaServiceStarter::stop; method not found");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+		TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal's activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbNamesJavaServiceStarter failed to call stop");
-			TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCall);
+			TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
@@ -290,7 +290,7 @@ void UTbNamesNamEsJniAdapter::callJniServiceReady(bool isServiceReady)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbNames/tbNamesjniservice/NamEsJniService:nativeServiceReady(Z)V CLASS not found");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -316,7 +316,7 @@ void UTbNamesNamEsJniAdapter::OnSomeSignalSignal(bool bSomeParam)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bSomeParam);
 		static const TCHAR* errorMsg = TEXT("tbNames/tbNamesjniservice/NamEsJniService failed to call onSomeSignal (Z)V");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -342,7 +342,7 @@ void UTbNamesNamEsJniAdapter::OnSomeSignal2Signal(bool bSomeParam)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bSomeParam);
 		static const TCHAR* errorMsg = TEXT("tbNames/tbNamesjniservice/NamEsJniService failed to call onSomeSignal2 (Z)V");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -367,7 +367,7 @@ void UTbNamesNamEsJniAdapter::OnSwitchChanged(bool bSwitch)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, bSwitch);
 		static const TCHAR* errorMsg = TEXT("tbNames/tbNamesjniservice/NamEsJniService failed to call onSwitchChanged ((Z)V)V");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -392,7 +392,7 @@ void UTbNamesNamEsJniAdapter::OnSomePropertyChanged(int32 SomeProperty)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, SomeProperty);
 		static const TCHAR* errorMsg = TEXT("tbNames/tbNamesjniservice/NamEsJniService failed to call onSomePropertyChanged ((I)V)V");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -417,7 +417,7 @@ void UTbNamesNamEsJniAdapter::OnSomePoperty2Changed(int32 SomePoperty2)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, SomePoperty2);
 		static const TCHAR* errorMsg = TEXT("tbNames/tbNamesjniservice/NamEsJniService failed to call onSomePoperty2Changed ((I)V)V");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -443,7 +443,7 @@ void UTbNamesNamEsJniAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scor
 		jobject jlocal_EnumProperty = TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(Env, EnumProperty);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_EnumProperty);
 		static const TCHAR* errorMsg = TEXT("tbNames/tbNamesjniservice/NamEsJniService failed to call onEnumPropertyChanged ((LtbNames/tbNames_api/EnumWithUnderScores;)V)V");
-		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }

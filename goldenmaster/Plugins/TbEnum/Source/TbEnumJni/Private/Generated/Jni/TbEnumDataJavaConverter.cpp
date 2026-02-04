@@ -86,7 +86,7 @@ void TbEnumDataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TA
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of Enum0 array.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (CheckJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -94,7 +94,7 @@ void TbEnumDataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TA
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of Enum0 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = CheckJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			out_array.Add(getEnum0Value(env, element));
@@ -122,7 +122,7 @@ ETbEnumEnum0 TbEnumDataJavaConverter::getEnum0Value(JNIEnv* env, jobject input)
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
 		static const TCHAR* errorMsg = TEXT("failed when trying to call getValue method for Enum0.");
-		if (!checkJniErrorOccured(errorMsg))
+		if (!CheckJniErrorOccurred(errorMsg))
 		{
 			UTbEnumLibrary::toTbEnumEnum0(cppEnumValue, int_value);
 		}
@@ -145,7 +145,7 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum0Array(JNIEnv* env, const TArr
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEnum0, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Enum0 jarray.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (CheckJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -155,7 +155,7 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum0Array(JNIEnv* env, const TArr
 		jobject element = makeJavaEnum0(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when trying to set element of Enum0 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = CheckJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -183,7 +183,7 @@ jobject TbEnumDataJavaConverter::makeJavaEnum0(JNIEnv* env, ETbEnumEnum0 value)
 	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(Cache->jEnum0, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum0.");
-	checkJniErrorOccured(errorMsg);
+	CheckJniErrorOccurred(errorMsg);
 	return javaObj;
 }
 
@@ -198,7 +198,7 @@ void TbEnumDataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TA
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of Enum1 array.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (CheckJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -206,7 +206,7 @@ void TbEnumDataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TA
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of Enum1 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = CheckJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			out_array.Add(getEnum1Value(env, element));
@@ -234,7 +234,7 @@ ETbEnumEnum1 TbEnumDataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
 		static const TCHAR* errorMsg = TEXT("failed when trying to call getValue method for Enum1.");
-		if (!checkJniErrorOccured(errorMsg))
+		if (!CheckJniErrorOccurred(errorMsg))
 		{
 			UTbEnumLibrary::toTbEnumEnum1(cppEnumValue, int_value);
 		}
@@ -257,7 +257,7 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TArr
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEnum1, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Enum1 jarray.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (CheckJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -267,7 +267,7 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TArr
 		jobject element = makeJavaEnum1(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when trying to set element of Enum1 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = CheckJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -295,7 +295,7 @@ jobject TbEnumDataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbEnumEnum1 value)
 	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(Cache->jEnum1, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum1.");
-	checkJniErrorOccured(errorMsg);
+	CheckJniErrorOccurred(errorMsg);
 	return javaObj;
 }
 
@@ -310,7 +310,7 @@ void TbEnumDataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TA
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of Enum2 array.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (CheckJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -318,7 +318,7 @@ void TbEnumDataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TA
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of Enum2 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = CheckJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			out_array.Add(getEnum2Value(env, element));
@@ -346,7 +346,7 @@ ETbEnumEnum2 TbEnumDataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
 		static const TCHAR* errorMsg = TEXT("failed when trying to call getValue method for Enum2.");
-		if (!checkJniErrorOccured(errorMsg))
+		if (!CheckJniErrorOccurred(errorMsg))
 		{
 			UTbEnumLibrary::toTbEnumEnum2(cppEnumValue, int_value);
 		}
@@ -369,7 +369,7 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TArr
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEnum2, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Enum2 jarray.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (CheckJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -379,7 +379,7 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TArr
 		jobject element = makeJavaEnum2(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when trying to set element of Enum2 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = CheckJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -407,7 +407,7 @@ jobject TbEnumDataJavaConverter::makeJavaEnum2(JNIEnv* env, ETbEnumEnum2 value)
 	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(Cache->jEnum2, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum2.");
-	checkJniErrorOccured(errorMsg);
+	CheckJniErrorOccurred(errorMsg);
 	return javaObj;
 }
 
@@ -422,7 +422,7 @@ void TbEnumDataJavaConverter::fillEnum3Array(JNIEnv* env, jobjectArray input, TA
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of Enum3 array.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (CheckJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -430,7 +430,7 @@ void TbEnumDataJavaConverter::fillEnum3Array(JNIEnv* env, jobjectArray input, TA
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of Enum3 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = CheckJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			out_array.Add(getEnum3Value(env, element));
@@ -458,7 +458,7 @@ ETbEnumEnum3 TbEnumDataJavaConverter::getEnum3Value(JNIEnv* env, jobject input)
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
 		static const TCHAR* errorMsg = TEXT("failed when trying to call getValue method for Enum3.");
-		if (!checkJniErrorOccured(errorMsg))
+		if (!CheckJniErrorOccurred(errorMsg))
 		{
 			UTbEnumLibrary::toTbEnumEnum3(cppEnumValue, int_value);
 		}
@@ -481,7 +481,7 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum3Array(JNIEnv* env, const TArr
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEnum3, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Enum3 jarray.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (CheckJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -491,7 +491,7 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnum3Array(JNIEnv* env, const TArr
 		jobject element = makeJavaEnum3(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when trying to set element of Enum3 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = CheckJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -519,7 +519,7 @@ jobject TbEnumDataJavaConverter::makeJavaEnum3(JNIEnv* env, ETbEnumEnum3 value)
 	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(Cache->jEnum3, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum3.");
-	checkJniErrorOccured(errorMsg);
+	CheckJniErrorOccurred(errorMsg);
 	return javaObj;
 }
 
@@ -578,7 +578,7 @@ jobjectArray TbEnumDataJavaConverter::makeJavaEnumInterfaceArray(JNIEnv* env, co
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEnumInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_enum_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -601,7 +601,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> TbEnumDataJavaConverter::getCppI
 	return wrapped;
 }
 
-bool TbEnumDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool TbEnumDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	if (env->ExceptionCheck())
@@ -634,19 +634,19 @@ TSharedPtr<FTbEnumDataJavaConverterCacheData, ESPMode::ThreadSafe> TbEnumDataJav
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	NewData->jEnum0 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum0");
 	static const TCHAR* errorMsgEnum0 = TEXT("failed to get tbEnum/tbEnum_api/Enum0");
-	checkJniErrorOccured(errorMsgEnum0);
+	CheckJniErrorOccurred(errorMsgEnum0);
 	NewData->jEnum1 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum1");
 	static const TCHAR* errorMsgEnum1 = TEXT("failed to get tbEnum/tbEnum_api/Enum1");
-	checkJniErrorOccured(errorMsgEnum1);
+	CheckJniErrorOccurred(errorMsgEnum1);
 	NewData->jEnum2 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum2");
 	static const TCHAR* errorMsgEnum2 = TEXT("failed to get tbEnum/tbEnum_api/Enum2");
-	checkJniErrorOccured(errorMsgEnum2);
+	CheckJniErrorOccurred(errorMsgEnum2);
 	NewData->jEnum3 = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/Enum3");
 	static const TCHAR* errorMsgEnum3 = TEXT("failed to get tbEnum/tbEnum_api/Enum3");
-	checkJniErrorOccured(errorMsgEnum3);
+	CheckJniErrorOccurred(errorMsgEnum3);
 	NewData->jEnumInterface = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnum_api/IEnumInterface");
 	static const TCHAR* errorMsgEnumInterface = TEXT("failed to get tbEnum/tbEnum_api/IEnumInterface");
-	checkJniErrorOccured(errorMsgEnumInterface);
+	CheckJniErrorOccurred(errorMsgEnumInterface);
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -662,7 +662,7 @@ jmethodID TbEnumDataJavaConverter::getMethod(jclass cls, const char* name, const
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -670,7 +670,7 @@ jmethodID TbEnumDataJavaConverter::getStaticMethod(jclass cls, const char* name,
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -678,7 +678,7 @@ jfieldID TbEnumDataJavaConverter::getFieldId(jclass cls, const char* name, const
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 
