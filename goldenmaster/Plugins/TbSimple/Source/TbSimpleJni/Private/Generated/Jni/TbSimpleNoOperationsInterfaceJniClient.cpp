@@ -88,22 +88,22 @@ void UTbSimpleNoOperationsInterfaceJniClientCache::init()
 
 	clientClassNoOperationsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	PropBoolSetterId = env->GetMethodID(clientClassNoOperationsInterface, "setPropBool", "(Z)V");
 	static const TCHAR* errorMsgPropBoolSetter = TEXT("failed to get java setPropBool, Z)V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolSetter);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgPropBoolSetter);
 	PropIntSetterId = env->GetMethodID(clientClassNoOperationsInterface, "setPropInt", "(I)V");
 	static const TCHAR* errorMsgPropIntSetter = TEXT("failed to get java setPropInt, I)V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntSetter);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgPropIntSetter);
 	clientClassNoOperationsInterfaceCtor = env->GetMethodID(clientClassNoOperationsInterface, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgInit);
 	BindMethodID = env->GetMethodID(clientClassNoOperationsInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgBind);
 	UnbindMethodID = env->GetMethodID(clientClassNoOperationsInterface, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgUnbind);
 }
 
 void UTbSimpleNoOperationsInterfaceJniClientCache::clear()
@@ -221,7 +221,7 @@ void UTbSimpleNoOperationsInterfaceJniClient::SetPropBool(bool bInPropBool)
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, bInPropBool);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropBool on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -266,7 +266,7 @@ void UTbSimpleNoOperationsInterfaceJniClient::SetPropInt(int32 InPropInt)
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InPropInt);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropInt on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -301,19 +301,19 @@ bool UTbSimpleNoOperationsInterfaceJniClient::_bindToService(FString servicePack
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		if (TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		if (TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -341,7 +341,7 @@ void UTbSimpleNoOperationsInterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 	else
 	{

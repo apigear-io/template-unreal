@@ -101,40 +101,40 @@ void UTbEnumEnumInterfaceJniClientCache::init()
 
 	clientClassEnumInterface = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	Prop0SetterId = env->GetMethodID(clientClassEnumInterface, "setProp0", "(LtbEnum/tbEnum_api/Enum0;)V");
 	static const TCHAR* errorMsgProp0Setter = TEXT("failed to get java setProp0, LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp0Setter);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgProp0Setter);
 	Prop1SetterId = env->GetMethodID(clientClassEnumInterface, "setProp1", "(LtbEnum/tbEnum_api/Enum1;)V");
 	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgProp1Setter);
 	Prop2SetterId = env->GetMethodID(clientClassEnumInterface, "setProp2", "(LtbEnum/tbEnum_api/Enum2;)V");
 	static const TCHAR* errorMsgProp2Setter = TEXT("failed to get java setProp2, LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp2Setter);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgProp2Setter);
 	Prop3SetterId = env->GetMethodID(clientClassEnumInterface, "setProp3", "(LtbEnum/tbEnum_api/Enum3;)V");
 	static const TCHAR* errorMsgProp3Setter = TEXT("failed to get java setProp3, LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp3Setter);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgProp3Setter);
 	Func0AsyncMethodID = env->GetMethodID(clientClassEnumInterface, "func0Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V");
 	static const TCHAR* errorMsgFunc0AsyncMethod = TEXT("failed to get java func0Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc0AsyncMethod);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgFunc0AsyncMethod);
 	Func1AsyncMethodID = env->GetMethodID(clientClassEnumInterface, "func1Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V");
 	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgFunc1AsyncMethod);
 	Func2AsyncMethodID = env->GetMethodID(clientClassEnumInterface, "func2Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V");
 	static const TCHAR* errorMsgFunc2AsyncMethod = TEXT("failed to get java func2Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc2AsyncMethod);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgFunc2AsyncMethod);
 	Func3AsyncMethodID = env->GetMethodID(clientClassEnumInterface, "func3Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V");
 	static const TCHAR* errorMsgFunc3AsyncMethod = TEXT("failed to get java func3Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc3AsyncMethod);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgFunc3AsyncMethod);
 	clientClassEnumInterfaceCtor = env->GetMethodID(clientClassEnumInterface, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgInit);
 	BindMethodID = env->GetMethodID(clientClassEnumInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgBind);
 	UnbindMethodID = env->GetMethodID(clientClassEnumInterface, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgUnbind);
 }
 
 void UTbEnumEnumInterfaceJniClientCache::clear()
@@ -261,7 +261,7 @@ void UTbEnumEnumInterfaceJniClient::SetProp0(ETbEnumEnum0 InProp0)
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop0);
 		Env->DeleteLocalRef(jlocal_Prop0);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp0 on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -309,7 +309,7 @@ void UTbEnumEnumInterfaceJniClient::SetProp1(ETbEnumEnum1 InProp1)
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop1);
 		Env->DeleteLocalRef(jlocal_Prop1);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp1 on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -357,7 +357,7 @@ void UTbEnumEnumInterfaceJniClient::SetProp2(ETbEnumEnum2 InProp2)
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop2);
 		Env->DeleteLocalRef(jlocal_Prop2);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp2 on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -405,7 +405,7 @@ void UTbEnumEnumInterfaceJniClient::SetProp3(ETbEnumEnum3 InProp3)
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop3);
 		Env->DeleteLocalRef(jlocal_Prop3);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp3 on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -800,19 +800,19 @@ bool UTbEnumEnumInterfaceJniClient::_bindToService(FString servicePackage, FStri
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-		if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		if (TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-		if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		if (TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -840,7 +840,7 @@ void UTbEnumEnumInterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 	else
 	{
@@ -922,7 +922,7 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc0(FGuid Guid, jmethodID 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func0Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -931,7 +931,7 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc0(FGuid Guid, jmethodID 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param0);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func0Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param0);
 
 	return !errorOccurred;
@@ -949,7 +949,7 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jmethodID 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -958,7 +958,7 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jmethodID 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func1Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 
 	return !errorOccurred;
@@ -976,7 +976,7 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid, jmethodID 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -985,7 +985,7 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid, jmethodID 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param2);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func2Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param2);
 
 	return !errorOccurred;
@@ -1003,7 +1003,7 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc3(FGuid Guid, jmethodID 
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func3Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -1012,7 +1012,7 @@ bool UTbEnumEnumInterfaceJniClient::tryCallAsyncJavaFunc3(FGuid Guid, jmethodID 
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param3);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func3Async on tbEnum/tbEnumjniclient/EnumInterfaceJniClient.");
-	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param3);
 
 	return !errorOccurred;
@@ -1148,7 +1148,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc0
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc0Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc0 for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1164,7 +1164,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc1
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc1Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc1 for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1180,7 +1180,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc2
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc2Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc2 for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1196,7 +1196,7 @@ JNI_METHOD void Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc3
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("Java_tbEnum_tbEnumjniclient_EnumInterfaceJniClient_nativeOnFunc3Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc3 for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	if (TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbEnumDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}

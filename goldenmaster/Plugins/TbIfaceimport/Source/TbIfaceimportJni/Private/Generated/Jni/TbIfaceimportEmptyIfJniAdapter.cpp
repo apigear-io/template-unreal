@@ -70,10 +70,10 @@ void UTbIfaceimportEmptyIfJniAdapterCache::init()
 
 	javaService = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbIfaceimportDataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	TbIfaceimportDataJavaConverter::checkJniErrorOccurred(errorMsgReadyMethod);
 }
 
 void UTbIfaceimportEmptyIfJniAdapterCache::clear()
@@ -99,7 +99,7 @@ void UTbIfaceimportEmptyIfJniAdapter::Initialize(FSubsystemCollectionBase& Colle
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbIfaceimportJavaServiceStarter; class not found");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbIfaceimportDataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -107,7 +107,7 @@ void UTbIfaceimportEmptyIfJniAdapter::Initialize(FSubsystemCollectionBase& Colle
 	auto functionSignature = "(Landroid/content/Context;)LtbIfaceimport/tbIfaceimport_api/IEmptyIf;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("TbIfaceimportJavaServiceStarter::start; method not found");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+	TbIfaceimportDataJavaConverter::checkJniErrorOccurred(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -115,7 +115,7 @@ void UTbIfaceimportEmptyIfJniAdapter::Initialize(FSubsystemCollectionBase& Colle
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("TbIfaceimportJavaServiceStarter failed to call start method");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCall);
+	TbIfaceimportDataJavaConverter::checkJniErrorOccurred(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -138,18 +138,18 @@ void UTbIfaceimportEmptyIfJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbIfaceimportJavaServiceStarter; class not found");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbIfaceimportDataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("TbIfaceimportJavaServiceStarter::stop; method not found");
-		TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+		TbIfaceimportDataJavaConverter::checkJniErrorOccurred(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbIfaceimportJavaServiceStarter failed to call stop");
-			TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCall);
+			TbIfaceimportDataJavaConverter::checkJniErrorOccurred(errorMsgCall);
 		}
 		else
 		{
@@ -209,7 +209,7 @@ void UTbIfaceimportEmptyIfJniAdapter::callJniServiceReady(bool isServiceReady)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTbIfaceimportEmptyIfJniAdapterCache::ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService:nativeServiceReady(Z)V CLASS not found");
-		TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbIfaceimportDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }

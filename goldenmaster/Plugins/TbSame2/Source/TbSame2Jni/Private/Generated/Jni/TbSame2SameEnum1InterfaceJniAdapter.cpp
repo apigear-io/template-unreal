@@ -75,16 +75,16 @@ void UTbSame2SameEnum1InterfaceJniAdapterCache::init()
 
 	javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsgReadyMethod);
 	Prop1ChangedMethodID = env->GetMethodID(javaService, "onProp1Changed", "(LtbSame2/tbSame2_api/Enum1;)V");
 	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed);
+	TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsgProp1Changed);
 	Sig1SignalMethodID = env->GetMethodID(javaService, "onSig1", "(LtbSame2/tbSame2_api/Enum1;)V");
 	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal);
+	TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsgSig1Signal);
 }
 
 void UTbSame2SameEnum1InterfaceJniAdapterCache::clear()
@@ -112,7 +112,7 @@ void UTbSame2SameEnum1InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& 
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum1InterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSame2JavaServiceStarter; class not found");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -120,7 +120,7 @@ void UTbSame2SameEnum1InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& 
 	auto functionSignature = "(Landroid/content/Context;)LtbSame2/tbSame2_api/ISameEnum1Interface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("TbSame2JavaServiceStarter::start; method not found");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+	TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -128,7 +128,7 @@ void UTbSame2SameEnum1InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& 
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("TbSame2JavaServiceStarter failed to call start method");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCall);
+	TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -151,18 +151,18 @@ void UTbSame2SameEnum1InterfaceJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum1InterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSame2JavaServiceStarter; class not found");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("TbSame2JavaServiceStarter::stop; method not found");
-		TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+		TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbSame2JavaServiceStarter failed to call stop");
-			TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCall);
+			TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsgCall);
 		}
 		else
 		{
@@ -222,7 +222,7 @@ void UTbSame2SameEnum1InterfaceJniAdapter::callJniServiceReady(bool isServiceRea
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTbSame2SameEnum1InterfaceJniAdapterCache::ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService:nativeServiceReady(Z)V CLASS not found");
-		TbSame2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -248,7 +248,7 @@ void UTbSame2SameEnum1InterfaceJniAdapter::OnSig1Signal(ETbSame2Enum1 Param1)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param1);
 		static const TCHAR* errorMsg = TEXT("tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService failed to call onSig1 (LtbSame2/tbSame2_api/Enum1;)V");
-		TbSame2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 	}
 #endif
@@ -274,7 +274,7 @@ void UTbSame2SameEnum1InterfaceJniAdapter::OnProp1Changed(ETbSame2Enum1 Prop1)
 		jobject jlocal_Prop1 = TbSame2DataJavaConverter::makeJavaEnum1(Env, Prop1);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop1);
 		static const TCHAR* errorMsg = TEXT("tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService failed to call onProp1Changed ((LtbSame2/tbSame2_api/Enum1;)V)V");
-		TbSame2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSame2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }

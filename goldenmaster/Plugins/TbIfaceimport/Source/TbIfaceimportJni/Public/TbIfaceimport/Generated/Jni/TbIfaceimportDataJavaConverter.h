@@ -44,7 +44,7 @@ public:
 
 	static TScriptInterface<ITbIfaceimportEmptyIfInterface> getCppInstanceTbIfaceimportEmptyIf();
 
-	static bool checkJniErrorOccured(const TCHAR* Msg);
+	static bool checkJniErrorOccurred(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:

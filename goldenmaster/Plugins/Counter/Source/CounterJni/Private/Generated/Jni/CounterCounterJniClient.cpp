@@ -100,40 +100,40 @@ void UCounterCounterJniClientCache::init()
 
 	clientClassCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniclient/CounterJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	VectorSetterId = env->GetMethodID(clientClassCounter, "setVector", "(LcustomTypes/customTypes_api/Vector3D;)V");
 	static const TCHAR* errorMsgVectorSetter = TEXT("failed to get java setVector, LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgVectorSetter);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgVectorSetter);
 	ExternVectorSetterId = env->GetMethodID(clientClassCounter, "setExternVector", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	static const TCHAR* errorMsgExternVectorSetter = TEXT("failed to get java setExternVector, Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgExternVectorSetter);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgExternVectorSetter);
 	VectorArraySetterId = env->GetMethodID(clientClassCounter, "setVectorArray", "([LcustomTypes/customTypes_api/Vector3D;)V");
 	static const TCHAR* errorMsgVectorArraySetter = TEXT("failed to get java setVectorArray, [LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgVectorArraySetter);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgVectorArraySetter);
 	ExternVectorArraySetterId = env->GetMethodID(clientClassCounter, "setExternVectorArray", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	static const TCHAR* errorMsgExternVectorArraySetter = TEXT("failed to get java setExternVectorArray, [Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgExternVectorArraySetter);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgExternVectorArraySetter);
 	IncrementAsyncMethodID = env->GetMethodID(clientClassCounter, "incrementAsync", "(Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	static const TCHAR* errorMsgIncrementAsyncMethod = TEXT("failed to get java incrementAsync, (Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgIncrementAsyncMethod);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgIncrementAsyncMethod);
 	IncrementArrayAsyncMethodID = env->GetMethodID(clientClassCounter, "incrementArrayAsync", "(Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	static const TCHAR* errorMsgIncrementArrayAsyncMethod = TEXT("failed to get java incrementArrayAsync, (Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgIncrementArrayAsyncMethod);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgIncrementArrayAsyncMethod);
 	DecrementAsyncMethodID = env->GetMethodID(clientClassCounter, "decrementAsync", "(Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V");
 	static const TCHAR* errorMsgDecrementAsyncMethod = TEXT("failed to get java decrementAsync, (Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgDecrementAsyncMethod);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgDecrementAsyncMethod);
 	DecrementArrayAsyncMethodID = env->GetMethodID(clientClassCounter, "decrementArrayAsync", "(Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V");
 	static const TCHAR* errorMsgDecrementArrayAsyncMethod = TEXT("failed to get java decrementArrayAsync, (Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgDecrementArrayAsyncMethod);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgDecrementArrayAsyncMethod);
 	clientClassCounterCtor = env->GetMethodID(clientClassCounter, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgInit);
 	BindMethodID = env->GetMethodID(clientClassCounter, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgBind);
 	UnbindMethodID = env->GetMethodID(clientClassCounter, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	CounterDataJavaConverter::checkJniErrorOccurred(errorMsgUnbind);
 }
 
 void UCounterCounterJniClientCache::clear()
@@ -260,7 +260,7 @@ void UCounterCounterJniClient::SetVector(const FCustomTypesVector3D& InVector)
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Vector);
 		Env->DeleteLocalRef(jlocal_Vector);
 		static const TCHAR* errorMsg = TEXT("failed to call setVector on counter/counterjniclient/CounterJniClient.");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -308,7 +308,7 @@ void UCounterCounterJniClient::SetExternVector(const FVector& InExternVector)
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_ExternVector);
 		Env->DeleteLocalRef(jlocal_ExternVector);
 		static const TCHAR* errorMsg = TEXT("failed to call setExternVector on counter/counterjniclient/CounterJniClient.");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -356,7 +356,7 @@ void UCounterCounterJniClient::SetVectorArray(const TArray<FCustomTypesVector3D>
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_VectorArray);
 		Env->DeleteLocalRef(jlocal_VectorArray);
 		static const TCHAR* errorMsg = TEXT("failed to call setVectorArray on counter/counterjniclient/CounterJniClient.");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -404,7 +404,7 @@ void UCounterCounterJniClient::SetExternVectorArray(const TArray<FVector>& InExt
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_ExternVectorArray);
 		Env->DeleteLocalRef(jlocal_ExternVectorArray);
 		static const TCHAR* errorMsg = TEXT("failed to call setExternVectorArray on counter/counterjniclient/CounterJniClient.");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -799,19 +799,19 @@ bool UCounterCounterJniClient::_bindToService(FString servicePackage, FString co
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on counter/counterjniclient/CounterJniClient");
-		if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		if (CounterDataJavaConverter::checkJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on counter/counterjniclient/CounterJniClient");
-		if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		if (CounterDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on counter/counterjniclient/CounterJniClient.");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -839,7 +839,7 @@ void UCounterCounterJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on counter/counterjniclient/CounterJniClient.");
-		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+		CounterDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 	else
 	{
@@ -906,7 +906,7 @@ bool UCounterCounterJniClient::tryCallAsyncJavaIncrement(FGuid Guid, jmethodID M
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call incrementAsync on counter/counterjniclient/CounterJniClient");
-	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (CounterDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -915,7 +915,7 @@ bool UCounterCounterJniClient::tryCallAsyncJavaIncrement(FGuid Guid, jmethodID M
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
 
 	static const TCHAR* errorMsg = TEXT("failed to call incrementAsync on counter/counterjniclient/CounterJniClient.");
-	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 
 	return !errorOccurred;
@@ -933,7 +933,7 @@ bool UCounterCounterJniClient::tryCallAsyncJavaIncrementArray(FGuid Guid, jmetho
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call incrementArrayAsync on counter/counterjniclient/CounterJniClient");
-	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (CounterDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -942,7 +942,7 @@ bool UCounterCounterJniClient::tryCallAsyncJavaIncrementArray(FGuid Guid, jmetho
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
 
 	static const TCHAR* errorMsg = TEXT("failed to call incrementArrayAsync on counter/counterjniclient/CounterJniClient.");
-	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 
 	return !errorOccurred;
@@ -960,7 +960,7 @@ bool UCounterCounterJniClient::tryCallAsyncJavaDecrement(FGuid Guid, jmethodID M
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call decrementAsync on counter/counterjniclient/CounterJniClient");
-	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (CounterDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -969,7 +969,7 @@ bool UCounterCounterJniClient::tryCallAsyncJavaDecrement(FGuid Guid, jmethodID M
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
 
 	static const TCHAR* errorMsg = TEXT("failed to call decrementAsync on counter/counterjniclient/CounterJniClient.");
-	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 
 	return !errorOccurred;
@@ -987,7 +987,7 @@ bool UCounterCounterJniClient::tryCallAsyncJavaDecrementArray(FGuid Guid, jmetho
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call decrementArrayAsync on counter/counterjniclient/CounterJniClient");
-	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (CounterDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -996,7 +996,7 @@ bool UCounterCounterJniClient::tryCallAsyncJavaDecrementArray(FGuid Guid, jmetho
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Vec);
 
 	static const TCHAR* errorMsg = TEXT("failed to call decrementArrayAsync on counter/counterjniclient/CounterJniClient.");
-	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = CounterDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Vec);
 
 	return !errorOccurred;
@@ -1098,7 +1098,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnIncrement
 	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnIncrement for counter/counterjniclient/CounterJniClient");
-	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (CounterDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1115,7 +1115,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnIncrement
 	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnIncrementArrayResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnIncrementArray for counter/counterjniclient/CounterJniClient");
-	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (CounterDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1132,7 +1132,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnDecrement
 	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnDecrement for counter/counterjniclient/CounterJniClient");
-	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (CounterDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1149,7 +1149,7 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeOnDecrement
 	UE_LOG(LogCounterCounterClient_JNI, Verbose, TEXT("Java_counter_counterjniclient_CounterJniClient_nativeOnDecrementArrayResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnDecrementArray for counter/counterjniclient/CounterJniClient");
-	if (CounterDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (CounterDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
