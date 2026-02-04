@@ -22,6 +22,8 @@ limitations under the License.
 #include "TbRefIfaces/Implementation/TbRefIfacesSimpleLocalIf.h"
 #include "TbRefIfaces/Implementation/TbRefIfacesParentIf.h"
 
+#include "Generated/Detail/TbRefIfacesCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -220,15 +222,7 @@ TScriptInterface<ITbRefIfacesParentIfInterface> TbRefIfacesDataJavaConverter::ge
 
 bool TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FTbRefIfacesCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void TbRefIfacesDataJavaConverter::cleanJavaReferences()
