@@ -108,25 +108,25 @@ void UTbIfaceimportEmptyIfJniClientCache::init()
 
 	NewData->clientClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient. Bailing...");
-	if (NewData->clientClassEmptyIf == nullptr || TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	if (NewData->clientClassEmptyIf == nullptr || TbIfaceimportDataJavaConverter::CheckJniErrorOccurred(errorMsgCls))
 	{
 		return;
 	}
 	NewData->clientClassEmptyIfCtor = env->GetMethodID(NewData->clientClassEmptyIf, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient. Bailing...");
-	if (NewData->clientClassEmptyIfCtor == nullptr || TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	if (NewData->clientClassEmptyIfCtor == nullptr || TbIfaceimportDataJavaConverter::CheckJniErrorOccurred(errorMsgInit))
 	{
 		return;
 	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassEmptyIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient. Bailing...");
-	if (NewData->BindMethodID == nullptr || TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	if (NewData->BindMethodID == nullptr || TbIfaceimportDataJavaConverter::CheckJniErrorOccurred(errorMsgBind))
 	{
 		return;
 	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassEmptyIf, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient. Bailing...");
-	if (NewData->UnbindMethodID == nullptr || TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	if (NewData->UnbindMethodID == nullptr || TbIfaceimportDataJavaConverter::CheckJniErrorOccurred(errorMsgUnbind))
 	{
 		return;
 	}
@@ -240,19 +240,19 @@ bool UTbIfaceimportEmptyIfJniClient::_bindToService(FString servicePackage, FStr
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
-		if (TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		if (TbIfaceimportDataJavaConverter::CheckJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
-		if (TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		if (TbIfaceimportDataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient.");
-		TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbIfaceimportDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -281,7 +281,7 @@ void UTbIfaceimportEmptyIfJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient.");
-		TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbIfaceimportDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 	else
 	{

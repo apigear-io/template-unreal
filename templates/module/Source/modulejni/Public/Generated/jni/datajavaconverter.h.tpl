@@ -116,7 +116,7 @@ public:
 	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$exType}}>& cppArray);
 {{- end }}
 
-	static bool checkJniErrorOccured(const TCHAR* Msg);
+	static bool CheckJniErrorOccurred(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:

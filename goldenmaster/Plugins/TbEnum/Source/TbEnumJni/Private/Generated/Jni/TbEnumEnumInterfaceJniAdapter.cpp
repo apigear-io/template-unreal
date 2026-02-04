@@ -105,61 +105,61 @@ void UTbEnumEnumInterfaceJniAdapterCache::init()
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnumjniservice/EnumInterfaceJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbEnum/tbEnumjniservice/EnumInterfaceJniService. Bailing...");
-	if (NewData->javaService == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	if (NewData->javaService == nullptr || TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgCls))
 	{
 		return;
 	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService. Bailing...");
-	if (NewData->ReadyMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	if (NewData->ReadyMethodID == nullptr || TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgReadyMethod))
 	{
 		return;
 	}
 	NewData->Prop0ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp0Changed", "(LtbEnum/tbEnum_api/Enum0;)V");
 	static const TCHAR* errorMsgProp0Changed = TEXT("failed to get java onProp0Changed, (LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService. Bailing...");
-	if (NewData->Prop0ChangedMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp0Changed))
+	if (NewData->Prop0ChangedMethodID == nullptr || TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgProp0Changed))
 	{
 		return;
 	}
 	NewData->Prop1ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp1Changed", "(LtbEnum/tbEnum_api/Enum1;)V");
 	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService. Bailing...");
-	if (NewData->Prop1ChangedMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed))
+	if (NewData->Prop1ChangedMethodID == nullptr || TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgProp1Changed))
 	{
 		return;
 	}
 	NewData->Prop2ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp2Changed", "(LtbEnum/tbEnum_api/Enum2;)V");
 	static const TCHAR* errorMsgProp2Changed = TEXT("failed to get java onProp2Changed, (LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService. Bailing...");
-	if (NewData->Prop2ChangedMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp2Changed))
+	if (NewData->Prop2ChangedMethodID == nullptr || TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgProp2Changed))
 	{
 		return;
 	}
 	NewData->Prop3ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp3Changed", "(LtbEnum/tbEnum_api/Enum3;)V");
 	static const TCHAR* errorMsgProp3Changed = TEXT("failed to get java onProp3Changed, (LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService. Bailing...");
-	if (NewData->Prop3ChangedMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp3Changed))
+	if (NewData->Prop3ChangedMethodID == nullptr || TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgProp3Changed))
 	{
 		return;
 	}
 	NewData->Sig0SignalMethodID = env->GetMethodID(NewData->javaService, "onSig0", "(LtbEnum/tbEnum_api/Enum0;)V");
 	static const TCHAR* errorMsgSig0Signal = TEXT("failed to get java onSig0, (LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService. Bailing...");
-	if (NewData->Sig0SignalMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgSig0Signal))
+	if (NewData->Sig0SignalMethodID == nullptr || TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgSig0Signal))
 	{
 		return;
 	}
 	NewData->Sig1SignalMethodID = env->GetMethodID(NewData->javaService, "onSig1", "(LtbEnum/tbEnum_api/Enum1;)V");
 	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService. Bailing...");
-	if (NewData->Sig1SignalMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal))
+	if (NewData->Sig1SignalMethodID == nullptr || TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgSig1Signal))
 	{
 		return;
 	}
 	NewData->Sig2SignalMethodID = env->GetMethodID(NewData->javaService, "onSig2", "(LtbEnum/tbEnum_api/Enum2;)V");
 	static const TCHAR* errorMsgSig2Signal = TEXT("failed to get java onSig2, (LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService. Bailing...");
-	if (NewData->Sig2SignalMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgSig2Signal))
+	if (NewData->Sig2SignalMethodID == nullptr || TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgSig2Signal))
 	{
 		return;
 	}
 	NewData->Sig3SignalMethodID = env->GetMethodID(NewData->javaService, "onSig3", "(LtbEnum/tbEnum_api/Enum3;)V");
 	static const TCHAR* errorMsgSig3Signal = TEXT("failed to get java onSig3, (LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniservice/EnumInterfaceJniService. Bailing...");
-	if (NewData->Sig3SignalMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgSig3Signal))
+	if (NewData->Sig3SignalMethodID == nullptr || TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgSig3Signal))
 	{
 		return;
 	}
@@ -196,7 +196,7 @@ void UTbEnumEnumInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collec
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnumjniservice/EnumInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbEnumJavaServiceStarter; class not found");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -204,7 +204,7 @@ void UTbEnumEnumInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collec
 	auto functionSignature = "(Landroid/content/Context;)LtbEnum/tbEnum_api/IEnumInterface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("TbEnumJavaServiceStarter::start; method not found");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+	TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -212,7 +212,7 @@ void UTbEnumEnumInterfaceJniAdapter::Initialize(FSubsystemCollectionBase& Collec
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("TbEnumJavaServiceStarter failed to call start method");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgCall);
+	TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -235,18 +235,18 @@ void UTbEnumEnumInterfaceJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnumjniservice/EnumInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbEnumJavaServiceStarter; class not found");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("TbEnumJavaServiceStarter::stop; method not found");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal�s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("TbEnumJavaServiceStarter failed to call stop");
-			TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgCall);
+			TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
@@ -304,7 +304,7 @@ void UTbEnumEnumInterfaceJniAdapter::callJniServiceReady(bool isServiceReady)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService:nativeServiceReady(Z)V CLASS not found");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -331,7 +331,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnSig0Signal(ETbEnumEnum0 Param0)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param0);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onSig0 (LtbEnum/tbEnum_api/Enum0;)V");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param0);
 	}
 #endif
@@ -359,7 +359,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnSig1Signal(ETbEnumEnum1 Param1)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param1);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onSig1 (LtbEnum/tbEnum_api/Enum1;)V");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 	}
 #endif
@@ -387,7 +387,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnSig2Signal(ETbEnumEnum2 Param2)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param2);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onSig2 (LtbEnum/tbEnum_api/Enum2;)V");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param2);
 	}
 #endif
@@ -415,7 +415,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnSig3Signal(ETbEnumEnum3 Param3)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Param3);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onSig3 (LtbEnum/tbEnum_api/Enum3;)V");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param3);
 	}
 #endif
@@ -442,7 +442,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp0Changed(ETbEnumEnum0 Prop0)
 		jobject jlocal_Prop0 = TbEnumDataJavaConverter::makeJavaEnum0(Env, Prop0);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop0);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onProp0Changed ((LtbEnum/tbEnum_api/Enum0;)V)V");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -468,7 +468,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp1Changed(ETbEnumEnum1 Prop1)
 		jobject jlocal_Prop1 = TbEnumDataJavaConverter::makeJavaEnum1(Env, Prop1);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop1);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onProp1Changed ((LtbEnum/tbEnum_api/Enum1;)V)V");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -494,7 +494,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp2Changed(ETbEnumEnum2 Prop2)
 		jobject jlocal_Prop2 = TbEnumDataJavaConverter::makeJavaEnum2(Env, Prop2);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop2);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onProp2Changed ((LtbEnum/tbEnum_api/Enum2;)V)V");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -520,7 +520,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp3Changed(ETbEnumEnum3 Prop3)
 		jobject jlocal_Prop3 = TbEnumDataJavaConverter::makeJavaEnum3(Env, Prop3);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop3);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onProp3Changed ((LtbEnum/tbEnum_api/Enum3;)V)V");
-		TbEnumDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }

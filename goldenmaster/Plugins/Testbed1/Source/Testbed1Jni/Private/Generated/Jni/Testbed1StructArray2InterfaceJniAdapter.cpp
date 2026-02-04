@@ -106,67 +106,67 @@ void UTestbed1StructArray2InterfaceJniAdapterCache::init()
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniservice/StructArray2InterfaceJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->javaService == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	if (NewData->javaService == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgCls))
 	{
 		return;
 	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->ReadyMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	if (NewData->ReadyMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgReadyMethod))
 	{
 		return;
 	}
 	NewData->PropBoolChangedMethodID = env->GetMethodID(NewData->javaService, "onPropBoolChanged", "(Ltestbed1/testbed1_api/StructBoolWithArray;)V");
 	static const TCHAR* errorMsgPropBoolChanged = TEXT("failed to get java onPropBoolChanged, (Ltestbed1/testbed1_api/StructBoolWithArray;)V for testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->PropBoolChangedMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropBoolChanged))
+	if (NewData->PropBoolChangedMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPropBoolChanged))
 	{
 		return;
 	}
 	NewData->PropIntChangedMethodID = env->GetMethodID(NewData->javaService, "onPropIntChanged", "(Ltestbed1/testbed1_api/StructIntWithArray;)V");
 	static const TCHAR* errorMsgPropIntChanged = TEXT("failed to get java onPropIntChanged, (Ltestbed1/testbed1_api/StructIntWithArray;)V for testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->PropIntChangedMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropIntChanged))
+	if (NewData->PropIntChangedMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPropIntChanged))
 	{
 		return;
 	}
 	NewData->PropFloatChangedMethodID = env->GetMethodID(NewData->javaService, "onPropFloatChanged", "(Ltestbed1/testbed1_api/StructFloatWithArray;)V");
 	static const TCHAR* errorMsgPropFloatChanged = TEXT("failed to get java onPropFloatChanged, (Ltestbed1/testbed1_api/StructFloatWithArray;)V for testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->PropFloatChangedMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropFloatChanged))
+	if (NewData->PropFloatChangedMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPropFloatChanged))
 	{
 		return;
 	}
 	NewData->PropStringChangedMethodID = env->GetMethodID(NewData->javaService, "onPropStringChanged", "(Ltestbed1/testbed1_api/StructStringWithArray;)V");
 	static const TCHAR* errorMsgPropStringChanged = TEXT("failed to get java onPropStringChanged, (Ltestbed1/testbed1_api/StructStringWithArray;)V for testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->PropStringChangedMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropStringChanged))
+	if (NewData->PropStringChangedMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPropStringChanged))
 	{
 		return;
 	}
 	NewData->PropEnumChangedMethodID = env->GetMethodID(NewData->javaService, "onPropEnumChanged", "(Ltestbed1/testbed1_api/StructEnumWithArray;)V");
 	static const TCHAR* errorMsgPropEnumChanged = TEXT("failed to get java onPropEnumChanged, (Ltestbed1/testbed1_api/StructEnumWithArray;)V for testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->PropEnumChangedMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropEnumChanged))
+	if (NewData->PropEnumChangedMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPropEnumChanged))
 	{
 		return;
 	}
 	NewData->SigBoolSignalMethodID = env->GetMethodID(NewData->javaService, "onSigBool", "(Ltestbed1/testbed1_api/StructBoolWithArray;)V");
 	static const TCHAR* errorMsgSigBoolSignal = TEXT("failed to get java onSigBool, (Ltestbed1/testbed1_api/StructBoolWithArray;)V for testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->SigBoolSignalMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgSigBoolSignal))
+	if (NewData->SigBoolSignalMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgSigBoolSignal))
 	{
 		return;
 	}
 	NewData->SigIntSignalMethodID = env->GetMethodID(NewData->javaService, "onSigInt", "(Ltestbed1/testbed1_api/StructIntWithArray;)V");
 	static const TCHAR* errorMsgSigIntSignal = TEXT("failed to get java onSigInt, (Ltestbed1/testbed1_api/StructIntWithArray;)V for testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->SigIntSignalMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgSigIntSignal))
+	if (NewData->SigIntSignalMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgSigIntSignal))
 	{
 		return;
 	}
 	NewData->SigFloatSignalMethodID = env->GetMethodID(NewData->javaService, "onSigFloat", "(Ltestbed1/testbed1_api/StructFloatWithArray;)V");
 	static const TCHAR* errorMsgSigFloatSignal = TEXT("failed to get java onSigFloat, (Ltestbed1/testbed1_api/StructFloatWithArray;)V for testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->SigFloatSignalMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgSigFloatSignal))
+	if (NewData->SigFloatSignalMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgSigFloatSignal))
 	{
 		return;
 	}
 	NewData->SigStringSignalMethodID = env->GetMethodID(NewData->javaService, "onSigString", "(Ltestbed1/testbed1_api/StructStringWithArray;)V");
 	static const TCHAR* errorMsgSigStringSignal = TEXT("failed to get java onSigString, (Ltestbed1/testbed1_api/StructStringWithArray;)V for testbed1/testbed1jniservice/StructArray2InterfaceJniService. Bailing...");
-	if (NewData->SigStringSignalMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgSigStringSignal))
+	if (NewData->SigStringSignalMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgSigStringSignal))
 	{
 		return;
 	}
@@ -203,7 +203,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::Initialize(FSubsystemCollectionBa
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniservice/StructArray2InterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("Testbed1JavaServiceStarter; class not found");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -211,7 +211,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::Initialize(FSubsystemCollectionBa
 	auto functionSignature = "(Landroid/content/Context;)Ltestbed1/testbed1_api/IStructArray2Interface;";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("Testbed1JavaServiceStarter::start; method not found");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+	Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -219,7 +219,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::Initialize(FSubsystemCollectionBa
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("Testbed1JavaServiceStarter failed to call start method");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgCall);
+	Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -242,18 +242,18 @@ void UTestbed1StructArray2InterfaceJniAdapter::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniservice/StructArray2InterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("Testbed1JavaServiceStarter; class not found");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("Testbed1JavaServiceStarter::stop; method not found");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgMethodId);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal�s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("Testbed1JavaServiceStarter failed to call stop");
-			Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgCall);
+			Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgCall);
 		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
@@ -311,7 +311,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::callJniServiceReady(bool isServic
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("testbed1/testbed1jniservice/StructArray2InterfaceJniService:nativeServiceReady(Z)V CLASS not found");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -338,7 +338,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::OnSigBoolSignal(const FTestbed1St
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamBool);
 		static const TCHAR* errorMsg = TEXT("testbed1/testbed1jniservice/StructArray2InterfaceJniService failed to call onSigBool (Ltestbed1/testbed1_api/StructBoolWithArray;)V");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamBool);
 	}
 #endif
@@ -366,7 +366,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::OnSigIntSignal(const FTestbed1Str
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamInt);
 		static const TCHAR* errorMsg = TEXT("testbed1/testbed1jniservice/StructArray2InterfaceJniService failed to call onSigInt (Ltestbed1/testbed1_api/StructIntWithArray;)V");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamInt);
 	}
 #endif
@@ -394,7 +394,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::OnSigFloatSignal(const FTestbed1S
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamFloat);
 		static const TCHAR* errorMsg = TEXT("testbed1/testbed1jniservice/StructArray2InterfaceJniService failed to call onSigFloat (Ltestbed1/testbed1_api/StructFloatWithArray;)V");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamFloat);
 	}
 #endif
@@ -422,7 +422,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::OnSigStringSignal(const FTestbed1
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_ParamString);
 		static const TCHAR* errorMsg = TEXT("testbed1/testbed1jniservice/StructArray2InterfaceJniService failed to call onSigString (Ltestbed1/testbed1_api/StructStringWithArray;)V");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamString);
 	}
 #endif
@@ -450,7 +450,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::OnPropBoolChanged(const FTestbed1
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropBool);
 		Env->DeleteLocalRef(jlocal_PropBool);
 		static const TCHAR* errorMsg = TEXT("testbed1/testbed1jniservice/StructArray2InterfaceJniService failed to call onPropBoolChanged ((Ltestbed1/testbed1_api/StructBoolWithArray;)V)V");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -477,7 +477,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::OnPropIntChanged(const FTestbed1S
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropInt);
 		Env->DeleteLocalRef(jlocal_PropInt);
 		static const TCHAR* errorMsg = TEXT("testbed1/testbed1jniservice/StructArray2InterfaceJniService failed to call onPropIntChanged ((Ltestbed1/testbed1_api/StructIntWithArray;)V)V");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -504,7 +504,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::OnPropFloatChanged(const FTestbed
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropFloat);
 		Env->DeleteLocalRef(jlocal_PropFloat);
 		static const TCHAR* errorMsg = TEXT("testbed1/testbed1jniservice/StructArray2InterfaceJniService failed to call onPropFloatChanged ((Ltestbed1/testbed1_api/StructFloatWithArray;)V)V");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -531,7 +531,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::OnPropStringChanged(const FTestbe
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropString);
 		Env->DeleteLocalRef(jlocal_PropString);
 		static const TCHAR* errorMsg = TEXT("testbed1/testbed1jniservice/StructArray2InterfaceJniService failed to call onPropStringChanged ((Ltestbed1/testbed1_api/StructStringWithArray;)V)V");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -558,7 +558,7 @@ void UTestbed1StructArray2InterfaceJniAdapter::OnPropEnumChanged(const FTestbed1
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_PropEnum);
 		Env->DeleteLocalRef(jlocal_PropEnum);
 		static const TCHAR* errorMsg = TEXT("testbed1/testbed1jniservice/StructArray2InterfaceJniService failed to call onPropEnumChanged ((Ltestbed1/testbed1_api/StructEnumWithArray;)V)V");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }

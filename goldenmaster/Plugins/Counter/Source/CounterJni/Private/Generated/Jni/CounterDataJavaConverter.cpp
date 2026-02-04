@@ -110,7 +110,7 @@ jobjectArray CounterDataJavaConverter::makeJavaCounterArray(JNIEnv* env, const T
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jCounter, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_counter.");
-	if (checkJniErrorOccured(errorMsg))
+	if (CheckJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -133,7 +133,7 @@ TScriptInterface<ICounterCounterInterface> CounterDataJavaConverter::getCppInsta
 	return wrapped;
 }
 
-bool CounterDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool CounterDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	if (env->ExceptionCheck())
@@ -166,7 +166,7 @@ TSharedPtr<FCounterDataJavaConverterCacheData, ESPMode::ThreadSafe> CounterDataJ
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	NewData->jCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
 	static const TCHAR* errorMsgCounter = TEXT("failed to get counter/counter_api/ICounter");
-	checkJniErrorOccured(errorMsgCounter);
+	CheckJniErrorOccurred(errorMsgCounter);
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -182,7 +182,7 @@ jmethodID CounterDataJavaConverter::getMethod(jclass cls, const char* name, cons
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -190,7 +190,7 @@ jmethodID CounterDataJavaConverter::getStaticMethod(jclass cls, const char* name
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -198,7 +198,7 @@ jfieldID CounterDataJavaConverter::getFieldId(jclass cls, const char* name, cons
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	CheckJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 

@@ -110,37 +110,37 @@ void UTbRefIfacesSimpleLocalIfJniClientCache::init()
 
 	NewData->clientClassSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
-	if (NewData->clientClassSimpleLocalIf == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	if (NewData->clientClassSimpleLocalIf == nullptr || TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgCls))
 	{
 		return;
 	}
 	NewData->IntPropertySetterId = env->GetMethodID(NewData->clientClassSimpleLocalIf, "setIntProperty", "(I)V");
 	static const TCHAR* errorMsgIntPropertySetter = TEXT("failed to get java setIntProperty, I)V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
-	if (NewData->IntPropertySetterId == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntPropertySetter))
+	if (NewData->IntPropertySetterId == nullptr || TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgIntPropertySetter))
 	{
 		return;
 	}
 	NewData->IntMethodAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleLocalIf, "intMethodAsync", "(Ljava/lang/String;I)V");
 	static const TCHAR* errorMsgIntMethodAsyncMethod = TEXT("failed to get java intMethodAsync, (Ljava/lang/String;I)V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
-	if (NewData->IntMethodAsyncMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntMethodAsyncMethod))
+	if (NewData->IntMethodAsyncMethodID == nullptr || TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgIntMethodAsyncMethod))
 	{
 		return;
 	}
 	NewData->clientClassSimpleLocalIfCtor = env->GetMethodID(NewData->clientClassSimpleLocalIf, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
-	if (NewData->clientClassSimpleLocalIfCtor == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	if (NewData->clientClassSimpleLocalIfCtor == nullptr || TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgInit))
 	{
 		return;
 	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassSimpleLocalIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
-	if (NewData->BindMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	if (NewData->BindMethodID == nullptr || TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgBind))
 	{
 		return;
 	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassSimpleLocalIf, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
-	if (NewData->UnbindMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	if (NewData->UnbindMethodID == nullptr || TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgUnbind))
 	{
 		return;
 	}
@@ -263,7 +263,7 @@ void UTbRefIfacesSimpleLocalIfJniClient::SetIntProperty(int32 InIntProperty)
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InIntProperty);
 		static const TCHAR* errorMsg = TEXT("failed to call setIntProperty on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient.");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -390,19 +390,19 @@ bool UTbRefIfacesSimpleLocalIfJniClient::_bindToService(FString servicePackage, 
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-		if (TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		if (TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-		if (TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		if (TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient.");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -431,7 +431,7 @@ void UTbRefIfacesSimpleLocalIfJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient.");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 	else
 	{
@@ -506,7 +506,7 @@ bool UTbRefIfacesSimpleLocalIfJniClient::tryCallAsyncJavaIntMethod(FGuid Guid, j
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-	if (TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -514,7 +514,7 @@ bool UTbRefIfacesSimpleLocalIfJniClient::tryCallAsyncJavaIntMethod(FGuid Guid, j
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam);
 
 	static const TCHAR* errorMsg = TEXT("failed to call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient.");
-	auto errorOccurred = TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 
 	return !errorOccurred;
 }
@@ -563,7 +563,7 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nat
 	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeOnIntMethodResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnIntMethod for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-	if (TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}

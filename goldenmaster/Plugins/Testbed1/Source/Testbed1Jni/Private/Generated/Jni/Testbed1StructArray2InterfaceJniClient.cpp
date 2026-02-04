@@ -119,85 +119,85 @@ void UTestbed1StructArray2InterfaceJniClientCache::init()
 
 	NewData->clientClassStructArray2Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->clientClassStructArray2Interface == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	if (NewData->clientClassStructArray2Interface == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgCls))
 	{
 		return;
 	}
 	NewData->PropBoolSetterId = env->GetMethodID(NewData->clientClassStructArray2Interface, "setPropBool", "(Ltestbed1/testbed1_api/StructBoolWithArray;)V");
 	static const TCHAR* errorMsgPropBoolSetter = TEXT("failed to get java setPropBool, Ltestbed1/testbed1_api/StructBoolWithArray;)V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->PropBoolSetterId == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropBoolSetter))
+	if (NewData->PropBoolSetterId == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPropBoolSetter))
 	{
 		return;
 	}
 	NewData->PropIntSetterId = env->GetMethodID(NewData->clientClassStructArray2Interface, "setPropInt", "(Ltestbed1/testbed1_api/StructIntWithArray;)V");
 	static const TCHAR* errorMsgPropIntSetter = TEXT("failed to get java setPropInt, Ltestbed1/testbed1_api/StructIntWithArray;)V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->PropIntSetterId == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropIntSetter))
+	if (NewData->PropIntSetterId == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPropIntSetter))
 	{
 		return;
 	}
 	NewData->PropFloatSetterId = env->GetMethodID(NewData->clientClassStructArray2Interface, "setPropFloat", "(Ltestbed1/testbed1_api/StructFloatWithArray;)V");
 	static const TCHAR* errorMsgPropFloatSetter = TEXT("failed to get java setPropFloat, Ltestbed1/testbed1_api/StructFloatWithArray;)V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->PropFloatSetterId == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropFloatSetter))
+	if (NewData->PropFloatSetterId == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPropFloatSetter))
 	{
 		return;
 	}
 	NewData->PropStringSetterId = env->GetMethodID(NewData->clientClassStructArray2Interface, "setPropString", "(Ltestbed1/testbed1_api/StructStringWithArray;)V");
 	static const TCHAR* errorMsgPropStringSetter = TEXT("failed to get java setPropString, Ltestbed1/testbed1_api/StructStringWithArray;)V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->PropStringSetterId == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropStringSetter))
+	if (NewData->PropStringSetterId == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPropStringSetter))
 	{
 		return;
 	}
 	NewData->PropEnumSetterId = env->GetMethodID(NewData->clientClassStructArray2Interface, "setPropEnum", "(Ltestbed1/testbed1_api/StructEnumWithArray;)V");
 	static const TCHAR* errorMsgPropEnumSetter = TEXT("failed to get java setPropEnum, Ltestbed1/testbed1_api/StructEnumWithArray;)V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->PropEnumSetterId == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropEnumSetter))
+	if (NewData->PropEnumSetterId == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPropEnumSetter))
 	{
 		return;
 	}
 	NewData->FuncBoolAsyncMethodID = env->GetMethodID(NewData->clientClassStructArray2Interface, "funcBoolAsync", "(Ljava/lang/String;Ltestbed1/testbed1_api/StructBoolWithArray;)V");
 	static const TCHAR* errorMsgFuncBoolAsyncMethod = TEXT("failed to get java funcBoolAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructBoolWithArray;)V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->FuncBoolAsyncMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncBoolAsyncMethod))
+	if (NewData->FuncBoolAsyncMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgFuncBoolAsyncMethod))
 	{
 		return;
 	}
 	NewData->FuncIntAsyncMethodID = env->GetMethodID(NewData->clientClassStructArray2Interface, "funcIntAsync", "(Ljava/lang/String;Ltestbed1/testbed1_api/StructIntWithArray;)V");
 	static const TCHAR* errorMsgFuncIntAsyncMethod = TEXT("failed to get java funcIntAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructIntWithArray;)V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->FuncIntAsyncMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncIntAsyncMethod))
+	if (NewData->FuncIntAsyncMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgFuncIntAsyncMethod))
 	{
 		return;
 	}
 	NewData->FuncFloatAsyncMethodID = env->GetMethodID(NewData->clientClassStructArray2Interface, "funcFloatAsync", "(Ljava/lang/String;Ltestbed1/testbed1_api/StructFloatWithArray;)V");
 	static const TCHAR* errorMsgFuncFloatAsyncMethod = TEXT("failed to get java funcFloatAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructFloatWithArray;)V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->FuncFloatAsyncMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncFloatAsyncMethod))
+	if (NewData->FuncFloatAsyncMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgFuncFloatAsyncMethod))
 	{
 		return;
 	}
 	NewData->FuncStringAsyncMethodID = env->GetMethodID(NewData->clientClassStructArray2Interface, "funcStringAsync", "(Ljava/lang/String;Ltestbed1/testbed1_api/StructStringWithArray;)V");
 	static const TCHAR* errorMsgFuncStringAsyncMethod = TEXT("failed to get java funcStringAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructStringWithArray;)V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->FuncStringAsyncMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncStringAsyncMethod))
+	if (NewData->FuncStringAsyncMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgFuncStringAsyncMethod))
 	{
 		return;
 	}
 	NewData->FuncEnumAsyncMethodID = env->GetMethodID(NewData->clientClassStructArray2Interface, "funcEnumAsync", "(Ljava/lang/String;Ltestbed1/testbed1_api/StructEnumWithArray;)V");
 	static const TCHAR* errorMsgFuncEnumAsyncMethod = TEXT("failed to get java funcEnumAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructEnumWithArray;)V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->FuncEnumAsyncMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncEnumAsyncMethod))
+	if (NewData->FuncEnumAsyncMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgFuncEnumAsyncMethod))
 	{
 		return;
 	}
 	NewData->clientClassStructArray2InterfaceCtor = env->GetMethodID(NewData->clientClassStructArray2Interface, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->clientClassStructArray2InterfaceCtor == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	if (NewData->clientClassStructArray2InterfaceCtor == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgInit))
 	{
 		return;
 	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassStructArray2Interface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->BindMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	if (NewData->BindMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgBind))
 	{
 		return;
 	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassStructArray2Interface, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for testbed1/testbed1jniclient/StructArray2InterfaceJniClient. Bailing...");
-	if (NewData->UnbindMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	if (NewData->UnbindMethodID == nullptr || Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgUnbind))
 	{
 		return;
 	}
@@ -323,7 +323,7 @@ void UTestbed1StructArray2InterfaceJniClient::SetPropBool(const FTestbed1StructB
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropBool);
 		Env->DeleteLocalRef(jlocal_PropBool);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropBool on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -371,7 +371,7 @@ void UTestbed1StructArray2InterfaceJniClient::SetPropInt(const FTestbed1StructIn
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropInt);
 		Env->DeleteLocalRef(jlocal_PropInt);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropInt on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -419,7 +419,7 @@ void UTestbed1StructArray2InterfaceJniClient::SetPropFloat(const FTestbed1Struct
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropFloat);
 		Env->DeleteLocalRef(jlocal_PropFloat);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropFloat on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -467,7 +467,7 @@ void UTestbed1StructArray2InterfaceJniClient::SetPropString(const FTestbed1Struc
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropString);
 		Env->DeleteLocalRef(jlocal_PropString);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropString on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -515,7 +515,7 @@ void UTestbed1StructArray2InterfaceJniClient::SetPropEnum(const FTestbed1StructE
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_PropEnum);
 		Env->DeleteLocalRef(jlocal_PropEnum);
 		static const TCHAR* errorMsg = TEXT("failed to call setPropEnum on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -1006,19 +1006,19 @@ bool UTestbed1StructArray2InterfaceJniClient::_bindToService(FString servicePack
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-		if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-		if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+		if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -1047,7 +1047,7 @@ void UTestbed1StructArray2InterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-		Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
 	else
 	{
@@ -1294,7 +1294,7 @@ bool UTestbed1StructArray2InterfaceJniClient::tryCallAsyncJavaFuncBool(FGuid Gui
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-	if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -1303,7 +1303,7 @@ bool UTestbed1StructArray2InterfaceJniClient::tryCallAsyncJavaFuncBool(FGuid Gui
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamBool);
 
 	static const TCHAR* errorMsg = TEXT("failed to call funcBoolAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-	auto errorOccurred = Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamBool);
 
 	return !errorOccurred;
@@ -1321,7 +1321,7 @@ bool UTestbed1StructArray2InterfaceJniClient::tryCallAsyncJavaFuncInt(FGuid Guid
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcIntAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-	if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -1330,7 +1330,7 @@ bool UTestbed1StructArray2InterfaceJniClient::tryCallAsyncJavaFuncInt(FGuid Guid
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamInt);
 
 	static const TCHAR* errorMsg = TEXT("failed to call funcIntAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-	auto errorOccurred = Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamInt);
 
 	return !errorOccurred;
@@ -1348,7 +1348,7 @@ bool UTestbed1StructArray2InterfaceJniClient::tryCallAsyncJavaFuncFloat(FGuid Gu
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcFloatAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-	if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -1357,7 +1357,7 @@ bool UTestbed1StructArray2InterfaceJniClient::tryCallAsyncJavaFuncFloat(FGuid Gu
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamFloat);
 
 	static const TCHAR* errorMsg = TEXT("failed to call funcFloatAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-	auto errorOccurred = Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamFloat);
 
 	return !errorOccurred;
@@ -1375,7 +1375,7 @@ bool UTestbed1StructArray2InterfaceJniClient::tryCallAsyncJavaFuncString(FGuid G
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcStringAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-	if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -1384,7 +1384,7 @@ bool UTestbed1StructArray2InterfaceJniClient::tryCallAsyncJavaFuncString(FGuid G
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamString);
 
 	static const TCHAR* errorMsg = TEXT("failed to call funcStringAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-	auto errorOccurred = Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamString);
 
 	return !errorOccurred;
@@ -1402,7 +1402,7 @@ bool UTestbed1StructArray2InterfaceJniClient::tryCallAsyncJavaFuncEnum(FGuid Gui
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcEnumAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-	if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -1411,7 +1411,7 @@ bool UTestbed1StructArray2InterfaceJniClient::tryCallAsyncJavaFuncEnum(FGuid Gui
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_ParamEnum);
 
 	static const TCHAR* errorMsg = TEXT("failed to call funcEnumAsync on testbed1/testbed1jniclient/StructArray2InterfaceJniClient.");
-	auto errorOccurred = Testbed1DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_ParamEnum);
 
 	return !errorOccurred;
@@ -1569,7 +1569,7 @@ JNI_METHOD void Java_testbed1_testbed1jniclient_StructArray2InterfaceJniClient_n
 	UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Verbose, TEXT("Java_testbed1_testbed1jniclient_StructArray2InterfaceJniClient_nativeOnFuncBoolResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncBool for testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-	if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1586,7 +1586,7 @@ JNI_METHOD void Java_testbed1_testbed1jniclient_StructArray2InterfaceJniClient_n
 	UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Verbose, TEXT("Java_testbed1_testbed1jniclient_StructArray2InterfaceJniClient_nativeOnFuncIntResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncInt for testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-	if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1603,7 +1603,7 @@ JNI_METHOD void Java_testbed1_testbed1jniclient_StructArray2InterfaceJniClient_n
 	UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Verbose, TEXT("Java_testbed1_testbed1jniclient_StructArray2InterfaceJniClient_nativeOnFuncFloatResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncFloat for testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-	if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1620,7 +1620,7 @@ JNI_METHOD void Java_testbed1_testbed1jniclient_StructArray2InterfaceJniClient_n
 	UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Verbose, TEXT("Java_testbed1_testbed1jniclient_StructArray2InterfaceJniClient_nativeOnFuncStringResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncString for testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-	if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1637,7 +1637,7 @@ JNI_METHOD void Java_testbed1_testbed1jniclient_StructArray2InterfaceJniClient_n
 	UE_LOG(LogTestbed1StructArray2InterfaceClient_JNI, Verbose, TEXT("Java_testbed1_testbed1jniclient_StructArray2InterfaceJniClient_nativeOnFuncEnumResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncEnum for testbed1/testbed1jniclient/StructArray2InterfaceJniClient");
-	if (Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
