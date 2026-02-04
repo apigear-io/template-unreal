@@ -101,40 +101,40 @@ void UTestbed2ManyParamInterfaceJniClientCache::init()
 
 	clientClassManyParamInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	Prop1SetterId = env->GetMethodID(clientClassManyParamInterface, "setProp1", "(I)V");
 	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgProp1Setter);
 	Prop2SetterId = env->GetMethodID(clientClassManyParamInterface, "setProp2", "(I)V");
 	static const TCHAR* errorMsgProp2Setter = TEXT("failed to get java setProp2, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Setter);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgProp2Setter);
 	Prop3SetterId = env->GetMethodID(clientClassManyParamInterface, "setProp3", "(I)V");
 	static const TCHAR* errorMsgProp3Setter = TEXT("failed to get java setProp3, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp3Setter);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgProp3Setter);
 	Prop4SetterId = env->GetMethodID(clientClassManyParamInterface, "setProp4", "(I)V");
 	static const TCHAR* errorMsgProp4Setter = TEXT("failed to get java setProp4, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp4Setter);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgProp4Setter);
 	Func1AsyncMethodID = env->GetMethodID(clientClassManyParamInterface, "func1Async", "(Ljava/lang/String;I)V");
 	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgFunc1AsyncMethod);
 	Func2AsyncMethodID = env->GetMethodID(clientClassManyParamInterface, "func2Async", "(Ljava/lang/String;II)V");
 	static const TCHAR* errorMsgFunc2AsyncMethod = TEXT("failed to get java func2Async, (Ljava/lang/String;II)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc2AsyncMethod);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgFunc2AsyncMethod);
 	Func3AsyncMethodID = env->GetMethodID(clientClassManyParamInterface, "func3Async", "(Ljava/lang/String;III)V");
 	static const TCHAR* errorMsgFunc3AsyncMethod = TEXT("failed to get java func3Async, (Ljava/lang/String;III)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc3AsyncMethod);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgFunc3AsyncMethod);
 	Func4AsyncMethodID = env->GetMethodID(clientClassManyParamInterface, "func4Async", "(Ljava/lang/String;IIII)V");
 	static const TCHAR* errorMsgFunc4AsyncMethod = TEXT("failed to get java func4Async, (Ljava/lang/String;IIII)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc4AsyncMethod);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgFunc4AsyncMethod);
 	clientClassManyParamInterfaceCtor = env->GetMethodID(clientClassManyParamInterface, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgInit);
 	BindMethodID = env->GetMethodID(clientClassManyParamInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgBind);
 	UnbindMethodID = env->GetMethodID(clientClassManyParamInterface, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgUnbind);
 }
 
 void UTestbed2ManyParamInterfaceJniClientCache::clear()
@@ -258,7 +258,7 @@ void UTestbed2ManyParamInterfaceJniClient::SetProp1(int32 InProp1)
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp1);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp1 on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -303,7 +303,7 @@ void UTestbed2ManyParamInterfaceJniClient::SetProp2(int32 InProp2)
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp2);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp2 on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -348,7 +348,7 @@ void UTestbed2ManyParamInterfaceJniClient::SetProp3(int32 InProp3)
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp3);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp3 on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -393,7 +393,7 @@ void UTestbed2ManyParamInterfaceJniClient::SetProp4(int32 InProp4)
 		}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, InProp4);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp4 on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -788,19 +788,19 @@ bool UTestbed2ManyParamInterfaceJniClient::_bindToService(FString servicePackage
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-		if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-		if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+		if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -828,7 +828,7 @@ void UTestbed2ManyParamInterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 	else
 	{
@@ -910,7 +910,7 @@ bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jme
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -918,7 +918,7 @@ bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jme
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func1Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 
 	return !errorOccurred;
 }
@@ -935,7 +935,7 @@ bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid, jme
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -943,7 +943,7 @@ bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid, jme
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func2Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 
 	return !errorOccurred;
 }
@@ -960,7 +960,7 @@ bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc3(FGuid Guid, jme
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func3Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -968,7 +968,7 @@ bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc3(FGuid Guid, jme
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2, InParam3);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func3Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 
 	return !errorOccurred;
 }
@@ -985,7 +985,7 @@ bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc4(FGuid Guid, jme
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func4Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -993,7 +993,7 @@ bool UTestbed2ManyParamInterfaceJniClient::tryCallAsyncJavaFunc4(FGuid Guid, jme
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam1, InParam2, InParam3, InParam4);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func4Async on testbed2/testbed2jniclient/ManyParamInterfaceJniClient.");
-	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 
 	return !errorOccurred;
 }
@@ -1120,7 +1120,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc1Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc1 for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1135,7 +1135,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc2Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc2 for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1150,7 +1150,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc3Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc3 for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -1165,7 +1165,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nati
 	UE_LOG(LogTestbed2ManyParamInterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_ManyParamInterfaceJniClient_nativeOnFunc4Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc4 for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}

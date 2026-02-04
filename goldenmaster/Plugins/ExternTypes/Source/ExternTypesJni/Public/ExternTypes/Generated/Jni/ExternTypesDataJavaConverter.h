@@ -42,7 +42,7 @@ public:
 	static jobject makeJavaMyVector3D(JNIEnv* env, const FVector& out_my_vector3_d);
 	static jobjectArray makeJavaMyVector3DArray(JNIEnv* env, const TArray<FVector>& cppArray);
 
-	static bool checkJniErrorOccured(const TCHAR* Msg);
+	static bool checkJniErrorOccurred(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:
