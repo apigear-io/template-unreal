@@ -520,6 +520,10 @@ features:
             target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Detail/{{Camel .Module.Name}}ThreadingHelper.h"
           - source: "module/Source/modulejni/Private/Generated/detail/threadinghelper.cpp.tpl"
             target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Detail/{{Camel .Module.Name}}ThreadingHelper.cpp"
+          - source: "module/Source/modulejni/Private/Generated/detail/commonjavaconverter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Detail/{{Camel .Module.Name}}CommonJavaConverter.h"
+          - source: "module/Source/modulejni/Private/Generated/detail/commonjavaconverter.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}Jni/Private/Generated/Detail/{{Camel .Module.Name}}CommonJavaConverter.cpp"
       - match: interface
         prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}Jni/"
         documents:
