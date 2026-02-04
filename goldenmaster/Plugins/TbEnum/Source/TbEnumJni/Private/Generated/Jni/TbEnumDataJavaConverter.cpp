@@ -20,6 +20,8 @@ limitations under the License.
 #include "TbEnum/Generated/api/TbEnum_data.h"
 #include "TbEnum/Implementation/TbEnumEnumInterface.h"
 
+#include "Generated/Detail/TbEnumCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -603,15 +605,7 @@ TScriptInterface<ITbEnumEnumInterfaceInterface> TbEnumDataJavaConverter::getCppI
 
 bool TbEnumDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogTbEnumDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FTbEnumCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void TbEnumDataJavaConverter::cleanJavaReferences()

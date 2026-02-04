@@ -19,6 +19,8 @@ limitations under the License.
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
 #include "TbIfaceimport/Implementation/TbIfaceimportEmptyIf.h"
 
+#include "Generated/Detail/TbIfaceimportCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -134,15 +136,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> TbIfaceimportDataJavaConverter:
 
 bool TbIfaceimportDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogTbIfaceimportDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FTbIfaceimportCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void TbIfaceimportDataJavaConverter::cleanJavaReferences()

@@ -19,6 +19,8 @@ limitations under the License.
 #include "CustomTypes/Generated/Jni/CustomTypesDataJavaConverter.h"
 #include "CustomTypes/Generated/api/CustomTypes_data.h"
 
+#include "Generated/Detail/CustomTypesCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -240,15 +242,7 @@ jobjectArray CustomTypesDataJavaConverter::makeJavaVector3DArray(JNIEnv* env, co
 
 bool CustomTypesDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FCustomTypesCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void CustomTypesDataJavaConverter::cleanJavaReferences()

@@ -23,6 +23,8 @@ limitations under the License.
 #include "Testbed2/Implementation/Testbed2NestedStruct2Interface.h"
 #include "Testbed2/Implementation/Testbed2NestedStruct3Interface.h"
 
+#include "Generated/Detail/Testbed2CommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -1945,15 +1947,7 @@ TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> Testbed2DataJavaConve
 
 bool Testbed2DataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogTestbed2DataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FTestbed2CommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void Testbed2DataJavaConverter::cleanJavaReferences()

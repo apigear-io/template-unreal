@@ -25,6 +25,8 @@ limitations under the License.
 #include "TbSimple/Implementation/TbSimpleNoSignalsInterface.h"
 #include "TbSimple/Implementation/TbSimpleEmptyInterface.h"
 
+#include "Generated/Detail/TbSimpleCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -638,15 +640,7 @@ TScriptInterface<ITbSimpleEmptyInterfaceInterface> TbSimpleDataJavaConverter::ge
 
 bool TbSimpleDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FTbSimpleCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void TbSimpleDataJavaConverter::cleanJavaReferences()
