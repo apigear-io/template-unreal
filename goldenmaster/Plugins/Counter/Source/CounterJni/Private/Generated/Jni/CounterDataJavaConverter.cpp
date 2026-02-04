@@ -23,6 +23,8 @@ limitations under the License.
 #include "ExternTypes/Generated/api/ExternTypes_data.h"
 #include "Counter/Implementation/CounterCounter.h"
 
+#include "Generated/Detail/CounterCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -135,15 +137,7 @@ TScriptInterface<ICounterCounterInterface> CounterDataJavaConverter::getCppInsta
 
 bool CounterDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogCounterDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FCounterCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void CounterDataJavaConverter::cleanJavaReferences()

@@ -22,6 +22,8 @@ limitations under the License.
 #include "Testbed1/Implementation/Testbed1StructArrayInterface.h"
 #include "Testbed1/Implementation/Testbed1StructArray2Interface.h"
 
+#include "Generated/Detail/Testbed1CommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -2071,15 +2073,7 @@ TScriptInterface<ITestbed1StructArray2InterfaceInterface> Testbed1DataJavaConver
 
 bool Testbed1DataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogTestbed1DataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FTestbed1CommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void Testbed1DataJavaConverter::cleanJavaReferences()

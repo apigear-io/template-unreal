@@ -19,6 +19,8 @@ limitations under the License.
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
 #include "Runtime/Core/Public/Math/Vector.h"
 
+#include "Generated/Detail/ExternTypesCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -160,15 +162,7 @@ jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, 
 
 bool ExternTypesDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogExternTypesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FExternTypesCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void ExternTypesDataJavaConverter::cleanJavaReferences()

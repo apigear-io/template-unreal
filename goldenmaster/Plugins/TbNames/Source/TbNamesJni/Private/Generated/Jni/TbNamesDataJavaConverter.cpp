@@ -20,6 +20,8 @@ limitations under the License.
 #include "TbNames/Generated/api/TbNames_data.h"
 #include "TbNames/Implementation/TbNamesNamEs.h"
 
+#include "Generated/Detail/TbNamesCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -246,15 +248,7 @@ TScriptInterface<ITbNamesNamEsInterface> TbNamesDataJavaConverter::getCppInstanc
 
 bool TbNamesDataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogTbNamesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FTbNamesCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void TbNamesDataJavaConverter::cleanJavaReferences()

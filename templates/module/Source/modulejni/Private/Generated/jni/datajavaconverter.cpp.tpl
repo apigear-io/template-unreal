@@ -52,6 +52,8 @@ limitations under the License.
 {{- end }}
 {{- end }}
 
+#include "Generated/Detail/{{Camel .Module.Name}}CommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -764,15 +766,7 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 
 bool {{$className}}::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(Log{{$className}}_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return F{{Camel .Module.Name}}CommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void {{$className}}::cleanJavaReferences()

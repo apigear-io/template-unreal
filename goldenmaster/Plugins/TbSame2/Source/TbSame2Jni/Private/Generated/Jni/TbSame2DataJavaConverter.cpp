@@ -23,6 +23,8 @@ limitations under the License.
 #include "TbSame2/Implementation/TbSame2SameEnum1Interface.h"
 #include "TbSame2/Implementation/TbSame2SameEnum2Interface.h"
 
+#include "Generated/Detail/TbSame2CommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -975,15 +977,7 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> TbSame2DataJavaConverter::
 
 bool TbSame2DataJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogTbSame2DataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FTbSame2CommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void TbSame2DataJavaConverter::cleanJavaReferences()
