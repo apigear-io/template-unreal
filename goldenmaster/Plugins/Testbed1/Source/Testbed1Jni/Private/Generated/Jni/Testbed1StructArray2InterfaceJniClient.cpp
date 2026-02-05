@@ -46,6 +46,7 @@ limitations under the License.
 #include "Misc/ScopeRWLock.h"
 
 #include "Generated/Detail/Testbed1MethodHelper.h"
+#include "Generated/Detail/Testbed1CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

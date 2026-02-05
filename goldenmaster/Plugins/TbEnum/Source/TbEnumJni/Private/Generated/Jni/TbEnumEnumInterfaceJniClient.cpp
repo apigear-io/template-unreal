@@ -46,6 +46,7 @@ limitations under the License.
 #include "Misc/ScopeRWLock.h"
 
 #include "Generated/Detail/TbEnumMethodHelper.h"
+#include "Generated/Detail/TbEnumCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

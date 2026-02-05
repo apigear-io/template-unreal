@@ -31,6 +31,7 @@ limitations under the License.
 #include "TbSame1/Generated/api/TbSame1_data.h"
 
 #include "Generated/Detail/TbSame1ThreadingHelper.h"
+#include "Generated/Detail/TbSame1CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 
