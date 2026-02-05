@@ -3,10 +3,6 @@
 
 #include "Generated/Detail/{{Camel .Module.Name}}CommonJavaConverter.h"
 #include "CoreMinimal.h"
-#if PLATFORM_ANDROID
-#include "Android/AndroidApplication.h"
-#include "Android/AndroidJNI.h"
-#endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
@@ -23,6 +19,20 @@ bool F{{Camel .Module.Name}}CommonJavaConverter::CheckJniErrorOccurred(const TCH
 		return true;
 	}
 	return false;
+}
+
+bool F{{Camel .Module.Name}}CommonJavaConverter::TryFillArray(
+    JNIEnv* Env, TArray<FString>& OutStringArray, jobjectArray InJniArray, const FString& InPropertyName)
+{
+	TArray<FString> TempArray = FJavaHelper::ObjectArrayToFStringTArray(Env, InJniArray);
+	if (CheckJniErrorOccurred(*FString::Printf(TEXT("failed to convert %s from jstring array"), *InPropertyName)))
+	{
+		return false;
+	}
+
+	Swap(TempArray, OutStringArray);
+
+	return true;
 }
 
 #endif

@@ -45,6 +45,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 #include "Generated/Detail/TbEnumMethodHelper.h"
+#include "Generated/Detail/TbEnumCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

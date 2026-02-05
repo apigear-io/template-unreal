@@ -140,37 +140,10 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
 		{{- $otherModuleClassName := printf "%sDataJavaConverter" ( Camel .Schema.Import ) }}
 		{{if not (eq $otherModuleClassName "DataJavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
 		fill{{Camel .Type }}Array(env, {{snake .Name}}_value, {{$structName}}.{{$cppFieldName}});
-	{{- else if (eq .KindType "string")}}
-		{{$structName}}.{{$cppFieldName}} = FJavaHelper::ObjectArrayToFStringTArray(env, {{snake .Name}}_value);
-		static const TCHAR* errorMsg{{$cppFieldName}} = TEXT("failed when converting from jstring array for {{$structName}}.{{$cppFieldName}}");
-		CheckJniErrorOccurred(errorMsg{{$cppFieldName}});
-
-	{{- else if (eq .KindType "bool")}}
-		jsize len{{snake .Name}} = env->GetArrayLength({{snake .Name}}_value);
-		static const TCHAR* errorMsg{{$cppFieldName}}Len = TEXT("failed when getting lengt of a java array {{$structName}}.{{$cppFieldName}}");
-		CheckJniErrorOccurred(errorMsg{{$cppFieldName}}Len);
-		{{$structName}}.{{$cppFieldName}}.Reserve(len{{snake .Name}});
-		TArray<jboolean> Temp;
-		Temp.SetNumUninitialized(len{{snake .Name}});
-		env->GetBooleanArrayRegion({{snake .Name}}_value, 0, len{{snake .Name}}, Temp.GetData());
-		static const TCHAR* errorMsg{{$cppFieldName}} = TEXT("failed when getting a java array region for {{$structName}}.{{$cppFieldName}}");
-		CheckJniErrorOccurred(errorMsg{{$cppFieldName}});
-		for (int i = 0; i < len{{snake .Name}}; i++)
-		{
-			{{$structName}}.{{$cppFieldName}}.Add(Temp[i] == JNI_TRUE);
-		}
 	{{- else if .IsPrimitive }}
-		jsize len{{snake .Name}} = env->GetArrayLength({{snake .Name}}_value);
-		static const TCHAR* errorMsg{{$cppFieldName}}Len = TEXT("failed when getting lengt of a java array {{$structName}}.{{$cppFieldName}}");
-		CheckJniErrorOccurred(errorMsg{{$cppFieldName}}Len);
-		{{$structName}}.{{$cppFieldName}}.AddUninitialized(len{{snake .Name}});
-		env->Get{{jniToEnvNameType .}}ArrayRegion({{snake .Name}}_value, 0, len{{snake .Name}}, {{ if (eq .KindType "int64") -}}
-			reinterpret_cast<jlong*>({{$structName}}.{{$cppFieldName}}.GetData()));
-			{{- else -}}
-			{{$structName}}.{{$cppFieldName}}.GetData());
-			{{- end }}
-		static const TCHAR* errorMsg{{$cppFieldName}} = TEXT("failed when getting a java array region for {{$structName}}.{{$cppFieldName}}");
-		CheckJniErrorOccurred(errorMsg{{$cppFieldName}});
+	F{{Camel .Module.Name}}CommonJavaConverter::TryFillArray(
+		env, {{$structName}}.{{$cppFieldName}}, {{snake .Name}}_value,
+		TEXT("{{$javaFieldName}} for {{$structType}}"));
 	{{- else }}
 		{{- $otherModuleClassName := printf "%sDataJavaConverter" ( Camel .Schema.Import ) }}
 		{{if not (eq $otherModuleClassName "DataJavaConverter" )}}{{$otherModuleClassName}}::{{end -}}

@@ -44,6 +44,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 #include "Generated/Detail/TbIfaceimportMethodHelper.h"
+#include "Generated/Detail/TbIfaceimportCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

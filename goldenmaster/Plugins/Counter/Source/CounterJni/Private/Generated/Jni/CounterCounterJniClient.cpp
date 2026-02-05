@@ -44,6 +44,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 #include "Generated/Detail/CounterMethodHelper.h"
+#include "Generated/Detail/CounterCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 
