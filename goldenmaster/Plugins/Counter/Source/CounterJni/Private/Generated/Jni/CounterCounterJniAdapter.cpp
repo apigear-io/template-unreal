@@ -33,6 +33,7 @@ limitations under the License.
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
 
 #include "Generated/Detail/CounterThreadingHelper.h"
+#include "Generated/Detail/CounterCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

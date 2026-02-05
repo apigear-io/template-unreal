@@ -116,6 +116,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 #include "Generated/Detail/{{$ModuleName}}MethodHelper.h"
+#include "Generated/Detail/{{$ModuleName}}CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 
@@ -753,6 +754,7 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}(JNIEnv* Env, jcla
 
 {{- end }}
 
+{{- $ModuleName = (Camel .Module.Name) }}
 {{- range .Interface.Operations}}
 
 JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env, jclass Clazz, {{if not .Return.IsVoid}}{{jniToReturnType .Return }} result, {{end }}jstring callId)
@@ -772,43 +774,11 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 {{- if (eq $javaClassConverter "DataJavaConverter" )}}{{- $javaClassConverter = printf "%sDataJavaConverter" $ModuleName}}{{ end }}
 {{- if .Return.IsArray }}
 	{{ueReturn "" .Return}} cpp_result = {{ ueDefault "" .Return }};
-	{{- if (eq .Return.KindType "string")}}
-	cpp_result = FJavaHelper::ObjectArrayToFStringTArray(Env, result);
-	static const TCHAR* errorMsgResult = TEXT("failed to convert result from jstring array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-	{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgResult);
-	{{- else if (eq .Return.KindType "bool")}}
-	jbooleanArray localArray = (jbooleanArray)result;
-	jsize len = Env->GetArrayLength(localArray);
-	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-	if (!{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgLen))
-	{
-		cpp_result.AddUninitialized(len);
-		TArray<jboolean> Temp;
-		Temp.SetNumUninitialized(len);
-		Env->GetBooleanArrayRegion(localArray, 0, len, Temp.GetData());
-		static const TCHAR* errorMsgResult = TEXT("failed to convert result from boolean array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgResult);
-		for (int i = 0; i < len; i++)
-		{
-			cpp_result[i] = (Temp[i] == JNI_TRUE);
-		}
-	}
-	{{- else if .Return.IsPrimitive }}
-	{{ jniToReturnType .Return }} localArray = ({{ jniToReturnType .Return }})result;
-	jsize len = Env->GetArrayLength(localArray);
-	static const TCHAR* errorMsgLen = TEXT("failed to check size of array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-	if (!{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgLen))
-	{
-		cpp_result.AddUninitialized(len);
-		Env->Get{{jniToEnvNameType .Return}}ArrayRegion(result, 0, len, {{ if (eq .Return.KindType "int64") -}}
-			reinterpret_cast<jlong*>(cpp_result.GetData()));
-			{{- else -}}
-			cpp_result.GetData());
-			{{- end }}
-		static const TCHAR* errorMsgResult = TEXT("failed to convert result from {{jniToEnvNameType .Return}} array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgResult);
-	}
-	{{- else }}
+	{{- if .Return.IsPrimitive }}
+	F{{$ModuleName}}CommonJavaConverter::TryFillArray(
+		Env, cpp_result, result,
+		TEXT("result of nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}"));
+	{{- else}}
 	{{- if eq .Return.KindType "interface" }}
 	// interfaces are currently not supported. {{$javaClassConverter}} does not fill the array. 
 	{{- end }}

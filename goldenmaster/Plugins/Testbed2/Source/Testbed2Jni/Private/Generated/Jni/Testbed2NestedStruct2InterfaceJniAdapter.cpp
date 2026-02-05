@@ -31,6 +31,7 @@ limitations under the License.
 #include "Testbed2/Generated/api/Testbed2_data.h"
 
 #include "Generated/Detail/Testbed2ThreadingHelper.h"
+#include "Generated/Detail/Testbed2CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

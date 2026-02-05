@@ -933,19 +933,9 @@ void Testbed1DataJavaConverter::fillStructBoolWithArray(JNIEnv* env, jobject inp
 		jbooleanArray field_bool_value = (jbooleanArray)env->GetObjectField(input, jFieldId_field_bool);
 		static const TCHAR* errorMsgfieldBoolField = TEXT("failed when getting the jFieldId_field_bool for out_struct_bool_with_array.fieldBool");
 		CheckJniErrorOccurred(errorMsgfieldBoolField);
-		jsize lenfield_bool = env->GetArrayLength(field_bool_value);
-		static const TCHAR* errorMsgfieldBoolLen = TEXT("failed when getting lengt of a java array out_struct_bool_with_array.fieldBool");
-		CheckJniErrorOccurred(errorMsgfieldBoolLen);
-		out_struct_bool_with_array.fieldBool.Reserve(lenfield_bool);
-		TArray<jboolean> Temp;
-		Temp.SetNumUninitialized(lenfield_bool);
-		env->GetBooleanArrayRegion(field_bool_value, 0, lenfield_bool, Temp.GetData());
-		static const TCHAR* errorMsgfieldBool = TEXT("failed when getting a java array region for out_struct_bool_with_array.fieldBool");
-		CheckJniErrorOccurred(errorMsgfieldBool);
-		for (int i = 0; i < lenfield_bool; i++)
-		{
-			out_struct_bool_with_array.fieldBool.Add(Temp[i] == JNI_TRUE);
-		}
+		FTestbed1CommonJavaConverter::TryFillArray(
+			env, out_struct_bool_with_array.fieldBool, field_bool_value,
+			TEXT("fieldBool for FTestbed1StructBoolWithArray"));
 		env->DeleteLocalRef(field_bool_value);
 	}
 	else
@@ -1091,13 +1081,9 @@ void Testbed1DataJavaConverter::fillStructIntWithArray(JNIEnv* env, jobject inpu
 		jintArray field_int_value = (jintArray)env->GetObjectField(input, jFieldId_field_int);
 		static const TCHAR* errorMsgfieldIntField = TEXT("failed when getting the jFieldId_field_int for out_struct_int_with_array.fieldInt");
 		CheckJniErrorOccurred(errorMsgfieldIntField);
-		jsize lenfield_int = env->GetArrayLength(field_int_value);
-		static const TCHAR* errorMsgfieldIntLen = TEXT("failed when getting lengt of a java array out_struct_int_with_array.fieldInt");
-		CheckJniErrorOccurred(errorMsgfieldIntLen);
-		out_struct_int_with_array.fieldInt.AddUninitialized(lenfield_int);
-		env->GetIntArrayRegion(field_int_value, 0, lenfield_int, out_struct_int_with_array.fieldInt.GetData());
-		static const TCHAR* errorMsgfieldInt = TEXT("failed when getting a java array region for out_struct_int_with_array.fieldInt");
-		CheckJniErrorOccurred(errorMsgfieldInt);
+		FTestbed1CommonJavaConverter::TryFillArray(
+			env, out_struct_int_with_array.fieldInt, field_int_value,
+			TEXT("fieldInt for FTestbed1StructIntWithArray"));
 		env->DeleteLocalRef(field_int_value);
 	}
 	else
@@ -1237,13 +1223,9 @@ void Testbed1DataJavaConverter::fillStructFloatWithArray(JNIEnv* env, jobject in
 		jfloatArray field_float_value = (jfloatArray)env->GetObjectField(input, jFieldId_field_float);
 		static const TCHAR* errorMsgfieldFloatField = TEXT("failed when getting the jFieldId_field_float for out_struct_float_with_array.fieldFloat");
 		CheckJniErrorOccurred(errorMsgfieldFloatField);
-		jsize lenfield_float = env->GetArrayLength(field_float_value);
-		static const TCHAR* errorMsgfieldFloatLen = TEXT("failed when getting lengt of a java array out_struct_float_with_array.fieldFloat");
-		CheckJniErrorOccurred(errorMsgfieldFloatLen);
-		out_struct_float_with_array.fieldFloat.AddUninitialized(lenfield_float);
-		env->GetFloatArrayRegion(field_float_value, 0, lenfield_float, out_struct_float_with_array.fieldFloat.GetData());
-		static const TCHAR* errorMsgfieldFloat = TEXT("failed when getting a java array region for out_struct_float_with_array.fieldFloat");
-		CheckJniErrorOccurred(errorMsgfieldFloat);
+		FTestbed1CommonJavaConverter::TryFillArray(
+			env, out_struct_float_with_array.fieldFloat, field_float_value,
+			TEXT("fieldFloat for FTestbed1StructFloatWithArray"));
 		env->DeleteLocalRef(field_float_value);
 	}
 	else
@@ -1383,9 +1365,9 @@ void Testbed1DataJavaConverter::fillStructStringWithArray(JNIEnv* env, jobject i
 		jobjectArray field_string_value = (jobjectArray)env->GetObjectField(input, jFieldId_field_string);
 		static const TCHAR* errorMsgfieldStringField = TEXT("failed when getting the jFieldId_field_string for out_struct_string_with_array.fieldString");
 		CheckJniErrorOccurred(errorMsgfieldStringField);
-		out_struct_string_with_array.fieldString = FJavaHelper::ObjectArrayToFStringTArray(env, field_string_value);
-		static const TCHAR* errorMsgfieldString = TEXT("failed when converting from jstring array for out_struct_string_with_array.fieldString");
-		CheckJniErrorOccurred(errorMsgfieldString);
+		FTestbed1CommonJavaConverter::TryFillArray(
+			env, out_struct_string_with_array.fieldString, field_string_value,
+			TEXT("fieldString for FTestbed1StructStringWithArray"));
 		env->DeleteLocalRef(field_string_value);
 	}
 	else
