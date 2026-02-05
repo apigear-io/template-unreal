@@ -31,6 +31,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 #include "Generated/Detail/Testbed2MethodHelper.h"
+#include "Generated/Detail/Testbed2CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

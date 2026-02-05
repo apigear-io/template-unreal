@@ -17,6 +17,7 @@
 #include "TbEnum/Generated/api/TbEnum_data.h"
 
 #include "Generated/Detail/TbEnumThreadingHelper.h"
+#include "Generated/Detail/TbEnumCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

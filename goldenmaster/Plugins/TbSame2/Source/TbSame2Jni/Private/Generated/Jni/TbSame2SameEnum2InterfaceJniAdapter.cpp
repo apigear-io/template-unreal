@@ -17,6 +17,7 @@
 #include "TbSame2/Generated/api/TbSame2_data.h"
 
 #include "Generated/Detail/TbSame2ThreadingHelper.h"
+#include "Generated/Detail/TbSame2CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

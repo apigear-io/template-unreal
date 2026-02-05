@@ -18,6 +18,7 @@
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
 
 #include "Generated/Detail/TbRefIfacesThreadingHelper.h"
+#include "Generated/Detail/TbRefIfacesCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

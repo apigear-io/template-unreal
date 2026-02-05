@@ -17,6 +17,7 @@
 #include "TbNames/Generated/api/TbNames_data.h"
 
 #include "Generated/Detail/TbNamesThreadingHelper.h"
+#include "Generated/Detail/TbNamesCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

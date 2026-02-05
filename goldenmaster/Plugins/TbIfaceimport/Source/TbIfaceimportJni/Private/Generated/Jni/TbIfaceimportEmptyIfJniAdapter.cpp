@@ -16,6 +16,7 @@
 #include "HAL/Platform.h"
 
 #include "Generated/Detail/TbIfaceimportThreadingHelper.h"
+#include "Generated/Detail/TbIfaceimportCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

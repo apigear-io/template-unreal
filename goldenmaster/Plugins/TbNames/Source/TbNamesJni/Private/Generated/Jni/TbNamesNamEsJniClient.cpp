@@ -31,6 +31,7 @@ limitations under the License.
 #include "Engine/Engine.h"
 
 #include "Generated/Detail/TbNamesMethodHelper.h"
+#include "Generated/Detail/TbNamesCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 
