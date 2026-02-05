@@ -129,6 +129,12 @@ TSharedPtr<F{{$className}}CacheData, ESPMode::ThreadSafe> {{$className}}::CacheD
 
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$structType}}& {{$structName}})
 {
+	if (input == nullptr)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("Cannot fill {{camel .Name}}, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -207,6 +213,12 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$structType}}>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("Cannot fill {{camel .Name}} array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -412,6 +424,12 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("Cannot fill {{camel .Name}} array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -450,6 +468,13 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 	{{- else}}
 	{{$cpp_class}} cppEnumValue;
 	{{- end}}
+
+	if (input == nullptr)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("Cannot {{camel .Name}}, input object is null"));
+		return cppEnumValue;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -640,6 +665,12 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exCppType}}& {{$exName}})
 {
+	if (input == nullptr)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("Cannot fill {{camel .Name}}, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache || !Cache->{{$cachedClass}})
 	{
@@ -654,6 +685,12 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exCppT
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$exCppType}}>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("Cannot fill {{camel .Name}} array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{

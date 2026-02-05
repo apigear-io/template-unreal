@@ -97,6 +97,12 @@ TSharedPtr<FTbSame1DataJavaConverterCacheData, ESPMode::ThreadSafe> TbSame1DataJ
 
 void TbSame1DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame1Struct1& out_struct1)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbSame1DataJavaConverter_JNI, Warning, TEXT("Cannot fill struct1, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -149,6 +155,12 @@ void TbSame1DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame1S
 
 void TbSame1DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTbSame1Struct1>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbSame1DataJavaConverter_JNI, Warning, TEXT("Cannot fill struct1 array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -281,6 +293,12 @@ jobjectArray TbSame1DataJavaConverter::makeJavaStruct1Array(JNIEnv* env, const T
 
 void TbSame1DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame1Struct2& out_struct2)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbSame1DataJavaConverter_JNI, Warning, TEXT("Cannot fill struct2, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -333,6 +351,12 @@ void TbSame1DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame1S
 
 void TbSame1DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTbSame1Struct2>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbSame1DataJavaConverter_JNI, Warning, TEXT("Cannot fill struct2 array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -465,6 +489,12 @@ jobjectArray TbSame1DataJavaConverter::makeJavaStruct2Array(JNIEnv* env, const T
 
 void TbSame1DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETbSame1Enum1>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbSame1DataJavaConverter_JNI, Warning, TEXT("Cannot fill enum1 array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -498,6 +528,13 @@ void TbSame1DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, T
 ETbSame1Enum1 TbSame1DataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 {
 	ETbSame1Enum1 cppEnumValue = ETbSame1Enum1::TS1E1_Value1;
+
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbSame1DataJavaConverter_JNI, Warning, TEXT("Cannot enum1, input object is null"));
+		return cppEnumValue;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -577,6 +614,12 @@ jobject TbSame1DataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbSame1Enum1 value
 
 void TbSame1DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETbSame1Enum2>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbSame1DataJavaConverter_JNI, Warning, TEXT("Cannot fill enum2 array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -610,6 +653,13 @@ void TbSame1DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, T
 ETbSame1Enum2 TbSame1DataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 {
 	ETbSame1Enum2 cppEnumValue = ETbSame1Enum2::TS1E2_Value1;
+
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbSame1DataJavaConverter_JNI, Warning, TEXT("Cannot enum2, input object is null"));
+		return cppEnumValue;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{

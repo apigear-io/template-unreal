@@ -58,6 +58,12 @@ TSharedPtr<FCustomTypesDataJavaConverterCacheData, ESPMode::ThreadSafe> CustomTy
 
 void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCustomTypesVector3D& out_vector3_d)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("Cannot fill vector3D, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -110,6 +116,12 @@ void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCus
 
 void CustomTypesDataJavaConverter::fillVector3DArray(JNIEnv* env, jobjectArray input, TArray<FCustomTypesVector3D>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("Cannot fill vector3D array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
