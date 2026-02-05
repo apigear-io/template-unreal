@@ -64,6 +64,12 @@ TSharedPtr<FTbEnumDataJavaConverterCacheData, ESPMode::ThreadSafe> TbEnumDataJav
 
 void TbEnumDataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum0>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Cannot fill enum0 array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -97,6 +103,13 @@ void TbEnumDataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TA
 ETbEnumEnum0 TbEnumDataJavaConverter::getEnum0Value(JNIEnv* env, jobject input)
 {
 	ETbEnumEnum0 cppEnumValue = ETbEnumEnum0::TEE0_Value0;
+
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Cannot enum0, input object is null"));
+		return cppEnumValue;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -176,6 +189,12 @@ jobject TbEnumDataJavaConverter::makeJavaEnum0(JNIEnv* env, ETbEnumEnum0 value)
 
 void TbEnumDataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum1>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Cannot fill enum1 array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -209,6 +228,13 @@ void TbEnumDataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TA
 ETbEnumEnum1 TbEnumDataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 {
 	ETbEnumEnum1 cppEnumValue = ETbEnumEnum1::TEE1_Value1;
+
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Cannot enum1, input object is null"));
+		return cppEnumValue;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -288,6 +314,12 @@ jobject TbEnumDataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbEnumEnum1 value)
 
 void TbEnumDataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum2>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Cannot fill enum2 array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -321,6 +353,13 @@ void TbEnumDataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TA
 ETbEnumEnum2 TbEnumDataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 {
 	ETbEnumEnum2 cppEnumValue = ETbEnumEnum2::TEE2_Value2;
+
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Cannot enum2, input object is null"));
+		return cppEnumValue;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -400,6 +439,12 @@ jobject TbEnumDataJavaConverter::makeJavaEnum2(JNIEnv* env, ETbEnumEnum2 value)
 
 void TbEnumDataJavaConverter::fillEnum3Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum3>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Cannot fill enum3 array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -433,6 +478,13 @@ void TbEnumDataJavaConverter::fillEnum3Array(JNIEnv* env, jobjectArray input, TA
 ETbEnumEnum3 TbEnumDataJavaConverter::getEnum3Value(JNIEnv* env, jobject input)
 {
 	ETbEnumEnum3 cppEnumValue = ETbEnumEnum3::TEE3_Value3;
+
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("Cannot enum3, input object is null"));
+		return cppEnumValue;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{

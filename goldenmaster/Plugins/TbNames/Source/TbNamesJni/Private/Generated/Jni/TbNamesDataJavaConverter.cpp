@@ -58,6 +58,12 @@ TSharedPtr<FTbNamesDataJavaConverterCacheData, ESPMode::ThreadSafe> TbNamesDataJ
 
 void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobjectArray input, TArray<ETbNamesEnum_With_Under_scores>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("Cannot fill enumWithUnderScores array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -91,6 +97,13 @@ void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobject
 ETbNamesEnum_With_Under_scores TbNamesDataJavaConverter::getEnumWithUnderScoresValue(JNIEnv* env, jobject input)
 {
 	ETbNamesEnum_With_Under_scores cppEnumValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
+
+	if (input == nullptr)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("Cannot enumWithUnderScores, input object is null"));
+		return cppEnumValue;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{

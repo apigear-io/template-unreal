@@ -88,6 +88,12 @@ TSharedPtr<FTestbed1DataJavaConverterCacheData, ESPMode::ThreadSafe> Testbed1Dat
 
 void Testbed1DataJavaConverter::fillStructBool(JNIEnv* env, jobject input, FTestbed1StructBool& out_struct_bool)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structBool, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -112,6 +118,12 @@ void Testbed1DataJavaConverter::fillStructBool(JNIEnv* env, jobject input, FTest
 
 void Testbed1DataJavaConverter::fillStructBoolArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructBool>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structBool array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -216,6 +228,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolArray(JNIEnv* env, con
 
 void Testbed1DataJavaConverter::fillStructInt(JNIEnv* env, jobject input, FTestbed1StructInt& out_struct_int)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structInt, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -240,6 +258,12 @@ void Testbed1DataJavaConverter::fillStructInt(JNIEnv* env, jobject input, FTestb
 
 void Testbed1DataJavaConverter::fillStructIntArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructInt>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structInt array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -344,6 +368,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructIntArray(JNIEnv* env, cons
 
 void Testbed1DataJavaConverter::fillStructFloat(JNIEnv* env, jobject input, FTestbed1StructFloat& out_struct_float)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structFloat, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -368,6 +398,12 @@ void Testbed1DataJavaConverter::fillStructFloat(JNIEnv* env, jobject input, FTes
 
 void Testbed1DataJavaConverter::fillStructFloatArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructFloat>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structFloat array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -472,6 +508,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatArray(JNIEnv* env, co
 
 void Testbed1DataJavaConverter::fillStructString(JNIEnv* env, jobject input, FTestbed1StructString& out_struct_string)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structString, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -499,6 +541,12 @@ void Testbed1DataJavaConverter::fillStructString(JNIEnv* env, jobject input, FTe
 
 void Testbed1DataJavaConverter::fillStructStringArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructString>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structString array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -606,6 +654,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStringArray(JNIEnv* env, c
 
 void Testbed1DataJavaConverter::fillStructStruct(JNIEnv* env, jobject input, FTestbed1StructStruct& out_struct_struct)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structStruct, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -632,6 +686,12 @@ void Testbed1DataJavaConverter::fillStructStruct(JNIEnv* env, jobject input, FTe
 
 void Testbed1DataJavaConverter::fillStructStructArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStruct>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structStruct array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -738,6 +798,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStructArray(JNIEnv* env, c
 
 void Testbed1DataJavaConverter::fillStructEnum(JNIEnv* env, jobject input, FTestbed1StructEnum& out_struct_enum)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structEnum, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -764,6 +830,12 @@ void Testbed1DataJavaConverter::fillStructEnum(JNIEnv* env, jobject input, FTest
 
 void Testbed1DataJavaConverter::fillStructEnumArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructEnum>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structEnum array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -870,6 +942,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumArray(JNIEnv* env, con
 
 void Testbed1DataJavaConverter::fillStructBoolWithArray(JNIEnv* env, jobject input, FTestbed1StructBoolWithArray& out_struct_bool_with_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structBoolWithArray, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -898,6 +976,12 @@ void Testbed1DataJavaConverter::fillStructBoolWithArray(JNIEnv* env, jobject inp
 
 void Testbed1DataJavaConverter::fillStructBoolWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructBoolWithArray>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structBoolWithArray array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1018,6 +1102,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolWithArrayArray(JNIEnv*
 
 void Testbed1DataJavaConverter::fillStructIntWithArray(JNIEnv* env, jobject input, FTestbed1StructIntWithArray& out_struct_int_with_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structIntWithArray, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1046,6 +1136,12 @@ void Testbed1DataJavaConverter::fillStructIntWithArray(JNIEnv* env, jobject inpu
 
 void Testbed1DataJavaConverter::fillStructIntWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructIntWithArray>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structIntWithArray array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1160,6 +1256,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructIntWithArrayArray(JNIEnv* 
 
 void Testbed1DataJavaConverter::fillStructFloatWithArray(JNIEnv* env, jobject input, FTestbed1StructFloatWithArray& out_struct_float_with_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structFloatWithArray, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1188,6 +1290,12 @@ void Testbed1DataJavaConverter::fillStructFloatWithArray(JNIEnv* env, jobject in
 
 void Testbed1DataJavaConverter::fillStructFloatWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructFloatWithArray>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structFloatWithArray array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1302,6 +1410,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatWithArrayArray(JNIEnv
 
 void Testbed1DataJavaConverter::fillStructStringWithArray(JNIEnv* env, jobject input, FTestbed1StructStringWithArray& out_struct_string_with_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structStringWithArray, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1330,6 +1444,12 @@ void Testbed1DataJavaConverter::fillStructStringWithArray(JNIEnv* env, jobject i
 
 void Testbed1DataJavaConverter::fillStructStringWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStringWithArray>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structStringWithArray array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1445,6 +1565,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStringWithArrayArray(JNIEn
 
 void Testbed1DataJavaConverter::fillStructStructWithArray(JNIEnv* env, jobject input, FTestbed1StructStructWithArray& out_struct_struct_with_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structStructWithArray, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1471,6 +1597,12 @@ void Testbed1DataJavaConverter::fillStructStructWithArray(JNIEnv* env, jobject i
 
 void Testbed1DataJavaConverter::fillStructStructWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStructWithArray>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structStructWithArray array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1577,6 +1709,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStructWithArrayArray(JNIEn
 
 void Testbed1DataJavaConverter::fillStructEnumWithArray(JNIEnv* env, jobject input, FTestbed1StructEnumWithArray& out_struct_enum_with_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structEnumWithArray, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1603,6 +1741,12 @@ void Testbed1DataJavaConverter::fillStructEnumWithArray(JNIEnv* env, jobject inp
 
 void Testbed1DataJavaConverter::fillStructEnumWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructEnumWithArray>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill structEnumWithArray array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1709,6 +1853,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumWithArrayArray(JNIEnv*
 
 void Testbed1DataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TArray<ETestbed1Enum0>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot fill enum0 array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
@@ -1742,6 +1892,13 @@ void Testbed1DataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, 
 ETestbed1Enum0 Testbed1DataJavaConverter::getEnum0Value(JNIEnv* env, jobject input)
 {
 	ETestbed1Enum0 cppEnumValue = ETestbed1Enum0::T1E0_Value0;
+
+	if (input == nullptr)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Cannot enum0, input object is null"));
+		return cppEnumValue;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{

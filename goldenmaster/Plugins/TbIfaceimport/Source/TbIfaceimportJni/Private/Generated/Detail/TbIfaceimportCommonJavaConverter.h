@@ -122,6 +122,12 @@ FTbIfaceimportCommonJavaConverter::TryFillArray(
 	using JniElement = typename Traits::JniElementType;
 	constexpr auto GetArrayRegionFunc = Traits::GetArrayRegionFunc;
 
+	if (InJniArray == nullptr)
+	{
+		UE_LOG(LogTbIfaceimportCommonJavaConverter_JNI, Warning, TEXT("%s is null"), *InPropertyName);
+		return false;
+	}
+
 	JniArrayType JniArray = (JniArrayType)InJniArray;
 	jsize JniArrayLength = Env->GetArrayLength(JniArray);
 	if (CheckJniErrorOccurred(*FString::Printf(TEXT("failed to get array length of %s"), *InPropertyName)))
