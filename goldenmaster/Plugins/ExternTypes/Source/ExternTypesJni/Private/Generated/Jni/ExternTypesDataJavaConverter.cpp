@@ -40,6 +40,11 @@ jclass ExternTypesDataJavaConverter::jMyVector3D = nullptr;
 
 void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	if (!jMyVector3D)
 	{
@@ -54,6 +59,11 @@ void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FV
 
 void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray input, TArray<FVector>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get len of Vector3D jarray.");

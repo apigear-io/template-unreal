@@ -40,6 +40,11 @@ jclass CustomTypesDataJavaConverter::jVector3D = nullptr;
 
 void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCustomTypesVector3D& out_vector3_d)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindx = TEXT("failed when trying to field x F for FCustomTypesVector3D");
@@ -87,6 +92,11 @@ void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCus
 
 void CustomTypesDataJavaConverter::fillVector3DArray(JNIEnv* env, jobjectArray input, TArray<FCustomTypesVector3D>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_vector3_d array.");

@@ -38,6 +38,11 @@ bool FCustomTypesCommonJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 bool FCustomTypesCommonJavaConverter::TryFillArray(
     JNIEnv* Env, TArray<FString>& OutStringArray, jobjectArray InJniArray, const FString& InPropertyName)
 {
+	if (InJniArray == nullptr || Env->IsSameObject(InJniArray, nullptr))
+	{
+		return false;
+	}
+
 	TArray<FString> TempArray = FJavaHelper::ObjectArrayToFStringTArray(Env, InJniArray);
 	if (CheckJniErrorOccurred(*FString::Printf(TEXT("failed to convert %s from jstring array"), *InPropertyName)))
 	{
