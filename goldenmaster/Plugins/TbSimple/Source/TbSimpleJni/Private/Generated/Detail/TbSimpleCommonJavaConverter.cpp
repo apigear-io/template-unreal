@@ -17,10 +17,6 @@ limitations under the License.
 
 #include "Generated/Detail/TbSimpleCommonJavaConverter.h"
 #include "CoreMinimal.h"
-#if PLATFORM_ANDROID
-#include "Android/AndroidApplication.h"
-#include "Android/AndroidJNI.h"
-#endif
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
@@ -37,6 +33,20 @@ bool FTbSimpleCommonJavaConverter::CheckJniErrorOccurred(const TCHAR* Msg)
 		return true;
 	}
 	return false;
+}
+
+bool FTbSimpleCommonJavaConverter::TryFillArray(
+    JNIEnv* Env, TArray<FString>& OutStringArray, jobjectArray InJniArray, const FString& InPropertyName)
+{
+	TArray<FString> TempArray = FJavaHelper::ObjectArrayToFStringTArray(Env, InJniArray);
+	if (CheckJniErrorOccurred(*FString::Printf(TEXT("failed to convert %s from jstring array"), *InPropertyName)))
+	{
+		return false;
+	}
+
+	Swap(TempArray, OutStringArray);
+
+	return true;
 }
 
 #endif

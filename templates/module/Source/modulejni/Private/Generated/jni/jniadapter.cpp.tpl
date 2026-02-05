@@ -92,40 +92,13 @@
 {{- if (eq $javaClassConverter "DataJavaConverter" )}}{{- $javaClassConverter = $localClassConverter }}{{ end }}
 {{- if .IsArray }}
 	{{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
+	{{- if .IsPrimitive }}
 	{{- if (eq .KindType "string")}}
-	{{$local_value}} = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
-	static const TCHAR* errorMsg{{$local_value}} = TEXT("failed to convert {{$javaPropName}} from jstring array");
-	{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{$local_value}});
-	{{- else if (eq .KindType "bool")}}
-	jbooleanArray l_java{{Camel .Name}}Array = (jbooleanArray){{$javaPropName}};
-	jsize len{{snake .Name}} = Env->GetArrayLength(l_java{{Camel .Name}}Array);
-	static const TCHAR* errorMsgLen{{$local_value}} = TEXT("failed to get an array length l_java{{Camel .Name}}Array");
-	{{$localClassConverter}}::checkJniErrorOccurred(errorMsgLen{{$local_value}});
-	{{$local_value}}.Reserve(len{{snake .Name}});
-	TArray<jboolean> Temp{{Camel .Name}};
-	Temp{{Camel .Name}}.SetNumUninitialized(len{{snake .Name}});
-	Env->GetBooleanArrayRegion(l_java{{Camel .Name}}Array, 0, len{{snake .Name}}, Temp{{Camel .Name}}.GetData());
-	static const TCHAR* errorMsg{{$local_value}} = TEXT("failed to get an array region l_java{{Camel .Name}}Array");
-	{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{$local_value}});
-	for (int i = 0; i < len{{snake .Name}}; i++)
-	{
-		{{$local_value}}.Add(Temp{{Camel .Name}}[i] == JNI_TRUE);
-	}
-	{{- else if .IsPrimitive }}
-	{{ jniToReturnType . }} l_java{{Camel .Name}}Array = ({{ jniToReturnType . }}){{$javaPropName}};
-	jsize len{{snake .Name}} = Env->GetArrayLength(l_java{{Camel .Name}}Array);
-	static const TCHAR* errorMsgLen{{$local_value}} = TEXT("failed to get an array length l_java{{Camel .Name}}Array");
-	if (!{{$localClassConverter}}::checkJniErrorOccurred(errorMsgLen{{$local_value}}))
-	{
-		{{$local_value}}.AddUninitialized(len{{snake .Name}});
-		Env->Get{{jniToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0, len{{snake .Name}}, {{ if (eq .KindType "int64") -}}
-			reinterpret_cast<jlong*>({{$local_value}}.GetData()));
-			{{- else -}}
-			{{$local_value}}.GetData());
-			{{- end }}
-		static const TCHAR* errorMsg{{$local_value}} = TEXT("failed to get an array region{{$javaPropName}}");
-		{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{$local_value}});
-	}
+	F{{Camel .Module.Name}}CommonJavaConverter::TryFillArray(
+	{{- else }}
+	F{{Camel .Module.Name}}CommonJavaConverter::TryFillPrimitiveArray(
+	{{- end }}
+		Env, {{$local_value}}, {{$javaPropName}}, TEXT("{{$javaPropName}}"));
 	{{- else}}
 	{{- if eq .KindType "interface" }}
 	// interfaces are currently not supported. {{$javaClassConverter}} does not fill the array. 
@@ -182,6 +155,7 @@
 {{- end }}
 
 #include "Generated/Detail/{{$ModuleName}}ThreadingHelper.h"
+#include "Generated/Detail/{{$ModuleName}}CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

@@ -30,6 +30,7 @@ limitations under the License.
 #include "HAL/Platform.h"
 
 #include "Generated/Detail/TbSimpleThreadingHelper.h"
+#include "Generated/Detail/TbSimpleCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 

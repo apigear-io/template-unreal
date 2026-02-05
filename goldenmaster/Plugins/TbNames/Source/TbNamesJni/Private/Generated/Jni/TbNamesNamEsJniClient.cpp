@@ -46,6 +46,7 @@ limitations under the License.
 #include "Misc/ScopeRWLock.h"
 
 #include "Generated/Detail/TbNamesMethodHelper.h"
+#include "Generated/Detail/TbNamesCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 
