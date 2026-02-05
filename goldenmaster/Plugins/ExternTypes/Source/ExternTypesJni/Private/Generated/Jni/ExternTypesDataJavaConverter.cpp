@@ -58,6 +58,12 @@ TSharedPtr<FExternTypesDataJavaConverterCacheData, ESPMode::ThreadSafe> ExternTy
 
 void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("Cannot fill myVector3D, object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache || !Cache->jMyVector3D)
 	{
@@ -72,6 +78,12 @@ void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FV
 
 void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray input, TArray<FVector>& out_array)
 {
+	if (input == nullptr)
+	{
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("Cannot fill myVector3D array, array object is null"));
+		return;
+	}
+
 	auto Cache = ensureInitialized();
 	if (!Cache)
 	{
