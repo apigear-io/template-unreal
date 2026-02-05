@@ -80,6 +80,11 @@ jclass {{$className }}::{{$cachedStruct}} = nullptr;
 
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$structType}}& {{$structName}})
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 {{- range .Fields }}
 	{{- $cppFieldName := .Name}}
@@ -156,6 +161,11 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$structType}}>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of {{$structName}} array.");
@@ -352,6 +362,11 @@ jclass {{$className }}::{{$cachedEnum}} = nullptr;
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -385,6 +400,12 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 	{{- else}}
 	{{$cpp_class}} cppEnumValue;
 	{{- end}}
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for {{$javaClassTypeName}}.");
 	static const jmethodID getValueMethod = getMethod({{$cachedEnum}}, "getValue", "()I", errorMsgGetMethod);
@@ -549,6 +570,11 @@ jclass {{$className }}::{{$cachedClass}} = nullptr;
 
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exCppType}}& {{$exName}})
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	if (!{{$cachedClass}})
 	{
@@ -563,6 +589,11 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exCppT
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$exCppType}}>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get len of {{$extJava.Name}} jarray.");

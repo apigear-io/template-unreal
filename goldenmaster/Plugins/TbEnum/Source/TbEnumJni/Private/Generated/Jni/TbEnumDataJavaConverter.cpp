@@ -40,6 +40,11 @@ jclass TbEnumDataJavaConverter::jEnum0 = nullptr;
 
 void TbEnumDataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum0>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -68,6 +73,12 @@ void TbEnumDataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TA
 ETbEnumEnum0 TbEnumDataJavaConverter::getEnum0Value(JNIEnv* env, jobject input)
 {
 	ETbEnumEnum0 cppEnumValue = ETbEnumEnum0::TEE0_Value0;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum0.");
 	static const jmethodID getValueMethod = getMethod(jEnum0, "getValue", "()I", errorMsgGetMethod);
@@ -138,6 +149,11 @@ jclass TbEnumDataJavaConverter::jEnum1 = nullptr;
 
 void TbEnumDataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum1>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -166,6 +182,12 @@ void TbEnumDataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TA
 ETbEnumEnum1 TbEnumDataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 {
 	ETbEnumEnum1 cppEnumValue = ETbEnumEnum1::TEE1_Value1;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum1.");
 	static const jmethodID getValueMethod = getMethod(jEnum1, "getValue", "()I", errorMsgGetMethod);
@@ -236,6 +258,11 @@ jclass TbEnumDataJavaConverter::jEnum2 = nullptr;
 
 void TbEnumDataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum2>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -264,6 +291,12 @@ void TbEnumDataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TA
 ETbEnumEnum2 TbEnumDataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 {
 	ETbEnumEnum2 cppEnumValue = ETbEnumEnum2::TEE2_Value2;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum2.");
 	static const jmethodID getValueMethod = getMethod(jEnum2, "getValue", "()I", errorMsgGetMethod);
@@ -334,6 +367,11 @@ jclass TbEnumDataJavaConverter::jEnum3 = nullptr;
 
 void TbEnumDataJavaConverter::fillEnum3Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum3>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -362,6 +400,12 @@ void TbEnumDataJavaConverter::fillEnum3Array(JNIEnv* env, jobjectArray input, TA
 ETbEnumEnum3 TbEnumDataJavaConverter::getEnum3Value(JNIEnv* env, jobject input)
 {
 	ETbEnumEnum3 cppEnumValue = ETbEnumEnum3::TEE3_Value3;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum3.");
 	static const jmethodID getValueMethod = getMethod(jEnum3, "getValue", "()I", errorMsgGetMethod);

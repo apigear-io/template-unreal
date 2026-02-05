@@ -40,6 +40,11 @@ jclass TbNamesDataJavaConverter::jEnumWithUnderScores = nullptr;
 
 void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobjectArray input, TArray<ETbNamesEnum_With_Under_scores>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -68,6 +73,12 @@ void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobject
 ETbNamesEnum_With_Under_scores TbNamesDataJavaConverter::getEnumWithUnderScoresValue(JNIEnv* env, jobject input)
 {
 	ETbNamesEnum_With_Under_scores cppEnumValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for EnumWithUnderScores.");
 	static const jmethodID getValueMethod = getMethod(jEnumWithUnderScores, "getValue", "()I", errorMsgGetMethod);

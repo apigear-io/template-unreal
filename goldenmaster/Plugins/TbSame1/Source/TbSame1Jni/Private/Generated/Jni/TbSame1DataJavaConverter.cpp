@@ -44,6 +44,11 @@ jclass TbSame1DataJavaConverter::jStruct1 = nullptr;
 
 void TbSame1DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame1Struct1& out_struct1)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTbSame1Struct1");
@@ -91,6 +96,11 @@ void TbSame1DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame1S
 
 void TbSame1DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTbSame1Struct1>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct1 array.");
@@ -215,6 +225,11 @@ jclass TbSame1DataJavaConverter::jStruct2 = nullptr;
 
 void TbSame1DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame1Struct2& out_struct2)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTbSame1Struct2");
@@ -262,6 +277,11 @@ void TbSame1DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame1S
 
 void TbSame1DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTbSame1Struct2>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct2 array.");
@@ -385,6 +405,11 @@ jclass TbSame1DataJavaConverter::jEnum1 = nullptr;
 
 void TbSame1DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETbSame1Enum1>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -413,6 +438,12 @@ void TbSame1DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, T
 ETbSame1Enum1 TbSame1DataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 {
 	ETbSame1Enum1 cppEnumValue = ETbSame1Enum1::TS1E1_Value1;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum1.");
 	static const jmethodID getValueMethod = getMethod(jEnum1, "getValue", "()I", errorMsgGetMethod);
@@ -483,6 +514,11 @@ jclass TbSame1DataJavaConverter::jEnum2 = nullptr;
 
 void TbSame1DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETbSame1Enum2>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -511,6 +547,12 @@ void TbSame1DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, T
 ETbSame1Enum2 TbSame1DataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 {
 	ETbSame1Enum2 cppEnumValue = ETbSame1Enum2::TS1E2_Value1;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum2.");
 	static const jmethodID getValueMethod = getMethod(jEnum2, "getValue", "()I", errorMsgGetMethod);

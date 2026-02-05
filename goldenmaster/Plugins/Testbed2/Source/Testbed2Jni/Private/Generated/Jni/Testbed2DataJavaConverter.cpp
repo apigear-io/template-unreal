@@ -44,6 +44,11 @@ jclass Testbed2DataJavaConverter::jStruct1 = nullptr;
 
 void Testbed2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTestbed2Struct1& out_struct1)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTestbed2Struct1");
@@ -63,6 +68,11 @@ void Testbed2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTestbed
 
 void Testbed2DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct1>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct1 array.");
@@ -159,6 +169,11 @@ jclass Testbed2DataJavaConverter::jStruct2 = nullptr;
 
 void Testbed2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTestbed2Struct2& out_struct2)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTestbed2Struct2");
@@ -192,6 +207,11 @@ void Testbed2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTestbed
 
 void Testbed2DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct2>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct2 array.");
@@ -302,6 +322,11 @@ jclass Testbed2DataJavaConverter::jStruct3 = nullptr;
 
 void Testbed2DataJavaConverter::fillStruct3(JNIEnv* env, jobject input, FTestbed2Struct3& out_struct3)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTestbed2Struct3");
@@ -349,6 +374,11 @@ void Testbed2DataJavaConverter::fillStruct3(JNIEnv* env, jobject input, FTestbed
 
 void Testbed2DataJavaConverter::fillStruct3Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct3>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct3 array.");
@@ -473,6 +503,11 @@ jclass Testbed2DataJavaConverter::jStruct4 = nullptr;
 
 void Testbed2DataJavaConverter::fillStruct4(JNIEnv* env, jobject input, FTestbed2Struct4& out_struct4)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTestbed2Struct4");
@@ -534,6 +569,11 @@ void Testbed2DataJavaConverter::fillStruct4(JNIEnv* env, jobject input, FTestbed
 
 void Testbed2DataJavaConverter::fillStruct4Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2Struct4>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct4 array.");
@@ -672,6 +712,11 @@ jclass Testbed2DataJavaConverter::jNestedStruct1 = nullptr;
 
 void Testbed2DataJavaConverter::fillNestedStruct1(JNIEnv* env, jobject input, FTestbed2NestedStruct1& out_nested_struct1)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 Ltestbed2/testbed2_api/Struct1; for FTestbed2NestedStruct1");
@@ -693,6 +738,11 @@ void Testbed2DataJavaConverter::fillNestedStruct1(JNIEnv* env, jobject input, FT
 
 void Testbed2DataJavaConverter::fillNestedStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2NestedStruct1>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_nested_struct1 array.");
@@ -791,6 +841,11 @@ jclass Testbed2DataJavaConverter::jNestedStruct2 = nullptr;
 
 void Testbed2DataJavaConverter::fillNestedStruct2(JNIEnv* env, jobject input, FTestbed2NestedStruct2& out_nested_struct2)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 Ltestbed2/testbed2_api/Struct1; for FTestbed2NestedStruct2");
@@ -828,6 +883,11 @@ void Testbed2DataJavaConverter::fillNestedStruct2(JNIEnv* env, jobject input, FT
 
 void Testbed2DataJavaConverter::fillNestedStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2NestedStruct2>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_nested_struct2 array.");
@@ -942,6 +1002,11 @@ jclass Testbed2DataJavaConverter::jNestedStruct3 = nullptr;
 
 void Testbed2DataJavaConverter::fillNestedStruct3(JNIEnv* env, jobject input, FTestbed2NestedStruct3& out_nested_struct3)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 Ltestbed2/testbed2_api/Struct1; for FTestbed2NestedStruct3");
@@ -995,6 +1060,11 @@ void Testbed2DataJavaConverter::fillNestedStruct3(JNIEnv* env, jobject input, FT
 
 void Testbed2DataJavaConverter::fillNestedStruct3Array(JNIEnv* env, jobjectArray input, TArray<FTestbed2NestedStruct3>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_nested_struct3 array.");
@@ -1124,6 +1194,11 @@ jclass Testbed2DataJavaConverter::jEnum1 = nullptr;
 
 void Testbed2DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETestbed2Enum1>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -1152,6 +1227,12 @@ void Testbed2DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, 
 ETestbed2Enum1 Testbed2DataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 {
 	ETestbed2Enum1 cppEnumValue = ETestbed2Enum1::T2E1_Value1;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum1.");
 	static const jmethodID getValueMethod = getMethod(jEnum1, "getValue", "()I", errorMsgGetMethod);
@@ -1222,6 +1303,11 @@ jclass Testbed2DataJavaConverter::jEnum2 = nullptr;
 
 void Testbed2DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETestbed2Enum2>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -1250,6 +1336,12 @@ void Testbed2DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, 
 ETestbed2Enum2 Testbed2DataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 {
 	ETestbed2Enum2 cppEnumValue = ETestbed2Enum2::T2E2_Value1;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum2.");
 	static const jmethodID getValueMethod = getMethod(jEnum2, "getValue", "()I", errorMsgGetMethod);
@@ -1320,6 +1412,11 @@ jclass Testbed2DataJavaConverter::jEnum3 = nullptr;
 
 void Testbed2DataJavaConverter::fillEnum3Array(JNIEnv* env, jobjectArray input, TArray<ETestbed2Enum3>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
@@ -1348,6 +1445,12 @@ void Testbed2DataJavaConverter::fillEnum3Array(JNIEnv* env, jobjectArray input, 
 ETestbed2Enum3 Testbed2DataJavaConverter::getEnum3Value(JNIEnv* env, jobject input)
 {
 	ETestbed2Enum3 cppEnumValue = ETestbed2Enum3::T2E3_Value1;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum3.");
 	static const jmethodID getValueMethod = getMethod(jEnum3, "getValue", "()I", errorMsgGetMethod);
