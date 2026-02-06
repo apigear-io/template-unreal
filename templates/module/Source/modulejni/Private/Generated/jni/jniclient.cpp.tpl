@@ -788,7 +788,6 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 		{
 			cpp_result[i] = (Temp[i] == JNI_TRUE);
 		}
-		Env->DeleteLocalRef(localArray);
 	}
 	{{- else if .Return.IsPrimitive }}
 	{{ jniToReturnType .Return }} localArray = ({{ jniToReturnType .Return }})result;
@@ -804,7 +803,6 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeOn{{Camel .Name}}Result(JNIEnv* Env
 			{{- end }}
 		static const TCHAR* errorMsgResult = TEXT("failed to convert result from {{jniToEnvNameType .Return}} array in call nativeOn{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
 		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsgResult);
-		Env->DeleteLocalRef(localArray);
 	}
 	{{- else }}
 	{{- if eq .Return.KindType "interface" }}
