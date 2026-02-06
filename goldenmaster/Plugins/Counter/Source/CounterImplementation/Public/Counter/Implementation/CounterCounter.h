@@ -56,4 +56,12 @@ public:
 	FCustomTypesVector3D Decrement(const FCustomTypesVector3D& Vec) override;
 
 	TArray<FCustomTypesVector3D> DecrementArray(const TArray<FCustomTypesVector3D>& Vec) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock VectorRWLock;
+	mutable FRWLock ExternVectorRWLock;
+	mutable FRWLock VectorArrayRWLock;
+	mutable FRWLock ExternVectorArrayRWLock;
+#endif
 };

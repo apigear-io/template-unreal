@@ -26,7 +26,10 @@ limitations under the License.
 #include "Async/Async.h"
 #include "Engine/Engine.h"
 #include "Misc/DateTime.h"
+#include "Misc/Optional.h"
 #include "HAL/Platform.h"
+
+#include "Generated/Detail/TbSimpleThreadingHelper.h"
 
 #if PLATFORM_ANDROID
 
