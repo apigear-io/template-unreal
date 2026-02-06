@@ -16,6 +16,7 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}JniConnectionStatus.h"
 #include <memory>
+#include "HAL/PlatformProcess.h"
 
 #if PLATFORM_ANDROID
 
@@ -117,4 +118,9 @@ private:
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	jobject m_javaJniClientInstance = nullptr;
 #endif
+
+{{- nl}}
+{{- range .Interface.Properties }}
+	mutable FRWLock m_{{Camel .Name}}RWLock;
+{{- end }}
 };

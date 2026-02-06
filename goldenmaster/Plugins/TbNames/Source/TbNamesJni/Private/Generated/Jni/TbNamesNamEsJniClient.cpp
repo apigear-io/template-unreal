@@ -43,6 +43,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -222,6 +223,7 @@ void UTbNamesNamEsJniClient::Deinitialize()
 }
 bool UTbNamesNamEsJniClient::GetSwitch() const
 {
+	FReadScopeLock Lock(m_SwitchRWLock);
 	return bSwitch;
 }
 void UTbNamesNamEsJniClient::SetSwitch(bool bInSwitch)
@@ -266,6 +268,7 @@ void UTbNamesNamEsJniClient::SetSwitch(bool bInSwitch)
 }
 int32 UTbNamesNamEsJniClient::GetSomeProperty() const
 {
+	FReadScopeLock Lock(m_SomePropertyRWLock);
 	return SomeProperty;
 }
 void UTbNamesNamEsJniClient::SetSomeProperty(int32 InSomeProperty)
@@ -310,6 +313,7 @@ void UTbNamesNamEsJniClient::SetSomeProperty(int32 InSomeProperty)
 }
 int32 UTbNamesNamEsJniClient::GetSomePoperty2() const
 {
+	FReadScopeLock Lock(m_SomePoperty2RWLock);
 	return SomePoperty2;
 }
 void UTbNamesNamEsJniClient::SetSomePoperty2(int32 InSomePoperty2)
@@ -354,6 +358,7 @@ void UTbNamesNamEsJniClient::SetSomePoperty2(int32 InSomePoperty2)
 }
 ETbNamesEnum_With_Under_scores UTbNamesNamEsJniClient::GetEnumProperty() const
 {
+	FReadScopeLock Lock(m_EnumPropertyRWLock);
 	return EnumProperty;
 }
 void UTbNamesNamEsJniClient::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
@@ -575,25 +580,37 @@ void UTbNamesNamEsJniClient::OnSomeSignal2Signal(bool bInSomeParam)
 
 void UTbNamesNamEsJniClient::OnSwitchChanged(bool bInSwitch)
 {
-	bSwitch = bInSwitch;
+	{
+		FWriteScopeLock Lock(m_SwitchRWLock);
+		bSwitch = bInSwitch;
+	}
 	_GetPublisher()->BroadcastSwitchChanged(bSwitch);
 }
 
 void UTbNamesNamEsJniClient::OnSomePropertyChanged(int32 InSomeProperty)
 {
-	SomeProperty = InSomeProperty;
+	{
+		FWriteScopeLock Lock(m_SomePropertyRWLock);
+		SomeProperty = InSomeProperty;
+	}
 	_GetPublisher()->BroadcastSomePropertyChanged(SomeProperty);
 }
 
 void UTbNamesNamEsJniClient::OnSomePoperty2Changed(int32 InSomePoperty2)
 {
-	SomePoperty2 = InSomePoperty2;
+	{
+		FWriteScopeLock Lock(m_SomePoperty2RWLock);
+		SomePoperty2 = InSomePoperty2;
+	}
 	_GetPublisher()->BroadcastSomePoperty2Changed(SomePoperty2);
 }
 
 void UTbNamesNamEsJniClient::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
-	EnumProperty = InEnumProperty;
+	{
+		FWriteScopeLock Lock(m_EnumPropertyRWLock);
+		EnumProperty = InEnumProperty;
+	}
 	_GetPublisher()->BroadcastEnumPropertyChanged(EnumProperty);
 }
 

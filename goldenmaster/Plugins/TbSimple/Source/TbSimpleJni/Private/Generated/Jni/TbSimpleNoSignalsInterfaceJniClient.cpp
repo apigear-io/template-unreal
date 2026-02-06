@@ -42,6 +42,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -209,6 +210,7 @@ void UTbSimpleNoSignalsInterfaceJniClient::Deinitialize()
 }
 bool UTbSimpleNoSignalsInterfaceJniClient::GetPropBool() const
 {
+	FReadScopeLock Lock(m_PropBoolRWLock);
 	return bPropBool;
 }
 void UTbSimpleNoSignalsInterfaceJniClient::SetPropBool(bool bInPropBool)
@@ -253,6 +255,7 @@ void UTbSimpleNoSignalsInterfaceJniClient::SetPropBool(bool bInPropBool)
 }
 int32 UTbSimpleNoSignalsInterfaceJniClient::GetPropInt() const
 {
+	FReadScopeLock Lock(m_PropIntRWLock);
 	return PropInt;
 }
 void UTbSimpleNoSignalsInterfaceJniClient::SetPropInt(int32 InPropInt)
@@ -462,13 +465,19 @@ bool UTbSimpleNoSignalsInterfaceJniClient::_IsReady() const
 }
 void UTbSimpleNoSignalsInterfaceJniClient::OnPropBoolChanged(bool bInPropBool)
 {
-	bPropBool = bInPropBool;
+	{
+		FWriteScopeLock Lock(m_PropBoolRWLock);
+		bPropBool = bInPropBool;
+	}
 	_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
 }
 
 void UTbSimpleNoSignalsInterfaceJniClient::OnPropIntChanged(int32 InPropInt)
 {
-	PropInt = InPropInt;
+	{
+		FWriteScopeLock Lock(m_PropIntRWLock);
+		PropInt = InPropInt;
+	}
 	_GetPublisher()->BroadcastPropIntChanged(PropInt);
 }
 

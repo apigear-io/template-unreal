@@ -42,6 +42,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -281,6 +282,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::Deinitialize()
 }
 TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::GetPropBool() const
 {
+	FReadScopeLock Lock(m_PropBoolRWLock);
 	return PropBool;
 }
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropBool(const TArray<bool>& InPropBool)
@@ -342,6 +344,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropBool(const TArray<bool>& InP
 }
 TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::GetPropInt() const
 {
+	FReadScopeLock Lock(m_PropIntRWLock);
 	return PropInt;
 }
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt(const TArray<int32>& InPropInt)
@@ -397,6 +400,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt(const TArray<int32>& InP
 }
 TArray<int32> UTbSimpleSimpleArrayInterfaceJniClient::GetPropInt32() const
 {
+	FReadScopeLock Lock(m_PropInt32RWLock);
 	return PropInt32;
 }
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt32(const TArray<int32>& InPropInt32)
@@ -452,6 +456,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt32(const TArray<int32>& I
 }
 TArray<int64> UTbSimpleSimpleArrayInterfaceJniClient::GetPropInt64() const
 {
+	FReadScopeLock Lock(m_PropInt64RWLock);
 	return PropInt64;
 }
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt64(const TArray<int64>& InPropInt64)
@@ -507,6 +512,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropInt64(const TArray<int64>& I
 }
 TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::GetPropFloat() const
 {
+	FReadScopeLock Lock(m_PropFloatRWLock);
 	return PropFloat;
 }
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat(const TArray<float>& InPropFloat)
@@ -562,6 +568,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat(const TArray<float>& I
 }
 TArray<float> UTbSimpleSimpleArrayInterfaceJniClient::GetPropFloat32() const
 {
+	FReadScopeLock Lock(m_PropFloat32RWLock);
 	return PropFloat32;
 }
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat32(const TArray<float>& InPropFloat32)
@@ -617,6 +624,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat32(const TArray<float>&
 }
 TArray<double> UTbSimpleSimpleArrayInterfaceJniClient::GetPropFloat64() const
 {
+	FReadScopeLock Lock(m_PropFloat64RWLock);
 	return PropFloat64;
 }
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat64(const TArray<double>& InPropFloat64)
@@ -672,6 +680,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropFloat64(const TArray<double>
 }
 TArray<FString> UTbSimpleSimpleArrayInterfaceJniClient::GetPropString() const
 {
+	FReadScopeLock Lock(m_PropStringRWLock);
 	return PropString;
 }
 void UTbSimpleSimpleArrayInterfaceJniClient::SetPropString(const TArray<FString>& InPropString)
@@ -728,6 +737,7 @@ void UTbSimpleSimpleArrayInterfaceJniClient::SetPropString(const TArray<FString>
 }
 FString UTbSimpleSimpleArrayInterfaceJniClient::GetPropReadOnlyString() const
 {
+	FReadScopeLock Lock(m_PropReadOnlyStringRWLock);
 	return PropReadOnlyString;
 }
 TArray<bool> UTbSimpleSimpleArrayInterfaceJniClient::FuncBool(const TArray<bool>& InParamBool)
@@ -1271,55 +1281,82 @@ void UTbSimpleSimpleArrayInterfaceJniClient::OnSigStringSignal(const TArray<FStr
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropBoolChanged(const TArray<bool>& InPropBool)
 {
-	PropBool = InPropBool;
+	{
+		FWriteScopeLock Lock(m_PropBoolRWLock);
+		PropBool = InPropBool;
+	}
 	_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropIntChanged(const TArray<int32>& InPropInt)
 {
-	PropInt = InPropInt;
+	{
+		FWriteScopeLock Lock(m_PropIntRWLock);
+		PropInt = InPropInt;
+	}
 	_GetPublisher()->BroadcastPropIntChanged(PropInt);
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropInt32Changed(const TArray<int32>& InPropInt32)
 {
-	PropInt32 = InPropInt32;
+	{
+		FWriteScopeLock Lock(m_PropInt32RWLock);
+		PropInt32 = InPropInt32;
+	}
 	_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropInt64Changed(const TArray<int64>& InPropInt64)
 {
-	PropInt64 = InPropInt64;
+	{
+		FWriteScopeLock Lock(m_PropInt64RWLock);
+		PropInt64 = InPropInt64;
+	}
 	_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropFloatChanged(const TArray<float>& InPropFloat)
 {
-	PropFloat = InPropFloat;
+	{
+		FWriteScopeLock Lock(m_PropFloatRWLock);
+		PropFloat = InPropFloat;
+	}
 	_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropFloat32Changed(const TArray<float>& InPropFloat32)
 {
-	PropFloat32 = InPropFloat32;
+	{
+		FWriteScopeLock Lock(m_PropFloat32RWLock);
+		PropFloat32 = InPropFloat32;
+	}
 	_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropFloat64Changed(const TArray<double>& InPropFloat64)
 {
-	PropFloat64 = InPropFloat64;
+	{
+		FWriteScopeLock Lock(m_PropFloat64RWLock);
+		PropFloat64 = InPropFloat64;
+	}
 	_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropStringChanged(const TArray<FString>& InPropString)
 {
-	PropString = InPropString;
+	{
+		FWriteScopeLock Lock(m_PropStringRWLock);
+		PropString = InPropString;
+	}
 	_GetPublisher()->BroadcastPropStringChanged(PropString);
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
 {
-	PropReadOnlyString = InPropReadOnlyString;
+	{
+		FWriteScopeLock Lock(m_PropReadOnlyStringRWLock);
+		PropReadOnlyString = InPropReadOnlyString;
+	}
 	_GetPublisher()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
 }
 

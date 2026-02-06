@@ -43,6 +43,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -222,6 +223,7 @@ void UTestbed2NestedStruct3InterfaceJniClient::Deinitialize()
 }
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceJniClient::GetProp1() const
 {
+	FReadScopeLock Lock(m_Prop1RWLock);
 	return Prop1;
 }
 void UTestbed2NestedStruct3InterfaceJniClient::SetProp1(const FTestbed2NestedStruct1& InProp1)
@@ -269,6 +271,7 @@ void UTestbed2NestedStruct3InterfaceJniClient::SetProp1(const FTestbed2NestedStr
 }
 FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceJniClient::GetProp2() const
 {
+	FReadScopeLock Lock(m_Prop2RWLock);
 	return Prop2;
 }
 void UTestbed2NestedStruct3InterfaceJniClient::SetProp2(const FTestbed2NestedStruct2& InProp2)
@@ -316,6 +319,7 @@ void UTestbed2NestedStruct3InterfaceJniClient::SetProp2(const FTestbed2NestedStr
 }
 FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceJniClient::GetProp3() const
 {
+	FReadScopeLock Lock(m_Prop3RWLock);
 	return Prop3;
 }
 void UTestbed2NestedStruct3InterfaceJniClient::SetProp3(const FTestbed2NestedStruct3& InProp3)
@@ -597,19 +601,28 @@ void UTestbed2NestedStruct3InterfaceJniClient::OnSig3Signal(const FTestbed2Neste
 
 void UTestbed2NestedStruct3InterfaceJniClient::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
-	Prop1 = InProp1;
+	{
+		FWriteScopeLock Lock(m_Prop1RWLock);
+		Prop1 = InProp1;
+	}
 	_GetPublisher()->BroadcastProp1Changed(Prop1);
 }
 
 void UTestbed2NestedStruct3InterfaceJniClient::OnProp2Changed(const FTestbed2NestedStruct2& InProp2)
 {
-	Prop2 = InProp2;
+	{
+		FWriteScopeLock Lock(m_Prop2RWLock);
+		Prop2 = InProp2;
+	}
 	_GetPublisher()->BroadcastProp2Changed(Prop2);
 }
 
 void UTestbed2NestedStruct3InterfaceJniClient::OnProp3Changed(const FTestbed2NestedStruct3& InProp3)
 {
-	Prop3 = InProp3;
+	{
+		FWriteScopeLock Lock(m_Prop3RWLock);
+		Prop3 = InProp3;
+	}
 	_GetPublisher()->BroadcastProp3Changed(Prop3);
 }
 

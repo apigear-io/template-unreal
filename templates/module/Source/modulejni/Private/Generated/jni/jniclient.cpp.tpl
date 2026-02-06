@@ -114,6 +114,7 @@ limitations under the License.
 {{ end }}
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -305,6 +306,7 @@ void {{$Class}}::Deinitialize()
 {{- range .Interface.Properties }}
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}() const
 {
+	FReadScopeLock Lock(m_{{Camel .Name}}RWLock);
 	return {{ueVar "" . }};
 }
 
@@ -533,7 +535,10 @@ void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "In" .Params}})
 {{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
-	{{ueVar "" .}} = {{ueVar "In" .}};
+	{
+		FWriteScopeLock Lock(m_{{Camel .Name}}RWLock);
+		{{ueVar "" .}} = {{ueVar "In" .}};
+	}
 	_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 }
 {{- end }}

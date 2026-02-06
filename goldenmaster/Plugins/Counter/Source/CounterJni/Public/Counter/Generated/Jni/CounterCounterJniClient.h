@@ -21,6 +21,7 @@ limitations under the License.
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Counter/Generated/Jni/CounterJniConnectionStatus.h"
 #include <memory>
+#include "HAL/PlatformProcess.h"
 
 #if PLATFORM_ANDROID
 
@@ -124,4 +125,9 @@ private:
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	jobject m_javaJniClientInstance = nullptr;
 #endif
+
+	mutable FRWLock m_VectorRWLock;
+	mutable FRWLock m_ExternVectorRWLock;
+	mutable FRWLock m_VectorArrayRWLock;
+	mutable FRWLock m_ExternVectorArrayRWLock;
 };

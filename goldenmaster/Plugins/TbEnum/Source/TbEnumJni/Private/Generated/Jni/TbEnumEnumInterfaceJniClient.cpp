@@ -43,6 +43,7 @@ limitations under the License.
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/ScopeRWLock.h"
 
 #if PLATFORM_ANDROID
 
@@ -234,6 +235,7 @@ void UTbEnumEnumInterfaceJniClient::Deinitialize()
 }
 ETbEnumEnum0 UTbEnumEnumInterfaceJniClient::GetProp0() const
 {
+	FReadScopeLock Lock(m_Prop0RWLock);
 	return Prop0;
 }
 void UTbEnumEnumInterfaceJniClient::SetProp0(ETbEnumEnum0 InProp0)
@@ -281,6 +283,7 @@ void UTbEnumEnumInterfaceJniClient::SetProp0(ETbEnumEnum0 InProp0)
 }
 ETbEnumEnum1 UTbEnumEnumInterfaceJniClient::GetProp1() const
 {
+	FReadScopeLock Lock(m_Prop1RWLock);
 	return Prop1;
 }
 void UTbEnumEnumInterfaceJniClient::SetProp1(ETbEnumEnum1 InProp1)
@@ -328,6 +331,7 @@ void UTbEnumEnumInterfaceJniClient::SetProp1(ETbEnumEnum1 InProp1)
 }
 ETbEnumEnum2 UTbEnumEnumInterfaceJniClient::GetProp2() const
 {
+	FReadScopeLock Lock(m_Prop2RWLock);
 	return Prop2;
 }
 void UTbEnumEnumInterfaceJniClient::SetProp2(ETbEnumEnum2 InProp2)
@@ -375,6 +379,7 @@ void UTbEnumEnumInterfaceJniClient::SetProp2(ETbEnumEnum2 InProp2)
 }
 ETbEnumEnum3 UTbEnumEnumInterfaceJniClient::GetProp3() const
 {
+	FReadScopeLock Lock(m_Prop3RWLock);
 	return Prop3;
 }
 void UTbEnumEnumInterfaceJniClient::SetProp3(ETbEnumEnum3 InProp3)
@@ -698,25 +703,37 @@ void UTbEnumEnumInterfaceJniClient::OnSig3Signal(ETbEnumEnum3 InParam3)
 
 void UTbEnumEnumInterfaceJniClient::OnProp0Changed(ETbEnumEnum0 InProp0)
 {
-	Prop0 = InProp0;
+	{
+		FWriteScopeLock Lock(m_Prop0RWLock);
+		Prop0 = InProp0;
+	}
 	_GetPublisher()->BroadcastProp0Changed(Prop0);
 }
 
 void UTbEnumEnumInterfaceJniClient::OnProp1Changed(ETbEnumEnum1 InProp1)
 {
-	Prop1 = InProp1;
+	{
+		FWriteScopeLock Lock(m_Prop1RWLock);
+		Prop1 = InProp1;
+	}
 	_GetPublisher()->BroadcastProp1Changed(Prop1);
 }
 
 void UTbEnumEnumInterfaceJniClient::OnProp2Changed(ETbEnumEnum2 InProp2)
 {
-	Prop2 = InProp2;
+	{
+		FWriteScopeLock Lock(m_Prop2RWLock);
+		Prop2 = InProp2;
+	}
 	_GetPublisher()->BroadcastProp2Changed(Prop2);
 }
 
 void UTbEnumEnumInterfaceJniClient::OnProp3Changed(ETbEnumEnum3 InProp3)
 {
-	Prop3 = InProp3;
+	{
+		FWriteScopeLock Lock(m_Prop3RWLock);
+		Prop3 = InProp3;
+	}
 	_GetPublisher()->BroadcastProp3Changed(Prop3);
 }
 
