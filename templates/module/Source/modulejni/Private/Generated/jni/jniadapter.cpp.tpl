@@ -33,13 +33,13 @@
 		}
 		auto {{$localName}}Wrapped = FJavaHelper::ToJavaStringArray(Env, {{$cppropName}}StringViews);
 		static const TCHAR* errorMsg{{$localName}} = TEXT("failed to convert {{$cppropName}} to jstring array");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+		{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{$localName}});
 		jobjectArray {{$localName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$localName}}Wrapped));
 		{{- else if (eq .KindType "bool")}}
 		auto len{{snake .Name}} = {{$cppropName}}.Num();
 		{{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
 		static const TCHAR* errorMsgAlloc{{$localName}} = TEXT("failed allocate jarray for {{$localName}}");
-		if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgAlloc{{$localName}}))
+		if (!{{$localClassConverter}}::checkJniErrorOccurred(errorMsgAlloc{{$localName}}))
 		{
 			TArray<jboolean> Temp{{$localName}};
 			Temp{{$localName}}.SetNumUninitialized(len{{snake .Name}});
@@ -49,13 +49,13 @@
 			}
 			Env->SetBooleanArrayRegion({{$localName}}, 0, len{{snake .Name}}, Temp{{$localName}}.GetData());
 			static const TCHAR* errorMsg{{$localName}} = TEXT("failed set array region for {{$localName}}");
-			{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+			{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{$localName}});
 		}
 		{{- else if and (.IsPrimitive ) (not (eq .KindType "enum")) }}
 		auto len{{snake .Name}} = {{$cppropName}}.Num();
 		{{jniToReturnType .}} {{$localName}} = Env->New{{jniToEnvNameType .}}Array(len{{snake .Name}});
 		static const TCHAR* errorMsgAlloc{{$localName}} = TEXT("failed allocate jarray for {{$localName}}");
-		if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgAlloc{{$localName}}))
+		if (!{{$localClassConverter}}::checkJniErrorOccurred(errorMsgAlloc{{$localName}}))
 		{
 			Env->Set{{jniToEnvNameType .}}ArrayRegion({{$localName}}, 0, len{{snake .Name}}, {{ if (eq .KindType "int64") -}}
 		reinterpret_cast<const jlong*>({{$cppropName}}.GetData()));
@@ -63,7 +63,7 @@
 		{{$cppropName}}.GetData());
 		{{- end }}
 			static const TCHAR* errorMsg{{$localName}} = TEXT("failed set array region for {{$localName}}");
-			{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+			{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{$localName}});
 		};
 		{{- else }}
 		{{- if eq .KindType "interface" }}
@@ -74,7 +74,7 @@
 	{{- else if (eq .KindType "string")}}
 		auto {{$localName}}Wrapped = FJavaHelper::ToJavaString(Env, {{$cppropName}});
 		static const TCHAR* errorMsg{{$localName}} = TEXT("failed converting to jstring {{$localName}}");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+		{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{$localName}});
 		jstring {{$localName}} = static_cast<jstring>(Env->NewLocalRef(*{{$localName}}Wrapped));
 	{{- else if ( or (not .IsPrimitive ) (eq .KindType "enum" ) ) }}
 		{{- if eq .KindType "interface" }}
@@ -92,42 +92,13 @@
 {{- if (eq $javaClassConverter "DataJavaConverter" )}}{{- $javaClassConverter = $localClassConverter }}{{ end }}
 {{- if .IsArray }}
 	{{ueReturn "" .}} {{$local_value}} = {{ ueDefault "" . }};
+	{{- if .IsPrimitive }}
 	{{- if (eq .KindType "string")}}
-	{{$local_value}} = FJavaHelper::ObjectArrayToFStringTArray(Env, {{$javaPropName}});
-	static const TCHAR* errorMsg{{$local_value}} = TEXT("failed to convert {{$javaPropName}} from jstring array");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$local_value}});
-	{{- else if (eq .KindType "bool")}}
-	jbooleanArray l_java{{Camel .Name}}Array = (jbooleanArray){{$javaPropName}};
-	jsize len{{snake .Name}} = Env->GetArrayLength(l_java{{Camel .Name}}Array);
-	static const TCHAR* errorMsgLen{{$local_value}} = TEXT("failed to get an array length l_java{{Camel .Name}}Array");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgLen{{$local_value}});
-	{{$local_value}}.Reserve(len{{snake .Name}});
-	TArray<jboolean> Temp{{Camel .Name}};
-	Temp{{Camel .Name}}.SetNumUninitialized(len{{snake .Name}});
-	Env->GetBooleanArrayRegion(l_java{{Camel .Name}}Array, 0, len{{snake .Name}}, Temp{{Camel .Name}}.GetData());
-	static const TCHAR* errorMsg{{$local_value}} = TEXT("failed to get an array region l_java{{Camel .Name}}Array");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$local_value}});
-	for (int i = 0; i < len{{snake .Name}}; i++)
-	{
-		{{$local_value}}.Add(Temp{{Camel .Name}}[i] == JNI_TRUE);
-	}
-	Env->DeleteLocalRef(l_java{{Camel .Name}}Array);
-	{{- else if .IsPrimitive }}
-	{{ jniToReturnType . }} l_java{{Camel .Name}}Array = ({{ jniToReturnType . }}){{$javaPropName}};
-	jsize len{{snake .Name}} = Env->GetArrayLength(l_java{{Camel .Name}}Array);
-	static const TCHAR* errorMsgLen{{$local_value}} = TEXT("failed to get an array length l_java{{Camel .Name}}Array");
-	if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgLen{{$local_value}}))
-	{
-		{{$local_value}}.AddUninitialized(len{{snake .Name}});
-		Env->Get{{jniToEnvNameType .}}ArrayRegion({{$javaPropName}}, 0, len{{snake .Name}}, {{ if (eq .KindType "int64") -}}
-			reinterpret_cast<jlong*>({{$local_value}}.GetData()));
-			{{- else -}}
-			{{$local_value}}.GetData());
-			{{- end }}
-		static const TCHAR* errorMsg{{$local_value}} = TEXT("failed to get an array region{{$javaPropName}}");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$local_value}});
-		Env->DeleteLocalRef(l_java{{Camel .Name}}Array);
-	}
+	F{{Camel .Module.Name}}CommonJavaConverter::TryFillArray(
+	{{- else }}
+	F{{Camel .Module.Name}}CommonJavaConverter::TryFillPrimitiveArray(
+	{{- end }}
+		Env, {{$local_value}}, {{$javaPropName}}, TEXT("{{$javaPropName}}"));
 	{{- else}}
 	{{- if eq .KindType "interface" }}
 	// interfaces are currently not supported. {{$javaClassConverter}} does not fill the array. 
@@ -184,6 +155,7 @@
 {{- end }}
 
 #include "Generated/Detail/{{$ModuleName}}ThreadingHelper.h"
+#include "Generated/Detail/{{$ModuleName}}CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 
@@ -241,21 +213,21 @@ void {{$Class}}Cache::init()
 
 	{{$serviceClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaServicePath}}/{{$javaServiceTypeName}}");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java {{$javaServicePath}}/{{$javaServiceTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgCls);
+	{{$localClassConverter}}::checkJniErrorOccurred(errorMsgCls);
 	ReadyMethodID = env->GetMethodID({{$serviceClass}}, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgReadyMethod);
+	{{$localClassConverter}}::checkJniErrorOccurred(errorMsgReadyMethod);
 {{- range .Interface.Properties }}
 	{{- $signatureParam := jniJavaSignatureParam . }}
 	{{ Camel .Name}}ChangedMethodID = env->GetMethodID({{$serviceClass}}, "on{{Camel .Name}}Changed", "({{$signatureParam}})V");
 	static const TCHAR* errorMsg{{Camel .Name}}Changed = TEXT("failed to get java on{{Camel .Name}}Changed, ({{$signatureParam}})V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Changed);
+	{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
 	{{- $signatureParams := jniJavaSignatureParams .Params }}
 	{{ Camel .Name}}SignalMethodID = env->GetMethodID({{$serviceClass}}, "on{{Camel .Name}}", "({{$signatureParams}})V");
 	static const TCHAR* errorMsg{{Camel .Name}}Signal = TEXT("failed to get java on{{Camel .Name}}, ({{$signatureParams}})V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Signal);
+	{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{Camel .Name}}Signal);
 {{- end }}
 }
 
@@ -294,7 +266,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}Starter");
 	static const TCHAR* errorMsgCls = TEXT("{{Camel .Module.Name}}JavaServiceStarter; class not found");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgCls);
+	{{$localClassConverter}}::checkJniErrorOccurred(errorMsgCls);
 	if (BridgeClass == nullptr)
 	{
 		return;
@@ -302,7 +274,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	auto functionSignature = "(Landroid/content/Context;)L{{$javaIfClassFull}};";
 	jmethodID StartMethod = Env->GetStaticMethodID(BridgeClass, "start", functionSignature);
 	static const TCHAR* errorMsgMethodId = TEXT("{{Camel .Module.Name}}JavaServiceStarter::start; method not found");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgMethodId);
+	{{$localClassConverter}}::checkJniErrorOccurred(errorMsgMethodId);
 	if (StartMethod == nullptr)
 	{
 		return;
@@ -310,7 +282,7 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 	jobject Activity = FJavaWrapper::GameActivityThis;
 	jobject localRef = FJavaWrapper::CallStaticObjectMethod(Env, BridgeClass, StartMethod, Activity);
 	static const TCHAR* errorMsgCall = TEXT("{{Camel .Module.Name}}JavaServiceStarter failed to call start method");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgCall);
+	{{$localClassConverter}}::checkJniErrorOccurred(errorMsgCall);
 	m_javaJniServiceInstance = Env->NewGlobalRef(localRef);
 	Env->DeleteLocalRef(localRef);
 	Env->DeleteGlobalRef(BridgeClass);
@@ -333,18 +305,18 @@ void {{$Class}}::Deinitialize()
 
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}Starter");
 	static const TCHAR* errorMsgCls = TEXT("{{Camel .Module.Name}}JavaServiceStarter; class not found");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgCls);
+	{{$localClassConverter}}::checkJniErrorOccurred(errorMsgCls);
 	if (BridgeClass != nullptr)
 	{
 		jmethodID StopMethod = Env->GetStaticMethodID(BridgeClass, "stop", "(Landroid/content/Context;)V");
 		static const TCHAR* errorMsgMethodId = TEXT("{{Camel .Module.Name}}JavaServiceStarter::stop; method not found");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsgMethodId);
+		{{$localClassConverter}}::checkJniErrorOccurred(errorMsgMethodId);
 		if (StopMethod != nullptr)
 		{
 			jobject Activity = FJavaWrapper::GameActivityThis; // Unreal’s activity
 			FJavaWrapper::CallStaticVoidMethod(Env, BridgeClass, StopMethod, Activity);
 			static const TCHAR* errorMsgCall = TEXT("{{Camel .Module.Name}}JavaServiceStarter failed to call stop");
-			{{$localClassConverter}}::checkJniErrorOccured(errorMsgCall);
+			{{$localClassConverter}}::checkJniErrorOccurred(errorMsgCall);
 		}
 		else
 		{
@@ -405,7 +377,7 @@ void {{$Class}}::callJniServiceReady(bool isServiceReady)
 
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, {{$Class}}Cache::ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("{{$javaClassPath}}/{{$javaClassName}}:nativeServiceReady(Z)V CLASS not found");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
+		{{$localClassConverter}}::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -446,7 +418,7 @@ void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "" .Params}})
 		{{- end -}}
 		{{- end -}});
 		static const TCHAR* errorMsg = TEXT("{{$javaClassPath}}/{{$javaClassName}} failed to call on{{Camel .Name}} ({{$signatureParams}})V");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
+		{{$localClassConverter}}::checkJniErrorOccurred(errorMsg);
 
 		{{- range $idx, $p := .Params -}}
 			{{- $javaPropName := Camel .Name}}
@@ -501,7 +473,7 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, {{$cppropName}});
 		{{- end }}
 		static const TCHAR* errorMsg = TEXT("{{$javaClassPath}}/{{$javaClassName}} failed to call on{{Camel .Name}}Changed ({{$signature}})V");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
+		{{$localClassConverter}}::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -624,12 +596,12 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel .N
 		auto {{$localName}}Wrapped = FJavaHelper::ToJavaStringArray(Env, {{$cppropName}}StringViews);
 		auto {{$localName}} = static_cast<jobjectArray>(Env->NewLocalRef(*{{$localName}}Wrapped));
 		static const TCHAR* errorMsgResult = TEXT("failed to convert result to jstring array in call native{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsgResult);
+		{{$localClassConverter}}::checkJniErrorOccurred(errorMsgResult);
 	{{- else if (eq .Return.KindType "bool")}}
 		auto len = {{$cppropName}}.Num();
 		{{jniToReturnType .Return}} {{$localName}} = Env->New{{jniToEnvNameType .Return}}Array(len);
 		static const TCHAR* errorMsgAlloc{{$localName}} = TEXT("failed to allocate an array in call native{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-		if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgAlloc{{$localName}}))
+		if (!{{$localClassConverter}}::checkJniErrorOccurred(errorMsgAlloc{{$localName}}))
 		{
 			TArray<jboolean> Temp;
 			Temp.SetNumUninitialized(len);
@@ -639,13 +611,13 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel .N
 			}
 			Env->SetBooleanArrayRegion({{$localName}}, 0, len, Temp.GetData());
 			static const TCHAR* errorMsg{{$localName}} = TEXT("failed to set an array region in call native{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-			{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+			{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{$localName}});
 		}
 	{{- else if and (.Return.IsPrimitive ) (not (eq .Return.KindType "enum")) }}
 		auto len = {{$cppropName}}.Num();
 		{{jniToReturnType .Return}} {{$localName}} = Env->New{{jniToEnvNameType .Return}}Array(len);
 		static const TCHAR* errorMsgAlloc{{$localName}} = TEXT("failed to allocate an array in call native{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-		if (!{{$localClassConverter}}::checkJniErrorOccured(errorMsgAlloc{{$localName}}))
+		if (!{{$localClassConverter}}::checkJniErrorOccurred(errorMsgAlloc{{$localName}}))
 		{
 			Env->Set{{jniToEnvNameType .Return}}ArrayRegion({{$localName}}, 0, len, {{ if (eq .Return.KindType "int64") -}}
 		reinterpret_cast<const jlong*>({{$cppropName}}.GetData()));
@@ -653,7 +625,7 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel .N
 		{{$cppropName}}.GetData());
 		{{- end }}
 			static const TCHAR* errorMsg{{$localName}} = TEXT("failed to set an array region in call native{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-			{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+			{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{$localName}});
 		};
 	{{- else }}
 		{{- if eq .Return.KindType "interface" }}
@@ -664,7 +636,7 @@ JNI_METHOD {{ jniToReturnType .Return}} {{$jniFullFuncPrefix}}_native{{ Camel .N
 		{{- else if (eq .Return.KindType "string")}}
 		auto {{$localName}}Wrapped = FJavaHelper::ToJavaString(Env, {{$cppropName}});
 		static const TCHAR* errorMsg{{$localName}} = TEXT("failed to convert to jstring in call native{{Camel .Name}} for {{$javaClassPath}}/{{$javaClassName}}");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{$localName}});
+		{{$localClassConverter}}::checkJniErrorOccurred(errorMsg{{$localName}});
 		jstring {{$localName}} = static_cast<jstring>(Env->NewLocalRef(*{{$localName}}Wrapped));
 		{{- else if ( or (not (ueIsStdSimpleType .Return)) (eq .Return.KindType "enum" ) ) }}
 		{{- if eq .Return.KindType "interface" }}

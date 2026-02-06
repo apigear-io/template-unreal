@@ -46,7 +46,7 @@ public:
 
 	static TScriptInterface<ICounterCounterInterface> getCppInstanceCounterCounter();
 
-	static bool checkJniErrorOccured(const TCHAR* Msg);
+	static bool checkJniErrorOccurred(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:

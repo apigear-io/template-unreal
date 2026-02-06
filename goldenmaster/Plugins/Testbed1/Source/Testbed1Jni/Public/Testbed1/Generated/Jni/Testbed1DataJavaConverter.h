@@ -127,7 +127,7 @@ public:
 
 	static TScriptInterface<ITestbed1StructArray2InterfaceInterface> getCppInstanceTestbed1StructArray2Interface();
 
-	static bool checkJniErrorOccured(const TCHAR* Msg);
+	static bool checkJniErrorOccurred(const TCHAR* Msg);
 	static void cleanJavaReferences();
 
 private:

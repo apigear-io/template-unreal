@@ -45,6 +45,7 @@ limitations under the License.
 #include "Misc/ScopeRWLock.h"
 
 #include "Generated/Detail/TbSimpleMethodHelper.h"
+#include "Generated/Detail/TbSimpleCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 
@@ -86,19 +87,19 @@ void UTbSimpleVoidInterfaceJniClientCache::init()
 
 	clientClassVoidInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	FuncVoidAsyncMethodID = env->GetMethodID(clientClassVoidInterface, "funcVoidAsync", "(Ljava/lang/String;)V");
 	static const TCHAR* errorMsgFuncVoidAsyncMethod = TEXT("failed to get java funcVoidAsync, (Ljava/lang/String;)V for tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncVoidAsyncMethod);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgFuncVoidAsyncMethod);
 	clientClassVoidInterfaceCtor = env->GetMethodID(clientClassVoidInterface, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgInit);
 	BindMethodID = env->GetMethodID(clientClassVoidInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgBind);
 	UnbindMethodID = env->GetMethodID(clientClassVoidInterface, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgUnbind);
 }
 
 void UTbSimpleVoidInterfaceJniClientCache::clear()
@@ -243,19 +244,19 @@ bool UTbSimpleVoidInterfaceJniClient::_bindToService(FString servicePackage, FSt
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		if (TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-		if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+		if (TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbSimple/tbSimplejniclient/VoidInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -283,7 +284,7 @@ void UTbSimpleVoidInterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbSimple/tbSimplejniclient/VoidInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 	else
 	{
@@ -314,7 +315,7 @@ bool UTbSimpleVoidInterfaceJniClient::tryCallAsyncJavaFuncVoid(FGuid Guid, jmeth
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcVoidAsync on tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -322,7 +323,7 @@ bool UTbSimpleVoidInterfaceJniClient::tryCallAsyncJavaFuncVoid(FGuid Guid, jmeth
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
 
 	static const TCHAR* errorMsg = TEXT("failed to call funcVoidAsync on tbSimple/tbSimplejniclient/VoidInterfaceJniClient.");
-	auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsg);
 
 	return !errorOccurred;
 }
@@ -359,7 +360,7 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_VoidInterfaceJniClient_nativeOnF
 	UE_LOG(LogTbSimpleVoidInterfaceClient_JNI, Verbose, TEXT("Java_tbSimple_tbSimplejniclient_VoidInterfaceJniClient_nativeOnFuncVoidResult"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFuncVoid for tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbSimpleDataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
