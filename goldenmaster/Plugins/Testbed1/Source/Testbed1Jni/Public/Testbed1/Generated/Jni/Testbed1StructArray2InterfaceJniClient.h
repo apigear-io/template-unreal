@@ -22,6 +22,7 @@ limitations under the License.
 #include "Testbed1/Generated/Jni/Testbed1JniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -91,10 +92,15 @@ public:
 
 	// operations
 	virtual TArray<FTestbed1StructBool> FuncBool(const FTestbed1StructBoolWithArray& ParamBool) override;
+	TFuture<TArray<FTestbed1StructBool>> FuncBoolAsync(const FTestbed1StructBoolWithArray& ParamBool) override;
 	virtual TArray<FTestbed1StructInt> FuncInt(const FTestbed1StructIntWithArray& ParamInt) override;
+	TFuture<TArray<FTestbed1StructInt>> FuncIntAsync(const FTestbed1StructIntWithArray& ParamInt) override;
 	virtual TArray<FTestbed1StructFloat> FuncFloat(const FTestbed1StructFloatWithArray& ParamFloat) override;
+	TFuture<TArray<FTestbed1StructFloat>> FuncFloatAsync(const FTestbed1StructFloatWithArray& ParamFloat) override;
 	virtual TArray<FTestbed1StructString> FuncString(const FTestbed1StructStringWithArray& ParamString) override;
+	TFuture<TArray<FTestbed1StructString>> FuncStringAsync(const FTestbed1StructStringWithArray& ParamString) override;
 	virtual TArray<ETestbed1Enum0> FuncEnum(const FTestbed1StructEnumWithArray& ParamEnum) override;
+	TFuture<TArray<ETestbed1Enum0>> FuncEnumAsync(const FTestbed1StructEnumWithArray& ParamEnum) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructArray2Interface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTestbed1JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -136,6 +142,18 @@ private:
 	void OnPropStringChanged(const FTestbed1StructStringWithArray& InPropString) override;
 
 	void OnPropEnumChanged(const FTestbed1StructEnumWithArray& InPropEnum) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFuncBool(FGuid Guid, jmethodID MethodId, const FTestbed1StructBoolWithArray& InParamBool);
+
+	bool tryCallAsyncJavaFuncInt(FGuid Guid, jmethodID MethodId, const FTestbed1StructIntWithArray& InParamInt);
+
+	bool tryCallAsyncJavaFuncFloat(FGuid Guid, jmethodID MethodId, const FTestbed1StructFloatWithArray& InParamFloat);
+
+	bool tryCallAsyncJavaFuncString(FGuid Guid, jmethodID MethodId, const FTestbed1StructStringWithArray& InParamString);
+
+	bool tryCallAsyncJavaFuncEnum(FGuid Guid, jmethodID MethodId, const FTestbed1StructEnumWithArray& InParamEnum);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

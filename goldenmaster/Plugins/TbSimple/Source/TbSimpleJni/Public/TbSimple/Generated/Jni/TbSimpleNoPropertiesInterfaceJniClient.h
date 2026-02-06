@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbSimple/Generated/Jni/TbSimpleJniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -68,6 +69,7 @@ public:
 	// operations
 	virtual void FuncVoid() override;
 	virtual bool FuncBool(bool bParamBool) override;
+	TFuture<bool> FuncBoolAsync(bool bParamBool) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|NoPropertiesInterface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbSimpleJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -95,6 +97,12 @@ private:
 	void OnSigVoidSignal() override;
 
 	void OnSigBoolSignal(bool bInParamBool) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFuncVoid(FGuid Guid, jmethodID MethodId);
+
+	bool tryCallAsyncJavaFuncBool(FGuid Guid, jmethodID MethodId, bool bInParamBool);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

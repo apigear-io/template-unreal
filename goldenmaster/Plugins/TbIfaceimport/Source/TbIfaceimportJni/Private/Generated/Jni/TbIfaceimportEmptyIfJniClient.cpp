@@ -44,6 +44,8 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Misc/ScopeRWLock.h"
 
+#include "Generated/Detail/TbIfaceimportMethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -58,24 +60,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UTbIfaceimportEmptyIfJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 class UTbIfaceimportEmptyIfJniClientCache
@@ -128,7 +112,7 @@ namespace
 
 std::atomic<IUTbIfaceimportEmptyIfJniClientJniAccessor*> gUTbIfaceimportEmptyIfJniClientHandle(nullptr);
 
-UTbIfaceimportEmptyIfJniClientMethodHelper gUTbIfaceimportEmptyIfJniClientmethodHelper;
+FTbIfaceimportMethodHelper gUTbIfaceimportEmptyIfJniClientmethodHelper(TEXT("UTbIfaceimportEmptyIfJniClient"));
 
 } // namespace
 
@@ -269,6 +253,9 @@ bool UTbIfaceimportEmptyIfJniClient::_IsReady() const
 	return b_isReady.load(std::memory_order_acquire);
 }
 
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+#endif
+
 void UTbIfaceimportEmptyIfJniClient::notifyIsReady(bool isReady)
 {
 	b_isReady.store(isReady, std::memory_order_release);
@@ -292,39 +279,3 @@ JNI_METHOD void Java_tbIfaceimport_tbIfaceimportjniclient_EmptyIfJniClient_nativ
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UTbIfaceimportEmptyIfJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-	FScopeLock Lock(&ReplyPromisesMapCS);
-	ReplyPromisesMap.Add(Id, &Promise);
-	UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
-	return Id;
-}
-
-template <typename ResultType>
-bool UTbIfaceimportEmptyIfJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-			{
-			PromisePtr->SetValue(Value);
-		});
-		return true;
-	}
-	return false;
-}

@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbSimple/Generated/Jni/TbSimpleJniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -112,14 +113,23 @@ public:
 	// operations
 	virtual void FuncNoReturnValue(bool bParamBool) override;
 	virtual bool FuncNoParams() override;
+	TFuture<bool> FuncNoParamsAsync() override;
 	virtual bool FuncBool(bool bParamBool) override;
+	TFuture<bool> FuncBoolAsync(bool bParamBool) override;
 	virtual int32 FuncInt(int32 ParamInt) override;
+	TFuture<int32> FuncIntAsync(int32 ParamInt) override;
 	virtual int32 FuncInt32(int32 ParamInt32) override;
+	TFuture<int32> FuncInt32Async(int32 ParamInt32) override;
 	virtual int64 FuncInt64(int64 ParamInt64) override;
+	TFuture<int64> FuncInt64Async(int64 ParamInt64) override;
 	virtual float FuncFloat(float ParamFloat) override;
+	TFuture<float> FuncFloatAsync(float ParamFloat) override;
 	virtual float FuncFloat32(float ParamFloat32) override;
+	TFuture<float> FuncFloat32Async(float ParamFloat32) override;
 	virtual double FuncFloat64(double ParamFloat) override;
+	TFuture<double> FuncFloat64Async(double ParamFloat) override;
 	virtual FString FuncString(const FString& ParamString) override;
+	TFuture<FString> FuncStringAsync(const FString& ParamString) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleInterface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbSimpleJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -175,6 +185,28 @@ private:
 	void OnPropFloat64Changed(double InPropFloat64) override;
 
 	void OnPropStringChanged(const FString& InPropString) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFuncNoReturnValue(FGuid Guid, jmethodID MethodId, bool bInParamBool);
+
+	bool tryCallAsyncJavaFuncNoParams(FGuid Guid, jmethodID MethodId);
+
+	bool tryCallAsyncJavaFuncBool(FGuid Guid, jmethodID MethodId, bool bInParamBool);
+
+	bool tryCallAsyncJavaFuncInt(FGuid Guid, jmethodID MethodId, int32 InParamInt);
+
+	bool tryCallAsyncJavaFuncInt32(FGuid Guid, jmethodID MethodId, int32 InParamInt32);
+
+	bool tryCallAsyncJavaFuncInt64(FGuid Guid, jmethodID MethodId, int64 InParamInt64);
+
+	bool tryCallAsyncJavaFuncFloat(FGuid Guid, jmethodID MethodId, float InParamFloat);
+
+	bool tryCallAsyncJavaFuncFloat32(FGuid Guid, jmethodID MethodId, float InParamFloat32);
+
+	bool tryCallAsyncJavaFuncFloat64(FGuid Guid, jmethodID MethodId, double InParamFloat);
+
+	bool tryCallAsyncJavaFuncString(FGuid Guid, jmethodID MethodId, const FString& InParamString);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

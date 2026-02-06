@@ -44,6 +44,8 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Misc/ScopeRWLock.h"
 
+#include "Generated/Detail/TbSimpleMethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -58,24 +60,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UTbSimpleNoPropertiesInterfaceJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 class UTbSimpleNoPropertiesInterfaceJniClientCache
@@ -140,7 +124,7 @@ namespace
 
 std::atomic<IUTbSimpleNoPropertiesInterfaceJniClientJniAccessor*> gUTbSimpleNoPropertiesInterfaceJniClientHandle(nullptr);
 
-UTbSimpleNoPropertiesInterfaceJniClientMethodHelper gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper;
+FTbSimpleMethodHelper gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper(TEXT("UTbSimpleNoPropertiesInterfaceJniClient"));
 
 } // namespace
 
@@ -220,21 +204,19 @@ void UTbSimpleNoPropertiesInterfaceJniClient::FuncVoid()
 	if (MethodID != nullptr)
 	{
 		FGuid id = FGuid::NewGuid();
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcVoidAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
-
-		static const TCHAR* errorMsg = TEXT("failed to call funcVoidAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		if (!tryCallAsyncJavaFuncVoid(id, MethodID))
+		{
+			return;
+		}
 	}
 	else
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcVoidAsync (Ljava/lang/String;)V not found"));
 	}
-#endif
 	return;
+#else
+	return;
+#endif
 }
 bool UTbSimpleNoPropertiesInterfaceJniClient::FuncBool(bool bInParamBool)
 {
@@ -248,7 +230,6 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::FuncBool(bool bInParamBool)
 #endif
 		return false;
 	}
-	TPromise<bool> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbSimpleNoPropertiesInterfaceJniClientCache::clientClassNoPropertiesInterface == nullptr)
@@ -256,26 +237,76 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::FuncBool(bool bInParamBool)
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Z)V CLASS not found"));
 		return false;
 	}
+	TPromise<bool> Promise;
+	TFuture<bool> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbSimpleNoPropertiesInterfaceJniClientCache::FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.StorePromise(Promise);
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInParamBool);
-
-		static const TCHAR* errorMsg = TEXT("failed to call funcBoolAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient.");
-		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto id = gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncBool(id, MethodID, bInParamBool))
+		{
+			gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.FulfillPromise(id, false);
+			return false;
+		}
 	}
 	else
 	{
 		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
+		Promise.SetValue(false);
 	}
+	return Future.Get();
+#else
+	return false;
 #endif
-	return Promise.GetFuture().Get();
+}
+TFuture<bool> UTbSimpleNoPropertiesInterfaceJniClient::FuncBoolAsync(bool bInParamBool)
+{
+	UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Verbose, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBoolAsync"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<bool> Promise;
+		Promise.SetValue(false);
+		return Promise.GetFuture();
+	}
+
+	TPromise<bool> Promise;
+	TFuture<bool> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbSimpleNoPropertiesInterfaceJniClientCache::clientClassNoPropertiesInterface == nullptr)
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Z)V CLASS not found"));
+		Promise.SetValue(false);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbSimpleNoPropertiesInterfaceJniClientCache::FuncBoolAsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaFuncBool(id, MethodID, bInParamBool))
+		{
+			gUTbSimpleNoPropertiesInterfaceJniClientmethodHelper.FulfillPromise(id, false);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBoolAsync (Ljava/lang/String;Z)V not found"));
+		Promise.SetValue(false);
+	}
+#else
+	Promise.SetValue(false);
+#endif
+
+	return Future;
 }
 
 bool UTbSimpleNoPropertiesInterfaceJniClient::_bindToService(FString servicePackage, FString connectionId)
@@ -371,6 +402,58 @@ void UTbSimpleNoPropertiesInterfaceJniClient::OnSigBoolSignal(bool bInParamBool)
 	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
 }
 
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+bool UTbSimpleNoPropertiesInterfaceJniClient::tryCallAsyncJavaFuncVoid(FGuid Guid, jmethodID MethodID)
+{
+	UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Verbose, TEXT("call async tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcVoid"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcVoidAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString);
+
+	static const TCHAR* errorMsg = TEXT("failed to call funcVoidAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient.");
+	auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+
+	return !errorOccurred;
+}
+
+bool UTbSimpleNoPropertiesInterfaceJniClient::tryCallAsyncJavaFuncBool(FGuid Guid, jmethodID MethodID, bool bInParamBool)
+{
+	UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Verbose, TEXT("call async tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient:funcBool"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call funcBoolAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient");
+	if (TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, bInParamBool);
+
+	static const TCHAR* errorMsg = TEXT("failed to call funcBoolAsync on tbSimple/tbSimplejniclient/NoPropertiesInterfaceJniClient.");
+	auto errorOccurred = TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
+
+	return !errorOccurred;
+}
+#endif
+
 void UTbSimpleNoPropertiesInterfaceJniClient::notifyIsReady(bool isReady)
 {
 	b_isReady.store(isReady, std::memory_order_release);
@@ -451,41 +534,3 @@ JNI_METHOD void Java_tbSimple_tbSimplejniclient_NoPropertiesInterfaceJniClient_n
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UTbSimpleNoPropertiesInterfaceJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-	FScopeLock Lock(&ReplyPromisesMapCS);
-	ReplyPromisesMap.Add(Id, &Promise);
-	UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
-	return Id;
-}
-
-template <typename ResultType>
-bool UTbSimpleNoPropertiesInterfaceJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(LogTbSimpleNoPropertiesInterfaceClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-			{
-			PromisePtr->SetValue(Value);
-		});
-		return true;
-	}
-	return false;
-}
-template FGuid UTbSimpleNoPropertiesInterfaceJniClientMethodHelper::StorePromise<bool>(TPromise<bool>& Promise);
-template bool UTbSimpleNoPropertiesInterfaceJniClientMethodHelper::FulfillPromise<bool>(const FGuid& Id, const bool& Value);

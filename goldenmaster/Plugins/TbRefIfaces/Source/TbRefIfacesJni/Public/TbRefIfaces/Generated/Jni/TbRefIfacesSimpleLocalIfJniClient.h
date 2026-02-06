@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbRefIfaces/Generated/Jni/TbRefIfacesJniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -69,6 +70,7 @@ public:
 
 	// operations
 	virtual int32 IntMethod(int32 Param) override;
+	TFuture<int32> IntMethodAsync(int32 Param) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|SimpleLocalIf|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbRefIfacesJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -96,6 +98,10 @@ private:
 	void OnIntSignalSignal(int32 InParam) override;
 
 	void OnIntPropertyChanged(int32 InIntProperty) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaIntMethod(FGuid Guid, jmethodID MethodId, int32 InParam);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

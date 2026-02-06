@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbSame1/Generated/Jni/TbSame1JniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -69,6 +70,7 @@ public:
 
 	// operations
 	virtual ETbSame1Enum1 Func1(ETbSame1Enum1 Param1) override;
+	TFuture<ETbSame1Enum1> Func1Async(ETbSame1Enum1 Param1) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame1|SameEnum1Interface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbSame1JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -96,6 +98,10 @@ private:
 	void OnSig1Signal(ETbSame1Enum1 InParam1) override;
 
 	void OnProp1Changed(ETbSame1Enum1 InProp1) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, ETbSame1Enum1 InParam1);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

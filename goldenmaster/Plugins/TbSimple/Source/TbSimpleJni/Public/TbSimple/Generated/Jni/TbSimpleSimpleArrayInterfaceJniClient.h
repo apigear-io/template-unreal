@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbSimple/Generated/Jni/TbSimpleJniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -114,13 +115,21 @@ public:
 
 	// operations
 	virtual TArray<bool> FuncBool(const TArray<bool>& ParamBool) override;
+	TFuture<TArray<bool>> FuncBoolAsync(const TArray<bool>& ParamBool) override;
 	virtual TArray<int32> FuncInt(const TArray<int32>& ParamInt) override;
+	TFuture<TArray<int32>> FuncIntAsync(const TArray<int32>& ParamInt) override;
 	virtual TArray<int32> FuncInt32(const TArray<int32>& ParamInt32) override;
+	TFuture<TArray<int32>> FuncInt32Async(const TArray<int32>& ParamInt32) override;
 	virtual TArray<int64> FuncInt64(const TArray<int64>& ParamInt64) override;
+	TFuture<TArray<int64>> FuncInt64Async(const TArray<int64>& ParamInt64) override;
 	virtual TArray<float> FuncFloat(const TArray<float>& ParamFloat) override;
+	TFuture<TArray<float>> FuncFloatAsync(const TArray<float>& ParamFloat) override;
 	virtual TArray<float> FuncFloat32(const TArray<float>& ParamFloat32) override;
+	TFuture<TArray<float>> FuncFloat32Async(const TArray<float>& ParamFloat32) override;
 	virtual TArray<double> FuncFloat64(const TArray<double>& ParamFloat) override;
+	TFuture<TArray<double>> FuncFloat64Async(const TArray<double>& ParamFloat) override;
 	virtual TArray<FString> FuncString(const TArray<FString>& ParamString) override;
+	TFuture<TArray<FString>> FuncStringAsync(const TArray<FString>& ParamString) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|SimpleArrayInterface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbSimpleJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -178,6 +187,24 @@ private:
 	void OnPropStringChanged(const TArray<FString>& InPropString) override;
 
 	void OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFuncBool(FGuid Guid, jmethodID MethodId, const TArray<bool>& InParamBool);
+
+	bool tryCallAsyncJavaFuncInt(FGuid Guid, jmethodID MethodId, const TArray<int32>& InParamInt);
+
+	bool tryCallAsyncJavaFuncInt32(FGuid Guid, jmethodID MethodId, const TArray<int32>& InParamInt32);
+
+	bool tryCallAsyncJavaFuncInt64(FGuid Guid, jmethodID MethodId, const TArray<int64>& InParamInt64);
+
+	bool tryCallAsyncJavaFuncFloat(FGuid Guid, jmethodID MethodId, const TArray<float>& InParamFloat);
+
+	bool tryCallAsyncJavaFuncFloat32(FGuid Guid, jmethodID MethodId, const TArray<float>& InParamFloat32);
+
+	bool tryCallAsyncJavaFuncFloat64(FGuid Guid, jmethodID MethodId, const TArray<double>& InParamFloat);
+
+	bool tryCallAsyncJavaFuncString(FGuid Guid, jmethodID MethodId, const TArray<FString>& InParamString);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

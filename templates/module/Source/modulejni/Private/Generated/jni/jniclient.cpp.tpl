@@ -116,6 +116,8 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Misc/ScopeRWLock.h"
 
+#include "Generated/Detail/{{$ModuleName}}MethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -132,24 +134,6 @@ limitations under the License.
 #include "GenericPlatform/GenericPlatformMisc.h"
 
 {{- $cachedClass:= printf "javaClass%s" (Camel .Interface.Name) }}
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class {{$Class}}MethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 class {{$Class}}Cache
@@ -246,7 +230,7 @@ namespace
 
 std::atomic<I{{$Class}}JniAccessor*> g{{$Class}}Handle(nullptr);
 
-{{$Class}}MethodHelper g{{$Class}}methodHelper;
+F{{Camel .Module.Name}}MethodHelper g{{$Class}}methodHelper(TEXT("{{$Class}}"));
 
 } // namespace
 
@@ -379,9 +363,6 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 #endif
 		return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
 	}
-	{{- if not .Return.IsVoid }}
-	TPromise<{{ueReturn "" .Return}}> Promise;
-	{{- end}}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if ({{$Class}}Cache::{{$clientClass}} == nullptr)
@@ -390,53 +371,91 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async:(Ljava/lang/String;{{$signatureParams}})V CLASS not found"));
 		return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
 	}
+	{{- if not .Return.IsVoid }}
+	TPromise<{{ueReturn "" .Return}}> Promise;
+	TFuture<{{ueReturn "" .Return}}> Future = Promise.GetFuture();
+	{{- end}}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = {{$Class}}Cache::{{Camel .Name}}AsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		{{- if not .Return.IsVoid }}
-		auto id = g{{$Class}}methodHelper.StorePromise(Promise);
+		auto id = g{{$Class}}methodHelper.StorePromise(MoveTemp(Promise));
 		{{- else}}
 		FGuid id = FGuid::NewGuid();
 		{{- end}}
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsgId);
-		{{- range .Params -}}
-		{{ template "convert_to_java_type_in_param" .}}
-		{{- end }}
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString{{- if len (.Params) }}, {{end}}{{- range $idx, $p := .Params -}}{{- if $idx}}, {{ end -}}
-			{{- $javaPropName := Camel .Name}}
-			{{- $cppropName := ueVar "In" .}}
-			{{- $localName := printf "jlocal_%s" $javaPropName }}
-			{{- if .IsArray }}{{$localName}}
-		{{- else if or ( or (eq .KindType "enum") (eq .KindType "string") ) (not .IsPrimitive ) }}{{$localName}}
-		{{- else }}{{$cppropName}}
-		{{- end -}}
-		{{- end -}});
-
-		static const TCHAR* errorMsg = TEXT("failed to call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}.");
-		{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
-
-	{{- range $idx, $p := .Params -}}
-		{{- $javaPropName := Camel .Name}}
-		{{- $localName := printf "jlocal_%s" $javaPropName }}
-	{{- if or .IsArray (eq .KindType "enum" ) }}
-		Env->DeleteLocalRef({{$localName}});
-	{{- else if not ( ueIsStdSimpleType .) }}
-		Env->DeleteLocalRef({{$localName}});
-	{{- end }}
-	{{- end }}
+		if (!tryCallAsyncJava{{Camel .Name}}(id, MethodID{{- if len (.Params) }}, {{end}}{{ueVars "In" .Params}}))
+		{
+			{{- if not .Return.IsVoid }}
+			g{{$Class}}methodHelper.FulfillPromise(id, {{ueDefault "" .Return }});
+			{{- end}}
+			return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
+		}
 	}
 	else
 	{
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async (Ljava/lang/String;{{$signatureParams}})V not found"));
+		{{- if not .Return.IsVoid }}
+		Promise.SetValue({{ueDefault "" .Return }});
+		{{- end}}
 	}
+	return{{ if not .Return.IsVoid }} Future.Get() {{- end}};
+#else
+	return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
 #endif
-	return{{ if not .Return.IsVoid }} Promise.GetFuture().Get() {{- end}};
 }
 
+{{- if not .Return.IsVoid }}
+TFuture<{{ueReturn "" .Return}}> {{$Class}}::{{Camel .Name}}Async({{ueParams "In" .Params}})
+{
+	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{.Name}}Async"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(Log{{$Iface}}Client_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<{{ueReturn "" .Return}}> Promise;
+		Promise.SetValue({{ ueDefault "" .Return }});
+		return Promise.GetFuture();
+	}
+
+	TPromise<{{ueReturn "" .Return}}> Promise;
+	TFuture<{{ueReturn "" .Return}}> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if ({{$Class}}Cache::{{$clientClass}} == nullptr)
+	{
+		{{- $signatureParams:= jniJavaSignatureParams .Params}}
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async:(Ljava/lang/String;{{$signatureParams}})V CLASS not found"));
+		Promise.SetValue({{ ueDefault "" .Return }});
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = {{$Class}}Cache::{{Camel .Name}}AsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = g{{$Class}}methodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJava{{Camel .Name}}(id, MethodID{{- if len (.Params) }}, {{end}}{{ueVars "In" .Params}}))
+		{
+			g{{$Class}}methodHelper.FulfillPromise(id, {{ueDefault "" .Return }});
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async (Ljava/lang/String;{{$signatureParams}})V not found"));
+		Promise.SetValue({{ueDefault "" .Return }});
+	}
+#else
+	Promise.SetValue({{ ueDefault "" .Return }});
+#endif
+
+	return Future;
+}
+{{- end }}
 {{- end }}
 
 bool {{$Class}}::_bindToService(FString servicePackage, FString connectionId)
@@ -542,6 +561,58 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 	_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
 }
 {{- end }}
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+{{- range $i, $e := .Interface.Operations }}
+{{- if $i }}{{nl}}{{ end }}
+bool {{$Class}}::tryCallAsyncJava{{Camel .Name}}(FGuid Guid, jmethodID MethodID{{- if len (.Params) }}, {{end}}{{ueParams "In" .Params}})
+{
+	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT("call async {{$javaClassPath}}/{{$javaClassName}}:{{.Name}}"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}");
+	if ({{$localClassConverter}}::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
+
+	{{- range .Params -}}
+	{{ template "convert_to_java_type_in_param" .}}
+	{{- end }}
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString{{- if len (.Params) }}, {{end}}{{- range $idx, $p := .Params -}}{{- if $idx}}, {{ end -}}
+		{{- $javaPropName := Camel .Name}}
+		{{- $cppropName := ueVar "In" .}}
+		{{- $localName := printf "jlocal_%s" $javaPropName }}
+		{{- if .IsArray }}{{$localName}}
+	{{- else if or ( or (eq .KindType "enum") (eq .KindType "string") ) (not .IsPrimitive ) }}{{$localName}}
+	{{- else }}{{$cppropName}}
+	{{- end -}}
+	{{- end -}});
+
+	static const TCHAR* errorMsg = TEXT("failed to call {{camel .Name}}Async on {{$javaClassPath}}/{{$javaClassName}}.");
+	auto errorOccurred = {{$localClassConverter}}::checkJniErrorOccured(errorMsg);
+
+	{{- range $idx, $p := .Params -}}
+		{{- $javaPropName := Camel .Name}}
+		{{- $localName := printf "jlocal_%s" $javaPropName }}
+	{{- if or .IsArray (eq .KindType "enum" ) }}
+		Env->DeleteLocalRef({{$localName}});
+	{{- else if not ( ueIsStdSimpleType .) }}
+		Env->DeleteLocalRef({{$localName}});
+	{{- end }}
+	{{- end }}
+
+	return !errorOccurred;
+}
+{{- end }}
+#endif
 
 void {{$Class}}::notifyIsReady(bool isReady)
 {
@@ -711,51 +782,3 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeIsReady(JNIEnv* Env, jclass Clazz, 
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid {{$Class}}MethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-	FScopeLock Lock(&ReplyPromisesMapCS);
-	ReplyPromisesMap.Add(Id, &Promise);
-	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
-	return Id;
-}
-
-template <typename ResultType>
-bool {{$Class}}MethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(Log{{$Iface}}Client_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-			{
-			PromisePtr->SetValue(Value);
-		});
-		return true;
-	}
-	return false;
-}
-{{- $returnTypes := getEmptyStringList}}
-{{- range .Interface.Operations }}
-{{- if not .Return.IsVoid }}
-{{- $type := ueReturn "" .Return }}
-{{- $returnTypes = (appendList $returnTypes $type) }}
-{{- end }}
-{{- end }}
-{{- $returnTypes = unique $returnTypes }}
-{{- range $returnTypes}}
-template FGuid {{$Class}}MethodHelper::StorePromise<{{.}}>(TPromise<{{.}}>& Promise);
-template bool {{$Class}}MethodHelper::FulfillPromise<{{.}}>(const FGuid& Id, const {{.}}& Value);
-{{- end}}

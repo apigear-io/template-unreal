@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbRefIfaces/Generated/Jni/TbRefIfacesJniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -87,9 +88,13 @@ public:
 
 	// operations
 	virtual TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
+	TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodAsync(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
 	virtual TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
+	TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> LocalIfMethodListAsync(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
 	virtual TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
+	TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodAsync(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
 	virtual TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
+	TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> ImportedIfMethodListAsync(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|ParentIf|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbRefIfacesJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -129,6 +134,16 @@ private:
 	void OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf) override;
 
 	void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaLocalIfMethod(FGuid Guid, jmethodID MethodId, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam);
+
+	bool tryCallAsyncJavaLocalIfMethodList(FGuid Guid, jmethodID MethodId, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam);
+
+	bool tryCallAsyncJavaImportedIfMethod(FGuid Guid, jmethodID MethodId, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam);
+
+	bool tryCallAsyncJavaImportedIfMethodList(FGuid Guid, jmethodID MethodId, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

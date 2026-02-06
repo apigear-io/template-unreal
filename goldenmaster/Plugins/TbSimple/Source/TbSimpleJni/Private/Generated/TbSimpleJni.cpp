@@ -22,7 +22,11 @@ limitations under the License.
 #include "TbSimpleSettings.h"
 #include "Modules/ModuleManager.h"
 
+#include "Generated/Detail/TbSimpleMethodHelper.h"
+
 #define LOCTEXT_NAMESPACE "TbSimpleJni"
+
+DEFINE_LOG_CATEGORY(LogTbSimpleMethodHelper_JNI);
 
 void FTbSimpleJniModule::StartupModule()
 {

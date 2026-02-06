@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbEnum/Generated/Jni/TbEnumJniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -87,9 +88,13 @@ public:
 
 	// operations
 	virtual ETbEnumEnum0 Func0(ETbEnumEnum0 Param0) override;
+	TFuture<ETbEnumEnum0> Func0Async(ETbEnumEnum0 Param0) override;
 	virtual ETbEnumEnum1 Func1(ETbEnumEnum1 Param1) override;
+	TFuture<ETbEnumEnum1> Func1Async(ETbEnumEnum1 Param1) override;
 	virtual ETbEnumEnum2 Func2(ETbEnumEnum2 Param2) override;
+	TFuture<ETbEnumEnum2> Func2Async(ETbEnumEnum2 Param2) override;
 	virtual ETbEnumEnum3 Func3(ETbEnumEnum3 Param3) override;
+	TFuture<ETbEnumEnum3> Func3Async(ETbEnumEnum3 Param3) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbEnum|EnumInterface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbEnumJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -129,6 +134,16 @@ private:
 	void OnProp2Changed(ETbEnumEnum2 InProp2) override;
 
 	void OnProp3Changed(ETbEnumEnum3 InProp3) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFunc0(FGuid Guid, jmethodID MethodId, ETbEnumEnum0 InParam0);
+
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, ETbEnumEnum1 InParam1);
+
+	bool tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodId, ETbEnumEnum2 InParam2);
+
+	bool tryCallAsyncJavaFunc3(FGuid Guid, jmethodID MethodId, ETbEnumEnum3 InParam3);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

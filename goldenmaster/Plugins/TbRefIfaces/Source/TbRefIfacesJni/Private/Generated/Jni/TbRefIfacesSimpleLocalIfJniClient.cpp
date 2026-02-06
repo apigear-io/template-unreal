@@ -44,6 +44,8 @@ limitations under the License.
 #include "Engine/Engine.h"
 #include "Misc/ScopeRWLock.h"
 
+#include "Generated/Detail/TbRefIfacesMethodHelper.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -58,24 +60,6 @@ limitations under the License.
 #include <atomic>
 #include "HAL/CriticalSection.h"
 #include "GenericPlatform/GenericPlatformMisc.h"
-
-/**
-	\brief data structure to hold the last sent property values
-*/
-
-class UTbRefIfacesSimpleLocalIfJniClientMethodHelper
-{
-public:
-	template <typename ResultType>
-	FGuid StorePromise(TPromise<ResultType>& Promise);
-
-	template <typename ResultType>
-	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
-
-private:
-	TMap<FGuid, void*> ReplyPromisesMap;
-	FCriticalSection ReplyPromisesMapCS;
-};
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 class UTbRefIfacesSimpleLocalIfJniClientCache
@@ -140,7 +124,7 @@ namespace
 
 std::atomic<IUTbRefIfacesSimpleLocalIfJniClientJniAccessor*> gUTbRefIfacesSimpleLocalIfJniClientHandle(nullptr);
 
-UTbRefIfacesSimpleLocalIfJniClientMethodHelper gUTbRefIfacesSimpleLocalIfJniClientmethodHelper;
+FTbRefIfacesMethodHelper gUTbRefIfacesSimpleLocalIfJniClientmethodHelper(TEXT("UTbRefIfacesSimpleLocalIfJniClient"));
 
 } // namespace
 
@@ -253,7 +237,6 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 #endif
 		return 0;
 	}
-	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIf == nullptr)
@@ -261,26 +244,76 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync:(Ljava/lang/String;I)V CLASS not found"));
 		return 0;
 	}
+	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	jmethodID MethodID = UTbRefIfacesSimpleLocalIfJniClientCache::IntMethodAsyncMethodID;
 	if (MethodID != nullptr)
 	{
-		auto id = gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.StorePromise(Promise);
-		auto idString = FJavaHelper::ToJavaString(Env, id.ToString(EGuidFormats::Digits));
-		static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId);
-
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam);
-
-		static const TCHAR* errorMsg = TEXT("failed to call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient.");
-		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+		auto id = gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaIntMethod(id, MethodID, InParam))
+		{
+			gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.FulfillPromise(id, 0);
+			return 0;
+		}
 	}
 	else
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync (Ljava/lang/String;I)V not found"));
+		Promise.SetValue(0);
 	}
+	return Future.Get();
+#else
+	return 0;
 #endif
-	return Promise.GetFuture().Get();
+}
+TFuture<int32> UTbRefIfacesSimpleLocalIfJniClient::IntMethodAsync(int32 InParam)
+{
+	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync"));
+
+	if (!b_isReady.load(std::memory_order_acquire))
+	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#else
+		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Log, TEXT("No valid connection to service. Check that android service is set up correctly"));
+#endif
+		TPromise<int32> Promise;
+		Promise.SetValue(0);
+		return Promise.GetFuture();
+	}
+
+	TPromise<int32> Promise;
+	TFuture<int32> Future = Promise.GetFuture();
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	if (UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIf == nullptr)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync:(Ljava/lang/String;I)V CLASS not found"));
+		Promise.SetValue(0);
+		return Future;
+	}
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	jmethodID MethodID = UTbRefIfacesSimpleLocalIfJniClientCache::IntMethodAsyncMethodID;
+	if (MethodID != nullptr)
+	{
+		auto id = gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.StorePromise(MoveTemp(Promise));
+		if (!tryCallAsyncJavaIntMethod(id, MethodID, InParam))
+		{
+			gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.FulfillPromise(id, 0);
+			return Future;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync (Ljava/lang/String;I)V not found"));
+		Promise.SetValue(0);
+	}
+#else
+	Promise.SetValue(0);
+#endif
+
+	return Future;
 }
 
 bool UTbRefIfacesSimpleLocalIfJniClient::_bindToService(FString servicePackage, FString connectionId)
@@ -380,6 +413,33 @@ void UTbRefIfacesSimpleLocalIfJniClient::OnIntPropertyChanged(int32 InIntPropert
 	_GetPublisher()->BroadcastIntPropertyChanged(IntProperty);
 }
 
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+bool UTbRefIfacesSimpleLocalIfJniClient::tryCallAsyncJavaIntMethod(FGuid Guid, jmethodID MethodID, int32 InParam)
+{
+	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT("call async tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethod"));
+
+	if (MethodID == nullptr)
+	{
+		return false;
+	}
+
+	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
+	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
+	if (TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgId))
+	{
+		return false;
+	}
+
+	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, InParam);
+
+	static const TCHAR* errorMsg = TEXT("failed to call intMethodAsync on tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient.");
+	auto errorOccurred = TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
+
+	return !errorOccurred;
+}
+#endif
+
 void UTbRefIfacesSimpleLocalIfJniClient::notifyIsReady(bool isReady)
 {
 	b_isReady.store(isReady, std::memory_order_release);
@@ -444,41 +504,3 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nat
 	localJniAccessor->notifyIsReady(value);
 }
 #endif
-
-template <typename ResultType>
-FGuid UTbRefIfacesSimpleLocalIfJniClientMethodHelper::StorePromise(TPromise<ResultType>& Promise)
-{
-	FGuid Id = FGuid::NewGuid();
-	FScopeLock Lock(&ReplyPromisesMapCS);
-	ReplyPromisesMap.Add(Id, &Promise);
-	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT(" method store id %s"), *(Id.ToString(EGuidFormats::Digits)));
-	return Id;
-}
-
-template <typename ResultType>
-bool UTbRefIfacesSimpleLocalIfJniClientMethodHelper::FulfillPromise(const FGuid& Id, const ResultType& Value)
-{
-	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Verbose, TEXT(" method resolving id %s"), *(Id.ToString(EGuidFormats::Digits)));
-	TPromise<ResultType>* PromisePtr = nullptr;
-
-	{
-		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
-		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
-		}
-	}
-
-	if (PromisePtr)
-	{
-		AsyncTask(ENamedThreads::GameThread, [Value, PromisePtr]()
-			{
-			PromisePtr->SetValue(Value);
-		});
-		return true;
-	}
-	return false;
-}
-template FGuid UTbRefIfacesSimpleLocalIfJniClientMethodHelper::StorePromise<int32>(TPromise<int32>& Promise);
-template bool UTbRefIfacesSimpleLocalIfJniClientMethodHelper::FulfillPromise<int32>(const FGuid& Id, const int32& Value);

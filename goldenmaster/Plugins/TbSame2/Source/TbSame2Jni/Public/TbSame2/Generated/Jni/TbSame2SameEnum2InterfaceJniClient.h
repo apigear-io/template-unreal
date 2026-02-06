@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbSame2/Generated/Jni/TbSame2JniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -75,7 +76,9 @@ public:
 
 	// operations
 	virtual ETbSame2Enum1 Func1(ETbSame2Enum1 Param1) override;
+	TFuture<ETbSame2Enum1> Func1Async(ETbSame2Enum1 Param1) override;
 	virtual ETbSame2Enum1 Func2(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override;
+	TFuture<ETbSame2Enum1> Func2Async(ETbSame2Enum1 Param1, ETbSame2Enum2 Param2) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameEnum2Interface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbSame2JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -107,6 +110,12 @@ private:
 	void OnProp1Changed(ETbSame2Enum1 InProp1) override;
 
 	void OnProp2Changed(ETbSame2Enum2 InProp2) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, ETbSame2Enum1 InParam1);
+
+	bool tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodId, ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

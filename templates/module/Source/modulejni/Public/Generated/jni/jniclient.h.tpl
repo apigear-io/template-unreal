@@ -17,6 +17,7 @@
 #include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}JniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -76,6 +77,9 @@ public:
 	// operations
 {{- range $i, $e := .Interface.Operations }}
 	virtual {{ueReturn "" .Return}} {{Camel .Name}}({{ueParams "" .Params}}) override;
+{{- if not .Return.IsVoid }}
+	TFuture<{{ueReturn "" .Return}}> {{Camel .Name}}Async({{ueParams "" .Params}}) override;
+{{- end }}
 {{- end }}
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|{{Camel .Module.Name}}|{{$IfaceName}}|Jni|Remote", DisplayName = "Connection Status Changed")
@@ -110,6 +114,13 @@ private:
 	{{- if $i }}{{nl}}{{ end }}
 	void On{{Camel .Name}}Changed({{ueParam "In" .}}) override;
 {{- end }}
+{{- if or (len .Interface.Properties) (len .Interface.Signals) }}{{ nl }}{{ end }}
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+{{- range $i, $e := .Interface.Operations }}
+{{- if $i }}{{nl}}{{ end }}
+	bool tryCallAsyncJava{{Camel .Name}}(FGuid Guid, jmethodID MethodId{{- if len (.Params) }}, {{end}}{{ueParams "In" .Params}});
+{{- end }}
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

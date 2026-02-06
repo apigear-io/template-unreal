@@ -22,6 +22,7 @@ limitations under the License.
 #include "TbSame2/Generated/Jni/TbSame2JniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -75,7 +76,9 @@ public:
 
 	// operations
 	virtual FTbSame2Struct1 Func1(const FTbSame2Struct1& Param1) override;
+	TFuture<FTbSame2Struct1> Func1Async(const FTbSame2Struct1& Param1) override;
 	virtual FTbSame2Struct1 Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
+	TFuture<FTbSame2Struct1> Func2Async(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSame2|SameStruct2Interface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTbSame2JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -107,6 +110,12 @@ private:
 	void OnProp1Changed(const FTbSame2Struct2& InProp1) override;
 
 	void OnProp2Changed(const FTbSame2Struct2& InProp2) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, const FTbSame2Struct1& InParam1);
+
+	bool tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodId, const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

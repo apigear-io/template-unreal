@@ -22,6 +22,7 @@ limitations under the License.
 #include "Testbed2/Generated/Jni/Testbed2JniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -75,7 +76,9 @@ public:
 
 	// operations
 	virtual FTestbed2NestedStruct1 Func1(const FTestbed2NestedStruct1& Param1) override;
+	TFuture<FTestbed2NestedStruct1> Func1Async(const FTestbed2NestedStruct1& Param1) override;
 	virtual FTestbed2NestedStruct1 Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
+	TFuture<FTestbed2NestedStruct1> Func2Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|NestedStruct2Interface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTestbed2JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -107,6 +110,12 @@ private:
 	void OnProp1Changed(const FTestbed2NestedStruct1& InProp1) override;
 
 	void OnProp2Changed(const FTestbed2NestedStruct2& InProp2) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, const FTestbed2NestedStruct1& InParam1);
+
+	bool tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodId, const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

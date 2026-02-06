@@ -22,6 +22,7 @@ limitations under the License.
 #include "Testbed1/Generated/Jni/Testbed1JniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -87,9 +88,13 @@ public:
 
 	// operations
 	virtual FTestbed1StructBool FuncBool(const FTestbed1StructBool& ParamBool) override;
+	TFuture<FTestbed1StructBool> FuncBoolAsync(const FTestbed1StructBool& ParamBool) override;
 	virtual FTestbed1StructInt FuncInt(const FTestbed1StructInt& ParamInt) override;
+	TFuture<FTestbed1StructInt> FuncIntAsync(const FTestbed1StructInt& ParamInt) override;
 	virtual FTestbed1StructFloat FuncFloat(const FTestbed1StructFloat& ParamFloat) override;
+	TFuture<FTestbed1StructFloat> FuncFloatAsync(const FTestbed1StructFloat& ParamFloat) override;
 	virtual FTestbed1StructString FuncString(const FTestbed1StructString& ParamString) override;
+	TFuture<FTestbed1StructString> FuncStringAsync(const FTestbed1StructString& ParamString) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed1|StructInterface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTestbed1JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -129,6 +134,16 @@ private:
 	void OnPropFloatChanged(const FTestbed1StructFloat& InPropFloat) override;
 
 	void OnPropStringChanged(const FTestbed1StructString& InPropString) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFuncBool(FGuid Guid, jmethodID MethodId, const FTestbed1StructBool& InParamBool);
+
+	bool tryCallAsyncJavaFuncInt(FGuid Guid, jmethodID MethodId, const FTestbed1StructInt& InParamInt);
+
+	bool tryCallAsyncJavaFuncFloat(FGuid Guid, jmethodID MethodId, const FTestbed1StructFloat& InParamFloat);
+
+	bool tryCallAsyncJavaFuncString(FGuid Guid, jmethodID MethodId, const FTestbed1StructString& InParamString);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};

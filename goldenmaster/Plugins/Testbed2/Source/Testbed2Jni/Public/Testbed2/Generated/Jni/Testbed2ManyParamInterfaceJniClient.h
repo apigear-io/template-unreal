@@ -22,6 +22,7 @@ limitations under the License.
 #include "Testbed2/Generated/Jni/Testbed2JniConnectionStatus.h"
 #include <memory>
 #include "HAL/PlatformProcess.h"
+#include "Misc/Guid.h"
 
 #if PLATFORM_ANDROID
 
@@ -87,9 +88,13 @@ public:
 
 	// operations
 	virtual int32 Func1(int32 Param1) override;
+	TFuture<int32> Func1Async(int32 Param1) override;
 	virtual int32 Func2(int32 Param1, int32 Param2) override;
+	TFuture<int32> Func2Async(int32 Param1, int32 Param2) override;
 	virtual int32 Func3(int32 Param1, int32 Param2, int32 Param3) override;
+	TFuture<int32> Func3Async(int32 Param1, int32 Param2, int32 Param3) override;
 	virtual int32 Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
+	TFuture<int32> Func4Async(int32 Param1, int32 Param2, int32 Param3, int32 Param4) override;
 
 	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Testbed2|ManyParamInterface|Jni|Remote", DisplayName = "Connection Status Changed")
 	FTestbed2JniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
@@ -129,6 +134,16 @@ private:
 	void OnProp3Changed(int32 InProp3) override;
 
 	void OnProp4Changed(int32 InProp4) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFunc1(FGuid Guid, jmethodID MethodId, int32 InParam1);
+
+	bool tryCallAsyncJavaFunc2(FGuid Guid, jmethodID MethodId, int32 InParam1, int32 InParam2);
+
+	bool tryCallAsyncJavaFunc3(FGuid Guid, jmethodID MethodId, int32 InParam1, int32 InParam2, int32 InParam3);
+
+	bool tryCallAsyncJavaFunc4(FGuid Guid, jmethodID MethodId, int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4);
+#endif
 	void notifyIsReady(bool isReady) override;
 
 	std::atomic<bool> b_isReady{false};
