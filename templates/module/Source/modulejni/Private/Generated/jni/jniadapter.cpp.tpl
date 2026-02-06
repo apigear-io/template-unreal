@@ -111,7 +111,6 @@
 	{
 		{{$local_value}}.Add(Temp{{Camel .Name}}[i] == JNI_TRUE);
 	}
-	Env->DeleteLocalRef(l_java{{Camel .Name}}Array);
 	{{- else if .IsPrimitive }}
 	{{ jniToReturnType . }} l_java{{Camel .Name}}Array = ({{ jniToReturnType . }}){{$javaPropName}};
 	jsize len{{snake .Name}} = Env->GetArrayLength(l_java{{Camel .Name}}Array);
@@ -126,7 +125,6 @@
 			{{- end }}
 		static const TCHAR* errorMsg{{$local_value}} = TEXT("failed to get an array region{{$javaPropName}}");
 		{{$localClassConverter}}::CheckJniErrorOccurred(errorMsg{{$local_value}});
-		Env->DeleteLocalRef(l_java{{Camel .Name}}Array);
 	}
 	{{- else}}
 	{{- if eq .KindType "interface" }}
