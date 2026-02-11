@@ -23,6 +23,8 @@ limitations under the License.
 #include "ExternTypes/Generated/api/ExternTypes_data.h"
 #include "Counter/Implementation/CounterCounter.h"
 
+#include "Generated/Detail/CounterCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -80,7 +82,7 @@ jobjectArray CounterDataJavaConverter::makeJavaCounterArray(JNIEnv* env, const T
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jCounter, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_counter.");
-	if (checkJniErrorOccured(errorMsg))
+	if (checkJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -98,17 +100,9 @@ TScriptInterface<ICounterCounterInterface> CounterDataJavaConverter::getCppInsta
 	return wrapped;
 }
 
-bool CounterDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool CounterDataJavaConverter::checkJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogCounterDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FCounterCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void CounterDataJavaConverter::cleanJavaReferences()
@@ -137,7 +131,7 @@ void CounterDataJavaConverter::ensureInitialized()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
 	static const TCHAR* errorMsgCounter = TEXT("failed to get counter/counter_api/ICounter");
-	checkJniErrorOccured(errorMsgCounter);
+	checkJniErrorOccurred(errorMsgCounter);
 	m_isInitialized = true;
 }
 
@@ -145,7 +139,7 @@ jmethodID CounterDataJavaConverter::getMethod(jclass cls, const char* name, cons
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -153,7 +147,7 @@ jmethodID CounterDataJavaConverter::getStaticMethod(jclass cls, const char* name
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -161,7 +155,7 @@ jfieldID CounterDataJavaConverter::getFieldId(jclass cls, const char* name, cons
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 

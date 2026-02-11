@@ -22,6 +22,8 @@ limitations under the License.
 #include "TbRefIfaces/Implementation/TbRefIfacesSimpleLocalIf.h"
 #include "TbRefIfaces/Implementation/TbRefIfacesParentIf.h"
 
+#include "Generated/Detail/TbRefIfacesCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -79,7 +81,7 @@ jobjectArray TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(JNIEnv* en
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jSimpleLocalIf, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_local_if.");
-	if (checkJniErrorOccured(errorMsg))
+	if (checkJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -139,7 +141,7 @@ jobjectArray TbRefIfacesDataJavaConverter::makeJavaParentIfArray(JNIEnv* env, co
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jParentIf, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_parent_if.");
-	if (checkJniErrorOccured(errorMsg))
+	if (checkJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -157,17 +159,9 @@ TScriptInterface<ITbRefIfacesParentIfInterface> TbRefIfacesDataJavaConverter::ge
 	return wrapped;
 }
 
-bool TbRefIfacesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool TbRefIfacesDataJavaConverter::checkJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FTbRefIfacesCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void TbRefIfacesDataJavaConverter::cleanJavaReferences()
@@ -197,10 +191,10 @@ void TbRefIfacesDataJavaConverter::ensureInitialized()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
 	static const TCHAR* errorMsgSimpleLocalIf = TEXT("failed to get tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
-	checkJniErrorOccured(errorMsgSimpleLocalIf);
+	checkJniErrorOccurred(errorMsgSimpleLocalIf);
 	jParentIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
 	static const TCHAR* errorMsgParentIf = TEXT("failed to get tbRefIfaces/tbRefIfaces_api/IParentIf");
-	checkJniErrorOccured(errorMsgParentIf);
+	checkJniErrorOccurred(errorMsgParentIf);
 	m_isInitialized = true;
 }
 
@@ -208,7 +202,7 @@ jmethodID TbRefIfacesDataJavaConverter::getMethod(jclass cls, const char* name, 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -216,7 +210,7 @@ jmethodID TbRefIfacesDataJavaConverter::getStaticMethod(jclass cls, const char* 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -224,7 +218,7 @@ jfieldID TbRefIfacesDataJavaConverter::getFieldId(jclass cls, const char* name, 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 

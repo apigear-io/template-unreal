@@ -46,6 +46,7 @@ limitations under the License.
 #include "Misc/ScopeRWLock.h"
 
 #include "Generated/Detail/Testbed2MethodHelper.h"
+#include "Generated/Detail/Testbed2CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 
@@ -93,28 +94,28 @@ void UTestbed2NestedStruct2InterfaceJniClientCache::init()
 
 	clientClassNestedStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	Prop1SetterId = env->GetMethodID(clientClassNestedStruct2Interface, "setProp1", "(Ltestbed2/testbed2_api/NestedStruct1;)V");
 	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgProp1Setter);
 	Prop2SetterId = env->GetMethodID(clientClassNestedStruct2Interface, "setProp2", "(Ltestbed2/testbed2_api/NestedStruct2;)V");
 	static const TCHAR* errorMsgProp2Setter = TEXT("failed to get java setProp2, Ltestbed2/testbed2_api/NestedStruct2;)V for testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Setter);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgProp2Setter);
 	Func1AsyncMethodID = env->GetMethodID(clientClassNestedStruct2Interface, "func1Async", "(Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V");
 	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgFunc1AsyncMethod);
 	Func2AsyncMethodID = env->GetMethodID(clientClassNestedStruct2Interface, "func2Async", "(Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V");
 	static const TCHAR* errorMsgFunc2AsyncMethod = TEXT("failed to get java func2Async, (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V for testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc2AsyncMethod);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgFunc2AsyncMethod);
 	clientClassNestedStruct2InterfaceCtor = env->GetMethodID(clientClassNestedStruct2Interface, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgInit);
 	BindMethodID = env->GetMethodID(clientClassNestedStruct2Interface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgBind);
 	UnbindMethodID = env->GetMethodID(clientClassNestedStruct2Interface, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgUnbind);
 }
 
 void UTestbed2NestedStruct2InterfaceJniClientCache::clear()
@@ -237,7 +238,7 @@ void UTestbed2NestedStruct2InterfaceJniClient::SetProp1(const FTestbed2NestedStr
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop1);
 		Env->DeleteLocalRef(jlocal_Prop1);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp1 on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -285,7 +286,7 @@ void UTestbed2NestedStruct2InterfaceJniClient::SetProp2(const FTestbed2NestedStr
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop2);
 		Env->DeleteLocalRef(jlocal_Prop2);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp2 on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -500,19 +501,19 @@ bool UTestbed2NestedStruct2InterfaceJniClient::_bindToService(FString servicePac
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-		if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-		if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+		if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -540,7 +541,7 @@ void UTestbed2NestedStruct2InterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient.");
-		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+		Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 	else
 	{
@@ -594,7 +595,7 @@ bool UTestbed2NestedStruct2InterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid,
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -603,7 +604,7 @@ bool UTestbed2NestedStruct2InterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid,
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func1Async on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient.");
-	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 
 	return !errorOccurred;
@@ -621,7 +622,7 @@ bool UTestbed2NestedStruct2InterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid,
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -631,7 +632,7 @@ bool UTestbed2NestedStruct2InterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid,
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1, jlocal_Param2);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func2Async on testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient.");
-	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 		Env->DeleteLocalRef(jlocal_Param2);
 
@@ -718,7 +719,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct2InterfaceJniClient_
 	UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct2InterfaceJniClient_nativeOnFunc1Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc1 for testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -735,7 +736,7 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct2InterfaceJniClient_
 	UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Verbose, TEXT("Java_testbed2_testbed2jniclient_NestedStruct2InterfaceJniClient_nativeOnFunc2Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc2 for testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
-	if (Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (Testbed2DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}

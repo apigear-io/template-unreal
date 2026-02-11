@@ -46,6 +46,7 @@ limitations under the License.
 #include "Misc/ScopeRWLock.h"
 
 #include "Generated/Detail/TbSame1MethodHelper.h"
+#include "Generated/Detail/TbSame1CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 
@@ -93,28 +94,28 @@ void UTbSame1SameStruct2InterfaceJniClientCache::init()
 
 	clientClassSameStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgCls);
 	Prop1SetterId = env->GetMethodID(clientClassSameStruct2Interface, "setProp1", "(LtbSame1/tbSame1_api/Struct2;)V");
 	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, LtbSame1/tbSame1_api/Struct2;)V for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter);
+	TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgProp1Setter);
 	Prop2SetterId = env->GetMethodID(clientClassSameStruct2Interface, "setProp2", "(LtbSame1/tbSame1_api/Struct2;)V");
 	static const TCHAR* errorMsgProp2Setter = TEXT("failed to get java setProp2, LtbSame1/tbSame1_api/Struct2;)V for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgProp2Setter);
+	TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgProp2Setter);
 	Func1AsyncMethodID = env->GetMethodID(clientClassSameStruct2Interface, "func1Async", "(Ljava/lang/String;LtbSame1/tbSame1_api/Struct1;)V");
 	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;LtbSame1/tbSame1_api/Struct1;)V for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod);
+	TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgFunc1AsyncMethod);
 	Func2AsyncMethodID = env->GetMethodID(clientClassSameStruct2Interface, "func2Async", "(Ljava/lang/String;LtbSame1/tbSame1_api/Struct1;LtbSame1/tbSame1_api/Struct2;)V");
 	static const TCHAR* errorMsgFunc2AsyncMethod = TEXT("failed to get java func2Async, (Ljava/lang/String;LtbSame1/tbSame1_api/Struct1;LtbSame1/tbSame1_api/Struct2;)V for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgFunc2AsyncMethod);
+	TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgFunc2AsyncMethod);
 	clientClassSameStruct2InterfaceCtor = env->GetMethodID(clientClassSameStruct2Interface, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgInit);
 	BindMethodID = env->GetMethodID(clientClassSameStruct2Interface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgBind);
 	UnbindMethodID = env->GetMethodID(clientClassSameStruct2Interface, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgUnbind);
 }
 
 void UTbSame1SameStruct2InterfaceJniClientCache::clear()
@@ -237,7 +238,7 @@ void UTbSame1SameStruct2InterfaceJniClient::SetProp1(const FTbSame1Struct2& InPr
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop1);
 		Env->DeleteLocalRef(jlocal_Prop1);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp1 on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -285,7 +286,7 @@ void UTbSame1SameStruct2InterfaceJniClient::SetProp2(const FTbSame1Struct2& InPr
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, jlocal_Prop2);
 		Env->DeleteLocalRef(jlocal_Prop2);
 		static const TCHAR* errorMsg = TEXT("failed to call setProp2 on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 #endif
 }
@@ -500,19 +501,19 @@ bool UTbSame1SameStruct2InterfaceJniClient::_bindToService(FString servicePackag
 		jobject Activity = FJavaWrapper::GameActivityThis;
 		auto jPackage = FJavaHelper::ToJavaString(Env, servicePackage);
 		static const TCHAR* errorMsgPackage = TEXT("failed to create java string for package in call bind on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-		if (TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgPackage))
+		if (TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgPackage))
 		{
 			return false;
 		}
 		auto jConnId = FJavaHelper::ToJavaString(Env, connectionId);
 		static const TCHAR* errorMsgId = TEXT("failed to create java string for connection id in call bind on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-		if (TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+		if (TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 		{
 			return false;
 		}
 		auto res = FJavaWrapper::CallBooleanMethod(Env, m_javaJniClientInstance, MethodID, Activity, *jPackage, *jConnId);
 		static const TCHAR* errorMsg = TEXT("failed to call bind on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsg);
 		return res;
 	}
 	else
@@ -540,7 +541,7 @@ void UTbSame1SameStruct2InterfaceJniClient::_unbind()
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
 		static const TCHAR* errorMsg = TEXT("failed to call unbind on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-		TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
+		TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsg);
 	}
 	else
 	{
@@ -594,7 +595,7 @@ bool UTbSame1SameStruct2InterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jm
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func1Async on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	if (TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -603,7 +604,7 @@ bool UTbSame1SameStruct2InterfaceJniClient::tryCallAsyncJavaFunc1(FGuid Guid, jm
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func1Async on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-	auto errorOccurred = TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 
 	return !errorOccurred;
@@ -621,7 +622,7 @@ bool UTbSame1SameStruct2InterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid, jm
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
 	auto idString = FJavaHelper::ToJavaString(Env, Guid.ToString(EGuidFormats::Digits));
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for id in call func2Async on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	if (TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return false;
 	}
@@ -631,7 +632,7 @@ bool UTbSame1SameStruct2InterfaceJniClient::tryCallAsyncJavaFunc2(FGuid Guid, jm
 	FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID, *idString, jlocal_Param1, jlocal_Param2);
 
 	static const TCHAR* errorMsg = TEXT("failed to call func2Async on tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient.");
-	auto errorOccurred = TbSame1DataJavaConverter::checkJniErrorOccured(errorMsg);
+	auto errorOccurred = TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsg);
 		Env->DeleteLocalRef(jlocal_Param1);
 		Env->DeleteLocalRef(jlocal_Param2);
 
@@ -718,7 +719,7 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Verbose, TEXT("Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnFunc1Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc1 for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	if (TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}
@@ -735,7 +736,7 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Verbose, TEXT("Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeOnFunc2Result"));
 	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
 	static const TCHAR* errorMsgId = TEXT("failed to create java string for call id in call nativeOnFunc2 for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
-	if (TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgId))
+	if (TbSame1DataJavaConverter::checkJniErrorOccurred(errorMsgId))
 	{
 		return;
 	}

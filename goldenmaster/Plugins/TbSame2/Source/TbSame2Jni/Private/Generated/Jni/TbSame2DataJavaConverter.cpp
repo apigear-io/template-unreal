@@ -23,6 +23,8 @@ limitations under the License.
 #include "TbSame2/Implementation/TbSame2SameEnum1Interface.h"
 #include "TbSame2/Implementation/TbSame2SameEnum2Interface.h"
 
+#include "Generated/Detail/TbSame2CommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -42,6 +44,11 @@ jclass TbSame2DataJavaConverter::jStruct1 = nullptr;
 
 void TbSame2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame2Struct1& out_struct1)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTbSame2Struct1");
@@ -51,7 +58,7 @@ void TbSame2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame2S
 	{
 		out_struct1.field1 = env->GetIntField(input, jFieldId_field1);
 		static const TCHAR* errorMsgfield1 = TEXT("failed when getting the jFieldId_field1 for out_struct1.field1");
-		checkJniErrorOccured(errorMsgfield1);
+		checkJniErrorOccurred(errorMsgfield1);
 	}
 	else
 	{
@@ -65,7 +72,7 @@ void TbSame2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame2S
 	{
 		out_struct1.field2 = env->GetIntField(input, jFieldId_field2);
 		static const TCHAR* errorMsgfield2 = TEXT("failed when getting the jFieldId_field2 for out_struct1.field2");
-		checkJniErrorOccured(errorMsgfield2);
+		checkJniErrorOccurred(errorMsgfield2);
 	}
 	else
 	{
@@ -79,7 +86,7 @@ void TbSame2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame2S
 	{
 		out_struct1.field3 = env->GetIntField(input, jFieldId_field3);
 		static const TCHAR* errorMsgfield3 = TEXT("failed when getting the jFieldId_field3 for out_struct1.field3");
-		checkJniErrorOccured(errorMsgfield3);
+		checkJniErrorOccurred(errorMsgfield3);
 	}
 	else
 	{
@@ -89,10 +96,15 @@ void TbSame2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame2S
 
 void TbSame2DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTbSame2Struct1>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct1 array.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (checkJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -102,7 +114,7 @@ void TbSame2DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input,
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of out_struct1 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			fillStruct1(env, element, out_array[i]);
@@ -128,7 +140,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame2Str
 	}
 	jobject javaObjInstance = env->NewObject(jStruct1, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct1.");
-	if (checkJniErrorOccured(errorMsgObj))
+	if (checkJniErrorOccurred(errorMsgObj))
 	{
 		return nullptr;
 	}
@@ -140,7 +152,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame2Str
 	{
 		env->SetIntField(javaObjInstance, jFieldId_field1, in_struct1.field1);
 		static const TCHAR* errorMsgfield1Set = TEXT("failed when seting field for out_struct1.field1");
-		checkJniErrorOccured(errorMsgfield1Set);
+		checkJniErrorOccurred(errorMsgfield1Set);
 	}
 	else
 	{
@@ -154,7 +166,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame2Str
 	{
 		env->SetIntField(javaObjInstance, jFieldId_field2, in_struct1.field2);
 		static const TCHAR* errorMsgfield2Set = TEXT("failed when seting field for out_struct1.field2");
-		checkJniErrorOccured(errorMsgfield2Set);
+		checkJniErrorOccurred(errorMsgfield2Set);
 	}
 	else
 	{
@@ -168,7 +180,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame2Str
 	{
 		env->SetIntField(javaObjInstance, jFieldId_field3, in_struct1.field3);
 		static const TCHAR* errorMsgfield3Set = TEXT("failed when seting field for out_struct1.field3");
-		checkJniErrorOccured(errorMsgfield3Set);
+		checkJniErrorOccurred(errorMsgfield3Set);
 	}
 	else
 	{
@@ -189,7 +201,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaStruct1Array(JNIEnv* env, const T
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jStruct1, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct1.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (checkJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -199,7 +211,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaStruct1Array(JNIEnv* env, const T
 		jobject element = makeJavaStruct1(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when setting an element for out_struct1 jarray.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -213,6 +225,11 @@ jclass TbSame2DataJavaConverter::jStruct2 = nullptr;
 
 void TbSame2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame2Struct2& out_struct2)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTbSame2Struct2");
@@ -222,7 +239,7 @@ void TbSame2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame2S
 	{
 		out_struct2.field1 = env->GetIntField(input, jFieldId_field1);
 		static const TCHAR* errorMsgfield1 = TEXT("failed when getting the jFieldId_field1 for out_struct2.field1");
-		checkJniErrorOccured(errorMsgfield1);
+		checkJniErrorOccurred(errorMsgfield1);
 	}
 	else
 	{
@@ -236,7 +253,7 @@ void TbSame2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame2S
 	{
 		out_struct2.field2 = env->GetIntField(input, jFieldId_field2);
 		static const TCHAR* errorMsgfield2 = TEXT("failed when getting the jFieldId_field2 for out_struct2.field2");
-		checkJniErrorOccured(errorMsgfield2);
+		checkJniErrorOccurred(errorMsgfield2);
 	}
 	else
 	{
@@ -250,7 +267,7 @@ void TbSame2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame2S
 	{
 		out_struct2.field3 = env->GetIntField(input, jFieldId_field3);
 		static const TCHAR* errorMsgfield3 = TEXT("failed when getting the jFieldId_field3 for out_struct2.field3");
-		checkJniErrorOccured(errorMsgfield3);
+		checkJniErrorOccurred(errorMsgfield3);
 	}
 	else
 	{
@@ -260,10 +277,15 @@ void TbSame2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame2S
 
 void TbSame2DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTbSame2Struct2>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct2 array.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (checkJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -273,7 +295,7 @@ void TbSame2DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input,
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of out_struct2 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			fillStruct2(env, element, out_array[i]);
@@ -299,7 +321,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame2Str
 	}
 	jobject javaObjInstance = env->NewObject(jStruct2, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct2.");
-	if (checkJniErrorOccured(errorMsgObj))
+	if (checkJniErrorOccurred(errorMsgObj))
 	{
 		return nullptr;
 	}
@@ -311,7 +333,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame2Str
 	{
 		env->SetIntField(javaObjInstance, jFieldId_field1, in_struct2.field1);
 		static const TCHAR* errorMsgfield1Set = TEXT("failed when seting field for out_struct2.field1");
-		checkJniErrorOccured(errorMsgfield1Set);
+		checkJniErrorOccurred(errorMsgfield1Set);
 	}
 	else
 	{
@@ -325,7 +347,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame2Str
 	{
 		env->SetIntField(javaObjInstance, jFieldId_field2, in_struct2.field2);
 		static const TCHAR* errorMsgfield2Set = TEXT("failed when seting field for out_struct2.field2");
-		checkJniErrorOccured(errorMsgfield2Set);
+		checkJniErrorOccurred(errorMsgfield2Set);
 	}
 	else
 	{
@@ -339,7 +361,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame2Str
 	{
 		env->SetIntField(javaObjInstance, jFieldId_field3, in_struct2.field3);
 		static const TCHAR* errorMsgfield3Set = TEXT("failed when seting field for out_struct2.field3");
-		checkJniErrorOccured(errorMsgfield3Set);
+		checkJniErrorOccurred(errorMsgfield3Set);
 	}
 	else
 	{
@@ -360,7 +382,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaStruct2Array(JNIEnv* env, const T
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jStruct2, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct2.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (checkJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -370,7 +392,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaStruct2Array(JNIEnv* env, const T
 		jobject element = makeJavaStruct2(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when setting an element for out_struct2 jarray.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -383,11 +405,16 @@ jclass TbSame2DataJavaConverter::jEnum1 = nullptr;
 
 void TbSame2DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETbSame2Enum1>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of Enum1 array.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (checkJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -395,7 +422,7 @@ void TbSame2DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, T
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of Enum1 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			out_array.Add(getEnum1Value(env, element));
@@ -411,6 +438,12 @@ void TbSame2DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, T
 ETbSame2Enum1 TbSame2DataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 {
 	ETbSame2Enum1 cppEnumValue = ETbSame2Enum1::TS2E1_Value1;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum1.");
 	static const jmethodID getValueMethod = getMethod(jEnum1, "getValue", "()I", errorMsgGetMethod);
@@ -418,7 +451,7 @@ ETbSame2Enum1 TbSame2DataJavaConverter::getEnum1Value(JNIEnv* env, jobject input
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
 		static const TCHAR* errorMsg = TEXT("failed when trying to call getValue method for Enum1.");
-		if (!checkJniErrorOccured(errorMsg))
+		if (!checkJniErrorOccurred(errorMsg))
 		{
 			UTbSame2Library::toTbSame2Enum1(cppEnumValue, int_value);
 		}
@@ -441,7 +474,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TAr
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jEnum1, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Enum1 jarray.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (checkJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -451,7 +484,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TAr
 		jobject element = makeJavaEnum1(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when trying to set element of Enum1 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -474,18 +507,23 @@ jobject TbSame2DataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbSame2Enum1 value
 	int int_value = (uint8)value;
 	jobject javaObj = env->CallStaticObjectMethod(jEnum1, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum1.");
-	checkJniErrorOccured(errorMsg);
+	checkJniErrorOccurred(errorMsg);
 	return javaObj;
 }
 jclass TbSame2DataJavaConverter::jEnum2 = nullptr;
 
 void TbSame2DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETbSame2Enum2>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of Enum2 array.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (checkJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -493,7 +531,7 @@ void TbSame2DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, T
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of Enum2 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			out_array.Add(getEnum2Value(env, element));
@@ -509,6 +547,12 @@ void TbSame2DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, T
 ETbSame2Enum2 TbSame2DataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 {
 	ETbSame2Enum2 cppEnumValue = ETbSame2Enum2::TS2E2_Value1;
+
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return cppEnumValue;
+	}
+
 	ensureInitialized();
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum2.");
 	static const jmethodID getValueMethod = getMethod(jEnum2, "getValue", "()I", errorMsgGetMethod);
@@ -516,7 +560,7 @@ ETbSame2Enum2 TbSame2DataJavaConverter::getEnum2Value(JNIEnv* env, jobject input
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
 		static const TCHAR* errorMsg = TEXT("failed when trying to call getValue method for Enum2.");
-		if (!checkJniErrorOccured(errorMsg))
+		if (!checkJniErrorOccurred(errorMsg))
 		{
 			UTbSame2Library::toTbSame2Enum2(cppEnumValue, int_value);
 		}
@@ -539,7 +583,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TAr
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jEnum2, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Enum2 jarray.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (checkJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -549,7 +593,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TAr
 		jobject element = makeJavaEnum2(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when trying to set element of Enum2 array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -572,7 +616,7 @@ jobject TbSame2DataJavaConverter::makeJavaEnum2(JNIEnv* env, ETbSame2Enum2 value
 	int int_value = (uint8)value;
 	jobject javaObj = env->CallStaticObjectMethod(jEnum2, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum2.");
-	checkJniErrorOccured(errorMsg);
+	checkJniErrorOccurred(errorMsg);
 	return javaObj;
 }
 
@@ -618,7 +662,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaSameStruct1InterfaceArray(JNIEnv*
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jSameStruct1Interface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_same_struct1_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (checkJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -678,7 +722,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaSameStruct2InterfaceArray(JNIEnv*
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jSameStruct2Interface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_same_struct2_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (checkJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -738,7 +782,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaSameEnum1InterfaceArray(JNIEnv* e
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jSameEnum1Interface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_same_enum1_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (checkJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -798,7 +842,7 @@ jobjectArray TbSame2DataJavaConverter::makeJavaSameEnum2InterfaceArray(JNIEnv* e
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jSameEnum2Interface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_same_enum2_interface.");
-	if (checkJniErrorOccured(errorMsg))
+	if (checkJniErrorOccurred(errorMsg))
 	{
 		return nullptr;
 	}
@@ -816,17 +860,9 @@ TScriptInterface<ITbSame2SameEnum2InterfaceInterface> TbSame2DataJavaConverter::
 	return wrapped;
 }
 
-bool TbSame2DataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool TbSame2DataJavaConverter::checkJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogTbSame2DataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FTbSame2CommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void TbSame2DataJavaConverter::cleanJavaReferences()
@@ -862,28 +898,28 @@ void TbSame2DataJavaConverter::ensureInitialized()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jStruct1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct1");
 	static const TCHAR* errorMsgStruct1 = TEXT("failed to get tbSame2/tbSame2_api/Struct1");
-	checkJniErrorOccured(errorMsgStruct1);
+	checkJniErrorOccurred(errorMsgStruct1);
 	jStruct2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct2");
 	static const TCHAR* errorMsgStruct2 = TEXT("failed to get tbSame2/tbSame2_api/Struct2");
-	checkJniErrorOccured(errorMsgStruct2);
+	checkJniErrorOccurred(errorMsgStruct2);
 	jEnum1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum1");
 	static const TCHAR* errorMsgEnum1 = TEXT("failed to get tbSame2/tbSame2_api/Enum1");
-	checkJniErrorOccured(errorMsgEnum1);
+	checkJniErrorOccurred(errorMsgEnum1);
 	jEnum2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum2");
 	static const TCHAR* errorMsgEnum2 = TEXT("failed to get tbSame2/tbSame2_api/Enum2");
-	checkJniErrorOccured(errorMsgEnum2);
+	checkJniErrorOccurred(errorMsgEnum2);
 	jSameStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameStruct1Interface");
 	static const TCHAR* errorMsgSameStruct1Interface = TEXT("failed to get tbSame2/tbSame2_api/ISameStruct1Interface");
-	checkJniErrorOccured(errorMsgSameStruct1Interface);
+	checkJniErrorOccurred(errorMsgSameStruct1Interface);
 	jSameStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameStruct2Interface");
 	static const TCHAR* errorMsgSameStruct2Interface = TEXT("failed to get tbSame2/tbSame2_api/ISameStruct2Interface");
-	checkJniErrorOccured(errorMsgSameStruct2Interface);
+	checkJniErrorOccurred(errorMsgSameStruct2Interface);
 	jSameEnum1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameEnum1Interface");
 	static const TCHAR* errorMsgSameEnum1Interface = TEXT("failed to get tbSame2/tbSame2_api/ISameEnum1Interface");
-	checkJniErrorOccured(errorMsgSameEnum1Interface);
+	checkJniErrorOccurred(errorMsgSameEnum1Interface);
 	jSameEnum2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameEnum2Interface");
 	static const TCHAR* errorMsgSameEnum2Interface = TEXT("failed to get tbSame2/tbSame2_api/ISameEnum2Interface");
-	checkJniErrorOccured(errorMsgSameEnum2Interface);
+	checkJniErrorOccurred(errorMsgSameEnum2Interface);
 	m_isInitialized = true;
 }
 
@@ -891,7 +927,7 @@ jmethodID TbSame2DataJavaConverter::getMethod(jclass cls, const char* name, cons
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -899,7 +935,7 @@ jmethodID TbSame2DataJavaConverter::getStaticMethod(jclass cls, const char* name
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -907,7 +943,7 @@ jfieldID TbSame2DataJavaConverter::getFieldId(jclass cls, const char* name, cons
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 

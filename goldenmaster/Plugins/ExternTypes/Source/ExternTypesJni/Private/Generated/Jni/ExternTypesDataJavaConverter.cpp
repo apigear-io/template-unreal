@@ -19,6 +19,8 @@ limitations under the License.
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
 #include "Runtime/Core/Public/Math/Vector.h"
 
+#include "Generated/Detail/ExternTypesCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -38,6 +40,11 @@ jclass ExternTypesDataJavaConverter::jMyVector3D = nullptr;
 
 void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	if (!jMyVector3D)
 	{
@@ -52,10 +59,15 @@ void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FV
 
 void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray input, TArray<FVector>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get len of Vector3D jarray.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (checkJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -65,7 +77,7 @@ void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of Vector3D jarray.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			fillMyVector3D(env, element, out_array[i]);
@@ -91,7 +103,7 @@ jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVec
 	}
 	jobject javaObjInstance = env->NewObject(jMyVector3D, ctor);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Vector3D.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (checkJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -113,7 +125,7 @@ jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, 
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jMyVector3D, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Vector3D jarray.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (checkJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -123,7 +135,7 @@ jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, 
 		jobject element = makeJavaMyVector3D(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when trying to set element of Vector3D array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -133,17 +145,9 @@ jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, 
 	return javaArray;
 }
 
-bool ExternTypesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool ExternTypesDataJavaConverter::checkJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogExternTypesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FExternTypesCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void ExternTypesDataJavaConverter::cleanJavaReferences()
@@ -172,7 +176,7 @@ void ExternTypesDataJavaConverter::ensureInitialized()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jMyVector3D = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
 	static const TCHAR* errorMsgMyVector3D = TEXT("failed to get org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
-	checkJniErrorOccured(errorMsgMyVector3D);
+	checkJniErrorOccurred(errorMsgMyVector3D);
 	m_isInitialized = true;
 }
 
@@ -180,7 +184,7 @@ jmethodID ExternTypesDataJavaConverter::getMethod(jclass cls, const char* name, 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -188,7 +192,7 @@ jmethodID ExternTypesDataJavaConverter::getStaticMethod(jclass cls, const char* 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -196,7 +200,7 @@ jfieldID ExternTypesDataJavaConverter::getFieldId(jclass cls, const char* name, 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 

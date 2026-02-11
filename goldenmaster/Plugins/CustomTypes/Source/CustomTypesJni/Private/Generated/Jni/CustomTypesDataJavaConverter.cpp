@@ -19,6 +19,8 @@ limitations under the License.
 #include "CustomTypes/Generated/Jni/CustomTypesDataJavaConverter.h"
 #include "CustomTypes/Generated/api/CustomTypes_data.h"
 
+#include "Generated/Detail/CustomTypesCommonJavaConverter.h"
+
 #if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
@@ -38,6 +40,11 @@ jclass CustomTypesDataJavaConverter::jVector3D = nullptr;
 
 void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCustomTypesVector3D& out_vector3_d)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 
 	static const TCHAR* errorMsgFindx = TEXT("failed when trying to field x F for FCustomTypesVector3D");
@@ -47,7 +54,7 @@ void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCus
 	{
 		out_vector3_d.x = env->GetFloatField(input, jFieldId_x);
 		static const TCHAR* errorMsgx = TEXT("failed when getting the jFieldId_x for out_vector3_d.x");
-		checkJniErrorOccured(errorMsgx);
+		checkJniErrorOccurred(errorMsgx);
 	}
 	else
 	{
@@ -61,7 +68,7 @@ void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCus
 	{
 		out_vector3_d.y = env->GetFloatField(input, jFieldId_y);
 		static const TCHAR* errorMsgy = TEXT("failed when getting the jFieldId_y for out_vector3_d.y");
-		checkJniErrorOccured(errorMsgy);
+		checkJniErrorOccurred(errorMsgy);
 	}
 	else
 	{
@@ -75,7 +82,7 @@ void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCus
 	{
 		out_vector3_d.z = env->GetFloatField(input, jFieldId_z);
 		static const TCHAR* errorMsgz = TEXT("failed when getting the jFieldId_z for out_vector3_d.z");
-		checkJniErrorOccured(errorMsgz);
+		checkJniErrorOccurred(errorMsgz);
 	}
 	else
 	{
@@ -85,10 +92,15 @@ void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCus
 
 void CustomTypesDataJavaConverter::fillVector3DArray(JNIEnv* env, jobjectArray input, TArray<FCustomTypesVector3D>& out_array)
 {
+	if (input == nullptr || env->IsSameObject(input, nullptr))
+	{
+		return;
+	}
+
 	ensureInitialized();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_vector3_d array.");
-	if (checkJniErrorOccured(errorMsgLen))
+	if (checkJniErrorOccurred(errorMsgLen))
 	{
 		return;
 	}
@@ -98,7 +110,7 @@ void CustomTypesDataJavaConverter::fillVector3DArray(JNIEnv* env, jobjectArray i
 	{
 		jobject element = env->GetObjectArrayElement(input, i);
 		static const TCHAR* errorMsg = TEXT("failed when trying to get element of out_vector3_d array.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		if (!failed)
 		{
 			fillVector3D(env, element, out_array[i]);
@@ -124,7 +136,7 @@ jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCusto
 	}
 	jobject javaObjInstance = env->NewObject(jVector3D, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_vector3_d.");
-	if (checkJniErrorOccured(errorMsgObj))
+	if (checkJniErrorOccurred(errorMsgObj))
 	{
 		return nullptr;
 	}
@@ -136,7 +148,7 @@ jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCusto
 	{
 		env->SetFloatField(javaObjInstance, jFieldId_x, in_vector3_d.x);
 		static const TCHAR* errorMsgxSet = TEXT("failed when seting field for out_vector3_d.x");
-		checkJniErrorOccured(errorMsgxSet);
+		checkJniErrorOccurred(errorMsgxSet);
 	}
 	else
 	{
@@ -150,7 +162,7 @@ jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCusto
 	{
 		env->SetFloatField(javaObjInstance, jFieldId_y, in_vector3_d.y);
 		static const TCHAR* errorMsgySet = TEXT("failed when seting field for out_vector3_d.y");
-		checkJniErrorOccured(errorMsgySet);
+		checkJniErrorOccurred(errorMsgySet);
 	}
 	else
 	{
@@ -164,7 +176,7 @@ jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCusto
 	{
 		env->SetFloatField(javaObjInstance, jFieldId_z, in_vector3_d.z);
 		static const TCHAR* errorMsgzSet = TEXT("failed when seting field for out_vector3_d.z");
-		checkJniErrorOccured(errorMsgzSet);
+		checkJniErrorOccurred(errorMsgzSet);
 	}
 	else
 	{
@@ -185,7 +197,7 @@ jobjectArray CustomTypesDataJavaConverter::makeJavaVector3DArray(JNIEnv* env, co
 	auto arraySize = cppArray.Num();
 	jobjectArray javaArray = env->NewObjectArray(arraySize, jVector3D, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_vector3_d.");
-	if (checkJniErrorOccured(errorMsgAlloc))
+	if (checkJniErrorOccurred(errorMsgAlloc))
 	{
 		return nullptr;
 	}
@@ -195,7 +207,7 @@ jobjectArray CustomTypesDataJavaConverter::makeJavaVector3DArray(JNIEnv* env, co
 		jobject element = makeJavaVector3D(env, cppArray[i]);
 		env->SetObjectArrayElement(javaArray, i, element);
 		static const TCHAR* errorMsg = TEXT("failed when setting an element for out_vector3_d jarray.");
-		auto failed = checkJniErrorOccured(errorMsg);
+		auto failed = checkJniErrorOccurred(errorMsg);
 		env->DeleteLocalRef(element);
 		if (failed)
 		{
@@ -205,17 +217,9 @@ jobjectArray CustomTypesDataJavaConverter::makeJavaVector3DArray(JNIEnv* env, co
 	return javaArray;
 }
 
-bool CustomTypesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
+bool CustomTypesDataJavaConverter::checkJniErrorOccurred(const TCHAR* Msg)
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	if (env->ExceptionCheck())
-	{
-		env->ExceptionDescribe(); // logs in java
-		env->ExceptionClear();
-		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Error, TEXT("%s"), Msg);
-		return true;
-	}
-	return false;
+	return FCustomTypesCommonJavaConverter::CheckJniErrorOccurred(Msg);
 }
 
 void CustomTypesDataJavaConverter::cleanJavaReferences()
@@ -244,7 +248,7 @@ void CustomTypesDataJavaConverter::ensureInitialized()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jVector3D = FAndroidApplication::FindJavaClassGlobalRef("customTypes/customTypes_api/Vector3D");
 	static const TCHAR* errorMsgVector3D = TEXT("failed to get customTypes/customTypes_api/Vector3D");
-	checkJniErrorOccured(errorMsgVector3D);
+	checkJniErrorOccurred(errorMsgVector3D);
 	m_isInitialized = true;
 }
 
@@ -252,7 +256,7 @@ jmethodID CustomTypesDataJavaConverter::getMethod(jclass cls, const char* name, 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -260,7 +264,7 @@ jmethodID CustomTypesDataJavaConverter::getStaticMethod(jclass cls, const char* 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jmethodID method = env->GetStaticMethodID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return method;
 }
 
@@ -268,7 +272,7 @@ jfieldID CustomTypesDataJavaConverter::getFieldId(jclass cls, const char* name, 
 {
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 	jfieldID field = env->GetFieldID(cls, name, signature);
-	checkJniErrorOccured(errorMsgInfo);
+	checkJniErrorOccurred(errorMsgInfo);
 	return field;
 }
 
