@@ -16,10 +16,14 @@ limitations under the License.
 */
 
 #include "TbRefIfaces/Implementation/TbRefIfacesParentIf.h"
+#include "Misc/ScopeRWLock.h"
 
 UTbRefIfacesParentIfImplementation::~UTbRefIfacesParentIfImplementation() = default;
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfImplementation::GetLocalIf() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(LocalIfRWLock);
+#endif
 	return LocalIf;
 }
 
@@ -28,12 +32,22 @@ void UTbRefIfacesParentIfImplementation::SetLocalIf(const TScriptInterface<ITbRe
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.Impl.SetLocalIf");
 	if (LocalIf != InLocalIf)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(LocalIfRWLock);
+			LocalIf = InLocalIf;
+		}
+#else
 		LocalIf = InLocalIf;
+#endif
 		_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 	}
 }
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfImplementation::GetLocalIfList() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(LocalIfListRWLock);
+#endif
 	return LocalIfList;
 }
 
@@ -42,12 +56,22 @@ void UTbRefIfacesParentIfImplementation::SetLocalIfList(const TArray<TScriptInte
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.Impl.SetLocalIfList");
 	if (LocalIfList != InLocalIfList)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(LocalIfListRWLock);
+			LocalIfList = InLocalIfList;
+		}
+#else
 		LocalIfList = InLocalIfList;
+#endif
 		_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 	}
 }
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfImplementation::GetImportedIf() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(ImportedIfRWLock);
+#endif
 	return ImportedIf;
 }
 
@@ -56,12 +80,22 @@ void UTbRefIfacesParentIfImplementation::SetImportedIf(const TScriptInterface<IT
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.Impl.SetImportedIf");
 	if (ImportedIf != InImportedIf)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(ImportedIfRWLock);
+			ImportedIf = InImportedIf;
+		}
+#else
 		ImportedIf = InImportedIf;
+#endif
 		_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 	}
 }
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfImplementation::GetImportedIfList() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(ImportedIfListRWLock);
+#endif
 	return ImportedIfList;
 }
 
@@ -70,7 +104,14 @@ void UTbRefIfacesParentIfImplementation::SetImportedIfList(const TArray<TScriptI
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbRefIfaces.ParentIf.Impl.SetImportedIfList");
 	if (ImportedIfList != InImportedIfList)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(ImportedIfListRWLock);
+			ImportedIfList = InImportedIfList;
+		}
+#else
 		ImportedIfList = InImportedIfList;
+#endif
 		_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }
@@ -111,22 +152,50 @@ void UTbRefIfacesParentIfImplementation::_ResetProperties()
 {
 	if (LocalIf != TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(LocalIfRWLock);
+			LocalIf = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
+		}
+#else
 		LocalIf = TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
+#endif
 		_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
 	}
 	if (LocalIfList != TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(LocalIfListRWLock);
+			LocalIfList = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+		}
+#else
 		LocalIfList = TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+#endif
 		_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
 	}
 	if (ImportedIf != TScriptInterface<ITbIfaceimportEmptyIfInterface>())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(ImportedIfRWLock);
+			ImportedIf = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+		}
+#else
 		ImportedIf = TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+#endif
 		_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
 	}
 	if (ImportedIfList != TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(ImportedIfListRWLock);
+			ImportedIfList = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+		}
+#else
 		ImportedIfList = TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+#endif
 		_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
 	}
 }

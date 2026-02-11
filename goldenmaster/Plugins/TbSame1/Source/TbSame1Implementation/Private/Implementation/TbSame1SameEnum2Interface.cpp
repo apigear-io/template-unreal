@@ -16,10 +16,14 @@ limitations under the License.
 */
 
 #include "TbSame1/Implementation/TbSame1SameEnum2Interface.h"
+#include "Misc/ScopeRWLock.h"
 
 UTbSame1SameEnum2InterfaceImplementation::~UTbSame1SameEnum2InterfaceImplementation() = default;
 ETbSame1Enum1 UTbSame1SameEnum2InterfaceImplementation::GetProp1() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(Prop1RWLock);
+#endif
 	return Prop1;
 }
 
@@ -28,12 +32,22 @@ void UTbSame1SameEnum2InterfaceImplementation::SetProp1(ETbSame1Enum1 InProp1)
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameEnum2Interface.Impl.SetProp1");
 	if (Prop1 != InProp1)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(Prop1RWLock);
+			Prop1 = InProp1;
+		}
+#else
 		Prop1 = InProp1;
+#endif
 		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 ETbSame1Enum2 UTbSame1SameEnum2InterfaceImplementation::GetProp2() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(Prop2RWLock);
+#endif
 	return Prop2;
 }
 
@@ -42,7 +56,14 @@ void UTbSame1SameEnum2InterfaceImplementation::SetProp2(ETbSame1Enum2 InProp2)
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame1.SameEnum2Interface.Impl.SetProp2");
 	if (Prop2 != InProp2)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(Prop2RWLock);
+			Prop2 = InProp2;
+		}
+#else
 		Prop2 = InProp2;
+#endif
 		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
@@ -68,12 +89,26 @@ void UTbSame1SameEnum2InterfaceImplementation::_ResetProperties()
 {
 	if (Prop1 != ETbSame1Enum1::TS1E1_Value1)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(Prop1RWLock);
+			Prop1 = ETbSame1Enum1::TS1E1_Value1;
+		}
+#else
 		Prop1 = ETbSame1Enum1::TS1E1_Value1;
+#endif
 		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 	if (Prop2 != ETbSame1Enum2::TS1E2_Value1)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(Prop2RWLock);
+			Prop2 = ETbSame1Enum2::TS1E2_Value1;
+		}
+#else
 		Prop2 = ETbSame1Enum2::TS1E2_Value1;
+#endif
 		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }

@@ -16,10 +16,14 @@ limitations under the License.
 */
 
 #include "Testbed1/Implementation/Testbed1StructArray2Interface.h"
+#include "Misc/ScopeRWLock.h"
 
 UTestbed1StructArray2InterfaceImplementation::~UTestbed1StructArray2InterfaceImplementation() = default;
 FTestbed1StructBoolWithArray UTestbed1StructArray2InterfaceImplementation::GetPropBool() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(PropBoolRWLock);
+#endif
 	return PropBool;
 }
 
@@ -28,12 +32,22 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropBool(const FTestbed1St
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.SetPropBool");
 	if (PropBool != InPropBool)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropBoolRWLock);
+			PropBool = InPropBool;
+		}
+#else
 		PropBool = InPropBool;
+#endif
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 }
 FTestbed1StructIntWithArray UTestbed1StructArray2InterfaceImplementation::GetPropInt() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(PropIntRWLock);
+#endif
 	return PropInt;
 }
 
@@ -42,12 +56,22 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropInt(const FTestbed1Str
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.SetPropInt");
 	if (PropInt != InPropInt)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropIntRWLock);
+			PropInt = InPropInt;
+		}
+#else
 		PropInt = InPropInt;
+#endif
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 }
 FTestbed1StructFloatWithArray UTestbed1StructArray2InterfaceImplementation::GetPropFloat() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(PropFloatRWLock);
+#endif
 	return PropFloat;
 }
 
@@ -56,12 +80,22 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropFloat(const FTestbed1S
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.SetPropFloat");
 	if (PropFloat != InPropFloat)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropFloatRWLock);
+			PropFloat = InPropFloat;
+		}
+#else
 		PropFloat = InPropFloat;
+#endif
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 }
 FTestbed1StructStringWithArray UTestbed1StructArray2InterfaceImplementation::GetPropString() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(PropStringRWLock);
+#endif
 	return PropString;
 }
 
@@ -70,12 +104,22 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropString(const FTestbed1
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.SetPropString");
 	if (PropString != InPropString)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropStringRWLock);
+			PropString = InPropString;
+		}
+#else
 		PropString = InPropString;
+#endif
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 }
 FTestbed1StructEnumWithArray UTestbed1StructArray2InterfaceImplementation::GetPropEnum() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(PropEnumRWLock);
+#endif
 	return PropEnum;
 }
 
@@ -84,7 +128,14 @@ void UTestbed1StructArray2InterfaceImplementation::SetPropEnum(const FTestbed1St
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.Testbed1.StructArray2Interface.Impl.SetPropEnum");
 	if (PropEnum != InPropEnum)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropEnumRWLock);
+			PropEnum = InPropEnum;
+		}
+#else
 		PropEnum = InPropEnum;
+#endif
 		_GetPublisher()->BroadcastPropEnumChanged(PropEnum);
 	}
 }
@@ -133,27 +184,62 @@ void UTestbed1StructArray2InterfaceImplementation::_ResetProperties()
 {
 	if (PropBool != FTestbed1StructBoolWithArray())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropBoolRWLock);
+			PropBool = FTestbed1StructBoolWithArray();
+		}
+#else
 		PropBool = FTestbed1StructBoolWithArray();
+#endif
 		_GetPublisher()->BroadcastPropBoolChanged(PropBool);
 	}
 	if (PropInt != FTestbed1StructIntWithArray())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropIntRWLock);
+			PropInt = FTestbed1StructIntWithArray();
+		}
+#else
 		PropInt = FTestbed1StructIntWithArray();
+#endif
 		_GetPublisher()->BroadcastPropIntChanged(PropInt);
 	}
 	if (PropFloat != FTestbed1StructFloatWithArray())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropFloatRWLock);
+			PropFloat = FTestbed1StructFloatWithArray();
+		}
+#else
 		PropFloat = FTestbed1StructFloatWithArray();
+#endif
 		_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
 	}
 	if (PropString != FTestbed1StructStringWithArray())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropStringRWLock);
+			PropString = FTestbed1StructStringWithArray();
+		}
+#else
 		PropString = FTestbed1StructStringWithArray();
+#endif
 		_GetPublisher()->BroadcastPropStringChanged(PropString);
 	}
 	if (PropEnum != FTestbed1StructEnumWithArray())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(PropEnumRWLock);
+			PropEnum = FTestbed1StructEnumWithArray();
+		}
+#else
 		PropEnum = FTestbed1StructEnumWithArray();
+#endif
 		_GetPublisher()->BroadcastPropEnumChanged(PropEnum);
 	}
 }
