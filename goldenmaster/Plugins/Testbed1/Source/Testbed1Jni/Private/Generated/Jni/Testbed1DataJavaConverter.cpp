@@ -637,6 +637,7 @@ void Testbed1DataJavaConverter::fillStructEnum(JNIEnv* env, jobject input, FTest
 		static const TCHAR* errorMsgfieldEnum = TEXT("failed when getting the jFieldId_field_enum for out_struct_enum.fieldEnum");
 		checkJniErrorOccured(errorMsgfieldEnum);
 		out_struct_enum.fieldEnum = getEnum0Value(env, field_enum_value);
+		env->DeleteLocalRef(field_enum_value);
 	}
 	else
 	{

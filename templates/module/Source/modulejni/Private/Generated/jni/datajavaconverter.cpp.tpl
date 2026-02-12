@@ -140,6 +140,7 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
 		{{- $otherModuleClassName := printf "%sDataJavaConverter" ( Camel .Schema.Import ) }}
 		{{$structName}}.{{$cppFieldName}} = {{if not (eq $otherModuleClassName "DataJavaConverter" )}}{{$otherModuleClassName}}::{{end -}}
 		get{{Camel .Type }}Value(env, {{snake .Name}}_value);
+		env->DeleteLocalRef({{snake .Name}}_value);
 	{{- else if eq .KindType "string"}}
 		jstring {{snake .Name}}_value = (jstring)env->GetObjectField(input, jFieldId_{{snake .Name}});
 		static const TCHAR* errorMsg{{$cppFieldName}} = TEXT("failed when getting the jFieldId_{{snake .Name}} for {{$structName}}.{{$cppFieldName}}");
