@@ -77,96 +77,106 @@ private:
 };
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+struct FUTbRefIfacesParentIfJniClientCacheData
+{
+	jclass clientClassParentIf = nullptr;
+	jmethodID clientClassParentIfCtor = nullptr;
+	jmethodID LocalIfSetterId = nullptr;
+	jmethodID LocalIfListSetterId = nullptr;
+	jmethodID ImportedIfSetterId = nullptr;
+	jmethodID ImportedIfListSetterId = nullptr;
+	jmethodID LocalIfMethodAsyncMethodID = nullptr;
+	jmethodID LocalIfMethodListAsyncMethodID = nullptr;
+	jmethodID ImportedIfMethodAsyncMethodID = nullptr;
+	jmethodID ImportedIfMethodListAsyncMethodID = nullptr;
+	jmethodID BindMethodID = nullptr;
+	jmethodID UnbindMethodID = nullptr;
+
+	~FUTbRefIfacesParentIfJniClientCacheData()
+	{
+		if (clientClassParentIf)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(clientClassParentIf);
+			}
+		}
+	}
+};
+
 class UTbRefIfacesParentIfJniClientCache
 {
 public:
-	static jclass clientClassParentIf;
-	static jmethodID clientClassParentIfCtor;
-	static jmethodID LocalIfSetterId;
-	static jmethodID LocalIfListSetterId;
-	static jmethodID ImportedIfSetterId;
-	static jmethodID ImportedIfListSetterId;
-	static jmethodID LocalIfMethodAsyncMethodID;
-	static jmethodID LocalIfMethodListAsyncMethodID;
-	static jmethodID ImportedIfMethodAsyncMethodID;
-	static jmethodID ImportedIfMethodListAsyncMethodID;
-	static jmethodID BindMethodID;
-	static jmethodID UnbindMethodID;
+	static TSharedPtr<FUTbRefIfacesParentIfJniClientCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
+
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbRefIfacesParentIfJniClientCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbRefIfacesParentIfJniClientCache::clientClassParentIf = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::clientClassParentIfCtor = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::BindMethodID = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::UnbindMethodID = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::LocalIfSetterId = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::LocalIfListSetterId = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::ImportedIfSetterId = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::ImportedIfListSetterId = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::LocalIfMethodAsyncMethodID = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::LocalIfMethodListAsyncMethodID = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::ImportedIfMethodAsyncMethodID = nullptr;
-jmethodID UTbRefIfacesParentIfJniClientCache::ImportedIfMethodListAsyncMethodID = nullptr;
+FCriticalSection UTbRefIfacesParentIfJniClientCache::CacheLock;
+TSharedPtr<FUTbRefIfacesParentIfJniClientCacheData, ESPMode::ThreadSafe> UTbRefIfacesParentIfJniClientCache::CacheData;
 
 void UTbRefIfacesParentIfJniClientCache::init()
 {
+	auto NewData = MakeShared<FUTbRefIfacesParentIfJniClientCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	clientClassParentIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
+	NewData->clientClassParentIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	LocalIfSetterId = env->GetMethodID(clientClassParentIf, "setLocalIf", "(LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
+	NewData->LocalIfSetterId = env->GetMethodID(NewData->clientClassParentIf, "setLocalIf", "(LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
 	static const TCHAR* errorMsgLocalIfSetter = TEXT("failed to get java setLocalIf, LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfSetter);
-	LocalIfListSetterId = env->GetMethodID(clientClassParentIf, "setLocalIfList", "([LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
+	NewData->LocalIfListSetterId = env->GetMethodID(NewData->clientClassParentIf, "setLocalIfList", "([LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
 	static const TCHAR* errorMsgLocalIfListSetter = TEXT("failed to get java setLocalIfList, [LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfListSetter);
-	ImportedIfSetterId = env->GetMethodID(clientClassParentIf, "setImportedIf", "(LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
+	NewData->ImportedIfSetterId = env->GetMethodID(NewData->clientClassParentIf, "setImportedIf", "(LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
 	static const TCHAR* errorMsgImportedIfSetter = TEXT("failed to get java setImportedIf, LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfSetter);
-	ImportedIfListSetterId = env->GetMethodID(clientClassParentIf, "setImportedIfList", "([LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
+	NewData->ImportedIfListSetterId = env->GetMethodID(NewData->clientClassParentIf, "setImportedIfList", "([LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
 	static const TCHAR* errorMsgImportedIfListSetter = TEXT("failed to get java setImportedIfList, [LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfListSetter);
-	LocalIfMethodAsyncMethodID = env->GetMethodID(clientClassParentIf, "localIfMethodAsync", "(Ljava/lang/String;LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
+	NewData->LocalIfMethodAsyncMethodID = env->GetMethodID(NewData->clientClassParentIf, "localIfMethodAsync", "(Ljava/lang/String;LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
 	static const TCHAR* errorMsgLocalIfMethodAsyncMethod = TEXT("failed to get java localIfMethodAsync, (Ljava/lang/String;LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfMethodAsyncMethod);
-	LocalIfMethodListAsyncMethodID = env->GetMethodID(clientClassParentIf, "localIfMethodListAsync", "(Ljava/lang/String;[LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
+	NewData->LocalIfMethodListAsyncMethodID = env->GetMethodID(NewData->clientClassParentIf, "localIfMethodListAsync", "(Ljava/lang/String;[LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
 	static const TCHAR* errorMsgLocalIfMethodListAsyncMethod = TEXT("failed to get java localIfMethodListAsync, (Ljava/lang/String;[LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfMethodListAsyncMethod);
-	ImportedIfMethodAsyncMethodID = env->GetMethodID(clientClassParentIf, "importedIfMethodAsync", "(Ljava/lang/String;LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
+	NewData->ImportedIfMethodAsyncMethodID = env->GetMethodID(NewData->clientClassParentIf, "importedIfMethodAsync", "(Ljava/lang/String;LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
 	static const TCHAR* errorMsgImportedIfMethodAsyncMethod = TEXT("failed to get java importedIfMethodAsync, (Ljava/lang/String;LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfMethodAsyncMethod);
-	ImportedIfMethodListAsyncMethodID = env->GetMethodID(clientClassParentIf, "importedIfMethodListAsync", "(Ljava/lang/String;[LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
+	NewData->ImportedIfMethodListAsyncMethodID = env->GetMethodID(NewData->clientClassParentIf, "importedIfMethodListAsync", "(Ljava/lang/String;[LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
 	static const TCHAR* errorMsgImportedIfMethodListAsyncMethod = TEXT("failed to get java importedIfMethodListAsync, (Ljava/lang/String;[LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfMethodListAsyncMethod);
-	clientClassParentIfCtor = env->GetMethodID(clientClassParentIf, "<init>", "()V");
+	NewData->clientClassParentIfCtor = env->GetMethodID(NewData->clientClassParentIf, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgInit);
-	BindMethodID = env->GetMethodID(clientClassParentIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	NewData->BindMethodID = env->GetMethodID(NewData->clientClassParentIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgBind);
-	UnbindMethodID = env->GetMethodID(clientClassParentIf, "unbind", "()V");
+	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassParentIf, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbRefIfacesParentIfJniClientCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(clientClassParentIf);
-	clientClassParentIf = nullptr;
-	clientClassParentIfCtor = nullptr;
-	BindMethodID = nullptr;
-	UnbindMethodID = nullptr;
-	LocalIfSetterId = nullptr;
-	LocalIfListSetterId = nullptr;
-	ImportedIfSetterId = nullptr;
-	ImportedIfListSetterId = nullptr;
-	LocalIfMethodAsyncMethodID = nullptr;
-	LocalIfMethodListAsyncMethodID = nullptr;
-	ImportedIfMethodAsyncMethodID = nullptr;
-	ImportedIfMethodListAsyncMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 #endif
 
@@ -204,12 +214,13 @@ void UTbRefIfacesParentIfJniClient::Initialize(FSubsystemCollectionBase& Collect
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbRefIfacesParentIfJniClientCache::init();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIfCtor == nullptr)
+	auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+	if (!Cache || Cache->clientClassParentIfCtor == nullptr)
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("Java Client Class tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient not found"));
 		return;
 	}
-	jobject localRef = Env->NewObject(UTbRefIfacesParentIfJniClientCache::clientClassParentIf, UTbRefIfacesParentIfJniClientCache::clientClassParentIfCtor);
+	jobject localRef = Env->NewObject(Cache->clientClassParentIf, Cache->clientClassParentIfCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -258,12 +269,13 @@ void UTbRefIfacesParentIfJniClient::SetLocalIf(const TScriptInterface<ITbRefIfac
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
+		auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:setLocalIf (LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::LocalIfSetterId;
+		jmethodID MethodID = Cache->LocalIfSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:setLocalIf (LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V not found"));
@@ -306,12 +318,13 @@ void UTbRefIfacesParentIfJniClient::SetLocalIfList(const TArray<TScriptInterface
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
+		auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:setLocalIfList ([LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::LocalIfListSetterId;
+		jmethodID MethodID = Cache->LocalIfListSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:setLocalIfList ([LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V not found"));
@@ -354,12 +367,13 @@ void UTbRefIfacesParentIfJniClient::SetImportedIf(const TScriptInterface<ITbIfac
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
+		auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:setImportedIf (LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::ImportedIfSetterId;
+		jmethodID MethodID = Cache->ImportedIfSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:setImportedIf (LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V not found"));
@@ -402,12 +416,13 @@ void UTbRefIfacesParentIfJniClient::SetImportedIfList(const TArray<TScriptInterf
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
+		auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:setImportedIfList ([LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::ImportedIfListSetterId;
+		jmethodID MethodID = Cache->ImportedIfListSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:setImportedIfList ([LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V not found"));
@@ -438,13 +453,14 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfJniClie
 	TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
+	auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:localIfMethodAsync:(Ljava/lang/String;LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V CLASS not found"));
 		return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::LocalIfMethodAsyncMethodID;
+	jmethodID MethodID = Cache->LocalIfMethodAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(Promise);
@@ -482,13 +498,14 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 	TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
+	auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:localIfMethodListAsync:(Ljava/lang/String;[LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V CLASS not found"));
 		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::LocalIfMethodListAsyncMethodID;
+	jmethodID MethodID = Cache->LocalIfMethodListAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(Promise);
@@ -526,13 +543,14 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfJniClient::
 	TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
+	auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:importedIfMethodAsync:(Ljava/lang/String;LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V CLASS not found"));
 		return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::ImportedIfMethodAsyncMethodID;
+	jmethodID MethodID = Cache->ImportedIfMethodAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(Promise);
@@ -570,13 +588,14 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfJni
 	TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
+	auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:importedIfMethodListAsync:(Ljava/lang/String;[LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V CLASS not found"));
 		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::ImportedIfMethodListAsyncMethodID;
+	jmethodID MethodID = Cache->ImportedIfMethodListAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbRefIfacesParentIfJniClientmethodHelper.StorePromise(Promise);
@@ -619,12 +638,13 @@ bool UTbRefIfacesParentIfJniClient::_bindToService(FString servicePackage, FStri
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
+	auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::BindMethodID;
+	jmethodID MethodID = Cache->BindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
@@ -660,12 +680,13 @@ void UTbRefIfacesParentIfJniClient::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbRefIfacesParentIfJniClientCache::clientClassParentIf == nullptr)
+	auto Cache = UTbRefIfacesParentIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbRefIfacesParentIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient:unbind:()V CLASS not found"));
 		return;
 	}
-	jmethodID MethodID = UTbRefIfacesParentIfJniClientCache::UnbindMethodID;
+	jmethodID MethodID = Cache->UnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);

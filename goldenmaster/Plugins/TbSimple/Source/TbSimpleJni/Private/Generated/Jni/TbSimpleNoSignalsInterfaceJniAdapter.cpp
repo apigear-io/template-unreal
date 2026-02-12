@@ -48,49 +48,74 @@ std::atomic<ITbSimpleNoSignalsInterfaceJniAdapterAccessor*> gUTbSimpleNoSignalsI
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+struct FUTbSimpleNoSignalsInterfaceJniAdapterCacheData
+{
+	jclass javaService = nullptr;
+	jmethodID ReadyMethodID = nullptr;
+	jmethodID PropBoolChangedMethodID = nullptr;
+	jmethodID PropIntChangedMethodID = nullptr;
+
+	~FUTbSimpleNoSignalsInterfaceJniAdapterCacheData()
+	{
+		if (javaService)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(javaService);
+			}
+		}
+	}
+};
+
 class UTbSimpleNoSignalsInterfaceJniAdapterCache
 {
 public:
-	static jclass javaService;
-	static jmethodID ReadyMethodID;
-	static jmethodID PropBoolChangedMethodID;
-	static jmethodID PropIntChangedMethodID;
+	static TSharedPtr<FUTbSimpleNoSignalsInterfaceJniAdapterCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
 
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbSimpleNoSignalsInterfaceJniAdapterCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbSimpleNoSignalsInterfaceJniAdapterCache::javaService = nullptr;
-jmethodID UTbSimpleNoSignalsInterfaceJniAdapterCache::ReadyMethodID = nullptr;
-jmethodID UTbSimpleNoSignalsInterfaceJniAdapterCache::PropBoolChangedMethodID = nullptr;
-jmethodID UTbSimpleNoSignalsInterfaceJniAdapterCache::PropIntChangedMethodID = nullptr;
+FCriticalSection UTbSimpleNoSignalsInterfaceJniAdapterCache::CacheLock;
+TSharedPtr<FUTbSimpleNoSignalsInterfaceJniAdapterCacheData, ESPMode::ThreadSafe> UTbSimpleNoSignalsInterfaceJniAdapterCache::CacheData;
 
 void UTbSimpleNoSignalsInterfaceJniAdapterCache::init()
 {
+	auto NewData = MakeShared<FUTbSimpleNoSignalsInterfaceJniAdapterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService");
+	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
+	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
-	PropBoolChangedMethodID = env->GetMethodID(javaService, "onPropBoolChanged", "(Z)V");
+	NewData->PropBoolChangedMethodID = env->GetMethodID(NewData->javaService, "onPropBoolChanged", "(Z)V");
 	static const TCHAR* errorMsgPropBoolChanged = TEXT("failed to get java onPropBoolChanged, (Z)V for tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolChanged);
-	PropIntChangedMethodID = env->GetMethodID(javaService, "onPropIntChanged", "(I)V");
+	NewData->PropIntChangedMethodID = env->GetMethodID(NewData->javaService, "onPropIntChanged", "(I)V");
 	static const TCHAR* errorMsgPropIntChanged = TEXT("failed to get java onPropIntChanged, (I)V for tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntChanged);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbSimpleNoSignalsInterfaceJniAdapterCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(javaService);
-	javaService = nullptr;
-	ReadyMethodID = nullptr;
-	PropBoolChangedMethodID = nullptr;
-	PropIntChangedMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
 #endif
@@ -211,13 +236,14 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::callJniServiceReady(bool isServiceRe
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceInstance || !UTbSimpleNoSignalsInterfaceJniAdapterCache::ReadyMethodID)
+		auto Cache = UTbSimpleNoSignalsInterfaceJniAdapterCache::Get();
+		if (!m_javaJniServiceInstance || !Cache || !Cache->ReadyMethodID)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTbSimpleNoSignalsInterfaceJniAdapterCache::ReadyMethodID, isServiceReady);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:nativeServiceReady(Z)V CLASS not found");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
@@ -229,12 +255,13 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::OnPropBoolChanged(bool bPropBool)
 	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleNoSignalsInterfaceJniAdapter::OnPropBool "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleNoSignalsInterfaceJniAdapterCache::javaService == nullptr)
+		auto Cache = UTbSimpleNoSignalsInterfaceJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService::onPropBoolChanged(Z)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleNoSignalsInterfaceJniAdapterCache::PropBoolChangedMethodID;
+		jmethodID MethodID = Cache->PropBoolChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:onPropBoolChanged(Z)V not found"));
@@ -253,12 +280,13 @@ void UTbSimpleNoSignalsInterfaceJniAdapter::OnPropIntChanged(int32 PropInt)
 	UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleNoSignalsInterfaceJniAdapter::OnPropInt "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleNoSignalsInterfaceJniAdapterCache::javaService == nullptr)
+		auto Cache = UTbSimpleNoSignalsInterfaceJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService::onPropIntChanged(I)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleNoSignalsInterfaceJniAdapterCache::PropIntChangedMethodID;
+		jmethodID MethodID = Cache->PropIntChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoSignalsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoSignalsInterfaceJniService:onPropIntChanged(I)V not found"));

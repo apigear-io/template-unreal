@@ -49,49 +49,74 @@ std::atomic<ITbSame2SameStruct1InterfaceJniAdapterAccessor*> gUTbSame2SameStruct
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+struct FUTbSame2SameStruct1InterfaceJniAdapterCacheData
+{
+	jclass javaService = nullptr;
+	jmethodID ReadyMethodID = nullptr;
+	jmethodID Prop1ChangedMethodID = nullptr;
+	jmethodID Sig1SignalMethodID = nullptr;
+
+	~FUTbSame2SameStruct1InterfaceJniAdapterCacheData()
+	{
+		if (javaService)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(javaService);
+			}
+		}
+	}
+};
+
 class UTbSame2SameStruct1InterfaceJniAdapterCache
 {
 public:
-	static jclass javaService;
-	static jmethodID ReadyMethodID;
-	static jmethodID Prop1ChangedMethodID;
-	static jmethodID Sig1SignalMethodID;
+	static TSharedPtr<FUTbSame2SameStruct1InterfaceJniAdapterCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
 
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbSame2SameStruct1InterfaceJniAdapterCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbSame2SameStruct1InterfaceJniAdapterCache::javaService = nullptr;
-jmethodID UTbSame2SameStruct1InterfaceJniAdapterCache::ReadyMethodID = nullptr;
-jmethodID UTbSame2SameStruct1InterfaceJniAdapterCache::Prop1ChangedMethodID = nullptr;
-jmethodID UTbSame2SameStruct1InterfaceJniAdapterCache::Sig1SignalMethodID = nullptr;
+FCriticalSection UTbSame2SameStruct1InterfaceJniAdapterCache::CacheLock;
+TSharedPtr<FUTbSame2SameStruct1InterfaceJniAdapterCacheData, ESPMode::ThreadSafe> UTbSame2SameStruct1InterfaceJniAdapterCache::CacheData;
 
 void UTbSame2SameStruct1InterfaceJniAdapterCache::init()
 {
+	auto NewData = MakeShared<FUTbSame2SameStruct1InterfaceJniAdapterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
+	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
 	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
+	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
 	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
-	Prop1ChangedMethodID = env->GetMethodID(javaService, "onProp1Changed", "(LtbSame2/tbSame2_api/Struct1;)V");
+	NewData->Prop1ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp1Changed", "(LtbSame2/tbSame2_api/Struct1;)V");
 	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
 	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed);
-	Sig1SignalMethodID = env->GetMethodID(javaService, "onSig1", "(LtbSame2/tbSame2_api/Struct1;)V");
+	NewData->Sig1SignalMethodID = env->GetMethodID(NewData->javaService, "onSig1", "(LtbSame2/tbSame2_api/Struct1;)V");
 	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService");
 	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbSame2SameStruct1InterfaceJniAdapterCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(javaService);
-	javaService = nullptr;
-	ReadyMethodID = nullptr;
-	Prop1ChangedMethodID = nullptr;
-	Sig1SignalMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
 #endif
@@ -212,13 +237,14 @@ void UTbSame2SameStruct1InterfaceJniAdapter::callJniServiceReady(bool isServiceR
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceInstance || !UTbSame2SameStruct1InterfaceJniAdapterCache::ReadyMethodID)
+		auto Cache = UTbSame2SameStruct1InterfaceJniAdapterCache::Get();
+		if (!m_javaJniServiceInstance || !Cache || !Cache->ReadyMethodID)
 		{
 			UE_LOG(LogTbSame2SameStruct1Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTbSame2SameStruct1InterfaceJniAdapterCache::ReadyMethodID, isServiceReady);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService:nativeServiceReady(Z)V CLASS not found");
 		TbSame2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
@@ -231,12 +257,13 @@ void UTbSame2SameStruct1InterfaceJniAdapter::OnSig1Signal(const FTbSame2Struct1&
 	UE_LOG(LogTbSame2SameStruct1Interface_JNI, Verbose, TEXT("Notify java jni UTbSame2SameStruct1InterfaceJniAdapter::onSig1 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSame2SameStruct1InterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UTbSame2SameStruct1InterfaceJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSame2SameStruct1Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService:onSig1 (LtbSame2/tbSame2_api/Struct1;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSame2SameStruct1InterfaceJniAdapterCache::Sig1SignalMethodID;
+		jmethodID MethodID = Cache->Sig1SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSame2SameStruct1Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService:onSig1 (LtbSame2/tbSame2_api/Struct1;)V not found"));
@@ -257,12 +284,13 @@ void UTbSame2SameStruct1InterfaceJniAdapter::OnProp1Changed(const FTbSame2Struct
 	UE_LOG(LogTbSame2SameStruct1Interface_JNI, Verbose, TEXT("Notify java jni UTbSame2SameStruct1InterfaceJniAdapter::OnProp1 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSame2SameStruct1InterfaceJniAdapterCache::javaService == nullptr)
+		auto Cache = UTbSame2SameStruct1InterfaceJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSame2SameStruct1Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService::onProp1Changed(LtbSame2/tbSame2_api/Struct1;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSame2SameStruct1InterfaceJniAdapterCache::Prop1ChangedMethodID;
+		jmethodID MethodID = Cache->Prop1ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSame2SameStruct1Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameStruct1InterfaceJniService:onProp1Changed(LtbSame2/tbSame2_api/Struct1;)V not found"));
