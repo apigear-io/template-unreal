@@ -126,7 +126,7 @@ jobject TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(JNIEnv* env, ETbNa
 		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
-	int int_value = (uint8)value;
+	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(jEnumWithUnderScores, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for EnumWithUnderScores.");
 	checkJniErrorOccured(errorMsg);
