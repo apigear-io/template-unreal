@@ -126,7 +126,7 @@ jobject TbEnumDataJavaConverter::makeJavaEnum0(JNIEnv* env, ETbEnumEnum0 value)
 		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
-	int int_value = (uint8)value;
+	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(jEnum0, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum0.");
 	checkJniErrorOccured(errorMsg);
@@ -224,7 +224,7 @@ jobject TbEnumDataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbEnumEnum1 value)
 		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
-	int int_value = (uint8)value;
+	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(jEnum1, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum1.");
 	checkJniErrorOccured(errorMsg);
@@ -322,7 +322,7 @@ jobject TbEnumDataJavaConverter::makeJavaEnum2(JNIEnv* env, ETbEnumEnum2 value)
 		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
-	int int_value = (uint8)value;
+	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(jEnum2, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum2.");
 	checkJniErrorOccured(errorMsg);
@@ -420,7 +420,7 @@ jobject TbEnumDataJavaConverter::makeJavaEnum3(JNIEnv* env, ETbEnumEnum3 value)
 		UE_LOG(LogTbEnumDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
-	int int_value = (uint8)value;
+	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(jEnum3, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum3.");
 	checkJniErrorOccured(errorMsg);

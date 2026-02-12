@@ -468,7 +468,7 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, {{$cpp_class}} va
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
-	int int_value = (uint8)value;
+	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod({{$cachedEnum}}, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for {{$javaClassTypeName}}.");
 	checkJniErrorOccured(errorMsg);

@@ -1611,7 +1611,7 @@ jobject Testbed1DataJavaConverter::makeJavaEnum0(JNIEnv* env, ETestbed1Enum0 val
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
-	int int_value = (uint8)value;
+	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(jEnum0, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum0.");
 	checkJniErrorOccured(errorMsg);

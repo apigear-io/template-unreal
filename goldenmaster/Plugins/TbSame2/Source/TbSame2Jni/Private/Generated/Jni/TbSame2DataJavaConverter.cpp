@@ -471,7 +471,7 @@ jobject TbSame2DataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbSame2Enum1 value
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
-	int int_value = (uint8)value;
+	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(jEnum1, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum1.");
 	checkJniErrorOccured(errorMsg);
@@ -569,7 +569,7 @@ jobject TbSame2DataJavaConverter::makeJavaEnum2(JNIEnv* env, ETbSame2Enum2 value
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
-	int int_value = (uint8)value;
+	int int_value = (int)value;
 	jobject javaObj = env->CallStaticObjectMethod(jEnum2, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum2.");
 	checkJniErrorOccured(errorMsg);
