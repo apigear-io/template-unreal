@@ -50,49 +50,74 @@ std::atomic<ITbRefIfacesSimpleLocalIfJniAdapterAccessor*> gUTbRefIfacesSimpleLoc
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+struct FUTbRefIfacesSimpleLocalIfJniAdapterCacheData
+{
+	jclass javaService = nullptr;
+	jmethodID ReadyMethodID = nullptr;
+	jmethodID IntPropertyChangedMethodID = nullptr;
+	jmethodID IntSignalSignalMethodID = nullptr;
+
+	~FUTbRefIfacesSimpleLocalIfJniAdapterCacheData()
+	{
+		if (javaService)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(javaService);
+			}
+		}
+	}
+};
+
 class UTbRefIfacesSimpleLocalIfJniAdapterCache
 {
 public:
-	static jclass javaService;
-	static jmethodID ReadyMethodID;
-	static jmethodID IntPropertyChangedMethodID;
-	static jmethodID IntSignalSignalMethodID;
+	static TSharedPtr<FUTbRefIfacesSimpleLocalIfJniAdapterCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
 
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbRefIfacesSimpleLocalIfJniAdapterCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbRefIfacesSimpleLocalIfJniAdapterCache::javaService = nullptr;
-jmethodID UTbRefIfacesSimpleLocalIfJniAdapterCache::ReadyMethodID = nullptr;
-jmethodID UTbRefIfacesSimpleLocalIfJniAdapterCache::IntPropertyChangedMethodID = nullptr;
-jmethodID UTbRefIfacesSimpleLocalIfJniAdapterCache::IntSignalSignalMethodID = nullptr;
+FCriticalSection UTbRefIfacesSimpleLocalIfJniAdapterCache::CacheLock;
+TSharedPtr<FUTbRefIfacesSimpleLocalIfJniAdapterCacheData, ESPMode::ThreadSafe> UTbRefIfacesSimpleLocalIfJniAdapterCache::CacheData;
 
 void UTbRefIfacesSimpleLocalIfJniAdapterCache::init()
 {
+	auto NewData = MakeShared<FUTbRefIfacesSimpleLocalIfJniAdapterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaService = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
+	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
+	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
-	IntPropertyChangedMethodID = env->GetMethodID(javaService, "onIntPropertyChanged", "(I)V");
+	NewData->IntPropertyChangedMethodID = env->GetMethodID(NewData->javaService, "onIntPropertyChanged", "(I)V");
 	static const TCHAR* errorMsgIntPropertyChanged = TEXT("failed to get java onIntPropertyChanged, (I)V for tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntPropertyChanged);
-	IntSignalSignalMethodID = env->GetMethodID(javaService, "onIntSignal", "(I)V");
+	NewData->IntSignalSignalMethodID = env->GetMethodID(NewData->javaService, "onIntSignal", "(I)V");
 	static const TCHAR* errorMsgIntSignalSignal = TEXT("failed to get java onIntSignal, (I)V for tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntSignalSignal);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbRefIfacesSimpleLocalIfJniAdapterCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(javaService);
-	javaService = nullptr;
-	ReadyMethodID = nullptr;
-	IntPropertyChangedMethodID = nullptr;
-	IntSignalSignalMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
 #endif
@@ -213,13 +238,14 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::callJniServiceReady(bool isServiceRead
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceInstance || !UTbRefIfacesSimpleLocalIfJniAdapterCache::ReadyMethodID)
+		auto Cache = UTbRefIfacesSimpleLocalIfJniAdapterCache::Get();
+		if (!m_javaJniServiceInstance || !Cache || !Cache->ReadyMethodID)
 		{
 			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTbRefIfacesSimpleLocalIfJniAdapterCache::ReadyMethodID, isServiceReady);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:nativeServiceReady(Z)V CLASS not found");
 		TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
@@ -232,12 +258,13 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::OnIntSignalSignal(int32 Param)
 	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Notify java jni UTbRefIfacesSimpleLocalIfJniAdapter::onIntSignal "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbRefIfacesSimpleLocalIfJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UTbRefIfacesSimpleLocalIfJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:onIntSignal (I)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbRefIfacesSimpleLocalIfJniAdapterCache::IntSignalSignalMethodID;
+		jmethodID MethodID = Cache->IntSignalSignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:onIntSignal (I)V not found"));
@@ -256,12 +283,13 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::OnIntPropertyChanged(int32 IntProperty
 	UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Verbose, TEXT("Notify java jni UTbRefIfacesSimpleLocalIfJniAdapter::OnIntProperty "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbRefIfacesSimpleLocalIfJniAdapterCache::javaService == nullptr)
+		auto Cache = UTbRefIfacesSimpleLocalIfJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService::onIntPropertyChanged(I)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbRefIfacesSimpleLocalIfJniAdapterCache::IntPropertyChangedMethodID;
+		jmethodID MethodID = Cache->IntPropertyChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService:onIntPropertyChanged(I)V not found"));

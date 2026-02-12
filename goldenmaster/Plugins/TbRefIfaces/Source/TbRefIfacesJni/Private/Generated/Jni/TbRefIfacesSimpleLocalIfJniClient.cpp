@@ -77,60 +77,82 @@ private:
 };
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+struct FUTbRefIfacesSimpleLocalIfJniClientCacheData
+{
+	jclass clientClassSimpleLocalIf = nullptr;
+	jmethodID clientClassSimpleLocalIfCtor = nullptr;
+	jmethodID IntPropertySetterId = nullptr;
+	jmethodID IntMethodAsyncMethodID = nullptr;
+	jmethodID BindMethodID = nullptr;
+	jmethodID UnbindMethodID = nullptr;
+
+	~FUTbRefIfacesSimpleLocalIfJniClientCacheData()
+	{
+		if (clientClassSimpleLocalIf)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(clientClassSimpleLocalIf);
+			}
+		}
+	}
+};
+
 class UTbRefIfacesSimpleLocalIfJniClientCache
 {
 public:
-	static jclass clientClassSimpleLocalIf;
-	static jmethodID clientClassSimpleLocalIfCtor;
-	static jmethodID IntPropertySetterId;
-	static jmethodID IntMethodAsyncMethodID;
-	static jmethodID BindMethodID;
-	static jmethodID UnbindMethodID;
+	static TSharedPtr<FUTbRefIfacesSimpleLocalIfJniClientCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
+
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbRefIfacesSimpleLocalIfJniClientCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIf = nullptr;
-jmethodID UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIfCtor = nullptr;
-jmethodID UTbRefIfacesSimpleLocalIfJniClientCache::BindMethodID = nullptr;
-jmethodID UTbRefIfacesSimpleLocalIfJniClientCache::UnbindMethodID = nullptr;
-jmethodID UTbRefIfacesSimpleLocalIfJniClientCache::IntPropertySetterId = nullptr;
-jmethodID UTbRefIfacesSimpleLocalIfJniClientCache::IntMethodAsyncMethodID = nullptr;
+FCriticalSection UTbRefIfacesSimpleLocalIfJniClientCache::CacheLock;
+TSharedPtr<FUTbRefIfacesSimpleLocalIfJniClientCacheData, ESPMode::ThreadSafe> UTbRefIfacesSimpleLocalIfJniClientCache::CacheData;
 
 void UTbRefIfacesSimpleLocalIfJniClientCache::init()
 {
+	auto NewData = MakeShared<FUTbRefIfacesSimpleLocalIfJniClientCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	clientClassSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
+	NewData->clientClassSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	IntPropertySetterId = env->GetMethodID(clientClassSimpleLocalIf, "setIntProperty", "(I)V");
+	NewData->IntPropertySetterId = env->GetMethodID(NewData->clientClassSimpleLocalIf, "setIntProperty", "(I)V");
 	static const TCHAR* errorMsgIntPropertySetter = TEXT("failed to get java setIntProperty, I)V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntPropertySetter);
-	IntMethodAsyncMethodID = env->GetMethodID(clientClassSimpleLocalIf, "intMethodAsync", "(Ljava/lang/String;I)V");
+	NewData->IntMethodAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleLocalIf, "intMethodAsync", "(Ljava/lang/String;I)V");
 	static const TCHAR* errorMsgIntMethodAsyncMethod = TEXT("failed to get java intMethodAsync, (Ljava/lang/String;I)V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntMethodAsyncMethod);
-	clientClassSimpleLocalIfCtor = env->GetMethodID(clientClassSimpleLocalIf, "<init>", "()V");
+	NewData->clientClassSimpleLocalIfCtor = env->GetMethodID(NewData->clientClassSimpleLocalIf, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgInit);
-	BindMethodID = env->GetMethodID(clientClassSimpleLocalIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	NewData->BindMethodID = env->GetMethodID(NewData->clientClassSimpleLocalIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgBind);
-	UnbindMethodID = env->GetMethodID(clientClassSimpleLocalIf, "unbind", "()V");
+	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassSimpleLocalIf, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
 	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbRefIfacesSimpleLocalIfJniClientCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(clientClassSimpleLocalIf);
-	clientClassSimpleLocalIf = nullptr;
-	clientClassSimpleLocalIfCtor = nullptr;
-	BindMethodID = nullptr;
-	UnbindMethodID = nullptr;
-	IntPropertySetterId = nullptr;
-	IntMethodAsyncMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 #endif
 
@@ -168,12 +190,13 @@ void UTbRefIfacesSimpleLocalIfJniClient::Initialize(FSubsystemCollectionBase& Co
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbRefIfacesSimpleLocalIfJniClientCache::init();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIfCtor == nullptr)
+	auto Cache = UTbRefIfacesSimpleLocalIfJniClientCache::Get();
+	if (!Cache || Cache->clientClassSimpleLocalIfCtor == nullptr)
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("Java Client Class tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient not found"));
 		return;
 	}
-	jobject localRef = Env->NewObject(UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIf, UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIfCtor);
+	jobject localRef = Env->NewObject(Cache->clientClassSimpleLocalIf, Cache->clientClassSimpleLocalIfCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -222,12 +245,13 @@ void UTbRefIfacesSimpleLocalIfJniClient::SetIntProperty(int32 InIntProperty)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIf == nullptr)
+		auto Cache = UTbRefIfacesSimpleLocalIfJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:setIntProperty (I)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbRefIfacesSimpleLocalIfJniClientCache::IntPropertySetterId;
+		jmethodID MethodID = Cache->IntPropertySetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:setIntProperty (I)V not found"));
@@ -254,13 +278,14 @@ int32 UTbRefIfacesSimpleLocalIfJniClient::IntMethod(int32 InParam)
 	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIf == nullptr)
+	auto Cache = UTbRefIfacesSimpleLocalIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:intMethodAsync:(Ljava/lang/String;I)V CLASS not found"));
 		return 0;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbRefIfacesSimpleLocalIfJniClientCache::IntMethodAsyncMethodID;
+	jmethodID MethodID = Cache->IntMethodAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.StorePromise(Promise);
@@ -300,12 +325,13 @@ bool UTbRefIfacesSimpleLocalIfJniClient::_bindToService(FString servicePackage, 
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIf == nullptr)
+	auto Cache = UTbRefIfacesSimpleLocalIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	jmethodID MethodID = UTbRefIfacesSimpleLocalIfJniClientCache::BindMethodID;
+	jmethodID MethodID = Cache->BindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
@@ -341,12 +367,13 @@ void UTbRefIfacesSimpleLocalIfJniClient::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbRefIfacesSimpleLocalIfJniClientCache::clientClassSimpleLocalIf == nullptr)
+	auto Cache = UTbRefIfacesSimpleLocalIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient:unbind:()V CLASS not found"));
 		return;
 	}
-	jmethodID MethodID = UTbRefIfacesSimpleLocalIfJniClientCache::UnbindMethodID;
+	jmethodID MethodID = Cache->UnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);

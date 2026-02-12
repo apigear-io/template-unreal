@@ -77,156 +77,146 @@ private:
 };
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+struct FUTbSimpleSimpleInterfaceJniClientCacheData
+{
+	jclass clientClassSimpleInterface = nullptr;
+	jmethodID clientClassSimpleInterfaceCtor = nullptr;
+	jmethodID PropBoolSetterId = nullptr;
+	jmethodID PropIntSetterId = nullptr;
+	jmethodID PropInt32SetterId = nullptr;
+	jmethodID PropInt64SetterId = nullptr;
+	jmethodID PropFloatSetterId = nullptr;
+	jmethodID PropFloat32SetterId = nullptr;
+	jmethodID PropFloat64SetterId = nullptr;
+	jmethodID PropStringSetterId = nullptr;
+	jmethodID FuncNoReturnValueAsyncMethodID = nullptr;
+	jmethodID FuncNoParamsAsyncMethodID = nullptr;
+	jmethodID FuncBoolAsyncMethodID = nullptr;
+	jmethodID FuncIntAsyncMethodID = nullptr;
+	jmethodID FuncInt32AsyncMethodID = nullptr;
+	jmethodID FuncInt64AsyncMethodID = nullptr;
+	jmethodID FuncFloatAsyncMethodID = nullptr;
+	jmethodID FuncFloat32AsyncMethodID = nullptr;
+	jmethodID FuncFloat64AsyncMethodID = nullptr;
+	jmethodID FuncStringAsyncMethodID = nullptr;
+	jmethodID BindMethodID = nullptr;
+	jmethodID UnbindMethodID = nullptr;
+
+	~FUTbSimpleSimpleInterfaceJniClientCacheData()
+	{
+		if (clientClassSimpleInterface)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(clientClassSimpleInterface);
+			}
+		}
+	}
+};
+
 class UTbSimpleSimpleInterfaceJniClientCache
 {
 public:
-	static jclass clientClassSimpleInterface;
-	static jmethodID clientClassSimpleInterfaceCtor;
-	static jmethodID PropBoolSetterId;
-	static jmethodID PropIntSetterId;
-	static jmethodID PropInt32SetterId;
-	static jmethodID PropInt64SetterId;
-	static jmethodID PropFloatSetterId;
-	static jmethodID PropFloat32SetterId;
-	static jmethodID PropFloat64SetterId;
-	static jmethodID PropStringSetterId;
-	static jmethodID FuncNoReturnValueAsyncMethodID;
-	static jmethodID FuncNoParamsAsyncMethodID;
-	static jmethodID FuncBoolAsyncMethodID;
-	static jmethodID FuncIntAsyncMethodID;
-	static jmethodID FuncInt32AsyncMethodID;
-	static jmethodID FuncInt64AsyncMethodID;
-	static jmethodID FuncFloatAsyncMethodID;
-	static jmethodID FuncFloat32AsyncMethodID;
-	static jmethodID FuncFloat64AsyncMethodID;
-	static jmethodID FuncStringAsyncMethodID;
-	static jmethodID BindMethodID;
-	static jmethodID UnbindMethodID;
+	static TSharedPtr<FUTbSimpleSimpleInterfaceJniClientCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
+
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbSimpleSimpleInterfaceJniClientCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterfaceCtor = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::BindMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::UnbindMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::PropBoolSetterId = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::PropIntSetterId = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::PropInt32SetterId = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::PropInt64SetterId = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::PropFloatSetterId = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::PropFloat32SetterId = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::PropFloat64SetterId = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::PropStringSetterId = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::FuncNoReturnValueAsyncMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::FuncNoParamsAsyncMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::FuncBoolAsyncMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::FuncIntAsyncMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::FuncInt32AsyncMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::FuncInt64AsyncMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::FuncFloatAsyncMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::FuncFloat32AsyncMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::FuncFloat64AsyncMethodID = nullptr;
-jmethodID UTbSimpleSimpleInterfaceJniClientCache::FuncStringAsyncMethodID = nullptr;
+FCriticalSection UTbSimpleSimpleInterfaceJniClientCache::CacheLock;
+TSharedPtr<FUTbSimpleSimpleInterfaceJniClientCacheData, ESPMode::ThreadSafe> UTbSimpleSimpleInterfaceJniClientCache::CacheData;
 
 void UTbSimpleSimpleInterfaceJniClientCache::init()
 {
+	auto NewData = MakeShared<FUTbSimpleSimpleInterfaceJniClientCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	clientClassSimpleInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
+	NewData->clientClassSimpleInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	PropBoolSetterId = env->GetMethodID(clientClassSimpleInterface, "setPropBool", "(Z)V");
+	NewData->PropBoolSetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropBool", "(Z)V");
 	static const TCHAR* errorMsgPropBoolSetter = TEXT("failed to get java setPropBool, Z)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolSetter);
-	PropIntSetterId = env->GetMethodID(clientClassSimpleInterface, "setPropInt", "(I)V");
+	NewData->PropIntSetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropInt", "(I)V");
 	static const TCHAR* errorMsgPropIntSetter = TEXT("failed to get java setPropInt, I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntSetter);
-	PropInt32SetterId = env->GetMethodID(clientClassSimpleInterface, "setPropInt32", "(I)V");
+	NewData->PropInt32SetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropInt32", "(I)V");
 	static const TCHAR* errorMsgPropInt32Setter = TEXT("failed to get java setPropInt32, I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt32Setter);
-	PropInt64SetterId = env->GetMethodID(clientClassSimpleInterface, "setPropInt64", "(J)V");
+	NewData->PropInt64SetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropInt64", "(J)V");
 	static const TCHAR* errorMsgPropInt64Setter = TEXT("failed to get java setPropInt64, J)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt64Setter);
-	PropFloatSetterId = env->GetMethodID(clientClassSimpleInterface, "setPropFloat", "(F)V");
+	NewData->PropFloatSetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropFloat", "(F)V");
 	static const TCHAR* errorMsgPropFloatSetter = TEXT("failed to get java setPropFloat, F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloatSetter);
-	PropFloat32SetterId = env->GetMethodID(clientClassSimpleInterface, "setPropFloat32", "(F)V");
+	NewData->PropFloat32SetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropFloat32", "(F)V");
 	static const TCHAR* errorMsgPropFloat32Setter = TEXT("failed to get java setPropFloat32, F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat32Setter);
-	PropFloat64SetterId = env->GetMethodID(clientClassSimpleInterface, "setPropFloat64", "(D)V");
+	NewData->PropFloat64SetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropFloat64", "(D)V");
 	static const TCHAR* errorMsgPropFloat64Setter = TEXT("failed to get java setPropFloat64, D)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat64Setter);
-	PropStringSetterId = env->GetMethodID(clientClassSimpleInterface, "setPropString", "(Ljava/lang/String;)V");
+	NewData->PropStringSetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropString", "(Ljava/lang/String;)V");
 	static const TCHAR* errorMsgPropStringSetter = TEXT("failed to get java setPropString, Ljava/lang/String;)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropStringSetter);
-	FuncNoReturnValueAsyncMethodID = env->GetMethodID(clientClassSimpleInterface, "funcNoReturnValueAsync", "(Ljava/lang/String;Z)V");
+	NewData->FuncNoReturnValueAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcNoReturnValueAsync", "(Ljava/lang/String;Z)V");
 	static const TCHAR* errorMsgFuncNoReturnValueAsyncMethod = TEXT("failed to get java funcNoReturnValueAsync, (Ljava/lang/String;Z)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncNoReturnValueAsyncMethod);
-	FuncNoParamsAsyncMethodID = env->GetMethodID(clientClassSimpleInterface, "funcNoParamsAsync", "(Ljava/lang/String;)V");
+	NewData->FuncNoParamsAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcNoParamsAsync", "(Ljava/lang/String;)V");
 	static const TCHAR* errorMsgFuncNoParamsAsyncMethod = TEXT("failed to get java funcNoParamsAsync, (Ljava/lang/String;)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncNoParamsAsyncMethod);
-	FuncBoolAsyncMethodID = env->GetMethodID(clientClassSimpleInterface, "funcBoolAsync", "(Ljava/lang/String;Z)V");
+	NewData->FuncBoolAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcBoolAsync", "(Ljava/lang/String;Z)V");
 	static const TCHAR* errorMsgFuncBoolAsyncMethod = TEXT("failed to get java funcBoolAsync, (Ljava/lang/String;Z)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncBoolAsyncMethod);
-	FuncIntAsyncMethodID = env->GetMethodID(clientClassSimpleInterface, "funcIntAsync", "(Ljava/lang/String;I)V");
+	NewData->FuncIntAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcIntAsync", "(Ljava/lang/String;I)V");
 	static const TCHAR* errorMsgFuncIntAsyncMethod = TEXT("failed to get java funcIntAsync, (Ljava/lang/String;I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncIntAsyncMethod);
-	FuncInt32AsyncMethodID = env->GetMethodID(clientClassSimpleInterface, "funcInt32Async", "(Ljava/lang/String;I)V");
+	NewData->FuncInt32AsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcInt32Async", "(Ljava/lang/String;I)V");
 	static const TCHAR* errorMsgFuncInt32AsyncMethod = TEXT("failed to get java funcInt32Async, (Ljava/lang/String;I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncInt32AsyncMethod);
-	FuncInt64AsyncMethodID = env->GetMethodID(clientClassSimpleInterface, "funcInt64Async", "(Ljava/lang/String;J)V");
+	NewData->FuncInt64AsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcInt64Async", "(Ljava/lang/String;J)V");
 	static const TCHAR* errorMsgFuncInt64AsyncMethod = TEXT("failed to get java funcInt64Async, (Ljava/lang/String;J)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncInt64AsyncMethod);
-	FuncFloatAsyncMethodID = env->GetMethodID(clientClassSimpleInterface, "funcFloatAsync", "(Ljava/lang/String;F)V");
+	NewData->FuncFloatAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcFloatAsync", "(Ljava/lang/String;F)V");
 	static const TCHAR* errorMsgFuncFloatAsyncMethod = TEXT("failed to get java funcFloatAsync, (Ljava/lang/String;F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncFloatAsyncMethod);
-	FuncFloat32AsyncMethodID = env->GetMethodID(clientClassSimpleInterface, "funcFloat32Async", "(Ljava/lang/String;F)V");
+	NewData->FuncFloat32AsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcFloat32Async", "(Ljava/lang/String;F)V");
 	static const TCHAR* errorMsgFuncFloat32AsyncMethod = TEXT("failed to get java funcFloat32Async, (Ljava/lang/String;F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncFloat32AsyncMethod);
-	FuncFloat64AsyncMethodID = env->GetMethodID(clientClassSimpleInterface, "funcFloat64Async", "(Ljava/lang/String;D)V");
+	NewData->FuncFloat64AsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcFloat64Async", "(Ljava/lang/String;D)V");
 	static const TCHAR* errorMsgFuncFloat64AsyncMethod = TEXT("failed to get java funcFloat64Async, (Ljava/lang/String;D)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncFloat64AsyncMethod);
-	FuncStringAsyncMethodID = env->GetMethodID(clientClassSimpleInterface, "funcStringAsync", "(Ljava/lang/String;Ljava/lang/String;)V");
+	NewData->FuncStringAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcStringAsync", "(Ljava/lang/String;Ljava/lang/String;)V");
 	static const TCHAR* errorMsgFuncStringAsyncMethod = TEXT("failed to get java funcStringAsync, (Ljava/lang/String;Ljava/lang/String;)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncStringAsyncMethod);
-	clientClassSimpleInterfaceCtor = env->GetMethodID(clientClassSimpleInterface, "<init>", "()V");
+	NewData->clientClassSimpleInterfaceCtor = env->GetMethodID(NewData->clientClassSimpleInterface, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgInit);
-	BindMethodID = env->GetMethodID(clientClassSimpleInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	NewData->BindMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgBind);
-	UnbindMethodID = env->GetMethodID(clientClassSimpleInterface, "unbind", "()V");
+	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbSimpleSimpleInterfaceJniClientCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(clientClassSimpleInterface);
-	clientClassSimpleInterface = nullptr;
-	clientClassSimpleInterfaceCtor = nullptr;
-	BindMethodID = nullptr;
-	UnbindMethodID = nullptr;
-	PropBoolSetterId = nullptr;
-	PropIntSetterId = nullptr;
-	PropInt32SetterId = nullptr;
-	PropInt64SetterId = nullptr;
-	PropFloatSetterId = nullptr;
-	PropFloat32SetterId = nullptr;
-	PropFloat64SetterId = nullptr;
-	PropStringSetterId = nullptr;
-	FuncNoReturnValueAsyncMethodID = nullptr;
-	FuncNoParamsAsyncMethodID = nullptr;
-	FuncBoolAsyncMethodID = nullptr;
-	FuncIntAsyncMethodID = nullptr;
-	FuncInt32AsyncMethodID = nullptr;
-	FuncInt64AsyncMethodID = nullptr;
-	FuncFloatAsyncMethodID = nullptr;
-	FuncFloat32AsyncMethodID = nullptr;
-	FuncFloat64AsyncMethodID = nullptr;
-	FuncStringAsyncMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 #endif
 
@@ -264,12 +254,13 @@ void UTbSimpleSimpleInterfaceJniClient::Initialize(FSubsystemCollectionBase& Col
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbSimpleSimpleInterfaceJniClientCache::init();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterfaceCtor == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache || Cache->clientClassSimpleInterfaceCtor == nullptr)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("Java Client Class tbSimple/tbSimplejniclient/SimpleInterfaceJniClient not found"));
 		return;
 	}
-	jobject localRef = Env->NewObject(UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface, UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterfaceCtor);
+	jobject localRef = Env->NewObject(Cache->clientClassSimpleInterface, Cache->clientClassSimpleInterfaceCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -318,12 +309,13 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropBool(bool bInPropBool)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+		auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropBool (Z)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::PropBoolSetterId;
+		jmethodID MethodID = Cache->PropBoolSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropBool (Z)V not found"));
@@ -362,12 +354,13 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropInt(int32 InPropInt)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+		auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt (I)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::PropIntSetterId;
+		jmethodID MethodID = Cache->PropIntSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt (I)V not found"));
@@ -406,12 +399,13 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropInt32(int32 InPropInt32)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+		auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt32 (I)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::PropInt32SetterId;
+		jmethodID MethodID = Cache->PropInt32SetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt32 (I)V not found"));
@@ -450,12 +444,13 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropInt64(int64 InPropInt64)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+		auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt64 (J)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::PropInt64SetterId;
+		jmethodID MethodID = Cache->PropInt64SetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropInt64 (J)V not found"));
@@ -494,12 +489,13 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropFloat(float InPropFloat)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+		auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat (F)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::PropFloatSetterId;
+		jmethodID MethodID = Cache->PropFloatSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat (F)V not found"));
@@ -538,12 +534,13 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropFloat32(float InPropFloat32)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+		auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat32 (F)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::PropFloat32SetterId;
+		jmethodID MethodID = Cache->PropFloat32SetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat32 (F)V not found"));
@@ -582,12 +579,13 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropFloat64(double InPropFloat64)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+		auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat64 (D)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::PropFloat64SetterId;
+		jmethodID MethodID = Cache->PropFloat64SetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropFloat64 (D)V not found"));
@@ -626,12 +624,13 @@ void UTbSimpleSimpleInterfaceJniClient::SetPropString(const FString& InPropStrin
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+		auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropString (Ljava/lang/String;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::PropStringSetterId;
+		jmethodID MethodID = Cache->PropStringSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:setPropString (Ljava/lang/String;)V not found"));
@@ -663,13 +662,14 @@ void UTbSimpleSimpleInterfaceJniClient::FuncNoReturnValue(bool bInParamBool)
 	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoReturnValueAsync:(Ljava/lang/String;Z)V CLASS not found"));
 		return;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncNoReturnValueAsyncMethodID;
+	jmethodID MethodID = Cache->FuncNoReturnValueAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		FGuid id = FGuid::NewGuid();
@@ -704,13 +704,14 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncNoParams()
 	TPromise<bool> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcNoParamsAsync:(Ljava/lang/String;)V CLASS not found"));
 		return false;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncNoParamsAsyncMethodID;
+	jmethodID MethodID = Cache->FuncNoParamsAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -745,13 +746,14 @@ bool UTbSimpleSimpleInterfaceJniClient::FuncBool(bool bInParamBool)
 	TPromise<bool> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcBoolAsync:(Ljava/lang/String;Z)V CLASS not found"));
 		return false;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncBoolAsyncMethodID;
+	jmethodID MethodID = Cache->FuncBoolAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -786,13 +788,14 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt(int32 InParamInt)
 	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcIntAsync:(Ljava/lang/String;I)V CLASS not found"));
 		return 0;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncIntAsyncMethodID;
+	jmethodID MethodID = Cache->FuncIntAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -827,13 +830,14 @@ int32 UTbSimpleSimpleInterfaceJniClient::FuncInt32(int32 InParamInt32)
 	TPromise<int32> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt32Async:(Ljava/lang/String;I)V CLASS not found"));
 		return 0;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncInt32AsyncMethodID;
+	jmethodID MethodID = Cache->FuncInt32AsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -868,13 +872,14 @@ int64 UTbSimpleSimpleInterfaceJniClient::FuncInt64(int64 InParamInt64)
 	TPromise<int64> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcInt64Async:(Ljava/lang/String;J)V CLASS not found"));
 		return 0LL;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncInt64AsyncMethodID;
+	jmethodID MethodID = Cache->FuncInt64AsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -909,13 +914,14 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat(float InParamFloat)
 	TPromise<float> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloatAsync:(Ljava/lang/String;F)V CLASS not found"));
 		return 0.0f;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncFloatAsyncMethodID;
+	jmethodID MethodID = Cache->FuncFloatAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -950,13 +956,14 @@ float UTbSimpleSimpleInterfaceJniClient::FuncFloat32(float InParamFloat32)
 	TPromise<float> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat32Async:(Ljava/lang/String;F)V CLASS not found"));
 		return 0.0f;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncFloat32AsyncMethodID;
+	jmethodID MethodID = Cache->FuncFloat32AsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -991,13 +998,14 @@ double UTbSimpleSimpleInterfaceJniClient::FuncFloat64(double InParamFloat)
 	TPromise<double> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcFloat64Async:(Ljava/lang/String;D)V CLASS not found"));
 		return 0.0;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncFloat64AsyncMethodID;
+	jmethodID MethodID = Cache->FuncFloat64AsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -1032,13 +1040,14 @@ FString UTbSimpleSimpleInterfaceJniClient::FuncString(const FString& InParamStri
 	TPromise<FString> Promise;
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:funcStringAsync:(Ljava/lang/String;Ljava/lang/String;)V CLASS not found"));
 		return FString();
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::FuncStringAsyncMethodID;
+	jmethodID MethodID = Cache->FuncStringAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		auto id = gUTbSimpleSimpleInterfaceJniClientmethodHelper.StorePromise(Promise);
@@ -1083,12 +1092,13 @@ bool UTbSimpleSimpleInterfaceJniClient::_bindToService(FString servicePackage, F
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::BindMethodID;
+	jmethodID MethodID = Cache->BindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
@@ -1124,12 +1134,13 @@ void UTbSimpleSimpleInterfaceJniClient::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbSimpleSimpleInterfaceJniClientCache::clientClassSimpleInterface == nullptr)
+	auto Cache = UTbSimpleSimpleInterfaceJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbSimpleSimpleInterfaceClient_JNI, Warning, TEXT("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient:unbind:()V CLASS not found"));
 		return;
 	}
-	jmethodID MethodID = UTbSimpleSimpleInterfaceJniClientCache::UnbindMethodID;
+	jmethodID MethodID = Cache->UnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
