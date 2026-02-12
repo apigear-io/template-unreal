@@ -151,92 +151,101 @@ private:
 };
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+struct F{{$Class}}CacheData
+{
+	{{- $className:= printf "javaClient" (Camel .Interface.Name) }}
+	jclass {{$clientClass}} = nullptr;
+	jmethodID {{$clientClass}}Ctor = nullptr;
+{{- range .Interface.Properties }}
+{{- if not .IsReadOnly }}
+	jmethodID {{ Camel .Name}}SetterId = nullptr;
+{{- end }}
+{{- end }}
+{{- range .Interface.Operations }}
+	jmethodID {{ Camel .Name}}AsyncMethodID = nullptr;
+{{- end }}
+	jmethodID BindMethodID = nullptr;
+	jmethodID UnbindMethodID = nullptr;
+
+	~F{{$Class}}CacheData()
+	{
+		if ({{$clientClass}})
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef({{$clientClass}});
+			}
+		}
+	}
+};
+
 class {{$Class}}Cache
 {
 public:
-	{{- $className:= printf "javaClient" (Camel .Interface.Name) }}
-	static jclass {{$clientClass}};
-	static jmethodID {{$clientClass}}Ctor;
-{{- range .Interface.Properties }}
-{{- if not .IsReadOnly }}
-	static jmethodID {{ Camel .Name}}SetterId;
-{{- end }}
-{{- end }}
-{{- range .Interface.Operations }}
-	static jmethodID {{ Camel .Name}}AsyncMethodID;
-{{- end }}
-	static jmethodID BindMethodID;
-	static jmethodID UnbindMethodID;
+	static TSharedPtr<F{{$Class}}CacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
+
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<F{{$Class}}CacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass {{$Class}}Cache::{{$clientClass}} = nullptr;
-jmethodID {{$Class}}Cache::{{$clientClass}}Ctor = nullptr;
-jmethodID {{$Class}}Cache::BindMethodID = nullptr;
-jmethodID {{$Class}}Cache::UnbindMethodID = nullptr;
-{{- range .Interface.Properties }}
-{{- if not .IsReadOnly }}
-jmethodID {{$Class}}Cache::{{ Camel .Name}}SetterId = nullptr;
-{{- end }}
-{{- end }}
-
-{{- range .Interface.Operations }}
-jmethodID {{$Class}}Cache::{{ Camel .Name}}AsyncMethodID = nullptr;
-{{- end }}
+FCriticalSection {{$Class}}Cache::CacheLock;
+TSharedPtr<F{{$Class}}CacheData, ESPMode::ThreadSafe> {{$Class}}Cache::CacheData;
 
 void {{$Class}}Cache::init()
 {
+	auto NewData = MakeShared<F{{$Class}}CacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 {{- $clientClass:= printf "clientClass%s" (Camel .Interface.Name) }}
 {{- $javaClientTypeName := printf "%sJniClient"  (Camel .Interface.Name) }}
 {{- $jniclient_name:= printf "%sjniclient" ( camel $ModuleName) }}
 {{- $javaClientPath := ( join "/" (strSlice ( camel $ModuleName) $jniclient_name) ) }}
 
-	{{$clientClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClientPath}}/{{$javaClientTypeName}}");
+	NewData->{{$clientClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClientPath}}/{{$javaClientTypeName}}");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java {{$javaClientPath}}/{{$javaClientTypeName}}");
 	{{$localClassConverter}}::checkJniErrorOccured(errorMsgCls);
 {{- range .Interface.Properties }}
 {{- if not .IsReadOnly }}
 	{{- $signatureParam := jniJavaSignatureParam . }}
-	{{ Camel .Name}}SetterId = env->GetMethodID({{$clientClass}}, "set{{Camel .Name}}", "({{$signatureParam}})V");
+	NewData->{{ Camel .Name}}SetterId = env->GetMethodID(NewData->{{$clientClass}}, "set{{Camel .Name}}", "({{$signatureParam}})V");
 	static const TCHAR* errorMsg{{Camel .Name}}Setter = TEXT("failed to get java set{{Camel .Name}}, {{$signatureParam}})V for {{$javaClientPath}}/{{$javaClientTypeName}}");
 	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Setter);
 {{- end }}
 {{- end }}
 {{- range .Interface.Operations }}
 	{{- $signatureParams := jniJavaSignatureParams .Params }}
-	{{Camel .Name}}AsyncMethodID = env->GetMethodID({{$clientClass}}, "{{camel .Name}}Async", "(Ljava/lang/String;{{$signatureParams}})V");
+	NewData->{{Camel .Name}}AsyncMethodID = env->GetMethodID(NewData->{{$clientClass}}, "{{camel .Name}}Async", "(Ljava/lang/String;{{$signatureParams}})V");
 	static const TCHAR* errorMsg{{Camel .Name}}AsyncMethod = TEXT("failed to get java {{camel .Name}}Async, (Ljava/lang/String;{{$signatureParams}})V for {{$javaClientPath}}/{{$javaClientTypeName}}");
 	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}AsyncMethod);
 {{- end }}
-	{{$clientClass}}Ctor = env->GetMethodID({{$clientClass}}, "<init>", "()V");
+	NewData->{{$clientClass}}Ctor = env->GetMethodID(NewData->{{$clientClass}}, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for {{$javaClientPath}}/{{$javaClientTypeName}}");
 	{{$localClassConverter}}::checkJniErrorOccured(errorMsgInit);
-	BindMethodID = env->GetMethodID({{$clientClass}}, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	NewData->BindMethodID = env->GetMethodID(NewData->{{$clientClass}}, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for {{$javaClientPath}}/{{$javaClientTypeName}}");
 	{{$localClassConverter}}::checkJniErrorOccured(errorMsgBind);
-	UnbindMethodID = env->GetMethodID({{$clientClass}}, "unbind", "()V");
+	NewData->UnbindMethodID = env->GetMethodID(NewData->{{$clientClass}}, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for {{$javaClientPath}}/{{$javaClientTypeName}}");
 	{{$localClassConverter}}::checkJniErrorOccured(errorMsgUnbind);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void {{$Class}}Cache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef({{$clientClass}});
-	{{$clientClass}} = nullptr;
-	{{$clientClass}}Ctor = nullptr;
-	BindMethodID = nullptr;
-	UnbindMethodID = nullptr;
-	{{- range .Interface.Properties }}
-	{{- if not .IsReadOnly }}
-	{{ Camel .Name}}SetterId = nullptr;
-	{{- end }}
-	{{- end }}
-	{{- range .Interface.Operations }}
-	{{ Camel .Name}}AsyncMethodID = nullptr;
-	{{- end }}
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 #endif
 
@@ -274,12 +283,13 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	{{$Class}}Cache::init();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if ({{$Class}}Cache::{{$clientClass}}Ctor == nullptr)
+	auto Cache = {{$Class}}Cache::Get();
+	if (!Cache || Cache->{{$clientClass}}Ctor == nullptr)
 	{
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("Java Client Class {{$javaClassPath}}/{{$javaClassName}} not found"));
 		return;
 	}
-	jobject localRef = Env->NewObject({{$Class}}Cache::{{$clientClass}}, {{$Class}}Cache::{{$clientClass}}Ctor);
+	jobject localRef = Env->NewObject(Cache->{{$clientClass}}, Cache->{{$clientClass}}Ctor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -333,12 +343,13 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		{{- $signatureParam := jniJavaSignatureParam . }}
-		if ({{$Class}}Cache::{{$clientClass}} == nullptr)
+		auto Cache = {{$Class}}Cache::Get();
+		if (!Cache)
 		{
 			UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:set{{Camel .Name}} ({{$signatureParam}})V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = {{$Class}}Cache::{{ Camel .Name}}SetterId;
+		jmethodID MethodID = Cache->{{ Camel .Name}}SetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:set{{Camel .Name}} ({{$signatureParam}})V not found"));
@@ -382,14 +393,15 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 	{{- end}}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if ({{$Class}}Cache::{{$clientClass}} == nullptr)
+	auto Cache = {{$Class}}Cache::Get();
+	if (!Cache)
 	{
 		{{- $signatureParams:= jniJavaSignatureParams .Params}}
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:{{camel .Name}}Async:(Ljava/lang/String;{{$signatureParams}})V CLASS not found"));
 		return{{ if not .Return.IsVoid }} {{ueDefault "" .Return }}{{ end}};
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = {{$Class}}Cache::{{Camel .Name}}AsyncMethodID;
+	jmethodID MethodID = Cache->{{Camel .Name}}AsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		{{- if not .Return.IsVoid }}
@@ -456,12 +468,13 @@ bool {{$Class}}::_bindToService(FString servicePackage, FString connectionId)
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if ({{$Class}}Cache::{{$clientClass}} == nullptr)
+	auto Cache = {{$Class}}Cache::Get();
+	if (!Cache)
 	{
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	jmethodID MethodID = {{$Class}}Cache::BindMethodID;
+	jmethodID MethodID = Cache->BindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
@@ -497,12 +510,13 @@ void {{$Class}}::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if ({{$Class}}Cache::{{$clientClass}} == nullptr)
+	auto Cache = {{$Class}}Cache::Get();
+	if (!Cache)
 	{
 		UE_LOG(Log{{$Iface}}Client_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:unbind:()V CLASS not found"));
 		return;
 	}
-	jmethodID MethodID = {{$Class}}Cache::UnbindMethodID;
+	jmethodID MethodID = Cache->UnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);
