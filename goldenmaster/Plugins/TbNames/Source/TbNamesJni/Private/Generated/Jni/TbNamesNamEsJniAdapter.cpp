@@ -49,73 +49,90 @@ std::atomic<ITbNamesNamEsJniAdapterAccessor*> gUTbNamesNamEsJniAdapterHandle{nul
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+struct FUTbNamesNamEsJniAdapterCacheData
+{
+	jclass javaService = nullptr;
+	jmethodID ReadyMethodID = nullptr;
+	jmethodID SwitchChangedMethodID = nullptr;
+	jmethodID SomePropertyChangedMethodID = nullptr;
+	jmethodID SomePoperty2ChangedMethodID = nullptr;
+	jmethodID EnumPropertyChangedMethodID = nullptr;
+	jmethodID SomeSignalSignalMethodID = nullptr;
+	jmethodID SomeSignal2SignalMethodID = nullptr;
+
+	~FUTbNamesNamEsJniAdapterCacheData()
+	{
+		if (javaService)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(javaService);
+			}
+		}
+	}
+};
+
 class UTbNamesNamEsJniAdapterCache
 {
 public:
-	static jclass javaService;
-	static jmethodID ReadyMethodID;
-	static jmethodID SwitchChangedMethodID;
-	static jmethodID SomePropertyChangedMethodID;
-	static jmethodID SomePoperty2ChangedMethodID;
-	static jmethodID EnumPropertyChangedMethodID;
-	static jmethodID SomeSignalSignalMethodID;
-	static jmethodID SomeSignal2SignalMethodID;
+	static TSharedPtr<FUTbNamesNamEsJniAdapterCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
 
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbNamesNamEsJniAdapterCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbNamesNamEsJniAdapterCache::javaService = nullptr;
-jmethodID UTbNamesNamEsJniAdapterCache::ReadyMethodID = nullptr;
-jmethodID UTbNamesNamEsJniAdapterCache::SwitchChangedMethodID = nullptr;
-jmethodID UTbNamesNamEsJniAdapterCache::SomePropertyChangedMethodID = nullptr;
-jmethodID UTbNamesNamEsJniAdapterCache::SomePoperty2ChangedMethodID = nullptr;
-jmethodID UTbNamesNamEsJniAdapterCache::EnumPropertyChangedMethodID = nullptr;
-jmethodID UTbNamesNamEsJniAdapterCache::SomeSignalSignalMethodID = nullptr;
-jmethodID UTbNamesNamEsJniAdapterCache::SomeSignal2SignalMethodID = nullptr;
+FCriticalSection UTbNamesNamEsJniAdapterCache::CacheLock;
+TSharedPtr<FUTbNamesNamEsJniAdapterCacheData, ESPMode::ThreadSafe> UTbNamesNamEsJniAdapterCache::CacheData;
 
 void UTbNamesNamEsJniAdapterCache::init()
 {
+	auto NewData = MakeShared<FUTbNamesNamEsJniAdapterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaService = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniService");
+	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbNames/tbNamesjniservice/NamEsJniService");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
+	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbNames/tbNamesjniservice/NamEsJniService");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
-	SwitchChangedMethodID = env->GetMethodID(javaService, "onSwitchChanged", "(Z)V");
+	NewData->SwitchChangedMethodID = env->GetMethodID(NewData->javaService, "onSwitchChanged", "(Z)V");
 	static const TCHAR* errorMsgSwitchChanged = TEXT("failed to get java onSwitchChanged, (Z)V for tbNames/tbNamesjniservice/NamEsJniService");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSwitchChanged);
-	SomePropertyChangedMethodID = env->GetMethodID(javaService, "onSomePropertyChanged", "(I)V");
+	NewData->SomePropertyChangedMethodID = env->GetMethodID(NewData->javaService, "onSomePropertyChanged", "(I)V");
 	static const TCHAR* errorMsgSomePropertyChanged = TEXT("failed to get java onSomePropertyChanged, (I)V for tbNames/tbNamesjniservice/NamEsJniService");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePropertyChanged);
-	SomePoperty2ChangedMethodID = env->GetMethodID(javaService, "onSomePoperty2Changed", "(I)V");
+	NewData->SomePoperty2ChangedMethodID = env->GetMethodID(NewData->javaService, "onSomePoperty2Changed", "(I)V");
 	static const TCHAR* errorMsgSomePoperty2Changed = TEXT("failed to get java onSomePoperty2Changed, (I)V for tbNames/tbNamesjniservice/NamEsJniService");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePoperty2Changed);
-	EnumPropertyChangedMethodID = env->GetMethodID(javaService, "onEnumPropertyChanged", "(LtbNames/tbNames_api/EnumWithUnderScores;)V");
+	NewData->EnumPropertyChangedMethodID = env->GetMethodID(NewData->javaService, "onEnumPropertyChanged", "(LtbNames/tbNames_api/EnumWithUnderScores;)V");
 	static const TCHAR* errorMsgEnumPropertyChanged = TEXT("failed to get java onEnumPropertyChanged, (LtbNames/tbNames_api/EnumWithUnderScores;)V for tbNames/tbNamesjniservice/NamEsJniService");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgEnumPropertyChanged);
-	SomeSignalSignalMethodID = env->GetMethodID(javaService, "onSomeSignal", "(Z)V");
+	NewData->SomeSignalSignalMethodID = env->GetMethodID(NewData->javaService, "onSomeSignal", "(Z)V");
 	static const TCHAR* errorMsgSomeSignalSignal = TEXT("failed to get java onSomeSignal, (Z)V for tbNames/tbNamesjniservice/NamEsJniService");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeSignalSignal);
-	SomeSignal2SignalMethodID = env->GetMethodID(javaService, "onSomeSignal2", "(Z)V");
+	NewData->SomeSignal2SignalMethodID = env->GetMethodID(NewData->javaService, "onSomeSignal2", "(Z)V");
 	static const TCHAR* errorMsgSomeSignal2Signal = TEXT("failed to get java onSomeSignal2, (Z)V for tbNames/tbNamesjniservice/NamEsJniService");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeSignal2Signal);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbNamesNamEsJniAdapterCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(javaService);
-	javaService = nullptr;
-	ReadyMethodID = nullptr;
-	SwitchChangedMethodID = nullptr;
-	SomePropertyChangedMethodID = nullptr;
-	SomePoperty2ChangedMethodID = nullptr;
-	EnumPropertyChangedMethodID = nullptr;
-	SomeSignalSignalMethodID = nullptr;
-	SomeSignal2SignalMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
 #endif
@@ -236,13 +253,14 @@ void UTbNamesNamEsJniAdapter::callJniServiceReady(bool isServiceReady)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceInstance || !UTbNamesNamEsJniAdapterCache::ReadyMethodID)
+		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
+		if (!m_javaJniServiceInstance || !Cache || !Cache->ReadyMethodID)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTbNamesNamEsJniAdapterCache::ReadyMethodID, isServiceReady);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbNames/tbNamesjniservice/NamEsJniService:nativeServiceReady(Z)V CLASS not found");
 		TbNamesDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
@@ -255,12 +273,13 @@ void UTbNamesNamEsJniAdapter::OnSomeSignalSignal(bool bSomeParam)
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::onSomeSignal "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbNamesNamEsJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal (Z)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbNamesNamEsJniAdapterCache::SomeSignalSignalMethodID;
+		jmethodID MethodID = Cache->SomeSignalSignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal (Z)V not found"));
@@ -280,12 +299,13 @@ void UTbNamesNamEsJniAdapter::OnSomeSignal2Signal(bool bSomeParam)
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::onSomeSignal2 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbNamesNamEsJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal2 (Z)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbNamesNamEsJniAdapterCache::SomeSignal2SignalMethodID;
+		jmethodID MethodID = Cache->SomeSignal2SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomeSignal2 (Z)V not found"));
@@ -304,12 +324,13 @@ void UTbNamesNamEsJniAdapter::OnSwitchChanged(bool bSwitch)
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnSwitch "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbNamesNamEsJniAdapterCache::javaService == nullptr)
+		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSwitchChanged(Z)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbNamesNamEsJniAdapterCache::SwitchChangedMethodID;
+		jmethodID MethodID = Cache->SwitchChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSwitchChanged(Z)V not found"));
@@ -328,12 +349,13 @@ void UTbNamesNamEsJniAdapter::OnSomePropertyChanged(int32 SomeProperty)
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnSomeProperty "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbNamesNamEsJniAdapterCache::javaService == nullptr)
+		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSomePropertyChanged(I)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbNamesNamEsJniAdapterCache::SomePropertyChangedMethodID;
+		jmethodID MethodID = Cache->SomePropertyChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomePropertyChanged(I)V not found"));
@@ -352,12 +374,13 @@ void UTbNamesNamEsJniAdapter::OnSomePoperty2Changed(int32 SomePoperty2)
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnSomePoperty2 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbNamesNamEsJniAdapterCache::javaService == nullptr)
+		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSomePoperty2Changed(I)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbNamesNamEsJniAdapterCache::SomePoperty2ChangedMethodID;
+		jmethodID MethodID = Cache->SomePoperty2ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onSomePoperty2Changed(I)V not found"));
@@ -376,12 +399,13 @@ void UTbNamesNamEsJniAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scor
 	UE_LOG(LogTbNamesNamEs_JNI, Verbose, TEXT("Notify java jni UTbNamesNamEsJniAdapter::OnEnumProperty "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbNamesNamEsJniAdapterCache::javaService == nullptr)
+		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onEnumPropertyChanged(LtbNames/tbNames_api/EnumWithUnderScores;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbNamesNamEsJniAdapterCache::EnumPropertyChangedMethodID;
+		jmethodID MethodID = Cache->EnumPropertyChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService:onEnumPropertyChanged(LtbNames/tbNames_api/EnumWithUnderScores;)V not found"));

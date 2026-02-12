@@ -78,84 +78,98 @@ private:
 };
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+struct FUTbNamesNamEsJniClientCacheData
+{
+	jclass clientClassNamEs = nullptr;
+	jmethodID clientClassNamEsCtor = nullptr;
+	jmethodID SwitchSetterId = nullptr;
+	jmethodID SomePropertySetterId = nullptr;
+	jmethodID SomePoperty2SetterId = nullptr;
+	jmethodID EnumPropertySetterId = nullptr;
+	jmethodID SomeFunctionAsyncMethodID = nullptr;
+	jmethodID SomeFunction2AsyncMethodID = nullptr;
+	jmethodID BindMethodID = nullptr;
+	jmethodID UnbindMethodID = nullptr;
+
+	~FUTbNamesNamEsJniClientCacheData()
+	{
+		if (clientClassNamEs)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(clientClassNamEs);
+			}
+		}
+	}
+};
+
 class UTbNamesNamEsJniClientCache
 {
 public:
-	static jclass clientClassNamEs;
-	static jmethodID clientClassNamEsCtor;
-	static jmethodID SwitchSetterId;
-	static jmethodID SomePropertySetterId;
-	static jmethodID SomePoperty2SetterId;
-	static jmethodID EnumPropertySetterId;
-	static jmethodID SomeFunctionAsyncMethodID;
-	static jmethodID SomeFunction2AsyncMethodID;
-	static jmethodID BindMethodID;
-	static jmethodID UnbindMethodID;
+	static TSharedPtr<FUTbNamesNamEsJniClientCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
+
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbNamesNamEsJniClientCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbNamesNamEsJniClientCache::clientClassNamEs = nullptr;
-jmethodID UTbNamesNamEsJniClientCache::clientClassNamEsCtor = nullptr;
-jmethodID UTbNamesNamEsJniClientCache::BindMethodID = nullptr;
-jmethodID UTbNamesNamEsJniClientCache::UnbindMethodID = nullptr;
-jmethodID UTbNamesNamEsJniClientCache::SwitchSetterId = nullptr;
-jmethodID UTbNamesNamEsJniClientCache::SomePropertySetterId = nullptr;
-jmethodID UTbNamesNamEsJniClientCache::SomePoperty2SetterId = nullptr;
-jmethodID UTbNamesNamEsJniClientCache::EnumPropertySetterId = nullptr;
-jmethodID UTbNamesNamEsJniClientCache::SomeFunctionAsyncMethodID = nullptr;
-jmethodID UTbNamesNamEsJniClientCache::SomeFunction2AsyncMethodID = nullptr;
+FCriticalSection UTbNamesNamEsJniClientCache::CacheLock;
+TSharedPtr<FUTbNamesNamEsJniClientCacheData, ESPMode::ThreadSafe> UTbNamesNamEsJniClientCache::CacheData;
 
 void UTbNamesNamEsJniClientCache::init()
 {
+	auto NewData = MakeShared<FUTbNamesNamEsJniClientCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	clientClassNamEs = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniclient/NamEsJniClient");
+	NewData->clientClassNamEs = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniclient/NamEsJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbNames/tbNamesjniclient/NamEsJniClient");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	SwitchSetterId = env->GetMethodID(clientClassNamEs, "setSwitch", "(Z)V");
+	NewData->SwitchSetterId = env->GetMethodID(NewData->clientClassNamEs, "setSwitch", "(Z)V");
 	static const TCHAR* errorMsgSwitchSetter = TEXT("failed to get java setSwitch, Z)V for tbNames/tbNamesjniclient/NamEsJniClient");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSwitchSetter);
-	SomePropertySetterId = env->GetMethodID(clientClassNamEs, "setSomeProperty", "(I)V");
+	NewData->SomePropertySetterId = env->GetMethodID(NewData->clientClassNamEs, "setSomeProperty", "(I)V");
 	static const TCHAR* errorMsgSomePropertySetter = TEXT("failed to get java setSomeProperty, I)V for tbNames/tbNamesjniclient/NamEsJniClient");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePropertySetter);
-	SomePoperty2SetterId = env->GetMethodID(clientClassNamEs, "setSomePoperty2", "(I)V");
+	NewData->SomePoperty2SetterId = env->GetMethodID(NewData->clientClassNamEs, "setSomePoperty2", "(I)V");
 	static const TCHAR* errorMsgSomePoperty2Setter = TEXT("failed to get java setSomePoperty2, I)V for tbNames/tbNamesjniclient/NamEsJniClient");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePoperty2Setter);
-	EnumPropertySetterId = env->GetMethodID(clientClassNamEs, "setEnumProperty", "(LtbNames/tbNames_api/EnumWithUnderScores;)V");
+	NewData->EnumPropertySetterId = env->GetMethodID(NewData->clientClassNamEs, "setEnumProperty", "(LtbNames/tbNames_api/EnumWithUnderScores;)V");
 	static const TCHAR* errorMsgEnumPropertySetter = TEXT("failed to get java setEnumProperty, LtbNames/tbNames_api/EnumWithUnderScores;)V for tbNames/tbNamesjniclient/NamEsJniClient");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgEnumPropertySetter);
-	SomeFunctionAsyncMethodID = env->GetMethodID(clientClassNamEs, "someFunctionAsync", "(Ljava/lang/String;Z)V");
+	NewData->SomeFunctionAsyncMethodID = env->GetMethodID(NewData->clientClassNamEs, "someFunctionAsync", "(Ljava/lang/String;Z)V");
 	static const TCHAR* errorMsgSomeFunctionAsyncMethod = TEXT("failed to get java someFunctionAsync, (Ljava/lang/String;Z)V for tbNames/tbNamesjniclient/NamEsJniClient");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeFunctionAsyncMethod);
-	SomeFunction2AsyncMethodID = env->GetMethodID(clientClassNamEs, "someFunction2Async", "(Ljava/lang/String;Z)V");
+	NewData->SomeFunction2AsyncMethodID = env->GetMethodID(NewData->clientClassNamEs, "someFunction2Async", "(Ljava/lang/String;Z)V");
 	static const TCHAR* errorMsgSomeFunction2AsyncMethod = TEXT("failed to get java someFunction2Async, (Ljava/lang/String;Z)V for tbNames/tbNamesjniclient/NamEsJniClient");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeFunction2AsyncMethod);
-	clientClassNamEsCtor = env->GetMethodID(clientClassNamEs, "<init>", "()V");
+	NewData->clientClassNamEsCtor = env->GetMethodID(NewData->clientClassNamEs, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbNames/tbNamesjniclient/NamEsJniClient");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgInit);
-	BindMethodID = env->GetMethodID(clientClassNamEs, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	NewData->BindMethodID = env->GetMethodID(NewData->clientClassNamEs, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbNames/tbNamesjniclient/NamEsJniClient");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgBind);
-	UnbindMethodID = env->GetMethodID(clientClassNamEs, "unbind", "()V");
+	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassNamEs, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbNames/tbNamesjniclient/NamEsJniClient");
 	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbNamesNamEsJniClientCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(clientClassNamEs);
-	clientClassNamEs = nullptr;
-	clientClassNamEsCtor = nullptr;
-	BindMethodID = nullptr;
-	UnbindMethodID = nullptr;
-	SwitchSetterId = nullptr;
-	SomePropertySetterId = nullptr;
-	SomePoperty2SetterId = nullptr;
-	EnumPropertySetterId = nullptr;
-	SomeFunctionAsyncMethodID = nullptr;
-	SomeFunction2AsyncMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 #endif
 
@@ -193,12 +207,13 @@ void UTbNamesNamEsJniClient::Initialize(FSubsystemCollectionBase& Collection)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbNamesNamEsJniClientCache::init();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbNamesNamEsJniClientCache::clientClassNamEsCtor == nullptr)
+	auto Cache = UTbNamesNamEsJniClientCache::Get();
+	if (!Cache || Cache->clientClassNamEsCtor == nullptr)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("Java Client Class tbNames/tbNamesjniclient/NamEsJniClient not found"));
 		return;
 	}
-	jobject localRef = Env->NewObject(UTbNamesNamEsJniClientCache::clientClassNamEs, UTbNamesNamEsJniClientCache::clientClassNamEsCtor);
+	jobject localRef = Env->NewObject(Cache->clientClassNamEs, Cache->clientClassNamEsCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -247,12 +262,13 @@ void UTbNamesNamEsJniClient::SetSwitch(bool bInSwitch)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbNamesNamEsJniClientCache::clientClassNamEs == nullptr)
+		auto Cache = UTbNamesNamEsJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setSwitch (Z)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbNamesNamEsJniClientCache::SwitchSetterId;
+		jmethodID MethodID = Cache->SwitchSetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setSwitch (Z)V not found"));
@@ -291,12 +307,13 @@ void UTbNamesNamEsJniClient::SetSomeProperty(int32 InSomeProperty)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbNamesNamEsJniClientCache::clientClassNamEs == nullptr)
+		auto Cache = UTbNamesNamEsJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setSomeProperty (I)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbNamesNamEsJniClientCache::SomePropertySetterId;
+		jmethodID MethodID = Cache->SomePropertySetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setSomeProperty (I)V not found"));
@@ -335,12 +352,13 @@ void UTbNamesNamEsJniClient::SetSomePoperty2(int32 InSomePoperty2)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbNamesNamEsJniClientCache::clientClassNamEs == nullptr)
+		auto Cache = UTbNamesNamEsJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setSomePoperty2 (I)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbNamesNamEsJniClientCache::SomePoperty2SetterId;
+		jmethodID MethodID = Cache->SomePoperty2SetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setSomePoperty2 (I)V not found"));
@@ -379,12 +397,13 @@ void UTbNamesNamEsJniClient::SetEnumProperty(ETbNamesEnum_With_Under_scores InEn
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbNamesNamEsJniClientCache::clientClassNamEs == nullptr)
+		auto Cache = UTbNamesNamEsJniClientCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setEnumProperty (LtbNames/tbNames_api/EnumWithUnderScores;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbNamesNamEsJniClientCache::EnumPropertySetterId;
+		jmethodID MethodID = Cache->EnumPropertySetterId;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:setEnumProperty (LtbNames/tbNames_api/EnumWithUnderScores;)V not found"));
@@ -413,13 +432,14 @@ void UTbNamesNamEsJniClient::SomeFunction(bool bInSomeParam)
 	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbNamesNamEsJniClientCache::clientClassNamEs == nullptr)
+	auto Cache = UTbNamesNamEsJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:someFunctionAsync:(Ljava/lang/String;Z)V CLASS not found"));
 		return;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbNamesNamEsJniClientCache::SomeFunctionAsyncMethodID;
+	jmethodID MethodID = Cache->SomeFunctionAsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		FGuid id = FGuid::NewGuid();
@@ -453,13 +473,14 @@ void UTbNamesNamEsJniClient::SomeFunction2(bool bInSomeParam)
 	}
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
-	if (UTbNamesNamEsJniClientCache::clientClassNamEs == nullptr)
+	auto Cache = UTbNamesNamEsJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:someFunction2Async:(Ljava/lang/String;Z)V CLASS not found"));
 		return;
 	}
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	jmethodID MethodID = UTbNamesNamEsJniClientCache::SomeFunction2AsyncMethodID;
+	jmethodID MethodID = Cache->SomeFunction2AsyncMethodID;
 	if (MethodID != nullptr)
 	{
 		FGuid id = FGuid::NewGuid();
@@ -499,12 +520,13 @@ bool UTbNamesNamEsJniClient::_bindToService(FString servicePackage, FString conn
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbNamesNamEsJniClientCache::clientClassNamEs == nullptr)
+	auto Cache = UTbNamesNamEsJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	jmethodID MethodID = UTbNamesNamEsJniClientCache::BindMethodID;
+	jmethodID MethodID = Cache->BindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
@@ -540,12 +562,13 @@ void UTbNamesNamEsJniClient::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbNamesNamEsJniClientCache::clientClassNamEs == nullptr)
+	auto Cache = UTbNamesNamEsJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbNamesNamEsClient_JNI, Warning, TEXT("tbNames/tbNamesjniclient/NamEsJniClient:unbind:()V CLASS not found"));
 		return;
 	}
-	jmethodID MethodID = UTbNamesNamEsJniClientCache::UnbindMethodID;
+	jmethodID MethodID = Cache->UnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);

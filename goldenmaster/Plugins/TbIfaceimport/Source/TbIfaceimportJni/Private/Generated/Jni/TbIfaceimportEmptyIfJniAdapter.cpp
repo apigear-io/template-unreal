@@ -48,37 +48,66 @@ std::atomic<ITbIfaceimportEmptyIfJniAdapterAccessor*> gUTbIfaceimportEmptyIfJniA
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+struct FUTbIfaceimportEmptyIfJniAdapterCacheData
+{
+	jclass javaService = nullptr;
+	jmethodID ReadyMethodID = nullptr;
+
+	~FUTbIfaceimportEmptyIfJniAdapterCacheData()
+	{
+		if (javaService)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(javaService);
+			}
+		}
+	}
+};
+
 class UTbIfaceimportEmptyIfJniAdapterCache
 {
 public:
-	static jclass javaService;
-	static jmethodID ReadyMethodID;
+	static TSharedPtr<FUTbIfaceimportEmptyIfJniAdapterCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
 
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbIfaceimportEmptyIfJniAdapterCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbIfaceimportEmptyIfJniAdapterCache::javaService = nullptr;
-jmethodID UTbIfaceimportEmptyIfJniAdapterCache::ReadyMethodID = nullptr;
+FCriticalSection UTbIfaceimportEmptyIfJniAdapterCache::CacheLock;
+TSharedPtr<FUTbIfaceimportEmptyIfJniAdapterCacheData, ESPMode::ThreadSafe> UTbIfaceimportEmptyIfJniAdapterCache::CacheData;
 
 void UTbIfaceimportEmptyIfJniAdapterCache::init()
 {
+	auto NewData = MakeShared<FUTbIfaceimportEmptyIfJniAdapterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaService = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
+	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
 	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
+	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
 	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbIfaceimportEmptyIfJniAdapterCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(javaService);
-	javaService = nullptr;
-	ReadyMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
 #endif
@@ -199,13 +228,14 @@ void UTbIfaceimportEmptyIfJniAdapter::callJniServiceReady(bool isServiceReady)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceInstance || !UTbIfaceimportEmptyIfJniAdapterCache::ReadyMethodID)
+		auto Cache = UTbIfaceimportEmptyIfJniAdapterCache::Get();
+		if (!m_javaJniServiceInstance || !Cache || !Cache->ReadyMethodID)
 		{
 			UE_LOG(LogTbIfaceimportEmptyIf_JNI, Warning, TEXT("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTbIfaceimportEmptyIfJniAdapterCache::ReadyMethodID, isServiceReady);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService:nativeServiceReady(Z)V CLASS not found");
 		TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}

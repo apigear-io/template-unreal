@@ -49,61 +49,82 @@ std::atomic<ITbSame2SameEnum2InterfaceJniAdapterAccessor*> gUTbSame2SameEnum2Int
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+struct FUTbSame2SameEnum2InterfaceJniAdapterCacheData
+{
+	jclass javaService = nullptr;
+	jmethodID ReadyMethodID = nullptr;
+	jmethodID Prop1ChangedMethodID = nullptr;
+	jmethodID Prop2ChangedMethodID = nullptr;
+	jmethodID Sig1SignalMethodID = nullptr;
+	jmethodID Sig2SignalMethodID = nullptr;
+
+	~FUTbSame2SameEnum2InterfaceJniAdapterCacheData()
+	{
+		if (javaService)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(javaService);
+			}
+		}
+	}
+};
+
 class UTbSame2SameEnum2InterfaceJniAdapterCache
 {
 public:
-	static jclass javaService;
-	static jmethodID ReadyMethodID;
-	static jmethodID Prop1ChangedMethodID;
-	static jmethodID Prop2ChangedMethodID;
-	static jmethodID Sig1SignalMethodID;
-	static jmethodID Sig2SignalMethodID;
+	static TSharedPtr<FUTbSame2SameEnum2InterfaceJniAdapterCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
 
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbSame2SameEnum2InterfaceJniAdapterCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbSame2SameEnum2InterfaceJniAdapterCache::javaService = nullptr;
-jmethodID UTbSame2SameEnum2InterfaceJniAdapterCache::ReadyMethodID = nullptr;
-jmethodID UTbSame2SameEnum2InterfaceJniAdapterCache::Prop1ChangedMethodID = nullptr;
-jmethodID UTbSame2SameEnum2InterfaceJniAdapterCache::Prop2ChangedMethodID = nullptr;
-jmethodID UTbSame2SameEnum2InterfaceJniAdapterCache::Sig1SignalMethodID = nullptr;
-jmethodID UTbSame2SameEnum2InterfaceJniAdapterCache::Sig2SignalMethodID = nullptr;
+FCriticalSection UTbSame2SameEnum2InterfaceJniAdapterCache::CacheLock;
+TSharedPtr<FUTbSame2SameEnum2InterfaceJniAdapterCacheData, ESPMode::ThreadSafe> UTbSame2SameEnum2InterfaceJniAdapterCache::CacheData;
 
 void UTbSame2SameEnum2InterfaceJniAdapterCache::init()
 {
+	auto NewData = MakeShared<FUTbSame2SameEnum2InterfaceJniAdapterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
+	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
+	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
-	Prop1ChangedMethodID = env->GetMethodID(javaService, "onProp1Changed", "(LtbSame2/tbSame2_api/Enum1;)V");
+	NewData->Prop1ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp1Changed", "(LtbSame2/tbSame2_api/Enum1;)V");
 	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed);
-	Prop2ChangedMethodID = env->GetMethodID(javaService, "onProp2Changed", "(LtbSame2/tbSame2_api/Enum2;)V");
+	NewData->Prop2ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp2Changed", "(LtbSame2/tbSame2_api/Enum2;)V");
 	static const TCHAR* errorMsgProp2Changed = TEXT("failed to get java onProp2Changed, (LtbSame2/tbSame2_api/Enum2;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Changed);
-	Sig1SignalMethodID = env->GetMethodID(javaService, "onSig1", "(LtbSame2/tbSame2_api/Enum1;)V");
+	NewData->Sig1SignalMethodID = env->GetMethodID(NewData->javaService, "onSig1", "(LtbSame2/tbSame2_api/Enum1;)V");
 	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal);
-	Sig2SignalMethodID = env->GetMethodID(javaService, "onSig2", "(LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V");
+	NewData->Sig2SignalMethodID = env->GetMethodID(NewData->javaService, "onSig2", "(LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V");
 	static const TCHAR* errorMsgSig2Signal = TEXT("failed to get java onSig2, (LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
 	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgSig2Signal);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbSame2SameEnum2InterfaceJniAdapterCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(javaService);
-	javaService = nullptr;
-	ReadyMethodID = nullptr;
-	Prop1ChangedMethodID = nullptr;
-	Prop2ChangedMethodID = nullptr;
-	Sig1SignalMethodID = nullptr;
-	Sig2SignalMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
 #endif
@@ -224,13 +245,14 @@ void UTbSame2SameEnum2InterfaceJniAdapter::callJniServiceReady(bool isServiceRea
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceInstance || !UTbSame2SameEnum2InterfaceJniAdapterCache::ReadyMethodID)
+		auto Cache = UTbSame2SameEnum2InterfaceJniAdapterCache::Get();
+		if (!m_javaJniServiceInstance || !Cache || !Cache->ReadyMethodID)
 		{
 			UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTbSame2SameEnum2InterfaceJniAdapterCache::ReadyMethodID, isServiceReady);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService:nativeServiceReady(Z)V CLASS not found");
 		TbSame2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
@@ -243,12 +265,13 @@ void UTbSame2SameEnum2InterfaceJniAdapter::OnSig1Signal(ETbSame2Enum1 Param1)
 	UE_LOG(LogTbSame2SameEnum2Interface_JNI, Verbose, TEXT("Notify java jni UTbSame2SameEnum2InterfaceJniAdapter::onSig1 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSame2SameEnum2InterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UTbSame2SameEnum2InterfaceJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService:onSig1 (LtbSame2/tbSame2_api/Enum1;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSame2SameEnum2InterfaceJniAdapterCache::Sig1SignalMethodID;
+		jmethodID MethodID = Cache->Sig1SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService:onSig1 (LtbSame2/tbSame2_api/Enum1;)V not found"));
@@ -270,12 +293,13 @@ void UTbSame2SameEnum2InterfaceJniAdapter::OnSig2Signal(ETbSame2Enum1 Param1, ET
 	UE_LOG(LogTbSame2SameEnum2Interface_JNI, Verbose, TEXT("Notify java jni UTbSame2SameEnum2InterfaceJniAdapter::onSig2 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSame2SameEnum2InterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UTbSame2SameEnum2InterfaceJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService:onSig2 (LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSame2SameEnum2InterfaceJniAdapterCache::Sig2SignalMethodID;
+		jmethodID MethodID = Cache->Sig2SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService:onSig2 (LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V not found"));
@@ -298,12 +322,13 @@ void UTbSame2SameEnum2InterfaceJniAdapter::OnProp1Changed(ETbSame2Enum1 Prop1)
 	UE_LOG(LogTbSame2SameEnum2Interface_JNI, Verbose, TEXT("Notify java jni UTbSame2SameEnum2InterfaceJniAdapter::OnProp1 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSame2SameEnum2InterfaceJniAdapterCache::javaService == nullptr)
+		auto Cache = UTbSame2SameEnum2InterfaceJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService::onProp1Changed(LtbSame2/tbSame2_api/Enum1;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSame2SameEnum2InterfaceJniAdapterCache::Prop1ChangedMethodID;
+		jmethodID MethodID = Cache->Prop1ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService:onProp1Changed(LtbSame2/tbSame2_api/Enum1;)V not found"));
@@ -323,12 +348,13 @@ void UTbSame2SameEnum2InterfaceJniAdapter::OnProp2Changed(ETbSame2Enum2 Prop2)
 	UE_LOG(LogTbSame2SameEnum2Interface_JNI, Verbose, TEXT("Notify java jni UTbSame2SameEnum2InterfaceJniAdapter::OnProp2 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSame2SameEnum2InterfaceJniAdapterCache::javaService == nullptr)
+		auto Cache = UTbSame2SameEnum2InterfaceJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService::onProp2Changed(LtbSame2/tbSame2_api/Enum2;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSame2SameEnum2InterfaceJniAdapterCache::Prop2ChangedMethodID;
+		jmethodID MethodID = Cache->Prop2ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSame2SameEnum2Interface_JNI, Warning, TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService:onProp2Changed(LtbSame2/tbSame2_api/Enum2;)V not found"));

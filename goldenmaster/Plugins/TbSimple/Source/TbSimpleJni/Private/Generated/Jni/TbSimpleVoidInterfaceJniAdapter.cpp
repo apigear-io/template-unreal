@@ -48,43 +48,70 @@ std::atomic<ITbSimpleVoidInterfaceJniAdapterAccessor*> gUTbSimpleVoidInterfaceJn
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+struct FUTbSimpleVoidInterfaceJniAdapterCacheData
+{
+	jclass javaService = nullptr;
+	jmethodID ReadyMethodID = nullptr;
+	jmethodID SigVoidSignalMethodID = nullptr;
+
+	~FUTbSimpleVoidInterfaceJniAdapterCacheData()
+	{
+		if (javaService)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(javaService);
+			}
+		}
+	}
+};
+
 class UTbSimpleVoidInterfaceJniAdapterCache
 {
 public:
-	static jclass javaService;
-	static jmethodID ReadyMethodID;
-	static jmethodID SigVoidSignalMethodID;
+	static TSharedPtr<FUTbSimpleVoidInterfaceJniAdapterCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
 
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbSimpleVoidInterfaceJniAdapterCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbSimpleVoidInterfaceJniAdapterCache::javaService = nullptr;
-jmethodID UTbSimpleVoidInterfaceJniAdapterCache::ReadyMethodID = nullptr;
-jmethodID UTbSimpleVoidInterfaceJniAdapterCache::SigVoidSignalMethodID = nullptr;
+FCriticalSection UTbSimpleVoidInterfaceJniAdapterCache::CacheLock;
+TSharedPtr<FUTbSimpleVoidInterfaceJniAdapterCacheData, ESPMode::ThreadSafe> UTbSimpleVoidInterfaceJniAdapterCache::CacheData;
 
 void UTbSimpleVoidInterfaceJniAdapterCache::init()
 {
+	auto NewData = MakeShared<FUTbSimpleVoidInterfaceJniAdapterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/VoidInterfaceJniService");
+	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/VoidInterfaceJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniservice/VoidInterfaceJniService");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
+	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSimple/tbSimplejniservice/VoidInterfaceJniService");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
-	SigVoidSignalMethodID = env->GetMethodID(javaService, "onSigVoid", "()V");
+	NewData->SigVoidSignalMethodID = env->GetMethodID(NewData->javaService, "onSigVoid", "()V");
 	static const TCHAR* errorMsgSigVoidSignal = TEXT("failed to get java onSigVoid, ()V for tbSimple/tbSimplejniservice/VoidInterfaceJniService");
 	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigVoidSignal);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbSimpleVoidInterfaceJniAdapterCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(javaService);
-	javaService = nullptr;
-	ReadyMethodID = nullptr;
-	SigVoidSignalMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
 #endif
@@ -205,13 +232,14 @@ void UTbSimpleVoidInterfaceJniAdapter::callJniServiceReady(bool isServiceReady)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceInstance || !UTbSimpleVoidInterfaceJniAdapterCache::ReadyMethodID)
+		auto Cache = UTbSimpleVoidInterfaceJniAdapterCache::Get();
+		if (!m_javaJniServiceInstance || !Cache || !Cache->ReadyMethodID)
 		{
 			UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/VoidInterfaceJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTbSimpleVoidInterfaceJniAdapterCache::ReadyMethodID, isServiceReady);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("tbSimple/tbSimplejniservice/VoidInterfaceJniService:nativeServiceReady(Z)V CLASS not found");
 		TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
@@ -224,12 +252,13 @@ void UTbSimpleVoidInterfaceJniAdapter::OnSigVoidSignal()
 	UE_LOG(LogTbSimpleVoidInterface_JNI, Verbose, TEXT("Notify java jni UTbSimpleVoidInterfaceJniAdapter::onSigVoid "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTbSimpleVoidInterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UTbSimpleVoidInterfaceJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/VoidInterfaceJniService:onSigVoid ()V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTbSimpleVoidInterfaceJniAdapterCache::SigVoidSignalMethodID;
+		jmethodID MethodID = Cache->SigVoidSignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTbSimpleVoidInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/VoidInterfaceJniService:onSigVoid ()V not found"));

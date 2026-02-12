@@ -204,70 +204,87 @@ std::atomic<I{{$DisplayName}}JniAdapterAccessor*> g{{$Class}}Handle{nullptr};
 {{- $cachedClass:= printf "javaClass%s" (Camel .Interface.Name) }}
 {{- $serviceClass:= printf "javaService" }}
 
+struct F{{$Class}}CacheData
+{
+	jclass {{$serviceClass}} = nullptr;
+	jmethodID ReadyMethodID = nullptr;
+{{- range .Interface.Properties }}
+	jmethodID {{ Camel .Name}}ChangedMethodID = nullptr;
+{{- end }}
+{{- range .Interface.Signals }}
+	jmethodID {{ Camel .Name}}SignalMethodID = nullptr;
+{{- end }}
+
+	~F{{$Class}}CacheData()
+	{
+		if ({{$serviceClass}})
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef({{$serviceClass}});
+			}
+		}
+	}
+};
+
 class {{$Class}}Cache
 {
 public:
-	static jclass {{$serviceClass}};
-	static jmethodID ReadyMethodID;
-{{- range .Interface.Properties }}
-	static jmethodID {{ Camel .Name}}ChangedMethodID;
-{{- end }}
-{{- range .Interface.Signals }}
-	static jmethodID {{ Camel .Name}}SignalMethodID;
-{{- end }}
+	static TSharedPtr<F{{$Class}}CacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
 
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<F{{$Class}}CacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass {{$Class}}Cache::{{$serviceClass}} = nullptr;
-jmethodID {{$Class}}Cache::ReadyMethodID = nullptr;
-{{- range .Interface.Properties }}
-jmethodID {{$Class}}Cache::{{ Camel .Name}}ChangedMethodID = nullptr;
-{{- end }}
-{{- range .Interface.Signals }}
-jmethodID {{$Class}}Cache::{{ Camel .Name}}SignalMethodID = nullptr;
-{{- end }}
+FCriticalSection {{$Class}}Cache::CacheLock;
+TSharedPtr<F{{$Class}}CacheData, ESPMode::ThreadSafe> {{$Class}}Cache::CacheData;
 
 void {{$Class}}Cache::init()
 {
+	auto NewData = MakeShared<F{{$Class}}CacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 {{- $javaServiceTypeName := printf "%sJniService" (Camel .Interface.Name) }}
 {{- $jniservice_name:= printf "%sjniservice" ( camel $ModuleName) }}
 {{- $javaServicePath := ( join "/" (strSlice ( camel $ModuleName) $jniservice_name) ) }}
 
-	{{$serviceClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaServicePath}}/{{$javaServiceTypeName}}");
+	NewData->{{$serviceClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaServicePath}}/{{$javaServiceTypeName}}");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java {{$javaServicePath}}/{{$javaServiceTypeName}}");
 	{{$localClassConverter}}::checkJniErrorOccured(errorMsgCls);
-	ReadyMethodID = env->GetMethodID({{$serviceClass}}, "nativeServiceReady", "(Z)V");
+	NewData->ReadyMethodID = env->GetMethodID(NewData->{{$serviceClass}}, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
 	{{$localClassConverter}}::checkJniErrorOccured(errorMsgReadyMethod);
 {{- range .Interface.Properties }}
 	{{- $signatureParam := jniJavaSignatureParam . }}
-	{{ Camel .Name}}ChangedMethodID = env->GetMethodID({{$serviceClass}}, "on{{Camel .Name}}Changed", "({{$signatureParam}})V");
+	NewData->{{ Camel .Name}}ChangedMethodID = env->GetMethodID(NewData->{{$serviceClass}}, "on{{Camel .Name}}Changed", "({{$signatureParam}})V");
 	static const TCHAR* errorMsg{{Camel .Name}}Changed = TEXT("failed to get java on{{Camel .Name}}Changed, ({{$signatureParam}})V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
 	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Changed);
 {{- end }}
 {{- range .Interface.Signals }}
 	{{- $signatureParams := jniJavaSignatureParams .Params }}
-	{{ Camel .Name}}SignalMethodID = env->GetMethodID({{$serviceClass}}, "on{{Camel .Name}}", "({{$signatureParams}})V");
+	NewData->{{ Camel .Name}}SignalMethodID = env->GetMethodID(NewData->{{$serviceClass}}, "on{{Camel .Name}}", "({{$signatureParams}})V");
 	static const TCHAR* errorMsg{{Camel .Name}}Signal = TEXT("failed to get java on{{Camel .Name}}, ({{$signatureParams}})V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
 	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Signal);
 {{- end }}
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void {{$Class}}Cache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef({{$serviceClass}});
-	{{$serviceClass}} = nullptr;
-	ReadyMethodID = nullptr;
-	{{- range .Interface.Properties }}
-	{{ Camel .Name}}ChangedMethodID = nullptr;
-	{{- end }}
-	{{- range .Interface.Signals }}
-	{{ Camel .Name}}SignalMethodID = nullptr;
-	{{- end }}
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
 #endif
@@ -395,13 +412,14 @@ void {{$Class}}::callJniServiceReady(bool isServiceReady)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceInstance || !{{$Class}}Cache::ReadyMethodID)
+		auto Cache = {{$Class}}Cache::Get();
+		if (!m_javaJniServiceInstance || !Cache || !Cache->ReadyMethodID)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, {{$Class}}Cache::ReadyMethodID, isServiceReady);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("{{$javaClassPath}}/{{$javaClassName}}:nativeServiceReady(Z)V CLASS not found");
 		{{$localClassConverter}}::checkJniErrorOccured(errorMsg);
 	}
@@ -417,12 +435,13 @@ void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "" .Params}})
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		{{- $signatureParams:= jniJavaSignatureParams .Params}}
-		if ({{$Class}}Cache::{{$serviceClass}} == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = {{$Class}}Cache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}} ({{$signatureParams}})V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = {{$Class}}Cache::{{ Camel .Name}}SignalMethodID;
+		jmethodID MethodID = Cache->{{ Camel .Name}}SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}} ({{$signatureParams}})V not found"));
@@ -472,12 +491,13 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 	{{- $signature := printf "(%s)V" (jniJavaSignatureParam .)}}
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if ({{$Class}}Cache::{{$serviceClass}} == nullptr)
+		auto Cache = {{$Class}}Cache::Get();
+		if (!Cache)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}::on{{Camel .Name}}Changed{{$signature}} CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = {{$Class}}Cache::{{ Camel .Name}}ChangedMethodID;
+		jmethodID MethodID = Cache->{{ Camel .Name}}ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}:on{{Camel .Name}}Changed{{$signature}} not found"));

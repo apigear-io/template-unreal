@@ -77,48 +77,74 @@ private:
 };
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
+struct FUTbIfaceimportEmptyIfJniClientCacheData
+{
+	jclass clientClassEmptyIf = nullptr;
+	jmethodID clientClassEmptyIfCtor = nullptr;
+	jmethodID BindMethodID = nullptr;
+	jmethodID UnbindMethodID = nullptr;
+
+	~FUTbIfaceimportEmptyIfJniClientCacheData()
+	{
+		if (clientClassEmptyIf)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(clientClassEmptyIf);
+			}
+		}
+	}
+};
+
 class UTbIfaceimportEmptyIfJniClientCache
 {
 public:
-	static jclass clientClassEmptyIf;
-	static jmethodID clientClassEmptyIfCtor;
-	static jmethodID BindMethodID;
-	static jmethodID UnbindMethodID;
+	static TSharedPtr<FUTbIfaceimportEmptyIfJniClientCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
+
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTbIfaceimportEmptyIfJniClientCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTbIfaceimportEmptyIfJniClientCache::clientClassEmptyIf = nullptr;
-jmethodID UTbIfaceimportEmptyIfJniClientCache::clientClassEmptyIfCtor = nullptr;
-jmethodID UTbIfaceimportEmptyIfJniClientCache::BindMethodID = nullptr;
-jmethodID UTbIfaceimportEmptyIfJniClientCache::UnbindMethodID = nullptr;
+FCriticalSection UTbIfaceimportEmptyIfJniClientCache::CacheLock;
+TSharedPtr<FUTbIfaceimportEmptyIfJniClientCacheData, ESPMode::ThreadSafe> UTbIfaceimportEmptyIfJniClientCache::CacheData;
 
 void UTbIfaceimportEmptyIfJniClientCache::init()
 {
+	auto NewData = MakeShared<FUTbIfaceimportEmptyIfJniClientCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	clientClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
+	NewData->clientClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
 	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	clientClassEmptyIfCtor = env->GetMethodID(clientClassEmptyIf, "<init>", "()V");
+	NewData->clientClassEmptyIfCtor = env->GetMethodID(NewData->clientClassEmptyIf, "<init>", "()V");
 	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
 	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgInit);
-	BindMethodID = env->GetMethodID(clientClassEmptyIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
+	NewData->BindMethodID = env->GetMethodID(NewData->clientClassEmptyIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
 	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
 	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgBind);
-	UnbindMethodID = env->GetMethodID(clientClassEmptyIf, "unbind", "()V");
+	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassEmptyIf, "unbind", "()V");
 	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
 	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTbIfaceimportEmptyIfJniClientCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(clientClassEmptyIf);
-	clientClassEmptyIf = nullptr;
-	clientClassEmptyIfCtor = nullptr;
-	BindMethodID = nullptr;
-	UnbindMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 #endif
 
@@ -156,12 +182,13 @@ void UTbIfaceimportEmptyIfJniClient::Initialize(FSubsystemCollectionBase& Collec
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	UTbIfaceimportEmptyIfJniClientCache::init();
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbIfaceimportEmptyIfJniClientCache::clientClassEmptyIfCtor == nullptr)
+	auto Cache = UTbIfaceimportEmptyIfJniClientCache::Get();
+	if (!Cache || Cache->clientClassEmptyIfCtor == nullptr)
 	{
 		UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Warning, TEXT("Java Client Class tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient not found"));
 		return;
 	}
-	jobject localRef = Env->NewObject(UTbIfaceimportEmptyIfJniClientCache::clientClassEmptyIf, UTbIfaceimportEmptyIfJniClientCache::clientClassEmptyIfCtor);
+	jobject localRef = Env->NewObject(Cache->clientClassEmptyIf, Cache->clientClassEmptyIfCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
 #endif
@@ -203,12 +230,13 @@ bool UTbIfaceimportEmptyIfJniClient::_bindToService(FString servicePackage, FStr
 	m_lastConnectionId = connectionId;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbIfaceimportEmptyIfJniClientCache::clientClassEmptyIf == nullptr)
+	auto Cache = UTbIfaceimportEmptyIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Warning, TEXT("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient:bind:(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z CLASS not found"));
 		return false;
 	}
-	jmethodID MethodID = UTbIfaceimportEmptyIfJniClientCache::BindMethodID;
+	jmethodID MethodID = Cache->BindMethodID;
 	if (MethodID != nullptr)
 	{
 		jobject Activity = FJavaWrapper::GameActivityThis;
@@ -244,12 +272,13 @@ void UTbIfaceimportEmptyIfJniClient::_unbind()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	JNIEnv* Env = FAndroidApplication::GetJavaEnv();
-	if (UTbIfaceimportEmptyIfJniClientCache::clientClassEmptyIf == nullptr)
+	auto Cache = UTbIfaceimportEmptyIfJniClientCache::Get();
+	if (!Cache)
 	{
 		UE_LOG(LogTbIfaceimportEmptyIfClient_JNI, Warning, TEXT("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient:unbind:()V CLASS not found"));
 		return;
 	}
-	jmethodID MethodID = UTbIfaceimportEmptyIfJniClientCache::UnbindMethodID;
+	jmethodID MethodID = Cache->UnbindMethodID;
 	if (MethodID != nullptr)
 	{
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniClientInstance, MethodID);

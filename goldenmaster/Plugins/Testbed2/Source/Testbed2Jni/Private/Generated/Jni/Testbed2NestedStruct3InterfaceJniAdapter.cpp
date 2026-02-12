@@ -49,73 +49,90 @@ std::atomic<ITestbed2NestedStruct3InterfaceJniAdapterAccessor*> gUTestbed2Nested
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+struct FUTestbed2NestedStruct3InterfaceJniAdapterCacheData
+{
+	jclass javaService = nullptr;
+	jmethodID ReadyMethodID = nullptr;
+	jmethodID Prop1ChangedMethodID = nullptr;
+	jmethodID Prop2ChangedMethodID = nullptr;
+	jmethodID Prop3ChangedMethodID = nullptr;
+	jmethodID Sig1SignalMethodID = nullptr;
+	jmethodID Sig2SignalMethodID = nullptr;
+	jmethodID Sig3SignalMethodID = nullptr;
+
+	~FUTestbed2NestedStruct3InterfaceJniAdapterCacheData()
+	{
+		if (javaService)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(javaService);
+			}
+		}
+	}
+};
+
 class UTestbed2NestedStruct3InterfaceJniAdapterCache
 {
 public:
-	static jclass javaService;
-	static jmethodID ReadyMethodID;
-	static jmethodID Prop1ChangedMethodID;
-	static jmethodID Prop2ChangedMethodID;
-	static jmethodID Prop3ChangedMethodID;
-	static jmethodID Sig1SignalMethodID;
-	static jmethodID Sig2SignalMethodID;
-	static jmethodID Sig3SignalMethodID;
+	static TSharedPtr<FUTestbed2NestedStruct3InterfaceJniAdapterCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
 
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUTestbed2NestedStruct3InterfaceJniAdapterCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UTestbed2NestedStruct3InterfaceJniAdapterCache::javaService = nullptr;
-jmethodID UTestbed2NestedStruct3InterfaceJniAdapterCache::ReadyMethodID = nullptr;
-jmethodID UTestbed2NestedStruct3InterfaceJniAdapterCache::Prop1ChangedMethodID = nullptr;
-jmethodID UTestbed2NestedStruct3InterfaceJniAdapterCache::Prop2ChangedMethodID = nullptr;
-jmethodID UTestbed2NestedStruct3InterfaceJniAdapterCache::Prop3ChangedMethodID = nullptr;
-jmethodID UTestbed2NestedStruct3InterfaceJniAdapterCache::Sig1SignalMethodID = nullptr;
-jmethodID UTestbed2NestedStruct3InterfaceJniAdapterCache::Sig2SignalMethodID = nullptr;
-jmethodID UTestbed2NestedStruct3InterfaceJniAdapterCache::Sig3SignalMethodID = nullptr;
+FCriticalSection UTestbed2NestedStruct3InterfaceJniAdapterCache::CacheLock;
+TSharedPtr<FUTestbed2NestedStruct3InterfaceJniAdapterCacheData, ESPMode::ThreadSafe> UTestbed2NestedStruct3InterfaceJniAdapterCache::CacheData;
 
 void UTestbed2NestedStruct3InterfaceJniAdapterCache::init()
 {
+	auto NewData = MakeShared<FUTestbed2NestedStruct3InterfaceJniAdapterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaService = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService");
+	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniservice/NestedStruct3InterfaceJniService");
 	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
+	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for testbed2/testbed2jniservice/NestedStruct3InterfaceJniService");
 	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
-	Prop1ChangedMethodID = env->GetMethodID(javaService, "onProp1Changed", "(Ltestbed2/testbed2_api/NestedStruct1;)V");
+	NewData->Prop1ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp1Changed", "(Ltestbed2/testbed2_api/NestedStruct1;)V");
 	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniservice/NestedStruct3InterfaceJniService");
 	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed);
-	Prop2ChangedMethodID = env->GetMethodID(javaService, "onProp2Changed", "(Ltestbed2/testbed2_api/NestedStruct2;)V");
+	NewData->Prop2ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp2Changed", "(Ltestbed2/testbed2_api/NestedStruct2;)V");
 	static const TCHAR* errorMsgProp2Changed = TEXT("failed to get java onProp2Changed, (Ltestbed2/testbed2_api/NestedStruct2;)V for testbed2/testbed2jniservice/NestedStruct3InterfaceJniService");
 	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Changed);
-	Prop3ChangedMethodID = env->GetMethodID(javaService, "onProp3Changed", "(Ltestbed2/testbed2_api/NestedStruct3;)V");
+	NewData->Prop3ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp3Changed", "(Ltestbed2/testbed2_api/NestedStruct3;)V");
 	static const TCHAR* errorMsgProp3Changed = TEXT("failed to get java onProp3Changed, (Ltestbed2/testbed2_api/NestedStruct3;)V for testbed2/testbed2jniservice/NestedStruct3InterfaceJniService");
 	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp3Changed);
-	Sig1SignalMethodID = env->GetMethodID(javaService, "onSig1", "(Ltestbed2/testbed2_api/NestedStruct1;)V");
+	NewData->Sig1SignalMethodID = env->GetMethodID(NewData->javaService, "onSig1", "(Ltestbed2/testbed2_api/NestedStruct1;)V");
 	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniservice/NestedStruct3InterfaceJniService");
 	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal);
-	Sig2SignalMethodID = env->GetMethodID(javaService, "onSig2", "(Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V");
+	NewData->Sig2SignalMethodID = env->GetMethodID(NewData->javaService, "onSig2", "(Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V");
 	static const TCHAR* errorMsgSig2Signal = TEXT("failed to get java onSig2, (Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V for testbed2/testbed2jniservice/NestedStruct3InterfaceJniService");
 	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig2Signal);
-	Sig3SignalMethodID = env->GetMethodID(javaService, "onSig3", "(Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;Ltestbed2/testbed2_api/NestedStruct3;)V");
+	NewData->Sig3SignalMethodID = env->GetMethodID(NewData->javaService, "onSig3", "(Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;Ltestbed2/testbed2_api/NestedStruct3;)V");
 	static const TCHAR* errorMsgSig3Signal = TEXT("failed to get java onSig3, (Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;Ltestbed2/testbed2_api/NestedStruct3;)V for testbed2/testbed2jniservice/NestedStruct3InterfaceJniService");
 	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig3Signal);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UTestbed2NestedStruct3InterfaceJniAdapterCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(javaService);
-	javaService = nullptr;
-	ReadyMethodID = nullptr;
-	Prop1ChangedMethodID = nullptr;
-	Prop2ChangedMethodID = nullptr;
-	Prop3ChangedMethodID = nullptr;
-	Sig1SignalMethodID = nullptr;
-	Sig2SignalMethodID = nullptr;
-	Sig3SignalMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
 #endif
@@ -236,13 +253,14 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::callJniServiceReady(bool isServi
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceInstance || !UTestbed2NestedStruct3InterfaceJniAdapterCache::ReadyMethodID)
+		auto Cache = UTestbed2NestedStruct3InterfaceJniAdapterCache::Get();
+		if (!m_javaJniServiceInstance || !Cache || !Cache->ReadyMethodID)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UTestbed2NestedStruct3InterfaceJniAdapterCache::ReadyMethodID, isServiceReady);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:nativeServiceReady(Z)V CLASS not found");
 		Testbed2DataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
@@ -255,12 +273,13 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::OnSig1Signal(const FTestbed2Nest
 	UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Verbose, TEXT("Notify java jni UTestbed2NestedStruct3InterfaceJniAdapter::onSig1 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTestbed2NestedStruct3InterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UTestbed2NestedStruct3InterfaceJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:onSig1 (Ltestbed2/testbed2_api/NestedStruct1;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTestbed2NestedStruct3InterfaceJniAdapterCache::Sig1SignalMethodID;
+		jmethodID MethodID = Cache->Sig1SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:onSig1 (Ltestbed2/testbed2_api/NestedStruct1;)V not found"));
@@ -282,12 +301,13 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::OnSig2Signal(const FTestbed2Nest
 	UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Verbose, TEXT("Notify java jni UTestbed2NestedStruct3InterfaceJniAdapter::onSig2 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTestbed2NestedStruct3InterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UTestbed2NestedStruct3InterfaceJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:onSig2 (Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTestbed2NestedStruct3InterfaceJniAdapterCache::Sig2SignalMethodID;
+		jmethodID MethodID = Cache->Sig2SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:onSig2 (Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V not found"));
@@ -311,12 +331,13 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::OnSig3Signal(const FTestbed2Nest
 	UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Verbose, TEXT("Notify java jni UTestbed2NestedStruct3InterfaceJniAdapter::onSig3 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTestbed2NestedStruct3InterfaceJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UTestbed2NestedStruct3InterfaceJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:onSig3 (Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;Ltestbed2/testbed2_api/NestedStruct3;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTestbed2NestedStruct3InterfaceJniAdapterCache::Sig3SignalMethodID;
+		jmethodID MethodID = Cache->Sig3SignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:onSig3 (Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;Ltestbed2/testbed2_api/NestedStruct3;)V not found"));
@@ -341,12 +362,13 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::OnProp1Changed(const FTestbed2Ne
 	UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Verbose, TEXT("Notify java jni UTestbed2NestedStruct3InterfaceJniAdapter::OnProp1 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTestbed2NestedStruct3InterfaceJniAdapterCache::javaService == nullptr)
+		auto Cache = UTestbed2NestedStruct3InterfaceJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService::onProp1Changed(Ltestbed2/testbed2_api/NestedStruct1;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTestbed2NestedStruct3InterfaceJniAdapterCache::Prop1ChangedMethodID;
+		jmethodID MethodID = Cache->Prop1ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:onProp1Changed(Ltestbed2/testbed2_api/NestedStruct1;)V not found"));
@@ -367,12 +389,13 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::OnProp2Changed(const FTestbed2Ne
 	UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Verbose, TEXT("Notify java jni UTestbed2NestedStruct3InterfaceJniAdapter::OnProp2 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTestbed2NestedStruct3InterfaceJniAdapterCache::javaService == nullptr)
+		auto Cache = UTestbed2NestedStruct3InterfaceJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService::onProp2Changed(Ltestbed2/testbed2_api/NestedStruct2;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTestbed2NestedStruct3InterfaceJniAdapterCache::Prop2ChangedMethodID;
+		jmethodID MethodID = Cache->Prop2ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:onProp2Changed(Ltestbed2/testbed2_api/NestedStruct2;)V not found"));
@@ -393,12 +416,13 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::OnProp3Changed(const FTestbed2Ne
 	UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Verbose, TEXT("Notify java jni UTestbed2NestedStruct3InterfaceJniAdapter::OnProp3 "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UTestbed2NestedStruct3InterfaceJniAdapterCache::javaService == nullptr)
+		auto Cache = UTestbed2NestedStruct3InterfaceJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService::onProp3Changed(Ltestbed2/testbed2_api/NestedStruct3;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UTestbed2NestedStruct3InterfaceJniAdapterCache::Prop3ChangedMethodID;
+		jmethodID MethodID = Cache->Prop3ChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService:onProp3Changed(Ltestbed2/testbed2_api/NestedStruct3;)V not found"));

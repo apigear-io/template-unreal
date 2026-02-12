@@ -51,67 +51,86 @@ std::atomic<ICounterCounterJniAdapterAccessor*> gUCounterCounterJniAdapterHandle
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
+struct FUCounterCounterJniAdapterCacheData
+{
+	jclass javaService = nullptr;
+	jmethodID ReadyMethodID = nullptr;
+	jmethodID VectorChangedMethodID = nullptr;
+	jmethodID ExternVectorChangedMethodID = nullptr;
+	jmethodID VectorArrayChangedMethodID = nullptr;
+	jmethodID ExternVectorArrayChangedMethodID = nullptr;
+	jmethodID ValueChangedSignalMethodID = nullptr;
+
+	~FUCounterCounterJniAdapterCacheData()
+	{
+		if (javaService)
+		{
+			JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+			if (Env)
+			{
+				Env->DeleteGlobalRef(javaService);
+			}
+		}
+	}
+};
+
 class UCounterCounterJniAdapterCache
 {
 public:
-	static jclass javaService;
-	static jmethodID ReadyMethodID;
-	static jmethodID VectorChangedMethodID;
-	static jmethodID ExternVectorChangedMethodID;
-	static jmethodID VectorArrayChangedMethodID;
-	static jmethodID ExternVectorArrayChangedMethodID;
-	static jmethodID ValueChangedSignalMethodID;
+	static TSharedPtr<FUCounterCounterJniAdapterCacheData, ESPMode::ThreadSafe> Get()
+	{
+		FScopeLock Lock(&CacheLock);
+		return CacheData;
+	}
 
 	static void init();
 	static void clear();
+
+private:
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FUCounterCounterJniAdapterCacheData, ESPMode::ThreadSafe> CacheData;
 };
 
-jclass UCounterCounterJniAdapterCache::javaService = nullptr;
-jmethodID UCounterCounterJniAdapterCache::ReadyMethodID = nullptr;
-jmethodID UCounterCounterJniAdapterCache::VectorChangedMethodID = nullptr;
-jmethodID UCounterCounterJniAdapterCache::ExternVectorChangedMethodID = nullptr;
-jmethodID UCounterCounterJniAdapterCache::VectorArrayChangedMethodID = nullptr;
-jmethodID UCounterCounterJniAdapterCache::ExternVectorArrayChangedMethodID = nullptr;
-jmethodID UCounterCounterJniAdapterCache::ValueChangedSignalMethodID = nullptr;
+FCriticalSection UCounterCounterJniAdapterCache::CacheLock;
+TSharedPtr<FUCounterCounterJniAdapterCacheData, ESPMode::ThreadSafe> UCounterCounterJniAdapterCache::CacheData;
 
 void UCounterCounterJniAdapterCache::init()
 {
+	auto NewData = MakeShared<FUCounterCounterJniAdapterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
-	javaService = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniservice/CounterJniService");
+	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniservice/CounterJniService");
 	static const TCHAR* errorMsgCls = TEXT("failed to get java counter/counterjniservice/CounterJniService");
 	CounterDataJavaConverter::checkJniErrorOccured(errorMsgCls);
-	ReadyMethodID = env->GetMethodID(javaService, "nativeServiceReady", "(Z)V");
+	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
 	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for counter/counterjniservice/CounterJniService");
 	CounterDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
-	VectorChangedMethodID = env->GetMethodID(javaService, "onVectorChanged", "(LcustomTypes/customTypes_api/Vector3D;)V");
+	NewData->VectorChangedMethodID = env->GetMethodID(NewData->javaService, "onVectorChanged", "(LcustomTypes/customTypes_api/Vector3D;)V");
 	static const TCHAR* errorMsgVectorChanged = TEXT("failed to get java onVectorChanged, (LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniservice/CounterJniService");
 	CounterDataJavaConverter::checkJniErrorOccured(errorMsgVectorChanged);
-	ExternVectorChangedMethodID = env->GetMethodID(javaService, "onExternVectorChanged", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	NewData->ExternVectorChangedMethodID = env->GetMethodID(NewData->javaService, "onExternVectorChanged", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	static const TCHAR* errorMsgExternVectorChanged = TEXT("failed to get java onExternVectorChanged, (Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniservice/CounterJniService");
 	CounterDataJavaConverter::checkJniErrorOccured(errorMsgExternVectorChanged);
-	VectorArrayChangedMethodID = env->GetMethodID(javaService, "onVectorArrayChanged", "([LcustomTypes/customTypes_api/Vector3D;)V");
+	NewData->VectorArrayChangedMethodID = env->GetMethodID(NewData->javaService, "onVectorArrayChanged", "([LcustomTypes/customTypes_api/Vector3D;)V");
 	static const TCHAR* errorMsgVectorArrayChanged = TEXT("failed to get java onVectorArrayChanged, ([LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniservice/CounterJniService");
 	CounterDataJavaConverter::checkJniErrorOccured(errorMsgVectorArrayChanged);
-	ExternVectorArrayChangedMethodID = env->GetMethodID(javaService, "onExternVectorArrayChanged", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	NewData->ExternVectorArrayChangedMethodID = env->GetMethodID(NewData->javaService, "onExternVectorArrayChanged", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	static const TCHAR* errorMsgExternVectorArrayChanged = TEXT("failed to get java onExternVectorArrayChanged, ([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniservice/CounterJniService");
 	CounterDataJavaConverter::checkJniErrorOccured(errorMsgExternVectorArrayChanged);
-	ValueChangedSignalMethodID = env->GetMethodID(javaService, "onValueChanged", "(LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
+	NewData->ValueChangedSignalMethodID = env->GetMethodID(NewData->javaService, "onValueChanged", "(LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
 	static const TCHAR* errorMsgValueChangedSignal = TEXT("failed to get java onValueChanged, (LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniservice/CounterJniService");
 	CounterDataJavaConverter::checkJniErrorOccured(errorMsgValueChangedSignal);
+
+	{
+		FScopeLock Lock(&CacheLock);
+		CacheData = NewData;
+	}
 }
 
 void UCounterCounterJniAdapterCache::clear()
 {
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(javaService);
-	javaService = nullptr;
-	ReadyMethodID = nullptr;
-	VectorChangedMethodID = nullptr;
-	ExternVectorChangedMethodID = nullptr;
-	VectorArrayChangedMethodID = nullptr;
-	ExternVectorArrayChangedMethodID = nullptr;
-	ValueChangedSignalMethodID = nullptr;
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
 #endif
@@ -232,13 +251,14 @@ void UCounterCounterJniAdapter::callJniServiceReady(bool isServiceReady)
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (!m_javaJniServiceInstance || !UCounterCounterJniAdapterCache::ReadyMethodID)
+		auto Cache = UCounterCounterJniAdapterCache::Get();
+		if (!m_javaJniServiceInstance || !Cache || !Cache->ReadyMethodID)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService:nativeServiceReady(Z)V not found"));
 			return;
 		}
 
-		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, UCounterCounterJniAdapterCache::ReadyMethodID, isServiceReady);
+		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, Cache->ReadyMethodID, isServiceReady);
 		static const TCHAR* errorMsg = TEXT("counter/counterjniservice/CounterJniService:nativeServiceReady(Z)V CLASS not found");
 		CounterDataJavaConverter::checkJniErrorOccured(errorMsg);
 	}
@@ -251,12 +271,13 @@ void UCounterCounterJniAdapter::OnValueChangedSignal(const FCustomTypesVector3D&
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Notify java jni UCounterCounterJniAdapter::onValueChanged "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UCounterCounterJniAdapterCache::javaService == nullptr || m_javaJniServiceInstance == nullptr)
+		auto Cache = UCounterCounterJniAdapterCache::Get();
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService:onValueChanged (LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UCounterCounterJniAdapterCache::ValueChangedSignalMethodID;
+		jmethodID MethodID = Cache->ValueChangedSignalMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService:onValueChanged (LcustomTypes/customTypes_api/Vector3D;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;[LcustomTypes/customTypes_api/Vector3D;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
@@ -283,12 +304,13 @@ void UCounterCounterJniAdapter::OnVectorChanged(const FCustomTypesVector3D& Vect
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Notify java jni UCounterCounterJniAdapter::OnVector "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UCounterCounterJniAdapterCache::javaService == nullptr)
+		auto Cache = UCounterCounterJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService::onVectorChanged(LcustomTypes/customTypes_api/Vector3D;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UCounterCounterJniAdapterCache::VectorChangedMethodID;
+		jmethodID MethodID = Cache->VectorChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService:onVectorChanged(LcustomTypes/customTypes_api/Vector3D;)V not found"));
@@ -309,12 +331,13 @@ void UCounterCounterJniAdapter::OnExternVectorChanged(const FVector& ExternVecto
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Notify java jni UCounterCounterJniAdapter::OnExternVector "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UCounterCounterJniAdapterCache::javaService == nullptr)
+		auto Cache = UCounterCounterJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService::onExternVectorChanged(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UCounterCounterJniAdapterCache::ExternVectorChangedMethodID;
+		jmethodID MethodID = Cache->ExternVectorChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService:onExternVectorChanged(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
@@ -335,12 +358,13 @@ void UCounterCounterJniAdapter::OnVectorArrayChanged(const TArray<FCustomTypesVe
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Notify java jni UCounterCounterJniAdapter::OnVectorArray "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UCounterCounterJniAdapterCache::javaService == nullptr)
+		auto Cache = UCounterCounterJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService::onVectorArrayChanged([LcustomTypes/customTypes_api/Vector3D;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UCounterCounterJniAdapterCache::VectorArrayChangedMethodID;
+		jmethodID MethodID = Cache->VectorArrayChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService:onVectorArrayChanged([LcustomTypes/customTypes_api/Vector3D;)V not found"));
@@ -361,12 +385,13 @@ void UCounterCounterJniAdapter::OnExternVectorArrayChanged(const TArray<FVector>
 	UE_LOG(LogCounterCounter_JNI, Verbose, TEXT("Notify java jni UCounterCounterJniAdapter::OnExternVectorArray "));
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
-		if (UCounterCounterJniAdapterCache::javaService == nullptr)
+		auto Cache = UCounterCounterJniAdapterCache::Get();
+		if (!Cache)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService::onExternVectorArrayChanged([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V CLASS not found"));
 			return;
 		}
-		jmethodID MethodID = UCounterCounterJniAdapterCache::ExternVectorArrayChangedMethodID;
+		jmethodID MethodID = Cache->ExternVectorArrayChangedMethodID;
 		if (MethodID == nullptr)
 		{
 			UE_LOG(LogCounterCounter_JNI, Warning, TEXT("counter/counterjniservice/CounterJniService:onExternVectorArrayChanged([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V not found"));
