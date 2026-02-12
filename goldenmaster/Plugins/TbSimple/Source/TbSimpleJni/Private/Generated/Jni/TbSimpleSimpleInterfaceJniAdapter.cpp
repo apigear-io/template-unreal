@@ -270,6 +270,7 @@ void UTbSimpleSimpleInterfaceJniAdapter::setBackendService(TScriptInterface<ITbS
 
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> UTbSimpleSimpleInterfaceJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 

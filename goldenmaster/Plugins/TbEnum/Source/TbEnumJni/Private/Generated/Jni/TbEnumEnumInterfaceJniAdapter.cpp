@@ -223,6 +223,7 @@ void UTbEnumEnumInterfaceJniAdapter::setBackendService(TScriptInterface<ITbEnumE
 
 TScriptInterface<ITbEnumEnumInterfaceInterface> UTbEnumEnumInterfaceJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 

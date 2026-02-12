@@ -223,6 +223,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::setBackendService(TScriptInterface<I
 
 TScriptInterface<ITestbed2ManyParamInterfaceInterface> UTestbed2ManyParamInterfaceJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 

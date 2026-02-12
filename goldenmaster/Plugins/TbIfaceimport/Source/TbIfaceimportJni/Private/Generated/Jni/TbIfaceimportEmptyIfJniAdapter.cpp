@@ -174,6 +174,7 @@ void UTbIfaceimportEmptyIfJniAdapter::setBackendService(TScriptInterface<ITbIfac
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbIfaceimportEmptyIfJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 
