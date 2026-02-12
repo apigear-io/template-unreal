@@ -238,6 +238,7 @@ void UTbRefIfacesParentIfJniAdapter::setBackendService(TScriptInterface<ITbRefIf
 
 TScriptInterface<ITbRefIfacesParentIfInterface> UTbRefIfacesParentIfJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 

@@ -213,6 +213,7 @@ void UTbSame1SameEnum2InterfaceJniAdapter::setBackendService(TScriptInterface<IT
 
 TScriptInterface<ITbSame1SameEnum2InterfaceInterface> UTbSame1SameEnum2InterfaceJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 

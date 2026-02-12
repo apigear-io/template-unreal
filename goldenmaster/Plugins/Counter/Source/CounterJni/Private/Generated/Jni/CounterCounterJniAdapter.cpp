@@ -221,6 +221,7 @@ void UCounterCounterJniAdapter::setBackendService(TScriptInterface<ICounterCount
 
 TScriptInterface<ICounterCounterInterface> UCounterCounterJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 

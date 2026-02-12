@@ -202,6 +202,7 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::setBackendService(TScriptInterface<ITb
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesSimpleLocalIfJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 

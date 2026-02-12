@@ -201,6 +201,7 @@ void UTestbed2NestedStruct1InterfaceJniAdapter::setBackendService(TScriptInterfa
 
 TScriptInterface<ITestbed2NestedStruct1InterfaceInterface> UTestbed2NestedStruct1InterfaceJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 
