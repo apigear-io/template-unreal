@@ -28,11 +28,6 @@
 			"LoadingPhase": "default"
 		},
 		{
-			"Name": "CustomTypesJni",
-			"Type": "Runtime",
-			"LoadingPhase": "default"
-		},
-		{
 			"Name" : "CustomTypesEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",
