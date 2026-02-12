@@ -384,6 +384,7 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{$If
 
 TScriptInterface<I{{Camel .Module.Name}}{{Camel .Interface.Name}}Interface> {{$Class}}::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 

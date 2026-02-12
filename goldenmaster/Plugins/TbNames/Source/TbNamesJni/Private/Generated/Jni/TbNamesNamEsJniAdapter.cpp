@@ -225,6 +225,7 @@ void UTbNamesNamEsJniAdapter::setBackendService(TScriptInterface<ITbNamesNamEsIn
 
 TScriptInterface<ITbNamesNamEsInterface> UTbNamesNamEsJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 

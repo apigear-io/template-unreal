@@ -200,6 +200,7 @@ void UTbSimpleNoPropertiesInterfaceJniAdapter::setBackendService(TScriptInterfac
 
 TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> UTbSimpleNoPropertiesInterfaceJniAdapter::getBackendService()
 {
+	FScopeLock Lock(&BackendServiceCS);
 	return BackendService;
 }
 
