@@ -669,7 +669,7 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::OnPropBoolChanged(const TArray<boo
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleSimpleArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService::onPropBoolChanged([Z)V CLASS not found"));
 			return;
@@ -710,7 +710,7 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::OnPropIntChanged(const TArray<int3
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleSimpleArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService::onPropIntChanged([I)V CLASS not found"));
 			return;
@@ -745,7 +745,7 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::OnPropInt32Changed(const TArray<in
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleSimpleArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService::onPropInt32Changed([I)V CLASS not found"));
 			return;
@@ -780,7 +780,7 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::OnPropInt64Changed(const TArray<in
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleSimpleArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService::onPropInt64Changed([J)V CLASS not found"));
 			return;
@@ -815,7 +815,7 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::OnPropFloatChanged(const TArray<fl
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleSimpleArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService::onPropFloatChanged([F)V CLASS not found"));
 			return;
@@ -850,7 +850,7 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::OnPropFloat32Changed(const TArray<
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleSimpleArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService::onPropFloat32Changed([F)V CLASS not found"));
 			return;
@@ -885,7 +885,7 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::OnPropFloat64Changed(const TArray<
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleSimpleArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService::onPropFloat64Changed([D)V CLASS not found"));
 			return;
@@ -920,7 +920,7 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::OnPropStringChanged(const TArray<F
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleSimpleArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService::onPropStringChanged([Ljava/lang/String;)V CLASS not found"));
 			return;
@@ -956,7 +956,7 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::OnPropReadOnlyStringChanged(const 
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleSimpleArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService::onPropReadOnlyStringChanged(Ljava/lang/String;)V CLASS not found"));
 			return;
