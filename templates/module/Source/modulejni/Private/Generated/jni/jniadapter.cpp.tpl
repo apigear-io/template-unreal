@@ -257,22 +257,34 @@ void {{$Class}}Cache::init()
 {{- $javaServicePath := ( join "/" (strSlice ( camel $ModuleName) $jniservice_name) ) }}
 
 	NewData->{{$serviceClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaServicePath}}/{{$javaServiceTypeName}}");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java {{$javaServicePath}}/{{$javaServiceTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java {{$javaServicePath}}/{{$javaServiceTypeName}}. Bailing...");
+	if (NewData->{{$serviceClass}} == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->{{$serviceClass}}, "nativeServiceReady", "(Z)V");
-	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgReadyMethod);
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for {{$javaServicePath}}/{{$javaServiceTypeName}}. Bailing...");
+	if (NewData->ReadyMethodID == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsgReadyMethod))
+	{
+		return;
+	}
 {{- range .Interface.Properties }}
 	{{- $signatureParam := jniJavaSignatureParam . }}
 	NewData->{{ Camel .Name}}ChangedMethodID = env->GetMethodID(NewData->{{$serviceClass}}, "on{{Camel .Name}}Changed", "({{$signatureParam}})V");
-	static const TCHAR* errorMsg{{Camel .Name}}Changed = TEXT("failed to get java on{{Camel .Name}}Changed, ({{$signatureParam}})V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Changed);
+	static const TCHAR* errorMsg{{Camel .Name}}Changed = TEXT("failed to get java on{{Camel .Name}}Changed, ({{$signatureParam}})V for {{$javaServicePath}}/{{$javaServiceTypeName}}. Bailing...");
+	if (NewData->{{ Camel .Name}}ChangedMethodID == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Changed))
+	{
+		return;
+	}
 {{- end }}
 {{- range .Interface.Signals }}
 	{{- $signatureParams := jniJavaSignatureParams .Params }}
 	NewData->{{ Camel .Name}}SignalMethodID = env->GetMethodID(NewData->{{$serviceClass}}, "on{{Camel .Name}}", "({{$signatureParams}})V");
-	static const TCHAR* errorMsg{{Camel .Name}}Signal = TEXT("failed to get java on{{Camel .Name}}, ({{$signatureParams}})V for {{$javaServicePath}}/{{$javaServiceTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Signal);
+	static const TCHAR* errorMsg{{Camel .Name}}Signal = TEXT("failed to get java on{{Camel .Name}}, ({{$signatureParams}})V for {{$javaServicePath}}/{{$javaServiceTypeName}}. Bailing...");
+	if (NewData->{{ Camel .Name}}SignalMethodID == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Signal))
+	{
+		return;
+	}
 {{- end }}
 
 	{
@@ -305,6 +317,11 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	{{$Class}}Cache::init();
+	if (!{{$Class}}Cache::Get())
+	{
+		UE_LOG(Log{{$Iface}}_JNI, Error, TEXT("Failed to initialize {{$Class}}Cache. Bailing..."));
+		return;
+	}
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClassPath}}/{{$javaClassName}}Starter");
 	static const TCHAR* errorMsgCls = TEXT("{{Camel .Module.Name}}JavaServiceStarter; class not found");
