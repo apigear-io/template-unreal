@@ -124,20 +124,35 @@ void UTbSimpleVoidInterfaceJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassVoidInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniclient/VoidInterfaceJniClient. Bailing...");
+	if (NewData->clientClassVoidInterface == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->FuncVoidAsyncMethodID = env->GetMethodID(NewData->clientClassVoidInterface, "funcVoidAsync", "(Ljava/lang/String;)V");
-	static const TCHAR* errorMsgFuncVoidAsyncMethod = TEXT("failed to get java funcVoidAsync, (Ljava/lang/String;)V for tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncVoidAsyncMethod);
+	static const TCHAR* errorMsgFuncVoidAsyncMethod = TEXT("failed to get java funcVoidAsync, (Ljava/lang/String;)V for tbSimple/tbSimplejniclient/VoidInterfaceJniClient. Bailing...");
+	if (NewData->FuncVoidAsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncVoidAsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassVoidInterfaceCtor = env->GetMethodID(NewData->clientClassVoidInterface, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSimple/tbSimplejniclient/VoidInterfaceJniClient. Bailing...");
+	if (NewData->clientClassVoidInterfaceCtor == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassVoidInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSimple/tbSimplejniclient/VoidInterfaceJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassVoidInterface, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSimple/tbSimplejniclient/VoidInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSimple/tbSimplejniclient/VoidInterfaceJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

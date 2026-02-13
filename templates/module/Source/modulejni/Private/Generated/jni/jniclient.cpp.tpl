@@ -210,31 +210,49 @@ void {{$Class}}Cache::init()
 {{- $javaClientPath := ( join "/" (strSlice ( camel $ModuleName) $jniclient_name) ) }}
 
 	NewData->{{$clientClass}} = FAndroidApplication::FindJavaClassGlobalRef("{{$javaClientPath}}/{{$javaClientTypeName}}");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java {{$javaClientPath}}/{{$javaClientTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
+	if (NewData->{{$clientClass}} == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 {{- range .Interface.Properties }}
 {{- if not .IsReadOnly }}
 	{{- $signatureParam := jniJavaSignatureParam . }}
 	NewData->{{ Camel .Name}}SetterId = env->GetMethodID(NewData->{{$clientClass}}, "set{{Camel .Name}}", "({{$signatureParam}})V");
-	static const TCHAR* errorMsg{{Camel .Name}}Setter = TEXT("failed to get java set{{Camel .Name}}, {{$signatureParam}})V for {{$javaClientPath}}/{{$javaClientTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Setter);
+	static const TCHAR* errorMsg{{Camel .Name}}Setter = TEXT("failed to get java set{{Camel .Name}}, {{$signatureParam}})V for {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
+	if (NewData->{{ Camel .Name}}SetterId == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}Setter))
+	{
+		return;
+	}
 {{- end }}
 {{- end }}
 {{- range .Interface.Operations }}
 	{{- $signatureParams := jniJavaSignatureParams .Params }}
 	NewData->{{Camel .Name}}AsyncMethodID = env->GetMethodID(NewData->{{$clientClass}}, "{{camel .Name}}Async", "(Ljava/lang/String;{{$signatureParams}})V");
-	static const TCHAR* errorMsg{{Camel .Name}}AsyncMethod = TEXT("failed to get java {{camel .Name}}Async, (Ljava/lang/String;{{$signatureParams}})V for {{$javaClientPath}}/{{$javaClientTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}AsyncMethod);
+	static const TCHAR* errorMsg{{Camel .Name}}AsyncMethod = TEXT("failed to get java {{camel .Name}}Async, (Ljava/lang/String;{{$signatureParams}})V for {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
+	if (NewData->{{Camel .Name}}AsyncMethodID == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsg{{Camel .Name}}AsyncMethod))
+	{
+		return;
+	}
 {{- end }}
 	NewData->{{$clientClass}}Ctor = env->GetMethodID(NewData->{{$clientClass}}, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for {{$javaClientPath}}/{{$javaClientTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
+	if (NewData->{{$clientClass}}Ctor == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->{{$clientClass}}, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for {{$javaClientPath}}/{{$javaClientTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
+	if (NewData->BindMethodID == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->{{$clientClass}}, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for {{$javaClientPath}}/{{$javaClientTypeName}}");
-	{{$localClassConverter}}::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for {{$javaClientPath}}/{{$javaClientTypeName}}. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || {{$localClassConverter}}::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

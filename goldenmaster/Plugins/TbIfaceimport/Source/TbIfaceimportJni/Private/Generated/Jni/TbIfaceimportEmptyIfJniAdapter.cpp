@@ -92,11 +92,17 @@ void UTbIfaceimportEmptyIfJniAdapterCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService. Bailing...");
+	if (NewData->javaService == nullptr || TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
-	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniService. Bailing...");
+	if (NewData->ReadyMethodID == nullptr || TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -122,6 +128,11 @@ void UTbIfaceimportEmptyIfJniAdapter::Initialize(FSubsystemCollectionBase& Colle
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbIfaceimportEmptyIfJniAdapterCache::init();
+	if (!UTbIfaceimportEmptyIfJniAdapterCache::Get())
+	{
+		UE_LOG(LogTbIfaceimportEmptyIf_JNI, Error, TEXT("Failed to initialize UTbIfaceimportEmptyIfJniAdapterCache. Bailing..."));
+		return;
+	}
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniservice/EmptyIfJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbIfaceimportJavaServiceStarter; class not found");

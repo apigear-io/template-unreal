@@ -130,35 +130,65 @@ void UTbNamesNamEsJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassNamEs = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniclient/NamEsJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbNames/tbNamesjniclient/NamEsJniClient. Bailing...");
+	if (NewData->clientClassNamEs == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->SwitchSetterId = env->GetMethodID(NewData->clientClassNamEs, "setSwitch", "(Z)V");
-	static const TCHAR* errorMsgSwitchSetter = TEXT("failed to get java setSwitch, Z)V for tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSwitchSetter);
+	static const TCHAR* errorMsgSwitchSetter = TEXT("failed to get java setSwitch, Z)V for tbNames/tbNamesjniclient/NamEsJniClient. Bailing...");
+	if (NewData->SwitchSetterId == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSwitchSetter))
+	{
+		return;
+	}
 	NewData->SomePropertySetterId = env->GetMethodID(NewData->clientClassNamEs, "setSomeProperty", "(I)V");
-	static const TCHAR* errorMsgSomePropertySetter = TEXT("failed to get java setSomeProperty, I)V for tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePropertySetter);
+	static const TCHAR* errorMsgSomePropertySetter = TEXT("failed to get java setSomeProperty, I)V for tbNames/tbNamesjniclient/NamEsJniClient. Bailing...");
+	if (NewData->SomePropertySetterId == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePropertySetter))
+	{
+		return;
+	}
 	NewData->SomePoperty2SetterId = env->GetMethodID(NewData->clientClassNamEs, "setSomePoperty2", "(I)V");
-	static const TCHAR* errorMsgSomePoperty2Setter = TEXT("failed to get java setSomePoperty2, I)V for tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePoperty2Setter);
+	static const TCHAR* errorMsgSomePoperty2Setter = TEXT("failed to get java setSomePoperty2, I)V for tbNames/tbNamesjniclient/NamEsJniClient. Bailing...");
+	if (NewData->SomePoperty2SetterId == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePoperty2Setter))
+	{
+		return;
+	}
 	NewData->EnumPropertySetterId = env->GetMethodID(NewData->clientClassNamEs, "setEnumProperty", "(LtbNames/tbNames_api/EnumWithUnderScores;)V");
-	static const TCHAR* errorMsgEnumPropertySetter = TEXT("failed to get java setEnumProperty, LtbNames/tbNames_api/EnumWithUnderScores;)V for tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgEnumPropertySetter);
+	static const TCHAR* errorMsgEnumPropertySetter = TEXT("failed to get java setEnumProperty, LtbNames/tbNames_api/EnumWithUnderScores;)V for tbNames/tbNamesjniclient/NamEsJniClient. Bailing...");
+	if (NewData->EnumPropertySetterId == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgEnumPropertySetter))
+	{
+		return;
+	}
 	NewData->SomeFunctionAsyncMethodID = env->GetMethodID(NewData->clientClassNamEs, "someFunctionAsync", "(Ljava/lang/String;Z)V");
-	static const TCHAR* errorMsgSomeFunctionAsyncMethod = TEXT("failed to get java someFunctionAsync, (Ljava/lang/String;Z)V for tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeFunctionAsyncMethod);
+	static const TCHAR* errorMsgSomeFunctionAsyncMethod = TEXT("failed to get java someFunctionAsync, (Ljava/lang/String;Z)V for tbNames/tbNamesjniclient/NamEsJniClient. Bailing...");
+	if (NewData->SomeFunctionAsyncMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeFunctionAsyncMethod))
+	{
+		return;
+	}
 	NewData->SomeFunction2AsyncMethodID = env->GetMethodID(NewData->clientClassNamEs, "someFunction2Async", "(Ljava/lang/String;Z)V");
-	static const TCHAR* errorMsgSomeFunction2AsyncMethod = TEXT("failed to get java someFunction2Async, (Ljava/lang/String;Z)V for tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeFunction2AsyncMethod);
+	static const TCHAR* errorMsgSomeFunction2AsyncMethod = TEXT("failed to get java someFunction2Async, (Ljava/lang/String;Z)V for tbNames/tbNamesjniclient/NamEsJniClient. Bailing...");
+	if (NewData->SomeFunction2AsyncMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeFunction2AsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassNamEsCtor = env->GetMethodID(NewData->clientClassNamEs, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbNames/tbNamesjniclient/NamEsJniClient. Bailing...");
+	if (NewData->clientClassNamEsCtor == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassNamEs, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbNames/tbNamesjniclient/NamEsJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassNamEs, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbNames/tbNamesjniclient/NamEsJniClient");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbNames/tbNamesjniclient/NamEsJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
