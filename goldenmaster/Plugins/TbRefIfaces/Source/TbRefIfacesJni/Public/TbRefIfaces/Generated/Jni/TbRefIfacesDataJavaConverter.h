@@ -34,10 +34,11 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesDataJavaConverter_JNI, Log, All);
 
+struct FTbRefIfacesDataJavaConverterCacheData;
+
 class TBREFIFACESAPI_API TbRefIfacesDataJavaConverter
 {
 public:
-	static jclass jSimpleLocalIf;
 	static void fillSimpleLocalIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if);
 	static void fillSimpleLocalIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& out_array);
 	static jobject makeJavaSimpleLocalIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if);
@@ -45,7 +46,6 @@ public:
 
 	static TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> getCppInstanceTbRefIfacesSimpleLocalIf();
 
-	static jclass jParentIf;
 	static void fillParentIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if);
 	static void fillParentIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& out_array);
 	static jobject makeJavaParentIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if);
@@ -57,9 +57,9 @@ public:
 	static void cleanJavaReferences();
 
 private:
-	static FCriticalSection initMutex;
-	static void ensureInitialized();
-	static bool m_isInitialized;
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FTbRefIfacesDataJavaConverterCacheData, ESPMode::ThreadSafe> CacheData;
+	static TSharedPtr<FTbRefIfacesDataJavaConverterCacheData, ESPMode::ThreadSafe> ensureInitialized();
 	static jmethodID getMethod(jclass cls, const char* name, const char* signature, const TCHAR*);
 	static jmethodID getStaticMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo);
 	static jfieldID getFieldId(jclass cls, const char* name, const char* signature, const TCHAR*);

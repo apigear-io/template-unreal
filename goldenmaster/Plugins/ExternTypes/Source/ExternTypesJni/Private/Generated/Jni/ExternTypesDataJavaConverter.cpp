@@ -34,12 +34,27 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogExternTypesDataJavaConverter_JNI);
 
-jclass ExternTypesDataJavaConverter::jMyVector3D = nullptr;
+struct FExternTypesDataJavaConverterCacheData
+{
+	jclass jMyVector3D = nullptr;
+
+	~FExternTypesDataJavaConverterCacheData()
+	{
+		JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+		if (Env)
+		{
+			if (jMyVector3D) Env->DeleteGlobalRef(jMyVector3D);
+		}
+	}
+};
+
+FCriticalSection ExternTypesDataJavaConverter::CacheLock;
+TSharedPtr<FExternTypesDataJavaConverterCacheData, ESPMode::ThreadSafe> ExternTypesDataJavaConverter::CacheData;
 
 void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FVector& out_my_vector3_d)
 {
-	ensureInitialized();
-	if (!jMyVector3D)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jMyVector3D)
 	{
 		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("org/apache/commons/math3/geometry/euclidean/threed/Vector3D not found"));
 		return;
@@ -52,7 +67,12 @@ void ExternTypesDataJavaConverter::fillMyVector3D(JNIEnv* env, jobject input, FV
 
 void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray input, TArray<FVector>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("ExternTypesDataJavaConverter cache not initialized for fillMyVector3DArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get len of Vector3D jarray.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -80,16 +100,21 @@ void ExternTypesDataJavaConverter::fillMyVector3DArray(JNIEnv* env, jobjectArray
 
 jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVector& out_my_vector3_d)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("ExternTypesDataJavaConverter cache not initialized for makeJavaMyVector3D"));
+		return nullptr;
+	}
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for org/apache/commons/math3/geometry/euclidean/threed/Vector3D.");
 	// Make sure either that the extern class has default ctor or provide proper signature and arguments.
-	static const jmethodID ctor = getMethod(jMyVector3D, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jMyVector3D, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jMyVector3D, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jMyVector3D, ctor);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Vector3D.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -104,14 +129,14 @@ jobject ExternTypesDataJavaConverter::makeJavaMyVector3D(JNIEnv* env, const FVec
 
 jobjectArray ExternTypesDataJavaConverter::makeJavaMyVector3DArray(JNIEnv* env, const TArray<FVector>& cppArray)
 {
-	ensureInitialized();
-	if (!jMyVector3D)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jMyVector3D)
 	{
 		UE_LOG(LogExternTypesDataJavaConverter_JNI, Warning, TEXT("org/apache/commons/math3/geometry/euclidean/threed/Vector3D not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jMyVector3D, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jMyVector3D, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Vector3D jarray.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -148,32 +173,34 @@ bool ExternTypesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 
 void ExternTypesDataJavaConverter::cleanJavaReferences()
 {
-	FScopeLock Lock(&initMutex);
-	m_isInitialized = false;
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(jMyVector3D);
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
-FCriticalSection ExternTypesDataJavaConverter::initMutex;
-
-bool ExternTypesDataJavaConverter::m_isInitialized = false;
-
-void ExternTypesDataJavaConverter::ensureInitialized()
+TSharedPtr<FExternTypesDataJavaConverterCacheData, ESPMode::ThreadSafe> ExternTypesDataJavaConverter::ensureInitialized()
 {
-	if (m_isInitialized)
 	{
-		return;
+		FScopeLock Lock(&CacheLock);
+		if (CacheData)
+		{
+			return CacheData;
+		}
 	}
-	FScopeLock Lock(&initMutex);
-	if (m_isInitialized)
-	{
-		return;
-	}
+
+	auto NewData = MakeShared<FExternTypesDataJavaConverterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	jMyVector3D = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
+	NewData->jMyVector3D = FAndroidApplication::FindJavaClassGlobalRef("org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
 	static const TCHAR* errorMsgMyVector3D = TEXT("failed to get org/apache/commons/math3/geometry/euclidean/threed/Vector3D");
 	checkJniErrorOccured(errorMsgMyVector3D);
-	m_isInitialized = true;
+
+	{
+		FScopeLock Lock(&CacheLock);
+		if (!CacheData)
+		{
+			CacheData = NewData;
+		}
+		return CacheData;
+	}
 }
 
 jmethodID ExternTypesDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
