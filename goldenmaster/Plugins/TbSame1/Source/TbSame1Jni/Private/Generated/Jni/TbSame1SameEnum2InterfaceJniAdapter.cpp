@@ -194,10 +194,6 @@ void UTbSame1SameEnum2InterfaceJniAdapter::Deinitialize()
 			static const TCHAR* errorMsgCall = TEXT("TbSame1JavaServiceStarter failed to call stop");
 			TbSame1DataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
-		else
-		{
-			return;
-		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
 	UTbSame1SameEnum2InterfaceJniAdapterCache::clear();

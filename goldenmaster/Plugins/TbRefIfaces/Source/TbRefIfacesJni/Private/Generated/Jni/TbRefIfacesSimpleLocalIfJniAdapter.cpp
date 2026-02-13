@@ -187,10 +187,6 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Deinitialize()
 			static const TCHAR* errorMsgCall = TEXT("TbRefIfacesJavaServiceStarter failed to call stop");
 			TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
-		else
-		{
-			return;
-		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
 	UTbRefIfacesSimpleLocalIfJniAdapterCache::clear();

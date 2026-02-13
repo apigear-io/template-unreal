@@ -202,10 +202,6 @@ void UTbNamesNamEsJniAdapter::Deinitialize()
 			static const TCHAR* errorMsgCall = TEXT("TbNamesJavaServiceStarter failed to call stop");
 			TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
-		else
-		{
-			return;
-		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
 	UTbNamesNamEsJniAdapterCache::clear();

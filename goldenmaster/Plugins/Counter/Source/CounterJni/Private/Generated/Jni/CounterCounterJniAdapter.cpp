@@ -200,10 +200,6 @@ void UCounterCounterJniAdapter::Deinitialize()
 			static const TCHAR* errorMsgCall = TEXT("CounterJavaServiceStarter failed to call stop");
 			CounterDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
-		else
-		{
-			return;
-		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
 	UCounterCounterJniAdapterCache::clear();

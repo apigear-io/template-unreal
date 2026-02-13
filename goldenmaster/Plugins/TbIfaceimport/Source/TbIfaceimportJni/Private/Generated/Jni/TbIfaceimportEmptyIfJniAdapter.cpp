@@ -177,10 +177,6 @@ void UTbIfaceimportEmptyIfJniAdapter::Deinitialize()
 			static const TCHAR* errorMsgCall = TEXT("TbIfaceimportJavaServiceStarter failed to call stop");
 			TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
-		else
-		{
-			return;
-		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
 	UTbIfaceimportEmptyIfJniAdapterCache::clear();
