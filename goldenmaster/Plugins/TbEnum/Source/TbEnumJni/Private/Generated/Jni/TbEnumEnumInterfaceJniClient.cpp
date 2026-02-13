@@ -132,41 +132,77 @@ void UTbEnumEnumInterfaceJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassEnumInterface = FAndroidApplication::FindJavaClassGlobalRef("tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->clientClassEnumInterface == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->Prop0SetterId = env->GetMethodID(NewData->clientClassEnumInterface, "setProp0", "(LtbEnum/tbEnum_api/Enum0;)V");
-	static const TCHAR* errorMsgProp0Setter = TEXT("failed to get java setProp0, LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp0Setter);
+	static const TCHAR* errorMsgProp0Setter = TEXT("failed to get java setProp0, LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->Prop0SetterId == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp0Setter))
+	{
+		return;
+	}
 	NewData->Prop1SetterId = env->GetMethodID(NewData->clientClassEnumInterface, "setProp1", "(LtbEnum/tbEnum_api/Enum1;)V");
-	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter);
+	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->Prop1SetterId == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter))
+	{
+		return;
+	}
 	NewData->Prop2SetterId = env->GetMethodID(NewData->clientClassEnumInterface, "setProp2", "(LtbEnum/tbEnum_api/Enum2;)V");
-	static const TCHAR* errorMsgProp2Setter = TEXT("failed to get java setProp2, LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp2Setter);
+	static const TCHAR* errorMsgProp2Setter = TEXT("failed to get java setProp2, LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->Prop2SetterId == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp2Setter))
+	{
+		return;
+	}
 	NewData->Prop3SetterId = env->GetMethodID(NewData->clientClassEnumInterface, "setProp3", "(LtbEnum/tbEnum_api/Enum3;)V");
-	static const TCHAR* errorMsgProp3Setter = TEXT("failed to get java setProp3, LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp3Setter);
+	static const TCHAR* errorMsgProp3Setter = TEXT("failed to get java setProp3, LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->Prop3SetterId == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgProp3Setter))
+	{
+		return;
+	}
 	NewData->Func0AsyncMethodID = env->GetMethodID(NewData->clientClassEnumInterface, "func0Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V");
-	static const TCHAR* errorMsgFunc0AsyncMethod = TEXT("failed to get java func0Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc0AsyncMethod);
+	static const TCHAR* errorMsgFunc0AsyncMethod = TEXT("failed to get java func0Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum0;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->Func0AsyncMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc0AsyncMethod))
+	{
+		return;
+	}
 	NewData->Func1AsyncMethodID = env->GetMethodID(NewData->clientClassEnumInterface, "func1Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V");
-	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod);
+	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum1;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->Func1AsyncMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod))
+	{
+		return;
+	}
 	NewData->Func2AsyncMethodID = env->GetMethodID(NewData->clientClassEnumInterface, "func2Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V");
-	static const TCHAR* errorMsgFunc2AsyncMethod = TEXT("failed to get java func2Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc2AsyncMethod);
+	static const TCHAR* errorMsgFunc2AsyncMethod = TEXT("failed to get java func2Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum2;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->Func2AsyncMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc2AsyncMethod))
+	{
+		return;
+	}
 	NewData->Func3AsyncMethodID = env->GetMethodID(NewData->clientClassEnumInterface, "func3Async", "(Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V");
-	static const TCHAR* errorMsgFunc3AsyncMethod = TEXT("failed to get java func3Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc3AsyncMethod);
+	static const TCHAR* errorMsgFunc3AsyncMethod = TEXT("failed to get java func3Async, (Ljava/lang/String;LtbEnum/tbEnum_api/Enum3;)V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->Func3AsyncMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgFunc3AsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassEnumInterfaceCtor = env->GetMethodID(NewData->clientClassEnumInterface, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->clientClassEnumInterfaceCtor == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassEnumInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassEnumInterface, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient");
-	TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbEnum/tbEnumjniclient/EnumInterfaceJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

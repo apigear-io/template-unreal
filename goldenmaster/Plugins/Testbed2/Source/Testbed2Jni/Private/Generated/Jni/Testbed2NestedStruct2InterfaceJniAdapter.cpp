@@ -97,23 +97,41 @@ void UTestbed2NestedStruct2InterfaceJniAdapterCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/NestedStruct2InterfaceJniService");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniservice/NestedStruct2InterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniservice/NestedStruct2InterfaceJniService. Bailing...");
+	if (NewData->javaService == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
-	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for testbed2/testbed2jniservice/NestedStruct2InterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for testbed2/testbed2jniservice/NestedStruct2InterfaceJniService. Bailing...");
+	if (NewData->ReadyMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	{
+		return;
+	}
 	NewData->Prop1ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp1Changed", "(Ltestbed2/testbed2_api/NestedStruct1;)V");
-	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniservice/NestedStruct2InterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed);
+	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniservice/NestedStruct2InterfaceJniService. Bailing...");
+	if (NewData->Prop1ChangedMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed))
+	{
+		return;
+	}
 	NewData->Prop2ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp2Changed", "(Ltestbed2/testbed2_api/NestedStruct2;)V");
-	static const TCHAR* errorMsgProp2Changed = TEXT("failed to get java onProp2Changed, (Ltestbed2/testbed2_api/NestedStruct2;)V for testbed2/testbed2jniservice/NestedStruct2InterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Changed);
+	static const TCHAR* errorMsgProp2Changed = TEXT("failed to get java onProp2Changed, (Ltestbed2/testbed2_api/NestedStruct2;)V for testbed2/testbed2jniservice/NestedStruct2InterfaceJniService. Bailing...");
+	if (NewData->Prop2ChangedMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Changed))
+	{
+		return;
+	}
 	NewData->Sig1SignalMethodID = env->GetMethodID(NewData->javaService, "onSig1", "(Ltestbed2/testbed2_api/NestedStruct1;)V");
-	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniservice/NestedStruct2InterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal);
+	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniservice/NestedStruct2InterfaceJniService. Bailing...");
+	if (NewData->Sig1SignalMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal))
+	{
+		return;
+	}
 	NewData->Sig2SignalMethodID = env->GetMethodID(NewData->javaService, "onSig2", "(Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V");
-	static const TCHAR* errorMsgSig2Signal = TEXT("failed to get java onSig2, (Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V for testbed2/testbed2jniservice/NestedStruct2InterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig2Signal);
+	static const TCHAR* errorMsgSig2Signal = TEXT("failed to get java onSig2, (Ltestbed2/testbed2_api/NestedStruct1;Ltestbed2/testbed2_api/NestedStruct2;)V for testbed2/testbed2jniservice/NestedStruct2InterfaceJniService. Bailing...");
+	if (NewData->Sig2SignalMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig2Signal))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -139,6 +157,11 @@ void UTestbed2NestedStruct2InterfaceJniAdapter::Initialize(FSubsystemCollectionB
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTestbed2NestedStruct2InterfaceJniAdapterCache::init();
+	if (!UTestbed2NestedStruct2InterfaceJniAdapterCache::Get())
+	{
+		UE_LOG(LogTestbed2NestedStruct2Interface_JNI, Error, TEXT("Failed to initialize UTestbed2NestedStruct2InterfaceJniAdapterCache. Bailing..."));
+		return;
+	}
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/NestedStruct2InterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("Testbed2JavaServiceStarter; class not found");

@@ -131,41 +131,77 @@ void UTbRefIfacesParentIfJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassParentIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->clientClassParentIf == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->LocalIfSetterId = env->GetMethodID(NewData->clientClassParentIf, "setLocalIf", "(LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
-	static const TCHAR* errorMsgLocalIfSetter = TEXT("failed to get java setLocalIf, LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfSetter);
+	static const TCHAR* errorMsgLocalIfSetter = TEXT("failed to get java setLocalIf, LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->LocalIfSetterId == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfSetter))
+	{
+		return;
+	}
 	NewData->LocalIfListSetterId = env->GetMethodID(NewData->clientClassParentIf, "setLocalIfList", "([LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
-	static const TCHAR* errorMsgLocalIfListSetter = TEXT("failed to get java setLocalIfList, [LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfListSetter);
+	static const TCHAR* errorMsgLocalIfListSetter = TEXT("failed to get java setLocalIfList, [LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->LocalIfListSetterId == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfListSetter))
+	{
+		return;
+	}
 	NewData->ImportedIfSetterId = env->GetMethodID(NewData->clientClassParentIf, "setImportedIf", "(LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
-	static const TCHAR* errorMsgImportedIfSetter = TEXT("failed to get java setImportedIf, LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfSetter);
+	static const TCHAR* errorMsgImportedIfSetter = TEXT("failed to get java setImportedIf, LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->ImportedIfSetterId == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfSetter))
+	{
+		return;
+	}
 	NewData->ImportedIfListSetterId = env->GetMethodID(NewData->clientClassParentIf, "setImportedIfList", "([LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
-	static const TCHAR* errorMsgImportedIfListSetter = TEXT("failed to get java setImportedIfList, [LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfListSetter);
+	static const TCHAR* errorMsgImportedIfListSetter = TEXT("failed to get java setImportedIfList, [LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->ImportedIfListSetterId == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfListSetter))
+	{
+		return;
+	}
 	NewData->LocalIfMethodAsyncMethodID = env->GetMethodID(NewData->clientClassParentIf, "localIfMethodAsync", "(Ljava/lang/String;LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
-	static const TCHAR* errorMsgLocalIfMethodAsyncMethod = TEXT("failed to get java localIfMethodAsync, (Ljava/lang/String;LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfMethodAsyncMethod);
+	static const TCHAR* errorMsgLocalIfMethodAsyncMethod = TEXT("failed to get java localIfMethodAsync, (Ljava/lang/String;LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->LocalIfMethodAsyncMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfMethodAsyncMethod))
+	{
+		return;
+	}
 	NewData->LocalIfMethodListAsyncMethodID = env->GetMethodID(NewData->clientClassParentIf, "localIfMethodListAsync", "(Ljava/lang/String;[LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V");
-	static const TCHAR* errorMsgLocalIfMethodListAsyncMethod = TEXT("failed to get java localIfMethodListAsync, (Ljava/lang/String;[LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfMethodListAsyncMethod);
+	static const TCHAR* errorMsgLocalIfMethodListAsyncMethod = TEXT("failed to get java localIfMethodListAsync, (Ljava/lang/String;[LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->LocalIfMethodListAsyncMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgLocalIfMethodListAsyncMethod))
+	{
+		return;
+	}
 	NewData->ImportedIfMethodAsyncMethodID = env->GetMethodID(NewData->clientClassParentIf, "importedIfMethodAsync", "(Ljava/lang/String;LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
-	static const TCHAR* errorMsgImportedIfMethodAsyncMethod = TEXT("failed to get java importedIfMethodAsync, (Ljava/lang/String;LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfMethodAsyncMethod);
+	static const TCHAR* errorMsgImportedIfMethodAsyncMethod = TEXT("failed to get java importedIfMethodAsync, (Ljava/lang/String;LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->ImportedIfMethodAsyncMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfMethodAsyncMethod))
+	{
+		return;
+	}
 	NewData->ImportedIfMethodListAsyncMethodID = env->GetMethodID(NewData->clientClassParentIf, "importedIfMethodListAsync", "(Ljava/lang/String;[LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V");
-	static const TCHAR* errorMsgImportedIfMethodListAsyncMethod = TEXT("failed to get java importedIfMethodListAsync, (Ljava/lang/String;[LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfMethodListAsyncMethod);
+	static const TCHAR* errorMsgImportedIfMethodListAsyncMethod = TEXT("failed to get java importedIfMethodListAsync, (Ljava/lang/String;[LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->ImportedIfMethodListAsyncMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgImportedIfMethodListAsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassParentIfCtor = env->GetMethodID(NewData->clientClassParentIf, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->clientClassParentIfCtor == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassParentIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassParentIf, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbRefIfaces/tbRefIfacesjniclient/ParentIfJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

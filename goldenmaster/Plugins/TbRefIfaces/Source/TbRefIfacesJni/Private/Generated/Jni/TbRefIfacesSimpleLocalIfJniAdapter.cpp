@@ -96,17 +96,29 @@ void UTbRefIfacesSimpleLocalIfJniAdapterCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService. Bailing...");
+	if (NewData->javaService == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
-	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService. Bailing...");
+	if (NewData->ReadyMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	{
+		return;
+	}
 	NewData->IntPropertyChangedMethodID = env->GetMethodID(NewData->javaService, "onIntPropertyChanged", "(I)V");
-	static const TCHAR* errorMsgIntPropertyChanged = TEXT("failed to get java onIntPropertyChanged, (I)V for tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntPropertyChanged);
+	static const TCHAR* errorMsgIntPropertyChanged = TEXT("failed to get java onIntPropertyChanged, (I)V for tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService. Bailing...");
+	if (NewData->IntPropertyChangedMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntPropertyChanged))
+	{
+		return;
+	}
 	NewData->IntSignalSignalMethodID = env->GetMethodID(NewData->javaService, "onIntSignal", "(I)V");
-	static const TCHAR* errorMsgIntSignalSignal = TEXT("failed to get java onIntSignal, (I)V for tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntSignalSignal);
+	static const TCHAR* errorMsgIntSignalSignal = TEXT("failed to get java onIntSignal, (I)V for tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniService. Bailing...");
+	if (NewData->IntSignalSignalMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntSignalSignal))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -132,6 +144,11 @@ void UTbRefIfacesSimpleLocalIfJniAdapter::Initialize(FSubsystemCollectionBase& C
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbRefIfacesSimpleLocalIfJniAdapterCache::init();
+	if (!UTbRefIfacesSimpleLocalIfJniAdapterCache::Get())
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIf_JNI, Error, TEXT("Failed to initialize UTbRefIfacesSimpleLocalIfJniAdapterCache. Bailing..."));
+		return;
+	}
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniservice/SimpleLocalIfJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbRefIfacesJavaServiceStarter; class not found");

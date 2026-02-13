@@ -132,41 +132,77 @@ void UTestbed2ManyParamInterfaceJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassManyParamInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->clientClassManyParamInterface == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->Prop1SetterId = env->GetMethodID(NewData->clientClassManyParamInterface, "setProp1", "(I)V");
-	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter);
+	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->Prop1SetterId == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter))
+	{
+		return;
+	}
 	NewData->Prop2SetterId = env->GetMethodID(NewData->clientClassManyParamInterface, "setProp2", "(I)V");
-	static const TCHAR* errorMsgProp2Setter = TEXT("failed to get java setProp2, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Setter);
+	static const TCHAR* errorMsgProp2Setter = TEXT("failed to get java setProp2, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->Prop2SetterId == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Setter))
+	{
+		return;
+	}
 	NewData->Prop3SetterId = env->GetMethodID(NewData->clientClassManyParamInterface, "setProp3", "(I)V");
-	static const TCHAR* errorMsgProp3Setter = TEXT("failed to get java setProp3, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp3Setter);
+	static const TCHAR* errorMsgProp3Setter = TEXT("failed to get java setProp3, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->Prop3SetterId == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp3Setter))
+	{
+		return;
+	}
 	NewData->Prop4SetterId = env->GetMethodID(NewData->clientClassManyParamInterface, "setProp4", "(I)V");
-	static const TCHAR* errorMsgProp4Setter = TEXT("failed to get java setProp4, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp4Setter);
+	static const TCHAR* errorMsgProp4Setter = TEXT("failed to get java setProp4, I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->Prop4SetterId == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp4Setter))
+	{
+		return;
+	}
 	NewData->Func1AsyncMethodID = env->GetMethodID(NewData->clientClassManyParamInterface, "func1Async", "(Ljava/lang/String;I)V");
-	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod);
+	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;I)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->Func1AsyncMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod))
+	{
+		return;
+	}
 	NewData->Func2AsyncMethodID = env->GetMethodID(NewData->clientClassManyParamInterface, "func2Async", "(Ljava/lang/String;II)V");
-	static const TCHAR* errorMsgFunc2AsyncMethod = TEXT("failed to get java func2Async, (Ljava/lang/String;II)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc2AsyncMethod);
+	static const TCHAR* errorMsgFunc2AsyncMethod = TEXT("failed to get java func2Async, (Ljava/lang/String;II)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->Func2AsyncMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc2AsyncMethod))
+	{
+		return;
+	}
 	NewData->Func3AsyncMethodID = env->GetMethodID(NewData->clientClassManyParamInterface, "func3Async", "(Ljava/lang/String;III)V");
-	static const TCHAR* errorMsgFunc3AsyncMethod = TEXT("failed to get java func3Async, (Ljava/lang/String;III)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc3AsyncMethod);
+	static const TCHAR* errorMsgFunc3AsyncMethod = TEXT("failed to get java func3Async, (Ljava/lang/String;III)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->Func3AsyncMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc3AsyncMethod))
+	{
+		return;
+	}
 	NewData->Func4AsyncMethodID = env->GetMethodID(NewData->clientClassManyParamInterface, "func4Async", "(Ljava/lang/String;IIII)V");
-	static const TCHAR* errorMsgFunc4AsyncMethod = TEXT("failed to get java func4Async, (Ljava/lang/String;IIII)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc4AsyncMethod);
+	static const TCHAR* errorMsgFunc4AsyncMethod = TEXT("failed to get java func4Async, (Ljava/lang/String;IIII)V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->Func4AsyncMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc4AsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassManyParamInterfaceCtor = env->GetMethodID(NewData->clientClassManyParamInterface, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->clientClassManyParamInterfaceCtor == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassManyParamInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassManyParamInterface, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for testbed2/testbed2jniclient/ManyParamInterfaceJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

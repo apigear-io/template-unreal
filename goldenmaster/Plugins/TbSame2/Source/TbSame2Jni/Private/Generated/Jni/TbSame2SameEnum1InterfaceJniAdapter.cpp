@@ -95,17 +95,29 @@ void UTbSame2SameEnum1InterfaceJniAdapterCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService. Bailing...");
+	if (NewData->javaService == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
-	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService. Bailing...");
+	if (NewData->ReadyMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	{
+		return;
+	}
 	NewData->Prop1ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp1Changed", "(LtbSame2/tbSame2_api/Enum1;)V");
-	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed);
+	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService. Bailing...");
+	if (NewData->Prop1ChangedMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed))
+	{
+		return;
+	}
 	NewData->Sig1SignalMethodID = env->GetMethodID(NewData->javaService, "onSig1", "(LtbSame2/tbSame2_api/Enum1;)V");
-	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal);
+	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum1InterfaceJniService. Bailing...");
+	if (NewData->Sig1SignalMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -131,6 +143,11 @@ void UTbSame2SameEnum1InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& 
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbSame2SameEnum1InterfaceJniAdapterCache::init();
+	if (!UTbSame2SameEnum1InterfaceJniAdapterCache::Get())
+	{
+		UE_LOG(LogTbSame2SameEnum1Interface_JNI, Error, TEXT("Failed to initialize UTbSame2SameEnum1InterfaceJniAdapterCache. Bailing..."));
+		return;
+	}
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum1InterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSame2JavaServiceStarter; class not found");

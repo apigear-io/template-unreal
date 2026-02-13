@@ -132,41 +132,77 @@ void UTestbed1StructInterfaceJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassStructInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1jniclient/StructInterfaceJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->clientClassStructInterface == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->PropBoolSetterId = env->GetMethodID(NewData->clientClassStructInterface, "setPropBool", "(Ltestbed1/testbed1_api/StructBool;)V");
-	static const TCHAR* errorMsgPropBoolSetter = TEXT("failed to get java setPropBool, Ltestbed1/testbed1_api/StructBool;)V for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropBoolSetter);
+	static const TCHAR* errorMsgPropBoolSetter = TEXT("failed to get java setPropBool, Ltestbed1/testbed1_api/StructBool;)V for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->PropBoolSetterId == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropBoolSetter))
+	{
+		return;
+	}
 	NewData->PropIntSetterId = env->GetMethodID(NewData->clientClassStructInterface, "setPropInt", "(Ltestbed1/testbed1_api/StructInt;)V");
-	static const TCHAR* errorMsgPropIntSetter = TEXT("failed to get java setPropInt, Ltestbed1/testbed1_api/StructInt;)V for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropIntSetter);
+	static const TCHAR* errorMsgPropIntSetter = TEXT("failed to get java setPropInt, Ltestbed1/testbed1_api/StructInt;)V for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->PropIntSetterId == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropIntSetter))
+	{
+		return;
+	}
 	NewData->PropFloatSetterId = env->GetMethodID(NewData->clientClassStructInterface, "setPropFloat", "(Ltestbed1/testbed1_api/StructFloat;)V");
-	static const TCHAR* errorMsgPropFloatSetter = TEXT("failed to get java setPropFloat, Ltestbed1/testbed1_api/StructFloat;)V for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropFloatSetter);
+	static const TCHAR* errorMsgPropFloatSetter = TEXT("failed to get java setPropFloat, Ltestbed1/testbed1_api/StructFloat;)V for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->PropFloatSetterId == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropFloatSetter))
+	{
+		return;
+	}
 	NewData->PropStringSetterId = env->GetMethodID(NewData->clientClassStructInterface, "setPropString", "(Ltestbed1/testbed1_api/StructString;)V");
-	static const TCHAR* errorMsgPropStringSetter = TEXT("failed to get java setPropString, Ltestbed1/testbed1_api/StructString;)V for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropStringSetter);
+	static const TCHAR* errorMsgPropStringSetter = TEXT("failed to get java setPropString, Ltestbed1/testbed1_api/StructString;)V for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->PropStringSetterId == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgPropStringSetter))
+	{
+		return;
+	}
 	NewData->FuncBoolAsyncMethodID = env->GetMethodID(NewData->clientClassStructInterface, "funcBoolAsync", "(Ljava/lang/String;Ltestbed1/testbed1_api/StructBool;)V");
-	static const TCHAR* errorMsgFuncBoolAsyncMethod = TEXT("failed to get java funcBoolAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructBool;)V for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncBoolAsyncMethod);
+	static const TCHAR* errorMsgFuncBoolAsyncMethod = TEXT("failed to get java funcBoolAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructBool;)V for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->FuncBoolAsyncMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncBoolAsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncIntAsyncMethodID = env->GetMethodID(NewData->clientClassStructInterface, "funcIntAsync", "(Ljava/lang/String;Ltestbed1/testbed1_api/StructInt;)V");
-	static const TCHAR* errorMsgFuncIntAsyncMethod = TEXT("failed to get java funcIntAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructInt;)V for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncIntAsyncMethod);
+	static const TCHAR* errorMsgFuncIntAsyncMethod = TEXT("failed to get java funcIntAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructInt;)V for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->FuncIntAsyncMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncIntAsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncFloatAsyncMethodID = env->GetMethodID(NewData->clientClassStructInterface, "funcFloatAsync", "(Ljava/lang/String;Ltestbed1/testbed1_api/StructFloat;)V");
-	static const TCHAR* errorMsgFuncFloatAsyncMethod = TEXT("failed to get java funcFloatAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructFloat;)V for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncFloatAsyncMethod);
+	static const TCHAR* errorMsgFuncFloatAsyncMethod = TEXT("failed to get java funcFloatAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructFloat;)V for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->FuncFloatAsyncMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncFloatAsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncStringAsyncMethodID = env->GetMethodID(NewData->clientClassStructInterface, "funcStringAsync", "(Ljava/lang/String;Ltestbed1/testbed1_api/StructString;)V");
-	static const TCHAR* errorMsgFuncStringAsyncMethod = TEXT("failed to get java funcStringAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructString;)V for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncStringAsyncMethod);
+	static const TCHAR* errorMsgFuncStringAsyncMethod = TEXT("failed to get java funcStringAsync, (Ljava/lang/String;Ltestbed1/testbed1_api/StructString;)V for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->FuncStringAsyncMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgFuncStringAsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassStructInterfaceCtor = env->GetMethodID(NewData->clientClassStructInterface, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->clientClassStructInterfaceCtor == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassStructInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassStructInterface, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for testbed1/testbed1jniclient/StructInterfaceJniClient");
-	Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for testbed1/testbed1jniclient/StructInterfaceJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || Testbed1DataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

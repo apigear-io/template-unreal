@@ -128,29 +128,53 @@ void UTestbed2NestedStruct1InterfaceJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassNestedStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient. Bailing...");
+	if (NewData->clientClassNestedStruct1Interface == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->Prop1SetterId = env->GetMethodID(NewData->clientClassNestedStruct1Interface, "setProp1", "(Ltestbed2/testbed2_api/NestedStruct1;)V");
-	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter);
+	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient. Bailing...");
+	if (NewData->Prop1SetterId == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter))
+	{
+		return;
+	}
 	NewData->FuncNoReturnValueAsyncMethodID = env->GetMethodID(NewData->clientClassNestedStruct1Interface, "funcNoReturnValueAsync", "(Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V");
-	static const TCHAR* errorMsgFuncNoReturnValueAsyncMethod = TEXT("failed to get java funcNoReturnValueAsync, (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFuncNoReturnValueAsyncMethod);
+	static const TCHAR* errorMsgFuncNoReturnValueAsyncMethod = TEXT("failed to get java funcNoReturnValueAsync, (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient. Bailing...");
+	if (NewData->FuncNoReturnValueAsyncMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFuncNoReturnValueAsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncNoParamsAsyncMethodID = env->GetMethodID(NewData->clientClassNestedStruct1Interface, "funcNoParamsAsync", "(Ljava/lang/String;)V");
-	static const TCHAR* errorMsgFuncNoParamsAsyncMethod = TEXT("failed to get java funcNoParamsAsync, (Ljava/lang/String;)V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFuncNoParamsAsyncMethod);
+	static const TCHAR* errorMsgFuncNoParamsAsyncMethod = TEXT("failed to get java funcNoParamsAsync, (Ljava/lang/String;)V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient. Bailing...");
+	if (NewData->FuncNoParamsAsyncMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFuncNoParamsAsyncMethod))
+	{
+		return;
+	}
 	NewData->Func1AsyncMethodID = env->GetMethodID(NewData->clientClassNestedStruct1Interface, "func1Async", "(Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V");
-	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod);
+	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;Ltestbed2/testbed2_api/NestedStruct1;)V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient. Bailing...");
+	if (NewData->Func1AsyncMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassNestedStruct1InterfaceCtor = env->GetMethodID(NewData->clientClassNestedStruct1Interface, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient. Bailing...");
+	if (NewData->clientClassNestedStruct1InterfaceCtor == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassNestedStruct1Interface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassNestedStruct1Interface, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for testbed2/testbed2jniclient/NestedStruct1InterfaceJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

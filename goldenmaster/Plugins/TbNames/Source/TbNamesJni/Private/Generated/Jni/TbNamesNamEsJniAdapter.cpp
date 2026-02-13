@@ -99,29 +99,53 @@ void UTbNamesNamEsJniAdapterCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniService");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbNames/tbNamesjniservice/NamEsJniService");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
+	if (NewData->javaService == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
-	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbNames/tbNamesjniservice/NamEsJniService");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
+	if (NewData->ReadyMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	{
+		return;
+	}
 	NewData->SwitchChangedMethodID = env->GetMethodID(NewData->javaService, "onSwitchChanged", "(Z)V");
-	static const TCHAR* errorMsgSwitchChanged = TEXT("failed to get java onSwitchChanged, (Z)V for tbNames/tbNamesjniservice/NamEsJniService");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSwitchChanged);
+	static const TCHAR* errorMsgSwitchChanged = TEXT("failed to get java onSwitchChanged, (Z)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
+	if (NewData->SwitchChangedMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSwitchChanged))
+	{
+		return;
+	}
 	NewData->SomePropertyChangedMethodID = env->GetMethodID(NewData->javaService, "onSomePropertyChanged", "(I)V");
-	static const TCHAR* errorMsgSomePropertyChanged = TEXT("failed to get java onSomePropertyChanged, (I)V for tbNames/tbNamesjniservice/NamEsJniService");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePropertyChanged);
+	static const TCHAR* errorMsgSomePropertyChanged = TEXT("failed to get java onSomePropertyChanged, (I)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
+	if (NewData->SomePropertyChangedMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePropertyChanged))
+	{
+		return;
+	}
 	NewData->SomePoperty2ChangedMethodID = env->GetMethodID(NewData->javaService, "onSomePoperty2Changed", "(I)V");
-	static const TCHAR* errorMsgSomePoperty2Changed = TEXT("failed to get java onSomePoperty2Changed, (I)V for tbNames/tbNamesjniservice/NamEsJniService");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePoperty2Changed);
+	static const TCHAR* errorMsgSomePoperty2Changed = TEXT("failed to get java onSomePoperty2Changed, (I)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
+	if (NewData->SomePoperty2ChangedMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomePoperty2Changed))
+	{
+		return;
+	}
 	NewData->EnumPropertyChangedMethodID = env->GetMethodID(NewData->javaService, "onEnumPropertyChanged", "(LtbNames/tbNames_api/EnumWithUnderScores;)V");
-	static const TCHAR* errorMsgEnumPropertyChanged = TEXT("failed to get java onEnumPropertyChanged, (LtbNames/tbNames_api/EnumWithUnderScores;)V for tbNames/tbNamesjniservice/NamEsJniService");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgEnumPropertyChanged);
+	static const TCHAR* errorMsgEnumPropertyChanged = TEXT("failed to get java onEnumPropertyChanged, (LtbNames/tbNames_api/EnumWithUnderScores;)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
+	if (NewData->EnumPropertyChangedMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgEnumPropertyChanged))
+	{
+		return;
+	}
 	NewData->SomeSignalSignalMethodID = env->GetMethodID(NewData->javaService, "onSomeSignal", "(Z)V");
-	static const TCHAR* errorMsgSomeSignalSignal = TEXT("failed to get java onSomeSignal, (Z)V for tbNames/tbNamesjniservice/NamEsJniService");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeSignalSignal);
+	static const TCHAR* errorMsgSomeSignalSignal = TEXT("failed to get java onSomeSignal, (Z)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
+	if (NewData->SomeSignalSignalMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeSignalSignal))
+	{
+		return;
+	}
 	NewData->SomeSignal2SignalMethodID = env->GetMethodID(NewData->javaService, "onSomeSignal2", "(Z)V");
-	static const TCHAR* errorMsgSomeSignal2Signal = TEXT("failed to get java onSomeSignal2, (Z)V for tbNames/tbNamesjniservice/NamEsJniService");
-	TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeSignal2Signal);
+	static const TCHAR* errorMsgSomeSignal2Signal = TEXT("failed to get java onSomeSignal2, (Z)V for tbNames/tbNamesjniservice/NamEsJniService. Bailing...");
+	if (NewData->SomeSignal2SignalMethodID == nullptr || TbNamesDataJavaConverter::checkJniErrorOccured(errorMsgSomeSignal2Signal))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -147,6 +171,11 @@ void UTbNamesNamEsJniAdapter::Initialize(FSubsystemCollectionBase& Collection)
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbNamesNamEsJniAdapterCache::init();
+	if (!UTbNamesNamEsJniAdapterCache::Get())
+	{
+		UE_LOG(LogTbNamesNamEs_JNI, Error, TEXT("Failed to initialize UTbNamesNamEsJniAdapterCache. Bailing..."));
+		return;
+	}
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNamesjniservice/NamEsJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbNamesJavaServiceStarter; class not found");

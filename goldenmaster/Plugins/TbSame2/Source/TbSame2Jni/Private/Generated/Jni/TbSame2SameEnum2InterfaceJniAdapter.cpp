@@ -97,23 +97,41 @@ void UTbSame2SameEnum2InterfaceJniAdapterCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService. Bailing...");
+	if (NewData->javaService == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
-	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService. Bailing...");
+	if (NewData->ReadyMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	{
+		return;
+	}
 	NewData->Prop1ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp1Changed", "(LtbSame2/tbSame2_api/Enum1;)V");
-	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed);
+	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService. Bailing...");
+	if (NewData->Prop1ChangedMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed))
+	{
+		return;
+	}
 	NewData->Prop2ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp2Changed", "(LtbSame2/tbSame2_api/Enum2;)V");
-	static const TCHAR* errorMsgProp2Changed = TEXT("failed to get java onProp2Changed, (LtbSame2/tbSame2_api/Enum2;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Changed);
+	static const TCHAR* errorMsgProp2Changed = TEXT("failed to get java onProp2Changed, (LtbSame2/tbSame2_api/Enum2;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService. Bailing...");
+	if (NewData->Prop2ChangedMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Changed))
+	{
+		return;
+	}
 	NewData->Sig1SignalMethodID = env->GetMethodID(NewData->javaService, "onSig1", "(LtbSame2/tbSame2_api/Enum1;)V");
-	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal);
+	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (LtbSame2/tbSame2_api/Enum1;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService. Bailing...");
+	if (NewData->Sig1SignalMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal))
+	{
+		return;
+	}
 	NewData->Sig2SignalMethodID = env->GetMethodID(NewData->javaService, "onSig2", "(LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V");
-	static const TCHAR* errorMsgSig2Signal = TEXT("failed to get java onSig2, (LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgSig2Signal);
+	static const TCHAR* errorMsgSig2Signal = TEXT("failed to get java onSig2, (LtbSame2/tbSame2_api/Enum1;LtbSame2/tbSame2_api/Enum2;)V for tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService. Bailing...");
+	if (NewData->Sig2SignalMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgSig2Signal))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -139,6 +157,11 @@ void UTbSame2SameEnum2InterfaceJniAdapter::Initialize(FSubsystemCollectionBase& 
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbSame2SameEnum2InterfaceJniAdapterCache::init();
+	if (!UTbSame2SameEnum2InterfaceJniAdapterCache::Get())
+	{
+		UE_LOG(LogTbSame2SameEnum2Interface_JNI, Error, TEXT("Failed to initialize UTbSame2SameEnum2InterfaceJniAdapterCache. Bailing..."));
+		return;
+	}
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSame2JavaServiceStarter; class not found");

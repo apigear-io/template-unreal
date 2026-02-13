@@ -96,23 +96,41 @@ void UTbSimpleNoOperationsInterfaceJniAdapterCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService. Bailing...");
+	if (NewData->javaService == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
-	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService. Bailing...");
+	if (NewData->ReadyMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	{
+		return;
+	}
 	NewData->PropBoolChangedMethodID = env->GetMethodID(NewData->javaService, "onPropBoolChanged", "(Z)V");
-	static const TCHAR* errorMsgPropBoolChanged = TEXT("failed to get java onPropBoolChanged, (Z)V for tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolChanged);
+	static const TCHAR* errorMsgPropBoolChanged = TEXT("failed to get java onPropBoolChanged, (Z)V for tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService. Bailing...");
+	if (NewData->PropBoolChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolChanged))
+	{
+		return;
+	}
 	NewData->PropIntChangedMethodID = env->GetMethodID(NewData->javaService, "onPropIntChanged", "(I)V");
-	static const TCHAR* errorMsgPropIntChanged = TEXT("failed to get java onPropIntChanged, (I)V for tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntChanged);
+	static const TCHAR* errorMsgPropIntChanged = TEXT("failed to get java onPropIntChanged, (I)V for tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService. Bailing...");
+	if (NewData->PropIntChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntChanged))
+	{
+		return;
+	}
 	NewData->SigVoidSignalMethodID = env->GetMethodID(NewData->javaService, "onSigVoid", "()V");
-	static const TCHAR* errorMsgSigVoidSignal = TEXT("failed to get java onSigVoid, ()V for tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigVoidSignal);
+	static const TCHAR* errorMsgSigVoidSignal = TEXT("failed to get java onSigVoid, ()V for tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService. Bailing...");
+	if (NewData->SigVoidSignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigVoidSignal))
+	{
+		return;
+	}
 	NewData->SigBoolSignalMethodID = env->GetMethodID(NewData->javaService, "onSigBool", "(Z)V");
-	static const TCHAR* errorMsgSigBoolSignal = TEXT("failed to get java onSigBool, (Z)V for tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigBoolSignal);
+	static const TCHAR* errorMsgSigBoolSignal = TEXT("failed to get java onSigBool, (Z)V for tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService. Bailing...");
+	if (NewData->SigBoolSignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigBoolSignal))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -138,6 +156,11 @@ void UTbSimpleNoOperationsInterfaceJniAdapter::Initialize(FSubsystemCollectionBa
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbSimpleNoOperationsInterfaceJniAdapterCache::init();
+	if (!UTbSimpleNoOperationsInterfaceJniAdapterCache::Get())
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Error, TEXT("Failed to initialize UTbSimpleNoOperationsInterfaceJniAdapterCache. Bailing..."));
+		return;
+	}
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/NoOperationsInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSimpleJavaServiceStarter; class not found");

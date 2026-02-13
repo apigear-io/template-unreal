@@ -125,23 +125,41 @@ void UTbRefIfacesSimpleLocalIfJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
+	if (NewData->clientClassSimpleLocalIf == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->IntPropertySetterId = env->GetMethodID(NewData->clientClassSimpleLocalIf, "setIntProperty", "(I)V");
-	static const TCHAR* errorMsgIntPropertySetter = TEXT("failed to get java setIntProperty, I)V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntPropertySetter);
+	static const TCHAR* errorMsgIntPropertySetter = TEXT("failed to get java setIntProperty, I)V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
+	if (NewData->IntPropertySetterId == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntPropertySetter))
+	{
+		return;
+	}
 	NewData->IntMethodAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleLocalIf, "intMethodAsync", "(Ljava/lang/String;I)V");
-	static const TCHAR* errorMsgIntMethodAsyncMethod = TEXT("failed to get java intMethodAsync, (Ljava/lang/String;I)V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntMethodAsyncMethod);
+	static const TCHAR* errorMsgIntMethodAsyncMethod = TEXT("failed to get java intMethodAsync, (Ljava/lang/String;I)V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
+	if (NewData->IntMethodAsyncMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgIntMethodAsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassSimpleLocalIfCtor = env->GetMethodID(NewData->clientClassSimpleLocalIf, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
+	if (NewData->clientClassSimpleLocalIfCtor == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassSimpleLocalIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassSimpleLocalIf, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
-	TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || TbRefIfacesDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

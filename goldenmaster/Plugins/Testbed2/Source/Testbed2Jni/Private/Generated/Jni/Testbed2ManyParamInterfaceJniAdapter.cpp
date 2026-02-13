@@ -101,35 +101,65 @@ void UTestbed2ManyParamInterfaceJniAdapterCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
+	if (NewData->javaService == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
-	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
+	if (NewData->ReadyMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	{
+		return;
+	}
 	NewData->Prop1ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp1Changed", "(I)V");
-	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed);
+	static const TCHAR* errorMsgProp1Changed = TEXT("failed to get java onProp1Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
+	if (NewData->Prop1ChangedMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Changed))
+	{
+		return;
+	}
 	NewData->Prop2ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp2Changed", "(I)V");
-	static const TCHAR* errorMsgProp2Changed = TEXT("failed to get java onProp2Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Changed);
+	static const TCHAR* errorMsgProp2Changed = TEXT("failed to get java onProp2Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
+	if (NewData->Prop2ChangedMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp2Changed))
+	{
+		return;
+	}
 	NewData->Prop3ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp3Changed", "(I)V");
-	static const TCHAR* errorMsgProp3Changed = TEXT("failed to get java onProp3Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp3Changed);
+	static const TCHAR* errorMsgProp3Changed = TEXT("failed to get java onProp3Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
+	if (NewData->Prop3ChangedMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp3Changed))
+	{
+		return;
+	}
 	NewData->Prop4ChangedMethodID = env->GetMethodID(NewData->javaService, "onProp4Changed", "(I)V");
-	static const TCHAR* errorMsgProp4Changed = TEXT("failed to get java onProp4Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp4Changed);
+	static const TCHAR* errorMsgProp4Changed = TEXT("failed to get java onProp4Changed, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
+	if (NewData->Prop4ChangedMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgProp4Changed))
+	{
+		return;
+	}
 	NewData->Sig1SignalMethodID = env->GetMethodID(NewData->javaService, "onSig1", "(I)V");
-	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal);
+	static const TCHAR* errorMsgSig1Signal = TEXT("failed to get java onSig1, (I)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
+	if (NewData->Sig1SignalMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig1Signal))
+	{
+		return;
+	}
 	NewData->Sig2SignalMethodID = env->GetMethodID(NewData->javaService, "onSig2", "(II)V");
-	static const TCHAR* errorMsgSig2Signal = TEXT("failed to get java onSig2, (II)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig2Signal);
+	static const TCHAR* errorMsgSig2Signal = TEXT("failed to get java onSig2, (II)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
+	if (NewData->Sig2SignalMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig2Signal))
+	{
+		return;
+	}
 	NewData->Sig3SignalMethodID = env->GetMethodID(NewData->javaService, "onSig3", "(III)V");
-	static const TCHAR* errorMsgSig3Signal = TEXT("failed to get java onSig3, (III)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig3Signal);
+	static const TCHAR* errorMsgSig3Signal = TEXT("failed to get java onSig3, (III)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
+	if (NewData->Sig3SignalMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig3Signal))
+	{
+		return;
+	}
 	NewData->Sig4SignalMethodID = env->GetMethodID(NewData->javaService, "onSig4", "(IIII)V");
-	static const TCHAR* errorMsgSig4Signal = TEXT("failed to get java onSig4, (IIII)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService");
-	Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig4Signal);
+	static const TCHAR* errorMsgSig4Signal = TEXT("failed to get java onSig4, (IIII)V for testbed2/testbed2jniservice/ManyParamInterfaceJniService. Bailing...");
+	if (NewData->Sig4SignalMethodID == nullptr || Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgSig4Signal))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -155,6 +185,11 @@ void UTestbed2ManyParamInterfaceJniAdapter::Initialize(FSubsystemCollectionBase&
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTestbed2ManyParamInterfaceJniAdapterCache::init();
+	if (!UTestbed2ManyParamInterfaceJniAdapterCache::Get())
+	{
+		UE_LOG(LogTestbed2ManyParamInterface_JNI, Error, TEXT("Failed to initialize UTestbed2ManyParamInterfaceJniAdapterCache. Bailing..."));
+		return;
+	}
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("testbed2/testbed2jniservice/ManyParamInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("Testbed2JavaServiceStarter; class not found");
