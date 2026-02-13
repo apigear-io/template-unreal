@@ -245,10 +245,6 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::Deinitialize()
 			static const TCHAR* errorMsgCall = TEXT("TbSimpleJavaServiceStarter failed to call stop");
 			TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
-		else
-		{
-			return;
-		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
 	UTbSimpleSimpleArrayInterfaceJniAdapterCache::clear();
