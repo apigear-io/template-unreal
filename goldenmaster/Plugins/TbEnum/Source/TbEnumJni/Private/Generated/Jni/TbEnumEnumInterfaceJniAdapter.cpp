@@ -424,7 +424,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp0Changed(ETbEnumEnum0 Prop0)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbEnumEnumInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService::onProp0Changed(LtbEnum/tbEnum_api/Enum0;)V CLASS not found"));
 			return;
@@ -450,7 +450,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp1Changed(ETbEnumEnum1 Prop1)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbEnumEnumInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService::onProp1Changed(LtbEnum/tbEnum_api/Enum1;)V CLASS not found"));
 			return;
@@ -476,7 +476,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp2Changed(ETbEnumEnum2 Prop2)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbEnumEnumInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService::onProp2Changed(LtbEnum/tbEnum_api/Enum2;)V CLASS not found"));
 			return;
@@ -502,7 +502,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp3Changed(ETbEnumEnum3 Prop3)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbEnumEnumInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbEnumEnumInterface_JNI, Warning, TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService::onProp3Changed(LtbEnum/tbEnum_api/Enum3;)V CLASS not found"));
 			return;

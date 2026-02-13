@@ -298,7 +298,7 @@ void UTestbed2NestedStruct1InterfaceJniAdapter::OnProp1Changed(const FTestbed2Ne
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed2NestedStruct1InterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct1Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct1InterfaceJniService::onProp1Changed(Ltestbed2/testbed2_api/NestedStruct1;)V CLASS not found"));
 			return;

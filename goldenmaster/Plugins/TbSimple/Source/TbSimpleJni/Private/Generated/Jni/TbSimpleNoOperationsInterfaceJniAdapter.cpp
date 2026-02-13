@@ -335,7 +335,7 @@ void UTbSimpleNoOperationsInterfaceJniAdapter::OnPropBoolChanged(bool bPropBool)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleNoOperationsInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService::onPropBoolChanged(Z)V CLASS not found"));
 			return;
@@ -360,7 +360,7 @@ void UTbSimpleNoOperationsInterfaceJniAdapter::OnPropIntChanged(int32 PropInt)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSimpleNoOperationsInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSimpleNoOperationsInterface_JNI, Warning, TEXT("tbSimple/tbSimplejniservice/NoOperationsInterfaceJniService::onPropIntChanged(I)V CLASS not found"));
 			return;
