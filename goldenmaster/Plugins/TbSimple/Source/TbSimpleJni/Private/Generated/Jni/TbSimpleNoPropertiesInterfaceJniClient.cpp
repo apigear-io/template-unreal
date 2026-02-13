@@ -407,12 +407,54 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::_IsReady() const
 }
 void UTbSimpleNoPropertiesInterfaceJniClient::OnSigVoidSignal()
 {
-	_GetPublisher()->BroadcastSigVoidSignal();
+	auto updateAndBroadcastValueChanged = [](UTbSimpleNoPropertiesInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigVoidSignal();
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSimpleNoPropertiesInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSimpleNoPropertiesInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSimpleNoPropertiesInterfaceJniClient::OnSigBoolSignal(bool bInParamBool)
 {
-	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
+	auto updateAndBroadcastValueChanged = [bInParamBool](UTbSimpleNoPropertiesInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSimpleNoPropertiesInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSimpleNoPropertiesInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSimpleNoPropertiesInterfaceJniClient::notifyIsReady(bool isReady)

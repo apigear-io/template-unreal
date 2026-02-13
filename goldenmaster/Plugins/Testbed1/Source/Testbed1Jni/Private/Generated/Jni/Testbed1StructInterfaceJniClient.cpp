@@ -735,46 +735,214 @@ bool UTestbed1StructInterfaceJniClient::_IsReady() const
 }
 void UTestbed1StructInterfaceJniClient::OnSigBoolSignal(const FTestbed1StructBool& InParamBool)
 {
-	_GetPublisher()->BroadcastSigBoolSignal(InParamBool);
+	auto updateAndBroadcastValueChanged = [InParamBool](UTestbed1StructInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigBoolSignal(InParamBool);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed1StructInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed1StructInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed1StructInterfaceJniClient::OnSigIntSignal(const FTestbed1StructInt& InParamInt)
 {
-	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
+	auto updateAndBroadcastValueChanged = [InParamInt](UTestbed1StructInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigIntSignal(InParamInt);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed1StructInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed1StructInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed1StructInterfaceJniClient::OnSigFloatSignal(const FTestbed1StructFloat& InParamFloat)
 {
-	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
+	auto updateAndBroadcastValueChanged = [InParamFloat](UTestbed1StructInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed1StructInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed1StructInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed1StructInterfaceJniClient::OnSigStringSignal(const FTestbed1StructString& InParamString)
 {
-	_GetPublisher()->BroadcastSigStringSignal(InParamString);
+	auto updateAndBroadcastValueChanged = [InParamString](UTestbed1StructInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigStringSignal(InParamString);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed1StructInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed1StructInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed1StructInterfaceJniClient::OnPropBoolChanged(const FTestbed1StructBool& InPropBool)
 {
-	PropBool = InPropBool;
-	_GetPublisher()->BroadcastPropBoolChanged(PropBool);
+	auto updateAndBroadcastValueChanged = [InPropBool](UTestbed1StructInterfaceJniClient& self)
+	{
+		self.PropBool = InPropBool;
+		self._GetPublisher()->BroadcastPropBoolChanged(self.PropBool);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed1StructInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed1StructInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed1StructInterfaceJniClient::OnPropIntChanged(const FTestbed1StructInt& InPropInt)
 {
-	PropInt = InPropInt;
-	_GetPublisher()->BroadcastPropIntChanged(PropInt);
+	auto updateAndBroadcastValueChanged = [InPropInt](UTestbed1StructInterfaceJniClient& self)
+	{
+		self.PropInt = InPropInt;
+		self._GetPublisher()->BroadcastPropIntChanged(self.PropInt);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed1StructInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed1StructInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed1StructInterfaceJniClient::OnPropFloatChanged(const FTestbed1StructFloat& InPropFloat)
 {
-	PropFloat = InPropFloat;
-	_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
+	auto updateAndBroadcastValueChanged = [InPropFloat](UTestbed1StructInterfaceJniClient& self)
+	{
+		self.PropFloat = InPropFloat;
+		self._GetPublisher()->BroadcastPropFloatChanged(self.PropFloat);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed1StructInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed1StructInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed1StructInterfaceJniClient::OnPropStringChanged(const FTestbed1StructString& InPropString)
 {
-	PropString = InPropString;
-	_GetPublisher()->BroadcastPropStringChanged(PropString);
+	auto updateAndBroadcastValueChanged = [InPropString](UTestbed1StructInterfaceJniClient& self)
+	{
+		self.PropString = InPropString;
+		self._GetPublisher()->BroadcastPropStringChanged(self.PropString);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed1StructInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed1StructInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed1StructInterfaceJniClient::notifyIsReady(bool isReady)

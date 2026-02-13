@@ -525,24 +525,108 @@ bool UTbSame2SameStruct2InterfaceJniClient::_IsReady() const
 }
 void UTbSame2SameStruct2InterfaceJniClient::OnSig1Signal(const FTbSame2Struct1& InParam1)
 {
-	_GetPublisher()->BroadcastSig1Signal(InParam1);
+	auto updateAndBroadcastValueChanged = [InParam1](UTbSame2SameStruct2InterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig1Signal(InParam1);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSame2SameStruct2InterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSame2SameStruct2InterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSame2SameStruct2InterfaceJniClient::OnSig2Signal(const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2)
 {
-	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
+	auto updateAndBroadcastValueChanged = [InParam1, InParam2](UTbSame2SameStruct2InterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSame2SameStruct2InterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSame2SameStruct2InterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSame2SameStruct2InterfaceJniClient::OnProp1Changed(const FTbSame2Struct2& InProp1)
 {
-	Prop1 = InProp1;
-	_GetPublisher()->BroadcastProp1Changed(Prop1);
+	auto updateAndBroadcastValueChanged = [InProp1](UTbSame2SameStruct2InterfaceJniClient& self)
+	{
+		self.Prop1 = InProp1;
+		self._GetPublisher()->BroadcastProp1Changed(self.Prop1);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSame2SameStruct2InterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSame2SameStruct2InterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSame2SameStruct2InterfaceJniClient::OnProp2Changed(const FTbSame2Struct2& InProp2)
 {
-	Prop2 = InProp2;
-	_GetPublisher()->BroadcastProp2Changed(Prop2);
+	auto updateAndBroadcastValueChanged = [InProp2](UTbSame2SameStruct2InterfaceJniClient& self)
+	{
+		self.Prop2 = InProp2;
+		self._GetPublisher()->BroadcastProp2Changed(self.Prop2);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSame2SameStruct2InterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSame2SameStruct2InterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSame2SameStruct2InterfaceJniClient::notifyIsReady(bool isReady)

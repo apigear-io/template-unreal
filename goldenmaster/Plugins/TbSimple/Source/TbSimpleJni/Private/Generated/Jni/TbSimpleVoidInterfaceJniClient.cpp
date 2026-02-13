@@ -358,7 +358,28 @@ bool UTbSimpleVoidInterfaceJniClient::_IsReady() const
 }
 void UTbSimpleVoidInterfaceJniClient::OnSigVoidSignal()
 {
-	_GetPublisher()->BroadcastSigVoidSignal();
+	auto updateAndBroadcastValueChanged = [](UTbSimpleVoidInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigVoidSignal();
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSimpleVoidInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSimpleVoidInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSimpleVoidInterfaceJniClient::notifyIsReady(bool isReady)

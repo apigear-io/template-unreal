@@ -715,46 +715,214 @@ bool UTestbed2ManyParamInterfaceJniClient::_IsReady() const
 }
 void UTestbed2ManyParamInterfaceJniClient::OnSig1Signal(int32 InParam1)
 {
-	_GetPublisher()->BroadcastSig1Signal(InParam1);
+	auto updateAndBroadcastValueChanged = [InParam1](UTestbed2ManyParamInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig1Signal(InParam1);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed2ManyParamInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnSig2Signal(int32 InParam1, int32 InParam2)
 {
-	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
+	auto updateAndBroadcastValueChanged = [InParam1, InParam2](UTestbed2ManyParamInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed2ManyParamInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnSig3Signal(int32 InParam1, int32 InParam2, int32 InParam3)
 {
-	_GetPublisher()->BroadcastSig3Signal(InParam1, InParam2, InParam3);
+	auto updateAndBroadcastValueChanged = [InParam1, InParam2, InParam3](UTestbed2ManyParamInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig3Signal(InParam1, InParam2, InParam3);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed2ManyParamInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnSig4Signal(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 {
-	_GetPublisher()->BroadcastSig4Signal(InParam1, InParam2, InParam3, InParam4);
+	auto updateAndBroadcastValueChanged = [InParam1, InParam2, InParam3, InParam4](UTestbed2ManyParamInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig4Signal(InParam1, InParam2, InParam3, InParam4);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed2ManyParamInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnProp1Changed(int32 InProp1)
 {
-	Prop1 = InProp1;
-	_GetPublisher()->BroadcastProp1Changed(Prop1);
+	auto updateAndBroadcastValueChanged = [InProp1](UTestbed2ManyParamInterfaceJniClient& self)
+	{
+		self.Prop1 = InProp1;
+		self._GetPublisher()->BroadcastProp1Changed(self.Prop1);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed2ManyParamInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnProp2Changed(int32 InProp2)
 {
-	Prop2 = InProp2;
-	_GetPublisher()->BroadcastProp2Changed(Prop2);
+	auto updateAndBroadcastValueChanged = [InProp2](UTestbed2ManyParamInterfaceJniClient& self)
+	{
+		self.Prop2 = InProp2;
+		self._GetPublisher()->BroadcastProp2Changed(self.Prop2);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed2ManyParamInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnProp3Changed(int32 InProp3)
 {
-	Prop3 = InProp3;
-	_GetPublisher()->BroadcastProp3Changed(Prop3);
+	auto updateAndBroadcastValueChanged = [InProp3](UTestbed2ManyParamInterfaceJniClient& self)
+	{
+		self.Prop3 = InProp3;
+		self._GetPublisher()->BroadcastProp3Changed(self.Prop3);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed2ManyParamInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed2ManyParamInterfaceJniClient::OnProp4Changed(int32 InProp4)
 {
-	Prop4 = InProp4;
-	_GetPublisher()->BroadcastProp4Changed(Prop4);
+	auto updateAndBroadcastValueChanged = [InProp4](UTestbed2ManyParamInterfaceJniClient& self)
+	{
+		self.Prop4 = InProp4;
+		self._GetPublisher()->BroadcastProp4Changed(self.Prop4);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTestbed2ManyParamInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTestbed2ManyParamInterfaceJniClient::notifyIsReady(bool isReady)
