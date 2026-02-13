@@ -728,56 +728,244 @@ bool UTbRefIfacesParentIfJniClient::_IsReady() const
 }
 void UTbRefIfacesParentIfJniClient::OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
 {
-	_GetPublisher()->BroadcastLocalIfSignalSignal(InParam);
+	auto updateAndBroadcastValueChanged = [InParam](UTbRefIfacesParentIfJniClient& self)
+	{
+		self._GetPublisher()->BroadcastLocalIfSignalSignal(InParam);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbRefIfacesParentIfJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbRefIfacesParentIfJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbRefIfacesParentIfJniClient::OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
 {
-	_GetPublisher()->BroadcastLocalIfSignalListSignal(InParam);
+	auto updateAndBroadcastValueChanged = [InParam](UTbRefIfacesParentIfJniClient& self)
+	{
+		self._GetPublisher()->BroadcastLocalIfSignalListSignal(InParam);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbRefIfacesParentIfJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbRefIfacesParentIfJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbRefIfacesParentIfJniClient::OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
 {
-	_GetPublisher()->BroadcastImportedIfSignalSignal(InParam);
+	auto updateAndBroadcastValueChanged = [InParam](UTbRefIfacesParentIfJniClient& self)
+	{
+		self._GetPublisher()->BroadcastImportedIfSignalSignal(InParam);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbRefIfacesParentIfJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbRefIfacesParentIfJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbRefIfacesParentIfJniClient::OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
 {
-	_GetPublisher()->BroadcastImportedIfSignalListSignal(InParam);
+	auto updateAndBroadcastValueChanged = [InParam](UTbRefIfacesParentIfJniClient& self)
+	{
+		self._GetPublisher()->BroadcastImportedIfSignalListSignal(InParam);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbRefIfacesParentIfJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbRefIfacesParentIfJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbRefIfacesParentIfJniClient::OnLocalIfChanged(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
 {
-	LocalIf = InLocalIf;
-	_GetPublisher()->BroadcastLocalIfChanged(LocalIf);
+	auto updateAndBroadcastValueChanged = [InLocalIf](UTbRefIfacesParentIfJniClient& self)
+	{
+		self.LocalIf = InLocalIf;
+		self._GetPublisher()->BroadcastLocalIfChanged(self.LocalIf);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbRefIfacesParentIfJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbRefIfacesParentIfJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbRefIfacesParentIfJniClient::OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
 {
-	LocalIfList = InLocalIfList;
-	_GetPublisher()->BroadcastLocalIfListChanged(LocalIfList);
+	auto updateAndBroadcastValueChanged = [InLocalIfList](UTbRefIfacesParentIfJniClient& self)
+	{
+		self.LocalIfList = InLocalIfList;
+		self._GetPublisher()->BroadcastLocalIfListChanged(self.LocalIfList);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbRefIfacesParentIfJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbRefIfacesParentIfJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbRefIfacesParentIfJniClient::OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
-	ImportedIf = InImportedIf;
-	_GetPublisher()->BroadcastImportedIfChanged(ImportedIf);
+	auto updateAndBroadcastValueChanged = [InImportedIf](UTbRefIfacesParentIfJniClient& self)
+	{
+		self.ImportedIf = InImportedIf;
+		self._GetPublisher()->BroadcastImportedIfChanged(self.ImportedIf);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbRefIfacesParentIfJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbRefIfacesParentIfJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbRefIfacesParentIfJniClient::OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
 {
-	ImportedIfList = InImportedIfList;
-	_GetPublisher()->BroadcastImportedIfListChanged(ImportedIfList);
+	auto updateAndBroadcastValueChanged = [InImportedIfList](UTbRefIfacesParentIfJniClient& self)
+	{
+		self.ImportedIfList = InImportedIfList;
+		self._GetPublisher()->BroadcastImportedIfListChanged(self.ImportedIfList);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbRefIfacesParentIfJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbRefIfacesParentIfJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
-void UTbRefIfacesParentIfJniClient::notifyIsReady(bool isReady)
+void UTbRefIfacesParentIfJniClient::notifyIsReady(bool bInIsReady)
 {
-	b_isReady.store(isReady, std::memory_order_release);
-	AsyncTask(ENamedThreads::GameThread, [this]()
+	b_isReady.store(bInIsReady, std::memory_order_release);
+
+	auto broadcastConnectionStatusChanged = [](UTbRefIfacesParentIfJniClient& self)
+	{
+		auto bIsReady = self.b_isReady.load(std::memory_order_acquire);
+		self._ConnectionStatusChangedBP.Broadcast(bIsReady);
+		self._ConnectionStatusChanged.Broadcast(bIsReady);
+	};
+
+	if (IsInGameThread())
+	{
+		broadcastConnectionStatusChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbRefIfacesParentIfJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[broadcastConnectionStatusChanged = MoveTemp(broadcastConnectionStatusChanged), weakSelf]
 		{
-		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
-		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
-	});
+		UTbRefIfacesParentIfJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			broadcastConnectionStatusChanged(*self);
+		}
+		});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

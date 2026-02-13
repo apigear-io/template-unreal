@@ -720,41 +720,166 @@ bool UCounterCounterJniClient::_IsReady() const
 }
 void UCounterCounterJniClient::OnValueChangedSignal(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 {
-	_GetPublisher()->BroadcastValueChangedSignal(InVector, InExternVector, InVectorArray, InExternVectorArray);
+	auto updateAndBroadcastValueChanged = [InVector, InExternVector, InVectorArray, InExternVectorArray](UCounterCounterJniClient& self)
+	{
+		self._GetPublisher()->BroadcastValueChangedSignal(InVector, InExternVector, InVectorArray, InExternVectorArray);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UCounterCounterJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UCounterCounterJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UCounterCounterJniClient::OnVectorChanged(const FCustomTypesVector3D& InVector)
 {
-	Vector = InVector;
-	_GetPublisher()->BroadcastVectorChanged(Vector);
+	auto updateAndBroadcastValueChanged = [InVector](UCounterCounterJniClient& self)
+	{
+		self.Vector = InVector;
+		self._GetPublisher()->BroadcastVectorChanged(self.Vector);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UCounterCounterJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UCounterCounterJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UCounterCounterJniClient::OnExternVectorChanged(const FVector& InExternVector)
 {
-	ExternVector = InExternVector;
-	_GetPublisher()->BroadcastExternVectorChanged(ExternVector);
+	auto updateAndBroadcastValueChanged = [InExternVector](UCounterCounterJniClient& self)
+	{
+		self.ExternVector = InExternVector;
+		self._GetPublisher()->BroadcastExternVectorChanged(self.ExternVector);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UCounterCounterJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UCounterCounterJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UCounterCounterJniClient::OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
-	VectorArray = InVectorArray;
-	_GetPublisher()->BroadcastVectorArrayChanged(VectorArray);
+	auto updateAndBroadcastValueChanged = [InVectorArray](UCounterCounterJniClient& self)
+	{
+		self.VectorArray = InVectorArray;
+		self._GetPublisher()->BroadcastVectorArrayChanged(self.VectorArray);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UCounterCounterJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UCounterCounterJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UCounterCounterJniClient::OnExternVectorArrayChanged(const TArray<FVector>& InExternVectorArray)
 {
-	ExternVectorArray = InExternVectorArray;
-	_GetPublisher()->BroadcastExternVectorArrayChanged(ExternVectorArray);
+	auto updateAndBroadcastValueChanged = [InExternVectorArray](UCounterCounterJniClient& self)
+	{
+		self.ExternVectorArray = InExternVectorArray;
+		self._GetPublisher()->BroadcastExternVectorArrayChanged(self.ExternVectorArray);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UCounterCounterJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UCounterCounterJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
-void UCounterCounterJniClient::notifyIsReady(bool isReady)
+void UCounterCounterJniClient::notifyIsReady(bool bInIsReady)
 {
-	b_isReady.store(isReady, std::memory_order_release);
-	AsyncTask(ENamedThreads::GameThread, [this]()
+	b_isReady.store(bInIsReady, std::memory_order_release);
+
+	auto broadcastConnectionStatusChanged = [](UCounterCounterJniClient& self)
+	{
+		auto bIsReady = self.b_isReady.load(std::memory_order_acquire);
+		self._ConnectionStatusChangedBP.Broadcast(bIsReady);
+		self._ConnectionStatusChanged.Broadcast(bIsReady);
+	};
+
+	if (IsInGameThread())
+	{
+		broadcastConnectionStatusChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UCounterCounterJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[broadcastConnectionStatusChanged = MoveTemp(broadcastConnectionStatusChanged), weakSelf]
 		{
-		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
-		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
-	});
+		UCounterCounterJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			broadcastConnectionStatusChanged(*self);
+		}
+		});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

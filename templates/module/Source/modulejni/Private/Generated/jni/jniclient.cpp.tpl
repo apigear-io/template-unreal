@@ -557,7 +557,28 @@ bool {{$Class}}::_IsReady() const
 {{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "In" .Params}})
 {
-	_GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "In" .Params}});
+	auto updateAndBroadcastValueChanged = [{{ueVars "In" .Params}}]({{$Class}}& self)
+	{
+		self._GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "In" .Params}});
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<{{$Class}}> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		{{$Class}}* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 {{- end }}
 {{- if and (len .Interface.Properties) (len .Interface.Signals) }}{{ nl }}{{ end }}
@@ -565,19 +586,60 @@ void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "In" .Params}})
 {{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
-	{{ueVar "" .}} = {{ueVar "In" .}};
-	_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+	auto updateAndBroadcastValueChanged = [{{ueVar "In" .}}]({{$Class}}& self)
+	{
+		self.{{ueVar "" .}} = {{ueVar "In" .}};
+		self._GetPublisher()->Broadcast{{Camel .Name}}Changed(self.{{ueVar "" .}});
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<{{$Class}}> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		{{$Class}}* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 {{- end }}
 
-void {{$Class}}::notifyIsReady(bool isReady)
+void {{$Class}}::notifyIsReady(bool bInIsReady)
 {
-	b_isReady.store(isReady, std::memory_order_release);
-	AsyncTask(ENamedThreads::GameThread, [this]()
+	b_isReady.store(bInIsReady, std::memory_order_release);
+
+	auto broadcastConnectionStatusChanged = []({{$Class}}& self)
+	{
+		auto bIsReady = self.b_isReady.load(std::memory_order_acquire);
+		self._ConnectionStatusChangedBP.Broadcast(bIsReady);
+		self._ConnectionStatusChanged.Broadcast(bIsReady);
+	};
+
+	if (IsInGameThread())
+	{
+		broadcastConnectionStatusChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<{{$Class}}> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[broadcastConnectionStatusChanged = MoveTemp(broadcastConnectionStatusChanged), weakSelf]
 		{
-		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
-		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
-	});
+		{{$Class}}* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			broadcastConnectionStatusChanged(*self);
+		}
+		});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

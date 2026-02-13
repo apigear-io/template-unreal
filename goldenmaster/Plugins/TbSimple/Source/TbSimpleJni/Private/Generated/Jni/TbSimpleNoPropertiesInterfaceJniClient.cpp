@@ -393,22 +393,84 @@ bool UTbSimpleNoPropertiesInterfaceJniClient::_IsReady() const
 }
 void UTbSimpleNoPropertiesInterfaceJniClient::OnSigVoidSignal()
 {
-	_GetPublisher()->BroadcastSigVoidSignal();
+	auto updateAndBroadcastValueChanged = [](UTbSimpleNoPropertiesInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigVoidSignal();
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSimpleNoPropertiesInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSimpleNoPropertiesInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSimpleNoPropertiesInterfaceJniClient::OnSigBoolSignal(bool bInParamBool)
 {
-	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
+	auto updateAndBroadcastValueChanged = [bInParamBool](UTbSimpleNoPropertiesInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSimpleNoPropertiesInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSimpleNoPropertiesInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
-void UTbSimpleNoPropertiesInterfaceJniClient::notifyIsReady(bool isReady)
+void UTbSimpleNoPropertiesInterfaceJniClient::notifyIsReady(bool bInIsReady)
 {
-	b_isReady.store(isReady, std::memory_order_release);
-	AsyncTask(ENamedThreads::GameThread, [this]()
+	b_isReady.store(bInIsReady, std::memory_order_release);
+
+	auto broadcastConnectionStatusChanged = [](UTbSimpleNoPropertiesInterfaceJniClient& self)
+	{
+		auto bIsReady = self.b_isReady.load(std::memory_order_acquire);
+		self._ConnectionStatusChangedBP.Broadcast(bIsReady);
+		self._ConnectionStatusChanged.Broadcast(bIsReady);
+	};
+
+	if (IsInGameThread())
+	{
+		broadcastConnectionStatusChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSimpleNoPropertiesInterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[broadcastConnectionStatusChanged = MoveTemp(broadcastConnectionStatusChanged), weakSelf]
 		{
-		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
-		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
-	});
+		UTbSimpleNoPropertiesInterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			broadcastConnectionStatusChanged(*self);
+		}
+		});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI

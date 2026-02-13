@@ -511,34 +511,138 @@ bool UTbSame2SameEnum2InterfaceJniClient::_IsReady() const
 }
 void UTbSame2SameEnum2InterfaceJniClient::OnSig1Signal(ETbSame2Enum1 InParam1)
 {
-	_GetPublisher()->BroadcastSig1Signal(InParam1);
+	auto updateAndBroadcastValueChanged = [InParam1](UTbSame2SameEnum2InterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig1Signal(InParam1);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSame2SameEnum2InterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSame2SameEnum2InterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSame2SameEnum2InterfaceJniClient::OnSig2Signal(ETbSame2Enum1 InParam1, ETbSame2Enum2 InParam2)
 {
-	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
+	auto updateAndBroadcastValueChanged = [InParam1, InParam2](UTbSame2SameEnum2InterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSame2SameEnum2InterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSame2SameEnum2InterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSame2SameEnum2InterfaceJniClient::OnProp1Changed(ETbSame2Enum1 InProp1)
 {
-	Prop1 = InProp1;
-	_GetPublisher()->BroadcastProp1Changed(Prop1);
+	auto updateAndBroadcastValueChanged = [InProp1](UTbSame2SameEnum2InterfaceJniClient& self)
+	{
+		self.Prop1 = InProp1;
+		self._GetPublisher()->BroadcastProp1Changed(self.Prop1);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSame2SameEnum2InterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSame2SameEnum2InterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
 void UTbSame2SameEnum2InterfaceJniClient::OnProp2Changed(ETbSame2Enum2 InProp2)
 {
-	Prop2 = InProp2;
-	_GetPublisher()->BroadcastProp2Changed(Prop2);
+	auto updateAndBroadcastValueChanged = [InProp2](UTbSame2SameEnum2InterfaceJniClient& self)
+	{
+		self.Prop2 = InProp2;
+		self._GetPublisher()->BroadcastProp2Changed(self.Prop2);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSame2SameEnum2InterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf]
+		{
+		UTbSame2SameEnum2InterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			updateAndBroadcastValueChanged(*self);
+		}
+		});
 }
 
-void UTbSame2SameEnum2InterfaceJniClient::notifyIsReady(bool isReady)
+void UTbSame2SameEnum2InterfaceJniClient::notifyIsReady(bool bInIsReady)
 {
-	b_isReady.store(isReady, std::memory_order_release);
-	AsyncTask(ENamedThreads::GameThread, [this]()
+	b_isReady.store(bInIsReady, std::memory_order_release);
+
+	auto broadcastConnectionStatusChanged = [](UTbSame2SameEnum2InterfaceJniClient& self)
+	{
+		auto bIsReady = self.b_isReady.load(std::memory_order_acquire);
+		self._ConnectionStatusChangedBP.Broadcast(bIsReady);
+		self._ConnectionStatusChanged.Broadcast(bIsReady);
+	};
+
+	if (IsInGameThread())
+	{
+		broadcastConnectionStatusChanged(*this);
+		return;
+	}
+
+	TWeakObjectPtr<UTbSame2SameEnum2InterfaceJniClient> weakSelf(this);
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[broadcastConnectionStatusChanged = MoveTemp(broadcastConnectionStatusChanged), weakSelf]
 		{
-		_ConnectionStatusChangedBP.Broadcast(b_isReady.load(std::memory_order_acquire));
-		_ConnectionStatusChanged.Broadcast(b_isReady.load(std::memory_order_acquire));
-	});
+		UTbSame2SameEnum2InterfaceJniClient* self = weakSelf.Get();
+		if (self != nullptr)
+		{
+			broadcastConnectionStatusChanged(*self);
+		}
+		});
 }
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
