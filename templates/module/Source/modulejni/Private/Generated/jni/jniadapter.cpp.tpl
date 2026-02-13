@@ -360,10 +360,6 @@ void {{$Class}}::Deinitialize()
 			static const TCHAR* errorMsgCall = TEXT("{{Camel .Module.Name}}JavaServiceStarter failed to call stop");
 			{{$localClassConverter}}::checkJniErrorOccured(errorMsgCall);
 		}
-		else
-		{
-			return;
-		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
 	{{$Class}}Cache::clear();
