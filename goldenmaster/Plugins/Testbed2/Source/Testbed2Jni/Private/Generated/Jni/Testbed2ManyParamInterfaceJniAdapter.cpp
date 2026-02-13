@@ -210,10 +210,6 @@ void UTestbed2ManyParamInterfaceJniAdapter::Deinitialize()
 			static const TCHAR* errorMsgCall = TEXT("Testbed2JavaServiceStarter failed to call stop");
 			Testbed2DataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
-		else
-		{
-			return;
-		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
 	UTestbed2ManyParamInterfaceJniAdapterCache::clear();

@@ -210,10 +210,6 @@ void UTbEnumEnumInterfaceJniAdapter::Deinitialize()
 			static const TCHAR* errorMsgCall = TEXT("TbEnumJavaServiceStarter failed to call stop");
 			TbEnumDataJavaConverter::checkJniErrorOccured(errorMsgCall);
 		}
-		else
-		{
-			return;
-		}
 		Env->DeleteGlobalRef(BridgeClass);
 	}
 	UTbEnumEnumInterfaceJniAdapterCache::clear();
