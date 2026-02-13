@@ -416,7 +416,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp1Changed(int32 Prop1)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed2ManyParamInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService::onProp1Changed(I)V CLASS not found"));
 			return;
@@ -441,7 +441,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp2Changed(int32 Prop2)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed2ManyParamInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService::onProp2Changed(I)V CLASS not found"));
 			return;
@@ -466,7 +466,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp3Changed(int32 Prop3)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed2ManyParamInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService::onProp3Changed(I)V CLASS not found"));
 			return;
@@ -491,7 +491,7 @@ void UTestbed2ManyParamInterfaceJniAdapter::OnProp4Changed(int32 Prop4)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed2ManyParamInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2ManyParamInterface_JNI, Warning, TEXT("testbed2/testbed2jniservice/ManyParamInterfaceJniService::onProp4Changed(I)V CLASS not found"));
 			return;

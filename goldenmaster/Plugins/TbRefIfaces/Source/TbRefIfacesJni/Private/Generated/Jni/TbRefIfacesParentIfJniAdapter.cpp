@@ -430,7 +430,7 @@ void UTbRefIfacesParentIfJniAdapter::OnLocalIfChanged(const TScriptInterface<ITb
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbRefIfacesParentIfJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService::onLocalIfChanged(LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V CLASS not found"));
 			return;
@@ -459,7 +459,7 @@ void UTbRefIfacesParentIfJniAdapter::OnLocalIfListChanged(const TArray<TScriptIn
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbRefIfacesParentIfJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService::onLocalIfListChanged([LtbRefIfaces/tbRefIfaces_api/ISimpleLocalIf;)V CLASS not found"));
 			return;
@@ -488,7 +488,7 @@ void UTbRefIfacesParentIfJniAdapter::OnImportedIfChanged(const TScriptInterface<
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbRefIfacesParentIfJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService::onImportedIfChanged(LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V CLASS not found"));
 			return;
@@ -517,7 +517,7 @@ void UTbRefIfacesParentIfJniAdapter::OnImportedIfListChanged(const TArray<TScrip
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbRefIfacesParentIfJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbRefIfacesParentIf_JNI, Warning, TEXT("tbRefIfaces/tbRefIfacesjniservice/ParentIfJniService::onImportedIfListChanged([LtbIfaceimport/tbIfaceimport_api/IEmptyIf;)V CLASS not found"));
 			return;

@@ -388,7 +388,7 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::OnProp1Changed(const FTestbed2Ne
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed2NestedStruct3InterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService::onProp1Changed(Ltestbed2/testbed2_api/NestedStruct1;)V CLASS not found"));
 			return;
@@ -415,7 +415,7 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::OnProp2Changed(const FTestbed2Ne
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed2NestedStruct3InterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService::onProp2Changed(Ltestbed2/testbed2_api/NestedStruct2;)V CLASS not found"));
 			return;
@@ -442,7 +442,7 @@ void UTestbed2NestedStruct3InterfaceJniAdapter::OnProp3Changed(const FTestbed2Ne
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed2NestedStruct3InterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed2NestedStruct3Interface_JNI, Warning, TEXT("testbed2/testbed2jniservice/NestedStruct3InterfaceJniService::onProp3Changed(Ltestbed2/testbed2_api/NestedStruct3;)V CLASS not found"));
 			return;

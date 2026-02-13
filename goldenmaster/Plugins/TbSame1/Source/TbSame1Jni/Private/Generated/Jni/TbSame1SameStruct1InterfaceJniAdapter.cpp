@@ -298,7 +298,7 @@ void UTbSame1SameStruct1InterfaceJniAdapter::OnProp1Changed(const FTbSame1Struct
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSame1SameStruct1InterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSame1SameStruct1Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameStruct1InterfaceJniService::onProp1Changed(LtbSame1/tbSame1_api/Struct1;)V CLASS not found"));
 			return;

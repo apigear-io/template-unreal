@@ -298,7 +298,7 @@ void UTbSame1SameEnum1InterfaceJniAdapter::OnProp1Changed(ETbSame1Enum1 Prop1)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbSame1SameEnum1InterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbSame1SameEnum1Interface_JNI, Warning, TEXT("tbSame1/tbSame1jniservice/SameEnum1InterfaceJniService::onProp1Changed(LtbSame1/tbSame1_api/Enum1;)V CLASS not found"));
 			return;
