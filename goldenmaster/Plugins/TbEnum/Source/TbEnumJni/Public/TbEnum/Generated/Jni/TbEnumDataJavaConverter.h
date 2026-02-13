@@ -33,34 +33,31 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 DECLARE_LOG_CATEGORY_EXTERN(LogTbEnumDataJavaConverter_JNI, Log, All);
 
+struct FTbEnumDataJavaConverterCacheData;
+
 class TBENUMAPI_API TbEnumDataJavaConverter
 {
 public:
-	static jclass jEnum0;
 	static void fillEnum0Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum0>& out_array);
 	static ETbEnumEnum0 getEnum0Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnum0Array(JNIEnv* env, const TArray<ETbEnumEnum0>& cppArray);
 	static jobject makeJavaEnum0(JNIEnv* env, ETbEnumEnum0 value);
 
-	static jclass jEnum1;
 	static void fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum1>& out_array);
 	static ETbEnumEnum1 getEnum1Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnum1Array(JNIEnv* env, const TArray<ETbEnumEnum1>& cppArray);
 	static jobject makeJavaEnum1(JNIEnv* env, ETbEnumEnum1 value);
 
-	static jclass jEnum2;
 	static void fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum2>& out_array);
 	static ETbEnumEnum2 getEnum2Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnum2Array(JNIEnv* env, const TArray<ETbEnumEnum2>& cppArray);
 	static jobject makeJavaEnum2(JNIEnv* env, ETbEnumEnum2 value);
 
-	static jclass jEnum3;
 	static void fillEnum3Array(JNIEnv* env, jobjectArray input, TArray<ETbEnumEnum3>& out_array);
 	static ETbEnumEnum3 getEnum3Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnum3Array(JNIEnv* env, const TArray<ETbEnumEnum3>& cppArray);
 	static jobject makeJavaEnum3(JNIEnv* env, ETbEnumEnum3 value);
 
-	static jclass jEnumInterface;
 	static void fillEnumInterface(JNIEnv* env, jobject input, TScriptInterface<ITbEnumEnumInterfaceInterface> out_enum_interface);
 	static void fillEnumInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbEnumEnumInterfaceInterface>>& out_array);
 	static jobject makeJavaEnumInterface(JNIEnv* env, const TScriptInterface<ITbEnumEnumInterfaceInterface> out_enum_interface);
@@ -72,9 +69,9 @@ public:
 	static void cleanJavaReferences();
 
 private:
-	static FCriticalSection initMutex;
-	static void ensureInitialized();
-	static bool m_isInitialized;
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FTbEnumDataJavaConverterCacheData, ESPMode::ThreadSafe> CacheData;
+	static TSharedPtr<FTbEnumDataJavaConverterCacheData, ESPMode::ThreadSafe> ensureInitialized();
 	static jmethodID getMethod(jclass cls, const char* name, const char* signature, const TCHAR*);
 	static jmethodID getStaticMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo);
 	static jfieldID getFieldId(jclass cls, const char* name, const char* signature, const TCHAR*);
