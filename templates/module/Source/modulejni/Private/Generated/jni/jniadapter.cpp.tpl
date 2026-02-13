@@ -505,7 +505,7 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = {{$Class}}Cache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(Log{{$Iface}}_JNI, Warning, TEXT("{{$javaClassPath}}/{{$javaClassName}}::on{{Camel .Name}}Changed{{$signature}} CLASS not found"));
 			return;

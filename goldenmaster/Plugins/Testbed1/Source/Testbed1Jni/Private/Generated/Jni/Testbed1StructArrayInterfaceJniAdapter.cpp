@@ -452,7 +452,7 @@ void UTestbed1StructArrayInterfaceJniAdapter::OnPropBoolChanged(const TArray<FTe
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed1StructArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropBoolChanged([Ltestbed1/testbed1_api/StructBool;)V CLASS not found"));
 			return;
@@ -479,7 +479,7 @@ void UTestbed1StructArrayInterfaceJniAdapter::OnPropIntChanged(const TArray<FTes
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed1StructArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropIntChanged([Ltestbed1/testbed1_api/StructInt;)V CLASS not found"));
 			return;
@@ -506,7 +506,7 @@ void UTestbed1StructArrayInterfaceJniAdapter::OnPropFloatChanged(const TArray<FT
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed1StructArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropFloatChanged([Ltestbed1/testbed1_api/StructFloat;)V CLASS not found"));
 			return;
@@ -533,7 +533,7 @@ void UTestbed1StructArrayInterfaceJniAdapter::OnPropStringChanged(const TArray<F
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed1StructArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropStringChanged([Ltestbed1/testbed1_api/StructString;)V CLASS not found"));
 			return;
@@ -560,7 +560,7 @@ void UTestbed1StructArrayInterfaceJniAdapter::OnPropEnumChanged(const TArray<ETe
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTestbed1StructArrayInterfaceJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTestbed1StructArrayInterface_JNI, Warning, TEXT("testbed1/testbed1jniservice/StructArrayInterfaceJniService::onPropEnumChanged([Ltestbed1/testbed1_api/Enum0;)V CLASS not found"));
 			return;

@@ -336,7 +336,7 @@ void UTbNamesNamEsJniAdapter::OnSwitchChanged(bool bSwitch)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSwitchChanged(Z)V CLASS not found"));
 			return;
@@ -361,7 +361,7 @@ void UTbNamesNamEsJniAdapter::OnSomePropertyChanged(int32 SomeProperty)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSomePropertyChanged(I)V CLASS not found"));
 			return;
@@ -386,7 +386,7 @@ void UTbNamesNamEsJniAdapter::OnSomePoperty2Changed(int32 SomePoperty2)
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onSomePoperty2Changed(I)V CLASS not found"));
 			return;
@@ -411,7 +411,7 @@ void UTbNamesNamEsJniAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scor
 	if (JNIEnv* Env = FAndroidApplication::GetJavaEnv())
 	{
 		auto Cache = UTbNamesNamEsJniAdapterCache::Get();
-		if (!Cache)
+		if (!Cache || m_javaJniServiceInstance == nullptr)
 		{
 			UE_LOG(LogTbNamesNamEs_JNI, Warning, TEXT("tbNames/tbNamesjniservice/NamEsJniService::onEnumPropertyChanged(LtbNames/tbNames_api/EnumWithUnderScores;)V CLASS not found"));
 			return;
