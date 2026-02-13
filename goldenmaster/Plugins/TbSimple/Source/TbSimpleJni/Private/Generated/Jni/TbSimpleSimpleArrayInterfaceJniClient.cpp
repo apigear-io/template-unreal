@@ -1304,96 +1304,419 @@ bool UTbSimpleSimpleArrayInterfaceJniClient::_IsReady() const
 }
 void UTbSimpleSimpleArrayInterfaceJniClient::OnSigBoolSignal(const TArray<bool>& InParamBool)
 {
-	_GetPublisher()->BroadcastSigBoolSignal(InParamBool);
+	auto updateAndBroadcastValueChanged = [InParamBool](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigBoolSignal(InParamBool);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnSigIntSignal(const TArray<int32>& InParamInt)
 {
-	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
+	auto updateAndBroadcastValueChanged = [InParamInt](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigIntSignal(InParamInt);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnSigInt32Signal(const TArray<int32>& InParamInt32)
 {
-	_GetPublisher()->BroadcastSigInt32Signal(InParamInt32);
+	auto updateAndBroadcastValueChanged = [InParamInt32](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigInt32Signal(InParamInt32);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnSigInt64Signal(const TArray<int64>& InParamInt64)
 {
-	_GetPublisher()->BroadcastSigInt64Signal(InParamInt64);
+	auto updateAndBroadcastValueChanged = [InParamInt64](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigInt64Signal(InParamInt64);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnSigFloatSignal(const TArray<float>& InParamFloat)
 {
-	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
+	auto updateAndBroadcastValueChanged = [InParamFloat](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnSigFloat32Signal(const TArray<float>& InParamFloa32)
 {
-	_GetPublisher()->BroadcastSigFloat32Signal(InParamFloa32);
+	auto updateAndBroadcastValueChanged = [InParamFloa32](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigFloat32Signal(InParamFloa32);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnSigFloat64Signal(const TArray<double>& InParamFloat64)
 {
-	_GetPublisher()->BroadcastSigFloat64Signal(InParamFloat64);
+	auto updateAndBroadcastValueChanged = [InParamFloat64](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigFloat64Signal(InParamFloat64);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnSigStringSignal(const TArray<FString>& InParamString)
 {
-	_GetPublisher()->BroadcastSigStringSignal(InParamString);
+	auto updateAndBroadcastValueChanged = [InParamString](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigStringSignal(InParamString);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropBoolChanged(const TArray<bool>& InPropBool)
 {
-	PropBool = InPropBool;
-	_GetPublisher()->BroadcastPropBoolChanged(PropBool);
+	auto updateAndBroadcastValueChanged = [InPropBool](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self.PropBool = InPropBool;
+		self._GetPublisher()->BroadcastPropBoolChanged(self.PropBool);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropIntChanged(const TArray<int32>& InPropInt)
 {
-	PropInt = InPropInt;
-	_GetPublisher()->BroadcastPropIntChanged(PropInt);
+	auto updateAndBroadcastValueChanged = [InPropInt](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self.PropInt = InPropInt;
+		self._GetPublisher()->BroadcastPropIntChanged(self.PropInt);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropInt32Changed(const TArray<int32>& InPropInt32)
 {
-	PropInt32 = InPropInt32;
-	_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
+	auto updateAndBroadcastValueChanged = [InPropInt32](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self.PropInt32 = InPropInt32;
+		self._GetPublisher()->BroadcastPropInt32Changed(self.PropInt32);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropInt64Changed(const TArray<int64>& InPropInt64)
 {
-	PropInt64 = InPropInt64;
-	_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
+	auto updateAndBroadcastValueChanged = [InPropInt64](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self.PropInt64 = InPropInt64;
+		self._GetPublisher()->BroadcastPropInt64Changed(self.PropInt64);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropFloatChanged(const TArray<float>& InPropFloat)
 {
-	PropFloat = InPropFloat;
-	_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
+	auto updateAndBroadcastValueChanged = [InPropFloat](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self.PropFloat = InPropFloat;
+		self._GetPublisher()->BroadcastPropFloatChanged(self.PropFloat);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropFloat32Changed(const TArray<float>& InPropFloat32)
 {
-	PropFloat32 = InPropFloat32;
-	_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
+	auto updateAndBroadcastValueChanged = [InPropFloat32](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self.PropFloat32 = InPropFloat32;
+		self._GetPublisher()->BroadcastPropFloat32Changed(self.PropFloat32);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropFloat64Changed(const TArray<double>& InPropFloat64)
 {
-	PropFloat64 = InPropFloat64;
-	_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
+	auto updateAndBroadcastValueChanged = [InPropFloat64](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self.PropFloat64 = InPropFloat64;
+		self._GetPublisher()->BroadcastPropFloat64Changed(self.PropFloat64);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropStringChanged(const TArray<FString>& InPropString)
 {
-	PropString = InPropString;
-	_GetPublisher()->BroadcastPropStringChanged(PropString);
+	auto updateAndBroadcastValueChanged = [InPropString](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self.PropString = InPropString;
+		self._GetPublisher()->BroadcastPropStringChanged(self.PropString);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
 {
-	PropReadOnlyString = InPropReadOnlyString;
-	_GetPublisher()->BroadcastPropReadOnlyStringChanged(PropReadOnlyString);
+	auto updateAndBroadcastValueChanged = [InPropReadOnlyString](UTbSimpleSimpleArrayInterfaceJniClient& self)
+	{
+		self.PropReadOnlyString = InPropReadOnlyString;
+		self._GetPublisher()->BroadcastPropReadOnlyStringChanged(self.PropReadOnlyString);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleArrayInterfaceJniClient::notifyIsReady(bool isReady)

@@ -411,13 +411,51 @@ bool UTbRefIfacesSimpleLocalIfJniClient::_IsReady() const
 }
 void UTbRefIfacesSimpleLocalIfJniClient::OnIntSignalSignal(int32 InParam)
 {
-	_GetPublisher()->BroadcastIntSignalSignal(InParam);
+	auto updateAndBroadcastValueChanged = [InParam](UTbRefIfacesSimpleLocalIfJniClient& self)
+	{
+		self._GetPublisher()->BroadcastIntSignalSignal(InParam);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbRefIfacesSimpleLocalIfJniClient::OnIntPropertyChanged(int32 InIntProperty)
 {
-	IntProperty = InIntProperty;
-	_GetPublisher()->BroadcastIntPropertyChanged(IntProperty);
+	auto updateAndBroadcastValueChanged = [InIntProperty](UTbRefIfacesSimpleLocalIfJniClient& self)
+	{
+		self.IntProperty = InIntProperty;
+		self._GetPublisher()->BroadcastIntPropertyChanged(self.IntProperty);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbRefIfacesSimpleLocalIfJniClient::notifyIsReady(bool isReady)

@@ -557,7 +557,26 @@ bool {{$Class}}::_IsReady() const
 {{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "In" .Params}})
 {
-	_GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "In" .Params}});
+	auto updateAndBroadcastValueChanged = [{{ueVars "In" .Params}}]({{$Class}}& self)
+	{
+		self._GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "In" .Params}});
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 {{- end }}
 {{- if and (len .Interface.Properties) (len .Interface.Signals) }}{{ nl }}{{ end }}
@@ -565,8 +584,27 @@ void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "In" .Params}})
 {{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
-	{{ueVar "" .}} = {{ueVar "In" .}};
-	_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "" .}});
+	auto updateAndBroadcastValueChanged = [{{ueVar "In" .}}]({{$Class}}& self)
+	{
+		self.{{ueVar "" .}} = {{ueVar "In" .}};
+		self._GetPublisher()->Broadcast{{Camel .Name}}Changed(self.{{ueVar "" .}});
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 {{- end }}
 

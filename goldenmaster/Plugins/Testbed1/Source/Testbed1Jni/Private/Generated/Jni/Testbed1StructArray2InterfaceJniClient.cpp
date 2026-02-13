@@ -841,52 +841,223 @@ bool UTestbed1StructArray2InterfaceJniClient::_IsReady() const
 }
 void UTestbed1StructArray2InterfaceJniClient::OnSigBoolSignal(const FTestbed1StructBoolWithArray& InParamBool)
 {
-	_GetPublisher()->BroadcastSigBoolSignal(InParamBool);
+	auto updateAndBroadcastValueChanged = [InParamBool](UTestbed1StructArray2InterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigBoolSignal(InParamBool);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTestbed1StructArray2InterfaceJniClient::OnSigIntSignal(const FTestbed1StructIntWithArray& InParamInt)
 {
-	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
+	auto updateAndBroadcastValueChanged = [InParamInt](UTestbed1StructArray2InterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigIntSignal(InParamInt);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTestbed1StructArray2InterfaceJniClient::OnSigFloatSignal(const FTestbed1StructFloatWithArray& InParamFloat)
 {
-	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
+	auto updateAndBroadcastValueChanged = [InParamFloat](UTestbed1StructArray2InterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTestbed1StructArray2InterfaceJniClient::OnSigStringSignal(const FTestbed1StructStringWithArray& InParamString)
 {
-	_GetPublisher()->BroadcastSigStringSignal(InParamString);
+	auto updateAndBroadcastValueChanged = [InParamString](UTestbed1StructArray2InterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigStringSignal(InParamString);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTestbed1StructArray2InterfaceJniClient::OnPropBoolChanged(const FTestbed1StructBoolWithArray& InPropBool)
 {
-	PropBool = InPropBool;
-	_GetPublisher()->BroadcastPropBoolChanged(PropBool);
+	auto updateAndBroadcastValueChanged = [InPropBool](UTestbed1StructArray2InterfaceJniClient& self)
+	{
+		self.PropBool = InPropBool;
+		self._GetPublisher()->BroadcastPropBoolChanged(self.PropBool);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTestbed1StructArray2InterfaceJniClient::OnPropIntChanged(const FTestbed1StructIntWithArray& InPropInt)
 {
-	PropInt = InPropInt;
-	_GetPublisher()->BroadcastPropIntChanged(PropInt);
+	auto updateAndBroadcastValueChanged = [InPropInt](UTestbed1StructArray2InterfaceJniClient& self)
+	{
+		self.PropInt = InPropInt;
+		self._GetPublisher()->BroadcastPropIntChanged(self.PropInt);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTestbed1StructArray2InterfaceJniClient::OnPropFloatChanged(const FTestbed1StructFloatWithArray& InPropFloat)
 {
-	PropFloat = InPropFloat;
-	_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
+	auto updateAndBroadcastValueChanged = [InPropFloat](UTestbed1StructArray2InterfaceJniClient& self)
+	{
+		self.PropFloat = InPropFloat;
+		self._GetPublisher()->BroadcastPropFloatChanged(self.PropFloat);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTestbed1StructArray2InterfaceJniClient::OnPropStringChanged(const FTestbed1StructStringWithArray& InPropString)
 {
-	PropString = InPropString;
-	_GetPublisher()->BroadcastPropStringChanged(PropString);
+	auto updateAndBroadcastValueChanged = [InPropString](UTestbed1StructArray2InterfaceJniClient& self)
+	{
+		self.PropString = InPropString;
+		self._GetPublisher()->BroadcastPropStringChanged(self.PropString);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTestbed1StructArray2InterfaceJniClient::OnPropEnumChanged(const FTestbed1StructEnumWithArray& InPropEnum)
 {
-	PropEnum = InPropEnum;
-	_GetPublisher()->BroadcastPropEnumChanged(PropEnum);
+	auto updateAndBroadcastValueChanged = [InPropEnum](UTestbed1StructArray2InterfaceJniClient& self)
+	{
+		self.PropEnum = InPropEnum;
+		self._GetPublisher()->BroadcastPropEnumChanged(self.PropEnum);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTestbed1StructArray2InterfaceJniClient::notifyIsReady(bool isReady)

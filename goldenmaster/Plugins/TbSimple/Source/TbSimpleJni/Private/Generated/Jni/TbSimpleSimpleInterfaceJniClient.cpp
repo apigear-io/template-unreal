@@ -1226,90 +1226,394 @@ bool UTbSimpleSimpleInterfaceJniClient::_IsReady() const
 }
 void UTbSimpleSimpleInterfaceJniClient::OnSigBoolSignal(bool bInParamBool)
 {
-	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
+	auto updateAndBroadcastValueChanged = [bInParamBool](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnSigIntSignal(int32 InParamInt)
 {
-	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
+	auto updateAndBroadcastValueChanged = [InParamInt](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigIntSignal(InParamInt);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnSigInt32Signal(int32 InParamInt32)
 {
-	_GetPublisher()->BroadcastSigInt32Signal(InParamInt32);
+	auto updateAndBroadcastValueChanged = [InParamInt32](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigInt32Signal(InParamInt32);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnSigInt64Signal(int64 InParamInt64)
 {
-	_GetPublisher()->BroadcastSigInt64Signal(InParamInt64);
+	auto updateAndBroadcastValueChanged = [InParamInt64](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigInt64Signal(InParamInt64);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnSigFloatSignal(float InParamFloat)
 {
-	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
+	auto updateAndBroadcastValueChanged = [InParamFloat](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnSigFloat32Signal(float InParamFloat32)
 {
-	_GetPublisher()->BroadcastSigFloat32Signal(InParamFloat32);
+	auto updateAndBroadcastValueChanged = [InParamFloat32](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigFloat32Signal(InParamFloat32);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnSigFloat64Signal(double InParamFloat64)
 {
-	_GetPublisher()->BroadcastSigFloat64Signal(InParamFloat64);
+	auto updateAndBroadcastValueChanged = [InParamFloat64](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigFloat64Signal(InParamFloat64);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnSigStringSignal(const FString& InParamString)
 {
-	_GetPublisher()->BroadcastSigStringSignal(InParamString);
+	auto updateAndBroadcastValueChanged = [InParamString](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSigStringSignal(InParamString);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropBoolChanged(bool bInPropBool)
 {
-	bPropBool = bInPropBool;
-	_GetPublisher()->BroadcastPropBoolChanged(bPropBool);
+	auto updateAndBroadcastValueChanged = [bInPropBool](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self.bPropBool = bInPropBool;
+		self._GetPublisher()->BroadcastPropBoolChanged(self.bPropBool);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropIntChanged(int32 InPropInt)
 {
-	PropInt = InPropInt;
-	_GetPublisher()->BroadcastPropIntChanged(PropInt);
+	auto updateAndBroadcastValueChanged = [InPropInt](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self.PropInt = InPropInt;
+		self._GetPublisher()->BroadcastPropIntChanged(self.PropInt);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropInt32Changed(int32 InPropInt32)
 {
-	PropInt32 = InPropInt32;
-	_GetPublisher()->BroadcastPropInt32Changed(PropInt32);
+	auto updateAndBroadcastValueChanged = [InPropInt32](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self.PropInt32 = InPropInt32;
+		self._GetPublisher()->BroadcastPropInt32Changed(self.PropInt32);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropInt64Changed(int64 InPropInt64)
 {
-	PropInt64 = InPropInt64;
-	_GetPublisher()->BroadcastPropInt64Changed(PropInt64);
+	auto updateAndBroadcastValueChanged = [InPropInt64](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self.PropInt64 = InPropInt64;
+		self._GetPublisher()->BroadcastPropInt64Changed(self.PropInt64);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropFloatChanged(float InPropFloat)
 {
-	PropFloat = InPropFloat;
-	_GetPublisher()->BroadcastPropFloatChanged(PropFloat);
+	auto updateAndBroadcastValueChanged = [InPropFloat](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self.PropFloat = InPropFloat;
+		self._GetPublisher()->BroadcastPropFloatChanged(self.PropFloat);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropFloat32Changed(float InPropFloat32)
 {
-	PropFloat32 = InPropFloat32;
-	_GetPublisher()->BroadcastPropFloat32Changed(PropFloat32);
+	auto updateAndBroadcastValueChanged = [InPropFloat32](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self.PropFloat32 = InPropFloat32;
+		self._GetPublisher()->BroadcastPropFloat32Changed(self.PropFloat32);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropFloat64Changed(double InPropFloat64)
 {
-	PropFloat64 = InPropFloat64;
-	_GetPublisher()->BroadcastPropFloat64Changed(PropFloat64);
+	auto updateAndBroadcastValueChanged = [InPropFloat64](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self.PropFloat64 = InPropFloat64;
+		self._GetPublisher()->BroadcastPropFloat64Changed(self.PropFloat64);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::OnPropStringChanged(const FString& InPropString)
 {
-	PropString = InPropString;
-	_GetPublisher()->BroadcastPropStringChanged(PropString);
+	auto updateAndBroadcastValueChanged = [InPropString](UTbSimpleSimpleInterfaceJniClient& self)
+	{
+		self.PropString = InPropString;
+		self._GetPublisher()->BroadcastPropStringChanged(self.PropString);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbSimpleSimpleInterfaceJniClient::notifyIsReady(bool isReady)

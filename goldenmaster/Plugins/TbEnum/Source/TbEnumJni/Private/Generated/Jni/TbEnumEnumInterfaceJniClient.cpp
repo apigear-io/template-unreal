@@ -735,46 +735,198 @@ bool UTbEnumEnumInterfaceJniClient::_IsReady() const
 }
 void UTbEnumEnumInterfaceJniClient::OnSig0Signal(ETbEnumEnum0 InParam0)
 {
-	_GetPublisher()->BroadcastSig0Signal(InParam0);
+	auto updateAndBroadcastValueChanged = [InParam0](UTbEnumEnumInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig0Signal(InParam0);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbEnumEnumInterfaceJniClient::OnSig1Signal(ETbEnumEnum1 InParam1)
 {
-	_GetPublisher()->BroadcastSig1Signal(InParam1);
+	auto updateAndBroadcastValueChanged = [InParam1](UTbEnumEnumInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig1Signal(InParam1);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbEnumEnumInterfaceJniClient::OnSig2Signal(ETbEnumEnum2 InParam2)
 {
-	_GetPublisher()->BroadcastSig2Signal(InParam2);
+	auto updateAndBroadcastValueChanged = [InParam2](UTbEnumEnumInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig2Signal(InParam2);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbEnumEnumInterfaceJniClient::OnSig3Signal(ETbEnumEnum3 InParam3)
 {
-	_GetPublisher()->BroadcastSig3Signal(InParam3);
+	auto updateAndBroadcastValueChanged = [InParam3](UTbEnumEnumInterfaceJniClient& self)
+	{
+		self._GetPublisher()->BroadcastSig3Signal(InParam3);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbEnumEnumInterfaceJniClient::OnProp0Changed(ETbEnumEnum0 InProp0)
 {
-	Prop0 = InProp0;
-	_GetPublisher()->BroadcastProp0Changed(Prop0);
+	auto updateAndBroadcastValueChanged = [InProp0](UTbEnumEnumInterfaceJniClient& self)
+	{
+		self.Prop0 = InProp0;
+		self._GetPublisher()->BroadcastProp0Changed(self.Prop0);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbEnumEnumInterfaceJniClient::OnProp1Changed(ETbEnumEnum1 InProp1)
 {
-	Prop1 = InProp1;
-	_GetPublisher()->BroadcastProp1Changed(Prop1);
+	auto updateAndBroadcastValueChanged = [InProp1](UTbEnumEnumInterfaceJniClient& self)
+	{
+		self.Prop1 = InProp1;
+		self._GetPublisher()->BroadcastProp1Changed(self.Prop1);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbEnumEnumInterfaceJniClient::OnProp2Changed(ETbEnumEnum2 InProp2)
 {
-	Prop2 = InProp2;
-	_GetPublisher()->BroadcastProp2Changed(Prop2);
+	auto updateAndBroadcastValueChanged = [InProp2](UTbEnumEnumInterfaceJniClient& self)
+	{
+		self.Prop2 = InProp2;
+		self._GetPublisher()->BroadcastProp2Changed(self.Prop2);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbEnumEnumInterfaceJniClient::OnProp3Changed(ETbEnumEnum3 InProp3)
 {
-	Prop3 = InProp3;
-	_GetPublisher()->BroadcastProp3Changed(Prop3);
+	auto updateAndBroadcastValueChanged = [InProp3](UTbEnumEnumInterfaceJniClient& self)
+	{
+		self.Prop3 = InProp3;
+		self._GetPublisher()->BroadcastProp3Changed(self.Prop3);
+	};
+
+	if (IsInGameThread())
+	{
+		updateAndBroadcastValueChanged(*this);
+		return;
+	}
+
+	AsyncTask(
+		ENamedThreads::GameThread,
+		[updateAndBroadcastValueChanged = MoveTemp(updateAndBroadcastValueChanged), weakSelf = TWeakObjectPtr(this)]
+		{
+			auto strongSelf = weakSelf.Pin();
+			if (strongSelf) {
+				updateAndBroadcastValueChanged(*strongSelf);
+			}
+		});
 }
 
 void UTbEnumEnumInterfaceJniClient::notifyIsReady(bool isReady)
