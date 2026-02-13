@@ -126,23 +126,41 @@ void UTbSame2SameStruct1InterfaceJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassSameStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient. Bailing...");
+	if (NewData->clientClassSameStruct1Interface == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->Prop1SetterId = env->GetMethodID(NewData->clientClassSameStruct1Interface, "setProp1", "(LtbSame2/tbSame2_api/Struct1;)V");
-	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter);
+	static const TCHAR* errorMsgProp1Setter = TEXT("failed to get java setProp1, LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient. Bailing...");
+	if (NewData->Prop1SetterId == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgProp1Setter))
+	{
+		return;
+	}
 	NewData->Func1AsyncMethodID = env->GetMethodID(NewData->clientClassSameStruct1Interface, "func1Async", "(Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V");
-	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod);
+	static const TCHAR* errorMsgFunc1AsyncMethod = TEXT("failed to get java func1Async, (Ljava/lang/String;LtbSame2/tbSame2_api/Struct1;)V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient. Bailing...");
+	if (NewData->Func1AsyncMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgFunc1AsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassSameStruct1InterfaceCtor = env->GetMethodID(NewData->clientClassSameStruct1Interface, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient. Bailing...");
+	if (NewData->clientClassSameStruct1InterfaceCtor == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassSameStruct1Interface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassSameStruct1Interface, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient");
-	TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSame2/tbSame2jniclient/SameStruct1InterfaceJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || TbSame2DataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

@@ -125,23 +125,41 @@ void UTbSimpleNoOperationsInterfaceJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassNoOperationsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient. Bailing...");
+	if (NewData->clientClassNoOperationsInterface == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->PropBoolSetterId = env->GetMethodID(NewData->clientClassNoOperationsInterface, "setPropBool", "(Z)V");
-	static const TCHAR* errorMsgPropBoolSetter = TEXT("failed to get java setPropBool, Z)V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolSetter);
+	static const TCHAR* errorMsgPropBoolSetter = TEXT("failed to get java setPropBool, Z)V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient. Bailing...");
+	if (NewData->PropBoolSetterId == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolSetter))
+	{
+		return;
+	}
 	NewData->PropIntSetterId = env->GetMethodID(NewData->clientClassNoOperationsInterface, "setPropInt", "(I)V");
-	static const TCHAR* errorMsgPropIntSetter = TEXT("failed to get java setPropInt, I)V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntSetter);
+	static const TCHAR* errorMsgPropIntSetter = TEXT("failed to get java setPropInt, I)V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient. Bailing...");
+	if (NewData->PropIntSetterId == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntSetter))
+	{
+		return;
+	}
 	NewData->clientClassNoOperationsInterfaceCtor = env->GetMethodID(NewData->clientClassNoOperationsInterface, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient. Bailing...");
+	if (NewData->clientClassNoOperationsInterfaceCtor == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassNoOperationsInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassNoOperationsInterface, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSimple/tbSimplejniclient/NoOperationsInterfaceJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

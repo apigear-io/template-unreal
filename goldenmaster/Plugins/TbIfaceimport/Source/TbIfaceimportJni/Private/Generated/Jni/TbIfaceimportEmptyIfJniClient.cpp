@@ -123,17 +123,29 @@ void UTbIfaceimportEmptyIfJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient. Bailing...");
+	if (NewData->clientClassEmptyIf == nullptr || TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->clientClassEmptyIfCtor = env->GetMethodID(NewData->clientClassEmptyIf, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient. Bailing...");
+	if (NewData->clientClassEmptyIfCtor == nullptr || TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassEmptyIf, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassEmptyIf, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient");
-	TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbIfaceimport/tbIfaceimportjniclient/EmptyIfJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || TbIfaceimportDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

@@ -109,62 +109,119 @@ void UTbSimpleSimpleArrayInterfaceJniAdapterCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->javaService = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->javaService == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->ReadyMethodID = env->GetMethodID(NewData->javaService, "nativeServiceReady", "(Z)V");
-	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod);
+	static const TCHAR* errorMsgReadyMethod = TEXT("failed to get java nativeServiceReady, (Z)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->ReadyMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgReadyMethod))
+	{
+		return;
+	}
 	NewData->PropBoolChangedMethodID = env->GetMethodID(NewData->javaService, "onPropBoolChanged", "([Z)V");
-	static const TCHAR* errorMsgPropBoolChanged = TEXT("failed to get java onPropBoolChanged, ([Z)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolChanged);
+	static const TCHAR* errorMsgPropBoolChanged = TEXT("failed to get java onPropBoolChanged, ([Z)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->PropBoolChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolChanged))
+	{
+		return;
+	}
 	NewData->PropIntChangedMethodID = env->GetMethodID(NewData->javaService, "onPropIntChanged", "([I)V");
-	static const TCHAR* errorMsgPropIntChanged = TEXT("failed to get java onPropIntChanged, ([I)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntChanged);
+	static const TCHAR* errorMsgPropIntChanged = TEXT("failed to get java onPropIntChanged, ([I)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->PropIntChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntChanged))
+	{
+		return;
+	}
 	NewData->PropInt32ChangedMethodID = env->GetMethodID(NewData->javaService, "onPropInt32Changed", "([I)V");
-	static const TCHAR* errorMsgPropInt32Changed = TEXT("failed to get java onPropInt32Changed, ([I)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt32Changed);
+	static const TCHAR* errorMsgPropInt32Changed = TEXT("failed to get java onPropInt32Changed, ([I)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->PropInt32ChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt32Changed))
+	{
+		return;
+	}
 	NewData->PropInt64ChangedMethodID = env->GetMethodID(NewData->javaService, "onPropInt64Changed", "([J)V");
-	static const TCHAR* errorMsgPropInt64Changed = TEXT("failed to get java onPropInt64Changed, ([J)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt64Changed);
+	static const TCHAR* errorMsgPropInt64Changed = TEXT("failed to get java onPropInt64Changed, ([J)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->PropInt64ChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt64Changed))
+	{
+		return;
+	}
 	NewData->PropFloatChangedMethodID = env->GetMethodID(NewData->javaService, "onPropFloatChanged", "([F)V");
-	static const TCHAR* errorMsgPropFloatChanged = TEXT("failed to get java onPropFloatChanged, ([F)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloatChanged);
+	static const TCHAR* errorMsgPropFloatChanged = TEXT("failed to get java onPropFloatChanged, ([F)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->PropFloatChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloatChanged))
+	{
+		return;
+	}
 	NewData->PropFloat32ChangedMethodID = env->GetMethodID(NewData->javaService, "onPropFloat32Changed", "([F)V");
-	static const TCHAR* errorMsgPropFloat32Changed = TEXT("failed to get java onPropFloat32Changed, ([F)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat32Changed);
+	static const TCHAR* errorMsgPropFloat32Changed = TEXT("failed to get java onPropFloat32Changed, ([F)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->PropFloat32ChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat32Changed))
+	{
+		return;
+	}
 	NewData->PropFloat64ChangedMethodID = env->GetMethodID(NewData->javaService, "onPropFloat64Changed", "([D)V");
-	static const TCHAR* errorMsgPropFloat64Changed = TEXT("failed to get java onPropFloat64Changed, ([D)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat64Changed);
+	static const TCHAR* errorMsgPropFloat64Changed = TEXT("failed to get java onPropFloat64Changed, ([D)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->PropFloat64ChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat64Changed))
+	{
+		return;
+	}
 	NewData->PropStringChangedMethodID = env->GetMethodID(NewData->javaService, "onPropStringChanged", "([Ljava/lang/String;)V");
-	static const TCHAR* errorMsgPropStringChanged = TEXT("failed to get java onPropStringChanged, ([Ljava/lang/String;)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropStringChanged);
+	static const TCHAR* errorMsgPropStringChanged = TEXT("failed to get java onPropStringChanged, ([Ljava/lang/String;)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->PropStringChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropStringChanged))
+	{
+		return;
+	}
 	NewData->PropReadOnlyStringChangedMethodID = env->GetMethodID(NewData->javaService, "onPropReadOnlyStringChanged", "(Ljava/lang/String;)V");
-	static const TCHAR* errorMsgPropReadOnlyStringChanged = TEXT("failed to get java onPropReadOnlyStringChanged, (Ljava/lang/String;)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropReadOnlyStringChanged);
+	static const TCHAR* errorMsgPropReadOnlyStringChanged = TEXT("failed to get java onPropReadOnlyStringChanged, (Ljava/lang/String;)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->PropReadOnlyStringChangedMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropReadOnlyStringChanged))
+	{
+		return;
+	}
 	NewData->SigBoolSignalMethodID = env->GetMethodID(NewData->javaService, "onSigBool", "([Z)V");
-	static const TCHAR* errorMsgSigBoolSignal = TEXT("failed to get java onSigBool, ([Z)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigBoolSignal);
+	static const TCHAR* errorMsgSigBoolSignal = TEXT("failed to get java onSigBool, ([Z)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->SigBoolSignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigBoolSignal))
+	{
+		return;
+	}
 	NewData->SigIntSignalMethodID = env->GetMethodID(NewData->javaService, "onSigInt", "([I)V");
-	static const TCHAR* errorMsgSigIntSignal = TEXT("failed to get java onSigInt, ([I)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigIntSignal);
+	static const TCHAR* errorMsgSigIntSignal = TEXT("failed to get java onSigInt, ([I)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->SigIntSignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigIntSignal))
+	{
+		return;
+	}
 	NewData->SigInt32SignalMethodID = env->GetMethodID(NewData->javaService, "onSigInt32", "([I)V");
-	static const TCHAR* errorMsgSigInt32Signal = TEXT("failed to get java onSigInt32, ([I)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigInt32Signal);
+	static const TCHAR* errorMsgSigInt32Signal = TEXT("failed to get java onSigInt32, ([I)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->SigInt32SignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigInt32Signal))
+	{
+		return;
+	}
 	NewData->SigInt64SignalMethodID = env->GetMethodID(NewData->javaService, "onSigInt64", "([J)V");
-	static const TCHAR* errorMsgSigInt64Signal = TEXT("failed to get java onSigInt64, ([J)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigInt64Signal);
+	static const TCHAR* errorMsgSigInt64Signal = TEXT("failed to get java onSigInt64, ([J)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->SigInt64SignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigInt64Signal))
+	{
+		return;
+	}
 	NewData->SigFloatSignalMethodID = env->GetMethodID(NewData->javaService, "onSigFloat", "([F)V");
-	static const TCHAR* errorMsgSigFloatSignal = TEXT("failed to get java onSigFloat, ([F)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloatSignal);
+	static const TCHAR* errorMsgSigFloatSignal = TEXT("failed to get java onSigFloat, ([F)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->SigFloatSignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloatSignal))
+	{
+		return;
+	}
 	NewData->SigFloat32SignalMethodID = env->GetMethodID(NewData->javaService, "onSigFloat32", "([F)V");
-	static const TCHAR* errorMsgSigFloat32Signal = TEXT("failed to get java onSigFloat32, ([F)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloat32Signal);
+	static const TCHAR* errorMsgSigFloat32Signal = TEXT("failed to get java onSigFloat32, ([F)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->SigFloat32SignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloat32Signal))
+	{
+		return;
+	}
 	NewData->SigFloat64SignalMethodID = env->GetMethodID(NewData->javaService, "onSigFloat64", "([D)V");
-	static const TCHAR* errorMsgSigFloat64Signal = TEXT("failed to get java onSigFloat64, ([D)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloat64Signal);
+	static const TCHAR* errorMsgSigFloat64Signal = TEXT("failed to get java onSigFloat64, ([D)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->SigFloat64SignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigFloat64Signal))
+	{
+		return;
+	}
 	NewData->SigStringSignalMethodID = env->GetMethodID(NewData->javaService, "onSigString", "([Ljava/lang/String;)V");
-	static const TCHAR* errorMsgSigStringSignal = TEXT("failed to get java onSigString, ([Ljava/lang/String;)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigStringSignal);
+	static const TCHAR* errorMsgSigStringSignal = TEXT("failed to get java onSigString, ([Ljava/lang/String;)V for tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniService. Bailing...");
+	if (NewData->SigStringSignalMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgSigStringSignal))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
@@ -190,6 +247,11 @@ void UTbSimpleSimpleArrayInterfaceJniAdapter::Initialize(FSubsystemCollectionBas
 #if PLATFORM_ANDROID
 #if USE_ANDROID_JNI
 	UTbSimpleSimpleArrayInterfaceJniAdapterCache::init();
+	if (!UTbSimpleSimpleArrayInterfaceJniAdapterCache::Get())
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterface_JNI, Error, TEXT("Failed to initialize UTbSimpleSimpleArrayInterfaceJniAdapterCache. Bailing..."));
+		return;
+	}
 	auto Env = FAndroidApplication::GetJavaEnv();
 	jclass BridgeClass = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniservice/SimpleArrayInterfaceJniServiceStarter");
 	static const TCHAR* errorMsgCls = TEXT("TbSimpleJavaServiceStarter; class not found");

@@ -141,71 +141,137 @@ void UTbSimpleSimpleInterfaceJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassSimpleInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->clientClassSimpleInterface == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->PropBoolSetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropBool", "(Z)V");
-	static const TCHAR* errorMsgPropBoolSetter = TEXT("failed to get java setPropBool, Z)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolSetter);
+	static const TCHAR* errorMsgPropBoolSetter = TEXT("failed to get java setPropBool, Z)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->PropBoolSetterId == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropBoolSetter))
+	{
+		return;
+	}
 	NewData->PropIntSetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropInt", "(I)V");
-	static const TCHAR* errorMsgPropIntSetter = TEXT("failed to get java setPropInt, I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntSetter);
+	static const TCHAR* errorMsgPropIntSetter = TEXT("failed to get java setPropInt, I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->PropIntSetterId == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropIntSetter))
+	{
+		return;
+	}
 	NewData->PropInt32SetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropInt32", "(I)V");
-	static const TCHAR* errorMsgPropInt32Setter = TEXT("failed to get java setPropInt32, I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt32Setter);
+	static const TCHAR* errorMsgPropInt32Setter = TEXT("failed to get java setPropInt32, I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->PropInt32SetterId == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt32Setter))
+	{
+		return;
+	}
 	NewData->PropInt64SetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropInt64", "(J)V");
-	static const TCHAR* errorMsgPropInt64Setter = TEXT("failed to get java setPropInt64, J)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt64Setter);
+	static const TCHAR* errorMsgPropInt64Setter = TEXT("failed to get java setPropInt64, J)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->PropInt64SetterId == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropInt64Setter))
+	{
+		return;
+	}
 	NewData->PropFloatSetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropFloat", "(F)V");
-	static const TCHAR* errorMsgPropFloatSetter = TEXT("failed to get java setPropFloat, F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloatSetter);
+	static const TCHAR* errorMsgPropFloatSetter = TEXT("failed to get java setPropFloat, F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->PropFloatSetterId == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloatSetter))
+	{
+		return;
+	}
 	NewData->PropFloat32SetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropFloat32", "(F)V");
-	static const TCHAR* errorMsgPropFloat32Setter = TEXT("failed to get java setPropFloat32, F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat32Setter);
+	static const TCHAR* errorMsgPropFloat32Setter = TEXT("failed to get java setPropFloat32, F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->PropFloat32SetterId == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat32Setter))
+	{
+		return;
+	}
 	NewData->PropFloat64SetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropFloat64", "(D)V");
-	static const TCHAR* errorMsgPropFloat64Setter = TEXT("failed to get java setPropFloat64, D)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat64Setter);
+	static const TCHAR* errorMsgPropFloat64Setter = TEXT("failed to get java setPropFloat64, D)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->PropFloat64SetterId == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropFloat64Setter))
+	{
+		return;
+	}
 	NewData->PropStringSetterId = env->GetMethodID(NewData->clientClassSimpleInterface, "setPropString", "(Ljava/lang/String;)V");
-	static const TCHAR* errorMsgPropStringSetter = TEXT("failed to get java setPropString, Ljava/lang/String;)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropStringSetter);
+	static const TCHAR* errorMsgPropStringSetter = TEXT("failed to get java setPropString, Ljava/lang/String;)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->PropStringSetterId == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgPropStringSetter))
+	{
+		return;
+	}
 	NewData->FuncNoReturnValueAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcNoReturnValueAsync", "(Ljava/lang/String;Z)V");
-	static const TCHAR* errorMsgFuncNoReturnValueAsyncMethod = TEXT("failed to get java funcNoReturnValueAsync, (Ljava/lang/String;Z)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncNoReturnValueAsyncMethod);
+	static const TCHAR* errorMsgFuncNoReturnValueAsyncMethod = TEXT("failed to get java funcNoReturnValueAsync, (Ljava/lang/String;Z)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->FuncNoReturnValueAsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncNoReturnValueAsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncNoParamsAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcNoParamsAsync", "(Ljava/lang/String;)V");
-	static const TCHAR* errorMsgFuncNoParamsAsyncMethod = TEXT("failed to get java funcNoParamsAsync, (Ljava/lang/String;)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncNoParamsAsyncMethod);
+	static const TCHAR* errorMsgFuncNoParamsAsyncMethod = TEXT("failed to get java funcNoParamsAsync, (Ljava/lang/String;)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->FuncNoParamsAsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncNoParamsAsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncBoolAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcBoolAsync", "(Ljava/lang/String;Z)V");
-	static const TCHAR* errorMsgFuncBoolAsyncMethod = TEXT("failed to get java funcBoolAsync, (Ljava/lang/String;Z)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncBoolAsyncMethod);
+	static const TCHAR* errorMsgFuncBoolAsyncMethod = TEXT("failed to get java funcBoolAsync, (Ljava/lang/String;Z)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->FuncBoolAsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncBoolAsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncIntAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcIntAsync", "(Ljava/lang/String;I)V");
-	static const TCHAR* errorMsgFuncIntAsyncMethod = TEXT("failed to get java funcIntAsync, (Ljava/lang/String;I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncIntAsyncMethod);
+	static const TCHAR* errorMsgFuncIntAsyncMethod = TEXT("failed to get java funcIntAsync, (Ljava/lang/String;I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->FuncIntAsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncIntAsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncInt32AsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcInt32Async", "(Ljava/lang/String;I)V");
-	static const TCHAR* errorMsgFuncInt32AsyncMethod = TEXT("failed to get java funcInt32Async, (Ljava/lang/String;I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncInt32AsyncMethod);
+	static const TCHAR* errorMsgFuncInt32AsyncMethod = TEXT("failed to get java funcInt32Async, (Ljava/lang/String;I)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->FuncInt32AsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncInt32AsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncInt64AsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcInt64Async", "(Ljava/lang/String;J)V");
-	static const TCHAR* errorMsgFuncInt64AsyncMethod = TEXT("failed to get java funcInt64Async, (Ljava/lang/String;J)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncInt64AsyncMethod);
+	static const TCHAR* errorMsgFuncInt64AsyncMethod = TEXT("failed to get java funcInt64Async, (Ljava/lang/String;J)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->FuncInt64AsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncInt64AsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncFloatAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcFloatAsync", "(Ljava/lang/String;F)V");
-	static const TCHAR* errorMsgFuncFloatAsyncMethod = TEXT("failed to get java funcFloatAsync, (Ljava/lang/String;F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncFloatAsyncMethod);
+	static const TCHAR* errorMsgFuncFloatAsyncMethod = TEXT("failed to get java funcFloatAsync, (Ljava/lang/String;F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->FuncFloatAsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncFloatAsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncFloat32AsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcFloat32Async", "(Ljava/lang/String;F)V");
-	static const TCHAR* errorMsgFuncFloat32AsyncMethod = TEXT("failed to get java funcFloat32Async, (Ljava/lang/String;F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncFloat32AsyncMethod);
+	static const TCHAR* errorMsgFuncFloat32AsyncMethod = TEXT("failed to get java funcFloat32Async, (Ljava/lang/String;F)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->FuncFloat32AsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncFloat32AsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncFloat64AsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcFloat64Async", "(Ljava/lang/String;D)V");
-	static const TCHAR* errorMsgFuncFloat64AsyncMethod = TEXT("failed to get java funcFloat64Async, (Ljava/lang/String;D)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncFloat64AsyncMethod);
+	static const TCHAR* errorMsgFuncFloat64AsyncMethod = TEXT("failed to get java funcFloat64Async, (Ljava/lang/String;D)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->FuncFloat64AsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncFloat64AsyncMethod))
+	{
+		return;
+	}
 	NewData->FuncStringAsyncMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "funcStringAsync", "(Ljava/lang/String;Ljava/lang/String;)V");
-	static const TCHAR* errorMsgFuncStringAsyncMethod = TEXT("failed to get java funcStringAsync, (Ljava/lang/String;Ljava/lang/String;)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncStringAsyncMethod);
+	static const TCHAR* errorMsgFuncStringAsyncMethod = TEXT("failed to get java funcStringAsync, (Ljava/lang/String;Ljava/lang/String;)V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->FuncStringAsyncMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgFuncStringAsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassSimpleInterfaceCtor = env->GetMethodID(NewData->clientClassSimpleInterface, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->clientClassSimpleInterfaceCtor == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassSimpleInterface, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient");
-	TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for tbSimple/tbSimplejniclient/SimpleInterfaceJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || TbSimpleDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);

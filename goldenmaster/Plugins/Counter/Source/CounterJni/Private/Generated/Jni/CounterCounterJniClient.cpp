@@ -131,41 +131,77 @@ void UCounterCounterJniClientCache::init()
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 
 	NewData->clientClassCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counterjniclient/CounterJniClient");
-	static const TCHAR* errorMsgCls = TEXT("failed to get java counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgCls);
+	static const TCHAR* errorMsgCls = TEXT("failed to get java counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->clientClassCounter == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgCls))
+	{
+		return;
+	}
 	NewData->VectorSetterId = env->GetMethodID(NewData->clientClassCounter, "setVector", "(LcustomTypes/customTypes_api/Vector3D;)V");
-	static const TCHAR* errorMsgVectorSetter = TEXT("failed to get java setVector, LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgVectorSetter);
+	static const TCHAR* errorMsgVectorSetter = TEXT("failed to get java setVector, LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->VectorSetterId == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgVectorSetter))
+	{
+		return;
+	}
 	NewData->ExternVectorSetterId = env->GetMethodID(NewData->clientClassCounter, "setExternVector", "(Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-	static const TCHAR* errorMsgExternVectorSetter = TEXT("failed to get java setExternVector, Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgExternVectorSetter);
+	static const TCHAR* errorMsgExternVectorSetter = TEXT("failed to get java setExternVector, Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->ExternVectorSetterId == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgExternVectorSetter))
+	{
+		return;
+	}
 	NewData->VectorArraySetterId = env->GetMethodID(NewData->clientClassCounter, "setVectorArray", "([LcustomTypes/customTypes_api/Vector3D;)V");
-	static const TCHAR* errorMsgVectorArraySetter = TEXT("failed to get java setVectorArray, [LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgVectorArraySetter);
+	static const TCHAR* errorMsgVectorArraySetter = TEXT("failed to get java setVectorArray, [LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->VectorArraySetterId == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgVectorArraySetter))
+	{
+		return;
+	}
 	NewData->ExternVectorArraySetterId = env->GetMethodID(NewData->clientClassCounter, "setExternVectorArray", "([Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-	static const TCHAR* errorMsgExternVectorArraySetter = TEXT("failed to get java setExternVectorArray, [Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgExternVectorArraySetter);
+	static const TCHAR* errorMsgExternVectorArraySetter = TEXT("failed to get java setExternVectorArray, [Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->ExternVectorArraySetterId == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgExternVectorArraySetter))
+	{
+		return;
+	}
 	NewData->IncrementAsyncMethodID = env->GetMethodID(NewData->clientClassCounter, "incrementAsync", "(Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-	static const TCHAR* errorMsgIncrementAsyncMethod = TEXT("failed to get java incrementAsync, (Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgIncrementAsyncMethod);
+	static const TCHAR* errorMsgIncrementAsyncMethod = TEXT("failed to get java incrementAsync, (Ljava/lang/String;Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->IncrementAsyncMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgIncrementAsyncMethod))
+	{
+		return;
+	}
 	NewData->IncrementArrayAsyncMethodID = env->GetMethodID(NewData->clientClassCounter, "incrementArrayAsync", "(Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V");
-	static const TCHAR* errorMsgIncrementArrayAsyncMethod = TEXT("failed to get java incrementArrayAsync, (Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgIncrementArrayAsyncMethod);
+	static const TCHAR* errorMsgIncrementArrayAsyncMethod = TEXT("failed to get java incrementArrayAsync, (Ljava/lang/String;[Lorg/apache/commons/math3/geometry/euclidean/threed/Vector3D;)V for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->IncrementArrayAsyncMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgIncrementArrayAsyncMethod))
+	{
+		return;
+	}
 	NewData->DecrementAsyncMethodID = env->GetMethodID(NewData->clientClassCounter, "decrementAsync", "(Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V");
-	static const TCHAR* errorMsgDecrementAsyncMethod = TEXT("failed to get java decrementAsync, (Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgDecrementAsyncMethod);
+	static const TCHAR* errorMsgDecrementAsyncMethod = TEXT("failed to get java decrementAsync, (Ljava/lang/String;LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->DecrementAsyncMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgDecrementAsyncMethod))
+	{
+		return;
+	}
 	NewData->DecrementArrayAsyncMethodID = env->GetMethodID(NewData->clientClassCounter, "decrementArrayAsync", "(Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V");
-	static const TCHAR* errorMsgDecrementArrayAsyncMethod = TEXT("failed to get java decrementArrayAsync, (Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgDecrementArrayAsyncMethod);
+	static const TCHAR* errorMsgDecrementArrayAsyncMethod = TEXT("failed to get java decrementArrayAsync, (Ljava/lang/String;[LcustomTypes/customTypes_api/Vector3D;)V for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->DecrementArrayAsyncMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgDecrementArrayAsyncMethod))
+	{
+		return;
+	}
 	NewData->clientClassCounterCtor = env->GetMethodID(NewData->clientClassCounter, "<init>", "()V");
-	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgInit);
+	static const TCHAR* errorMsgInit = TEXT("failed to get java init, ()V for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->clientClassCounterCtor == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgInit))
+	{
+		return;
+	}
 	NewData->BindMethodID = env->GetMethodID(NewData->clientClassCounter, "bind", "(Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z");
-	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgBind);
+	static const TCHAR* errorMsgBind = TEXT("failed to get java bind, (Landroid/content/Context;Ljava/lang/String;Ljava/lang/String;)Z for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->BindMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgBind))
+	{
+		return;
+	}
 	NewData->UnbindMethodID = env->GetMethodID(NewData->clientClassCounter, "unbind", "()V");
-	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for counter/counterjniclient/CounterJniClient");
-	CounterDataJavaConverter::checkJniErrorOccured(errorMsgUnbind);
+	static const TCHAR* errorMsgUnbind = TEXT("failed to get java unbind, ()V for counter/counterjniclient/CounterJniClient. Bailing...");
+	if (NewData->UnbindMethodID == nullptr || CounterDataJavaConverter::checkJniErrorOccured(errorMsgUnbind))
+	{
+		return;
+	}
 
 	{
 		FScopeLock Lock(&CacheLock);
