@@ -32,10 +32,11 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 DECLARE_LOG_CATEGORY_EXTERN(LogCustomTypesDataJavaConverter_JNI, Log, All);
 
+struct FCustomTypesDataJavaConverterCacheData;
+
 class CUSTOMTYPESAPI_API CustomTypesDataJavaConverter
 {
 public:
-	static jclass jVector3D;
 	static void fillVector3D(JNIEnv* env, jobject input, FCustomTypesVector3D& out_vector3_d);
 	static void fillVector3DArray(JNIEnv* env, jobjectArray input, TArray<FCustomTypesVector3D>& out_array);
 	static jobject makeJavaVector3D(JNIEnv* env, const FCustomTypesVector3D& out_vector3_d);
@@ -45,9 +46,9 @@ public:
 	static void cleanJavaReferences();
 
 private:
-	static FCriticalSection initMutex;
-	static void ensureInitialized();
-	static bool m_isInitialized;
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FCustomTypesDataJavaConverterCacheData, ESPMode::ThreadSafe> CacheData;
+	static TSharedPtr<FCustomTypesDataJavaConverterCacheData, ESPMode::ThreadSafe> ensureInitialized();
 	static jmethodID getMethod(jclass cls, const char* name, const char* signature, const TCHAR*);
 	static jmethodID getStaticMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo);
 	static jfieldID getFieldId(jclass cls, const char* name, const char* signature, const TCHAR*);

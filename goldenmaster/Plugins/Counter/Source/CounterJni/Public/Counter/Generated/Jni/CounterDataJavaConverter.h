@@ -35,10 +35,11 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 DECLARE_LOG_CATEGORY_EXTERN(LogCounterDataJavaConverter_JNI, Log, All);
 
+struct FCounterDataJavaConverterCacheData;
+
 class COUNTERAPI_API CounterDataJavaConverter
 {
 public:
-	static jclass jCounter;
 	static void fillCounter(JNIEnv* env, jobject input, TScriptInterface<ICounterCounterInterface> out_counter);
 	static void fillCounterArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ICounterCounterInterface>>& out_array);
 	static jobject makeJavaCounter(JNIEnv* env, const TScriptInterface<ICounterCounterInterface> out_counter);
@@ -50,9 +51,9 @@ public:
 	static void cleanJavaReferences();
 
 private:
-	static FCriticalSection initMutex;
-	static void ensureInitialized();
-	static bool m_isInitialized;
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FCounterDataJavaConverterCacheData, ESPMode::ThreadSafe> CacheData;
+	static TSharedPtr<FCounterDataJavaConverterCacheData, ESPMode::ThreadSafe> ensureInitialized();
 	static jmethodID getMethod(jclass cls, const char* name, const char* signature, const TCHAR*);
 	static jmethodID getStaticMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo);
 	static jfieldID getFieldId(jclass cls, const char* name, const char* signature, const TCHAR*);

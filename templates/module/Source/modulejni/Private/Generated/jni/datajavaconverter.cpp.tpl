@@ -69,22 +69,64 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(Log{{$className}}_JNI);
 
+struct F{{$className}}CacheData
+{
+{{- range .Module.Structs }}
+	jclass j{{Camel .Name}} = nullptr;
+{{- end }}
+{{- range .Module.Enums }}
+	jclass j{{Camel .Name}} = nullptr;
+{{- end }}
+{{- range .Module.Interfaces }}
+	jclass j{{Camel .Name}} = nullptr;
+{{- end }}
+{{- range .Module.Externs }}
+	jclass j{{Camel .Name}} = nullptr;
+{{- end }}
+
+	~F{{$className}}CacheData()
+	{
+		JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+		if (Env)
+		{
+		{{- range .Module.Structs }}
+			if (j{{Camel .Name}}) Env->DeleteGlobalRef(j{{Camel .Name}});
+		{{- end }}
+		{{- range .Module.Enums }}
+			if (j{{Camel .Name}}) Env->DeleteGlobalRef(j{{Camel .Name}});
+		{{- end }}
+		{{- range .Module.Interfaces }}
+			if (j{{Camel .Name}}) Env->DeleteGlobalRef(j{{Camel .Name}});
+		{{- end }}
+		{{- range .Module.Externs }}
+			if (j{{Camel .Name}}) Env->DeleteGlobalRef(j{{Camel .Name}});
+		{{- end }}
+		}
+	}
+};
+
+FCriticalSection {{$className}}::CacheLock;
+TSharedPtr<F{{$className}}CacheData, ESPMode::ThreadSafe> {{$className}}::CacheData;
+
 {{- range .Module.Structs }}
 {{- $cachedStruct := printf "j%s" (Camel .Name) }}
 {{- $structType := printf "F%s%s" $ModuleName .Name }}
 {{- $structName := printf "out_%s" (snake .Name)}}
 
-jclass {{$className }}::{{$cachedStruct}} = nullptr;
-
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$structType}}& {{$structName}})
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for fill{{Camel .Name}}"));
+		return;
+	}
 {{- range .Fields }}
 	{{- $cppFieldName := .Name}}
 	{{- $javaFieldName := camel .Name}}
 
 	static const TCHAR* errorMsgFind{{$javaFieldName}} = TEXT("failed when trying to field {{$javaFieldName}} {{jniSignatureType . }} for {{$structType}}");
-	static const jfieldID jFieldId_{{snake .Name}} = getFieldId({{$cachedStruct}}, "{{$javaFieldName}}", "{{jniSignatureType . }}", errorMsgFind{{$javaFieldName}});
+	static const jfieldID jFieldId_{{snake .Name}} = getFieldId(Cache->{{$cachedStruct}}, "{{$javaFieldName}}", "{{jniSignatureType . }}", errorMsgFind{{$javaFieldName}});
 
 	if (jFieldId_{{snake .Name}})
 	{
@@ -178,7 +220,12 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$struct
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$structType}}>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for fill{{Camel .Name}}Array"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of {{$structName}} array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -211,16 +258,21 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 
 jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structType}}& {{$in_cppStructName}})
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for makeJava{{Camel .Name}}"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for {{$structName}}.");
-	static const jmethodID ctor = getMethod({{$cachedStruct}}, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->{{$cachedStruct}}, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject({{$cachedStruct}}, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->{{$cachedStruct}}, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for {{$structName}}.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -233,7 +285,7 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
 	{{- $tmpObjName := printf "l_%s" $javaFieldName }}
 
 	static const TCHAR* errorMsgFind{{$javaFieldName}} = TEXT("failed when trying to field {{$javaFieldName}} {{jniSignatureType . }} for {{$structType}}");
-	static const jfieldID jFieldId_{{snake .Name}} = getFieldId({{$cachedStruct}}, "{{$javaFieldName}}", "{{jniSignatureType . }}", errorMsgFind{{$javaFieldName}});
+	static const jfieldID jFieldId_{{snake .Name}} = getFieldId(Cache->{{$cachedStruct}}, "{{$javaFieldName}}", "{{jniSignatureType . }}", errorMsgFind{{$javaFieldName}});
 
 	if (jFieldId_{{snake .Name}} != nullptr)
 	{
@@ -331,15 +383,15 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$structTy
 
 jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$structType}}>& cppArray)
 {
-	ensureInitialized();
-	if ({{$cachedStruct}} == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->{{$cachedStruct}})
 	{
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$structType}} not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, {{$cachedStruct}}, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->{{$cachedStruct}}, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of {{$structName}}.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -370,11 +422,15 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 {{- $packageName := printf "%s/%s_api" $jmoduleName $jmoduleName}}
 {{- $javaClassTypeName := Camel .Name}}
 {{- $cachedEnum := printf "j%s" (Camel .Name) }}
-jclass {{$className }}::{{$cachedEnum}} = nullptr;
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for fill{{Camel .Name}}Array"));
+		return;
+	}
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of {{$javaClassTypeName}} array.");
@@ -407,9 +463,14 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 	{{- else}}
 	{{$cpp_class}} cppEnumValue;
 	{{- end}}
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for get{{Camel .Name}}Value"));
+		return cppEnumValue;
+	}
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for {{$javaClassTypeName}}.");
-	static const jmethodID getValueMethod = getMethod({{$cachedEnum}}, "getValue", "()I", errorMsgGetMethod);
+	static const jmethodID getValueMethod = getMethod(Cache->{{$cachedEnum}}, "getValue", "()I", errorMsgGetMethod);
 	if (getValueMethod != nullptr)
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
@@ -429,14 +490,14 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 
 jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$cpp_class}}>& cppArray)
 {
-	ensureInitialized();
-	if ({{$cachedEnum}} == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->{{$cachedEnum}})
 	{
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("Enum {{Camel .Name }} not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, {{$cachedEnum}}, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->{{$cachedEnum}}, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate {{$javaClassTypeName}} jarray.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -460,16 +521,21 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 
 jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, {{$cpp_class}} value)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for makeJava{{Camel .Name}}"));
+		return nullptr;
+	}
 	static const TCHAR* errorMsgFromValueMethod = TEXT("failed when trying to get java method fromValue for object for {{$javaClassTypeName}}.");
-	static const jmethodID fromValueMethod = getStaticMethod({{$cachedEnum}}, "fromValue", "(I)L{{$packageName}}/{{$javaClassTypeName}};", errorMsgFromValueMethod);
+	static const jmethodID fromValueMethod = getStaticMethod(Cache->{{$cachedEnum}}, "fromValue", "(I)L{{$packageName}}/{{$javaClassTypeName}};", errorMsgFromValueMethod);
 	if (fromValueMethod == nullptr)
 	{
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
 	int int_value = (int)value;
-	jobject javaObj = env->CallStaticObjectMethod({{$cachedEnum}}, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(Cache->{{$cachedEnum}}, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for {{$javaClassTypeName}}.");
 	checkJniErrorOccured(errorMsg);
 	return javaObj;
@@ -482,11 +548,14 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, {{$cpp_class}} va
 {{- $ifName := printf "out_%s" (snake .Name)}}
 {{- $cachedClass:= printf "j%s" (Camel .Name) }}
 
-jclass {{$className }}::{{$cachedClass}} = nullptr;
-
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$ifType}} {{$ifName}})
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for fill{{Camel .Name}}"));
+		return;
+	}
 	if (!input || !{{$ifName}})
 	{
 		return;
@@ -496,7 +565,12 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$ifType
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$ifType}}>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for fill{{Camel .Name}}Array"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
@@ -504,7 +578,12 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 
 jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$ifType}} {{$in_cppIfName}})
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for makeJava{{Camel .Name}}"));
+		return nullptr;
+	}
 	if (!{{$in_cppIfName}})
 	{
 		return nullptr;
@@ -517,14 +596,14 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$ifType}}
 
 jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$ifType}}>& cppArray)
 {
-	ensureInitialized();
-	if (!{{$cachedClass}})
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->{{$cachedClass}})
 	{
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("I{{Camel .Name}} not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, {{$cachedClass}}, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->{{$cachedClass}}, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for {{$ifName}}.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -536,7 +615,12 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 
 {{$ifType}} {{$className }}::getCppInstance{{$ModuleName}}{{Camel .Name }}()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for getCppInstance{{$ModuleName}}{{Camel .Name}}"));
+		return nullptr;
+	}
 	{{- if $features.stubs }}
 	{{- $Class := printf "U%s%sImplementation" $ModuleName (Camel .Name)}}
 	{{$Class}}* Impl = NewObject<{{$Class}}>();
@@ -567,12 +651,10 @@ jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const T
 {{- end }}
 {{- $cachedClass:= printf "j%s" (Camel .Name) }}
 
-jclass {{$className }}::{{$cachedClass}} = nullptr;
-
 void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exCppType}}& {{$exName}})
 {
-	ensureInitialized();
-	if (!{{$cachedClass}})
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->{{$cachedClass}})
 	{
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$fullJavaClassType}} not found"));
 		return;
@@ -585,7 +667,12 @@ void {{$className }}::fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exCppT
 
 void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$exCppType}}>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for fill{{Camel .Name}}Array"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get len of {{$extJava.Name}} jarray.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -615,16 +702,21 @@ void {{$className }}::fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input,
 
 jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$exCppType}}& {{$in_cppExName}})
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$className}} cache not initialized for makeJava{{Camel .Name}}"));
+		return nullptr;
+	}
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for {{$fullJavaClassType}}.");
 	// Make sure either that the extern class has default ctor or provide proper signature and arguments.
-	static const jmethodID ctor = getMethod({{$cachedClass}}, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->{{$cachedClass}}, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject({{$cachedClass}}, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->{{$cachedClass}}, ctor);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate {{$extJava.Name}}.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -639,14 +731,14 @@ jobject {{$className }}::makeJava{{Camel .Name }}(JNIEnv* env, const {{$exCppTyp
 
 jobjectArray {{$className }}::makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$exCppType}}>& cppArray)
 {
-	ensureInitialized();
-	if (!{{$cachedClass}})
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->{{$cachedClass}})
 	{
 		UE_LOG(Log{{$className}}_JNI, Warning, TEXT("{{$fullJavaClassType}} not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, {{$cachedClass}}, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->{{$cachedClass}}, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate {{$extJava.Name}} jarray.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -685,58 +777,40 @@ bool {{$className}}::checkJniErrorOccured(const TCHAR* Msg)
 
 void {{$className}}::cleanJavaReferences()
 {
-	FScopeLock Lock(&initMutex);
-	m_isInitialized = false;
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-{{- range .Module.Structs }}
-	env->DeleteGlobalRef(j{{Camel .Name}});
-{{- end }}
-{{- range .Module.Enums }}
-	env->DeleteGlobalRef(j{{Camel .Name}});
-{{- end }}
-{{- range .Module.Interfaces }}
-	env->DeleteGlobalRef(j{{Camel .Name}});
-{{- end }}
-{{- range .Module.Externs }}
-	env->DeleteGlobalRef(j{{Camel .Name}});
-{{- end }}
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
-FCriticalSection {{$className }}::initMutex;
-
-bool {{$className }}::m_isInitialized = false;
-
-void {{$className }}::ensureInitialized()
+TSharedPtr<F{{$className}}CacheData, ESPMode::ThreadSafe> {{$className }}::ensureInitialized()
 {
-	if (m_isInitialized)
 	{
-		return;
-	}
-	FScopeLock Lock(&initMutex);
-	if (m_isInitialized)
-	{
-		return;
+		FScopeLock Lock(&CacheLock);
+		if (CacheData)
+		{
+			return CacheData;
+		}
 	}
 
+	auto NewData = MakeShared<F{{$className}}CacheData, ESPMode::ThreadSafe>();
 	{{- $packageName := printf "%s/%s_api" $jmoduleName $jmoduleName }}
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
 {{- range .Module.Structs }}
 	{{- $javaClassTypeName := Camel .Name}}
-	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	NewData->j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
 	static const TCHAR* errorMsg{{Camel .Name}} = TEXT("failed to get {{$packageName}}/{{$javaClassTypeName}}");
 	checkJniErrorOccured(errorMsg{{Camel .Name}});
 {{- end }}
 
 {{- range .Module.Enums }}
 {{- $javaClassTypeName := Camel .Name}}
-	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
+	NewData->j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$packageName}}/{{$javaClassTypeName}}");
 	static const TCHAR* errorMsg{{Camel .Name}} = TEXT("failed to get {{$packageName}}/{{$javaClassTypeName}}");
 	checkJniErrorOccured(errorMsg{{Camel .Name}});
 {{- end }}
 
 {{- range .Module.Interfaces }}
 {{- $fullJavaClassType := printf "%s/%s_api/I%s" $jmoduleName $jmoduleName (Camel .Name) }}
-	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
+	NewData->j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
 	static const TCHAR* errorMsg{{Camel .Name}} = TEXT("failed to get {{$fullJavaClassType}}");
 	checkJniErrorOccured(errorMsg{{Camel .Name}});
 {{- end }}
@@ -748,11 +822,19 @@ void {{$className }}::ensureInitialized()
 {{- if ne $prefix "" }}
 {{- $fullJavaClassType = printf "%s/%s" $prefix $fullJavaClassType }}
 {{- end }}
-	j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
+	NewData->j{{Camel .Name}} = FAndroidApplication::FindJavaClassGlobalRef("{{$fullJavaClassType}}");
 	static const TCHAR* errorMsg{{Camel .Name}} = TEXT("failed to get {{$fullJavaClassType}}");
 	checkJniErrorOccured(errorMsg{{Camel .Name}});
 {{- end }}
-	m_isInitialized = true;
+
+	{
+		FScopeLock Lock(&CacheLock);
+		if (!CacheData)
+		{
+			CacheData = NewData;
+		}
+		return CacheData;
+	}
 }
 
 jmethodID {{$className }}::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)

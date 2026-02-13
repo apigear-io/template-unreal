@@ -34,11 +34,34 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 
 DEFINE_LOG_CATEGORY(LogTbNamesDataJavaConverter_JNI);
-jclass TbNamesDataJavaConverter::jEnumWithUnderScores = nullptr;
+
+struct FTbNamesDataJavaConverterCacheData
+{
+	jclass jEnumWithUnderScores = nullptr;
+	jclass jNamEs = nullptr;
+
+	~FTbNamesDataJavaConverterCacheData()
+	{
+		JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+		if (Env)
+		{
+			if (jEnumWithUnderScores) Env->DeleteGlobalRef(jEnumWithUnderScores);
+			if (jNamEs) Env->DeleteGlobalRef(jNamEs);
+		}
+	}
+};
+
+FCriticalSection TbNamesDataJavaConverter::CacheLock;
+TSharedPtr<FTbNamesDataJavaConverterCacheData, ESPMode::ThreadSafe> TbNamesDataJavaConverter::CacheData;
 
 void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobjectArray input, TArray<ETbNamesEnum_With_Under_scores>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("TbNamesDataJavaConverter cache not initialized for fillEnumWithUnderScoresArray"));
+		return;
+	}
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of EnumWithUnderScores array.");
@@ -66,9 +89,14 @@ void TbNamesDataJavaConverter::fillEnumWithUnderScoresArray(JNIEnv* env, jobject
 ETbNamesEnum_With_Under_scores TbNamesDataJavaConverter::getEnumWithUnderScoresValue(JNIEnv* env, jobject input)
 {
 	ETbNamesEnum_With_Under_scores cppEnumValue = ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("TbNamesDataJavaConverter cache not initialized for getEnumWithUnderScoresValue"));
+		return cppEnumValue;
+	}
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for EnumWithUnderScores.");
-	static const jmethodID getValueMethod = getMethod(jEnumWithUnderScores, "getValue", "()I", errorMsgGetMethod);
+	static const jmethodID getValueMethod = getMethod(Cache->jEnumWithUnderScores, "getValue", "()I", errorMsgGetMethod);
 	if (getValueMethod != nullptr)
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
@@ -87,14 +115,14 @@ ETbNamesEnum_With_Under_scores TbNamesDataJavaConverter::getEnumWithUnderScoresV
 
 jobjectArray TbNamesDataJavaConverter::makeJavaEnumWithUnderScoresArray(JNIEnv* env, const TArray<ETbNamesEnum_With_Under_scores>& cppArray)
 {
-	ensureInitialized();
-	if (jEnumWithUnderScores == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jEnumWithUnderScores)
 	{
 		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("Enum EnumWithUnderScores not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jEnumWithUnderScores, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEnumWithUnderScores, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate EnumWithUnderScores jarray.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -118,26 +146,34 @@ jobjectArray TbNamesDataJavaConverter::makeJavaEnumWithUnderScoresArray(JNIEnv* 
 
 jobject TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(JNIEnv* env, ETbNamesEnum_With_Under_scores value)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("TbNamesDataJavaConverter cache not initialized for makeJavaEnumWithUnderScores"));
+		return nullptr;
+	}
 	static const TCHAR* errorMsgFromValueMethod = TEXT("failed when trying to get java method fromValue for object for EnumWithUnderScores.");
-	static const jmethodID fromValueMethod = getStaticMethod(jEnumWithUnderScores, "fromValue", "(I)LtbNames/tbNames_api/EnumWithUnderScores;", errorMsgFromValueMethod);
+	static const jmethodID fromValueMethod = getStaticMethod(Cache->jEnumWithUnderScores, "fromValue", "(I)LtbNames/tbNames_api/EnumWithUnderScores;", errorMsgFromValueMethod);
 	if (fromValueMethod == nullptr)
 	{
 		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
 	int int_value = (int)value;
-	jobject javaObj = env->CallStaticObjectMethod(jEnumWithUnderScores, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(Cache->jEnumWithUnderScores, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for EnumWithUnderScores.");
 	checkJniErrorOccured(errorMsg);
 	return javaObj;
 }
 
-jclass TbNamesDataJavaConverter::jNamEs = nullptr;
-
 void TbNamesDataJavaConverter::fillNamEs(JNIEnv* env, jobject input, TScriptInterface<ITbNamesNamEsInterface> out_nam_es)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("TbNamesDataJavaConverter cache not initialized for fillNamEs"));
+		return;
+	}
 	if (!input || !out_nam_es)
 	{
 		return;
@@ -147,13 +183,23 @@ void TbNamesDataJavaConverter::fillNamEs(JNIEnv* env, jobject input, TScriptInte
 
 void TbNamesDataJavaConverter::fillNamEsArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbNamesNamEsInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("TbNamesDataJavaConverter cache not initialized for fillNamEsArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbNamesDataJavaConverter::makeJavaNamEs(JNIEnv* env, const TScriptInterface<ITbNamesNamEsInterface> out_nam_es)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("TbNamesDataJavaConverter cache not initialized for makeJavaNamEs"));
+		return nullptr;
+	}
 	if (!out_nam_es)
 	{
 		return nullptr;
@@ -166,14 +212,14 @@ jobject TbNamesDataJavaConverter::makeJavaNamEs(JNIEnv* env, const TScriptInterf
 
 jobjectArray TbNamesDataJavaConverter::makeJavaNamEsArray(JNIEnv* env, const TArray<TScriptInterface<ITbNamesNamEsInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jNamEs)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jNamEs)
 	{
 		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("INamEs not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jNamEs, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jNamEs, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_nam_es.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -185,7 +231,12 @@ jobjectArray TbNamesDataJavaConverter::makeJavaNamEsArray(JNIEnv* env, const TAr
 
 TScriptInterface<ITbNamesNamEsInterface> TbNamesDataJavaConverter::getCppInstanceTbNamesNamEs()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbNamesDataJavaConverter_JNI, Warning, TEXT("TbNamesDataJavaConverter cache not initialized for getCppInstanceTbNamesNamEs"));
+		return nullptr;
+	}
 	UTbNamesNamEsImplementation* Impl = NewObject<UTbNamesNamEsImplementation>();
 	TScriptInterface<ITbNamesNamEsInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -208,36 +259,37 @@ bool TbNamesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 
 void TbNamesDataJavaConverter::cleanJavaReferences()
 {
-	FScopeLock Lock(&initMutex);
-	m_isInitialized = false;
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(jEnumWithUnderScores);
-	env->DeleteGlobalRef(jNamEs);
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
-FCriticalSection TbNamesDataJavaConverter::initMutex;
-
-bool TbNamesDataJavaConverter::m_isInitialized = false;
-
-void TbNamesDataJavaConverter::ensureInitialized()
+TSharedPtr<FTbNamesDataJavaConverterCacheData, ESPMode::ThreadSafe> TbNamesDataJavaConverter::ensureInitialized()
 {
-	if (m_isInitialized)
 	{
-		return;
+		FScopeLock Lock(&CacheLock);
+		if (CacheData)
+		{
+			return CacheData;
+		}
 	}
-	FScopeLock Lock(&initMutex);
-	if (m_isInitialized)
-	{
-		return;
-	}
+
+	auto NewData = MakeShared<FTbNamesDataJavaConverterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	jEnumWithUnderScores = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
+	NewData->jEnumWithUnderScores = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/EnumWithUnderScores");
 	static const TCHAR* errorMsgEnumWithUnderScores = TEXT("failed to get tbNames/tbNames_api/EnumWithUnderScores");
 	checkJniErrorOccured(errorMsgEnumWithUnderScores);
-	jNamEs = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/INamEs");
+	NewData->jNamEs = FAndroidApplication::FindJavaClassGlobalRef("tbNames/tbNames_api/INamEs");
 	static const TCHAR* errorMsgNamEs = TEXT("failed to get tbNames/tbNames_api/INamEs");
 	checkJniErrorOccured(errorMsgNamEs);
-	m_isInitialized = true;
+
+	{
+		FScopeLock Lock(&CacheLock);
+		if (!CacheData)
+		{
+			CacheData = NewData;
+		}
+		return CacheData;
+	}
 }
 
 jmethodID TbNamesDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
