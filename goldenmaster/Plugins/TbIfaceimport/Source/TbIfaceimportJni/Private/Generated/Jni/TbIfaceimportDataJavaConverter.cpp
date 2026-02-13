@@ -34,11 +34,34 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbIfaceimportDataJavaConverter_JNI);
 
-jclass TbIfaceimportDataJavaConverter::jEmptyIf = nullptr;
+struct FTbIfaceimportDataJavaConverterCacheData
+{
+	jclass jEmptyIf = nullptr;
+
+	~FTbIfaceimportDataJavaConverterCacheData()
+	{
+		JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+		if (Env)
+		{
+			if (jEmptyIf)
+			{
+				Env->DeleteGlobalRef(jEmptyIf);
+			}
+		}
+	}
+};
+
+FCriticalSection TbIfaceimportDataJavaConverter::CacheLock;
+TSharedPtr<FTbIfaceimportDataJavaConverterCacheData, ESPMode::ThreadSafe> TbIfaceimportDataJavaConverter::CacheData;
 
 void TbIfaceimportDataJavaConverter::fillEmptyIf(JNIEnv* env, jobject input, TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbIfaceimportDataJavaConverter_JNI, Warning, TEXT("TbIfaceimportDataJavaConverter cache not initialized for fillEmptyIf"));
+		return;
+	}
 	if (!input || !out_empty_if)
 	{
 		return;
@@ -48,13 +71,23 @@ void TbIfaceimportDataJavaConverter::fillEmptyIf(JNIEnv* env, jobject input, TSc
 
 void TbIfaceimportDataJavaConverter::fillEmptyIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbIfaceimportDataJavaConverter_JNI, Warning, TEXT("TbIfaceimportDataJavaConverter cache not initialized for fillEmptyIfArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbIfaceimportDataJavaConverter::makeJavaEmptyIf(JNIEnv* env, const TScriptInterface<ITbIfaceimportEmptyIfInterface> out_empty_if)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbIfaceimportDataJavaConverter_JNI, Warning, TEXT("TbIfaceimportDataJavaConverter cache not initialized for makeJavaEmptyIf"));
+		return nullptr;
+	}
 	if (!out_empty_if)
 	{
 		return nullptr;
@@ -67,14 +100,14 @@ jobject TbIfaceimportDataJavaConverter::makeJavaEmptyIf(JNIEnv* env, const TScri
 
 jobjectArray TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jEmptyIf)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jEmptyIf)
 	{
 		UE_LOG(LogTbIfaceimportDataJavaConverter_JNI, Warning, TEXT("IEmptyIf not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jEmptyIf, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEmptyIf, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_empty_if.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -86,7 +119,12 @@ jobjectArray TbIfaceimportDataJavaConverter::makeJavaEmptyIfArray(JNIEnv* env, c
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> TbIfaceimportDataJavaConverter::getCppInstanceTbIfaceimportEmptyIf()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbIfaceimportDataJavaConverter_JNI, Warning, TEXT("TbIfaceimportDataJavaConverter cache not initialized for getCppInstanceTbIfaceimportEmptyIf"));
+		return nullptr;
+	}
 	UTbIfaceimportEmptyIfImplementation* Impl = NewObject<UTbIfaceimportEmptyIfImplementation>();
 	TScriptInterface<ITbIfaceimportEmptyIfInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -109,32 +147,34 @@ bool TbIfaceimportDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 
 void TbIfaceimportDataJavaConverter::cleanJavaReferences()
 {
-	FScopeLock Lock(&initMutex);
-	m_isInitialized = false;
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(jEmptyIf);
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
-FCriticalSection TbIfaceimportDataJavaConverter::initMutex;
-
-bool TbIfaceimportDataJavaConverter::m_isInitialized = false;
-
-void TbIfaceimportDataJavaConverter::ensureInitialized()
+TSharedPtr<FTbIfaceimportDataJavaConverterCacheData, ESPMode::ThreadSafe> TbIfaceimportDataJavaConverter::ensureInitialized()
 {
-	if (m_isInitialized)
 	{
-		return;
+		FScopeLock Lock(&CacheLock);
+		if (CacheData)
+		{
+			return CacheData;
+		}
 	}
-	FScopeLock Lock(&initMutex);
-	if (m_isInitialized)
-	{
-		return;
-	}
+
+	auto NewData = MakeShared<FTbIfaceimportDataJavaConverterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	jEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
+	NewData->jEmptyIf = FAndroidApplication::FindJavaClassGlobalRef("tbIfaceimport/tbIfaceimport_api/IEmptyIf");
 	static const TCHAR* errorMsgEmptyIf = TEXT("failed to get tbIfaceimport/tbIfaceimport_api/IEmptyIf");
 	checkJniErrorOccured(errorMsgEmptyIf);
-	m_isInitialized = true;
+
+	{
+		FScopeLock Lock(&CacheLock);
+		if (!CacheData)
+		{
+			CacheData = NewData;
+		}
+		return CacheData;
+	}
 }
 
 jmethodID TbIfaceimportDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)

@@ -40,11 +40,64 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbSimpleDataJavaConverter_JNI);
 
-jclass TbSimpleDataJavaConverter::jVoidInterface = nullptr;
+struct FTbSimpleDataJavaConverterCacheData
+{
+	jclass jVoidInterface = nullptr;
+	jclass jSimpleInterface = nullptr;
+	jclass jSimpleArrayInterface = nullptr;
+	jclass jNoPropertiesInterface = nullptr;
+	jclass jNoOperationsInterface = nullptr;
+	jclass jNoSignalsInterface = nullptr;
+	jclass jEmptyInterface = nullptr;
+
+	~FTbSimpleDataJavaConverterCacheData()
+	{
+		JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+		if (Env)
+		{
+			if (jVoidInterface)
+			{
+				Env->DeleteGlobalRef(jVoidInterface);
+			}
+			if (jSimpleInterface)
+			{
+				Env->DeleteGlobalRef(jSimpleInterface);
+			}
+			if (jSimpleArrayInterface)
+			{
+				Env->DeleteGlobalRef(jSimpleArrayInterface);
+			}
+			if (jNoPropertiesInterface)
+			{
+				Env->DeleteGlobalRef(jNoPropertiesInterface);
+			}
+			if (jNoOperationsInterface)
+			{
+				Env->DeleteGlobalRef(jNoOperationsInterface);
+			}
+			if (jNoSignalsInterface)
+			{
+				Env->DeleteGlobalRef(jNoSignalsInterface);
+			}
+			if (jEmptyInterface)
+			{
+				Env->DeleteGlobalRef(jEmptyInterface);
+			}
+		}
+	}
+};
+
+FCriticalSection TbSimpleDataJavaConverter::CacheLock;
+TSharedPtr<FTbSimpleDataJavaConverterCacheData, ESPMode::ThreadSafe> TbSimpleDataJavaConverter::CacheData;
 
 void TbSimpleDataJavaConverter::fillVoidInterface(JNIEnv* env, jobject input, TScriptInterface<ITbSimpleVoidInterfaceInterface> out_void_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillVoidInterface"));
+		return;
+	}
 	if (!input || !out_void_interface)
 	{
 		return;
@@ -54,13 +107,23 @@ void TbSimpleDataJavaConverter::fillVoidInterface(JNIEnv* env, jobject input, TS
 
 void TbSimpleDataJavaConverter::fillVoidInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSimpleVoidInterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillVoidInterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSimpleDataJavaConverter::makeJavaVoidInterface(JNIEnv* env, const TScriptInterface<ITbSimpleVoidInterfaceInterface> out_void_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for makeJavaVoidInterface"));
+		return nullptr;
+	}
 	if (!out_void_interface)
 	{
 		return nullptr;
@@ -73,14 +136,14 @@ jobject TbSimpleDataJavaConverter::makeJavaVoidInterface(JNIEnv* env, const TScr
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaVoidInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleVoidInterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jVoidInterface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jVoidInterface)
 	{
 		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("IVoidInterface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jVoidInterface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jVoidInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_void_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -92,7 +155,12 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaVoidInterfaceArray(JNIEnv* env, 
 
 TScriptInterface<ITbSimpleVoidInterfaceInterface> TbSimpleDataJavaConverter::getCppInstanceTbSimpleVoidInterface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for getCppInstanceTbSimpleVoidInterface"));
+		return nullptr;
+	}
 	UTbSimpleVoidInterfaceImplementation* Impl = NewObject<UTbSimpleVoidInterfaceImplementation>();
 	TScriptInterface<ITbSimpleVoidInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -100,11 +168,14 @@ TScriptInterface<ITbSimpleVoidInterfaceInterface> TbSimpleDataJavaConverter::get
 	return wrapped;
 }
 
-jclass TbSimpleDataJavaConverter::jSimpleInterface = nullptr;
-
 void TbSimpleDataJavaConverter::fillSimpleInterface(JNIEnv* env, jobject input, TScriptInterface<ITbSimpleSimpleInterfaceInterface> out_simple_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillSimpleInterface"));
+		return;
+	}
 	if (!input || !out_simple_interface)
 	{
 		return;
@@ -114,13 +185,23 @@ void TbSimpleDataJavaConverter::fillSimpleInterface(JNIEnv* env, jobject input, 
 
 void TbSimpleDataJavaConverter::fillSimpleInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSimpleSimpleInterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillSimpleInterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSimpleDataJavaConverter::makeJavaSimpleInterface(JNIEnv* env, const TScriptInterface<ITbSimpleSimpleInterfaceInterface> out_simple_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for makeJavaSimpleInterface"));
+		return nullptr;
+	}
 	if (!out_simple_interface)
 	{
 		return nullptr;
@@ -133,14 +214,14 @@ jobject TbSimpleDataJavaConverter::makeJavaSimpleInterface(JNIEnv* env, const TS
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaSimpleInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleSimpleInterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jSimpleInterface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jSimpleInterface)
 	{
 		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("ISimpleInterface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jSimpleInterface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jSimpleInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -152,7 +233,12 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaSimpleInterfaceArray(JNIEnv* env
 
 TScriptInterface<ITbSimpleSimpleInterfaceInterface> TbSimpleDataJavaConverter::getCppInstanceTbSimpleSimpleInterface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for getCppInstanceTbSimpleSimpleInterface"));
+		return nullptr;
+	}
 	UTbSimpleSimpleInterfaceImplementation* Impl = NewObject<UTbSimpleSimpleInterfaceImplementation>();
 	TScriptInterface<ITbSimpleSimpleInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -160,11 +246,14 @@ TScriptInterface<ITbSimpleSimpleInterfaceInterface> TbSimpleDataJavaConverter::g
 	return wrapped;
 }
 
-jclass TbSimpleDataJavaConverter::jSimpleArrayInterface = nullptr;
-
 void TbSimpleDataJavaConverter::fillSimpleArrayInterface(JNIEnv* env, jobject input, TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> out_simple_array_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillSimpleArrayInterface"));
+		return;
+	}
 	if (!input || !out_simple_array_interface)
 	{
 		return;
@@ -174,13 +263,23 @@ void TbSimpleDataJavaConverter::fillSimpleArrayInterface(JNIEnv* env, jobject in
 
 void TbSimpleDataJavaConverter::fillSimpleArrayInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillSimpleArrayInterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSimpleDataJavaConverter::makeJavaSimpleArrayInterface(JNIEnv* env, const TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> out_simple_array_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for makeJavaSimpleArrayInterface"));
+		return nullptr;
+	}
 	if (!out_simple_array_interface)
 	{
 		return nullptr;
@@ -193,14 +292,14 @@ jobject TbSimpleDataJavaConverter::makeJavaSimpleArrayInterface(JNIEnv* env, con
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaSimpleArrayInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jSimpleArrayInterface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jSimpleArrayInterface)
 	{
 		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("ISimpleArrayInterface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jSimpleArrayInterface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jSimpleArrayInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_array_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -212,7 +311,12 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaSimpleArrayInterfaceArray(JNIEnv
 
 TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> TbSimpleDataJavaConverter::getCppInstanceTbSimpleSimpleArrayInterface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for getCppInstanceTbSimpleSimpleArrayInterface"));
+		return nullptr;
+	}
 	UTbSimpleSimpleArrayInterfaceImplementation* Impl = NewObject<UTbSimpleSimpleArrayInterfaceImplementation>();
 	TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -220,11 +324,14 @@ TScriptInterface<ITbSimpleSimpleArrayInterfaceInterface> TbSimpleDataJavaConvert
 	return wrapped;
 }
 
-jclass TbSimpleDataJavaConverter::jNoPropertiesInterface = nullptr;
-
 void TbSimpleDataJavaConverter::fillNoPropertiesInterface(JNIEnv* env, jobject input, TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> out_no_properties_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillNoPropertiesInterface"));
+		return;
+	}
 	if (!input || !out_no_properties_interface)
 	{
 		return;
@@ -234,13 +341,23 @@ void TbSimpleDataJavaConverter::fillNoPropertiesInterface(JNIEnv* env, jobject i
 
 void TbSimpleDataJavaConverter::fillNoPropertiesInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillNoPropertiesInterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSimpleDataJavaConverter::makeJavaNoPropertiesInterface(JNIEnv* env, const TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> out_no_properties_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for makeJavaNoPropertiesInterface"));
+		return nullptr;
+	}
 	if (!out_no_properties_interface)
 	{
 		return nullptr;
@@ -253,14 +370,14 @@ jobject TbSimpleDataJavaConverter::makeJavaNoPropertiesInterface(JNIEnv* env, co
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaNoPropertiesInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jNoPropertiesInterface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jNoPropertiesInterface)
 	{
 		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("INoPropertiesInterface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jNoPropertiesInterface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jNoPropertiesInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_no_properties_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -272,7 +389,12 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaNoPropertiesInterfaceArray(JNIEn
 
 TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> TbSimpleDataJavaConverter::getCppInstanceTbSimpleNoPropertiesInterface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for getCppInstanceTbSimpleNoPropertiesInterface"));
+		return nullptr;
+	}
 	UTbSimpleNoPropertiesInterfaceImplementation* Impl = NewObject<UTbSimpleNoPropertiesInterfaceImplementation>();
 	TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -280,11 +402,14 @@ TScriptInterface<ITbSimpleNoPropertiesInterfaceInterface> TbSimpleDataJavaConver
 	return wrapped;
 }
 
-jclass TbSimpleDataJavaConverter::jNoOperationsInterface = nullptr;
-
 void TbSimpleDataJavaConverter::fillNoOperationsInterface(JNIEnv* env, jobject input, TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> out_no_operations_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillNoOperationsInterface"));
+		return;
+	}
 	if (!input || !out_no_operations_interface)
 	{
 		return;
@@ -294,13 +419,23 @@ void TbSimpleDataJavaConverter::fillNoOperationsInterface(JNIEnv* env, jobject i
 
 void TbSimpleDataJavaConverter::fillNoOperationsInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillNoOperationsInterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSimpleDataJavaConverter::makeJavaNoOperationsInterface(JNIEnv* env, const TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> out_no_operations_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for makeJavaNoOperationsInterface"));
+		return nullptr;
+	}
 	if (!out_no_operations_interface)
 	{
 		return nullptr;
@@ -313,14 +448,14 @@ jobject TbSimpleDataJavaConverter::makeJavaNoOperationsInterface(JNIEnv* env, co
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaNoOperationsInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleNoOperationsInterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jNoOperationsInterface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jNoOperationsInterface)
 	{
 		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("INoOperationsInterface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jNoOperationsInterface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jNoOperationsInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_no_operations_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -332,7 +467,12 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaNoOperationsInterfaceArray(JNIEn
 
 TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> TbSimpleDataJavaConverter::getCppInstanceTbSimpleNoOperationsInterface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for getCppInstanceTbSimpleNoOperationsInterface"));
+		return nullptr;
+	}
 	UTbSimpleNoOperationsInterfaceImplementation* Impl = NewObject<UTbSimpleNoOperationsInterfaceImplementation>();
 	TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -340,11 +480,14 @@ TScriptInterface<ITbSimpleNoOperationsInterfaceInterface> TbSimpleDataJavaConver
 	return wrapped;
 }
 
-jclass TbSimpleDataJavaConverter::jNoSignalsInterface = nullptr;
-
 void TbSimpleDataJavaConverter::fillNoSignalsInterface(JNIEnv* env, jobject input, TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> out_no_signals_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillNoSignalsInterface"));
+		return;
+	}
 	if (!input || !out_no_signals_interface)
 	{
 		return;
@@ -354,13 +497,23 @@ void TbSimpleDataJavaConverter::fillNoSignalsInterface(JNIEnv* env, jobject inpu
 
 void TbSimpleDataJavaConverter::fillNoSignalsInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSimpleNoSignalsInterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillNoSignalsInterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSimpleDataJavaConverter::makeJavaNoSignalsInterface(JNIEnv* env, const TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> out_no_signals_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for makeJavaNoSignalsInterface"));
+		return nullptr;
+	}
 	if (!out_no_signals_interface)
 	{
 		return nullptr;
@@ -373,14 +526,14 @@ jobject TbSimpleDataJavaConverter::makeJavaNoSignalsInterface(JNIEnv* env, const
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaNoSignalsInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleNoSignalsInterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jNoSignalsInterface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jNoSignalsInterface)
 	{
 		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("INoSignalsInterface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jNoSignalsInterface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jNoSignalsInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_no_signals_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -392,7 +545,12 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaNoSignalsInterfaceArray(JNIEnv* 
 
 TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> TbSimpleDataJavaConverter::getCppInstanceTbSimpleNoSignalsInterface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for getCppInstanceTbSimpleNoSignalsInterface"));
+		return nullptr;
+	}
 	UTbSimpleNoSignalsInterfaceImplementation* Impl = NewObject<UTbSimpleNoSignalsInterfaceImplementation>();
 	TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -400,11 +558,14 @@ TScriptInterface<ITbSimpleNoSignalsInterfaceInterface> TbSimpleDataJavaConverter
 	return wrapped;
 }
 
-jclass TbSimpleDataJavaConverter::jEmptyInterface = nullptr;
-
 void TbSimpleDataJavaConverter::fillEmptyInterface(JNIEnv* env, jobject input, TScriptInterface<ITbSimpleEmptyInterfaceInterface> out_empty_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillEmptyInterface"));
+		return;
+	}
 	if (!input || !out_empty_interface)
 	{
 		return;
@@ -414,13 +575,23 @@ void TbSimpleDataJavaConverter::fillEmptyInterface(JNIEnv* env, jobject input, T
 
 void TbSimpleDataJavaConverter::fillEmptyInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSimpleEmptyInterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for fillEmptyInterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSimpleDataJavaConverter::makeJavaEmptyInterface(JNIEnv* env, const TScriptInterface<ITbSimpleEmptyInterfaceInterface> out_empty_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for makeJavaEmptyInterface"));
+		return nullptr;
+	}
 	if (!out_empty_interface)
 	{
 		return nullptr;
@@ -433,14 +604,14 @@ jobject TbSimpleDataJavaConverter::makeJavaEmptyInterface(JNIEnv* env, const TSc
 
 jobjectArray TbSimpleDataJavaConverter::makeJavaEmptyInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSimpleEmptyInterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jEmptyInterface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jEmptyInterface)
 	{
 		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("IEmptyInterface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jEmptyInterface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEmptyInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_empty_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -452,7 +623,12 @@ jobjectArray TbSimpleDataJavaConverter::makeJavaEmptyInterfaceArray(JNIEnv* env,
 
 TScriptInterface<ITbSimpleEmptyInterfaceInterface> TbSimpleDataJavaConverter::getCppInstanceTbSimpleEmptyInterface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSimpleDataJavaConverter_JNI, Warning, TEXT("TbSimpleDataJavaConverter cache not initialized for getCppInstanceTbSimpleEmptyInterface"));
+		return nullptr;
+	}
 	UTbSimpleEmptyInterfaceImplementation* Impl = NewObject<UTbSimpleEmptyInterfaceImplementation>();
 	TScriptInterface<ITbSimpleEmptyInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -475,56 +651,52 @@ bool TbSimpleDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 
 void TbSimpleDataJavaConverter::cleanJavaReferences()
 {
-	FScopeLock Lock(&initMutex);
-	m_isInitialized = false;
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(jVoidInterface);
-	env->DeleteGlobalRef(jSimpleInterface);
-	env->DeleteGlobalRef(jSimpleArrayInterface);
-	env->DeleteGlobalRef(jNoPropertiesInterface);
-	env->DeleteGlobalRef(jNoOperationsInterface);
-	env->DeleteGlobalRef(jNoSignalsInterface);
-	env->DeleteGlobalRef(jEmptyInterface);
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
-FCriticalSection TbSimpleDataJavaConverter::initMutex;
-
-bool TbSimpleDataJavaConverter::m_isInitialized = false;
-
-void TbSimpleDataJavaConverter::ensureInitialized()
+TSharedPtr<FTbSimpleDataJavaConverterCacheData, ESPMode::ThreadSafe> TbSimpleDataJavaConverter::ensureInitialized()
 {
-	if (m_isInitialized)
 	{
-		return;
+		FScopeLock Lock(&CacheLock);
+		if (CacheData)
+		{
+			return CacheData;
+		}
 	}
-	FScopeLock Lock(&initMutex);
-	if (m_isInitialized)
-	{
-		return;
-	}
+
+	auto NewData = MakeShared<FTbSimpleDataJavaConverterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	jVoidInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/IVoidInterface");
+	NewData->jVoidInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/IVoidInterface");
 	static const TCHAR* errorMsgVoidInterface = TEXT("failed to get tbSimple/tbSimple_api/IVoidInterface");
 	checkJniErrorOccured(errorMsgVoidInterface);
-	jSimpleInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/ISimpleInterface");
+	NewData->jSimpleInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/ISimpleInterface");
 	static const TCHAR* errorMsgSimpleInterface = TEXT("failed to get tbSimple/tbSimple_api/ISimpleInterface");
 	checkJniErrorOccured(errorMsgSimpleInterface);
-	jSimpleArrayInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/ISimpleArrayInterface");
+	NewData->jSimpleArrayInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/ISimpleArrayInterface");
 	static const TCHAR* errorMsgSimpleArrayInterface = TEXT("failed to get tbSimple/tbSimple_api/ISimpleArrayInterface");
 	checkJniErrorOccured(errorMsgSimpleArrayInterface);
-	jNoPropertiesInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoPropertiesInterface");
+	NewData->jNoPropertiesInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoPropertiesInterface");
 	static const TCHAR* errorMsgNoPropertiesInterface = TEXT("failed to get tbSimple/tbSimple_api/INoPropertiesInterface");
 	checkJniErrorOccured(errorMsgNoPropertiesInterface);
-	jNoOperationsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoOperationsInterface");
+	NewData->jNoOperationsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoOperationsInterface");
 	static const TCHAR* errorMsgNoOperationsInterface = TEXT("failed to get tbSimple/tbSimple_api/INoOperationsInterface");
 	checkJniErrorOccured(errorMsgNoOperationsInterface);
-	jNoSignalsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoSignalsInterface");
+	NewData->jNoSignalsInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/INoSignalsInterface");
 	static const TCHAR* errorMsgNoSignalsInterface = TEXT("failed to get tbSimple/tbSimple_api/INoSignalsInterface");
 	checkJniErrorOccured(errorMsgNoSignalsInterface);
-	jEmptyInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/IEmptyInterface");
+	NewData->jEmptyInterface = FAndroidApplication::FindJavaClassGlobalRef("tbSimple/tbSimple_api/IEmptyInterface");
 	static const TCHAR* errorMsgEmptyInterface = TEXT("failed to get tbSimple/tbSimple_api/IEmptyInterface");
 	checkJniErrorOccured(errorMsgEmptyInterface);
-	m_isInitialized = true;
+
+	{
+		FScopeLock Lock(&CacheLock);
+		if (!CacheData)
+		{
+			CacheData = NewData;
+		}
+		return CacheData;
+	}
 }
 
 jmethodID TbSimpleDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)

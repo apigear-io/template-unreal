@@ -38,11 +38,34 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogCounterDataJavaConverter_JNI);
 
-jclass CounterDataJavaConverter::jCounter = nullptr;
+struct FCounterDataJavaConverterCacheData
+{
+	jclass jCounter = nullptr;
+
+	~FCounterDataJavaConverterCacheData()
+	{
+		JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+		if (Env)
+		{
+			if (jCounter)
+			{
+				Env->DeleteGlobalRef(jCounter);
+			}
+		}
+	}
+};
+
+FCriticalSection CounterDataJavaConverter::CacheLock;
+TSharedPtr<FCounterDataJavaConverterCacheData, ESPMode::ThreadSafe> CounterDataJavaConverter::CacheData;
 
 void CounterDataJavaConverter::fillCounter(JNIEnv* env, jobject input, TScriptInterface<ICounterCounterInterface> out_counter)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogCounterDataJavaConverter_JNI, Warning, TEXT("CounterDataJavaConverter cache not initialized for fillCounter"));
+		return;
+	}
 	if (!input || !out_counter)
 	{
 		return;
@@ -52,13 +75,23 @@ void CounterDataJavaConverter::fillCounter(JNIEnv* env, jobject input, TScriptIn
 
 void CounterDataJavaConverter::fillCounterArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ICounterCounterInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogCounterDataJavaConverter_JNI, Warning, TEXT("CounterDataJavaConverter cache not initialized for fillCounterArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject CounterDataJavaConverter::makeJavaCounter(JNIEnv* env, const TScriptInterface<ICounterCounterInterface> out_counter)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogCounterDataJavaConverter_JNI, Warning, TEXT("CounterDataJavaConverter cache not initialized for makeJavaCounter"));
+		return nullptr;
+	}
 	if (!out_counter)
 	{
 		return nullptr;
@@ -71,14 +104,14 @@ jobject CounterDataJavaConverter::makeJavaCounter(JNIEnv* env, const TScriptInte
 
 jobjectArray CounterDataJavaConverter::makeJavaCounterArray(JNIEnv* env, const TArray<TScriptInterface<ICounterCounterInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jCounter)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jCounter)
 	{
 		UE_LOG(LogCounterDataJavaConverter_JNI, Warning, TEXT("ICounter not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jCounter, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jCounter, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_counter.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -90,7 +123,12 @@ jobjectArray CounterDataJavaConverter::makeJavaCounterArray(JNIEnv* env, const T
 
 TScriptInterface<ICounterCounterInterface> CounterDataJavaConverter::getCppInstanceCounterCounter()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogCounterDataJavaConverter_JNI, Warning, TEXT("CounterDataJavaConverter cache not initialized for getCppInstanceCounterCounter"));
+		return nullptr;
+	}
 	UCounterCounterImplementation* Impl = NewObject<UCounterCounterImplementation>();
 	TScriptInterface<ICounterCounterInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -113,32 +151,34 @@ bool CounterDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 
 void CounterDataJavaConverter::cleanJavaReferences()
 {
-	FScopeLock Lock(&initMutex);
-	m_isInitialized = false;
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(jCounter);
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
-FCriticalSection CounterDataJavaConverter::initMutex;
-
-bool CounterDataJavaConverter::m_isInitialized = false;
-
-void CounterDataJavaConverter::ensureInitialized()
+TSharedPtr<FCounterDataJavaConverterCacheData, ESPMode::ThreadSafe> CounterDataJavaConverter::ensureInitialized()
 {
-	if (m_isInitialized)
 	{
-		return;
+		FScopeLock Lock(&CacheLock);
+		if (CacheData)
+		{
+			return CacheData;
+		}
 	}
-	FScopeLock Lock(&initMutex);
-	if (m_isInitialized)
-	{
-		return;
-	}
+
+	auto NewData = MakeShared<FCounterDataJavaConverterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	jCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
+	NewData->jCounter = FAndroidApplication::FindJavaClassGlobalRef("counter/counter_api/ICounter");
 	static const TCHAR* errorMsgCounter = TEXT("failed to get counter/counter_api/ICounter");
 	checkJniErrorOccured(errorMsgCounter);
-	m_isInitialized = true;
+
+	{
+		FScopeLock Lock(&CacheLock);
+		if (!CacheData)
+		{
+			CacheData = NewData;
+		}
+		return CacheData;
+	}
 }
 
 jmethodID CounterDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)

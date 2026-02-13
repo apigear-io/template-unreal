@@ -34,14 +34,37 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogCustomTypesDataJavaConverter_JNI);
 
-jclass CustomTypesDataJavaConverter::jVector3D = nullptr;
+struct FCustomTypesDataJavaConverterCacheData
+{
+	jclass jVector3D = nullptr;
+
+	~FCustomTypesDataJavaConverterCacheData()
+	{
+		JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+		if (Env)
+		{
+			if (jVector3D)
+			{
+				Env->DeleteGlobalRef(jVector3D);
+			}
+		}
+	}
+};
+
+FCriticalSection CustomTypesDataJavaConverter::CacheLock;
+TSharedPtr<FCustomTypesDataJavaConverterCacheData, ESPMode::ThreadSafe> CustomTypesDataJavaConverter::CacheData;
 
 void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCustomTypesVector3D& out_vector3_d)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("CustomTypesDataJavaConverter cache not initialized for fillVector3D"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindx = TEXT("failed when trying to field x F for FCustomTypesVector3D");
-	static const jfieldID jFieldId_x = getFieldId(jVector3D, "x", "F", errorMsgFindx);
+	static const jfieldID jFieldId_x = getFieldId(Cache->jVector3D, "x", "F", errorMsgFindx);
 
 	if (jFieldId_x)
 	{
@@ -55,7 +78,7 @@ void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCus
 	}
 
 	static const TCHAR* errorMsgFindy = TEXT("failed when trying to field y F for FCustomTypesVector3D");
-	static const jfieldID jFieldId_y = getFieldId(jVector3D, "y", "F", errorMsgFindy);
+	static const jfieldID jFieldId_y = getFieldId(Cache->jVector3D, "y", "F", errorMsgFindy);
 
 	if (jFieldId_y)
 	{
@@ -69,7 +92,7 @@ void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCus
 	}
 
 	static const TCHAR* errorMsgFindz = TEXT("failed when trying to field z F for FCustomTypesVector3D");
-	static const jfieldID jFieldId_z = getFieldId(jVector3D, "z", "F", errorMsgFindz);
+	static const jfieldID jFieldId_z = getFieldId(Cache->jVector3D, "z", "F", errorMsgFindz);
 
 	if (jFieldId_z)
 	{
@@ -85,7 +108,12 @@ void CustomTypesDataJavaConverter::fillVector3D(JNIEnv* env, jobject input, FCus
 
 void CustomTypesDataJavaConverter::fillVector3DArray(JNIEnv* env, jobjectArray input, TArray<FCustomTypesVector3D>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("CustomTypesDataJavaConverter cache not initialized for fillVector3DArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_vector3_d array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -113,16 +141,21 @@ void CustomTypesDataJavaConverter::fillVector3DArray(JNIEnv* env, jobjectArray i
 
 jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCustomTypesVector3D& in_vector3_d)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("CustomTypesDataJavaConverter cache not initialized for makeJavaVector3D"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_vector3_d.");
-	static const jmethodID ctor = getMethod(jVector3D, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jVector3D, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jVector3D, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jVector3D, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_vector3_d.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -130,7 +163,7 @@ jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCusto
 	}
 
 	static const TCHAR* errorMsgFindx = TEXT("failed when trying to field x F for FCustomTypesVector3D");
-	static const jfieldID jFieldId_x = getFieldId(jVector3D, "x", "F", errorMsgFindx);
+	static const jfieldID jFieldId_x = getFieldId(Cache->jVector3D, "x", "F", errorMsgFindx);
 
 	if (jFieldId_x != nullptr)
 	{
@@ -144,7 +177,7 @@ jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCusto
 	}
 
 	static const TCHAR* errorMsgFindy = TEXT("failed when trying to field y F for FCustomTypesVector3D");
-	static const jfieldID jFieldId_y = getFieldId(jVector3D, "y", "F", errorMsgFindy);
+	static const jfieldID jFieldId_y = getFieldId(Cache->jVector3D, "y", "F", errorMsgFindy);
 
 	if (jFieldId_y != nullptr)
 	{
@@ -158,7 +191,7 @@ jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCusto
 	}
 
 	static const TCHAR* errorMsgFindz = TEXT("failed when trying to field z F for FCustomTypesVector3D");
-	static const jfieldID jFieldId_z = getFieldId(jVector3D, "z", "F", errorMsgFindz);
+	static const jfieldID jFieldId_z = getFieldId(Cache->jVector3D, "z", "F", errorMsgFindz);
 
 	if (jFieldId_z != nullptr)
 	{
@@ -175,15 +208,15 @@ jobject CustomTypesDataJavaConverter::makeJavaVector3D(JNIEnv* env, const FCusto
 
 jobjectArray CustomTypesDataJavaConverter::makeJavaVector3DArray(JNIEnv* env, const TArray<FCustomTypesVector3D>& cppArray)
 {
-	ensureInitialized();
-	if (jVector3D == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jVector3D)
 	{
 		UE_LOG(LogCustomTypesDataJavaConverter_JNI, Warning, TEXT("FCustomTypesVector3D not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jVector3D, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jVector3D, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_vector3_d.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -220,32 +253,34 @@ bool CustomTypesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 
 void CustomTypesDataJavaConverter::cleanJavaReferences()
 {
-	FScopeLock Lock(&initMutex);
-	m_isInitialized = false;
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(jVector3D);
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
-FCriticalSection CustomTypesDataJavaConverter::initMutex;
-
-bool CustomTypesDataJavaConverter::m_isInitialized = false;
-
-void CustomTypesDataJavaConverter::ensureInitialized()
+TSharedPtr<FCustomTypesDataJavaConverterCacheData, ESPMode::ThreadSafe> CustomTypesDataJavaConverter::ensureInitialized()
 {
-	if (m_isInitialized)
 	{
-		return;
+		FScopeLock Lock(&CacheLock);
+		if (CacheData)
+		{
+			return CacheData;
+		}
 	}
-	FScopeLock Lock(&initMutex);
-	if (m_isInitialized)
-	{
-		return;
-	}
+
+	auto NewData = MakeShared<FCustomTypesDataJavaConverterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	jVector3D = FAndroidApplication::FindJavaClassGlobalRef("customTypes/customTypes_api/Vector3D");
+	NewData->jVector3D = FAndroidApplication::FindJavaClassGlobalRef("customTypes/customTypes_api/Vector3D");
 	static const TCHAR* errorMsgVector3D = TEXT("failed to get customTypes/customTypes_api/Vector3D");
 	checkJniErrorOccured(errorMsgVector3D);
-	m_isInitialized = true;
+
+	{
+		FScopeLock Lock(&CacheLock);
+		if (!CacheData)
+		{
+			CacheData = NewData;
+		}
+		return CacheData;
+	}
 }
 
 jmethodID CustomTypesDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)

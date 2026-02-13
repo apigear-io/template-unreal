@@ -33,16 +33,16 @@ limitations under the License.
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 DECLARE_LOG_CATEGORY_EXTERN(LogTbNamesDataJavaConverter_JNI, Log, All);
 
+struct FTbNamesDataJavaConverterCacheData;
+
 class TBNAMESAPI_API TbNamesDataJavaConverter
 {
 public:
-	static jclass jEnumWithUnderScores;
 	static void fillEnumWithUnderScoresArray(JNIEnv* env, jobjectArray input, TArray<ETbNamesEnum_With_Under_scores>& out_array);
 	static ETbNamesEnum_With_Under_scores getEnumWithUnderScoresValue(JNIEnv* env, jobject input);
 	static jobjectArray makeJavaEnumWithUnderScoresArray(JNIEnv* env, const TArray<ETbNamesEnum_With_Under_scores>& cppArray);
 	static jobject makeJavaEnumWithUnderScores(JNIEnv* env, ETbNamesEnum_With_Under_scores value);
 
-	static jclass jNamEs;
 	static void fillNamEs(JNIEnv* env, jobject input, TScriptInterface<ITbNamesNamEsInterface> out_nam_es);
 	static void fillNamEsArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbNamesNamEsInterface>>& out_array);
 	static jobject makeJavaNamEs(JNIEnv* env, const TScriptInterface<ITbNamesNamEsInterface> out_nam_es);
@@ -54,9 +54,9 @@ public:
 	static void cleanJavaReferences();
 
 private:
-	static FCriticalSection initMutex;
-	static void ensureInitialized();
-	static bool m_isInitialized;
+	static FCriticalSection CacheLock;
+	static TSharedPtr<FTbNamesDataJavaConverterCacheData, ESPMode::ThreadSafe> CacheData;
+	static TSharedPtr<FTbNamesDataJavaConverterCacheData, ESPMode::ThreadSafe> ensureInitialized();
 	static jmethodID getMethod(jclass cls, const char* name, const char* signature, const TCHAR*);
 	static jmethodID getStaticMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo);
 	static jfieldID getFieldId(jclass cls, const char* name, const char* signature, const TCHAR*);

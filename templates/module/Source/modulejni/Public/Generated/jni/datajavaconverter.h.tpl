@@ -62,13 +62,14 @@ limitations under the License.
 {{- $className := printf "%sDataJavaConverter" $ModuleName}}
 DECLARE_LOG_CATEGORY_EXTERN(Log{{$className}}_JNI, Log, All);
 
+struct F{{$className}}CacheData;
+
 class {{ $API_MACRO }} {{$className }}
 {
 public:
 {{- range .Module.Structs }}
 {{- $structType := printf "F%s%s" $ModuleName .Name }}
 {{- $structName := printf "out_%s" (snake .Name)}}
-	static jclass j{{Camel .Name}};
 	static void fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$structType}}& {{$structName}});
 	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$structType}}>& out_array);
 {{- $in_cppStructName := printf "out_%s" (snake .Name)}}
@@ -79,7 +80,6 @@ public:
 {{- range $idx, $p := .Module.Enums }}
 {{- $cpp_class := printf "E%s%s" $ModuleName .Name }}
 {{- if or .Module.Structs $idx}}{{- nl }}{{end}}
-	static jclass j{{Camel .Name}};
 	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$cpp_class}}>& out_array);
 	static {{$cpp_class}} get{{Camel .Name }}Value(JNIEnv* env, jobject input);
 	static jobjectArray makeJava{{Camel .Name }}Array(JNIEnv* env, const TArray<{{$cpp_class}}>& cppArray);
@@ -91,7 +91,6 @@ public:
 {{- $ifType := printf "TScriptInterface<I%s%sInterface>" $ModuleName (Camel .Name) }}
 {{- if or (or .Module.Enums .Module.Structs) $idx}}{{- nl }}{{end}}
 {{- $ifName := printf "out_%s" (snake .Name)}}
-	static jclass j{{Camel .Name}};
 	static void fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$ifType}} {{$ifName}});
 	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$ifType}}>& out_array);
 {{- $in_cppIfName := printf "out_%s" (snake .Name)}}
@@ -110,7 +109,6 @@ public:
 {{- end }}
 {{- $exType := printf "%s%s" $namespace $ext.Name }}
 {{- $exName := printf "out_%s" (snake .Name)}}
-	static jclass j{{Camel .Name}};
 	static void fill{{Camel .Name }}(JNIEnv* env, jobject input, {{$exType}}& {{$exName}});
 	static void fill{{Camel .Name }}Array(JNIEnv* env, jobjectArray input, TArray<{{$exType}}>& out_array);
 {{- $in_cppExName := printf "out_%s" (snake .Name)}}
@@ -122,9 +120,9 @@ public:
 	static void cleanJavaReferences();
 
 private:
-	static FCriticalSection initMutex;
-	static void ensureInitialized();
-	static bool m_isInitialized;
+	static FCriticalSection CacheLock;
+	static TSharedPtr<F{{$className}}CacheData, ESPMode::ThreadSafe> CacheData;
+	static TSharedPtr<F{{$className}}CacheData, ESPMode::ThreadSafe> ensureInitialized();
 	static jmethodID getMethod(jclass cls, const char* name, const char* signature, const TCHAR*);
 	static jmethodID getStaticMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo);
 	static jfieldID getFieldId(jclass cls, const char* name, const char* signature, const TCHAR*);

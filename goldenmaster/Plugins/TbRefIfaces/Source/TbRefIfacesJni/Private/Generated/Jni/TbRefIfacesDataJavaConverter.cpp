@@ -37,11 +37,39 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbRefIfacesDataJavaConverter_JNI);
 
-jclass TbRefIfacesDataJavaConverter::jSimpleLocalIf = nullptr;
+struct FTbRefIfacesDataJavaConverterCacheData
+{
+	jclass jSimpleLocalIf = nullptr;
+	jclass jParentIf = nullptr;
+
+	~FTbRefIfacesDataJavaConverterCacheData()
+	{
+		JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+		if (Env)
+		{
+			if (jSimpleLocalIf)
+			{
+				Env->DeleteGlobalRef(jSimpleLocalIf);
+			}
+			if (jParentIf)
+			{
+				Env->DeleteGlobalRef(jParentIf);
+			}
+		}
+	}
+};
+
+FCriticalSection TbRefIfacesDataJavaConverter::CacheLock;
+TSharedPtr<FTbRefIfacesDataJavaConverterCacheData, ESPMode::ThreadSafe> TbRefIfacesDataJavaConverter::CacheData;
 
 void TbRefIfacesDataJavaConverter::fillSimpleLocalIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("TbRefIfacesDataJavaConverter cache not initialized for fillSimpleLocalIf"));
+		return;
+	}
 	if (!input || !out_simple_local_if)
 	{
 		return;
@@ -51,13 +79,23 @@ void TbRefIfacesDataJavaConverter::fillSimpleLocalIf(JNIEnv* env, jobject input,
 
 void TbRefIfacesDataJavaConverter::fillSimpleLocalIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("TbRefIfacesDataJavaConverter cache not initialized for fillSimpleLocalIfArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> out_simple_local_if)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("TbRefIfacesDataJavaConverter cache not initialized for makeJavaSimpleLocalIf"));
+		return nullptr;
+	}
 	if (!out_simple_local_if)
 	{
 		return nullptr;
@@ -70,14 +108,14 @@ jobject TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIf(JNIEnv* env, const T
 
 jobjectArray TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jSimpleLocalIf)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jSimpleLocalIf)
 	{
 		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("ISimpleLocalIf not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jSimpleLocalIf, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jSimpleLocalIf, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_simple_local_if.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -89,7 +127,12 @@ jobjectArray TbRefIfacesDataJavaConverter::makeJavaSimpleLocalIfArray(JNIEnv* en
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> TbRefIfacesDataJavaConverter::getCppInstanceTbRefIfacesSimpleLocalIf()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("TbRefIfacesDataJavaConverter cache not initialized for getCppInstanceTbRefIfacesSimpleLocalIf"));
+		return nullptr;
+	}
 	UTbRefIfacesSimpleLocalIfImplementation* Impl = NewObject<UTbRefIfacesSimpleLocalIfImplementation>();
 	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -97,11 +140,14 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> TbRefIfacesDataJavaConverte
 	return wrapped;
 }
 
-jclass TbRefIfacesDataJavaConverter::jParentIf = nullptr;
-
 void TbRefIfacesDataJavaConverter::fillParentIf(JNIEnv* env, jobject input, TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("TbRefIfacesDataJavaConverter cache not initialized for fillParentIf"));
+		return;
+	}
 	if (!input || !out_parent_if)
 	{
 		return;
@@ -111,13 +157,23 @@ void TbRefIfacesDataJavaConverter::fillParentIf(JNIEnv* env, jobject input, TScr
 
 void TbRefIfacesDataJavaConverter::fillParentIfArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("TbRefIfacesDataJavaConverter cache not initialized for fillParentIfArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbRefIfacesDataJavaConverter::makeJavaParentIf(JNIEnv* env, const TScriptInterface<ITbRefIfacesParentIfInterface> out_parent_if)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("TbRefIfacesDataJavaConverter cache not initialized for makeJavaParentIf"));
+		return nullptr;
+	}
 	if (!out_parent_if)
 	{
 		return nullptr;
@@ -130,14 +186,14 @@ jobject TbRefIfacesDataJavaConverter::makeJavaParentIf(JNIEnv* env, const TScrip
 
 jobjectArray TbRefIfacesDataJavaConverter::makeJavaParentIfArray(JNIEnv* env, const TArray<TScriptInterface<ITbRefIfacesParentIfInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jParentIf)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jParentIf)
 	{
 		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("IParentIf not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jParentIf, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jParentIf, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_parent_if.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -149,7 +205,12 @@ jobjectArray TbRefIfacesDataJavaConverter::makeJavaParentIfArray(JNIEnv* env, co
 
 TScriptInterface<ITbRefIfacesParentIfInterface> TbRefIfacesDataJavaConverter::getCppInstanceTbRefIfacesParentIf()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbRefIfacesDataJavaConverter_JNI, Warning, TEXT("TbRefIfacesDataJavaConverter cache not initialized for getCppInstanceTbRefIfacesParentIf"));
+		return nullptr;
+	}
 	UTbRefIfacesParentIfImplementation* Impl = NewObject<UTbRefIfacesParentIfImplementation>();
 	TScriptInterface<ITbRefIfacesParentIfInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -172,36 +233,37 @@ bool TbRefIfacesDataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 
 void TbRefIfacesDataJavaConverter::cleanJavaReferences()
 {
-	FScopeLock Lock(&initMutex);
-	m_isInitialized = false;
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(jSimpleLocalIf);
-	env->DeleteGlobalRef(jParentIf);
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
-FCriticalSection TbRefIfacesDataJavaConverter::initMutex;
-
-bool TbRefIfacesDataJavaConverter::m_isInitialized = false;
-
-void TbRefIfacesDataJavaConverter::ensureInitialized()
+TSharedPtr<FTbRefIfacesDataJavaConverterCacheData, ESPMode::ThreadSafe> TbRefIfacesDataJavaConverter::ensureInitialized()
 {
-	if (m_isInitialized)
 	{
-		return;
+		FScopeLock Lock(&CacheLock);
+		if (CacheData)
+		{
+			return CacheData;
+		}
 	}
-	FScopeLock Lock(&initMutex);
-	if (m_isInitialized)
-	{
-		return;
-	}
+
+	auto NewData = MakeShared<FTbRefIfacesDataJavaConverterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	jSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
+	NewData->jSimpleLocalIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
 	static const TCHAR* errorMsgSimpleLocalIf = TEXT("failed to get tbRefIfaces/tbRefIfaces_api/ISimpleLocalIf");
 	checkJniErrorOccured(errorMsgSimpleLocalIf);
-	jParentIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
+	NewData->jParentIf = FAndroidApplication::FindJavaClassGlobalRef("tbRefIfaces/tbRefIfaces_api/IParentIf");
 	static const TCHAR* errorMsgParentIf = TEXT("failed to get tbRefIfaces/tbRefIfaces_api/IParentIf");
 	checkJniErrorOccured(errorMsgParentIf);
-	m_isInitialized = true;
+
+	{
+		FScopeLock Lock(&CacheLock);
+		if (!CacheData)
+		{
+			CacheData = NewData;
+		}
+		return CacheData;
+	}
 }
 
 jmethodID TbRefIfacesDataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)

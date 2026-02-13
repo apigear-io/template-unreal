@@ -38,14 +38,72 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTbSame2DataJavaConverter_JNI);
 
-jclass TbSame2DataJavaConverter::jStruct1 = nullptr;
+struct FTbSame2DataJavaConverterCacheData
+{
+	jclass jStruct1 = nullptr;
+	jclass jStruct2 = nullptr;
+	jclass jEnum1 = nullptr;
+	jclass jEnum2 = nullptr;
+	jclass jSameStruct1Interface = nullptr;
+	jclass jSameStruct2Interface = nullptr;
+	jclass jSameEnum1Interface = nullptr;
+	jclass jSameEnum2Interface = nullptr;
+
+	~FTbSame2DataJavaConverterCacheData()
+	{
+		JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+		if (Env)
+		{
+			if (jStruct1)
+			{
+				Env->DeleteGlobalRef(jStruct1);
+			}
+			if (jStruct2)
+			{
+				Env->DeleteGlobalRef(jStruct2);
+			}
+			if (jEnum1)
+			{
+				Env->DeleteGlobalRef(jEnum1);
+			}
+			if (jEnum2)
+			{
+				Env->DeleteGlobalRef(jEnum2);
+			}
+			if (jSameStruct1Interface)
+			{
+				Env->DeleteGlobalRef(jSameStruct1Interface);
+			}
+			if (jSameStruct2Interface)
+			{
+				Env->DeleteGlobalRef(jSameStruct2Interface);
+			}
+			if (jSameEnum1Interface)
+			{
+				Env->DeleteGlobalRef(jSameEnum1Interface);
+			}
+			if (jSameEnum2Interface)
+			{
+				Env->DeleteGlobalRef(jSameEnum2Interface);
+			}
+		}
+	}
+};
+
+FCriticalSection TbSame2DataJavaConverter::CacheLock;
+TSharedPtr<FTbSame2DataJavaConverterCacheData, ESPMode::ThreadSafe> TbSame2DataJavaConverter::CacheData;
 
 void TbSame2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame2Struct1& out_struct1)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillStruct1"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTbSame2Struct1");
-	static const jfieldID jFieldId_field1 = getFieldId(jStruct1, "field1", "I", errorMsgFindfield1);
+	static const jfieldID jFieldId_field1 = getFieldId(Cache->jStruct1, "field1", "I", errorMsgFindfield1);
 
 	if (jFieldId_field1)
 	{
@@ -59,7 +117,7 @@ void TbSame2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame2S
 	}
 
 	static const TCHAR* errorMsgFindfield2 = TEXT("failed when trying to field field2 I for FTbSame2Struct1");
-	static const jfieldID jFieldId_field2 = getFieldId(jStruct1, "field2", "I", errorMsgFindfield2);
+	static const jfieldID jFieldId_field2 = getFieldId(Cache->jStruct1, "field2", "I", errorMsgFindfield2);
 
 	if (jFieldId_field2)
 	{
@@ -73,7 +131,7 @@ void TbSame2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame2S
 	}
 
 	static const TCHAR* errorMsgFindfield3 = TEXT("failed when trying to field field3 I for FTbSame2Struct1");
-	static const jfieldID jFieldId_field3 = getFieldId(jStruct1, "field3", "I", errorMsgFindfield3);
+	static const jfieldID jFieldId_field3 = getFieldId(Cache->jStruct1, "field3", "I", errorMsgFindfield3);
 
 	if (jFieldId_field3)
 	{
@@ -89,7 +147,12 @@ void TbSame2DataJavaConverter::fillStruct1(JNIEnv* env, jobject input, FTbSame2S
 
 void TbSame2DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input, TArray<FTbSame2Struct1>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillStruct1Array"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct1 array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -117,16 +180,21 @@ void TbSame2DataJavaConverter::fillStruct1Array(JNIEnv* env, jobjectArray input,
 
 jobject TbSame2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame2Struct1& in_struct1)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for makeJavaStruct1"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct1.");
-	static const jmethodID ctor = getMethod(jStruct1, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStruct1, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStruct1, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStruct1, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct1.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -134,7 +202,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame2Str
 	}
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTbSame2Struct1");
-	static const jfieldID jFieldId_field1 = getFieldId(jStruct1, "field1", "I", errorMsgFindfield1);
+	static const jfieldID jFieldId_field1 = getFieldId(Cache->jStruct1, "field1", "I", errorMsgFindfield1);
 
 	if (jFieldId_field1 != nullptr)
 	{
@@ -148,7 +216,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame2Str
 	}
 
 	static const TCHAR* errorMsgFindfield2 = TEXT("failed when trying to field field2 I for FTbSame2Struct1");
-	static const jfieldID jFieldId_field2 = getFieldId(jStruct1, "field2", "I", errorMsgFindfield2);
+	static const jfieldID jFieldId_field2 = getFieldId(Cache->jStruct1, "field2", "I", errorMsgFindfield2);
 
 	if (jFieldId_field2 != nullptr)
 	{
@@ -162,7 +230,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame2Str
 	}
 
 	static const TCHAR* errorMsgFindfield3 = TEXT("failed when trying to field field3 I for FTbSame2Struct1");
-	static const jfieldID jFieldId_field3 = getFieldId(jStruct1, "field3", "I", errorMsgFindfield3);
+	static const jfieldID jFieldId_field3 = getFieldId(Cache->jStruct1, "field3", "I", errorMsgFindfield3);
 
 	if (jFieldId_field3 != nullptr)
 	{
@@ -179,15 +247,15 @@ jobject TbSame2DataJavaConverter::makeJavaStruct1(JNIEnv* env, const FTbSame2Str
 
 jobjectArray TbSame2DataJavaConverter::makeJavaStruct1Array(JNIEnv* env, const TArray<FTbSame2Struct1>& cppArray)
 {
-	ensureInitialized();
-	if (jStruct1 == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStruct1)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("FTbSame2Struct1 not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStruct1, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStruct1, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct1.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -209,14 +277,17 @@ jobjectArray TbSame2DataJavaConverter::makeJavaStruct1Array(JNIEnv* env, const T
 	return javaArray;
 }
 
-jclass TbSame2DataJavaConverter::jStruct2 = nullptr;
-
 void TbSame2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame2Struct2& out_struct2)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillStruct2"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTbSame2Struct2");
-	static const jfieldID jFieldId_field1 = getFieldId(jStruct2, "field1", "I", errorMsgFindfield1);
+	static const jfieldID jFieldId_field1 = getFieldId(Cache->jStruct2, "field1", "I", errorMsgFindfield1);
 
 	if (jFieldId_field1)
 	{
@@ -230,7 +301,7 @@ void TbSame2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame2S
 	}
 
 	static const TCHAR* errorMsgFindfield2 = TEXT("failed when trying to field field2 I for FTbSame2Struct2");
-	static const jfieldID jFieldId_field2 = getFieldId(jStruct2, "field2", "I", errorMsgFindfield2);
+	static const jfieldID jFieldId_field2 = getFieldId(Cache->jStruct2, "field2", "I", errorMsgFindfield2);
 
 	if (jFieldId_field2)
 	{
@@ -244,7 +315,7 @@ void TbSame2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame2S
 	}
 
 	static const TCHAR* errorMsgFindfield3 = TEXT("failed when trying to field field3 I for FTbSame2Struct2");
-	static const jfieldID jFieldId_field3 = getFieldId(jStruct2, "field3", "I", errorMsgFindfield3);
+	static const jfieldID jFieldId_field3 = getFieldId(Cache->jStruct2, "field3", "I", errorMsgFindfield3);
 
 	if (jFieldId_field3)
 	{
@@ -260,7 +331,12 @@ void TbSame2DataJavaConverter::fillStruct2(JNIEnv* env, jobject input, FTbSame2S
 
 void TbSame2DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input, TArray<FTbSame2Struct2>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillStruct2Array"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct2 array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -288,16 +364,21 @@ void TbSame2DataJavaConverter::fillStruct2Array(JNIEnv* env, jobjectArray input,
 
 jobject TbSame2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame2Struct2& in_struct2)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for makeJavaStruct2"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct2.");
-	static const jmethodID ctor = getMethod(jStruct2, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStruct2, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStruct2, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStruct2, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct2.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -305,7 +386,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame2Str
 	}
 
 	static const TCHAR* errorMsgFindfield1 = TEXT("failed when trying to field field1 I for FTbSame2Struct2");
-	static const jfieldID jFieldId_field1 = getFieldId(jStruct2, "field1", "I", errorMsgFindfield1);
+	static const jfieldID jFieldId_field1 = getFieldId(Cache->jStruct2, "field1", "I", errorMsgFindfield1);
 
 	if (jFieldId_field1 != nullptr)
 	{
@@ -319,7 +400,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame2Str
 	}
 
 	static const TCHAR* errorMsgFindfield2 = TEXT("failed when trying to field field2 I for FTbSame2Struct2");
-	static const jfieldID jFieldId_field2 = getFieldId(jStruct2, "field2", "I", errorMsgFindfield2);
+	static const jfieldID jFieldId_field2 = getFieldId(Cache->jStruct2, "field2", "I", errorMsgFindfield2);
 
 	if (jFieldId_field2 != nullptr)
 	{
@@ -333,7 +414,7 @@ jobject TbSame2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame2Str
 	}
 
 	static const TCHAR* errorMsgFindfield3 = TEXT("failed when trying to field field3 I for FTbSame2Struct2");
-	static const jfieldID jFieldId_field3 = getFieldId(jStruct2, "field3", "I", errorMsgFindfield3);
+	static const jfieldID jFieldId_field3 = getFieldId(Cache->jStruct2, "field3", "I", errorMsgFindfield3);
 
 	if (jFieldId_field3 != nullptr)
 	{
@@ -350,15 +431,15 @@ jobject TbSame2DataJavaConverter::makeJavaStruct2(JNIEnv* env, const FTbSame2Str
 
 jobjectArray TbSame2DataJavaConverter::makeJavaStruct2Array(JNIEnv* env, const TArray<FTbSame2Struct2>& cppArray)
 {
-	ensureInitialized();
-	if (jStruct2 == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStruct2)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("FTbSame2Struct2 not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStruct2, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStruct2, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct2.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -379,11 +460,15 @@ jobjectArray TbSame2DataJavaConverter::makeJavaStruct2Array(JNIEnv* env, const T
 	}
 	return javaArray;
 }
-jclass TbSame2DataJavaConverter::jEnum1 = nullptr;
 
 void TbSame2DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, TArray<ETbSame2Enum1>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillEnum1Array"));
+		return;
+	}
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of Enum1 array.");
@@ -411,9 +496,14 @@ void TbSame2DataJavaConverter::fillEnum1Array(JNIEnv* env, jobjectArray input, T
 ETbSame2Enum1 TbSame2DataJavaConverter::getEnum1Value(JNIEnv* env, jobject input)
 {
 	ETbSame2Enum1 cppEnumValue = ETbSame2Enum1::TS2E1_Value1;
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for getEnum1Value"));
+		return cppEnumValue;
+	}
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum1.");
-	static const jmethodID getValueMethod = getMethod(jEnum1, "getValue", "()I", errorMsgGetMethod);
+	static const jmethodID getValueMethod = getMethod(Cache->jEnum1, "getValue", "()I", errorMsgGetMethod);
 	if (getValueMethod != nullptr)
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
@@ -432,14 +522,14 @@ ETbSame2Enum1 TbSame2DataJavaConverter::getEnum1Value(JNIEnv* env, jobject input
 
 jobjectArray TbSame2DataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TArray<ETbSame2Enum1>& cppArray)
 {
-	ensureInitialized();
-	if (jEnum1 == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jEnum1)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("Enum Enum1 not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jEnum1, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEnum1, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Enum1 jarray.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -463,25 +553,34 @@ jobjectArray TbSame2DataJavaConverter::makeJavaEnum1Array(JNIEnv* env, const TAr
 
 jobject TbSame2DataJavaConverter::makeJavaEnum1(JNIEnv* env, ETbSame2Enum1 value)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for makeJavaEnum1"));
+		return nullptr;
+	}
 	static const TCHAR* errorMsgFromValueMethod = TEXT("failed when trying to get java method fromValue for object for Enum1.");
-	static const jmethodID fromValueMethod = getStaticMethod(jEnum1, "fromValue", "(I)LtbSame2/tbSame2_api/Enum1;", errorMsgFromValueMethod);
+	static const jmethodID fromValueMethod = getStaticMethod(Cache->jEnum1, "fromValue", "(I)LtbSame2/tbSame2_api/Enum1;", errorMsgFromValueMethod);
 	if (fromValueMethod == nullptr)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
 	int int_value = (int)value;
-	jobject javaObj = env->CallStaticObjectMethod(jEnum1, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(Cache->jEnum1, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum1.");
 	checkJniErrorOccured(errorMsg);
 	return javaObj;
 }
-jclass TbSame2DataJavaConverter::jEnum2 = nullptr;
 
 void TbSame2DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, TArray<ETbSame2Enum2>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillEnum2Array"));
+		return;
+	}
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of Enum2 array.");
@@ -509,9 +608,14 @@ void TbSame2DataJavaConverter::fillEnum2Array(JNIEnv* env, jobjectArray input, T
 ETbSame2Enum2 TbSame2DataJavaConverter::getEnum2Value(JNIEnv* env, jobject input)
 {
 	ETbSame2Enum2 cppEnumValue = ETbSame2Enum2::TS2E2_Value1;
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for getEnum2Value"));
+		return cppEnumValue;
+	}
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum2.");
-	static const jmethodID getValueMethod = getMethod(jEnum2, "getValue", "()I", errorMsgGetMethod);
+	static const jmethodID getValueMethod = getMethod(Cache->jEnum2, "getValue", "()I", errorMsgGetMethod);
 	if (getValueMethod != nullptr)
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
@@ -530,14 +634,14 @@ ETbSame2Enum2 TbSame2DataJavaConverter::getEnum2Value(JNIEnv* env, jobject input
 
 jobjectArray TbSame2DataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TArray<ETbSame2Enum2>& cppArray)
 {
-	ensureInitialized();
-	if (jEnum2 == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jEnum2)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("Enum Enum2 not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jEnum2, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEnum2, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Enum2 jarray.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -561,26 +665,34 @@ jobjectArray TbSame2DataJavaConverter::makeJavaEnum2Array(JNIEnv* env, const TAr
 
 jobject TbSame2DataJavaConverter::makeJavaEnum2(JNIEnv* env, ETbSame2Enum2 value)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for makeJavaEnum2"));
+		return nullptr;
+	}
 	static const TCHAR* errorMsgFromValueMethod = TEXT("failed when trying to get java method fromValue for object for Enum2.");
-	static const jmethodID fromValueMethod = getStaticMethod(jEnum2, "fromValue", "(I)LtbSame2/tbSame2_api/Enum2;", errorMsgFromValueMethod);
+	static const jmethodID fromValueMethod = getStaticMethod(Cache->jEnum2, "fromValue", "(I)LtbSame2/tbSame2_api/Enum2;", errorMsgFromValueMethod);
 	if (fromValueMethod == nullptr)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
 	int int_value = (int)value;
-	jobject javaObj = env->CallStaticObjectMethod(jEnum2, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(Cache->jEnum2, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum2.");
 	checkJniErrorOccured(errorMsg);
 	return javaObj;
 }
 
-jclass TbSame2DataJavaConverter::jSameStruct1Interface = nullptr;
-
 void TbSame2DataJavaConverter::fillSameStruct1Interface(JNIEnv* env, jobject input, TScriptInterface<ITbSame2SameStruct1InterfaceInterface> out_same_struct1_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillSameStruct1Interface"));
+		return;
+	}
 	if (!input || !out_same_struct1_interface)
 	{
 		return;
@@ -590,13 +702,23 @@ void TbSame2DataJavaConverter::fillSameStruct1Interface(JNIEnv* env, jobject inp
 
 void TbSame2DataJavaConverter::fillSameStruct1InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSame2SameStruct1InterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillSameStruct1InterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSame2DataJavaConverter::makeJavaSameStruct1Interface(JNIEnv* env, const TScriptInterface<ITbSame2SameStruct1InterfaceInterface> out_same_struct1_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for makeJavaSameStruct1Interface"));
+		return nullptr;
+	}
 	if (!out_same_struct1_interface)
 	{
 		return nullptr;
@@ -609,14 +731,14 @@ jobject TbSame2DataJavaConverter::makeJavaSameStruct1Interface(JNIEnv* env, cons
 
 jobjectArray TbSame2DataJavaConverter::makeJavaSameStruct1InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame2SameStruct1InterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jSameStruct1Interface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jSameStruct1Interface)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("ISameStruct1Interface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jSameStruct1Interface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jSameStruct1Interface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_same_struct1_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -628,7 +750,12 @@ jobjectArray TbSame2DataJavaConverter::makeJavaSameStruct1InterfaceArray(JNIEnv*
 
 TScriptInterface<ITbSame2SameStruct1InterfaceInterface> TbSame2DataJavaConverter::getCppInstanceTbSame2SameStruct1Interface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for getCppInstanceTbSame2SameStruct1Interface"));
+		return nullptr;
+	}
 	UTbSame2SameStruct1InterfaceImplementation* Impl = NewObject<UTbSame2SameStruct1InterfaceImplementation>();
 	TScriptInterface<ITbSame2SameStruct1InterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -636,11 +763,14 @@ TScriptInterface<ITbSame2SameStruct1InterfaceInterface> TbSame2DataJavaConverter
 	return wrapped;
 }
 
-jclass TbSame2DataJavaConverter::jSameStruct2Interface = nullptr;
-
 void TbSame2DataJavaConverter::fillSameStruct2Interface(JNIEnv* env, jobject input, TScriptInterface<ITbSame2SameStruct2InterfaceInterface> out_same_struct2_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillSameStruct2Interface"));
+		return;
+	}
 	if (!input || !out_same_struct2_interface)
 	{
 		return;
@@ -650,13 +780,23 @@ void TbSame2DataJavaConverter::fillSameStruct2Interface(JNIEnv* env, jobject inp
 
 void TbSame2DataJavaConverter::fillSameStruct2InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSame2SameStruct2InterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillSameStruct2InterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSame2DataJavaConverter::makeJavaSameStruct2Interface(JNIEnv* env, const TScriptInterface<ITbSame2SameStruct2InterfaceInterface> out_same_struct2_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for makeJavaSameStruct2Interface"));
+		return nullptr;
+	}
 	if (!out_same_struct2_interface)
 	{
 		return nullptr;
@@ -669,14 +809,14 @@ jobject TbSame2DataJavaConverter::makeJavaSameStruct2Interface(JNIEnv* env, cons
 
 jobjectArray TbSame2DataJavaConverter::makeJavaSameStruct2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame2SameStruct2InterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jSameStruct2Interface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jSameStruct2Interface)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("ISameStruct2Interface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jSameStruct2Interface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jSameStruct2Interface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_same_struct2_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -688,7 +828,12 @@ jobjectArray TbSame2DataJavaConverter::makeJavaSameStruct2InterfaceArray(JNIEnv*
 
 TScriptInterface<ITbSame2SameStruct2InterfaceInterface> TbSame2DataJavaConverter::getCppInstanceTbSame2SameStruct2Interface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for getCppInstanceTbSame2SameStruct2Interface"));
+		return nullptr;
+	}
 	UTbSame2SameStruct2InterfaceImplementation* Impl = NewObject<UTbSame2SameStruct2InterfaceImplementation>();
 	TScriptInterface<ITbSame2SameStruct2InterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -696,11 +841,14 @@ TScriptInterface<ITbSame2SameStruct2InterfaceInterface> TbSame2DataJavaConverter
 	return wrapped;
 }
 
-jclass TbSame2DataJavaConverter::jSameEnum1Interface = nullptr;
-
 void TbSame2DataJavaConverter::fillSameEnum1Interface(JNIEnv* env, jobject input, TScriptInterface<ITbSame2SameEnum1InterfaceInterface> out_same_enum1_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillSameEnum1Interface"));
+		return;
+	}
 	if (!input || !out_same_enum1_interface)
 	{
 		return;
@@ -710,13 +858,23 @@ void TbSame2DataJavaConverter::fillSameEnum1Interface(JNIEnv* env, jobject input
 
 void TbSame2DataJavaConverter::fillSameEnum1InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSame2SameEnum1InterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillSameEnum1InterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSame2DataJavaConverter::makeJavaSameEnum1Interface(JNIEnv* env, const TScriptInterface<ITbSame2SameEnum1InterfaceInterface> out_same_enum1_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for makeJavaSameEnum1Interface"));
+		return nullptr;
+	}
 	if (!out_same_enum1_interface)
 	{
 		return nullptr;
@@ -729,14 +887,14 @@ jobject TbSame2DataJavaConverter::makeJavaSameEnum1Interface(JNIEnv* env, const 
 
 jobjectArray TbSame2DataJavaConverter::makeJavaSameEnum1InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame2SameEnum1InterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jSameEnum1Interface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jSameEnum1Interface)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("ISameEnum1Interface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jSameEnum1Interface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jSameEnum1Interface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_same_enum1_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -748,7 +906,12 @@ jobjectArray TbSame2DataJavaConverter::makeJavaSameEnum1InterfaceArray(JNIEnv* e
 
 TScriptInterface<ITbSame2SameEnum1InterfaceInterface> TbSame2DataJavaConverter::getCppInstanceTbSame2SameEnum1Interface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for getCppInstanceTbSame2SameEnum1Interface"));
+		return nullptr;
+	}
 	UTbSame2SameEnum1InterfaceImplementation* Impl = NewObject<UTbSame2SameEnum1InterfaceImplementation>();
 	TScriptInterface<ITbSame2SameEnum1InterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -756,11 +919,14 @@ TScriptInterface<ITbSame2SameEnum1InterfaceInterface> TbSame2DataJavaConverter::
 	return wrapped;
 }
 
-jclass TbSame2DataJavaConverter::jSameEnum2Interface = nullptr;
-
 void TbSame2DataJavaConverter::fillSameEnum2Interface(JNIEnv* env, jobject input, TScriptInterface<ITbSame2SameEnum2InterfaceInterface> out_same_enum2_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillSameEnum2Interface"));
+		return;
+	}
 	if (!input || !out_same_enum2_interface)
 	{
 		return;
@@ -770,13 +936,23 @@ void TbSame2DataJavaConverter::fillSameEnum2Interface(JNIEnv* env, jobject input
 
 void TbSame2DataJavaConverter::fillSameEnum2InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITbSame2SameEnum2InterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for fillSameEnum2InterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject TbSame2DataJavaConverter::makeJavaSameEnum2Interface(JNIEnv* env, const TScriptInterface<ITbSame2SameEnum2InterfaceInterface> out_same_enum2_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for makeJavaSameEnum2Interface"));
+		return nullptr;
+	}
 	if (!out_same_enum2_interface)
 	{
 		return nullptr;
@@ -789,14 +965,14 @@ jobject TbSame2DataJavaConverter::makeJavaSameEnum2Interface(JNIEnv* env, const 
 
 jobjectArray TbSame2DataJavaConverter::makeJavaSameEnum2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITbSame2SameEnum2InterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jSameEnum2Interface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jSameEnum2Interface)
 	{
 		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("ISameEnum2Interface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jSameEnum2Interface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jSameEnum2Interface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_same_enum2_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -808,7 +984,12 @@ jobjectArray TbSame2DataJavaConverter::makeJavaSameEnum2InterfaceArray(JNIEnv* e
 
 TScriptInterface<ITbSame2SameEnum2InterfaceInterface> TbSame2DataJavaConverter::getCppInstanceTbSame2SameEnum2Interface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTbSame2DataJavaConverter_JNI, Warning, TEXT("TbSame2DataJavaConverter cache not initialized for getCppInstanceTbSame2SameEnum2Interface"));
+		return nullptr;
+	}
 	UTbSame2SameEnum2InterfaceImplementation* Impl = NewObject<UTbSame2SameEnum2InterfaceImplementation>();
 	TScriptInterface<ITbSame2SameEnum2InterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -831,60 +1012,55 @@ bool TbSame2DataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 
 void TbSame2DataJavaConverter::cleanJavaReferences()
 {
-	FScopeLock Lock(&initMutex);
-	m_isInitialized = false;
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(jStruct1);
-	env->DeleteGlobalRef(jStruct2);
-	env->DeleteGlobalRef(jEnum1);
-	env->DeleteGlobalRef(jEnum2);
-	env->DeleteGlobalRef(jSameStruct1Interface);
-	env->DeleteGlobalRef(jSameStruct2Interface);
-	env->DeleteGlobalRef(jSameEnum1Interface);
-	env->DeleteGlobalRef(jSameEnum2Interface);
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
-FCriticalSection TbSame2DataJavaConverter::initMutex;
-
-bool TbSame2DataJavaConverter::m_isInitialized = false;
-
-void TbSame2DataJavaConverter::ensureInitialized()
+TSharedPtr<FTbSame2DataJavaConverterCacheData, ESPMode::ThreadSafe> TbSame2DataJavaConverter::ensureInitialized()
 {
-	if (m_isInitialized)
 	{
-		return;
+		FScopeLock Lock(&CacheLock);
+		if (CacheData)
+		{
+			return CacheData;
+		}
 	}
-	FScopeLock Lock(&initMutex);
-	if (m_isInitialized)
-	{
-		return;
-	}
+
+	auto NewData = MakeShared<FTbSame2DataJavaConverterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	jStruct1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct1");
+	NewData->jStruct1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct1");
 	static const TCHAR* errorMsgStruct1 = TEXT("failed to get tbSame2/tbSame2_api/Struct1");
 	checkJniErrorOccured(errorMsgStruct1);
-	jStruct2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct2");
+	NewData->jStruct2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Struct2");
 	static const TCHAR* errorMsgStruct2 = TEXT("failed to get tbSame2/tbSame2_api/Struct2");
 	checkJniErrorOccured(errorMsgStruct2);
-	jEnum1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum1");
+	NewData->jEnum1 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum1");
 	static const TCHAR* errorMsgEnum1 = TEXT("failed to get tbSame2/tbSame2_api/Enum1");
 	checkJniErrorOccured(errorMsgEnum1);
-	jEnum2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum2");
+	NewData->jEnum2 = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/Enum2");
 	static const TCHAR* errorMsgEnum2 = TEXT("failed to get tbSame2/tbSame2_api/Enum2");
 	checkJniErrorOccured(errorMsgEnum2);
-	jSameStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameStruct1Interface");
+	NewData->jSameStruct1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameStruct1Interface");
 	static const TCHAR* errorMsgSameStruct1Interface = TEXT("failed to get tbSame2/tbSame2_api/ISameStruct1Interface");
 	checkJniErrorOccured(errorMsgSameStruct1Interface);
-	jSameStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameStruct2Interface");
+	NewData->jSameStruct2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameStruct2Interface");
 	static const TCHAR* errorMsgSameStruct2Interface = TEXT("failed to get tbSame2/tbSame2_api/ISameStruct2Interface");
 	checkJniErrorOccured(errorMsgSameStruct2Interface);
-	jSameEnum1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameEnum1Interface");
+	NewData->jSameEnum1Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameEnum1Interface");
 	static const TCHAR* errorMsgSameEnum1Interface = TEXT("failed to get tbSame2/tbSame2_api/ISameEnum1Interface");
 	checkJniErrorOccured(errorMsgSameEnum1Interface);
-	jSameEnum2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameEnum2Interface");
+	NewData->jSameEnum2Interface = FAndroidApplication::FindJavaClassGlobalRef("tbSame2/tbSame2_api/ISameEnum2Interface");
 	static const TCHAR* errorMsgSameEnum2Interface = TEXT("failed to get tbSame2/tbSame2_api/ISameEnum2Interface");
 	checkJniErrorOccured(errorMsgSameEnum2Interface);
-	m_isInitialized = true;
+
+	{
+		FScopeLock Lock(&CacheLock);
+		if (!CacheData)
+		{
+			CacheData = NewData;
+		}
+		return CacheData;
+	}
 }
 
 jmethodID TbSame2DataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)

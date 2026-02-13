@@ -37,14 +37,112 @@ limitations under the License.
 
 DEFINE_LOG_CATEGORY(LogTestbed1DataJavaConverter_JNI);
 
-jclass Testbed1DataJavaConverter::jStructBool = nullptr;
+struct FTestbed1DataJavaConverterCacheData
+{
+	jclass jStructBool = nullptr;
+	jclass jStructInt = nullptr;
+	jclass jStructFloat = nullptr;
+	jclass jStructString = nullptr;
+	jclass jStructStruct = nullptr;
+	jclass jStructEnum = nullptr;
+	jclass jStructBoolWithArray = nullptr;
+	jclass jStructIntWithArray = nullptr;
+	jclass jStructFloatWithArray = nullptr;
+	jclass jStructStringWithArray = nullptr;
+	jclass jStructStructWithArray = nullptr;
+	jclass jStructEnumWithArray = nullptr;
+	jclass jEnum0 = nullptr;
+	jclass jStructInterface = nullptr;
+	jclass jStructArrayInterface = nullptr;
+	jclass jStructArray2Interface = nullptr;
+
+	~FTestbed1DataJavaConverterCacheData()
+	{
+		JNIEnv* Env = FAndroidApplication::GetJavaEnv();
+		if (Env)
+		{
+			if (jStructBool)
+			{
+				Env->DeleteGlobalRef(jStructBool);
+			}
+			if (jStructInt)
+			{
+				Env->DeleteGlobalRef(jStructInt);
+			}
+			if (jStructFloat)
+			{
+				Env->DeleteGlobalRef(jStructFloat);
+			}
+			if (jStructString)
+			{
+				Env->DeleteGlobalRef(jStructString);
+			}
+			if (jStructStruct)
+			{
+				Env->DeleteGlobalRef(jStructStruct);
+			}
+			if (jStructEnum)
+			{
+				Env->DeleteGlobalRef(jStructEnum);
+			}
+			if (jStructBoolWithArray)
+			{
+				Env->DeleteGlobalRef(jStructBoolWithArray);
+			}
+			if (jStructIntWithArray)
+			{
+				Env->DeleteGlobalRef(jStructIntWithArray);
+			}
+			if (jStructFloatWithArray)
+			{
+				Env->DeleteGlobalRef(jStructFloatWithArray);
+			}
+			if (jStructStringWithArray)
+			{
+				Env->DeleteGlobalRef(jStructStringWithArray);
+			}
+			if (jStructStructWithArray)
+			{
+				Env->DeleteGlobalRef(jStructStructWithArray);
+			}
+			if (jStructEnumWithArray)
+			{
+				Env->DeleteGlobalRef(jStructEnumWithArray);
+			}
+			if (jEnum0)
+			{
+				Env->DeleteGlobalRef(jEnum0);
+			}
+			if (jStructInterface)
+			{
+				Env->DeleteGlobalRef(jStructInterface);
+			}
+			if (jStructArrayInterface)
+			{
+				Env->DeleteGlobalRef(jStructArrayInterface);
+			}
+			if (jStructArray2Interface)
+			{
+				Env->DeleteGlobalRef(jStructArray2Interface);
+			}
+		}
+	}
+};
+
+FCriticalSection Testbed1DataJavaConverter::CacheLock;
+TSharedPtr<FTestbed1DataJavaConverterCacheData, ESPMode::ThreadSafe> Testbed1DataJavaConverter::CacheData;
 
 void Testbed1DataJavaConverter::fillStructBool(JNIEnv* env, jobject input, FTestbed1StructBool& out_struct_bool)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructBool"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldBool = TEXT("failed when trying to field fieldBool Z for FTestbed1StructBool");
-	static const jfieldID jFieldId_field_bool = getFieldId(jStructBool, "fieldBool", "Z", errorMsgFindfieldBool);
+	static const jfieldID jFieldId_field_bool = getFieldId(Cache->jStructBool, "fieldBool", "Z", errorMsgFindfieldBool);
 
 	if (jFieldId_field_bool)
 	{
@@ -60,7 +158,12 @@ void Testbed1DataJavaConverter::fillStructBool(JNIEnv* env, jobject input, FTest
 
 void Testbed1DataJavaConverter::fillStructBoolArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructBool>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructBoolArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_bool array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -88,16 +191,21 @@ void Testbed1DataJavaConverter::fillStructBoolArray(JNIEnv* env, jobjectArray in
 
 jobject Testbed1DataJavaConverter::makeJavaStructBool(JNIEnv* env, const FTestbed1StructBool& in_struct_bool)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructBool"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_bool.");
-	static const jmethodID ctor = getMethod(jStructBool, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructBool, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructBool, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructBool, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_bool.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -105,7 +213,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructBool(JNIEnv* env, const FTestbe
 	}
 
 	static const TCHAR* errorMsgFindfieldBool = TEXT("failed when trying to field fieldBool Z for FTestbed1StructBool");
-	static const jfieldID jFieldId_field_bool = getFieldId(jStructBool, "fieldBool", "Z", errorMsgFindfieldBool);
+	static const jfieldID jFieldId_field_bool = getFieldId(Cache->jStructBool, "fieldBool", "Z", errorMsgFindfieldBool);
 
 	if (jFieldId_field_bool != nullptr)
 	{
@@ -122,15 +230,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructBool(JNIEnv* env, const FTestbe
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolArray(JNIEnv* env, const TArray<FTestbed1StructBool>& cppArray)
 {
-	ensureInitialized();
-	if (jStructBool == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructBool)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructBool not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructBool, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructBool, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_bool.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -152,14 +260,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolArray(JNIEnv* env, con
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructInt = nullptr;
-
 void Testbed1DataJavaConverter::fillStructInt(JNIEnv* env, jobject input, FTestbed1StructInt& out_struct_int)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructInt"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldInt = TEXT("failed when trying to field fieldInt I for FTestbed1StructInt");
-	static const jfieldID jFieldId_field_int = getFieldId(jStructInt, "fieldInt", "I", errorMsgFindfieldInt);
+	static const jfieldID jFieldId_field_int = getFieldId(Cache->jStructInt, "fieldInt", "I", errorMsgFindfieldInt);
 
 	if (jFieldId_field_int)
 	{
@@ -175,7 +286,12 @@ void Testbed1DataJavaConverter::fillStructInt(JNIEnv* env, jobject input, FTestb
 
 void Testbed1DataJavaConverter::fillStructIntArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructInt>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructIntArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_int array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -203,16 +319,21 @@ void Testbed1DataJavaConverter::fillStructIntArray(JNIEnv* env, jobjectArray inp
 
 jobject Testbed1DataJavaConverter::makeJavaStructInt(JNIEnv* env, const FTestbed1StructInt& in_struct_int)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructInt"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_int.");
-	static const jmethodID ctor = getMethod(jStructInt, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructInt, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructInt, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructInt, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_int.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -220,7 +341,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructInt(JNIEnv* env, const FTestbed
 	}
 
 	static const TCHAR* errorMsgFindfieldInt = TEXT("failed when trying to field fieldInt I for FTestbed1StructInt");
-	static const jfieldID jFieldId_field_int = getFieldId(jStructInt, "fieldInt", "I", errorMsgFindfieldInt);
+	static const jfieldID jFieldId_field_int = getFieldId(Cache->jStructInt, "fieldInt", "I", errorMsgFindfieldInt);
 
 	if (jFieldId_field_int != nullptr)
 	{
@@ -237,15 +358,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructInt(JNIEnv* env, const FTestbed
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructIntArray(JNIEnv* env, const TArray<FTestbed1StructInt>& cppArray)
 {
-	ensureInitialized();
-	if (jStructInt == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructInt)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructInt not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructInt, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructInt, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_int.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -267,14 +388,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructIntArray(JNIEnv* env, cons
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructFloat = nullptr;
-
 void Testbed1DataJavaConverter::fillStructFloat(JNIEnv* env, jobject input, FTestbed1StructFloat& out_struct_float)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructFloat"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldFloat = TEXT("failed when trying to field fieldFloat F for FTestbed1StructFloat");
-	static const jfieldID jFieldId_field_float = getFieldId(jStructFloat, "fieldFloat", "F", errorMsgFindfieldFloat);
+	static const jfieldID jFieldId_field_float = getFieldId(Cache->jStructFloat, "fieldFloat", "F", errorMsgFindfieldFloat);
 
 	if (jFieldId_field_float)
 	{
@@ -290,7 +414,12 @@ void Testbed1DataJavaConverter::fillStructFloat(JNIEnv* env, jobject input, FTes
 
 void Testbed1DataJavaConverter::fillStructFloatArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructFloat>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructFloatArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_float array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -318,16 +447,21 @@ void Testbed1DataJavaConverter::fillStructFloatArray(JNIEnv* env, jobjectArray i
 
 jobject Testbed1DataJavaConverter::makeJavaStructFloat(JNIEnv* env, const FTestbed1StructFloat& in_struct_float)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructFloat"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_float.");
-	static const jmethodID ctor = getMethod(jStructFloat, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructFloat, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructFloat, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructFloat, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_float.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -335,7 +469,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructFloat(JNIEnv* env, const FTestb
 	}
 
 	static const TCHAR* errorMsgFindfieldFloat = TEXT("failed when trying to field fieldFloat F for FTestbed1StructFloat");
-	static const jfieldID jFieldId_field_float = getFieldId(jStructFloat, "fieldFloat", "F", errorMsgFindfieldFloat);
+	static const jfieldID jFieldId_field_float = getFieldId(Cache->jStructFloat, "fieldFloat", "F", errorMsgFindfieldFloat);
 
 	if (jFieldId_field_float != nullptr)
 	{
@@ -352,15 +486,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructFloat(JNIEnv* env, const FTestb
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatArray(JNIEnv* env, const TArray<FTestbed1StructFloat>& cppArray)
 {
-	ensureInitialized();
-	if (jStructFloat == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructFloat)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructFloat not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructFloat, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructFloat, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_float.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -382,14 +516,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatArray(JNIEnv* env, co
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructString = nullptr;
-
 void Testbed1DataJavaConverter::fillStructString(JNIEnv* env, jobject input, FTestbed1StructString& out_struct_string)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructString"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldString = TEXT("failed when trying to field fieldString Ljava/lang/String; for FTestbed1StructString");
-	static const jfieldID jFieldId_field_string = getFieldId(jStructString, "fieldString", "Ljava/lang/String;", errorMsgFindfieldString);
+	static const jfieldID jFieldId_field_string = getFieldId(Cache->jStructString, "fieldString", "Ljava/lang/String;", errorMsgFindfieldString);
 
 	if (jFieldId_field_string)
 	{
@@ -408,7 +545,12 @@ void Testbed1DataJavaConverter::fillStructString(JNIEnv* env, jobject input, FTe
 
 void Testbed1DataJavaConverter::fillStructStringArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructString>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructStringArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_string array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -436,16 +578,21 @@ void Testbed1DataJavaConverter::fillStructStringArray(JNIEnv* env, jobjectArray 
 
 jobject Testbed1DataJavaConverter::makeJavaStructString(JNIEnv* env, const FTestbed1StructString& in_struct_string)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructString"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_string.");
-	static const jmethodID ctor = getMethod(jStructString, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructString, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructString, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructString, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_string.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -453,7 +600,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructString(JNIEnv* env, const FTest
 	}
 
 	static const TCHAR* errorMsgFindfieldString = TEXT("failed when trying to field fieldString Ljava/lang/String; for FTestbed1StructString");
-	static const jfieldID jFieldId_field_string = getFieldId(jStructString, "fieldString", "Ljava/lang/String;", errorMsgFindfieldString);
+	static const jfieldID jFieldId_field_string = getFieldId(Cache->jStructString, "fieldString", "Ljava/lang/String;", errorMsgFindfieldString);
 
 	if (jFieldId_field_string != nullptr)
 	{
@@ -473,15 +620,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructString(JNIEnv* env, const FTest
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStringArray(JNIEnv* env, const TArray<FTestbed1StructString>& cppArray)
 {
-	ensureInitialized();
-	if (jStructString == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructString)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructString not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructString, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructString, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_string.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -503,14 +650,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStringArray(JNIEnv* env, c
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructStruct = nullptr;
-
 void Testbed1DataJavaConverter::fillStructStruct(JNIEnv* env, jobject input, FTestbed1StructStruct& out_struct_struct)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructStruct"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldString = TEXT("failed when trying to field fieldString Ltestbed1/testbed1_api/StructString; for FTestbed1StructStruct");
-	static const jfieldID jFieldId_field_string = getFieldId(jStructStruct, "fieldString", "Ltestbed1/testbed1_api/StructString;", errorMsgFindfieldString);
+	static const jfieldID jFieldId_field_string = getFieldId(Cache->jStructStruct, "fieldString", "Ltestbed1/testbed1_api/StructString;", errorMsgFindfieldString);
 
 	if (jFieldId_field_string)
 	{
@@ -528,7 +678,12 @@ void Testbed1DataJavaConverter::fillStructStruct(JNIEnv* env, jobject input, FTe
 
 void Testbed1DataJavaConverter::fillStructStructArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStruct>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructStructArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_struct array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -556,16 +711,21 @@ void Testbed1DataJavaConverter::fillStructStructArray(JNIEnv* env, jobjectArray 
 
 jobject Testbed1DataJavaConverter::makeJavaStructStruct(JNIEnv* env, const FTestbed1StructStruct& in_struct_struct)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructStruct"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_struct.");
-	static const jmethodID ctor = getMethod(jStructStruct, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructStruct, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructStruct, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructStruct, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_struct.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -573,7 +733,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructStruct(JNIEnv* env, const FTest
 	}
 
 	static const TCHAR* errorMsgFindfieldString = TEXT("failed when trying to field fieldString Ltestbed1/testbed1_api/StructString; for FTestbed1StructStruct");
-	static const jfieldID jFieldId_field_string = getFieldId(jStructStruct, "fieldString", "Ltestbed1/testbed1_api/StructString;", errorMsgFindfieldString);
+	static const jfieldID jFieldId_field_string = getFieldId(Cache->jStructStruct, "fieldString", "Ltestbed1/testbed1_api/StructString;", errorMsgFindfieldString);
 
 	if (jFieldId_field_string != nullptr)
 	{
@@ -592,15 +752,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructStruct(JNIEnv* env, const FTest
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStructArray(JNIEnv* env, const TArray<FTestbed1StructStruct>& cppArray)
 {
-	ensureInitialized();
-	if (jStructStruct == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructStruct)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructStruct not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructStruct, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructStruct, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_struct.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -622,14 +782,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStructArray(JNIEnv* env, c
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructEnum = nullptr;
-
 void Testbed1DataJavaConverter::fillStructEnum(JNIEnv* env, jobject input, FTestbed1StructEnum& out_struct_enum)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructEnum"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldEnum = TEXT("failed when trying to field fieldEnum Ltestbed1/testbed1_api/Enum0; for FTestbed1StructEnum");
-	static const jfieldID jFieldId_field_enum = getFieldId(jStructEnum, "fieldEnum", "Ltestbed1/testbed1_api/Enum0;", errorMsgFindfieldEnum);
+	static const jfieldID jFieldId_field_enum = getFieldId(Cache->jStructEnum, "fieldEnum", "Ltestbed1/testbed1_api/Enum0;", errorMsgFindfieldEnum);
 
 	if (jFieldId_field_enum)
 	{
@@ -647,7 +810,12 @@ void Testbed1DataJavaConverter::fillStructEnum(JNIEnv* env, jobject input, FTest
 
 void Testbed1DataJavaConverter::fillStructEnumArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructEnum>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructEnumArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_enum array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -675,16 +843,21 @@ void Testbed1DataJavaConverter::fillStructEnumArray(JNIEnv* env, jobjectArray in
 
 jobject Testbed1DataJavaConverter::makeJavaStructEnum(JNIEnv* env, const FTestbed1StructEnum& in_struct_enum)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructEnum"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_enum.");
-	static const jmethodID ctor = getMethod(jStructEnum, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructEnum, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructEnum, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructEnum, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_enum.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -692,7 +865,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructEnum(JNIEnv* env, const FTestbe
 	}
 
 	static const TCHAR* errorMsgFindfieldEnum = TEXT("failed when trying to field fieldEnum Ltestbed1/testbed1_api/Enum0; for FTestbed1StructEnum");
-	static const jfieldID jFieldId_field_enum = getFieldId(jStructEnum, "fieldEnum", "Ltestbed1/testbed1_api/Enum0;", errorMsgFindfieldEnum);
+	static const jfieldID jFieldId_field_enum = getFieldId(Cache->jStructEnum, "fieldEnum", "Ltestbed1/testbed1_api/Enum0;", errorMsgFindfieldEnum);
 
 	if (jFieldId_field_enum != nullptr)
 	{
@@ -711,15 +884,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructEnum(JNIEnv* env, const FTestbe
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumArray(JNIEnv* env, const TArray<FTestbed1StructEnum>& cppArray)
 {
-	ensureInitialized();
-	if (jStructEnum == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructEnum)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructEnum not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructEnum, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructEnum, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_enum.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -741,14 +914,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumArray(JNIEnv* env, con
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructBoolWithArray = nullptr;
-
 void Testbed1DataJavaConverter::fillStructBoolWithArray(JNIEnv* env, jobject input, FTestbed1StructBoolWithArray& out_struct_bool_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructBoolWithArray"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldBool = TEXT("failed when trying to field fieldBool [Z for FTestbed1StructBoolWithArray");
-	static const jfieldID jFieldId_field_bool = getFieldId(jStructBoolWithArray, "fieldBool", "[Z", errorMsgFindfieldBool);
+	static const jfieldID jFieldId_field_bool = getFieldId(Cache->jStructBoolWithArray, "fieldBool", "[Z", errorMsgFindfieldBool);
 
 	if (jFieldId_field_bool)
 	{
@@ -778,7 +954,12 @@ void Testbed1DataJavaConverter::fillStructBoolWithArray(JNIEnv* env, jobject inp
 
 void Testbed1DataJavaConverter::fillStructBoolWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructBoolWithArray>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructBoolWithArrayArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_bool_with_array array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -806,16 +987,21 @@ void Testbed1DataJavaConverter::fillStructBoolWithArrayArray(JNIEnv* env, jobjec
 
 jobject Testbed1DataJavaConverter::makeJavaStructBoolWithArray(JNIEnv* env, const FTestbed1StructBoolWithArray& in_struct_bool_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructBoolWithArray"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_bool_with_array.");
-	static const jmethodID ctor = getMethod(jStructBoolWithArray, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructBoolWithArray, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructBoolWithArray, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructBoolWithArray, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_bool_with_array.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -823,7 +1009,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructBoolWithArray(JNIEnv* env, cons
 	}
 
 	static const TCHAR* errorMsgFindfieldBool = TEXT("failed when trying to field fieldBool [Z for FTestbed1StructBoolWithArray");
-	static const jfieldID jFieldId_field_bool = getFieldId(jStructBoolWithArray, "fieldBool", "[Z", errorMsgFindfieldBool);
+	static const jfieldID jFieldId_field_bool = getFieldId(Cache->jStructBoolWithArray, "fieldBool", "[Z", errorMsgFindfieldBool);
 
 	if (jFieldId_field_bool != nullptr)
 	{
@@ -856,15 +1042,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructBoolWithArray(JNIEnv* env, cons
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructBoolWithArray>& cppArray)
 {
-	ensureInitialized();
-	if (jStructBoolWithArray == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructBoolWithArray)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructBoolWithArray not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructBoolWithArray, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructBoolWithArray, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_bool_with_array.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -886,14 +1072,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructBoolWithArrayArray(JNIEnv*
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructIntWithArray = nullptr;
-
 void Testbed1DataJavaConverter::fillStructIntWithArray(JNIEnv* env, jobject input, FTestbed1StructIntWithArray& out_struct_int_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructIntWithArray"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldInt = TEXT("failed when trying to field fieldInt [I for FTestbed1StructIntWithArray");
-	static const jfieldID jFieldId_field_int = getFieldId(jStructIntWithArray, "fieldInt", "[I", errorMsgFindfieldInt);
+	static const jfieldID jFieldId_field_int = getFieldId(Cache->jStructIntWithArray, "fieldInt", "[I", errorMsgFindfieldInt);
 
 	if (jFieldId_field_int)
 	{
@@ -917,7 +1106,12 @@ void Testbed1DataJavaConverter::fillStructIntWithArray(JNIEnv* env, jobject inpu
 
 void Testbed1DataJavaConverter::fillStructIntWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructIntWithArray>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructIntWithArrayArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_int_with_array array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -945,16 +1139,21 @@ void Testbed1DataJavaConverter::fillStructIntWithArrayArray(JNIEnv* env, jobject
 
 jobject Testbed1DataJavaConverter::makeJavaStructIntWithArray(JNIEnv* env, const FTestbed1StructIntWithArray& in_struct_int_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructIntWithArray"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_int_with_array.");
-	static const jmethodID ctor = getMethod(jStructIntWithArray, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructIntWithArray, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructIntWithArray, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructIntWithArray, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_int_with_array.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -962,7 +1161,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructIntWithArray(JNIEnv* env, const
 	}
 
 	static const TCHAR* errorMsgFindfieldInt = TEXT("failed when trying to field fieldInt [I for FTestbed1StructIntWithArray");
-	static const jfieldID jFieldId_field_int = getFieldId(jStructIntWithArray, "fieldInt", "[I", errorMsgFindfieldInt);
+	static const jfieldID jFieldId_field_int = getFieldId(Cache->jStructIntWithArray, "fieldInt", "[I", errorMsgFindfieldInt);
 
 	if (jFieldId_field_int != nullptr)
 	{
@@ -989,15 +1188,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructIntWithArray(JNIEnv* env, const
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructIntWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructIntWithArray>& cppArray)
 {
-	ensureInitialized();
-	if (jStructIntWithArray == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructIntWithArray)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructIntWithArray not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructIntWithArray, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructIntWithArray, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_int_with_array.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -1019,14 +1218,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructIntWithArrayArray(JNIEnv* 
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructFloatWithArray = nullptr;
-
 void Testbed1DataJavaConverter::fillStructFloatWithArray(JNIEnv* env, jobject input, FTestbed1StructFloatWithArray& out_struct_float_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructFloatWithArray"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldFloat = TEXT("failed when trying to field fieldFloat [F for FTestbed1StructFloatWithArray");
-	static const jfieldID jFieldId_field_float = getFieldId(jStructFloatWithArray, "fieldFloat", "[F", errorMsgFindfieldFloat);
+	static const jfieldID jFieldId_field_float = getFieldId(Cache->jStructFloatWithArray, "fieldFloat", "[F", errorMsgFindfieldFloat);
 
 	if (jFieldId_field_float)
 	{
@@ -1050,7 +1252,12 @@ void Testbed1DataJavaConverter::fillStructFloatWithArray(JNIEnv* env, jobject in
 
 void Testbed1DataJavaConverter::fillStructFloatWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructFloatWithArray>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructFloatWithArrayArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_float_with_array array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -1078,16 +1285,21 @@ void Testbed1DataJavaConverter::fillStructFloatWithArrayArray(JNIEnv* env, jobje
 
 jobject Testbed1DataJavaConverter::makeJavaStructFloatWithArray(JNIEnv* env, const FTestbed1StructFloatWithArray& in_struct_float_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructFloatWithArray"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_float_with_array.");
-	static const jmethodID ctor = getMethod(jStructFloatWithArray, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructFloatWithArray, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructFloatWithArray, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructFloatWithArray, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_float_with_array.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -1095,7 +1307,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructFloatWithArray(JNIEnv* env, con
 	}
 
 	static const TCHAR* errorMsgFindfieldFloat = TEXT("failed when trying to field fieldFloat [F for FTestbed1StructFloatWithArray");
-	static const jfieldID jFieldId_field_float = getFieldId(jStructFloatWithArray, "fieldFloat", "[F", errorMsgFindfieldFloat);
+	static const jfieldID jFieldId_field_float = getFieldId(Cache->jStructFloatWithArray, "fieldFloat", "[F", errorMsgFindfieldFloat);
 
 	if (jFieldId_field_float != nullptr)
 	{
@@ -1122,15 +1334,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructFloatWithArray(JNIEnv* env, con
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructFloatWithArray>& cppArray)
 {
-	ensureInitialized();
-	if (jStructFloatWithArray == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructFloatWithArray)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructFloatWithArray not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructFloatWithArray, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructFloatWithArray, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_float_with_array.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -1152,14 +1364,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructFloatWithArrayArray(JNIEnv
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructStringWithArray = nullptr;
-
 void Testbed1DataJavaConverter::fillStructStringWithArray(JNIEnv* env, jobject input, FTestbed1StructStringWithArray& out_struct_string_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructStringWithArray"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldString = TEXT("failed when trying to field fieldString [Ljava/lang/String; for FTestbed1StructStringWithArray");
-	static const jfieldID jFieldId_field_string = getFieldId(jStructStringWithArray, "fieldString", "[Ljava/lang/String;", errorMsgFindfieldString);
+	static const jfieldID jFieldId_field_string = getFieldId(Cache->jStructStringWithArray, "fieldString", "[Ljava/lang/String;", errorMsgFindfieldString);
 
 	if (jFieldId_field_string)
 	{
@@ -1179,7 +1394,12 @@ void Testbed1DataJavaConverter::fillStructStringWithArray(JNIEnv* env, jobject i
 
 void Testbed1DataJavaConverter::fillStructStringWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStringWithArray>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructStringWithArrayArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_string_with_array array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -1207,16 +1427,21 @@ void Testbed1DataJavaConverter::fillStructStringWithArrayArray(JNIEnv* env, jobj
 
 jobject Testbed1DataJavaConverter::makeJavaStructStringWithArray(JNIEnv* env, const FTestbed1StructStringWithArray& in_struct_string_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructStringWithArray"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_string_with_array.");
-	static const jmethodID ctor = getMethod(jStructStringWithArray, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructStringWithArray, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructStringWithArray, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructStringWithArray, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_string_with_array.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -1224,7 +1449,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructStringWithArray(JNIEnv* env, co
 	}
 
 	static const TCHAR* errorMsgFindfieldString = TEXT("failed when trying to field fieldString [Ljava/lang/String; for FTestbed1StructStringWithArray");
-	static const jfieldID jFieldId_field_string = getFieldId(jStructStringWithArray, "fieldString", "[Ljava/lang/String;", errorMsgFindfieldString);
+	static const jfieldID jFieldId_field_string = getFieldId(Cache->jStructStringWithArray, "fieldString", "[Ljava/lang/String;", errorMsgFindfieldString);
 
 	if (jFieldId_field_string != nullptr)
 	{
@@ -1252,15 +1477,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructStringWithArray(JNIEnv* env, co
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStringWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructStringWithArray>& cppArray)
 {
-	ensureInitialized();
-	if (jStructStringWithArray == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructStringWithArray)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructStringWithArray not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructStringWithArray, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructStringWithArray, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_string_with_array.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -1282,14 +1507,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStringWithArrayArray(JNIEn
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructStructWithArray = nullptr;
-
 void Testbed1DataJavaConverter::fillStructStructWithArray(JNIEnv* env, jobject input, FTestbed1StructStructWithArray& out_struct_struct_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructStructWithArray"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldStruct = TEXT("failed when trying to field fieldStruct [Ltestbed1/testbed1_api/StructStringWithArray; for FTestbed1StructStructWithArray");
-	static const jfieldID jFieldId_field_struct = getFieldId(jStructStructWithArray, "fieldStruct", "[Ltestbed1/testbed1_api/StructStringWithArray;", errorMsgFindfieldStruct);
+	static const jfieldID jFieldId_field_struct = getFieldId(Cache->jStructStructWithArray, "fieldStruct", "[Ltestbed1/testbed1_api/StructStringWithArray;", errorMsgFindfieldStruct);
 
 	if (jFieldId_field_struct)
 	{
@@ -1307,7 +1535,12 @@ void Testbed1DataJavaConverter::fillStructStructWithArray(JNIEnv* env, jobject i
 
 void Testbed1DataJavaConverter::fillStructStructWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructStructWithArray>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructStructWithArrayArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_struct_with_array array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -1335,16 +1568,21 @@ void Testbed1DataJavaConverter::fillStructStructWithArrayArray(JNIEnv* env, jobj
 
 jobject Testbed1DataJavaConverter::makeJavaStructStructWithArray(JNIEnv* env, const FTestbed1StructStructWithArray& in_struct_struct_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructStructWithArray"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_struct_with_array.");
-	static const jmethodID ctor = getMethod(jStructStructWithArray, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructStructWithArray, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructStructWithArray, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructStructWithArray, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_struct_with_array.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -1352,7 +1590,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructStructWithArray(JNIEnv* env, co
 	}
 
 	static const TCHAR* errorMsgFindfieldStruct = TEXT("failed when trying to field fieldStruct [Ltestbed1/testbed1_api/StructStringWithArray; for FTestbed1StructStructWithArray");
-	static const jfieldID jFieldId_field_struct = getFieldId(jStructStructWithArray, "fieldStruct", "[Ltestbed1/testbed1_api/StructStringWithArray;", errorMsgFindfieldStruct);
+	static const jfieldID jFieldId_field_struct = getFieldId(Cache->jStructStructWithArray, "fieldStruct", "[Ltestbed1/testbed1_api/StructStringWithArray;", errorMsgFindfieldStruct);
 
 	if (jFieldId_field_struct != nullptr)
 	{
@@ -1371,15 +1609,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructStructWithArray(JNIEnv* env, co
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructStructWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructStructWithArray>& cppArray)
 {
-	ensureInitialized();
-	if (jStructStructWithArray == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructStructWithArray)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructStructWithArray not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructStructWithArray, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructStructWithArray, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_struct_with_array.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -1401,14 +1639,17 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructStructWithArrayArray(JNIEn
 	return javaArray;
 }
 
-jclass Testbed1DataJavaConverter::jStructEnumWithArray = nullptr;
-
 void Testbed1DataJavaConverter::fillStructEnumWithArray(JNIEnv* env, jobject input, FTestbed1StructEnumWithArray& out_struct_enum_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructEnumWithArray"));
+		return;
+	}
 
 	static const TCHAR* errorMsgFindfieldEnum = TEXT("failed when trying to field fieldEnum [Ltestbed1/testbed1_api/Enum0; for FTestbed1StructEnumWithArray");
-	static const jfieldID jFieldId_field_enum = getFieldId(jStructEnumWithArray, "fieldEnum", "[Ltestbed1/testbed1_api/Enum0;", errorMsgFindfieldEnum);
+	static const jfieldID jFieldId_field_enum = getFieldId(Cache->jStructEnumWithArray, "fieldEnum", "[Ltestbed1/testbed1_api/Enum0;", errorMsgFindfieldEnum);
 
 	if (jFieldId_field_enum)
 	{
@@ -1426,7 +1667,12 @@ void Testbed1DataJavaConverter::fillStructEnumWithArray(JNIEnv* env, jobject inp
 
 void Testbed1DataJavaConverter::fillStructEnumWithArrayArray(JNIEnv* env, jobjectArray input, TArray<FTestbed1StructEnumWithArray>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructEnumWithArrayArray"));
+		return;
+	}
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of out_struct_enum_with_array array.");
 	if (checkJniErrorOccured(errorMsgLen))
@@ -1454,16 +1700,21 @@ void Testbed1DataJavaConverter::fillStructEnumWithArrayArray(JNIEnv* env, jobjec
 
 jobject Testbed1DataJavaConverter::makeJavaStructEnumWithArray(JNIEnv* env, const FTestbed1StructEnumWithArray& in_struct_enum_with_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructEnumWithArray"));
+		return nullptr;
+	}
 
 	static const TCHAR* errorMsgCtor = TEXT("failed when trying to get java ctor for object for out_struct_enum_with_array.");
-	static const jmethodID ctor = getMethod(jStructEnumWithArray, "<init>", "()V", errorMsgCtor);
+	static const jmethodID ctor = getMethod(Cache->jStructEnumWithArray, "<init>", "()V", errorMsgCtor);
 	if (ctor == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgCtor);
 		return nullptr;
 	}
-	jobject javaObjInstance = env->NewObject(jStructEnumWithArray, ctor);
+	jobject javaObjInstance = env->NewObject(Cache->jStructEnumWithArray, ctor);
 	static const TCHAR* errorMsgObj = TEXT("failed when creating an instance of java object for out_struct_enum_with_array.");
 	if (checkJniErrorOccured(errorMsgObj))
 	{
@@ -1471,7 +1722,7 @@ jobject Testbed1DataJavaConverter::makeJavaStructEnumWithArray(JNIEnv* env, cons
 	}
 
 	static const TCHAR* errorMsgFindfieldEnum = TEXT("failed when trying to field fieldEnum [Ltestbed1/testbed1_api/Enum0; for FTestbed1StructEnumWithArray");
-	static const jfieldID jFieldId_field_enum = getFieldId(jStructEnumWithArray, "fieldEnum", "[Ltestbed1/testbed1_api/Enum0;", errorMsgFindfieldEnum);
+	static const jfieldID jFieldId_field_enum = getFieldId(Cache->jStructEnumWithArray, "fieldEnum", "[Ltestbed1/testbed1_api/Enum0;", errorMsgFindfieldEnum);
 
 	if (jFieldId_field_enum != nullptr)
 	{
@@ -1490,15 +1741,15 @@ jobject Testbed1DataJavaConverter::makeJavaStructEnumWithArray(JNIEnv* env, cons
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumWithArrayArray(JNIEnv* env, const TArray<FTestbed1StructEnumWithArray>& cppArray)
 {
-	ensureInitialized();
-	if (jStructEnumWithArray == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructEnumWithArray)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("FTestbed1StructEnumWithArray not found"));
 		return nullptr;
 	}
 
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructEnumWithArray, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructEnumWithArray, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when allocating jarray of out_struct_enum_with_array.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -1519,11 +1770,15 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructEnumWithArrayArray(JNIEnv*
 	}
 	return javaArray;
 }
-jclass Testbed1DataJavaConverter::jEnum0 = nullptr;
 
 void Testbed1DataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, TArray<ETestbed1Enum0>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillEnum0Array"));
+		return;
+	}
 	out_array.Empty();
 	jsize len = env->GetArrayLength(input);
 	static const TCHAR* errorMsgLen = TEXT("failed when trying to get length of Enum0 array.");
@@ -1551,9 +1806,14 @@ void Testbed1DataJavaConverter::fillEnum0Array(JNIEnv* env, jobjectArray input, 
 ETestbed1Enum0 Testbed1DataJavaConverter::getEnum0Value(JNIEnv* env, jobject input)
 {
 	ETestbed1Enum0 cppEnumValue = ETestbed1Enum0::T1E0_Value0;
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for getEnum0Value"));
+		return cppEnumValue;
+	}
 	static const TCHAR* errorMsgGetMethod = TEXT("failed when trying to get java method getVaue for object for Enum0.");
-	static const jmethodID getValueMethod = getMethod(jEnum0, "getValue", "()I", errorMsgGetMethod);
+	static const jmethodID getValueMethod = getMethod(Cache->jEnum0, "getValue", "()I", errorMsgGetMethod);
 	if (getValueMethod != nullptr)
 	{
 		int int_value = env->CallIntMethod(input, getValueMethod);
@@ -1572,14 +1832,14 @@ ETestbed1Enum0 Testbed1DataJavaConverter::getEnum0Value(JNIEnv* env, jobject inp
 
 jobjectArray Testbed1DataJavaConverter::makeJavaEnum0Array(JNIEnv* env, const TArray<ETestbed1Enum0>& cppArray)
 {
-	ensureInitialized();
-	if (jEnum0 == nullptr)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jEnum0)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Enum Enum0 not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jEnum0, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jEnum0, nullptr);
 	static const TCHAR* errorMsgAlloc = TEXT("failed when trying to allocate Enum0 jarray.");
 	if (checkJniErrorOccured(errorMsgAlloc))
 	{
@@ -1603,26 +1863,34 @@ jobjectArray Testbed1DataJavaConverter::makeJavaEnum0Array(JNIEnv* env, const TA
 
 jobject Testbed1DataJavaConverter::makeJavaEnum0(JNIEnv* env, ETestbed1Enum0 value)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaEnum0"));
+		return nullptr;
+	}
 	static const TCHAR* errorMsgFromValueMethod = TEXT("failed when trying to get java method fromValue for object for Enum0.");
-	static const jmethodID fromValueMethod = getStaticMethod(jEnum0, "fromValue", "(I)Ltestbed1/testbed1_api/Enum0;", errorMsgFromValueMethod);
+	static const jmethodID fromValueMethod = getStaticMethod(Cache->jEnum0, "fromValue", "(I)Ltestbed1/testbed1_api/Enum0;", errorMsgFromValueMethod);
 	if (fromValueMethod == nullptr)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("%s"), errorMsgFromValueMethod);
 		return nullptr;
 	}
 	int int_value = (int)value;
-	jobject javaObj = env->CallStaticObjectMethod(jEnum0, fromValueMethod, int_value);
+	jobject javaObj = env->CallStaticObjectMethod(Cache->jEnum0, fromValueMethod, int_value);
 	static const TCHAR* errorMsg = TEXT("failed when trying to call fromValue method for Enum0.");
 	checkJniErrorOccured(errorMsg);
 	return javaObj;
 }
 
-jclass Testbed1DataJavaConverter::jStructInterface = nullptr;
-
 void Testbed1DataJavaConverter::fillStructInterface(JNIEnv* env, jobject input, TScriptInterface<ITestbed1StructInterfaceInterface> out_struct_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructInterface"));
+		return;
+	}
 	if (!input || !out_struct_interface)
 	{
 		return;
@@ -1632,13 +1900,23 @@ void Testbed1DataJavaConverter::fillStructInterface(JNIEnv* env, jobject input, 
 
 void Testbed1DataJavaConverter::fillStructInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITestbed1StructInterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructInterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject Testbed1DataJavaConverter::makeJavaStructInterface(JNIEnv* env, const TScriptInterface<ITestbed1StructInterfaceInterface> out_struct_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructInterface"));
+		return nullptr;
+	}
 	if (!out_struct_interface)
 	{
 		return nullptr;
@@ -1651,14 +1929,14 @@ jobject Testbed1DataJavaConverter::makeJavaStructInterface(JNIEnv* env, const TS
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed1StructInterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jStructInterface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructInterface)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("IStructInterface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructInterface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_struct_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -1670,7 +1948,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructInterfaceArray(JNIEnv* env
 
 TScriptInterface<ITestbed1StructInterfaceInterface> Testbed1DataJavaConverter::getCppInstanceTestbed1StructInterface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for getCppInstanceTestbed1StructInterface"));
+		return nullptr;
+	}
 	UTestbed1StructInterfaceImplementation* Impl = NewObject<UTestbed1StructInterfaceImplementation>();
 	TScriptInterface<ITestbed1StructInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -1678,11 +1961,14 @@ TScriptInterface<ITestbed1StructInterfaceInterface> Testbed1DataJavaConverter::g
 	return wrapped;
 }
 
-jclass Testbed1DataJavaConverter::jStructArrayInterface = nullptr;
-
 void Testbed1DataJavaConverter::fillStructArrayInterface(JNIEnv* env, jobject input, TScriptInterface<ITestbed1StructArrayInterfaceInterface> out_struct_array_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructArrayInterface"));
+		return;
+	}
 	if (!input || !out_struct_array_interface)
 	{
 		return;
@@ -1692,13 +1978,23 @@ void Testbed1DataJavaConverter::fillStructArrayInterface(JNIEnv* env, jobject in
 
 void Testbed1DataJavaConverter::fillStructArrayInterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITestbed1StructArrayInterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructArrayInterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject Testbed1DataJavaConverter::makeJavaStructArrayInterface(JNIEnv* env, const TScriptInterface<ITestbed1StructArrayInterfaceInterface> out_struct_array_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructArrayInterface"));
+		return nullptr;
+	}
 	if (!out_struct_array_interface)
 	{
 		return nullptr;
@@ -1711,14 +2007,14 @@ jobject Testbed1DataJavaConverter::makeJavaStructArrayInterface(JNIEnv* env, con
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructArrayInterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed1StructArrayInterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jStructArrayInterface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructArrayInterface)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("IStructArrayInterface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructArrayInterface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructArrayInterface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_struct_array_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -1730,7 +2026,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructArrayInterfaceArray(JNIEnv
 
 TScriptInterface<ITestbed1StructArrayInterfaceInterface> Testbed1DataJavaConverter::getCppInstanceTestbed1StructArrayInterface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for getCppInstanceTestbed1StructArrayInterface"));
+		return nullptr;
+	}
 	UTestbed1StructArrayInterfaceImplementation* Impl = NewObject<UTestbed1StructArrayInterfaceImplementation>();
 	TScriptInterface<ITestbed1StructArrayInterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -1738,11 +2039,14 @@ TScriptInterface<ITestbed1StructArrayInterfaceInterface> Testbed1DataJavaConvert
 	return wrapped;
 }
 
-jclass Testbed1DataJavaConverter::jStructArray2Interface = nullptr;
-
 void Testbed1DataJavaConverter::fillStructArray2Interface(JNIEnv* env, jobject input, TScriptInterface<ITestbed1StructArray2InterfaceInterface> out_struct_array2_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructArray2Interface"));
+		return;
+	}
 	if (!input || !out_struct_array2_interface)
 	{
 		return;
@@ -1752,13 +2056,23 @@ void Testbed1DataJavaConverter::fillStructArray2Interface(JNIEnv* env, jobject i
 
 void Testbed1DataJavaConverter::fillStructArray2InterfaceArray(JNIEnv* env, jobjectArray input, TArray<TScriptInterface<ITestbed1StructArray2InterfaceInterface>>& out_array)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for fillStructArray2InterfaceArray"));
+		return;
+	}
 	// currently not supported, stub function generated for possible custom implementation
 }
 
 jobject Testbed1DataJavaConverter::makeJavaStructArray2Interface(JNIEnv* env, const TScriptInterface<ITestbed1StructArray2InterfaceInterface> out_struct_array2_interface)
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for makeJavaStructArray2Interface"));
+		return nullptr;
+	}
 	if (!out_struct_array2_interface)
 	{
 		return nullptr;
@@ -1771,14 +2085,14 @@ jobject Testbed1DataJavaConverter::makeJavaStructArray2Interface(JNIEnv* env, co
 
 jobjectArray Testbed1DataJavaConverter::makeJavaStructArray2InterfaceArray(JNIEnv* env, const TArray<TScriptInterface<ITestbed1StructArray2InterfaceInterface>>& cppArray)
 {
-	ensureInitialized();
-	if (!jStructArray2Interface)
+	auto Cache = ensureInitialized();
+	if (!Cache || !Cache->jStructArray2Interface)
 	{
 		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("IStructArray2Interface not found"));
 		return nullptr;
 	}
 	auto arraySize = cppArray.Num();
-	jobjectArray javaArray = env->NewObjectArray(arraySize, jStructArray2Interface, nullptr);
+	jobjectArray javaArray = env->NewObjectArray(arraySize, Cache->jStructArray2Interface, nullptr);
 	static const TCHAR* errorMsg = TEXT("failed when trying to allocate jarray for out_struct_array2_interface.");
 	if (checkJniErrorOccured(errorMsg))
 	{
@@ -1790,7 +2104,12 @@ jobjectArray Testbed1DataJavaConverter::makeJavaStructArray2InterfaceArray(JNIEn
 
 TScriptInterface<ITestbed1StructArray2InterfaceInterface> Testbed1DataJavaConverter::getCppInstanceTestbed1StructArray2Interface()
 {
-	ensureInitialized();
+	auto Cache = ensureInitialized();
+	if (!Cache)
+	{
+		UE_LOG(LogTestbed1DataJavaConverter_JNI, Warning, TEXT("Testbed1DataJavaConverter cache not initialized for getCppInstanceTestbed1StructArray2Interface"));
+		return nullptr;
+	}
 	UTestbed1StructArray2InterfaceImplementation* Impl = NewObject<UTestbed1StructArray2InterfaceImplementation>();
 	TScriptInterface<ITestbed1StructArray2InterfaceInterface> wrapped;
 	wrapped.SetObject(Impl);
@@ -1813,92 +2132,79 @@ bool Testbed1DataJavaConverter::checkJniErrorOccured(const TCHAR* Msg)
 
 void Testbed1DataJavaConverter::cleanJavaReferences()
 {
-	FScopeLock Lock(&initMutex);
-	m_isInitialized = false;
-	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	env->DeleteGlobalRef(jStructBool);
-	env->DeleteGlobalRef(jStructInt);
-	env->DeleteGlobalRef(jStructFloat);
-	env->DeleteGlobalRef(jStructString);
-	env->DeleteGlobalRef(jStructStruct);
-	env->DeleteGlobalRef(jStructEnum);
-	env->DeleteGlobalRef(jStructBoolWithArray);
-	env->DeleteGlobalRef(jStructIntWithArray);
-	env->DeleteGlobalRef(jStructFloatWithArray);
-	env->DeleteGlobalRef(jStructStringWithArray);
-	env->DeleteGlobalRef(jStructStructWithArray);
-	env->DeleteGlobalRef(jStructEnumWithArray);
-	env->DeleteGlobalRef(jEnum0);
-	env->DeleteGlobalRef(jStructInterface);
-	env->DeleteGlobalRef(jStructArrayInterface);
-	env->DeleteGlobalRef(jStructArray2Interface);
+	FScopeLock Lock(&CacheLock);
+	CacheData.Reset();
 }
 
-FCriticalSection Testbed1DataJavaConverter::initMutex;
-
-bool Testbed1DataJavaConverter::m_isInitialized = false;
-
-void Testbed1DataJavaConverter::ensureInitialized()
+TSharedPtr<FTestbed1DataJavaConverterCacheData, ESPMode::ThreadSafe> Testbed1DataJavaConverter::ensureInitialized()
 {
-	if (m_isInitialized)
 	{
-		return;
+		FScopeLock Lock(&CacheLock);
+		if (CacheData)
+		{
+			return CacheData;
+		}
 	}
-	FScopeLock Lock(&initMutex);
-	if (m_isInitialized)
-	{
-		return;
-	}
+
+	auto NewData = MakeShared<FTestbed1DataJavaConverterCacheData, ESPMode::ThreadSafe>();
 	JNIEnv* env = FAndroidApplication::GetJavaEnv();
-	jStructBool = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBool");
+	NewData->jStructBool = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBool");
 	static const TCHAR* errorMsgStructBool = TEXT("failed to get testbed1/testbed1_api/StructBool");
 	checkJniErrorOccured(errorMsgStructBool);
-	jStructInt = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructInt");
+	NewData->jStructInt = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructInt");
 	static const TCHAR* errorMsgStructInt = TEXT("failed to get testbed1/testbed1_api/StructInt");
 	checkJniErrorOccured(errorMsgStructInt);
-	jStructFloat = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloat");
+	NewData->jStructFloat = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloat");
 	static const TCHAR* errorMsgStructFloat = TEXT("failed to get testbed1/testbed1_api/StructFloat");
 	checkJniErrorOccured(errorMsgStructFloat);
-	jStructString = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructString");
+	NewData->jStructString = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructString");
 	static const TCHAR* errorMsgStructString = TEXT("failed to get testbed1/testbed1_api/StructString");
 	checkJniErrorOccured(errorMsgStructString);
-	jStructStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStruct");
+	NewData->jStructStruct = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStruct");
 	static const TCHAR* errorMsgStructStruct = TEXT("failed to get testbed1/testbed1_api/StructStruct");
 	checkJniErrorOccured(errorMsgStructStruct);
-	jStructEnum = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnum");
+	NewData->jStructEnum = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnum");
 	static const TCHAR* errorMsgStructEnum = TEXT("failed to get testbed1/testbed1_api/StructEnum");
 	checkJniErrorOccured(errorMsgStructEnum);
-	jStructBoolWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBoolWithArray");
+	NewData->jStructBoolWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructBoolWithArray");
 	static const TCHAR* errorMsgStructBoolWithArray = TEXT("failed to get testbed1/testbed1_api/StructBoolWithArray");
 	checkJniErrorOccured(errorMsgStructBoolWithArray);
-	jStructIntWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructIntWithArray");
+	NewData->jStructIntWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructIntWithArray");
 	static const TCHAR* errorMsgStructIntWithArray = TEXT("failed to get testbed1/testbed1_api/StructIntWithArray");
 	checkJniErrorOccured(errorMsgStructIntWithArray);
-	jStructFloatWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloatWithArray");
+	NewData->jStructFloatWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructFloatWithArray");
 	static const TCHAR* errorMsgStructFloatWithArray = TEXT("failed to get testbed1/testbed1_api/StructFloatWithArray");
 	checkJniErrorOccured(errorMsgStructFloatWithArray);
-	jStructStringWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStringWithArray");
+	NewData->jStructStringWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStringWithArray");
 	static const TCHAR* errorMsgStructStringWithArray = TEXT("failed to get testbed1/testbed1_api/StructStringWithArray");
 	checkJniErrorOccured(errorMsgStructStringWithArray);
-	jStructStructWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStructWithArray");
+	NewData->jStructStructWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructStructWithArray");
 	static const TCHAR* errorMsgStructStructWithArray = TEXT("failed to get testbed1/testbed1_api/StructStructWithArray");
 	checkJniErrorOccured(errorMsgStructStructWithArray);
-	jStructEnumWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnumWithArray");
+	NewData->jStructEnumWithArray = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/StructEnumWithArray");
 	static const TCHAR* errorMsgStructEnumWithArray = TEXT("failed to get testbed1/testbed1_api/StructEnumWithArray");
 	checkJniErrorOccured(errorMsgStructEnumWithArray);
-	jEnum0 = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
+	NewData->jEnum0 = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/Enum0");
 	static const TCHAR* errorMsgEnum0 = TEXT("failed to get testbed1/testbed1_api/Enum0");
 	checkJniErrorOccured(errorMsgEnum0);
-	jStructInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructInterface");
+	NewData->jStructInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructInterface");
 	static const TCHAR* errorMsgStructInterface = TEXT("failed to get testbed1/testbed1_api/IStructInterface");
 	checkJniErrorOccured(errorMsgStructInterface);
-	jStructArrayInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArrayInterface");
+	NewData->jStructArrayInterface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArrayInterface");
 	static const TCHAR* errorMsgStructArrayInterface = TEXT("failed to get testbed1/testbed1_api/IStructArrayInterface");
 	checkJniErrorOccured(errorMsgStructArrayInterface);
-	jStructArray2Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArray2Interface");
+	NewData->jStructArray2Interface = FAndroidApplication::FindJavaClassGlobalRef("testbed1/testbed1_api/IStructArray2Interface");
 	static const TCHAR* errorMsgStructArray2Interface = TEXT("failed to get testbed1/testbed1_api/IStructArray2Interface");
 	checkJniErrorOccured(errorMsgStructArray2Interface);
-	m_isInitialized = true;
+
+	{
+		FScopeLock Lock(&CacheLock);
+		if (!CacheData)
+		{
+			CacheData = NewData;
+		}
+		return CacheData;
+	}
 }
 
 jmethodID Testbed1DataJavaConverter::getMethod(jclass cls, const char* name, const char* signature, const TCHAR* errorMsgInfo)
