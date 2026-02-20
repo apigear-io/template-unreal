@@ -17,9 +17,12 @@ limitations under the License.
 */
 #pragma once
 
+#include "HAL/Platform.h"
+
+#if PLATFORM_ANDROID
+
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
 #include "TbRefIfaces/Generated/api/TbRefIfaces_apig.h"
-#if PLATFORM_ANDROID
 
 #include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"

@@ -50,7 +50,8 @@
 		{
 			"Name": "TbNamesJni",
 			"Type": "Runtime",
-			"LoadingPhase": "default"
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
 		},
 		{
 			"Name" : "TbNamesEditor",

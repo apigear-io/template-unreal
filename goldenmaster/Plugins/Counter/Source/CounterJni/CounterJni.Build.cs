@@ -37,10 +37,8 @@ public class CounterJni : ModuleRules
 				"Projects",
 				"Engine",
 				"JsonUtilities",
-				"CustomTypesCore",
-				"CustomTypesJni", 
-				"ExternTypesCore",
-				"ExternTypesJni"
+				"CustomTypesCore", 
+				"ExternTypesCore"
 			}
 			);
 			
@@ -63,6 +61,14 @@ public class CounterJni : ModuleRules
             PrivateDefinitions.Add("WITH_JNI=1");
             string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
             AdditionalPropertiesForReceipt.Add("AndroidPlugin", Path.Combine(PluginPath, "Counter_JNI_UPL.xml"));
+
+            PublicDependencyModuleNames.AddRange(
+                new string[]
+                {
+                    "CustomTypesJni", 
+                    "ExternTypesJni"
+                }
+                );
 
             PrivateDependencyModuleNames.AddRange(new string[] { "Launch" });
         }

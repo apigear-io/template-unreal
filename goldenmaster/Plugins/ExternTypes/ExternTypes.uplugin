@@ -30,7 +30,8 @@
 		{
 			"Name": "ExternTypesJni",
 			"Type": "Runtime",
-			"LoadingPhase": "default"
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
 		},
 		{
 			"Name" : "ExternTypesEditor",

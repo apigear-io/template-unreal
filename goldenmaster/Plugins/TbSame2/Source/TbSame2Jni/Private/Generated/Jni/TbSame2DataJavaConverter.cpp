@@ -17,15 +17,14 @@ limitations under the License.
 */
 
 #include "TbSame2/Generated/Jni/TbSame2DataJavaConverter.h"
+#include "Generated/Detail/TbSame2CommonJavaConverter.h"
+
+#if PLATFORM_ANDROID
 #include "TbSame2/Generated/api/TbSame2_data.h"
 #include "TbSame2/Implementation/TbSame2SameStruct1Interface.h"
 #include "TbSame2/Implementation/TbSame2SameStruct2Interface.h"
 #include "TbSame2/Implementation/TbSame2SameEnum1Interface.h"
 #include "TbSame2/Implementation/TbSame2SameEnum2Interface.h"
-
-#include "Generated/Detail/TbSame2CommonJavaConverter.h"
-
-#if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

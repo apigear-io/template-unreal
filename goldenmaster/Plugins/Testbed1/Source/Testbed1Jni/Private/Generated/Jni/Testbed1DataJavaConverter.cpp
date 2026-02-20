@@ -17,14 +17,13 @@ limitations under the License.
 */
 
 #include "Testbed1/Generated/Jni/Testbed1DataJavaConverter.h"
+#include "Generated/Detail/Testbed1CommonJavaConverter.h"
+
+#if PLATFORM_ANDROID
 #include "Testbed1/Generated/api/Testbed1_data.h"
 #include "Testbed1/Implementation/Testbed1StructInterface.h"
 #include "Testbed1/Implementation/Testbed1StructArrayInterface.h"
 #include "Testbed1/Implementation/Testbed1StructArray2Interface.h"
-
-#include "Generated/Detail/Testbed1CommonJavaConverter.h"
-
-#if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

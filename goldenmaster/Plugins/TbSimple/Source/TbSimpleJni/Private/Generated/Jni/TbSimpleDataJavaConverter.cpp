@@ -17,6 +17,9 @@ limitations under the License.
 */
 
 #include "TbSimple/Generated/Jni/TbSimpleDataJavaConverter.h"
+#include "Generated/Detail/TbSimpleCommonJavaConverter.h"
+
+#if PLATFORM_ANDROID
 #include "TbSimple/Implementation/TbSimpleVoidInterface.h"
 #include "TbSimple/Implementation/TbSimpleSimpleInterface.h"
 #include "TbSimple/Implementation/TbSimpleSimpleArrayInterface.h"
@@ -24,10 +27,6 @@ limitations under the License.
 #include "TbSimple/Implementation/TbSimpleNoOperationsInterface.h"
 #include "TbSimple/Implementation/TbSimpleNoSignalsInterface.h"
 #include "TbSimple/Implementation/TbSimpleEmptyInterface.h"
-
-#include "Generated/Detail/TbSimpleCommonJavaConverter.h"
-
-#if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

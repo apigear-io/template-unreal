@@ -17,8 +17,11 @@ limitations under the License.
 */
 #pragma once
 
-#include "Runtime/Core/Public/Math/Vector.h"
+#include "HAL/Platform.h"
+
 #if PLATFORM_ANDROID
+
+#include "Runtime/Core/Public/Math/Vector.h"
 
 #include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"

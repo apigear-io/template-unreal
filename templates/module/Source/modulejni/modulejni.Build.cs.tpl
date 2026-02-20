@@ -46,8 +46,7 @@ public class {{$ModuleName}}Jni : ModuleRules
 {{- if .Module.Imports }}, {{- end}}
 {{- range $idx, $elem := .Module.Imports }}
 {{- if $idx}}, {{ end }}
-				"{{Camel .Name}}Core",
-				"{{Camel .Name}}Jni"
+				"{{Camel .Name}}Core"
 {{- end }}
 			}
 			);
@@ -76,6 +75,19 @@ public class {{$ModuleName}}Jni : ModuleRules
             PrivateDefinitions.Add("WITH_JNI=1");
             string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
             AdditionalPropertiesForReceipt.Add("AndroidPlugin", Path.Combine(PluginPath, "{{Camel .Module.Name}}_JNI_UPL.xml"));
+
+{{- if .Module.Imports }}
+{{- nl }}
+            PublicDependencyModuleNames.AddRange(
+                new string[]
+                {
+{{- range $idx, $elem := .Module.Imports }}
+{{- if $idx }}, {{ end }}
+                    "{{Camel .Name}}Jni"
+{{- end }}
+                }
+                );
+{{- end }}
 
             PrivateDependencyModuleNames.AddRange(new string[] { "Launch" });
         }

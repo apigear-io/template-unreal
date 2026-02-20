@@ -50,7 +50,8 @@
 		{
 			"Name": "Testbed2Jni",
 			"Type": "Runtime",
-			"LoadingPhase": "default"
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
 		},
 		{
 			"Name" : "Testbed2Editor",

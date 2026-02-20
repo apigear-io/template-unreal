@@ -64,7 +64,8 @@
 		{
 			"Name": "{{$ModuleName}}Jni",
 			"Type": "Runtime",
-			"LoadingPhase": "default"
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
 		},
 {{- end }}
 		{

@@ -17,11 +17,10 @@ limitations under the License.
 */
 
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
-#include "Runtime/Core/Public/Math/Vector.h"
-
 #include "Generated/Detail/ExternTypesCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
+#include "Runtime/Core/Public/Math/Vector.h"
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

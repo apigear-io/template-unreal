@@ -28,6 +28,10 @@ limitations under the License.
 {{- end }}
 {{- end }}
 
+#include "HAL/Platform.h"
+
+#if PLATFORM_ANDROID
+
 {{- range .Module.Imports }}
 {{- $importModuleName := Camel .Name }}
 {{- $includeName :=  printf "\"%s/Generated/api/%s_data.h\"" $importModuleName $importModuleName }}
@@ -45,7 +49,6 @@ limitations under the License.
 {{- if len .Module.Interfaces }}
 #include "{{ $ModuleName }}/Generated/api/{{ $ModuleName }}_apig.h"
 {{- end }}
-#if PLATFORM_ANDROID
 
 #include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"

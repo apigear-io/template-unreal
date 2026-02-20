@@ -17,11 +17,10 @@ limitations under the License.
 */
 
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
-#include "TbIfaceimport/Implementation/TbIfaceimportEmptyIf.h"
-
 #include "Generated/Detail/TbIfaceimportCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
+#include "TbIfaceimport/Implementation/TbIfaceimportEmptyIf.h"
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

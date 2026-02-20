@@ -37,8 +37,7 @@ public class TbRefIfacesJni : ModuleRules
 				"Projects",
 				"Engine",
 				"JsonUtilities",
-				"TbIfaceimportCore",
-				"TbIfaceimportJni"
+				"TbIfaceimportCore"
 			}
 			);
 			
@@ -60,6 +59,13 @@ public class TbRefIfacesJni : ModuleRules
             PrivateDefinitions.Add("WITH_JNI=1");
             string PluginPath = Utils.MakePathRelativeTo(ModuleDirectory, Target.RelativeEnginePath);
             AdditionalPropertiesForReceipt.Add("AndroidPlugin", Path.Combine(PluginPath, "TbRefIfaces_JNI_UPL.xml"));
+
+            PublicDependencyModuleNames.AddRange(
+                new string[]
+                {
+                    "TbIfaceimportJni"
+                }
+                );
 
             PrivateDependencyModuleNames.AddRange(new string[] { "Launch" });
         }

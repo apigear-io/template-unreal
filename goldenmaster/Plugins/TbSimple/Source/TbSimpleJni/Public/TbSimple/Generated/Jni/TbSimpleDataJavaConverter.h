@@ -17,8 +17,11 @@ limitations under the License.
 */
 #pragma once
 
-#include "TbSimple/Generated/api/TbSimple_apig.h"
+#include "HAL/Platform.h"
+
 #if PLATFORM_ANDROID
+
+#include "TbSimple/Generated/api/TbSimple_apig.h"
 
 #include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"
