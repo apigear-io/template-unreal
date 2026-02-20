@@ -48,6 +48,12 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "Testbed2Jni",
+			"Type": "Runtime",
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
+		},
+		{
 			"Name" : "Testbed2Editor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

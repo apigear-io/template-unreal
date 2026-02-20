@@ -28,6 +28,12 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "CustomTypesJni",
+			"Type": "Runtime",
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
+		},
+		{
 			"Name" : "CustomTypesEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

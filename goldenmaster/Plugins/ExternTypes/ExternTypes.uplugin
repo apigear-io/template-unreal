@@ -28,6 +28,12 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "ExternTypesJni",
+			"Type": "Runtime",
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
+		},
+		{
 			"Name" : "ExternTypesEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

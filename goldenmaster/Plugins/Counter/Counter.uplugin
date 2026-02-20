@@ -48,6 +48,12 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "CounterJni",
+			"Type": "Runtime",
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
+		},
+		{
 			"Name" : "CounterEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

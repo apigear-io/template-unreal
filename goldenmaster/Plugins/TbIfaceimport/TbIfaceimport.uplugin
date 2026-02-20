@@ -48,6 +48,12 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbIfaceimportJni",
+			"Type": "Runtime",
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
+		},
+		{
 			"Name" : "TbIfaceimportEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

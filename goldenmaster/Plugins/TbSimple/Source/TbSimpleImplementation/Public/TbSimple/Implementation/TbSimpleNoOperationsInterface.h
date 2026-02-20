@@ -43,4 +43,10 @@ public:
 	void _ResetProperties();
 
 	// operations
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock bPropBoolRWLock;
+	mutable FRWLock PropIntRWLock;
+#endif
 };

@@ -1,0 +1,105 @@
+/**
+Copyright 2021 ApiGear UG
+Copyright 2021 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#pragma once
+
+#include "TbSimple/Generated/api/TbSimpleVoidInterfaceInterface.h"
+#include "TbSimple/Generated/api/AbstractTbSimpleVoidInterface.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "TbSimple/Generated/Jni/TbSimpleJniConnectionStatus.h"
+#include <memory>
+#include "Misc/Guid.h"
+
+#if PLATFORM_ANDROID
+
+#include "Engine/Engine.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
+#endif
+
+#include "TbSimpleVoidInterfaceJniClient.generated.h"
+
+DECLARE_LOG_CATEGORY_EXTERN(LogTbSimpleVoidInterfaceClient_JNI, Log, All);
+
+// A helper class that exposes part of UTbSimpleVoidInterfaceJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TBSIMPLEJNI_API IUTbSimpleVoidInterfaceJniClientJniAccessor
+{
+public:
+	virtual void OnSigVoidSignal() = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
+UCLASS(NotBlueprintable, BlueprintType)
+class TBSIMPLEJNI_API UTbSimpleVoidInterfaceJniClient : public UAbstractTbSimpleVoidInterface, public IUTbSimpleVoidInterfaceJniClientJniAccessor
+{
+	GENERATED_BODY()
+public:
+	explicit UTbSimpleVoidInterfaceJniClient();
+
+	UTbSimpleVoidInterfaceJniClient(FVTableHelper& Helper);
+	virtual ~UTbSimpleVoidInterfaceJniClient();
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+
+	// operations
+	virtual void FuncVoid() override;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbSimple|VoidInterface|Jni|Remote", DisplayName = "Connection Status Changed")
+	FTbSimpleJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
+	FTbSimpleJniConnectionStatusChangedDelegate _ConnectionStatusChanged;
+
+	/** @brief Informs about the subscription state of the interface client.
+	 * @return true if the client is connected to a service and ready to send and receive messages
+		or false if the server cannot be reached.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|JNI")
+	bool _IsReady() const;
+
+	/** @param package. This client will connect only to a VoidInterface Service,
+		that may be exposed by the application that runs it.
+	* To make successful binding the package of that application must be passed here.
+	* @return true if successfully bound, false it binding failed.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|JNI|Connection")
+	bool _bindToService(FString servicePackage, FString connectionId);
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbSimple|VoidInterface|JNI|Connection")
+	void _unbind();
+
+private:
+	void OnSigVoidSignal() override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaFuncVoid(FGuid Guid, jmethodID MethodId);
+#endif
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
+	FString m_lastBoundServicePackage;
+	FString m_lastConnectionId;
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	jobject m_javaJniClientInstance = nullptr;
+#endif
+};

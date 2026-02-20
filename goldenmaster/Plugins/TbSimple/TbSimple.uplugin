@@ -48,6 +48,12 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbSimpleJni",
+			"Type": "Runtime",
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
+		},
+		{
 			"Name" : "TbSimpleEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

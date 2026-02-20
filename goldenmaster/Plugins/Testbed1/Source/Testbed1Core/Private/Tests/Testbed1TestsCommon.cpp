@@ -235,4 +235,13 @@ TArray<FTestbed1StructEnumWithArray> createTestFTestbed1StructEnumWithArrayArray
 	return TestValueArray;
 }
 
+TArray<ETestbed1Enum0> createTestFTestbed1Enum0Array()
+{
+	TArray<ETestbed1Enum0> TestValueArray;
+
+	ETestbed1Enum0 val = ETestbed1Enum0::T1E0_Value0;
+	TestValueArray.Add(val);
+	return TestValueArray;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

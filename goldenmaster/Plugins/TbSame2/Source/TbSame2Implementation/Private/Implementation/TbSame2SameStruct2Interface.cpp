@@ -16,10 +16,14 @@ limitations under the License.
 */
 
 #include "TbSame2/Implementation/TbSame2SameStruct2Interface.h"
+#include "Misc/ScopeRWLock.h"
 
 UTbSame2SameStruct2InterfaceImplementation::~UTbSame2SameStruct2InterfaceImplementation() = default;
 FTbSame2Struct2 UTbSame2SameStruct2InterfaceImplementation::GetProp1() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(Prop1RWLock);
+#endif
 	return Prop1;
 }
 
@@ -28,12 +32,22 @@ void UTbSame2SameStruct2InterfaceImplementation::SetProp1(const FTbSame2Struct2&
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameStruct2Interface.Impl.SetProp1");
 	if (Prop1 != InProp1)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(Prop1RWLock);
+			Prop1 = InProp1;
+		}
+#else
 		Prop1 = InProp1;
+#endif
 		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 }
 FTbSame2Struct2 UTbSame2SameStruct2InterfaceImplementation::GetProp2() const
 {
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	FReadScopeLock ReadLock(Prop2RWLock);
+#endif
 	return Prop2;
 }
 
@@ -42,7 +56,14 @@ void UTbSame2SameStruct2InterfaceImplementation::SetProp2(const FTbSame2Struct2&
 	TRACE_CPUPROFILER_EVENT_SCOPE_STR("ApiGear.TbSame2.SameStruct2Interface.Impl.SetProp2");
 	if (Prop2 != InProp2)
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(Prop2RWLock);
+			Prop2 = InProp2;
+		}
+#else
 		Prop2 = InProp2;
+#endif
 		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }
@@ -68,12 +89,26 @@ void UTbSame2SameStruct2InterfaceImplementation::_ResetProperties()
 {
 	if (Prop1 != FTbSame2Struct2())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(Prop1RWLock);
+			Prop1 = FTbSame2Struct2();
+		}
+#else
 		Prop1 = FTbSame2Struct2();
+#endif
 		_GetPublisher()->BroadcastProp1Changed(Prop1);
 	}
 	if (Prop2 != FTbSame2Struct2())
 	{
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+		{
+			FWriteScopeLock WriteLock(Prop2RWLock);
+			Prop2 = FTbSame2Struct2();
+		}
+#else
 		Prop2 = FTbSame2Struct2();
+#endif
 		_GetPublisher()->BroadcastProp2Changed(Prop2);
 	}
 }

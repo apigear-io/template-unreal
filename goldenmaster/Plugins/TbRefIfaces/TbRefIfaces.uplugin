@@ -48,6 +48,12 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbRefIfacesJni",
+			"Type": "Runtime",
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
+		},
+		{
 			"Name" : "TbRefIfacesEditor",
 			"Type" : "Editor",
 			"LoadingPhase" : "default",

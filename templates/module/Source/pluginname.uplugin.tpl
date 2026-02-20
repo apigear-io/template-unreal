@@ -60,6 +60,14 @@
 			"LoadingPhase": "default"
 		},
 {{- end }}
+{{- if .Features.jni }}
+		{
+			"Name": "{{$ModuleName}}Jni",
+			"Type": "Runtime",
+			"LoadingPhase": "default",
+			"PlatformAllowList": ["Android"]
+		},
+{{- end }}
 		{
 			"Name" : "{{$ModuleName}}Editor",
 			"Type" : "Editor",

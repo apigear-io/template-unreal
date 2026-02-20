@@ -80,4 +80,16 @@ public:
 	double FuncFloat64(double ParamFloat) override;
 
 	FString FuncString(const FString& ParamString) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock bPropBoolRWLock;
+	mutable FRWLock PropIntRWLock;
+	mutable FRWLock PropInt32RWLock;
+	mutable FRWLock PropInt64RWLock;
+	mutable FRWLock PropFloatRWLock;
+	mutable FRWLock PropFloat32RWLock;
+	mutable FRWLock PropFloat64RWLock;
+	mutable FRWLock PropStringRWLock;
+#endif
 };

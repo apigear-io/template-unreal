@@ -1,0 +1,154 @@
+/**
+Copyright 2021 ApiGear UG
+Copyright 2021 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#pragma once
+
+#include "TbRefIfaces/Generated/api/TbRefIfacesParentIfInterface.h"
+#include "TbRefIfaces/Generated/api/AbstractTbRefIfacesParentIf.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "TbRefIfaces/Generated/Jni/TbRefIfacesJniConnectionStatus.h"
+#include <memory>
+#include "Misc/Guid.h"
+
+#if PLATFORM_ANDROID
+
+#include "Engine/Engine.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
+#endif
+
+#include "TbRefIfacesParentIfJniClient.generated.h"
+
+DECLARE_LOG_CATEGORY_EXTERN(LogTbRefIfacesParentIfClient_JNI, Log, All);
+
+// A helper class that exposes part of UTbRefIfacesParentIfJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class TBREFIFACESJNI_API IUTbRefIfacesParentIfJniClientJniAccessor
+{
+public:
+	virtual void OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) = 0;
+
+	virtual void OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) = 0;
+
+	virtual void OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) = 0;
+
+	virtual void OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) = 0;
+
+	virtual void OnLocalIfChanged(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& LocalIf) = 0;
+
+	virtual void OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& LocalIfList) = 0;
+
+	virtual void OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& ImportedIf) = 0;
+
+	virtual void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& ImportedIfList) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
+UCLASS(NotBlueprintable, BlueprintType)
+class TBREFIFACESJNI_API UTbRefIfacesParentIfJniClient : public UAbstractTbRefIfacesParentIf, public IUTbRefIfacesParentIfJniClientJniAccessor
+{
+	GENERATED_BODY()
+public:
+	explicit UTbRefIfacesParentIfJniClient();
+
+	UTbRefIfacesParentIfJniClient(FVTableHelper& Helper);
+	virtual ~UTbRefIfacesParentIfJniClient();
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+	TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> GetLocalIf() const override;
+	void SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf) override;
+	TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> GetLocalIfList() const override;
+	void SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList) override;
+	TScriptInterface<ITbIfaceimportEmptyIfInterface> GetImportedIf() const override;
+	void SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf) override;
+	TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> GetImportedIfList() const override;
+	void SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList) override;
+
+	// operations
+	virtual TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
+	TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodAsync(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param) override;
+	virtual TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
+	TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> LocalIfMethodListAsync(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param) override;
+	virtual TScriptInterface<ITbIfaceimportEmptyIfInterface> ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
+	TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodAsync(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param) override;
+	virtual TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
+	TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> ImportedIfMethodListAsync(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param) override;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbRefIfaces|ParentIf|Jni|Remote", DisplayName = "Connection Status Changed")
+	FTbRefIfacesJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
+	FTbRefIfacesJniConnectionStatusChangedDelegate _ConnectionStatusChanged;
+
+	/** @brief Informs about the subscription state of the interface client.
+	 * @return true if the client is connected to a service and ready to send and receive messages
+		or false if the server cannot be reached.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|JNI")
+	bool _IsReady() const;
+
+	/** @param package. This client will connect only to a ParentIf Service,
+		that may be exposed by the application that runs it.
+	* To make successful binding the package of that application must be passed here.
+	* @return true if successfully bound, false it binding failed.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|JNI|Connection")
+	bool _bindToService(FString servicePackage, FString connectionId);
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbRefIfaces|ParentIf|JNI|Connection")
+	void _unbind();
+
+private:
+	void OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam) override;
+
+	void OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam) override;
+
+	void OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam) override;
+
+	void OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam) override;
+
+	void OnLocalIfChanged(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf) override;
+
+	void OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList) override;
+
+	void OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf) override;
+
+	void OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaLocalIfMethod(FGuid Guid, jmethodID MethodId, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam);
+
+	bool tryCallAsyncJavaLocalIfMethodList(FGuid Guid, jmethodID MethodId, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam);
+
+	bool tryCallAsyncJavaImportedIfMethod(FGuid Guid, jmethodID MethodId, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam);
+
+	bool tryCallAsyncJavaImportedIfMethodList(FGuid Guid, jmethodID MethodId, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam);
+#endif
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
+	FString m_lastBoundServicePackage;
+	FString m_lastConnectionId;
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	jobject m_javaJniClientInstance = nullptr;
+#endif
+};

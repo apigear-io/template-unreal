@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<trace enable="true"/>
+	<init>
+		<log text="android tb.enum init"/>
+	</init>
+
+	<androidManifestUpdates>
+		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> 
+		<addPermission android:name="tbEnum.tbEnum_android_service.PERMISSION_BIND"/>
+		<addElements tag="queries">
+				<package android:name="tbEnum.tbEnum_android_service" />
+		</addElements>
+
+		<addElements tag="application"><service 
+			android:name="tbEnum.tbEnum_android_service.EnumInterfaceServiceAdapter"
+			android:enabled="true"
+			android:exported="true">
+		</service>
+		</addElements>
+
+	</androidManifestUpdates>
+
+	<resourceCopies>
+		<copyDir src="$S(PluginDir)/buildsystem" dst="$S(BuildDir)/gradle/buildsystem" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbEnum/tbEnum_android_service" dst="$S(BuildDir)/JavaLibs/tbEnum_android_service" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbEnum/tbEnum_android_client" dst="$S(BuildDir)/JavaLibs/tbEnum_android_client" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbEnum/tbEnum_api" dst="$S(BuildDir)/JavaLibs/tbEnum_api" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbEnum/tbEnum_android_messenger" dst="$S(BuildDir)/JavaLibs/tbEnum_android_messenger" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbEnum/tbEnum_impl" dst="$S(BuildDir)/JavaLibs/tbEnum_impl" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbEnum/tbEnumjniservice" dst="$S(BuildDir)/src/tbEnumjniservice" />
+		<copyDir src="$S(PluginDir)/../../../../android/tbEnum/tbEnumjniclient" dst="$S(BuildDir)/src/tbEnumjniclient" />
+	</resourceCopies>
+
+	<baseBuildGradleAdditions>
+		<addElements tag="buildscript">
+			<insertValue value="apply from: 'buildsystem/config.gradle'"/>
+			<insertValue value="apply from: 'buildsystem/dependencies.gradle'"/>
+			<insertNewline/>
+		</addElements>
+	</baseBuildGradleAdditions>
+
+	<settingsGradleAdditions>
+		<insert>
+			<![CDATA[
+      include ':tbEnum_api'
+      include ':tbEnum_impl'
+      include ':tbEnum_android_service'
+      include ':tbEnum_android_client'
+      include ':tbEnum_android_messenger'
+    ]]>
+		</insert>
+	
+	</settingsGradleAdditions>
+
+	<buildGradleAdditions>
+		<insert>
+            <![CDATA[
+                dependencies {
+                implementation project(':tbEnum_api')
+                implementation project(':tbEnum_impl')
+                implementation project(':tbEnum_android_service')
+                implementation project(':tbEnum_android_client')
+                implementation project(':tbEnum_android_messenger')
+                }
+            ]]>
+        </insert>
+		<insert>
+			<![CDATA[
+tasks.configureEach { task ->
+	if (task.name == 'assembleDebug') {
+		task.dependsOn ':tbEnum_api:assembleDebug'
+		task.dependsOn ':tbEnum_impl:assembleDebug'
+		task.dependsOn ':tbEnum_android_service:assembleDebug'
+		task.dependsOn ':tbEnum_android_client:assembleDebug'
+		task.dependsOn ':tbEnum_android_messenger:assembleDebug'
+	}
+	if (task.name == 'assembleRelease') {
+		task.dependsOn ':tbEnum_api:assembleRelease'
+		task.dependsOn ':tbEnum_impl:assembleRelease'
+		task.dependsOn ':tbEnum_android_service:assembleRelease'
+		task.dependsOn ':tbEnum_android_client:assembleRelease'
+		task.dependsOn ':tbEnum_android_messenger:assembleRelease'
+	}
+}
+
+]]>
+		</insert>
+	</buildGradleAdditions>
+
+
+	<proguardAdditions>
+		<insert>
+			-keep class tbEnum.tbEnumjniservice.EnumInterfaceJniService {
+			public *;
+			}
+			-keep class tbEnum.tbEnumjniservice.EnumInterfaceJniServiceStarter {
+			public *;
+			}
+			-keep class tbEnum.tbEnumjniclient.EnumInterfaceJniClient {
+			public *;
+			}
+		</insert>
+	</proguardAdditions>
+
+
+
+	<!-- optional additions to the GameActivity class in GameActivity.java -->
+	<gameActivityClassAdditions>
+	</gameActivityClassAdditions>
+
+
+	<!-- optional additions to GameActivity onCreate in GameActivity.java -->
+	<gameActivityOnCreateAdditions>
+		<insert>
+			<![CDATA[
+		]]>
+		</insert>
+	</gameActivityOnCreateAdditions>
+
+
+</root>

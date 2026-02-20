@@ -1,0 +1,142 @@
+/**
+Copyright 2021 ApiGear UG
+Copyright 2021 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#pragma once
+
+#include "Counter/Generated/api/CounterCounterInterface.h"
+#include "Counter/Generated/api/AbstractCounterCounter.h"
+#include "Subsystems/GameInstanceSubsystem.h"
+#include "Counter/Generated/Jni/CounterJniConnectionStatus.h"
+#include <memory>
+#include "Misc/Guid.h"
+
+#if PLATFORM_ANDROID
+
+#include "Engine/Engine.h"
+#include "Android/AndroidJNI.h"
+#include "Android/AndroidApplication.h"
+
+#if USE_ANDROID_JNI
+#include <jni.h>
+#endif
+#endif
+
+#include "CounterCounterJniClient.generated.h"
+
+DECLARE_LOG_CATEGORY_EXTERN(LogCounterCounterClient_JNI, Log, All);
+
+// A helper class that exposes part of UCounterCounterJniClient to use for native JNI calls.
+// The usage of it should allow thread safe access to set properties and broadcasting singals,
+// since all JNI native calls are made from JNI thread.
+// The difference from already provided subscirber interface is that it does not expose the functions to blueprints use.
+class COUNTERJNI_API IUCounterCounterJniClientJniAccessor
+{
+public:
+	virtual void OnValueChangedSignal(const FCustomTypesVector3D& Vector, const FVector& ExternVector, const TArray<FCustomTypesVector3D>& VectorArray, const TArray<FVector>& ExternVectorArray) = 0;
+
+	virtual void OnVectorChanged(const FCustomTypesVector3D& Vector) = 0;
+
+	virtual void OnExternVectorChanged(const FVector& ExternVector) = 0;
+
+	virtual void OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& VectorArray) = 0;
+
+	virtual void OnExternVectorArrayChanged(const TArray<FVector>& ExternVectorArray) = 0;
+	virtual void notifyIsReady(bool isReady) = 0;
+};
+
+UCLASS(NotBlueprintable, BlueprintType)
+class COUNTERJNI_API UCounterCounterJniClient : public UAbstractCounterCounter, public IUCounterCounterJniClientJniAccessor
+{
+	GENERATED_BODY()
+public:
+	explicit UCounterCounterJniClient();
+
+	UCounterCounterJniClient(FVTableHelper& Helper);
+	virtual ~UCounterCounterJniClient();
+
+	// subsystem
+	void Initialize(FSubsystemCollectionBase& Collection) override;
+	void Deinitialize() override;
+	FCustomTypesVector3D GetVector() const override;
+	void SetVector(const FCustomTypesVector3D& InVector) override;
+	FVector GetExternVector() const override;
+	void SetExternVector(const FVector& InExternVector) override;
+	TArray<FCustomTypesVector3D> GetVectorArray() const override;
+	void SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray) override;
+	TArray<FVector> GetExternVectorArray() const override;
+	void SetExternVectorArray(const TArray<FVector>& InExternVectorArray) override;
+
+	// operations
+	virtual FVector Increment(const FVector& Vec) override;
+	TFuture<FVector> IncrementAsync(const FVector& Vec) override;
+	virtual TArray<FVector> IncrementArray(const TArray<FVector>& Vec) override;
+	TFuture<TArray<FVector>> IncrementArrayAsync(const TArray<FVector>& Vec) override;
+	virtual FCustomTypesVector3D Decrement(const FCustomTypesVector3D& Vec) override;
+	TFuture<FCustomTypesVector3D> DecrementAsync(const FCustomTypesVector3D& Vec) override;
+	virtual TArray<FCustomTypesVector3D> DecrementArray(const TArray<FCustomTypesVector3D>& Vec) override;
+	TFuture<TArray<FCustomTypesVector3D>> DecrementArrayAsync(const TArray<FCustomTypesVector3D>& Vec) override;
+
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|Counter|Counter|Jni|Remote", DisplayName = "Connection Status Changed")
+	FCounterJniConnectionStatusChangedDelegateBP _ConnectionStatusChangedBP;
+	FCounterJniConnectionStatusChangedDelegate _ConnectionStatusChanged;
+
+	/** @brief Informs about the subscription state of the interface client.
+	 * @return true if the client is connected to a service and ready to send and receive messages
+		or false if the server cannot be reached.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|JNI")
+	bool _IsReady() const;
+
+	/** @param package. This client will connect only to a Counter Service,
+		that may be exposed by the application that runs it.
+	* To make successful binding the package of that application must be passed here.
+	* @return true if successfully bound, false it binding failed.
+	*/
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|JNI|Connection")
+	bool _bindToService(FString servicePackage, FString connectionId);
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|Counter|Counter|JNI|Connection")
+	void _unbind();
+
+private:
+	void OnValueChangedSignal(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray) override;
+
+	void OnVectorChanged(const FCustomTypesVector3D& InVector) override;
+
+	void OnExternVectorChanged(const FVector& InExternVector) override;
+
+	void OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& InVectorArray) override;
+
+	void OnExternVectorArrayChanged(const TArray<FVector>& InExternVectorArray) override;
+
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	bool tryCallAsyncJavaIncrement(FGuid Guid, jmethodID MethodId, const FVector& InVec);
+
+	bool tryCallAsyncJavaIncrementArray(FGuid Guid, jmethodID MethodId, const TArray<FVector>& InVec);
+
+	bool tryCallAsyncJavaDecrement(FGuid Guid, jmethodID MethodId, const FCustomTypesVector3D& InVec);
+
+	bool tryCallAsyncJavaDecrementArray(FGuid Guid, jmethodID MethodId, const TArray<FCustomTypesVector3D>& InVec);
+#endif
+	void notifyIsReady(bool isReady) override;
+
+	std::atomic<bool> b_isReady{false};
+	FString m_lastBoundServicePackage;
+	FString m_lastConnectionId;
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	jobject m_javaJniClientInstance = nullptr;
+#endif
+};
