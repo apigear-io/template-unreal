@@ -22,6 +22,9 @@ limitations under the License.
 */
 
 #include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}DataJavaConverter.h"
+#include "Generated/Detail/{{Camel .Module.Name}}CommonJavaConverter.h"
+
+#if PLATFORM_ANDROID
 
 {{- $includes := getEmptyStringList}}
 {{- range .Module.Externs }}
@@ -51,10 +54,6 @@ limitations under the License.
 #include "{{$ModuleName}}/Implementation/{{ $ModuleName }}{{Camel .Name}}.h"
 {{- end }}
 {{- end }}
-
-#include "Generated/Detail/{{Camel .Module.Name}}CommonJavaConverter.h"
-
-#if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

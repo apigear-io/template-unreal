@@ -17,10 +17,13 @@ limitations under the License.
 */
 #pragma once
 
+#include "HAL/Platform.h"
+
+#if PLATFORM_ANDROID
+
 #include "CustomTypes/Generated/Jni/CustomTypesDataJavaConverter.h"
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
 #include "Counter/Generated/api/Counter_apig.h"
-#if PLATFORM_ANDROID
 
 #include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"

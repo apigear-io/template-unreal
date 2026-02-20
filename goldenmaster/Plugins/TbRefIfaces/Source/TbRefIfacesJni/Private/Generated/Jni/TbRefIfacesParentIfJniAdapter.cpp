@@ -15,13 +15,12 @@
 #include "Misc/Optional.h"
 #include "HAL/Platform.h"
 
-#include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
-
 #include "Generated/Detail/TbRefIfacesThreadingHelper.h"
 #include "Generated/Detail/TbRefIfacesCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
 
+#include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"

@@ -14,13 +14,12 @@
 #include "Misc/DateTime.h"
 #include "Misc/Optional.h"
 #include "HAL/Platform.h"
-#include "TbNames/Generated/api/TbNames_data.h"
 
 #include "Generated/Detail/TbNamesThreadingHelper.h"
 #include "Generated/Detail/TbNamesCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
-
+#include "TbNames/Generated/api/TbNames_data.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"

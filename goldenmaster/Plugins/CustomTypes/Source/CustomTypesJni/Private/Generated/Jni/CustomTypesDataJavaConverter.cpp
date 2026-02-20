@@ -17,11 +17,10 @@ limitations under the License.
 */
 
 #include "CustomTypes/Generated/Jni/CustomTypesDataJavaConverter.h"
-#include "CustomTypes/Generated/api/CustomTypes_data.h"
-
 #include "Generated/Detail/CustomTypesCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
+#include "CustomTypes/Generated/api/CustomTypes_data.h"
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

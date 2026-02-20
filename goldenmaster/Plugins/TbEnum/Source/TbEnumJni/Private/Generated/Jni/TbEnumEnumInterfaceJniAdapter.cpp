@@ -14,13 +14,12 @@
 #include "Misc/DateTime.h"
 #include "Misc/Optional.h"
 #include "HAL/Platform.h"
-#include "TbEnum/Generated/api/TbEnum_data.h"
 
 #include "Generated/Detail/TbEnumThreadingHelper.h"
 #include "Generated/Detail/TbEnumCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
-
+#include "TbEnum/Generated/api/TbEnum_data.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"

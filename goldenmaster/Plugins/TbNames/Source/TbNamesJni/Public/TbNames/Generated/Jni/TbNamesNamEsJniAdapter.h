@@ -6,6 +6,7 @@
 #include "TbNames/Generated/Jni/TbNamesJniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
+#include "HAL/Platform.h"
 
 #if PLATFORM_ANDROID
 

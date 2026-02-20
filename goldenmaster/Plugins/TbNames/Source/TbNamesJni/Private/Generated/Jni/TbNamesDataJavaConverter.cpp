@@ -17,12 +17,11 @@ limitations under the License.
 */
 
 #include "TbNames/Generated/Jni/TbNamesDataJavaConverter.h"
-#include "TbNames/Generated/api/TbNames_data.h"
-#include "TbNames/Implementation/TbNamesNamEs.h"
-
 #include "Generated/Detail/TbNamesCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
+#include "TbNames/Generated/api/TbNames_data.h"
+#include "TbNames/Implementation/TbNamesNamEs.h"
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

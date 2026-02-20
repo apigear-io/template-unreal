@@ -8,6 +8,7 @@
 #include "Testbed2/Generated/Jni/Testbed2JniConnectionStatus.h"
 #include <memory>
 #include "Misc/Guid.h"
+#include "HAL/Platform.h"
 
 #if PLATFORM_ANDROID
 

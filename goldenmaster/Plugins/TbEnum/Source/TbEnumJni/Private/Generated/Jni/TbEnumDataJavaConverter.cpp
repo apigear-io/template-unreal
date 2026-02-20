@@ -17,12 +17,11 @@ limitations under the License.
 */
 
 #include "TbEnum/Generated/Jni/TbEnumDataJavaConverter.h"
-#include "TbEnum/Generated/api/TbEnum_data.h"
-#include "TbEnum/Implementation/TbEnumEnumInterface.h"
-
 #include "Generated/Detail/TbEnumCommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
+#include "TbEnum/Generated/api/TbEnum_data.h"
+#include "TbEnum/Implementation/TbEnumEnumInterface.h"
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

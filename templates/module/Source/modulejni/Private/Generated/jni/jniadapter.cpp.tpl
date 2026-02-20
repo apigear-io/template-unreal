@@ -128,6 +128,11 @@
 #include "Misc/Optional.h"
 #include "HAL/Platform.h"
 
+#include "Generated/Detail/{{$ModuleName}}ThreadingHelper.h"
+#include "Generated/Detail/{{$ModuleName}}CommonJavaConverter.h"
+
+#if PLATFORM_ANDROID
+
 {{- $includes := getEmptyStringList}}
 {{- range .Module.Externs }}
 {{- $class := ueExtern . }}
@@ -149,12 +154,6 @@
 {{- if or (len .Module.Enums) (len .Module.Structs) }}
 #include "{{$ModuleName}}/Generated/api/{{ $ModuleName }}_data.h"
 {{- end }}
-
-#include "Generated/Detail/{{$ModuleName}}ThreadingHelper.h"
-#include "Generated/Detail/{{$ModuleName}}CommonJavaConverter.h"
-
-#if PLATFORM_ANDROID
-
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"

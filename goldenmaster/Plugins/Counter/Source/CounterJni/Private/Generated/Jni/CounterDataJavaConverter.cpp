@@ -17,15 +17,14 @@ limitations under the License.
 */
 
 #include "Counter/Generated/Jni/CounterDataJavaConverter.h"
+#include "Generated/Detail/CounterCommonJavaConverter.h"
+
+#if PLATFORM_ANDROID
 #include "CustomTypes/Generated/Jni/CustomTypesDataJavaConverter.h"
 #include "CustomTypes/Generated/api/CustomTypes_data.h"
 #include "ExternTypes/Generated/Jni/ExternTypesDataJavaConverter.h"
 #include "ExternTypes/Generated/api/ExternTypes_data.h"
 #include "Counter/Implementation/CounterCounter.h"
-
-#include "Generated/Detail/CounterCommonJavaConverter.h"
-
-#if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

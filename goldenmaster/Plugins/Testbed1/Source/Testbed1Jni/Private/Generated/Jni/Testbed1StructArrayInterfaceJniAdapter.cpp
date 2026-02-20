@@ -14,13 +14,12 @@
 #include "Misc/DateTime.h"
 #include "Misc/Optional.h"
 #include "HAL/Platform.h"
-#include "Testbed1/Generated/api/Testbed1_data.h"
 
 #include "Generated/Detail/Testbed1ThreadingHelper.h"
 #include "Generated/Detail/Testbed1CommonJavaConverter.h"
 
 #if PLATFORM_ANDROID
-
+#include "Testbed1/Generated/api/Testbed1_data.h"
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"

@@ -16,8 +16,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
-#include "CustomTypes/Generated/api/CustomTypes_data.h"
+
+#include "HAL/Platform.h"
+
 #if PLATFORM_ANDROID
+#include "CustomTypes/Generated/api/CustomTypes_data.h"
 
 #include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"

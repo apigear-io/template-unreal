@@ -16,9 +16,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 #pragma once
+
+#include "HAL/Platform.h"
+
+#if PLATFORM_ANDROID
 #include "TbSame2/Generated/api/TbSame2_data.h"
 #include "TbSame2/Generated/api/TbSame2_apig.h"
-#if PLATFORM_ANDROID
 
 #include "HAL/CriticalSection.h"
 #include "Engine/Engine.h"

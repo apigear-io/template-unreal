@@ -6,6 +6,7 @@
 #include "Testbed2/Generated/Jni/Testbed2JniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
+#include "HAL/Platform.h"
 
 #if PLATFORM_ANDROID
 

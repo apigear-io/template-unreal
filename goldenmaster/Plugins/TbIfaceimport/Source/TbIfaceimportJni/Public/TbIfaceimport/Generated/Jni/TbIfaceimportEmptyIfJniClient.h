@@ -8,6 +8,7 @@
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportJniConnectionStatus.h"
 #include <memory>
 #include "Misc/Guid.h"
+#include "HAL/Platform.h"
 
 #if PLATFORM_ANDROID
 

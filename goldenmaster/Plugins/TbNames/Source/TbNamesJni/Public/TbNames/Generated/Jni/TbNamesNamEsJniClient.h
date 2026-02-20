@@ -8,6 +8,7 @@
 #include "TbNames/Generated/Jni/TbNamesJniConnectionStatus.h"
 #include <memory>
 #include "Misc/Guid.h"
+#include "HAL/Platform.h"
 
 #if PLATFORM_ANDROID
 

@@ -17,14 +17,13 @@ limitations under the License.
 */
 
 #include "TbRefIfaces/Generated/Jni/TbRefIfacesDataJavaConverter.h"
+#include "Generated/Detail/TbRefIfacesCommonJavaConverter.h"
+
+#if PLATFORM_ANDROID
 #include "TbIfaceimport/Generated/Jni/TbIfaceimportDataJavaConverter.h"
 #include "TbIfaceimport/Generated/api/TbIfaceimport_data.h"
 #include "TbRefIfaces/Implementation/TbRefIfacesSimpleLocalIf.h"
 #include "TbRefIfaces/Implementation/TbRefIfacesParentIf.h"
-
-#include "Generated/Detail/TbRefIfacesCommonJavaConverter.h"
-
-#if PLATFORM_ANDROID
 
 #include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"

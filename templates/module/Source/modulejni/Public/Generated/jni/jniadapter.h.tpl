@@ -15,6 +15,7 @@
 #include "{{$ModuleName}}/Generated/Jni/{{$ModuleName}}JniConnectionStatus.h"
 #include "Subsystems/GameInstanceSubsystem.h"
 #include <memory>
+#include "HAL/Platform.h"
 
 #if PLATFORM_ANDROID
 
