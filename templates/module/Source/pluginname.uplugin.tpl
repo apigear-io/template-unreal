@@ -60,7 +60,7 @@
 			"LoadingPhase": "default"
 		},
 {{- end }}
-{{- if and .Features.jni (len .Module.Interfaces) }}
+{{- if .Features.jni }}
 		{
 			"Name": "{{$ModuleName}}Jni",
 			"Type": "Runtime",
