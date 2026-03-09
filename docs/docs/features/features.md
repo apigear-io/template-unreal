@@ -2,8 +2,8 @@
 sidebar_position: 2
 sidebar_label: "Features"
 title: "Unreal Engine Template Features Overview"
-description: "Overview of ApiGear Unreal Engine template features: Core API generation, stub implementations, OLink networking, Message Bus IPC, and runtime monitoring."
-keywords: [unreal engine features, olink, message bus, stubs, monitor, api generation]
+description: "Overview of ApiGear Unreal Engine template features: Core API generation, stub implementations, OLink networking, JNI Android communication, Message Bus IPC, and runtime monitoring."
+keywords: [unreal engine features, olink, message bus, stubs, monitor, jni, android, api generation]
 ---
 
 import CodeBlock from '@theme/CodeBlock';
@@ -61,6 +61,7 @@ graph TD
         Stubs["Stubs<br/>(Local)"]
         OLink["OLink<br/>(Network)"]
         MsgBus["MsgBus<br/>(IPC)"]
+        JNI["JNI<br/>(Android)"]
         Monitor["Monitor<br/>(Decorator)"]
     end
 
@@ -73,15 +74,21 @@ graph TD
     Interface -->|implemented by| Stubs
     Interface -->|implemented by| OLink
     Interface -->|implemented by| MsgBus
+    Interface -->|implemented by| JNI
     Interface -->|implemented by| Monitor
     Monitor -.->|wraps| Stubs
     Monitor -.->|wraps| OLink
     Monitor -.->|wraps| MsgBus
+    Monitor -.->|wraps| JNI
     OLink -.->|uses| ApiGear
     Monitor -.->|uses| ApiGear
 ```
 
-*Your application programs against the generated API interfaces. Stubs provide local implementations, OLink and MsgBus connect to remote services, Monitor wraps any implementation for tracing, and the Infrastructure layer provides settings and connection management.*
+*Your application programs against the generated API interfaces. Stubs provide local implementations, OLink and MsgBus connect to remote services, JNI bridges to Android services, Monitor wraps any implementation for tracing, and the Infrastructure layer provides settings and connection management.*
+
+:::note
+The JNI feature requires the `template-java` `jnibridge` feature for the Java-side bridge code. See [JNI](jni.md) for setup details.
+:::
 
 ### Core Features
 
@@ -99,12 +106,14 @@ Extended features add connectivity and monitoring capabilities:
 
 > **Choosing between OLink and Message Bus?** See the [comparison guide](msgbus.md#when-to-use-message-bus-vs-olink) for a detailed breakdown.
 
+- [jni](jni.md) - provides JNI adapter and client for bridging Unreal Engine and Android services. Requires the `template-java` `jnibridge` feature for the Java-side code.
 - [monitor](monitor.md) - generates a middleware layer which logs all API events to the [CLI](/docs/cli/intro) or the [Studio](/docs/studio/intro).
 
 ### Test Features
 
 - `olink_tests` - test fixtures and specs for OLink client/server functionality.
 - `msgbus_tests` - test fixtures and specs for Message Bus adapters.
+- `jni_tests` - test fixtures and specs for JNI adapter/client functionality.
 
 ### Internal Features
 
@@ -173,6 +182,7 @@ This graph shows the folder structure generated for a module with all features e
  ┃   ┣ 📂IoWorldCore
  ┃   ┣ 📂IoWorldEditor
  ┃   ┣ 📂IoWorldImplementation
+ ┃   ┣ 📂IoWorldJni
  ┃   ┣ 📂IoWorldMonitor
  ┃   ┣ 📂IoWorldMsgBus
  ┃   ┗ 📂IoWorldOLink

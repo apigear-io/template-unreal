@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 6
 sidebar_label: "Monitor"
 title: "Monitor Feature: API Tracing and Runtime Debugging for Unreal Engine"
 description: "Trace API calls, property changes, and signals at runtime. View live debugging data in ApiGear Studio or CLI for Unreal Engine interfaces."
