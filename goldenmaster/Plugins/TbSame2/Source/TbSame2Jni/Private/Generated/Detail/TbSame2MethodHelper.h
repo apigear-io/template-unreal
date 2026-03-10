@@ -48,6 +48,41 @@ public:
 		}
 	}
 
+	bool FulfillPromiseWithDefaultValue(const FGuid& InId)
+	{
+		UE_LOG(
+			LogTbSame2MethodHelper_JNI,
+			Verbose,
+			TEXT("Resolving promise %s with default value for %s"),
+			*(InId.ToString(EGuidFormats::Digits)),
+			*OwnerName);
+
+		TUniquePtr<ITbSame2PromiseHolder> PromiseHolderPtr;
+		{
+			FScopeLock Lock(&ReplyPromisesMapCS);
+			if (auto* Found = ReplyPromisesMap.Find(InId))
+			{
+				PromiseHolderPtr = MoveTemp(*Found);
+				ReplyPromisesMap.Remove(InId);
+			}
+		}
+
+		if (PromiseHolderPtr)
+		{
+			PromiseHolderPtr->FulfillWithDefaultValue();
+			return true;
+		}
+
+		UE_LOG(
+			LogTbSame2MethodHelper_JNI,
+			Verbose,
+			TEXT("No promise found for id %s in %s"),
+			*(InId.ToString(EGuidFormats::Digits)),
+			*OwnerName);
+
+		return false;
+	}
+
 	template <typename ResultType>
 	FGuid StorePromise(TPromise<ResultType>&& InPromise);
 

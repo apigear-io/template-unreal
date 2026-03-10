@@ -894,4 +894,23 @@ JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct2InterfaceJniClient_
 	}
 	localJniAccessor->notifyIsReady(value);
 }
+
+JNI_METHOD void Java_testbed2_testbed2jniclient_NestedStruct2InterfaceJniClient_nativeAsyncOperationFailed(JNIEnv* Env, jclass Clazz, jstring callId, jstring errorMessage, jint errorCode)
+{
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to convert call id string in nativeAsyncOperationFailed for testbed2/testbed2jniclient/NestedStruct2InterfaceJniClient");
+	if (Testbed2DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
+	{
+		return;
+	}
+	FString errorMsgString = FJavaHelper::FStringFromParam(Env, errorMessage);
+
+	UE_LOG(LogTestbed2NestedStruct2InterfaceClient_JNI, Warning,
+		TEXT("Async operation failed for id %s: %s (code: %d)"),
+		*callIdString, *errorMsgString, static_cast<int32>(errorCode));
+
+	FGuid guid;
+	FGuid::Parse(callIdString, guid);
+	gUTestbed2NestedStruct2InterfaceJniClientmethodHelper.FulfillPromiseWithDefaultValue(guid);
+}
 #endif

@@ -355,6 +355,8 @@ Monitor test results using `adb logcat` — look for `LogAutomationController` e
 
 Prefer async operation variants to avoid blocking the game thread across the JNI and IPC boundary. See [Operations](#operations) for usage examples.
 
+If an async operation fails on the service side, the `TPromise` is fulfilled with a default-constructed value and a warning is logged. This prevents deadlocks from unfulfilled promises but means the caller cannot distinguish a failure from a legitimate default return value. Check logs if you suspect silent failures.
+
 ### Service Lifecycle
 
 - The client does not auto-reconnect — call `_bindToService()` again after the remote service restarts

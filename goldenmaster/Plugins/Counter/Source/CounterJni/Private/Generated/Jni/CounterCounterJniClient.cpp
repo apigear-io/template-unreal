@@ -1333,4 +1333,23 @@ JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeIsReady(JNI
 	}
 	localJniAccessor->notifyIsReady(value);
 }
+
+JNI_METHOD void Java_counter_counterjniclient_CounterJniClient_nativeAsyncOperationFailed(JNIEnv* Env, jclass Clazz, jstring callId, jstring errorMessage, jint errorCode)
+{
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to convert call id string in nativeAsyncOperationFailed for counter/counterjniclient/CounterJniClient");
+	if (CounterDataJavaConverter::CheckJniErrorOccurred(errorMsgId))
+	{
+		return;
+	}
+	FString errorMsgString = FJavaHelper::FStringFromParam(Env, errorMessage);
+
+	UE_LOG(LogCounterCounterClient_JNI, Warning,
+		TEXT("Async operation failed for id %s: %s (code: %d)"),
+		*callIdString, *errorMsgString, static_cast<int32>(errorCode));
+
+	FGuid guid;
+	FGuid::Parse(callIdString, guid);
+	gUCounterCounterJniClientmethodHelper.FulfillPromiseWithDefaultValue(guid);
+}
 #endif

@@ -841,4 +841,25 @@ JNI_METHOD void {{$jniFullFuncPrefix}}_nativeIsReady(JNIEnv* Env, jclass Clazz, 
 	}
 	localJniAccessor->notifyIsReady(value);
 }
+{{- if .Interface.Operations }}
+{{- nl }}
+JNI_METHOD void {{$jniFullFuncPrefix}}_nativeAsyncOperationFailed(JNIEnv* Env, jclass Clazz, jstring callId, jstring errorMessage, jint errorCode)
+{
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to convert call id string in nativeAsyncOperationFailed for {{$javaClassPath}}/{{$javaClassName}}");
+	if ({{$localClassConverter}}::CheckJniErrorOccurred(errorMsgId))
+	{
+		return;
+	}
+	FString errorMsgString = FJavaHelper::FStringFromParam(Env, errorMessage);
+
+	UE_LOG(Log{{$Iface}}Client_JNI, Warning,
+		TEXT("Async operation failed for id %s: %s (code: %d)"),
+		*callIdString, *errorMsgString, static_cast<int32>(errorCode));
+
+	FGuid guid;
+	FGuid::Parse(callIdString, guid);
+	g{{$Class}}methodHelper.FulfillPromiseWithDefaultValue(guid);
+}
+{{- end }}
 #endif

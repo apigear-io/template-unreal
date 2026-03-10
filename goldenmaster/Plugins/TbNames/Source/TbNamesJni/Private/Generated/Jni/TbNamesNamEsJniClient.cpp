@@ -946,4 +946,23 @@ JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeIsReady(JNIEn
 	}
 	localJniAccessor->notifyIsReady(value);
 }
+
+JNI_METHOD void Java_tbNames_tbNamesjniclient_NamEsJniClient_nativeAsyncOperationFailed(JNIEnv* Env, jclass Clazz, jstring callId, jstring errorMessage, jint errorCode)
+{
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to convert call id string in nativeAsyncOperationFailed for tbNames/tbNamesjniclient/NamEsJniClient");
+	if (TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsgId))
+	{
+		return;
+	}
+	FString errorMsgString = FJavaHelper::FStringFromParam(Env, errorMessage);
+
+	UE_LOG(LogTbNamesNamEsClient_JNI, Warning,
+		TEXT("Async operation failed for id %s: %s (code: %d)"),
+		*callIdString, *errorMsgString, static_cast<int32>(errorCode));
+
+	FGuid guid;
+	FGuid::Parse(callIdString, guid);
+	gUTbNamesNamEsJniClientmethodHelper.FulfillPromiseWithDefaultValue(guid);
+}
 #endif

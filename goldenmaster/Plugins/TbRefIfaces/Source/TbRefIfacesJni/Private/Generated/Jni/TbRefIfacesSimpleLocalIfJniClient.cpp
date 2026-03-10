@@ -596,4 +596,23 @@ JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nat
 	}
 	localJniAccessor->notifyIsReady(value);
 }
+
+JNI_METHOD void Java_tbRefIfaces_tbRefIfacesjniclient_SimpleLocalIfJniClient_nativeAsyncOperationFailed(JNIEnv* Env, jclass Clazz, jstring callId, jstring errorMessage, jint errorCode)
+{
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to convert call id string in nativeAsyncOperationFailed for tbRefIfaces/tbRefIfacesjniclient/SimpleLocalIfJniClient");
+	if (TbRefIfacesDataJavaConverter::CheckJniErrorOccurred(errorMsgId))
+	{
+		return;
+	}
+	FString errorMsgString = FJavaHelper::FStringFromParam(Env, errorMessage);
+
+	UE_LOG(LogTbRefIfacesSimpleLocalIfClient_JNI, Warning,
+		TEXT("Async operation failed for id %s: %s (code: %d)"),
+		*callIdString, *errorMsgString, static_cast<int32>(errorCode));
+
+	FGuid guid;
+	FGuid::Parse(callIdString, guid);
+	gUTbRefIfacesSimpleLocalIfJniClientmethodHelper.FulfillPromiseWithDefaultValue(guid);
+}
 #endif

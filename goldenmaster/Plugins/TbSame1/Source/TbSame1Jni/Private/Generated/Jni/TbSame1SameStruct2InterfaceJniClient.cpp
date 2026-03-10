@@ -894,4 +894,23 @@ JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nati
 	}
 	localJniAccessor->notifyIsReady(value);
 }
+
+JNI_METHOD void Java_tbSame1_tbSame1jniclient_SameStruct2InterfaceJniClient_nativeAsyncOperationFailed(JNIEnv* Env, jclass Clazz, jstring callId, jstring errorMessage, jint errorCode)
+{
+	FString callIdString = FJavaHelper::FStringFromParam(Env, callId);
+	static const TCHAR* errorMsgId = TEXT("failed to convert call id string in nativeAsyncOperationFailed for tbSame1/tbSame1jniclient/SameStruct2InterfaceJniClient");
+	if (TbSame1DataJavaConverter::CheckJniErrorOccurred(errorMsgId))
+	{
+		return;
+	}
+	FString errorMsgString = FJavaHelper::FStringFromParam(Env, errorMessage);
+
+	UE_LOG(LogTbSame1SameStruct2InterfaceClient_JNI, Warning,
+		TEXT("Async operation failed for id %s: %s (code: %d)"),
+		*callIdString, *errorMsgString, static_cast<int32>(errorCode));
+
+	FGuid guid;
+	FGuid::Parse(callIdString, guid);
+	gUTbSame1SameStruct2InterfaceJniClientmethodHelper.FulfillPromiseWithDefaultValue(guid);
+}
 #endif
