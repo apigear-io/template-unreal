@@ -28,7 +28,7 @@ public:
 		JNIEnv* Env, TArray<FString>& OutStringArray, jobjectArray InJniArray, const FString& InPropertyName);
 
 	template <typename PrimitiveType>
-	static std::enable_if<std::is_arithmetic<PrimitiveType>::value, bool>::type TryFillArray(
+	static typename std::enable_if<std::is_arithmetic<PrimitiveType>::value, bool>::type TryFillArray(
 		JNIEnv* Env, TArray<PrimitiveType>& OutPrimitiveArray, jarray InJniArray, const FString& InPropertyName);
 
 private:
@@ -99,7 +99,7 @@ struct F{{Camel .Module.Name}}CommonJavaConverter::JniArrayTraits<double>
 };
 
 template <typename PrimitiveType>
-std::enable_if<std::is_arithmetic<PrimitiveType>::value, bool>::type
+typename std::enable_if<std::is_arithmetic<PrimitiveType>::value, bool>::type
 F{{Camel .Module.Name}}CommonJavaConverter::TryFillArray(
 	JNIEnv* Env, TArray<PrimitiveType>& OutPrimitiveArray, jarray InJniArray, const FString& InPropertyName)
 {
