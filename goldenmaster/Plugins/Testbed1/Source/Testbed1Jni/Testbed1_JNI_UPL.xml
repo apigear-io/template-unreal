@@ -6,9 +6,7 @@
 		<log text="android testbed1 init"/>
 	</init>
 
-	<androidManifestUpdates>
-		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/> 
+	<androidManifestUpdates> 
 		<addPermission android:name="testbed1.testbed1_android_service.PERMISSION_BIND"/>
 		<addElements tag="queries">
 				<package android:name="testbed1.testbed1_android_service" />

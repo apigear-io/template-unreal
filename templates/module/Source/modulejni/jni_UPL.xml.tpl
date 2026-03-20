@@ -7,9 +7,6 @@
 	</init>
 
 	<androidManifestUpdates>
-		<addPermission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-		<addPermission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
-
 		{{- $moduleName := .Module.Name }}
 		{{- $service_package_name := printf "%s_android_service" (camel $moduleName) }} 
 		<addPermission android:name="{{camel $moduleName}}.{{$service_package_name}}.PERMISSION_BIND"/>
