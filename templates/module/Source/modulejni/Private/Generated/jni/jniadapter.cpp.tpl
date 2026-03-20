@@ -492,12 +492,7 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "" .}})
 		{{- $javaLocalName := printf "jlocal_%s" (Camel .Name) }}
 		{{- if or ( or ( .IsArray ) (eq .KindType "string")) ( or (eq .KindType "enum") (not (ueIsStdSimpleType .)) ) }}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, {{$javaLocalName}});
-
-		{{- if and .IsArray }}
 		Env->DeleteLocalRef({{$javaLocalName}});
-		{{- else if not (or (ueIsStdSimpleType .) (eq .KindType "enum")) }}
-		Env->DeleteLocalRef({{$javaLocalName}});
-		{{- end}}
 		{{- else }}
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, {{$cppropName}});
 		{{- end }}

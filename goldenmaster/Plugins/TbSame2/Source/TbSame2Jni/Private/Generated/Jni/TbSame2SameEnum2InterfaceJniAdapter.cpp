@@ -345,6 +345,7 @@ void UTbSame2SameEnum2InterfaceJniAdapter::OnProp1Changed(ETbSame2Enum1 Prop1)
 
 		jobject jlocal_Prop1 = TbSame2DataJavaConverter::makeJavaEnum1(Env, Prop1);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop1);
+		Env->DeleteLocalRef(jlocal_Prop1);
 		static const TCHAR* errorMsg = TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService failed to call onProp1Changed ((LtbSame2/tbSame2_api/Enum1;)V)V");
 		TbSame2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
@@ -371,6 +372,7 @@ void UTbSame2SameEnum2InterfaceJniAdapter::OnProp2Changed(ETbSame2Enum2 Prop2)
 
 		jobject jlocal_Prop2 = TbSame2DataJavaConverter::makeJavaEnum2(Env, Prop2);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop2);
+		Env->DeleteLocalRef(jlocal_Prop2);
 		static const TCHAR* errorMsg = TEXT("tbSame2/tbSame2jniservice/SameEnum2InterfaceJniService failed to call onProp2Changed ((LtbSame2/tbSame2_api/Enum2;)V)V");
 		TbSame2DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}

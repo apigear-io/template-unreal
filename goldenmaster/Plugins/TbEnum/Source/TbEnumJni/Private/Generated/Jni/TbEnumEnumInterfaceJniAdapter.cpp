@@ -427,6 +427,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp0Changed(ETbEnumEnum0 Prop0)
 
 		jobject jlocal_Prop0 = TbEnumDataJavaConverter::makeJavaEnum0(Env, Prop0);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop0);
+		Env->DeleteLocalRef(jlocal_Prop0);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onProp0Changed ((LtbEnum/tbEnum_api/Enum0;)V)V");
 		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
@@ -453,6 +454,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp1Changed(ETbEnumEnum1 Prop1)
 
 		jobject jlocal_Prop1 = TbEnumDataJavaConverter::makeJavaEnum1(Env, Prop1);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop1);
+		Env->DeleteLocalRef(jlocal_Prop1);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onProp1Changed ((LtbEnum/tbEnum_api/Enum1;)V)V");
 		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
@@ -479,6 +481,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp2Changed(ETbEnumEnum2 Prop2)
 
 		jobject jlocal_Prop2 = TbEnumDataJavaConverter::makeJavaEnum2(Env, Prop2);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop2);
+		Env->DeleteLocalRef(jlocal_Prop2);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onProp2Changed ((LtbEnum/tbEnum_api/Enum2;)V)V");
 		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
@@ -505,6 +508,7 @@ void UTbEnumEnumInterfaceJniAdapter::OnProp3Changed(ETbEnumEnum3 Prop3)
 
 		jobject jlocal_Prop3 = TbEnumDataJavaConverter::makeJavaEnum3(Env, Prop3);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop3);
+		Env->DeleteLocalRef(jlocal_Prop3);
 		static const TCHAR* errorMsg = TEXT("tbEnum/tbEnumjniservice/EnumInterfaceJniService failed to call onProp3Changed ((LtbEnum/tbEnum_api/Enum3;)V)V");
 		TbEnumDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}

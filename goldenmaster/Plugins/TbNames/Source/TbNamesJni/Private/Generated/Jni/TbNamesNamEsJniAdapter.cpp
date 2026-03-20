@@ -428,6 +428,7 @@ void UTbNamesNamEsJniAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scor
 
 		jobject jlocal_EnumProperty = TbNamesDataJavaConverter::makeJavaEnumWithUnderScores(Env, EnumProperty);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_EnumProperty);
+		Env->DeleteLocalRef(jlocal_EnumProperty);
 		static const TCHAR* errorMsg = TEXT("tbNames/tbNamesjniservice/NamEsJniService failed to call onEnumPropertyChanged ((LtbNames/tbNames_api/EnumWithUnderScores;)V)V");
 		TbNamesDataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}

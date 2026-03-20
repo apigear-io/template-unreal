@@ -301,6 +301,7 @@ void UTbSame1SameEnum1InterfaceJniAdapter::OnProp1Changed(ETbSame1Enum1 Prop1)
 
 		jobject jlocal_Prop1 = TbSame1DataJavaConverter::makeJavaEnum1(Env, Prop1);
 		FJavaWrapper::CallVoidMethod(Env, m_javaJniServiceInstance, MethodID, jlocal_Prop1);
+		Env->DeleteLocalRef(jlocal_Prop1);
 		static const TCHAR* errorMsg = TEXT("tbSame1/tbSame1jniservice/SameEnum1InterfaceJniService failed to call onProp1Changed ((LtbSame1/tbSame1_api/Enum1;)V)V");
 		TbSame1DataJavaConverter::CheckJniErrorOccurred(errorMsg);
 	}
