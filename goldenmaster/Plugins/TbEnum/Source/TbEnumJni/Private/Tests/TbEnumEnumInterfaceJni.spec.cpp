@@ -149,16 +149,15 @@ void UTbEnumEnumInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbEnumEnumInterfacePublisher->OnProp0Changed.AddLambda([this, TestDone](ETbEnumEnum0 InProp0)
+		TbEnumEnumInterfacePublisher->OnProp0Changed.AddLambda([this, TestDone, count = 0](ETbEnumEnum0 InProp0) mutable
 #else
 		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbEnumEnumInterfacePublisher->OnProp0Changed.AddLambda([this, TestDone, StartValue](ETbEnumEnum0 InProp0)
+		TbEnumEnumInterfacePublisher->OnProp0Changed.AddLambda([this, TestDone, StartValue, count = 0](ETbEnumEnum0 InProp0) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -269,16 +268,15 @@ void UTbEnumEnumInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbEnumEnumInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](ETbEnumEnum1 InProp1)
+		TbEnumEnumInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, count = 0](ETbEnumEnum1 InProp1) mutable
 #else
 		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbEnumEnumInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue](ETbEnumEnum1 InProp1)
+		TbEnumEnumInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue, count = 0](ETbEnumEnum1 InProp1) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -389,16 +387,15 @@ void UTbEnumEnumInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbEnumEnumInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone](ETbEnumEnum2 InProp2)
+		TbEnumEnumInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, count = 0](ETbEnumEnum2 InProp2) mutable
 #else
 		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbEnumEnumInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, StartValue](ETbEnumEnum2 InProp2)
+		TbEnumEnumInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, StartValue, count = 0](ETbEnumEnum2 InProp2) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -509,16 +506,15 @@ void UTbEnumEnumInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbEnumEnumInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone](ETbEnumEnum3 InProp3)
+		TbEnumEnumInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone, count = 0](ETbEnumEnum3 InProp3) mutable
 #else
 		UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbEnumEnumInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone, StartValue](ETbEnumEnum3 InProp3)
+		TbEnumEnumInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone, StartValue, count = 0](ETbEnumEnum3 InProp3) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

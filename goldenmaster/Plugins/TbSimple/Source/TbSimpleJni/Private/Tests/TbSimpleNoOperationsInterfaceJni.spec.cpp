@@ -149,16 +149,15 @@ void UTbSimpleNoOperationsInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, count = 0](bool bInPropBool) mutable
 #else
 		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue](bool bInPropBool)
+		TbSimpleNoOperationsInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue, count = 0](bool bInPropBool) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -269,16 +268,15 @@ void UTbSimpleNoOperationsInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSimpleNoOperationsInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+		TbSimpleNoOperationsInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, count = 0](int32 InPropInt) mutable
 #else
 		UTbSimpleNoOperationsInterfacePublisher* TbSimpleNoOperationsInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSimpleNoOperationsInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue](int32 InPropInt)
+		TbSimpleNoOperationsInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue, count = 0](int32 InPropInt) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

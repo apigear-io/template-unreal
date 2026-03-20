@@ -149,16 +149,15 @@ void UTbSame2SameStruct1InterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSame2SameStruct1InterfacePublisher* TbSame2SameStruct1InterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSame2SameStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTbSame2Struct1& InProp1)
+		TbSame2SameStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, count = 0](const FTbSame2Struct1& InProp1) mutable
 #else
 		UTbSame2SameStruct1InterfacePublisher* TbSame2SameStruct1InterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSame2SameStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue](const FTbSame2Struct1& InProp1)
+		TbSame2SameStruct1InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue, count = 0](const FTbSame2Struct1& InProp1) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

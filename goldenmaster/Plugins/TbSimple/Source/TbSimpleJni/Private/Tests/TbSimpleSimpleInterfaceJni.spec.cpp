@@ -149,16 +149,15 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](bool bInPropBool)
+		TbSimpleSimpleInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, count = 0](bool bInPropBool) mutable
 #else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue](bool bInPropBool)
+		TbSimpleSimpleInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue, count = 0](bool bInPropBool) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -269,16 +268,15 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](int32 InPropInt)
+		TbSimpleSimpleInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, count = 0](int32 InPropInt) mutable
 #else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue](int32 InPropInt)
+		TbSimpleSimpleInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue, count = 0](int32 InPropInt) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -389,16 +387,15 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone](int32 InPropInt32)
+		TbSimpleSimpleInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone, count = 0](int32 InPropInt32) mutable
 #else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone, StartValue](int32 InPropInt32)
+		TbSimpleSimpleInterfacePublisher->OnPropInt32Changed.AddLambda([this, TestDone, StartValue, count = 0](int32 InPropInt32) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -509,16 +506,15 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone](int64 InPropInt64)
+		TbSimpleSimpleInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone, count = 0](int64 InPropInt64) mutable
 #else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone, StartValue](int64 InPropInt64)
+		TbSimpleSimpleInterfacePublisher->OnPropInt64Changed.AddLambda([this, TestDone, StartValue, count = 0](int64 InPropInt64) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -629,16 +625,15 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](float InPropFloat)
+		TbSimpleSimpleInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, count = 0](float InPropFloat) mutable
 #else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, StartValue](float InPropFloat)
+		TbSimpleSimpleInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, StartValue, count = 0](float InPropFloat) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -749,16 +744,15 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone](float InPropFloat32)
+		TbSimpleSimpleInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone, count = 0](float InPropFloat32) mutable
 #else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone, StartValue](float InPropFloat32)
+		TbSimpleSimpleInterfacePublisher->OnPropFloat32Changed.AddLambda([this, TestDone, StartValue, count = 0](float InPropFloat32) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -869,16 +863,15 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone](double InPropFloat64)
+		TbSimpleSimpleInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone, count = 0](double InPropFloat64) mutable
 #else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone, StartValue](double InPropFloat64)
+		TbSimpleSimpleInterfacePublisher->OnPropFloat64Changed.AddLambda([this, TestDone, StartValue, count = 0](double InPropFloat64) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -989,16 +982,15 @@ void UTbSimpleSimpleInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const FString& InPropString)
+		TbSimpleSimpleInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, count = 0](const FString& InPropString) mutable
 #else
 		UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSimpleSimpleInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, StartValue](const FString& InPropString)
+		TbSimpleSimpleInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, StartValue, count = 0](const FString& InPropString) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

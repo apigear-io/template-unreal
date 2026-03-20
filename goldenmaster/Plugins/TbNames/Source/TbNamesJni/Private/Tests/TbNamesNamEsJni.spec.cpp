@@ -149,16 +149,15 @@ void UTbNamesNamEsJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbNamesNamEsPublisher->OnSwitchChanged.AddLambda([this, TestDone](bool bInSwitch)
+		TbNamesNamEsPublisher->OnSwitchChanged.AddLambda([this, TestDone, count = 0](bool bInSwitch) mutable
 #else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbNamesNamEsPublisher->OnSwitchChanged.AddLambda([this, TestDone, StartValue](bool bInSwitch)
+		TbNamesNamEsPublisher->OnSwitchChanged.AddLambda([this, TestDone, StartValue, count = 0](bool bInSwitch) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -269,16 +268,15 @@ void UTbNamesNamEsJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbNamesNamEsPublisher->OnSomePropertyChanged.AddLambda([this, TestDone](int32 InSomeProperty)
+		TbNamesNamEsPublisher->OnSomePropertyChanged.AddLambda([this, TestDone, count = 0](int32 InSomeProperty) mutable
 #else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbNamesNamEsPublisher->OnSomePropertyChanged.AddLambda([this, TestDone, StartValue](int32 InSomeProperty)
+		TbNamesNamEsPublisher->OnSomePropertyChanged.AddLambda([this, TestDone, StartValue, count = 0](int32 InSomeProperty) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -389,16 +387,15 @@ void UTbNamesNamEsJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbNamesNamEsPublisher->OnSomePoperty2Changed.AddLambda([this, TestDone](int32 InSomePoperty2)
+		TbNamesNamEsPublisher->OnSomePoperty2Changed.AddLambda([this, TestDone, count = 0](int32 InSomePoperty2) mutable
 #else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbNamesNamEsPublisher->OnSomePoperty2Changed.AddLambda([this, TestDone, StartValue](int32 InSomePoperty2)
+		TbNamesNamEsPublisher->OnSomePoperty2Changed.AddLambda([this, TestDone, StartValue, count = 0](int32 InSomePoperty2) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -509,16 +506,15 @@ void UTbNamesNamEsJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbNamesNamEsPublisher->OnEnumPropertyChanged.AddLambda([this, TestDone](ETbNamesEnum_With_Under_scores InEnumProperty)
+		TbNamesNamEsPublisher->OnEnumPropertyChanged.AddLambda([this, TestDone, count = 0](ETbNamesEnum_With_Under_scores InEnumProperty) mutable
 #else
 		UTbNamesNamEsPublisher* TbNamesNamEsPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbNamesNamEsPublisher->OnEnumPropertyChanged.AddLambda([this, TestDone, StartValue](ETbNamesEnum_With_Under_scores InEnumProperty)
+		TbNamesNamEsPublisher->OnEnumPropertyChanged.AddLambda([this, TestDone, StartValue, count = 0](ETbNamesEnum_With_Under_scores InEnumProperty) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

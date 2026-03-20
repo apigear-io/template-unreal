@@ -149,16 +149,15 @@ void UTbSame1SameStruct2InterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSame1SameStruct2InterfacePublisher* TbSame1SameStruct2InterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSame1SameStruct2InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTbSame1Struct2& InProp1)
+		TbSame1SameStruct2InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, count = 0](const FTbSame1Struct2& InProp1) mutable
 #else
 		UTbSame1SameStruct2InterfacePublisher* TbSame1SameStruct2InterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSame1SameStruct2InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue](const FTbSame1Struct2& InProp1)
+		TbSame1SameStruct2InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue, count = 0](const FTbSame1Struct2& InProp1) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -269,16 +268,15 @@ void UTbSame1SameStruct2InterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTbSame1SameStruct2InterfacePublisher* TbSame1SameStruct2InterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		TbSame1SameStruct2InterfacePublisher->OnProp2Changed.AddLambda([this, TestDone](const FTbSame1Struct2& InProp2)
+		TbSame1SameStruct2InterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, count = 0](const FTbSame1Struct2& InProp2) mutable
 #else
 		UTbSame1SameStruct2InterfacePublisher* TbSame1SameStruct2InterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		TbSame1SameStruct2InterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, StartValue](const FTbSame1Struct2& InProp2)
+		TbSame1SameStruct2InterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, StartValue, count = 0](const FTbSame1Struct2& InProp2) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

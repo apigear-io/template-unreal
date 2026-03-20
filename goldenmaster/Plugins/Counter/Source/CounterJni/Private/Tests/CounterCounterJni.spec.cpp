@@ -151,16 +151,15 @@ void UCounterCounterJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetClient()->_GetPublisher();
-		CounterCounterPublisher->OnVectorChanged.AddLambda([this, TestDone](const FCustomTypesVector3D& InVector)
+		CounterCounterPublisher->OnVectorChanged.AddLambda([this, TestDone, count = 0](const FCustomTypesVector3D& InVector) mutable
 #else
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		CounterCounterPublisher->OnVectorChanged.AddLambda([this, TestDone, StartValue](const FCustomTypesVector3D& InVector)
+		CounterCounterPublisher->OnVectorChanged.AddLambda([this, TestDone, StartValue, count = 0](const FCustomTypesVector3D& InVector) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -278,16 +277,15 @@ void UCounterCounterJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetClient()->_GetPublisher();
-		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, TestDone](const TArray<FCustomTypesVector3D>& InVectorArray)
+		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, TestDone, count = 0](const TArray<FCustomTypesVector3D>& InVectorArray) mutable
 #else
 		UCounterCounterPublisher* CounterCounterPublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, TestDone, StartValue](const TArray<FCustomTypesVector3D>& InVectorArray)
+		CounterCounterPublisher->OnVectorArrayChanged.AddLambda([this, TestDone, StartValue, count = 0](const TArray<FCustomTypesVector3D>& InVectorArray) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

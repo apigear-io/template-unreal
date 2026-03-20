@@ -149,16 +149,15 @@ void UTestbed2NestedStruct2InterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2NestedStruct2InterfacePublisher* Testbed2NestedStruct2InterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed2NestedStruct2InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct1& InProp1)
+		Testbed2NestedStruct2InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, count = 0](const FTestbed2NestedStruct1& InProp1) mutable
 #else
 		UTestbed2NestedStruct2InterfacePublisher* Testbed2NestedStruct2InterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed2NestedStruct2InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue](const FTestbed2NestedStruct1& InProp1)
+		Testbed2NestedStruct2InterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed2NestedStruct1& InProp1) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -269,16 +268,15 @@ void UTestbed2NestedStruct2InterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2NestedStruct2InterfacePublisher* Testbed2NestedStruct2InterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed2NestedStruct2InterfacePublisher->OnProp2Changed.AddLambda([this, TestDone](const FTestbed2NestedStruct2& InProp2)
+		Testbed2NestedStruct2InterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, count = 0](const FTestbed2NestedStruct2& InProp2) mutable
 #else
 		UTestbed2NestedStruct2InterfacePublisher* Testbed2NestedStruct2InterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed2NestedStruct2InterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, StartValue](const FTestbed2NestedStruct2& InProp2)
+		Testbed2NestedStruct2InterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed2NestedStruct2& InProp2) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

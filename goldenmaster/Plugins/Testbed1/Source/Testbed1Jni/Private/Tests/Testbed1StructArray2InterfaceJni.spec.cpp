@@ -149,16 +149,15 @@ void UTestbed1StructArray2InterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed1StructArray2InterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBoolWithArray& InPropBool)
+		Testbed1StructArray2InterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, count = 0](const FTestbed1StructBoolWithArray& InPropBool) mutable
 #else
 		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed1StructArray2InterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructBoolWithArray& InPropBool)
+		Testbed1StructArray2InterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed1StructBoolWithArray& InPropBool) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -269,16 +268,15 @@ void UTestbed1StructArray2InterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed1StructArray2InterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructIntWithArray& InPropInt)
+		Testbed1StructArray2InterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, count = 0](const FTestbed1StructIntWithArray& InPropInt) mutable
 #else
 		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed1StructArray2InterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructIntWithArray& InPropInt)
+		Testbed1StructArray2InterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed1StructIntWithArray& InPropInt) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -389,16 +387,15 @@ void UTestbed1StructArray2InterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed1StructArray2InterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloatWithArray& InPropFloat)
+		Testbed1StructArray2InterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, count = 0](const FTestbed1StructFloatWithArray& InPropFloat) mutable
 #else
 		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed1StructArray2InterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructFloatWithArray& InPropFloat)
+		Testbed1StructArray2InterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed1StructFloatWithArray& InPropFloat) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -509,16 +506,15 @@ void UTestbed1StructArray2InterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed1StructArray2InterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructStringWithArray& InPropString)
+		Testbed1StructArray2InterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, count = 0](const FTestbed1StructStringWithArray& InPropString) mutable
 #else
 		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed1StructArray2InterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructStringWithArray& InPropString)
+		Testbed1StructArray2InterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed1StructStringWithArray& InPropString) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -629,16 +625,15 @@ void UTestbed1StructArray2InterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed1StructArray2InterfacePublisher->OnPropEnumChanged.AddLambda([this, TestDone](const FTestbed1StructEnumWithArray& InPropEnum)
+		Testbed1StructArray2InterfacePublisher->OnPropEnumChanged.AddLambda([this, TestDone, count = 0](const FTestbed1StructEnumWithArray& InPropEnum) mutable
 #else
 		UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed1StructArray2InterfacePublisher->OnPropEnumChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructEnumWithArray& InPropEnum)
+		Testbed1StructArray2InterfacePublisher->OnPropEnumChanged.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed1StructEnumWithArray& InPropEnum) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

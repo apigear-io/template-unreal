@@ -149,16 +149,15 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed2ManyParamInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone](int32 InProp1)
+		Testbed2ManyParamInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, count = 0](int32 InProp1) mutable
 #else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed2ManyParamInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue](int32 InProp1)
+		Testbed2ManyParamInterfacePublisher->OnProp1Changed.AddLambda([this, TestDone, StartValue, count = 0](int32 InProp1) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -269,16 +268,15 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed2ManyParamInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone](int32 InProp2)
+		Testbed2ManyParamInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, count = 0](int32 InProp2) mutable
 #else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed2ManyParamInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, StartValue](int32 InProp2)
+		Testbed2ManyParamInterfacePublisher->OnProp2Changed.AddLambda([this, TestDone, StartValue, count = 0](int32 InProp2) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -389,16 +387,15 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed2ManyParamInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone](int32 InProp3)
+		Testbed2ManyParamInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone, count = 0](int32 InProp3) mutable
 #else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed2ManyParamInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone, StartValue](int32 InProp3)
+		Testbed2ManyParamInterfacePublisher->OnProp3Changed.AddLambda([this, TestDone, StartValue, count = 0](int32 InProp3) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -509,16 +506,15 @@ void UTestbed2ManyParamInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed2ManyParamInterfacePublisher->OnProp4Changed.AddLambda([this, TestDone](int32 InProp4)
+		Testbed2ManyParamInterfacePublisher->OnProp4Changed.AddLambda([this, TestDone, count = 0](int32 InProp4) mutable
 #else
 		UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed2ManyParamInterfacePublisher->OnProp4Changed.AddLambda([this, TestDone, StartValue](int32 InProp4)
+		Testbed2ManyParamInterfacePublisher->OnProp4Changed.AddLambda([this, TestDone, StartValue, count = 0](int32 InProp4) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

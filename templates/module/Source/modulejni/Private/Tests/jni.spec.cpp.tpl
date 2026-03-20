@@ -230,16 +230,15 @@ void {{$Class}}JniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetClient()->_GetPublisher();
-		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone]({{ueParam "In" .}})
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone, count = 0]({{ueParam "In" .}}) mutable
 #else
 		{{$Class}}Publisher* {{$Iface}}Publisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone, StartValue]({{ueParam "In" .}})
+		{{$Iface}}Publisher->On{{Camel .Name}}Changed.AddLambda([this, TestDone, StartValue, count = 0]({{ueParam "In" .}}) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)

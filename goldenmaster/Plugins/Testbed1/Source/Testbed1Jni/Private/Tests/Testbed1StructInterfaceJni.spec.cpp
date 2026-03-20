@@ -149,16 +149,15 @@ void UTestbed1StructInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed1StructInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const FTestbed1StructBool& InPropBool)
+		Testbed1StructInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, count = 0](const FTestbed1StructBool& InPropBool) mutable
 #else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed1StructInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructBool& InPropBool)
+		Testbed1StructInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed1StructBool& InPropBool) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -269,16 +268,15 @@ void UTestbed1StructInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed1StructInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const FTestbed1StructInt& InPropInt)
+		Testbed1StructInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, count = 0](const FTestbed1StructInt& InPropInt) mutable
 #else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed1StructInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructInt& InPropInt)
+		Testbed1StructInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed1StructInt& InPropInt) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -389,16 +387,15 @@ void UTestbed1StructInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed1StructInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const FTestbed1StructFloat& InPropFloat)
+		Testbed1StructInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, count = 0](const FTestbed1StructFloat& InPropFloat) mutable
 #else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed1StructInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructFloat& InPropFloat)
+		Testbed1StructInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed1StructFloat& InPropFloat) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
@@ -509,16 +506,15 @@ void UTestbed1StructInterfaceJniSpec::Define()
 
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetClient()->_GetPublisher();
-		Testbed1StructInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const FTestbed1StructString& InPropString)
+		Testbed1StructInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, count = 0](const FTestbed1StructString& InPropString) mutable
 #else
 		UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher = ImplFixture->GetLocalImplementation()->_GetPublisher();
-		Testbed1StructInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, StartValue](const FTestbed1StructString& InPropString)
+		Testbed1StructInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone, StartValue, count = 0](const FTestbed1StructString& InPropString) mutable
 #endif
 			{
 			// this function must be called twice before we can successfully pass this test.
 			// first call it should have the test value of the parameter
 			// second call it should have the default value of the parameter again
-			static int count = 0;
 			count++;
 
 			if (count % 2 != 0)
