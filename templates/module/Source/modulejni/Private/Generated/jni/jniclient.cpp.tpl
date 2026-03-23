@@ -120,7 +120,6 @@ limitations under the License.
 
 #if PLATFORM_ANDROID
 
-#include "Engine/Engine.h"
 #include "Android/AndroidJNI.h"
 #include "Android/AndroidApplication.h"
 
