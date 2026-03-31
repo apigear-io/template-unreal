@@ -17,7 +17,6 @@ limitations under the License.
 #pragma once
 
 #include "Runtime/Launch/Resources/Version.h"
-#include "Subsystems/GameInstanceSubsystem.h"
 #include "Testbed2_data.h"
 #include "Testbed2/Generated/api/Testbed2NestedStruct2InterfaceInterface.h"
 #include "Testbed2/Generated/api/Testbed2NestedStruct2InterfaceBPInterface.h"

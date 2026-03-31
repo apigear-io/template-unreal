@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTestbed2ManyParamInterfaceBPAdapter::Initialize(TScriptInterface<ITestbed2ManyParamInterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTestbed2ManyParamInterfaceBPInterface>(),
+		TEXT("UTestbed2ManyParamInterfaceBPAdapter::Initialize: InTarget does not implement ITestbed2ManyParamInterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UTestbed2ManyParamInterfaceBPAdapter::Func1Async(UObject* WorldContextObjec
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<int32> Future = Func1Async(Param1);
@@ -56,10 +56,15 @@ void UTestbed2ManyParamInterfaceBPAdapter::Func1Async(UObject* WorldContextObjec
 
 TFuture<int32> UTestbed2ManyParamInterfaceBPAdapter::Func1Async(int32 Param1)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (UTestbed2ManyParamInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return 0;
 	});
 }
 
@@ -82,9 +87,7 @@ void UTestbed2ManyParamInterfaceBPAdapter::Func2Async(UObject* WorldContextObjec
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<int32> Future = Func2Async(Param1, Param2);
@@ -95,10 +98,15 @@ void UTestbed2ManyParamInterfaceBPAdapter::Func2Async(UObject* WorldContextObjec
 
 TFuture<int32> UTestbed2ManyParamInterfaceBPAdapter::Func2Async(int32 Param1, int32 Param2)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, this]()
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, Param2, WeakThis]()
 		{
-		return Func2(Param1, Param2);
+		if (UTestbed2ManyParamInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func2(Param1, Param2);
+		}
+		return 0;
 	});
 }
 
@@ -121,9 +129,7 @@ void UTestbed2ManyParamInterfaceBPAdapter::Func3Async(UObject* WorldContextObjec
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<int32> Future = Func3Async(Param1, Param2, Param3);
@@ -134,10 +140,15 @@ void UTestbed2ManyParamInterfaceBPAdapter::Func3Async(UObject* WorldContextObjec
 
 TFuture<int32> UTestbed2ManyParamInterfaceBPAdapter::Func3Async(int32 Param1, int32 Param2, int32 Param3)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, this]()
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, Param2, Param3, WeakThis]()
 		{
-		return Func3(Param1, Param2, Param3);
+		if (UTestbed2ManyParamInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func3(Param1, Param2, Param3);
+		}
+		return 0;
 	});
 }
 
@@ -160,9 +171,7 @@ void UTestbed2ManyParamInterfaceBPAdapter::Func4Async(UObject* WorldContextObjec
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<int32> Future = Func4Async(Param1, Param2, Param3, Param4);
@@ -173,10 +182,15 @@ void UTestbed2ManyParamInterfaceBPAdapter::Func4Async(UObject* WorldContextObjec
 
 TFuture<int32> UTestbed2ManyParamInterfaceBPAdapter::Func4Async(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, Param4, this]()
+	TWeakObjectPtr<UTestbed2ManyParamInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, Param2, Param3, Param4, WeakThis]()
 		{
-		return Func4(Param1, Param2, Param3, Param4);
+		if (UTestbed2ManyParamInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func4(Param1, Param2, Param3, Param4);
+		}
+		return 0;
 	});
 }
 

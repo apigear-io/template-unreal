@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbSimpleSimpleInterfaceBPAdapter::Initialize(TScriptInterface<ITbSimpleSimpleInterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbSimpleSimpleInterfaceBPInterface>(),
+		TEXT("UTbSimpleSimpleInterfaceBPAdapter::Initialize: InTarget does not implement ITbSimpleSimpleInterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -52,9 +54,7 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncNoParamsAsync(UObject* WorldContextO
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<bool> Future = FuncNoParamsAsync();
@@ -65,10 +65,15 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncNoParamsAsync(UObject* WorldContextO
 
 TFuture<bool> UTbSimpleSimpleInterfaceBPAdapter::FuncNoParamsAsync()
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[this]()
+	TWeakObjectPtr<UTbSimpleSimpleInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[WeakThis]()
 		{
-		return FuncNoParams();
+		if (UTbSimpleSimpleInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncNoParams();
+		}
+		return false;
 	});
 }
 
@@ -91,9 +96,7 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContextObjec
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<bool> Future = FuncBoolAsync(bParamBool);
@@ -104,10 +107,15 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContextObjec
 
 TFuture<bool> UTbSimpleSimpleInterfaceBPAdapter::FuncBoolAsync(bool bParamBool)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[bParamBool, this]()
+	TWeakObjectPtr<UTbSimpleSimpleInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[bParamBool, WeakThis]()
 		{
-		return FuncBool(bParamBool);
+		if (UTbSimpleSimpleInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(bParamBool);
+		}
+		return false;
 	});
 }
 
@@ -130,9 +138,7 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncIntAsync(UObject* WorldContextObject
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<int32> Future = FuncIntAsync(ParamInt);
@@ -143,10 +149,15 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncIntAsync(UObject* WorldContextObject
 
 TFuture<int32> UTbSimpleSimpleInterfaceBPAdapter::FuncIntAsync(int32 ParamInt)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt, this]()
+	TWeakObjectPtr<UTbSimpleSimpleInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamInt, WeakThis]()
 		{
-		return FuncInt(ParamInt);
+		if (UTbSimpleSimpleInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt(ParamInt);
+		}
+		return 0;
 	});
 }
 
@@ -169,9 +180,7 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncInt32Async(UObject* WorldContextObje
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<int32> Future = FuncInt32Async(ParamInt32);
@@ -182,10 +191,15 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncInt32Async(UObject* WorldContextObje
 
 TFuture<int32> UTbSimpleSimpleInterfaceBPAdapter::FuncInt32Async(int32 ParamInt32)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt32, this]()
+	TWeakObjectPtr<UTbSimpleSimpleInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamInt32, WeakThis]()
 		{
-		return FuncInt32(ParamInt32);
+		if (UTbSimpleSimpleInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt32(ParamInt32);
+		}
+		return 0;
 	});
 }
 
@@ -208,9 +222,7 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncInt64Async(UObject* WorldContextObje
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<int64> Future = FuncInt64Async(ParamInt64);
@@ -221,10 +233,15 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncInt64Async(UObject* WorldContextObje
 
 TFuture<int64> UTbSimpleSimpleInterfaceBPAdapter::FuncInt64Async(int64 ParamInt64)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt64, this]()
+	TWeakObjectPtr<UTbSimpleSimpleInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamInt64, WeakThis]()
 		{
-		return FuncInt64(ParamInt64);
+		if (UTbSimpleSimpleInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt64(ParamInt64);
+		}
+		return 0LL;
 	});
 }
 
@@ -247,9 +264,7 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncFloatAsync(UObject* WorldContextObje
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<float> Future = FuncFloatAsync(ParamFloat);
@@ -260,10 +275,15 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncFloatAsync(UObject* WorldContextObje
 
 TFuture<float> UTbSimpleSimpleInterfaceBPAdapter::FuncFloatAsync(float ParamFloat)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+	TWeakObjectPtr<UTbSimpleSimpleInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat(ParamFloat);
+		if (UTbSimpleSimpleInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat(ParamFloat);
+		}
+		return 0.0f;
 	});
 }
 
@@ -286,9 +306,7 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncFloat32Async(UObject* WorldContextOb
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<float> Future = FuncFloat32Async(ParamFloat32);
@@ -299,10 +317,15 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncFloat32Async(UObject* WorldContextOb
 
 TFuture<float> UTbSimpleSimpleInterfaceBPAdapter::FuncFloat32Async(float ParamFloat32)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat32, this]()
+	TWeakObjectPtr<UTbSimpleSimpleInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamFloat32, WeakThis]()
 		{
-		return FuncFloat32(ParamFloat32);
+		if (UTbSimpleSimpleInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat32(ParamFloat32);
+		}
+		return 0.0f;
 	});
 }
 
@@ -325,9 +348,7 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncFloat64Async(UObject* WorldContextOb
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<double> Future = FuncFloat64Async(ParamFloat);
@@ -338,10 +359,15 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncFloat64Async(UObject* WorldContextOb
 
 TFuture<double> UTbSimpleSimpleInterfaceBPAdapter::FuncFloat64Async(double ParamFloat)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+	TWeakObjectPtr<UTbSimpleSimpleInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat64(ParamFloat);
+		if (UTbSimpleSimpleInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat64(ParamFloat);
+		}
+		return 0.0;
 	});
 }
 
@@ -364,9 +390,7 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncStringAsync(UObject* WorldContextObj
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FString> Future = FuncStringAsync(ParamString);
@@ -377,10 +401,15 @@ void UTbSimpleSimpleInterfaceBPAdapter::FuncStringAsync(UObject* WorldContextObj
 
 TFuture<FString> UTbSimpleSimpleInterfaceBPAdapter::FuncStringAsync(const FString& ParamString)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamString, this]()
+	TWeakObjectPtr<UTbSimpleSimpleInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamString, WeakThis]()
 		{
-		return FuncString(ParamString);
+		if (UTbSimpleSimpleInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncString(ParamString);
+		}
+		return FString();
 	});
 }
 

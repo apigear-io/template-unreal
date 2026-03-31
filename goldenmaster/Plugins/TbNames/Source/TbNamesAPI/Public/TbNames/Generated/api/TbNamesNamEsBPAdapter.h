@@ -17,7 +17,6 @@ limitations under the License.
 #pragma once
 
 #include "Runtime/Launch/Resources/Version.h"
-#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbNames_data.h"
 #include "TbNames/Generated/api/TbNamesNamEsInterface.h"
 #include "TbNames/Generated/api/TbNamesNamEsBPInterface.h"

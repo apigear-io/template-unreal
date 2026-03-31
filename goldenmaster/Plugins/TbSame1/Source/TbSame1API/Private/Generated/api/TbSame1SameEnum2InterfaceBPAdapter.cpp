@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbSame1SameEnum2InterfaceBPAdapter::Initialize(TScriptInterface<ITbSame1SameEnum2InterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbSame1SameEnum2InterfaceBPInterface>(),
+		TEXT("UTbSame1SameEnum2InterfaceBPAdapter::Initialize: InTarget does not implement ITbSame1SameEnum2InterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UTbSame1SameEnum2InterfaceBPAdapter::Func1Async(UObject* WorldContextObject
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<ETbSame1Enum1> Future = Func1Async(Param1);
@@ -56,10 +56,15 @@ void UTbSame1SameEnum2InterfaceBPAdapter::Func1Async(UObject* WorldContextObject
 
 TFuture<ETbSame1Enum1> UTbSame1SameEnum2InterfaceBPAdapter::Func1Async(ETbSame1Enum1 Param1)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+	TWeakObjectPtr<UTbSame1SameEnum2InterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (UTbSame1SameEnum2InterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return ETbSame1Enum1::TS1E1_Value1;
 	});
 }
 
@@ -82,9 +87,7 @@ void UTbSame1SameEnum2InterfaceBPAdapter::Func2Async(UObject* WorldContextObject
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<ETbSame1Enum1> Future = Func2Async(Param1, Param2);
@@ -95,10 +98,15 @@ void UTbSame1SameEnum2InterfaceBPAdapter::Func2Async(UObject* WorldContextObject
 
 TFuture<ETbSame1Enum1> UTbSame1SameEnum2InterfaceBPAdapter::Func2Async(ETbSame1Enum1 Param1, ETbSame1Enum2 Param2)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, this]()
+	TWeakObjectPtr<UTbSame1SameEnum2InterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, Param2, WeakThis]()
 		{
-		return Func2(Param1, Param2);
+		if (UTbSame1SameEnum2InterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func2(Param1, Param2);
+		}
+		return ETbSame1Enum1::TS1E1_Value1;
 	});
 }
 

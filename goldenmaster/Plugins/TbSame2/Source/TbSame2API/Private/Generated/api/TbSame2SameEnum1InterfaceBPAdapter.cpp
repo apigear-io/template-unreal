@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbSame2SameEnum1InterfaceBPAdapter::Initialize(TScriptInterface<ITbSame2SameEnum1InterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbSame2SameEnum1InterfaceBPInterface>(),
+		TEXT("UTbSame2SameEnum1InterfaceBPAdapter::Initialize: InTarget does not implement ITbSame2SameEnum1InterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UTbSame2SameEnum1InterfaceBPAdapter::Func1Async(UObject* WorldContextObject
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<ETbSame2Enum1> Future = Func1Async(Param1);
@@ -56,10 +56,15 @@ void UTbSame2SameEnum1InterfaceBPAdapter::Func1Async(UObject* WorldContextObject
 
 TFuture<ETbSame2Enum1> UTbSame2SameEnum1InterfaceBPAdapter::Func1Async(ETbSame2Enum1 Param1)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+	TWeakObjectPtr<UTbSame2SameEnum1InterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (UTbSame2SameEnum1InterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return ETbSame2Enum1::TS2E1_Value1;
 	});
 }
 

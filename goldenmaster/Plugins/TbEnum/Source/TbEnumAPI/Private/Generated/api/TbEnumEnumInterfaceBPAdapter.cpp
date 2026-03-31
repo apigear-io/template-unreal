@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbEnumEnumInterfaceBPAdapter::Initialize(TScriptInterface<ITbEnumEnumInterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbEnumEnumInterfaceBPInterface>(),
+		TEXT("UTbEnumEnumInterfaceBPAdapter::Initialize: InTarget does not implement ITbEnumEnumInterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UTbEnumEnumInterfaceBPAdapter::Func0Async(UObject* WorldContextObject, FLat
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<ETbEnumEnum0> Future = Func0Async(Param0);
@@ -56,10 +56,15 @@ void UTbEnumEnumInterfaceBPAdapter::Func0Async(UObject* WorldContextObject, FLat
 
 TFuture<ETbEnumEnum0> UTbEnumEnumInterfaceBPAdapter::Func0Async(ETbEnumEnum0 Param0)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param0, this]()
+	TWeakObjectPtr<UTbEnumEnumInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param0, WeakThis]()
 		{
-		return Func0(Param0);
+		if (UTbEnumEnumInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func0(Param0);
+		}
+		return ETbEnumEnum0::TEE0_Value0;
 	});
 }
 
@@ -82,9 +87,7 @@ void UTbEnumEnumInterfaceBPAdapter::Func1Async(UObject* WorldContextObject, FLat
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<ETbEnumEnum1> Future = Func1Async(Param1);
@@ -95,10 +98,15 @@ void UTbEnumEnumInterfaceBPAdapter::Func1Async(UObject* WorldContextObject, FLat
 
 TFuture<ETbEnumEnum1> UTbEnumEnumInterfaceBPAdapter::Func1Async(ETbEnumEnum1 Param1)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+	TWeakObjectPtr<UTbEnumEnumInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (UTbEnumEnumInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return ETbEnumEnum1::TEE1_Value1;
 	});
 }
 
@@ -121,9 +129,7 @@ void UTbEnumEnumInterfaceBPAdapter::Func2Async(UObject* WorldContextObject, FLat
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<ETbEnumEnum2> Future = Func2Async(Param2);
@@ -134,10 +140,15 @@ void UTbEnumEnumInterfaceBPAdapter::Func2Async(UObject* WorldContextObject, FLat
 
 TFuture<ETbEnumEnum2> UTbEnumEnumInterfaceBPAdapter::Func2Async(ETbEnumEnum2 Param2)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param2, this]()
+	TWeakObjectPtr<UTbEnumEnumInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param2, WeakThis]()
 		{
-		return Func2(Param2);
+		if (UTbEnumEnumInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func2(Param2);
+		}
+		return ETbEnumEnum2::TEE2_Value2;
 	});
 }
 
@@ -160,9 +171,7 @@ void UTbEnumEnumInterfaceBPAdapter::Func3Async(UObject* WorldContextObject, FLat
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<ETbEnumEnum3> Future = Func3Async(Param3);
@@ -173,10 +182,15 @@ void UTbEnumEnumInterfaceBPAdapter::Func3Async(UObject* WorldContextObject, FLat
 
 TFuture<ETbEnumEnum3> UTbEnumEnumInterfaceBPAdapter::Func3Async(ETbEnumEnum3 Param3)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param3, this]()
+	TWeakObjectPtr<UTbEnumEnumInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param3, WeakThis]()
 		{
-		return Func3(Param3);
+		if (UTbEnumEnumInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func3(Param3);
+		}
+		return ETbEnumEnum3::TEE3_Value3;
 	});
 }
 

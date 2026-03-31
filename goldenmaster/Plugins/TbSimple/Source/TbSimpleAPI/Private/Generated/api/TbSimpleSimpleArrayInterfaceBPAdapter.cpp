@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbSimpleSimpleArrayInterfaceBPAdapter::Initialize(TScriptInterface<ITbSimpleSimpleArrayInterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbSimpleSimpleArrayInterfaceBPInterface>(),
+		TEXT("UTbSimpleSimpleArrayInterfaceBPAdapter::Initialize: InTarget does not implement ITbSimpleSimpleArrayInterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContext
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<bool>> Future = FuncBoolAsync(ParamBool);
@@ -56,10 +56,15 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContext
 
 TFuture<TArray<bool>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncBoolAsync(const TArray<bool>& ParamBool)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamBool, this]()
+	TWeakObjectPtr<UTbSimpleSimpleArrayInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamBool, WeakThis]()
 		{
-		return FuncBool(ParamBool);
+		if (UTbSimpleSimpleArrayInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(ParamBool);
+		}
+		return TArray<bool>();
 	});
 }
 
@@ -82,9 +87,7 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncIntAsync(UObject* WorldContextO
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<int32>> Future = FuncIntAsync(ParamInt);
@@ -95,10 +98,15 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncIntAsync(UObject* WorldContextO
 
 TFuture<TArray<int32>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncIntAsync(const TArray<int32>& ParamInt)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt, this]()
+	TWeakObjectPtr<UTbSimpleSimpleArrayInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamInt, WeakThis]()
 		{
-		return FuncInt(ParamInt);
+		if (UTbSimpleSimpleArrayInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt(ParamInt);
+		}
+		return TArray<int32>();
 	});
 }
 
@@ -121,9 +129,7 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt32Async(UObject* WorldContex
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<int32>> Future = FuncInt32Async(ParamInt32);
@@ -134,10 +140,15 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt32Async(UObject* WorldContex
 
 TFuture<TArray<int32>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt32Async(const TArray<int32>& ParamInt32)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt32, this]()
+	TWeakObjectPtr<UTbSimpleSimpleArrayInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamInt32, WeakThis]()
 		{
-		return FuncInt32(ParamInt32);
+		if (UTbSimpleSimpleArrayInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt32(ParamInt32);
+		}
+		return TArray<int32>();
 	});
 }
 
@@ -160,9 +171,7 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt64Async(UObject* WorldContex
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<int64>> Future = FuncInt64Async(ParamInt64);
@@ -173,10 +182,15 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt64Async(UObject* WorldContex
 
 TFuture<TArray<int64>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncInt64Async(const TArray<int64>& ParamInt64)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt64, this]()
+	TWeakObjectPtr<UTbSimpleSimpleArrayInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamInt64, WeakThis]()
 		{
-		return FuncInt64(ParamInt64);
+		if (UTbSimpleSimpleArrayInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt64(ParamInt64);
+		}
+		return TArray<int64>();
 	});
 }
 
@@ -199,9 +213,7 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloatAsync(UObject* WorldContex
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<float>> Future = FuncFloatAsync(ParamFloat);
@@ -212,10 +224,15 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloatAsync(UObject* WorldContex
 
 TFuture<TArray<float>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloatAsync(const TArray<float>& ParamFloat)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+	TWeakObjectPtr<UTbSimpleSimpleArrayInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat(ParamFloat);
+		if (UTbSimpleSimpleArrayInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat(ParamFloat);
+		}
+		return TArray<float>();
 	});
 }
 
@@ -238,9 +255,7 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat32Async(UObject* WorldCont
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<float>> Future = FuncFloat32Async(ParamFloat32);
@@ -251,10 +266,15 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat32Async(UObject* WorldCont
 
 TFuture<TArray<float>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat32Async(const TArray<float>& ParamFloat32)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat32, this]()
+	TWeakObjectPtr<UTbSimpleSimpleArrayInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamFloat32, WeakThis]()
 		{
-		return FuncFloat32(ParamFloat32);
+		if (UTbSimpleSimpleArrayInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat32(ParamFloat32);
+		}
+		return TArray<float>();
 	});
 }
 
@@ -277,9 +297,7 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat64Async(UObject* WorldCont
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<double>> Future = FuncFloat64Async(ParamFloat);
@@ -290,10 +308,15 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat64Async(UObject* WorldCont
 
 TFuture<TArray<double>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncFloat64Async(const TArray<double>& ParamFloat)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+	TWeakObjectPtr<UTbSimpleSimpleArrayInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat64(ParamFloat);
+		if (UTbSimpleSimpleArrayInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat64(ParamFloat);
+		}
+		return TArray<double>();
 	});
 }
 
@@ -316,9 +339,7 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncStringAsync(UObject* WorldConte
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<FString>> Future = FuncStringAsync(ParamString);
@@ -329,10 +350,15 @@ void UTbSimpleSimpleArrayInterfaceBPAdapter::FuncStringAsync(UObject* WorldConte
 
 TFuture<TArray<FString>> UTbSimpleSimpleArrayInterfaceBPAdapter::FuncStringAsync(const TArray<FString>& ParamString)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamString, this]()
+	TWeakObjectPtr<UTbSimpleSimpleArrayInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamString, WeakThis]()
 		{
-		return FuncString(ParamString);
+		if (UTbSimpleSimpleArrayInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncString(ParamString);
+		}
+		return TArray<FString>();
 	});
 }
 

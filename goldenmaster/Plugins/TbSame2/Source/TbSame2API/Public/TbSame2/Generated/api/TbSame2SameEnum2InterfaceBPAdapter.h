@@ -17,7 +17,6 @@ limitations under the License.
 #pragma once
 
 #include "Runtime/Launch/Resources/Version.h"
-#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSame2_data.h"
 #include "TbSame2/Generated/api/TbSame2SameEnum2InterfaceInterface.h"
 #include "TbSame2/Generated/api/TbSame2SameEnum2InterfaceBPInterface.h"

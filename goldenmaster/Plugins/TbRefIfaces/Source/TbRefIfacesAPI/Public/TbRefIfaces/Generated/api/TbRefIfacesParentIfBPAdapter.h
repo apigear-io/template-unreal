@@ -17,7 +17,6 @@ limitations under the License.
 #pragma once
 
 #include "Runtime/Launch/Resources/Version.h"
-#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbRefIfaces_data.h"
 #include "TbRefIfaces/Generated/api/TbRefIfacesParentIfInterface.h"
 #include "TbRefIfaces/Generated/api/TbRefIfacesParentIfBPInterface.h"

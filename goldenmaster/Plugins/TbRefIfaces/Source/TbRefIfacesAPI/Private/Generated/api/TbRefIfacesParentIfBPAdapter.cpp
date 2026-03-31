@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbRefIfacesParentIfBPAdapter::Initialize(TScriptInterface<ITbRefIfacesParentIfBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbRefIfacesParentIfBPInterface>(),
+		TEXT("UTbRefIfacesParentIfBPAdapter::Initialize: InTarget does not implement ITbRefIfacesParentIfBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UTbRefIfacesParentIfBPAdapter::LocalIfMethodAsync(UObject* WorldContextObje
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Future = LocalIfMethodAsync(Param);
@@ -56,10 +56,15 @@ void UTbRefIfacesParentIfBPAdapter::LocalIfMethodAsync(UObject* WorldContextObje
 
 TFuture<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfBPAdapter::LocalIfMethodAsync(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param, this]()
+	TWeakObjectPtr<UTbRefIfacesParentIfBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param, WeakThis]()
 		{
-		return LocalIfMethod(Param);
+		if (UTbRefIfacesParentIfBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->LocalIfMethod(Param);
+		}
+		return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
 	});
 }
 
@@ -82,9 +87,7 @@ void UTbRefIfacesParentIfBPAdapter::LocalIfMethodListAsync(UObject* WorldContext
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Future = LocalIfMethodListAsync(Param);
@@ -95,10 +98,15 @@ void UTbRefIfacesParentIfBPAdapter::LocalIfMethodListAsync(UObject* WorldContext
 
 TFuture<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> UTbRefIfacesParentIfBPAdapter::LocalIfMethodListAsync(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param, this]()
+	TWeakObjectPtr<UTbRefIfacesParentIfBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param, WeakThis]()
 		{
-		return LocalIfMethodList(Param);
+		if (UTbRefIfacesParentIfBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->LocalIfMethodList(Param);
+		}
+		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 	});
 }
 
@@ -121,9 +129,7 @@ void UTbRefIfacesParentIfBPAdapter::ImportedIfMethodAsync(UObject* WorldContextO
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Future = ImportedIfMethodAsync(Param);
@@ -134,10 +140,15 @@ void UTbRefIfacesParentIfBPAdapter::ImportedIfMethodAsync(UObject* WorldContextO
 
 TFuture<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfBPAdapter::ImportedIfMethodAsync(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param, this]()
+	TWeakObjectPtr<UTbRefIfacesParentIfBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param, WeakThis]()
 		{
-		return ImportedIfMethod(Param);
+		if (UTbRefIfacesParentIfBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->ImportedIfMethod(Param);
+		}
+		return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
 	});
 }
 
@@ -160,9 +171,7 @@ void UTbRefIfacesParentIfBPAdapter::ImportedIfMethodListAsync(UObject* WorldCont
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Future = ImportedIfMethodListAsync(Param);
@@ -173,10 +182,15 @@ void UTbRefIfacesParentIfBPAdapter::ImportedIfMethodListAsync(UObject* WorldCont
 
 TFuture<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> UTbRefIfacesParentIfBPAdapter::ImportedIfMethodListAsync(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param, this]()
+	TWeakObjectPtr<UTbRefIfacesParentIfBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param, WeakThis]()
 		{
-		return ImportedIfMethodList(Param);
+		if (UTbRefIfacesParentIfBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->ImportedIfMethodList(Param);
+		}
+		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 	});
 }
 
