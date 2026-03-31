@@ -44,6 +44,13 @@ U{{$Class}}Publisher* {{$abstractclass}}::_GetPublisher()
 	return {{$Class}}Publisher;
 }
 {{- nl }}
+void {{$abstractclass}}::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	{{$abstractclass}}* This = CastChecked<{{$abstractclass}}>(InThis);
+	Collector.AddReferencedObject(This->{{$Iface}}Publisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+{{- nl }}
 
 {{- range $i, $e := .Properties }}
 {{ueReturn "" .}} {{$abstractclass}}::Get{{Camel .Name}}_Private() const

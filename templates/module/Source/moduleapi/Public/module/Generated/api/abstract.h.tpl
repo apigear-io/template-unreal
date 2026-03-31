@@ -70,6 +70,7 @@ public:
 {{- else }}{{- nl }}
 {{- end }}
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -93,7 +94,6 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	U{{$Class}}Publisher* {{$Iface}}Publisher;
 };
 {{- end }}

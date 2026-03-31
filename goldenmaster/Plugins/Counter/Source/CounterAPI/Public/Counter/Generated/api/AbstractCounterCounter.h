@@ -71,6 +71,7 @@ public:
 	virtual void SetExternVectorArray(const TArray<FVector>& InExternVectorArray) override PURE_VIRTUAL(UAbstractCounterCounter::SetExternVectorArray, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -114,6 +115,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UCounterCounterPublisher* CounterCounterPublisher;
 };

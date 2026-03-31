@@ -33,6 +33,13 @@ UTbNamesNamEsPublisher* UAbstractTbNamesNamEs::_GetPublisher()
 	return TbNamesNamEsPublisher;
 }
 
+void UAbstractTbNamesNamEs::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbNamesNamEs* This = CastChecked<UAbstractTbNamesNamEs>(InThis);
+	Collector.AddReferencedObject(This->TbNamesNamEsPublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 bool UAbstractTbNamesNamEs::GetSwitch_Private() const
 {
 	return GetSwitch();

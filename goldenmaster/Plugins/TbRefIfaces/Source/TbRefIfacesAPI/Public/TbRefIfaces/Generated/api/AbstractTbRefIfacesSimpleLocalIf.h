@@ -50,6 +50,7 @@ public:
 	virtual void SetIntProperty(int32 InIntProperty) override PURE_VIRTUAL(UAbstractTbRefIfacesSimpleLocalIf::SetIntProperty, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -66,6 +67,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTbRefIfacesSimpleLocalIfPublisher* TbRefIfacesSimpleLocalIfPublisher;
 };

@@ -78,6 +78,7 @@ public:
 	virtual void SetPropEnum(const FTestbed1StructEnumWithArray& InPropEnum) override PURE_VIRTUAL(UAbstractTestbed1StructArray2Interface::SetPropEnum, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -130,6 +131,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher;
 };

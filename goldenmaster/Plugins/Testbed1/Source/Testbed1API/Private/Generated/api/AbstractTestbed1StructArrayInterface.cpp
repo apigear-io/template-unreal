@@ -33,6 +33,13 @@ UTestbed1StructArrayInterfacePublisher* UAbstractTestbed1StructArrayInterface::_
 	return Testbed1StructArrayInterfacePublisher;
 }
 
+void UAbstractTestbed1StructArrayInterface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTestbed1StructArrayInterface* This = CastChecked<UAbstractTestbed1StructArrayInterface>(InThis);
+	Collector.AddReferencedObject(This->Testbed1StructArrayInterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 TArray<FTestbed1StructBool> UAbstractTestbed1StructArrayInterface::GetPropBool_Private() const
 {
 	return GetPropBool();

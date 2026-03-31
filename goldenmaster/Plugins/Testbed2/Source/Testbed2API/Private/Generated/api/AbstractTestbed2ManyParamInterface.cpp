@@ -33,6 +33,13 @@ UTestbed2ManyParamInterfacePublisher* UAbstractTestbed2ManyParamInterface::_GetP
 	return Testbed2ManyParamInterfacePublisher;
 }
 
+void UAbstractTestbed2ManyParamInterface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTestbed2ManyParamInterface* This = CastChecked<UAbstractTestbed2ManyParamInterface>(InThis);
+	Collector.AddReferencedObject(This->Testbed2ManyParamInterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 int32 UAbstractTestbed2ManyParamInterface::GetProp1_Private() const
 {
 	return GetProp1();

@@ -71,6 +71,7 @@ public:
 	virtual void SetProp4(int32 InProp4) override PURE_VIRTUAL(UAbstractTestbed2ManyParamInterface::SetProp4, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -114,6 +115,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher;
 };

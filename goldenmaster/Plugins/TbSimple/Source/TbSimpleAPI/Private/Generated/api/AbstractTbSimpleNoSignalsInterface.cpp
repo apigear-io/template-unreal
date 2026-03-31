@@ -33,6 +33,13 @@ UTbSimpleNoSignalsInterfacePublisher* UAbstractTbSimpleNoSignalsInterface::_GetP
 	return TbSimpleNoSignalsInterfacePublisher;
 }
 
+void UAbstractTbSimpleNoSignalsInterface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbSimpleNoSignalsInterface* This = CastChecked<UAbstractTbSimpleNoSignalsInterface>(InThis);
+	Collector.AddReferencedObject(This->TbSimpleNoSignalsInterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 bool UAbstractTbSimpleNoSignalsInterface::GetPropBool_Private() const
 {
 	return GetPropBool();

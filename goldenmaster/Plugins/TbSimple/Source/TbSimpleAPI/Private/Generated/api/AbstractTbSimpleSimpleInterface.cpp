@@ -33,6 +33,13 @@ UTbSimpleSimpleInterfacePublisher* UAbstractTbSimpleSimpleInterface::_GetPublish
 	return TbSimpleSimpleInterfacePublisher;
 }
 
+void UAbstractTbSimpleSimpleInterface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbSimpleSimpleInterface* This = CastChecked<UAbstractTbSimpleSimpleInterface>(InThis);
+	Collector.AddReferencedObject(This->TbSimpleSimpleInterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 bool UAbstractTbSimpleSimpleInterface::GetPropBool_Private() const
 {
 	return GetPropBool();

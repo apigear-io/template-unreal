@@ -33,6 +33,13 @@ UTbEnumEnumInterfacePublisher* UAbstractTbEnumEnumInterface::_GetPublisher()
 	return TbEnumEnumInterfacePublisher;
 }
 
+void UAbstractTbEnumEnumInterface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbEnumEnumInterface* This = CastChecked<UAbstractTbEnumEnumInterface>(InThis);
+	Collector.AddReferencedObject(This->TbEnumEnumInterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 ETbEnumEnum0 UAbstractTbEnumEnumInterface::GetProp0_Private() const
 {
 	return GetProp0();

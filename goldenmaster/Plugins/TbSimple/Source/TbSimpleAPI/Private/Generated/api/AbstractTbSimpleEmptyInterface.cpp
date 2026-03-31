@@ -32,6 +32,13 @@ UTbSimpleEmptyInterfacePublisher* UAbstractTbSimpleEmptyInterface::_GetPublisher
 	return TbSimpleEmptyInterfacePublisher;
 }
 
+void UAbstractTbSimpleEmptyInterface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbSimpleEmptyInterface* This = CastChecked<UAbstractTbSimpleEmptyInterface>(InThis);
+	Collector.AddReferencedObject(This->TbSimpleEmptyInterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 void UAbstractTbSimpleEmptyInterface::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);
