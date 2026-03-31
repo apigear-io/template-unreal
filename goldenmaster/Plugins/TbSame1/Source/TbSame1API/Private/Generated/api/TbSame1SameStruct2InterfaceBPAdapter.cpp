@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbSame1SameStruct2InterfaceBPAdapter::Initialize(TScriptInterface<ITbSame1SameStruct2InterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbSame1SameStruct2InterfaceBPInterface>(),
+		TEXT("UTbSame1SameStruct2InterfaceBPAdapter::Initialize: InTarget does not implement ITbSame1SameStruct2InterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UTbSame1SameStruct2InterfaceBPAdapter::Func1Async(UObject* WorldContextObje
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FTbSame1Struct1> Future = Func1Async(Param1);
@@ -56,10 +56,15 @@ void UTbSame1SameStruct2InterfaceBPAdapter::Func1Async(UObject* WorldContextObje
 
 TFuture<FTbSame1Struct1> UTbSame1SameStruct2InterfaceBPAdapter::Func1Async(const FTbSame1Struct1& Param1)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+	TWeakObjectPtr<UTbSame1SameStruct2InterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (UTbSame1SameStruct2InterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return FTbSame1Struct1();
 	});
 }
 
@@ -82,9 +87,7 @@ void UTbSame1SameStruct2InterfaceBPAdapter::Func2Async(UObject* WorldContextObje
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FTbSame1Struct1> Future = Func2Async(Param1, Param2);
@@ -95,10 +98,15 @@ void UTbSame1SameStruct2InterfaceBPAdapter::Func2Async(UObject* WorldContextObje
 
 TFuture<FTbSame1Struct1> UTbSame1SameStruct2InterfaceBPAdapter::Func2Async(const FTbSame1Struct1& Param1, const FTbSame1Struct2& Param2)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, this]()
+	TWeakObjectPtr<UTbSame1SameStruct2InterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, Param2, WeakThis]()
 		{
-		return Func2(Param1, Param2);
+		if (UTbSame1SameStruct2InterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func2(Param1, Param2);
+		}
+		return FTbSame1Struct1();
 	});
 }
 

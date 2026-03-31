@@ -17,7 +17,6 @@ limitations under the License.
 #pragma once
 
 #include "Runtime/Launch/Resources/Version.h"
-#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbEnum_data.h"
 #include "TbEnum/Generated/api/TbEnumEnumInterfaceInterface.h"
 #include "TbEnum/Generated/api/TbEnumEnumInterfaceBPInterface.h"

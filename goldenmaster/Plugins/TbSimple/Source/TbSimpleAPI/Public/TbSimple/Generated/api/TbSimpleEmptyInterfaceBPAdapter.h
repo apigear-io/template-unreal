@@ -17,7 +17,6 @@ limitations under the License.
 #pragma once
 
 #include "Runtime/Launch/Resources/Version.h"
-#include "Subsystems/GameInstanceSubsystem.h"
 #include "TbSimple_data.h"
 #include "TbSimple/Generated/api/TbSimpleEmptyInterfaceInterface.h"
 #include "TbSimple/Generated/api/TbSimpleEmptyInterfaceBPInterface.h"

@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTestbed1StructInterfaceBPAdapter::Initialize(TScriptInterface<ITestbed1StructInterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTestbed1StructInterfaceBPInterface>(),
+		TEXT("UTestbed1StructInterfaceBPAdapter::Initialize: InTarget does not implement ITestbed1StructInterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UTestbed1StructInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContextObjec
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FTestbed1StructBool> Future = FuncBoolAsync(ParamBool);
@@ -56,10 +56,15 @@ void UTestbed1StructInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContextObjec
 
 TFuture<FTestbed1StructBool> UTestbed1StructInterfaceBPAdapter::FuncBoolAsync(const FTestbed1StructBool& ParamBool)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamBool, this]()
+	TWeakObjectPtr<UTestbed1StructInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamBool, WeakThis]()
 		{
-		return FuncBool(ParamBool);
+		if (UTestbed1StructInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(ParamBool);
+		}
+		return FTestbed1StructBool();
 	});
 }
 
@@ -82,9 +87,7 @@ void UTestbed1StructInterfaceBPAdapter::FuncIntAsync(UObject* WorldContextObject
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FTestbed1StructInt> Future = FuncIntAsync(ParamInt);
@@ -95,10 +98,15 @@ void UTestbed1StructInterfaceBPAdapter::FuncIntAsync(UObject* WorldContextObject
 
 TFuture<FTestbed1StructInt> UTestbed1StructInterfaceBPAdapter::FuncIntAsync(const FTestbed1StructInt& ParamInt)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamInt, this]()
+	TWeakObjectPtr<UTestbed1StructInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamInt, WeakThis]()
 		{
-		return FuncInt(ParamInt);
+		if (UTestbed1StructInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncInt(ParamInt);
+		}
+		return FTestbed1StructInt();
 	});
 }
 
@@ -121,9 +129,7 @@ void UTestbed1StructInterfaceBPAdapter::FuncFloatAsync(UObject* WorldContextObje
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FTestbed1StructFloat> Future = FuncFloatAsync(ParamFloat);
@@ -134,10 +140,15 @@ void UTestbed1StructInterfaceBPAdapter::FuncFloatAsync(UObject* WorldContextObje
 
 TFuture<FTestbed1StructFloat> UTestbed1StructInterfaceBPAdapter::FuncFloatAsync(const FTestbed1StructFloat& ParamFloat)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamFloat, this]()
+	TWeakObjectPtr<UTestbed1StructInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamFloat, WeakThis]()
 		{
-		return FuncFloat(ParamFloat);
+		if (UTestbed1StructInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncFloat(ParamFloat);
+		}
+		return FTestbed1StructFloat();
 	});
 }
 
@@ -160,9 +171,7 @@ void UTestbed1StructInterfaceBPAdapter::FuncStringAsync(UObject* WorldContextObj
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FTestbed1StructString> Future = FuncStringAsync(ParamString);
@@ -173,10 +182,15 @@ void UTestbed1StructInterfaceBPAdapter::FuncStringAsync(UObject* WorldContextObj
 
 TFuture<FTestbed1StructString> UTestbed1StructInterfaceBPAdapter::FuncStringAsync(const FTestbed1StructString& ParamString)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[ParamString, this]()
+	TWeakObjectPtr<UTestbed1StructInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[ParamString, WeakThis]()
 		{
-		return FuncString(ParamString);
+		if (UTestbed1StructInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncString(ParamString);
+		}
+		return FTestbed1StructString();
 	});
 }
 

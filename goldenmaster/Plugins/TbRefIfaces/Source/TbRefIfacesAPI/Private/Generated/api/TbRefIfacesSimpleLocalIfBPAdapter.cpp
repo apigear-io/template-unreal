@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbRefIfacesSimpleLocalIfBPAdapter::Initialize(TScriptInterface<ITbRefIfacesSimpleLocalIfBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbRefIfacesSimpleLocalIfBPInterface>(),
+		TEXT("UTbRefIfacesSimpleLocalIfBPAdapter::Initialize: InTarget does not implement ITbRefIfacesSimpleLocalIfBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UTbRefIfacesSimpleLocalIfBPAdapter::IntMethodAsync(UObject* WorldContextObj
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<int32> Future = IntMethodAsync(Param);
@@ -56,10 +56,15 @@ void UTbRefIfacesSimpleLocalIfBPAdapter::IntMethodAsync(UObject* WorldContextObj
 
 TFuture<int32> UTbRefIfacesSimpleLocalIfBPAdapter::IntMethodAsync(int32 Param)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param, this]()
+	TWeakObjectPtr<UTbRefIfacesSimpleLocalIfBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param, WeakThis]()
 		{
-		return IntMethod(Param);
+		if (UTbRefIfacesSimpleLocalIfBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->IntMethod(Param);
+		}
+		return 0;
 	});
 }
 

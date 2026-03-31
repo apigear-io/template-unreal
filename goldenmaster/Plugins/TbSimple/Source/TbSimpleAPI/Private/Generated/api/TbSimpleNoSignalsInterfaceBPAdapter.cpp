@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbSimpleNoSignalsInterfaceBPAdapter::Initialize(TScriptInterface<ITbSimpleNoSignalsInterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbSimpleNoSignalsInterfaceBPInterface>(),
+		TEXT("UTbSimpleNoSignalsInterfaceBPAdapter::Initialize: InTarget does not implement ITbSimpleNoSignalsInterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -52,9 +54,7 @@ void UTbSimpleNoSignalsInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContextOb
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<bool> Future = FuncBoolAsync(bParamBool);
@@ -65,10 +65,15 @@ void UTbSimpleNoSignalsInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContextOb
 
 TFuture<bool> UTbSimpleNoSignalsInterfaceBPAdapter::FuncBoolAsync(bool bParamBool)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[bParamBool, this]()
+	TWeakObjectPtr<UTbSimpleNoSignalsInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[bParamBool, WeakThis]()
 		{
-		return FuncBool(bParamBool);
+		if (UTbSimpleNoSignalsInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(bParamBool);
+		}
+		return false;
 	});
 }
 

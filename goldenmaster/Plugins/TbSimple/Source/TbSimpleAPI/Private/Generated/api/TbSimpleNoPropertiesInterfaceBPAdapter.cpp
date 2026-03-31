@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbSimpleNoPropertiesInterfaceBPAdapter::Initialize(TScriptInterface<ITbSimpleNoPropertiesInterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbSimpleNoPropertiesInterfaceBPInterface>(),
+		TEXT("UTbSimpleNoPropertiesInterfaceBPAdapter::Initialize: InTarget does not implement ITbSimpleNoPropertiesInterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -52,9 +54,7 @@ void UTbSimpleNoPropertiesInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContex
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<bool> Future = FuncBoolAsync(bParamBool);
@@ -65,10 +65,15 @@ void UTbSimpleNoPropertiesInterfaceBPAdapter::FuncBoolAsync(UObject* WorldContex
 
 TFuture<bool> UTbSimpleNoPropertiesInterfaceBPAdapter::FuncBoolAsync(bool bParamBool)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[bParamBool, this]()
+	TWeakObjectPtr<UTbSimpleNoPropertiesInterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[bParamBool, WeakThis]()
 		{
-		return FuncBool(bParamBool);
+		if (UTbSimpleNoPropertiesInterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncBool(bParamBool);
+		}
+		return false;
 	});
 }
 

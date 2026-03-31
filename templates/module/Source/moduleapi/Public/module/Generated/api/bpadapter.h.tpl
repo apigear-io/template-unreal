@@ -20,7 +20,6 @@ limitations under the License.
 #pragma once
 
 #include "Runtime/Launch/Resources/Version.h"
-#include "Subsystems/GameInstanceSubsystem.h"
 #include "{{$ModuleName}}_data.h"
 {{- $Class := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
 #include "{{$ModuleName}}/Generated/api/{{$Class}}Interface.h"

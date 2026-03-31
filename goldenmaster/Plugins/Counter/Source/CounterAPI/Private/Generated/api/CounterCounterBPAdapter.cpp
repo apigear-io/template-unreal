@@ -21,6 +21,8 @@ limitations under the License.
 
 void UCounterCounterBPAdapter::Initialize(TScriptInterface<ICounterCounterBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UCounterCounterBPInterface>(),
+		TEXT("UCounterCounterBPAdapter::Initialize: InTarget does not implement ICounterCounterBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UCounterCounterBPAdapter::IncrementAsync(UObject* WorldContextObject, FLate
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FVector> Future = IncrementAsync(Vec);
@@ -56,10 +56,15 @@ void UCounterCounterBPAdapter::IncrementAsync(UObject* WorldContextObject, FLate
 
 TFuture<FVector> UCounterCounterBPAdapter::IncrementAsync(const FVector& Vec)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Vec, this]()
+	TWeakObjectPtr<UCounterCounterBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Vec, WeakThis]()
 		{
-		return Increment(Vec);
+		if (UCounterCounterBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Increment(Vec);
+		}
+		return FVector(0.f, 0.f, 0.f);
 	});
 }
 
@@ -82,9 +87,7 @@ void UCounterCounterBPAdapter::IncrementArrayAsync(UObject* WorldContextObject, 
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<FVector>> Future = IncrementArrayAsync(Vec);
@@ -95,10 +98,15 @@ void UCounterCounterBPAdapter::IncrementArrayAsync(UObject* WorldContextObject, 
 
 TFuture<TArray<FVector>> UCounterCounterBPAdapter::IncrementArrayAsync(const TArray<FVector>& Vec)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Vec, this]()
+	TWeakObjectPtr<UCounterCounterBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Vec, WeakThis]()
 		{
-		return IncrementArray(Vec);
+		if (UCounterCounterBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->IncrementArray(Vec);
+		}
+		return TArray<FVector>();
 	});
 }
 
@@ -121,9 +129,7 @@ void UCounterCounterBPAdapter::DecrementAsync(UObject* WorldContextObject, FLate
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FCustomTypesVector3D> Future = DecrementAsync(Vec);
@@ -134,10 +140,15 @@ void UCounterCounterBPAdapter::DecrementAsync(UObject* WorldContextObject, FLate
 
 TFuture<FCustomTypesVector3D> UCounterCounterBPAdapter::DecrementAsync(const FCustomTypesVector3D& Vec)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Vec, this]()
+	TWeakObjectPtr<UCounterCounterBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Vec, WeakThis]()
 		{
-		return Decrement(Vec);
+		if (UCounterCounterBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Decrement(Vec);
+		}
+		return FCustomTypesVector3D();
 	});
 }
 
@@ -160,9 +171,7 @@ void UCounterCounterBPAdapter::DecrementArrayAsync(UObject* WorldContextObject, 
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<TArray<FCustomTypesVector3D>> Future = DecrementArrayAsync(Vec);
@@ -173,10 +182,15 @@ void UCounterCounterBPAdapter::DecrementArrayAsync(UObject* WorldContextObject, 
 
 TFuture<TArray<FCustomTypesVector3D>> UCounterCounterBPAdapter::DecrementArrayAsync(const TArray<FCustomTypesVector3D>& Vec)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Vec, this]()
+	TWeakObjectPtr<UCounterCounterBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Vec, WeakThis]()
 		{
-		return DecrementArray(Vec);
+		if (UCounterCounterBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->DecrementArray(Vec);
+		}
+		return TArray<FCustomTypesVector3D>();
 	});
 }
 

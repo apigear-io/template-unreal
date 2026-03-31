@@ -30,6 +30,8 @@ limitations under the License.
 
 void {{$adapter}}::Initialize(TScriptInterface<{{ $bpinterface }}> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<U{{$Class}}BPInterface>(),
+		TEXT("{{$adapter}}::Initialize: InTarget does not implement {{$bpinterface}}. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -66,9 +68,7 @@ void {{$adapter}}::{{Camel .Name}}Async(UObject* WorldContextObject, FLatentActi
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<{{ueReturn "" .Return}}> Future = {{Camel .Name}}Async({{ueVars "" .Params}});
@@ -79,10 +79,15 @@ void {{$adapter}}::{{Camel .Name}}Async(UObject* WorldContextObject, FLatentActi
 
 TFuture<{{ueReturn "" .Return}}> {{$adapter}}::{{Camel .Name}}Async({{ueParams "" .Params}})
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[{{range .Params}}{{ueVar "" .}}, {{ end }}this]()
+	TWeakObjectPtr<{{$adapter}}> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[{{range .Params}}{{ueVar "" .}}, {{ end }}WeakThis]()
 		{
-		return {{Camel .Name}}({{ueVars "" .Params}});
+		if ({{$adapter}}* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->{{Camel .Name}}({{ueVars "" .Params}});
+		}
+		return {{ueDefault "" .Return}};
 	});
 }
 

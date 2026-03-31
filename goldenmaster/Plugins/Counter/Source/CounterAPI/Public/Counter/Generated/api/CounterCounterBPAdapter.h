@@ -17,7 +17,6 @@ limitations under the License.
 #pragma once
 
 #include "Runtime/Launch/Resources/Version.h"
-#include "Subsystems/GameInstanceSubsystem.h"
 #include "Counter_data.h"
 #include "Counter/Generated/api/CounterCounterInterface.h"
 #include "Counter/Generated/api/CounterCounterBPInterface.h"

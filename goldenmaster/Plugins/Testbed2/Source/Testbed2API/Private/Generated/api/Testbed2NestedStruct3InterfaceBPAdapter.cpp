@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTestbed2NestedStruct3InterfaceBPAdapter::Initialize(TScriptInterface<ITestbed2NestedStruct3InterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTestbed2NestedStruct3InterfaceBPInterface>(),
+		TEXT("UTestbed2NestedStruct3InterfaceBPAdapter::Initialize: InTarget does not implement ITestbed2NestedStruct3InterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
@@ -43,9 +45,7 @@ void UTestbed2NestedStruct3InterfaceBPAdapter::Func1Async(UObject* WorldContextO
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FTestbed2NestedStruct1> Future = Func1Async(Param1);
@@ -56,10 +56,15 @@ void UTestbed2NestedStruct3InterfaceBPAdapter::Func1Async(UObject* WorldContextO
 
 TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct3InterfaceBPAdapter::Func1Async(const FTestbed2NestedStruct1& Param1)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, this]()
+	TWeakObjectPtr<UTestbed2NestedStruct3InterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, WeakThis]()
 		{
-		return Func1(Param1);
+		if (UTestbed2NestedStruct3InterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func1(Param1);
+		}
+		return FTestbed2NestedStruct1();
 	});
 }
 
@@ -82,9 +87,7 @@ void UTestbed2NestedStruct3InterfaceBPAdapter::Func2Async(UObject* WorldContextO
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FTestbed2NestedStruct1> Future = Func2Async(Param1, Param2);
@@ -95,10 +98,15 @@ void UTestbed2NestedStruct3InterfaceBPAdapter::Func2Async(UObject* WorldContextO
 
 TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct3InterfaceBPAdapter::Func2Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, this]()
+	TWeakObjectPtr<UTestbed2NestedStruct3InterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, Param2, WeakThis]()
 		{
-		return Func2(Param1, Param2);
+		if (UTestbed2NestedStruct3InterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func2(Param1, Param2);
+		}
+		return FTestbed2NestedStruct1();
 	});
 }
 
@@ -121,9 +129,7 @@ void UTestbed2NestedStruct3InterfaceBPAdapter::Func3Async(UObject* WorldContextO
 
 		if (oldRequest != nullptr)
 		{
-			// cancel old request
 			oldRequest->Cancel();
-			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
 		}
 
 		TFuture<FTestbed2NestedStruct1> Future = Func3Async(Param1, Param2, Param3);
@@ -134,10 +140,15 @@ void UTestbed2NestedStruct3InterfaceBPAdapter::Func3Async(UObject* WorldContextO
 
 TFuture<FTestbed2NestedStruct1> UTestbed2NestedStruct3InterfaceBPAdapter::Func3Async(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
-	return Async(EAsyncExecution::ThreadPool,
-		[Param1, Param2, Param3, this]()
+	TWeakObjectPtr<UTestbed2NestedStruct3InterfaceBPAdapter> WeakThis(this);
+	return Async(EAsyncExecution::TaskGraphMainThread,
+		[Param1, Param2, Param3, WeakThis]()
 		{
-		return Func3(Param1, Param2, Param3);
+		if (UTestbed2NestedStruct3InterfaceBPAdapter* StrongThis = WeakThis.Get())
+		{
+			return StrongThis->Func3(Param1, Param2, Param3);
+		}
+		return FTestbed2NestedStruct1();
 	});
 }
 

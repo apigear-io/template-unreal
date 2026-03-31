@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbNamesNamEsBPAdapter::Initialize(TScriptInterface<ITbNamesNamEsBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbNamesNamEsBPInterface>(),
+		TEXT("UTbNamesNamEsBPAdapter::Initialize: InTarget does not implement ITbNamesNamEsBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 

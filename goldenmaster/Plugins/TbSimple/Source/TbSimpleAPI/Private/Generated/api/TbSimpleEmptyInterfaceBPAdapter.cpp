@@ -21,6 +21,8 @@ limitations under the License.
 
 void UTbSimpleEmptyInterfaceBPAdapter::Initialize(TScriptInterface<ITbSimpleEmptyInterfaceBPInterface> InTarget)
 {
+	ensureMsgf(InTarget.GetObject() == nullptr || InTarget.GetObject()->Implements<UTbSimpleEmptyInterfaceBPInterface>(),
+		TEXT("UTbSimpleEmptyInterfaceBPAdapter::Initialize: InTarget does not implement ITbSimpleEmptyInterfaceBPInterface. All BP calls will be silently skipped."));
 	Target = InTarget;
 }
 
