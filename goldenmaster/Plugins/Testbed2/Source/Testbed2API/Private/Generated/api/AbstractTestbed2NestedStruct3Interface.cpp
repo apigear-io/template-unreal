@@ -33,6 +33,13 @@ UTestbed2NestedStruct3InterfacePublisher* UAbstractTestbed2NestedStruct3Interfac
 	return Testbed2NestedStruct3InterfacePublisher;
 }
 
+void UAbstractTestbed2NestedStruct3Interface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTestbed2NestedStruct3Interface* This = CastChecked<UAbstractTestbed2NestedStruct3Interface>(InThis);
+	Collector.AddReferencedObject(This->Testbed2NestedStruct3InterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 FTestbed2NestedStruct1 UAbstractTestbed2NestedStruct3Interface::GetProp1_Private() const
 {
 	return GetProp1();

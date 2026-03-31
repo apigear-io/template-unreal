@@ -33,6 +33,13 @@ UTbSimpleNoPropertiesInterfacePublisher* UAbstractTbSimpleNoPropertiesInterface:
 	return TbSimpleNoPropertiesInterfacePublisher;
 }
 
+void UAbstractTbSimpleNoPropertiesInterface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbSimpleNoPropertiesInterface* This = CastChecked<UAbstractTbSimpleNoPropertiesInterface>(InThis);
+	Collector.AddReferencedObject(This->TbSimpleNoPropertiesInterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 void UAbstractTbSimpleNoPropertiesInterface::FuncBoolAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, bool& Result, bool bParamBool)
 {
 	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))

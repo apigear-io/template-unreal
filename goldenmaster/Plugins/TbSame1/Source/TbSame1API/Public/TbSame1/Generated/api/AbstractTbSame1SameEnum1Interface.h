@@ -50,6 +50,7 @@ public:
 	virtual void SetProp1(ETbSame1Enum1 InProp1) override PURE_VIRTUAL(UAbstractTbSame1SameEnum1Interface::SetProp1, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -66,6 +67,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTbSame1SameEnum1InterfacePublisher* TbSame1SameEnum1InterfacePublisher;
 };

@@ -33,6 +33,13 @@ UTbSame1SameStruct1InterfacePublisher* UAbstractTbSame1SameStruct1Interface::_Ge
 	return TbSame1SameStruct1InterfacePublisher;
 }
 
+void UAbstractTbSame1SameStruct1Interface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbSame1SameStruct1Interface* This = CastChecked<UAbstractTbSame1SameStruct1Interface>(InThis);
+	Collector.AddReferencedObject(This->TbSame1SameStruct1InterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 FTbSame1Struct1 UAbstractTbSame1SameStruct1Interface::GetProp1_Private() const
 {
 	return GetProp1();

@@ -71,6 +71,7 @@ public:
 	virtual void SetPropString(const FTestbed1StructString& InPropString) override PURE_VIRTUAL(UAbstractTestbed1StructInterface::SetPropString, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -114,6 +115,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTestbed1StructInterfacePublisher* Testbed1StructInterfacePublisher;
 };

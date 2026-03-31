@@ -14,3 +14,6 @@ tmp/
 tmp2/
 # blank project for testing the plugins
 goldenmaster/TP_Blank/
+# test run results
+goldenmaster/Plugins/index.json
+goldenmaster/Plugins/index.html

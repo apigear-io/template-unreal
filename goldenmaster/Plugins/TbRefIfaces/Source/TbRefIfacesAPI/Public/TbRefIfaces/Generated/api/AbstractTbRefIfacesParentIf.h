@@ -71,6 +71,7 @@ public:
 	virtual void SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList) override PURE_VIRTUAL(UAbstractTbRefIfacesParentIf::SetImportedIfList, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -114,6 +115,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTbRefIfacesParentIfPublisher* TbRefIfacesParentIfPublisher;
 };

@@ -32,6 +32,13 @@ UTbIfaceimportEmptyIfPublisher* UAbstractTbIfaceimportEmptyIf::_GetPublisher()
 	return TbIfaceimportEmptyIfPublisher;
 }
 
+void UAbstractTbIfaceimportEmptyIf::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbIfaceimportEmptyIf* This = CastChecked<UAbstractTbIfaceimportEmptyIf>(InThis);
+	Collector.AddReferencedObject(This->TbIfaceimportEmptyIfPublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 void UAbstractTbIfaceimportEmptyIf::Initialize(FSubsystemCollectionBase& Collection)
 {
 	check(!bInitialized);

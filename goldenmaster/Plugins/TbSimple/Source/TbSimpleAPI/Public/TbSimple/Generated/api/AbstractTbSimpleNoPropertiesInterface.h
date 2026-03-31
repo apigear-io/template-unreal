@@ -50,6 +50,7 @@ public:
 	// properties
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -58,6 +59,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTbSimpleNoPropertiesInterfacePublisher* TbSimpleNoPropertiesInterfacePublisher;
 };

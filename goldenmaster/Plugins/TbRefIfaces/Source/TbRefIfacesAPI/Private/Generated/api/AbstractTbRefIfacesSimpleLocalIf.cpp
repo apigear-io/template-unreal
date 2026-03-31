@@ -33,6 +33,13 @@ UTbRefIfacesSimpleLocalIfPublisher* UAbstractTbRefIfacesSimpleLocalIf::_GetPubli
 	return TbRefIfacesSimpleLocalIfPublisher;
 }
 
+void UAbstractTbRefIfacesSimpleLocalIf::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbRefIfacesSimpleLocalIf* This = CastChecked<UAbstractTbRefIfacesSimpleLocalIf>(InThis);
+	Collector.AddReferencedObject(This->TbRefIfacesSimpleLocalIfPublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 int32 UAbstractTbRefIfacesSimpleLocalIf::GetIntProperty_Private() const
 {
 	return GetIntProperty();

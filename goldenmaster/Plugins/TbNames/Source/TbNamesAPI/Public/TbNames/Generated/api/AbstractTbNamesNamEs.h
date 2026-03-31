@@ -59,6 +59,7 @@ public:
 	virtual void SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty) override PURE_VIRTUAL(UAbstractTbNamesNamEs::SetEnumProperty, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -102,6 +103,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTbNamesNamEsPublisher* TbNamesNamEsPublisher;
 };

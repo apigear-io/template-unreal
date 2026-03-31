@@ -33,6 +33,13 @@ UTbRefIfacesParentIfPublisher* UAbstractTbRefIfacesParentIf::_GetPublisher()
 	return TbRefIfacesParentIfPublisher;
 }
 
+void UAbstractTbRefIfacesParentIf::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbRefIfacesParentIf* This = CastChecked<UAbstractTbRefIfacesParentIf>(InThis);
+	Collector.AddReferencedObject(This->TbRefIfacesParentIfPublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UAbstractTbRefIfacesParentIf::GetLocalIf_Private() const
 {
 	return GetLocalIf();

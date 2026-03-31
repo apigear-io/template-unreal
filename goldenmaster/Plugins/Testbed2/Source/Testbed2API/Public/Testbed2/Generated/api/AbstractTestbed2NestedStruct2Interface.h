@@ -57,6 +57,7 @@ public:
 	virtual void SetProp2(const FTestbed2NestedStruct2& InProp2) override PURE_VIRTUAL(UAbstractTestbed2NestedStruct2Interface::SetProp2, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -82,6 +83,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTestbed2NestedStruct2InterfacePublisher* Testbed2NestedStruct2InterfacePublisher;
 };

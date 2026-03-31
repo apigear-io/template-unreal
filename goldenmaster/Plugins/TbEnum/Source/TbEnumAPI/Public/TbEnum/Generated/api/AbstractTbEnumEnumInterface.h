@@ -71,6 +71,7 @@ public:
 	virtual void SetProp3(ETbEnumEnum3 InProp3) override PURE_VIRTUAL(UAbstractTbEnumEnumInterface::SetProp3, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -114,6 +115,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTbEnumEnumInterfacePublisher* TbEnumEnumInterfacePublisher;
 };

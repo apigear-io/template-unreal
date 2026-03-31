@@ -101,6 +101,7 @@ public:
 	virtual FString GetPropReadOnlyString() const override PURE_VIRTUAL(UAbstractTbSimpleSimpleArrayInterface::GetPropReadOnlyString, return FString(););
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -186,6 +187,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher;
 };

@@ -105,6 +105,7 @@ public:
 	virtual void SetPropString(const FString& InPropString) override PURE_VIRTUAL(UAbstractTbSimpleSimpleInterface::SetPropString, return;);
 
 	virtual bool IsInitialized() const;
+	static void AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector);
 
 protected:
 	bool bInitialized = false;
@@ -184,6 +185,5 @@ protected:
 
 private:
 	// signals
-	UPROPERTY()
 	UTbSimpleSimpleInterfacePublisher* TbSimpleSimpleInterfacePublisher;
 };

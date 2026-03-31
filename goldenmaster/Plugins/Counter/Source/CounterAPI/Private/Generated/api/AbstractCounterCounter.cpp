@@ -33,6 +33,13 @@ UCounterCounterPublisher* UAbstractCounterCounter::_GetPublisher()
 	return CounterCounterPublisher;
 }
 
+void UAbstractCounterCounter::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractCounterCounter* This = CastChecked<UAbstractCounterCounter>(InThis);
+	Collector.AddReferencedObject(This->CounterCounterPublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 FCustomTypesVector3D UAbstractCounterCounter::GetVector_Private() const
 {
 	return GetVector();

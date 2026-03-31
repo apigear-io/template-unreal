@@ -33,6 +33,13 @@ UTbSimpleSimpleArrayInterfacePublisher* UAbstractTbSimpleSimpleArrayInterface::_
 	return TbSimpleSimpleArrayInterfacePublisher;
 }
 
+void UAbstractTbSimpleSimpleArrayInterface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbSimpleSimpleArrayInterface* This = CastChecked<UAbstractTbSimpleSimpleArrayInterface>(InThis);
+	Collector.AddReferencedObject(This->TbSimpleSimpleArrayInterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
 TArray<bool> UAbstractTbSimpleSimpleArrayInterface::GetPropBool_Private() const
 {
 	return GetPropBool();
