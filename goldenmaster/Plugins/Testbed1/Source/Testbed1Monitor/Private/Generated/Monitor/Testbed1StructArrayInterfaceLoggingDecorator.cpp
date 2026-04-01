@@ -49,16 +49,28 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 	{
 		UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
+		if (!BackendPublisher)
+		{
+			return;
+		}
 		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed1StructArrayInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
 	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface Testbed1StructArrayInterface is not fully implemented"));
+	if (InService.GetInterface() == nullptr)
+	{
+		return;
+	}
 
 	// subscribe to new backend
 	BackendService = InService;
 	UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
+	if (!BackendPublisher)
+	{
+		return;
+	}
 	// connect property changed signals or simple events
 	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed1StructArrayInterfaceSubscriberInterface>(this));
 	// populate service state to proxy

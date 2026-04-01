@@ -148,16 +148,28 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_setBackendService(TScriptInter
 	{
 		UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArrayInterface"));
+		if (!BackendPublisher)
+		{
+			return;
+		}
 		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed1StructArrayInterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
 	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface Testbed1StructArrayInterface is not fully implemented"));
+	if (InService.GetInterface() == nullptr)
+	{
+		return;
+	}
 
 	// subscribe to new backend
 	BackendService = InService;
 	UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed1StructArrayInterface"));
+	if (!BackendPublisher)
+	{
+		return;
+	}
 	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed1StructArrayInterfaceSubscriberInterface>(this));
 }
 

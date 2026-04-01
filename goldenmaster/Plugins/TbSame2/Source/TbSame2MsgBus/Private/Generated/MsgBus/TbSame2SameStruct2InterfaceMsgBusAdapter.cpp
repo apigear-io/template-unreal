@@ -142,16 +142,28 @@ void UTbSame2SameStruct2InterfaceMsgBusAdapter::_setBackendService(TScriptInterf
 	{
 		UTbSame2SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameStruct2Interface"));
+		if (!BackendPublisher)
+		{
+			return;
+		}
 		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame2SameStruct2InterfaceSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
 	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbSame2SameStruct2Interface is not fully implemented"));
+	if (InService.GetInterface() == nullptr)
+	{
+		return;
+	}
 
 	// subscribe to new backend
 	BackendService = InService;
 	UTbSame2SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSame2SameStruct2Interface"));
+	if (!BackendPublisher)
+	{
+		return;
+	}
 	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSame2SameStruct2InterfaceSubscriberInterface>(this));
 }
 
