@@ -39,6 +39,14 @@ void UTestbed2NestedStruct1InterfaceLoggingDecorator::Initialize(FSubsystemColle
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTestbed2NestedStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2NestedStruct1InterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -79,12 +87,20 @@ void UTestbed2NestedStruct1InterfaceLoggingDecorator::setBackendService(TScriptI
 
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::OnSig1Signal(const FTestbed2NestedStruct1& InParam1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2NestedStruct1InterfaceTracer::trace_signalSig1(InParam1);
 	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2NestedStruct1InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
 	_GetPublisher()->BroadcastProp1Changed(InProp1);
@@ -92,29 +108,54 @@ void UTestbed2NestedStruct1InterfaceLoggingDecorator::OnProp1Changed(const FTest
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLoggingDecorator::GetProp1() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTestbed2NestedStruct1();
+	}
 	return BackendService->GetProp1();
 }
 
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed2NestedStruct1InterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->SetProp1(InProp1);
 }
 
 void UTestbed2NestedStruct1InterfaceLoggingDecorator::FuncNoReturnValue(const FTestbed2NestedStruct1& Param1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed2NestedStruct1InterfaceTracer::trace_callFuncNoReturnValue(Param1);
 	BackendService->FuncNoReturnValue(Param1);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLoggingDecorator::FuncNoParams()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTestbed2NestedStruct1();
+	}
 	Testbed2NestedStruct1InterfaceTracer::trace_callFuncNoParams();
 	return BackendService->FuncNoParams();
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceLoggingDecorator::Func1(const FTestbed2NestedStruct1& Param1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTestbed2NestedStruct1();
+	}
 	Testbed2NestedStruct1InterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Func1(Param1);
 }

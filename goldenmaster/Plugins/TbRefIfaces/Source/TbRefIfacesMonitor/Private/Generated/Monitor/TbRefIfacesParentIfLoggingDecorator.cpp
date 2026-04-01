@@ -39,6 +39,14 @@ void UTbRefIfacesParentIfLoggingDecorator::Initialize(FSubsystemCollectionBase& 
 void UTbRefIfacesParentIfLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -82,30 +90,50 @@ void UTbRefIfacesParentIfLoggingDecorator::setBackendService(TScriptInterface<IT
 
 void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbRefIfacesParentIfTracer::trace_signalLocalIfSignal(InParam);
 	_GetPublisher()->BroadcastLocalIfSignalSignal(InParam);
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignalListSignal(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InParam)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbRefIfacesParentIfTracer::trace_signalLocalIfSignalList(InParam);
 	_GetPublisher()->BroadcastLocalIfSignalListSignal(InParam);
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::OnImportedIfSignalSignal(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InParam)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbRefIfacesParentIfTracer::trace_signalImportedIfSignal(InParam);
 	_GetPublisher()->BroadcastImportedIfSignalSignal(InParam);
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::OnImportedIfSignalListSignal(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InParam)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbRefIfacesParentIfTracer::trace_signalImportedIfSignalList(InParam);
 	_GetPublisher()->BroadcastImportedIfSignalListSignal(InParam);
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfChanged(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbRefIfacesParentIfTracer::capture_state(BackendService.GetObject(), this);
 	LocalIf = InLocalIf;
 	_GetPublisher()->BroadcastLocalIfChanged(InLocalIf);
@@ -113,17 +141,31 @@ void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfChanged(const TScriptInterfa
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfLoggingDecorator::GetLocalIf() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
+	}
 	return BackendService->GetLocalIf();
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::SetLocalIf(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InLocalIf)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbRefIfacesParentIfTracer::trace_callSetLocalIf(InLocalIf);
 	BackendService->SetLocalIf(InLocalIf);
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfListChanged(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbRefIfacesParentIfTracer::capture_state(BackendService.GetObject(), this);
 	LocalIfList = InLocalIfList;
 	_GetPublisher()->BroadcastLocalIfListChanged(InLocalIfList);
@@ -131,17 +173,31 @@ void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfListChanged(const TArray<TSc
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfLoggingDecorator::GetLocalIfList() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+	}
 	return BackendService->GetLocalIfList();
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::SetLocalIfList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& InLocalIfList)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbRefIfacesParentIfTracer::trace_callSetLocalIfList(InLocalIfList);
 	BackendService->SetLocalIfList(InLocalIfList);
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::OnImportedIfChanged(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbRefIfacesParentIfTracer::capture_state(BackendService.GetObject(), this);
 	ImportedIf = InImportedIf;
 	_GetPublisher()->BroadcastImportedIfChanged(InImportedIf);
@@ -149,17 +205,31 @@ void UTbRefIfacesParentIfLoggingDecorator::OnImportedIfChanged(const TScriptInte
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfLoggingDecorator::GetImportedIf() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+	}
 	return BackendService->GetImportedIf();
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::SetImportedIf(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& InImportedIf)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbRefIfacesParentIfTracer::trace_callSetImportedIf(InImportedIf);
 	BackendService->SetImportedIf(InImportedIf);
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::OnImportedIfListChanged(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbRefIfacesParentIfTracer::capture_state(BackendService.GetObject(), this);
 	ImportedIfList = InImportedIfList;
 	_GetPublisher()->BroadcastImportedIfListChanged(InImportedIfList);
@@ -167,35 +237,65 @@ void UTbRefIfacesParentIfLoggingDecorator::OnImportedIfListChanged(const TArray<
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfLoggingDecorator::GetImportedIfList() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+	}
 	return BackendService->GetImportedIfList();
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::SetImportedIfList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& InImportedIfList)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbRefIfacesParentIfTracer::trace_callSetImportedIfList(InImportedIfList);
 	BackendService->SetImportedIfList(InImportedIfList);
 }
 
 TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfLoggingDecorator::LocalIfMethod(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Param)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>();
+	}
 	TbRefIfacesParentIfTracer::trace_callLocalIfMethod(Param);
 	return BackendService->LocalIfMethod(Param);
 }
 
 TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentIfLoggingDecorator::LocalIfMethodList(const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Param)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
+	}
 	TbRefIfacesParentIfTracer::trace_callLocalIfMethodList(Param);
 	return BackendService->LocalIfMethodList(Param);
 }
 
 TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfLoggingDecorator::ImportedIfMethod(const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Param)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TScriptInterface<ITbIfaceimportEmptyIfInterface>();
+	}
 	TbRefIfacesParentIfTracer::trace_callImportedIfMethod(Param);
 	return BackendService->ImportedIfMethod(Param);
 }
 
 TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfLoggingDecorator::ImportedIfMethodList(const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Param)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
+	}
 	TbRefIfacesParentIfTracer::trace_callImportedIfMethodList(Param);
 	return BackendService->ImportedIfMethodList(Param);
 }

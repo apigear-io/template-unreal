@@ -39,6 +39,14 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::Initialize(FSubsystemCollectio
 void UTestbed2ManyParamInterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -82,30 +90,50 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1Signal(int32 InParam1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_signalSig1(InParam1);
 	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig2Signal(int32 InParam1, int32 InParam2)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_signalSig2(InParam1, InParam2);
 	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig3Signal(int32 InParam1, int32 InParam2, int32 InParam3)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_signalSig3(InParam1, InParam2, InParam3);
 	_GetPublisher()->BroadcastSig3Signal(InParam1, InParam2, InParam3);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig4Signal(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_signalSig4(InParam1, InParam2, InParam3, InParam4);
 	_GetPublisher()->BroadcastSig4Signal(InParam1, InParam2, InParam3, InParam4);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed(int32 InProp1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
 	_GetPublisher()->BroadcastProp1Changed(InProp1);
@@ -113,17 +141,31 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp1Changed(int32 InProp1)
 
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp1() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetProp1();
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp1(int32 InProp1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->SetProp1(InProp1);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed(int32 InProp2)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
 	_GetPublisher()->BroadcastProp2Changed(InProp2);
@@ -131,17 +173,31 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp2Changed(int32 InProp2)
 
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp2() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetProp2();
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp2(int32 InProp2)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp2(InProp2);
 	BackendService->SetProp2(InProp2);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp3Changed(int32 InProp3)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop3 = InProp3;
 	_GetPublisher()->BroadcastProp3Changed(InProp3);
@@ -149,17 +205,31 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp3Changed(int32 InProp3)
 
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp3() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetProp3();
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp3(int32 InProp3)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp3(InProp3);
 	BackendService->SetProp3(InProp3);
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp4Changed(int32 InProp4)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop4 = InProp4;
 	_GetPublisher()->BroadcastProp4Changed(InProp4);
@@ -167,35 +237,65 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::OnProp4Changed(int32 InProp4)
 
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::GetProp4() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetProp4();
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::SetProp4(int32 InProp4)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_callSetProp4(InProp4);
 	BackendService->SetProp4(InProp4);
 }
 
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func1(int32 Param1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Func1(Param1);
 }
 
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func2(int32 Param1, int32 Param2)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_callFunc2(Param1, Param2);
 	return BackendService->Func2(Param1, Param2);
 }
 
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func3(int32 Param1, int32 Param2, int32 Param3)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
 	return BackendService->Func3(Param1, Param2, Param3);
 }
 
 int32 UTestbed2ManyParamInterfaceLoggingDecorator::Func4(int32 Param1, int32 Param2, int32 Param3, int32 Param4)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	Testbed2ManyParamInterfaceTracer::trace_callFunc4(Param1, Param2, Param3, Param4);
 	return BackendService->Func4(Param1, Param2, Param3, Param4);
 }

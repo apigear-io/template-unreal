@@ -39,6 +39,14 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::Initialize(FSubsystemColle
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTestbed2NestedStruct3InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed2NestedStruct3InterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -81,24 +89,40 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::setBackendService(TScriptI
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig1Signal(const FTestbed2NestedStruct1& InParam1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig1(InParam1);
 	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig2Signal(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig2(InParam1, InParam2);
 	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig3Signal(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2, const FTestbed2NestedStruct3& InParam3)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2NestedStruct3InterfaceTracer::trace_signalSig3(InParam1, InParam2, InParam3);
 	_GetPublisher()->BroadcastSig3Signal(InParam1, InParam2, InParam3);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
 	_GetPublisher()->BroadcastProp1Changed(InProp1);
@@ -106,17 +130,31 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp1Changed(const FTest
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp1() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTestbed2NestedStruct1();
+	}
 	return BackendService->GetProp1();
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::SetProp1(const FTestbed2NestedStruct1& InProp1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed2NestedStruct3InterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->SetProp1(InProp1);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp2Changed(const FTestbed2NestedStruct2& InProp2)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
 	_GetPublisher()->BroadcastProp2Changed(InProp2);
@@ -124,17 +162,31 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp2Changed(const FTest
 
 FTestbed2NestedStruct2 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp2() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTestbed2NestedStruct2();
+	}
 	return BackendService->GetProp2();
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::SetProp2(const FTestbed2NestedStruct2& InProp2)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed2NestedStruct3InterfaceTracer::trace_callSetProp2(InProp2);
 	BackendService->SetProp2(InProp2);
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp3Changed(const FTestbed2NestedStruct3& InProp3)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed2NestedStruct3InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop3 = InProp3;
 	_GetPublisher()->BroadcastProp3Changed(InProp3);
@@ -142,29 +194,54 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnProp3Changed(const FTest
 
 FTestbed2NestedStruct3 UTestbed2NestedStruct3InterfaceLoggingDecorator::GetProp3() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTestbed2NestedStruct3();
+	}
 	return BackendService->GetProp3();
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::SetProp3(const FTestbed2NestedStruct3& InProp3)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed2NestedStruct3InterfaceTracer::trace_callSetProp3(InProp3);
 	BackendService->SetProp3(InProp3);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func1(const FTestbed2NestedStruct1& Param1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTestbed2NestedStruct1();
+	}
 	Testbed2NestedStruct3InterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Func1(Param1);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func2(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTestbed2NestedStruct1();
+	}
 	Testbed2NestedStruct3InterfaceTracer::trace_callFunc2(Param1, Param2);
 	return BackendService->Func2(Param1, Param2);
 }
 
 FTestbed2NestedStruct1 UTestbed2NestedStruct3InterfaceLoggingDecorator::Func3(const FTestbed2NestedStruct1& Param1, const FTestbed2NestedStruct2& Param2, const FTestbed2NestedStruct3& Param3)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTestbed2NestedStruct1();
+	}
 	Testbed2NestedStruct3InterfaceTracer::trace_callFunc3(Param1, Param2, Param3);
 	return BackendService->Func3(Param1, Param2, Param3);
 }

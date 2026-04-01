@@ -39,6 +39,14 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::Initialize(FSubsystemCollect
 void UTestbed1StructArrayInterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTestbed1StructArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITestbed1StructArrayInterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -83,36 +91,60 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigBoolSignal(const TArray<FTestbed1StructBool>& InParamBool)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::trace_signalSigBool(InParamBool);
 	_GetPublisher()->BroadcastSigBoolSignal(InParamBool);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigIntSignal(const TArray<FTestbed1StructInt>& InParamInt)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::trace_signalSigInt(InParamInt);
 	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigFloatSignal(const TArray<FTestbed1StructFloat>& InParamFloat)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::trace_signalSigFloat(InParamFloat);
 	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigStringSignal(const TArray<FTestbed1StructString>& InParamString)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::trace_signalSigString(InParamString);
 	_GetPublisher()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnSigEnumSignal(const TArray<ETestbed1Enum0>& InParamEnum)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::trace_signalSigEnum(InParamEnum);
 	_GetPublisher()->BroadcastSigEnumSignal(InParamEnum);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropBool = InPropBool;
 	_GetPublisher()->BroadcastPropBoolChanged(InPropBool);
@@ -120,17 +152,31 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArr
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropBool() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FTestbed1StructBool>();
+	}
 	return BackendService->GetPropBool();
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropBool(const TArray<FTestbed1StructBool>& InPropBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropBool(InPropBool);
 	BackendService->SetPropBool(InPropBool);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged(const TArray<FTestbed1StructInt>& InPropInt)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
 	_GetPublisher()->BroadcastPropIntChanged(InPropInt);
@@ -138,17 +184,31 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropIntChanged(const TArra
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropInt() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FTestbed1StructInt>();
+	}
 	return BackendService->GetPropInt();
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropInt(const TArray<FTestbed1StructInt>& InPropInt)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->SetPropInt(InPropInt);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
 	_GetPublisher()->BroadcastPropFloatChanged(InPropFloat);
@@ -156,17 +216,31 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropFloatChanged(const TAr
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropFloat() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FTestbed1StructFloat>();
+	}
 	return BackendService->GetPropFloat();
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropFloat(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropFloat(InPropFloat);
 	BackendService->SetPropFloat(InPropFloat);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
 	_GetPublisher()->BroadcastPropStringChanged(InPropString);
@@ -174,17 +248,31 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropStringChanged(const TA
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropString() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FTestbed1StructString>();
+	}
 	return BackendService->GetPropString();
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropString(const TArray<FTestbed1StructString>& InPropString)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropString(InPropString);
 	BackendService->SetPropString(InPropString);
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropEnumChanged(const TArray<ETestbed1Enum0>& InPropEnum)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropEnum = InPropEnum;
 	_GetPublisher()->BroadcastPropEnumChanged(InPropEnum);
@@ -192,41 +280,76 @@ void UTestbed1StructArrayInterfaceLoggingDecorator::OnPropEnumChanged(const TArr
 
 TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceLoggingDecorator::GetPropEnum() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<ETestbed1Enum0>();
+	}
 	return BackendService->GetPropEnum();
 }
 
 void UTestbed1StructArrayInterfaceLoggingDecorator::SetPropEnum(const TArray<ETestbed1Enum0>& InPropEnum)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	Testbed1StructArrayInterfaceTracer::trace_callSetPropEnum(InPropEnum);
 	BackendService->SetPropEnum(InPropEnum);
 }
 
 TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceLoggingDecorator::FuncBool(const TArray<FTestbed1StructBool>& ParamBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FTestbed1StructBool>();
+	}
 	Testbed1StructArrayInterfaceTracer::trace_callFuncBool(ParamBool);
 	return BackendService->FuncBool(ParamBool);
 }
 
 TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceLoggingDecorator::FuncInt(const TArray<FTestbed1StructInt>& ParamInt)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FTestbed1StructInt>();
+	}
 	Testbed1StructArrayInterfaceTracer::trace_callFuncInt(ParamInt);
 	return BackendService->FuncInt(ParamInt);
 }
 
 TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceLoggingDecorator::FuncFloat(const TArray<FTestbed1StructFloat>& ParamFloat)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FTestbed1StructFloat>();
+	}
 	Testbed1StructArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return BackendService->FuncFloat(ParamFloat);
 }
 
 TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceLoggingDecorator::FuncString(const TArray<FTestbed1StructString>& ParamString)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FTestbed1StructString>();
+	}
 	Testbed1StructArrayInterfaceTracer::trace_callFuncString(ParamString);
 	return BackendService->FuncString(ParamString);
 }
 
 TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceLoggingDecorator::FuncEnum(const TArray<ETestbed1Enum0>& ParamEnum)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<ETestbed1Enum0>();
+	}
 	Testbed1StructArrayInterfaceTracer::trace_callFuncEnum(ParamEnum);
 	return BackendService->FuncEnum(ParamEnum);
 }

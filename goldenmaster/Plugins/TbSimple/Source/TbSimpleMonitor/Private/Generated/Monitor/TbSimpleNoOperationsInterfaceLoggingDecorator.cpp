@@ -39,6 +39,14 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::Initialize(FSubsystemCollec
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbSimpleNoOperationsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoOperationsInterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -80,18 +88,30 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::setBackendService(TScriptIn
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigVoidSignal()
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleNoOperationsInterfaceTracer::trace_signalSigVoid();
 	_GetPublisher()->BroadcastSigVoidSignal();
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnSigBoolSignal(bool bInParamBool)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleNoOperationsInterfaceTracer::trace_signalSigBool(bInParamBool);
 	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleNoOperationsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	bPropBool = bInPropBool;
 	_GetPublisher()->BroadcastPropBoolChanged(bInPropBool);
@@ -99,17 +119,31 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInP
 
 bool UTbSimpleNoOperationsInterfaceLoggingDecorator::GetPropBool() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return false;
+	}
 	return BackendService->GetPropBool();
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::SetPropBool(bool bInPropBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleNoOperationsInterfaceTracer::trace_callSetPropBool(bInPropBool);
 	BackendService->SetPropBool(bInPropBool);
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropInt)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleNoOperationsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
 	_GetPublisher()->BroadcastPropIntChanged(InPropInt);
@@ -117,11 +151,21 @@ void UTbSimpleNoOperationsInterfaceLoggingDecorator::OnPropIntChanged(int32 InPr
 
 int32 UTbSimpleNoOperationsInterfaceLoggingDecorator::GetPropInt() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetPropInt();
 }
 
 void UTbSimpleNoOperationsInterfaceLoggingDecorator::SetPropInt(int32 InPropInt)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleNoOperationsInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->SetPropInt(InPropInt);
 }

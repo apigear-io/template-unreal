@@ -54,6 +54,14 @@ void {{$Class}}::Initialize(FSubsystemCollectionBase& Collection)
 void {{$Class}}::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -99,6 +107,10 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "In" .Params}})
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	{{$Iface}}Tracer::trace_signal{{Camel .Name}}({{ueVars "In" .Params}});
 	_GetPublisher()->Broadcast{{Camel .Name}}Signal({{ueVars "In" .Params }});
 }
@@ -108,6 +120,10 @@ void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "In" .Params}})
 {{- if $i }}{{nl}}{{ end }}
 void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	{{$Iface}}Tracer::capture_state(BackendService.GetObject(), this);
 	{{ueVar "" .}} = {{ueVar "In" .}};
 	_GetPublisher()->Broadcast{{Camel .Name}}Changed({{ueVar "In" .}});
@@ -115,12 +131,22 @@ void {{$Class}}::On{{Camel .Name}}Changed({{ueParam "In" .}})
 
 {{ueReturn "" .}} {{$Class}}::Get{{Camel .Name}}() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(Log{{$DisplayName}}, Error, TEXT("BackendService not set"));
+		return {{ueDefault "" .}};
+	}
 	return BackendService->Get{{Camel .Name}}();
 }
 
 {{- if not .IsReadOnly }}{{nl}}
 void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {
+	if (!BackendService)
+	{
+		UE_LOG(Log{{$DisplayName}}, Error, TEXT("BackendService not set"));
+		return;
+	}
 	{{$Iface}}Tracer::trace_callSet{{Camel .Name}}({{ueVar "In" .}});
 	BackendService->Set{{Camel .Name}}({{ueVar "In" .}});
 }
@@ -136,6 +162,15 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {{- end }}
 {{ueReturn "" .Return}} {{$Class}}::{{Camel .Name}}({{ueParams "" .Params}})
 {
+	if (!BackendService)
+	{
+		UE_LOG(Log{{$DisplayName}}, Error, TEXT("BackendService not set"));
+	{{- if not .Return.IsVoid }}
+		return {{ueDefault "" .Return}};
+	{{- else }}
+		return;
+	{{- end }}
+	}
 	{{ $Iface}}Tracer::trace_call{{Camel .Name}}({{ueVars "" .Params }});
 	{{- if not .Return.IsVoid }}
 	return BackendService->{{Camel .Name}}({{ ueVars "" .Params }});

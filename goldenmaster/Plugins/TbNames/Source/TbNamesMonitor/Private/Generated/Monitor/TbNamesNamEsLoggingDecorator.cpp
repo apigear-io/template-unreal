@@ -39,6 +39,14 @@ void UTbNamesNamEsLoggingDecorator::Initialize(FSubsystemCollectionBase& Collect
 void UTbNamesNamEsLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -82,18 +90,30 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 
 void UTbNamesNamEsLoggingDecorator::OnSomeSignalSignal(bool bInSomeParam)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbNamesNamEsTracer::trace_signalSomeSignal(bInSomeParam);
 	_GetPublisher()->BroadcastSomeSignalSignal(bInSomeParam);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomeSignal2Signal(bool bInSomeParam)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbNamesNamEsTracer::trace_signalSomeSignal2(bInSomeParam);
 	_GetPublisher()->BroadcastSomeSignal2Signal(bInSomeParam);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSwitchChanged(bool bInSwitch)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	bSwitch = bInSwitch;
 	_GetPublisher()->BroadcastSwitchChanged(bInSwitch);
@@ -101,17 +121,31 @@ void UTbNamesNamEsLoggingDecorator::OnSwitchChanged(bool bInSwitch)
 
 bool UTbNamesNamEsLoggingDecorator::GetSwitch() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsLoggingDecorator, Error, TEXT("BackendService not set"));
+		return false;
+	}
 	return BackendService->GetSwitch();
 }
 
 void UTbNamesNamEsLoggingDecorator::SetSwitch(bool bInSwitch)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbNamesNamEsTracer::trace_callSetSwitch(bInSwitch);
 	BackendService->SetSwitch(bInSwitch);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged(int32 InSomeProperty)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	SomeProperty = InSomeProperty;
 	_GetPublisher()->BroadcastSomePropertyChanged(InSomeProperty);
@@ -119,17 +153,31 @@ void UTbNamesNamEsLoggingDecorator::OnSomePropertyChanged(int32 InSomeProperty)
 
 int32 UTbNamesNamEsLoggingDecorator::GetSomeProperty() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetSomeProperty();
 }
 
 void UTbNamesNamEsLoggingDecorator::SetSomeProperty(int32 InSomeProperty)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbNamesNamEsTracer::trace_callSetSomeProperty(InSomeProperty);
 	BackendService->SetSomeProperty(InSomeProperty);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed(int32 InSomePoperty2)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	SomePoperty2 = InSomePoperty2;
 	_GetPublisher()->BroadcastSomePoperty2Changed(InSomePoperty2);
@@ -137,17 +185,31 @@ void UTbNamesNamEsLoggingDecorator::OnSomePoperty2Changed(int32 InSomePoperty2)
 
 int32 UTbNamesNamEsLoggingDecorator::GetSomePoperty2() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetSomePoperty2();
 }
 
 void UTbNamesNamEsLoggingDecorator::SetSomePoperty2(int32 InSomePoperty2)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbNamesNamEsTracer::trace_callSetSomePoperty2(InSomePoperty2);
 	BackendService->SetSomePoperty2(InSomePoperty2);
 }
 
 void UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbNamesNamEsTracer::capture_state(BackendService.GetObject(), this);
 	EnumProperty = InEnumProperty;
 	_GetPublisher()->BroadcastEnumPropertyChanged(InEnumProperty);
@@ -155,23 +217,43 @@ void UTbNamesNamEsLoggingDecorator::OnEnumPropertyChanged(ETbNamesEnum_With_Unde
 
 ETbNamesEnum_With_Under_scores UTbNamesNamEsLoggingDecorator::GetEnumProperty() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsLoggingDecorator, Error, TEXT("BackendService not set"));
+		return ETbNamesEnum_With_Under_scores::TNEWUS_FirstValue;
+	}
 	return BackendService->GetEnumProperty();
 }
 
 void UTbNamesNamEsLoggingDecorator::SetEnumProperty(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbNamesNamEsTracer::trace_callSetEnumProperty(InEnumProperty);
 	BackendService->SetEnumProperty(InEnumProperty);
 }
 
 void UTbNamesNamEsLoggingDecorator::SomeFunction(bool bSomeParam)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbNamesNamEsTracer::trace_callSomeFunction(bSomeParam);
 	BackendService->SomeFunction(bSomeParam);
 }
 
 void UTbNamesNamEsLoggingDecorator::SomeFunction2(bool bSomeParam)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbNamesNamEsTracer::trace_callSomeFunction2(bSomeParam);
 	BackendService->SomeFunction2(bSomeParam);
 }

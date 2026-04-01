@@ -39,6 +39,14 @@ void UTbIfaceimportEmptyIfLoggingDecorator::Initialize(FSubsystemCollectionBase&
 void UTbIfaceimportEmptyIfLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbIfaceimportEmptyIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbIfaceimportEmptyIfSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 

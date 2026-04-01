@@ -39,6 +39,14 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBa
 void UTbSimpleSimpleInterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbSimpleSimpleInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleSimpleInterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -86,54 +94,90 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::setBackendService(TScriptInterfac
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigBoolSignal(bool bInParamBool)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_signalSigBool(bInParamBool);
 	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigIntSignal(int32 InParamInt)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt(InParamInt);
 	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt32Signal(int32 InParamInt32)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt32(InParamInt32);
 	_GetPublisher()->BroadcastSigInt32Signal(InParamInt32);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigInt64Signal(int64 InParamInt64)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_signalSigInt64(InParamInt64);
 	_GetPublisher()->BroadcastSigInt64Signal(InParamInt64);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloatSignal(float InParamFloat)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat(InParamFloat);
 	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat32Signal(float InParamFloat32)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat32(InParamFloat32);
 	_GetPublisher()->BroadcastSigFloat32Signal(InParamFloat32);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigFloat64Signal(double InParamFloat64)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_signalSigFloat64(InParamFloat64);
 	_GetPublisher()->BroadcastSigFloat64Signal(InParamFloat64);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnSigStringSignal(const FString& InParamString)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_signalSigString(InParamString);
 	_GetPublisher()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	bPropBool = bInPropBool;
 	_GetPublisher()->BroadcastPropBoolChanged(bInPropBool);
@@ -141,17 +185,31 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBoo
 
 bool UTbSimpleSimpleInterfaceLoggingDecorator::GetPropBool() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return false;
+	}
 	return BackendService->GetPropBool();
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropBool(bool bInPropBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropBool(bInPropBool);
 	BackendService->SetPropBool(bInPropBool);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropInt)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
 	_GetPublisher()->BroadcastPropIntChanged(InPropInt);
@@ -159,17 +217,31 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropInt)
 
 int32 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetPropInt();
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt(int32 InPropInt)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->SetPropInt(InPropInt);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed(int32 InPropInt32)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt32 = InPropInt32;
 	_GetPublisher()->BroadcastPropInt32Changed(InPropInt32);
@@ -177,17 +249,31 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt32Changed(int32 InPropIn
 
 int32 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt32() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetPropInt32();
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt32(int32 InPropInt32)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropInt32(InPropInt32);
 	BackendService->SetPropInt32(InPropInt32);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed(int64 InPropInt64)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt64 = InPropInt64;
 	_GetPublisher()->BroadcastPropInt64Changed(InPropInt64);
@@ -195,17 +281,31 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropInt64Changed(int64 InPropIn
 
 int64 UTbSimpleSimpleInterfaceLoggingDecorator::GetPropInt64() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0LL;
+	}
 	return BackendService->GetPropInt64();
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropInt64(int64 InPropInt64)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropInt64(InPropInt64);
 	BackendService->SetPropInt64(InPropInt64);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged(float InPropFloat)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
 	_GetPublisher()->BroadcastPropFloatChanged(InPropFloat);
@@ -213,17 +313,31 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloatChanged(float InPropFl
 
 float UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0.0f;
+	}
 	return BackendService->GetPropFloat();
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat(float InPropFloat)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropFloat(InPropFloat);
 	BackendService->SetPropFloat(InPropFloat);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed(float InPropFloat32)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat32 = InPropFloat32;
 	_GetPublisher()->BroadcastPropFloat32Changed(InPropFloat32);
@@ -231,17 +345,31 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat32Changed(float InProp
 
 float UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat32() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0.0f;
+	}
 	return BackendService->GetPropFloat32();
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat32(float InPropFloat32)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropFloat32(InPropFloat32);
 	BackendService->SetPropFloat32(InPropFloat32);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed(double InPropFloat64)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat64 = InPropFloat64;
 	_GetPublisher()->BroadcastPropFloat64Changed(InPropFloat64);
@@ -249,17 +377,31 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropFloat64Changed(double InPro
 
 double UTbSimpleSimpleInterfaceLoggingDecorator::GetPropFloat64() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0.0;
+	}
 	return BackendService->GetPropFloat64();
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropFloat64(double InPropFloat64)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropFloat64(InPropFloat64);
 	BackendService->SetPropFloat64(InPropFloat64);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged(const FString& InPropString)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
 	_GetPublisher()->BroadcastPropStringChanged(InPropString);
@@ -267,71 +409,131 @@ void UTbSimpleSimpleInterfaceLoggingDecorator::OnPropStringChanged(const FString
 
 FString UTbSimpleSimpleInterfaceLoggingDecorator::GetPropString() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FString();
+	}
 	return BackendService->GetPropString();
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::SetPropString(const FString& InPropString)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callSetPropString(InPropString);
 	BackendService->SetPropString(InPropString);
 }
 
 void UTbSimpleSimpleInterfaceLoggingDecorator::FuncNoReturnValue(bool bParamBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callFuncNoReturnValue(bParamBool);
 	BackendService->FuncNoReturnValue(bParamBool);
 }
 
 bool UTbSimpleSimpleInterfaceLoggingDecorator::FuncNoParams()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return false;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callFuncNoParams();
 	return BackendService->FuncNoParams();
 }
 
 bool UTbSimpleSimpleInterfaceLoggingDecorator::FuncBool(bool bParamBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return false;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callFuncBool(bParamBool);
 	return BackendService->FuncBool(bParamBool);
 }
 
 int32 UTbSimpleSimpleInterfaceLoggingDecorator::FuncInt(int32 ParamInt)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callFuncInt(ParamInt);
 	return BackendService->FuncInt(ParamInt);
 }
 
 int32 UTbSimpleSimpleInterfaceLoggingDecorator::FuncInt32(int32 ParamInt32)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callFuncInt32(ParamInt32);
 	return BackendService->FuncInt32(ParamInt32);
 }
 
 int64 UTbSimpleSimpleInterfaceLoggingDecorator::FuncInt64(int64 ParamInt64)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0LL;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callFuncInt64(ParamInt64);
 	return BackendService->FuncInt64(ParamInt64);
 }
 
 float UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloat(float ParamFloat)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0.0f;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return BackendService->FuncFloat(ParamFloat);
 }
 
 float UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloat32(float ParamFloat32)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0.0f;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat32(ParamFloat32);
 	return BackendService->FuncFloat32(ParamFloat32);
 }
 
 double UTbSimpleSimpleInterfaceLoggingDecorator::FuncFloat64(double ParamFloat)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0.0;
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callFuncFloat64(ParamFloat);
 	return BackendService->FuncFloat64(ParamFloat);
 }
 
 FString UTbSimpleSimpleInterfaceLoggingDecorator::FuncString(const FString& ParamString)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FString();
+	}
 	TbSimpleSimpleInterfaceTracer::trace_callFuncString(ParamString);
 	return BackendService->FuncString(ParamString);
 }
