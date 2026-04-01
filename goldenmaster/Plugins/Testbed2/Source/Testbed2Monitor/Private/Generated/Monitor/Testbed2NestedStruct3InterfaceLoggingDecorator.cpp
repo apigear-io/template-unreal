@@ -74,17 +74,17 @@ void UTestbed2NestedStruct3InterfaceLoggingDecorator::setBackendService(TScriptI
 	// subscribe to new backend
 	BackendService = InService;
 	UTestbed2NestedStruct3InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2NestedStruct3Interface"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2NestedStruct3Interface"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2NestedStruct3InterfaceSubscriberInterface>(this));
-	// populate service state to proxy
+	// populate service state to proxy before subscribing
 	Prop1 = BackendService->GetProp1();
 	Prop2 = BackendService->GetProp2();
 	Prop3 = BackendService->GetProp3();
+	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2NestedStruct3InterfaceSubscriberInterface>(this));
 }
 
 void UTestbed2NestedStruct3InterfaceLoggingDecorator::OnSig1Signal(const FTestbed2NestedStruct1& InParam1)

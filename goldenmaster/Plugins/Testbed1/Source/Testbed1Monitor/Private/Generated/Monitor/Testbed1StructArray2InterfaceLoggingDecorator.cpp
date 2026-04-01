@@ -74,19 +74,19 @@ void UTestbed1StructArray2InterfaceLoggingDecorator::setBackendService(TScriptIn
 	// subscribe to new backend
 	BackendService = InService;
 	UTestbed1StructArray2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed1StructArray2Interface"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed1StructArray2Interface"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed1StructArray2InterfaceSubscriberInterface>(this));
-	// populate service state to proxy
+	// populate service state to proxy before subscribing
 	PropBool = BackendService->GetPropBool();
 	PropInt = BackendService->GetPropInt();
 	PropFloat = BackendService->GetPropFloat();
 	PropString = BackendService->GetPropString();
 	PropEnum = BackendService->GetPropEnum();
+	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed1StructArray2InterfaceSubscriberInterface>(this));
 }
 
 void UTestbed1StructArray2InterfaceLoggingDecorator::OnSigBoolSignal(const FTestbed1StructBoolWithArray& InParamBool)

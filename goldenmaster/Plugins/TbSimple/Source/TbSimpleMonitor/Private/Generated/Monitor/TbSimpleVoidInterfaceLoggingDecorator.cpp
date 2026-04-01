@@ -74,14 +74,14 @@ void UTbSimpleVoidInterfaceLoggingDecorator::setBackendService(TScriptInterface<
 	// subscribe to new backend
 	BackendService = InService;
 	UTbSimpleVoidInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSimpleVoidInterface"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSimpleVoidInterface"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
+	// populate service state to proxy before subscribing
 	// connect property changed signals or simple events
 	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>(this));
-	// populate service state to proxy
 }
 
 void UTbSimpleVoidInterfaceLoggingDecorator::OnSigVoidSignal()

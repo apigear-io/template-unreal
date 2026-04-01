@@ -35,7 +35,7 @@ Tracer::Tracer()
 Tracer* Tracer::instance()
 {
 	std::call_once(s_onceFlag, []()
-	{
+		{
 		s_instance = new Tracer();
 	});
 	return s_instance;

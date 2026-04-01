@@ -74,15 +74,15 @@ void UTbSame2SameEnum1InterfaceLoggingDecorator::setBackendService(TScriptInterf
 	// subscribe to new backend
 	BackendService = InService;
 	UTbSame2SameEnum1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbSame2SameEnum1Interface"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbSame2SameEnum1Interface"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
+	// populate service state to proxy before subscribing
+	Prop1 = BackendService->GetProp1();
 	// connect property changed signals or simple events
 	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbSame2SameEnum1InterfaceSubscriberInterface>(this));
-	// populate service state to proxy
-	Prop1 = BackendService->GetProp1();
 }
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::OnSig1Signal(ETbSame2Enum1 InParam1)

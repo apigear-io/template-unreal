@@ -74,12 +74,12 @@ void UTbIfaceimportEmptyIfLoggingDecorator::setBackendService(TScriptInterface<I
 	// subscribe to new backend
 	BackendService = InService;
 	UTbIfaceimportEmptyIfPublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbIfaceimportEmptyIf"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbIfaceimportEmptyIf"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
+	// populate service state to proxy before subscribing
 	// connect property changed signals or simple events
 	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbIfaceimportEmptyIfSubscriberInterface>(this));
-	// populate service state to proxy
 }

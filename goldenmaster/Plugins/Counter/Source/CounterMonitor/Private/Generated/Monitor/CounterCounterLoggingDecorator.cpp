@@ -74,18 +74,18 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 	// subscribe to new backend
 	BackendService = InService;
 	UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service CounterCounter"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service CounterCounter"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
-	// populate service state to proxy
+	// populate service state to proxy before subscribing
 	Vector = BackendService->GetVector();
 	ExternVector = BackendService->GetExternVector();
 	VectorArray = BackendService->GetVectorArray();
 	ExternVectorArray = BackendService->GetExternVectorArray();
+	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
 }
 
 void UCounterCounterLoggingDecorator::OnValueChangedSignal(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)

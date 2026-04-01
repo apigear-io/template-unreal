@@ -90,17 +90,17 @@ void {{$Class}}::setBackendService(TScriptInterface<I{{Camel .Module.Name}}{{Cam
 {{- $Service := printf "I%sInterface" $Iface }}
 	BackendService = InService;
 	U{{$Iface}}Publisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service {{$Iface}}"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service {{$Iface}}"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
-	// populate service state to proxy
+	// populate service state to proxy before subscribing
 {{- range .Interface.Properties }}
 	{{ueVar "" .}} = BackendService->Get{{Camel .Name}}();
 {{- end }}
+	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<I{{$Iface}}SubscriberInterface>(this));
 }
 {{- if .Interface.Signals }}{{nl}}{{ end }}
 {{- range $i, $e := .Interface.Signals }}

@@ -74,18 +74,18 @@ void UTbNamesNamEsLoggingDecorator::setBackendService(TScriptInterface<ITbNamesN
 	// subscribe to new backend
 	BackendService = InService;
 	UTbNamesNamEsPublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbNamesNamEs"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbNamesNamEs"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
-	// populate service state to proxy
+	// populate service state to proxy before subscribing
 	bSwitch = BackendService->GetSwitch();
 	SomeProperty = BackendService->GetSomeProperty();
 	SomePoperty2 = BackendService->GetSomePoperty2();
 	EnumProperty = BackendService->GetEnumProperty();
+	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbNamesNamEsSubscriberInterface>(this));
 }
 
 void UTbNamesNamEsLoggingDecorator::OnSomeSignalSignal(bool bInSomeParam)

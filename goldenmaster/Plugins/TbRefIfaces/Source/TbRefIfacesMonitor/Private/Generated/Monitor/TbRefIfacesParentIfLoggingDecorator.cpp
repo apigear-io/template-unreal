@@ -74,18 +74,18 @@ void UTbRefIfacesParentIfLoggingDecorator::setBackendService(TScriptInterface<IT
 	// subscribe to new backend
 	BackendService = InService;
 	UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesParentIf"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesParentIf"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
-	// populate service state to proxy
+	// populate service state to proxy before subscribing
 	LocalIf = BackendService->GetLocalIf();
 	LocalIfList = BackendService->GetLocalIfList();
 	ImportedIf = BackendService->GetImportedIf();
 	ImportedIfList = BackendService->GetImportedIfList();
+	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 }
 
 void UTbRefIfacesParentIfLoggingDecorator::OnLocalIfSignalSignal(const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& InParam)
