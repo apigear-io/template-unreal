@@ -74,18 +74,18 @@ void UTbEnumEnumInterfaceLoggingDecorator::setBackendService(TScriptInterface<IT
 	// subscribe to new backend
 	BackendService = InService;
 	UTbEnumEnumInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbEnumEnumInterface"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbEnumEnumInterface"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>(this));
-	// populate service state to proxy
+	// populate service state to proxy before subscribing
 	Prop0 = BackendService->GetProp0();
 	Prop1 = BackendService->GetProp1();
 	Prop2 = BackendService->GetProp2();
 	Prop3 = BackendService->GetProp3();
+	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbEnumEnumInterfaceSubscriberInterface>(this));
 }
 
 void UTbEnumEnumInterfaceLoggingDecorator::OnSig0Signal(ETbEnumEnum0 InParam0)

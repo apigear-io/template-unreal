@@ -74,18 +74,18 @@ void UTestbed2ManyParamInterfaceLoggingDecorator::setBackendService(TScriptInter
 	// subscribe to new backend
 	BackendService = InService;
 	UTestbed2ManyParamInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service Testbed2ManyParamInterface"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service Testbed2ManyParamInterface"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
-	// connect property changed signals or simple events
-	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
-	// populate service state to proxy
+	// populate service state to proxy before subscribing
 	Prop1 = BackendService->GetProp1();
 	Prop2 = BackendService->GetProp2();
 	Prop3 = BackendService->GetProp3();
 	Prop4 = BackendService->GetProp4();
+	// connect property changed signals or simple events
+	BackendPublisher->Subscribe(TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>(this));
 }
 
 void UTestbed2ManyParamInterfaceLoggingDecorator::OnSig1Signal(int32 InParam1)

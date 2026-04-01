@@ -74,15 +74,15 @@ void UTbRefIfacesSimpleLocalIfLoggingDecorator::setBackendService(TScriptInterfa
 	// subscribe to new backend
 	BackendService = InService;
 	UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
-	checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesSimpleLocalIf"));
+	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesSimpleLocalIf"));
 	if (!BackendPublisher)
 	{
 		return;
 	}
+	// populate service state to proxy before subscribing
+	IntProperty = BackendService->GetIntProperty();
 	// connect property changed signals or simple events
 	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>(this));
-	// populate service state to proxy
-	IntProperty = BackendService->GetIntProperty();
 }
 
 void UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntSignalSignal(int32 InParam)
