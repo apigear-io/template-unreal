@@ -114,6 +114,11 @@ nlohmann::json Testbed2NestedStruct1InterfaceOLinkSource::olinkInvoke(const std:
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcNoReturnValue")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcNoReturnValue' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed2NestedStruct1 Param1 = args.at(0).get<FTestbed2NestedStruct1>();
 		BackendService->FuncNoReturnValue(Param1);
 		return nlohmann::json{};
@@ -125,6 +130,11 @@ nlohmann::json Testbed2NestedStruct1InterfaceOLinkSource::olinkInvoke(const std:
 	}
 	if (path == "func1")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed2NestedStruct1InterfaceOLinkSource, Error, TEXT("olinkInvoke: 'func1' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed2NestedStruct1 Param1 = args.at(0).get<FTestbed2NestedStruct1>();
 		FTestbed2NestedStruct1 result = BackendService->Func1(Param1);
 		return result;

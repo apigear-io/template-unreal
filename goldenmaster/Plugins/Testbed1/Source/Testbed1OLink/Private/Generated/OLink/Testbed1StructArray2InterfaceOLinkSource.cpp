@@ -215,30 +215,55 @@ nlohmann::json Testbed1StructArray2InterfaceOLinkSource::olinkInvoke(const std::
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcBool")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcBool' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed1StructBoolWithArray ParamBool = args.at(0).get<FTestbed1StructBoolWithArray>();
 		TArray<FTestbed1StructBool> result = BackendService->FuncBool(ParamBool);
 		return result;
 	}
 	if (path == "funcInt")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcInt' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed1StructIntWithArray ParamInt = args.at(0).get<FTestbed1StructIntWithArray>();
 		TArray<FTestbed1StructInt> result = BackendService->FuncInt(ParamInt);
 		return result;
 	}
 	if (path == "funcFloat")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcFloat' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed1StructFloatWithArray ParamFloat = args.at(0).get<FTestbed1StructFloatWithArray>();
 		TArray<FTestbed1StructFloat> result = BackendService->FuncFloat(ParamFloat);
 		return result;
 	}
 	if (path == "funcString")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcString' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed1StructStringWithArray ParamString = args.at(0).get<FTestbed1StructStringWithArray>();
 		TArray<FTestbed1StructString> result = BackendService->FuncString(ParamString);
 		return result;
 	}
 	if (path == "funcEnum")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructArray2InterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcEnum' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed1StructEnumWithArray ParamEnum = args.at(0).get<FTestbed1StructEnumWithArray>();
 		TArray<ETestbed1Enum0> result = BackendService->FuncEnum(ParamEnum);
 		return result;

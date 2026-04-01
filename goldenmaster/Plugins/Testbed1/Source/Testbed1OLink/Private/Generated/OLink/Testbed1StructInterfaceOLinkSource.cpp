@@ -201,24 +201,44 @@ nlohmann::json Testbed1StructInterfaceOLinkSource::olinkInvoke(const std::string
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcBool")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcBool' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed1StructBool ParamBool = args.at(0).get<FTestbed1StructBool>();
 		FTestbed1StructBool result = BackendService->FuncBool(ParamBool);
 		return result;
 	}
 	if (path == "funcInt")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcInt' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed1StructInt ParamInt = args.at(0).get<FTestbed1StructInt>();
 		FTestbed1StructInt result = BackendService->FuncInt(ParamInt);
 		return result;
 	}
 	if (path == "funcFloat")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcFloat' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed1StructFloat ParamFloat = args.at(0).get<FTestbed1StructFloat>();
 		FTestbed1StructFloat result = BackendService->FuncFloat(ParamFloat);
 		return result;
 	}
 	if (path == "funcString")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTestbed1StructInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcString' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTestbed1StructString ParamString = args.at(0).get<FTestbed1StructString>();
 		FTestbed1StructString result = BackendService->FuncString(ParamString);
 		return result;

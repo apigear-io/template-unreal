@@ -202,24 +202,44 @@ nlohmann::json TbRefIfacesParentIfOLinkSource::olinkInvoke(const std::string& me
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "localIfMethod")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkSource, Error, TEXT("olinkInvoke: 'localIfMethod' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> Param = args.at(0).get<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>();
 		TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> result = BackendService->LocalIfMethod(Param);
 		return result;
 	}
 	if (path == "localIfMethodList")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkSource, Error, TEXT("olinkInvoke: 'localIfMethodList' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Param = args.at(0).get<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>();
 		TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> result = BackendService->LocalIfMethodList(Param);
 		return result;
 	}
 	if (path == "importedIfMethod")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkSource, Error, TEXT("olinkInvoke: 'importedIfMethod' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		TScriptInterface<ITbIfaceimportEmptyIfInterface> Param = args.at(0).get<TScriptInterface<ITbIfaceimportEmptyIfInterface>>();
 		TScriptInterface<ITbIfaceimportEmptyIfInterface> result = BackendService->ImportedIfMethod(Param);
 		return result;
 	}
 	if (path == "importedIfMethodList")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesParentIfOLinkSource, Error, TEXT("olinkInvoke: 'importedIfMethodList' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Param = args.at(0).get<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>();
 		TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> result = BackendService->ImportedIfMethodList(Param);
 		return result;

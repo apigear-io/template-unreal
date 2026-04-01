@@ -317,6 +317,11 @@ nlohmann::json TbSimpleSimpleInterfaceOLinkSource::olinkInvoke(const std::string
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "funcNoReturnValue")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcNoReturnValue' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		bool bParamBool = args.at(0).get<bool>();
 		BackendService->FuncNoReturnValue(bParamBool);
 		return nlohmann::json{};
@@ -328,48 +333,88 @@ nlohmann::json TbSimpleSimpleInterfaceOLinkSource::olinkInvoke(const std::string
 	}
 	if (path == "funcBool")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcBool' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		bool bParamBool = args.at(0).get<bool>();
 		bool result = BackendService->FuncBool(bParamBool);
 		return result;
 	}
 	if (path == "funcInt")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcInt' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		int32 ParamInt = args.at(0).get<int32>();
 		int32 result = BackendService->FuncInt(ParamInt);
 		return result;
 	}
 	if (path == "funcInt32")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcInt32' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		int32 ParamInt32 = args.at(0).get<int32>();
 		int32 result = BackendService->FuncInt32(ParamInt32);
 		return result;
 	}
 	if (path == "funcInt64")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcInt64' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		int64 ParamInt64 = args.at(0).get<int64>();
 		int64 result = BackendService->FuncInt64(ParamInt64);
 		return result;
 	}
 	if (path == "funcFloat")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcFloat' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		float ParamFloat = args.at(0).get<float>();
 		float result = BackendService->FuncFloat(ParamFloat);
 		return result;
 	}
 	if (path == "funcFloat32")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcFloat32' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		float ParamFloat32 = args.at(0).get<float>();
 		float result = BackendService->FuncFloat32(ParamFloat32);
 		return result;
 	}
 	if (path == "funcFloat64")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcFloat64' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		double ParamFloat = args.at(0).get<double>();
 		double result = BackendService->FuncFloat64(ParamFloat);
 		return result;
 	}
 	if (path == "funcString")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleSimpleInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcString' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FString ParamString = args.at(0).get<FString>();
 		FString result = BackendService->FuncString(ParamString);
 		return result;
