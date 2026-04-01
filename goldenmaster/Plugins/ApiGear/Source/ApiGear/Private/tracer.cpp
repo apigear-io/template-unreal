@@ -140,12 +140,7 @@ void Tracer::process()
 				m_httprequest->OnProcessRequestComplete().BindStatic(
 					[](FHttpRequestPtr HttpRequest, FHttpResponsePtr HttpResponse, bool bSucceeded)
 					{
-					FString Messagebody;
-					Messagebody = HttpResponse->GetContentAsString();
-					// log(Messagebody);
-					// UE_LOG(LogApiGearTracer, Display, TEXT("Response: %s"), *Messagebody);
 					isbusy = false;
-					// HttpResponse->GetContentAsString();
 				});
 				m_httprequest->SetVerb(TEXT("POST"));
 				m_httprequest->SetHeader(TEXT("Content-Type"), TEXT("application/json; charset=utf-8"));
