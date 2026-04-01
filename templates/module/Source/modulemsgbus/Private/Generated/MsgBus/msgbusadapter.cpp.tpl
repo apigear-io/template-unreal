@@ -181,6 +181,12 @@ void {{$Class}}::HandleClientConnectionRequest(const TSharedRef<IMessageContext,
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(Log{{$Iface}}MsgBusAdapter, Error, TEXT("No backend service set for {{$Iface}} - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new F{{$Iface}}InitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 
@@ -296,6 +302,11 @@ void {{$Class}}::_UpdateClientsConnected()
 
 void {{$Class}}::On{{Camel .Name}}Request(const F{{$Iface}}{{Camel .Name}}RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(Log{{$Iface}}MsgBusAdapter, Error, TEXT("No backend service set for {{$Iface}} - cannot handle {{Camel .Name}} request"));
+		return;
+	}
 {{- if .Return.IsVoid }}
 	BackendService->{{Camel .Name}}(
 {{- range $i, $e := .Params -}}
@@ -348,6 +359,11 @@ void {{$Class}}::On{{Camel .Name}}Signal({{ueParams "In" .Params}})
 
 void {{$Class}}::OnSet{{Camel .Name}}Request(const F{{$Iface}}Set{{Camel .Name}}RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(Log{{$Iface}}MsgBusAdapter, Error, TEXT("No backend service set for {{$Iface}} - cannot handle Set{{Camel .Name}} request"));
+		return;
+	}
 	BackendService->Set{{Camel .Name}}(InMessage.{{ueVar "" .}});
 }
 {{- end }}

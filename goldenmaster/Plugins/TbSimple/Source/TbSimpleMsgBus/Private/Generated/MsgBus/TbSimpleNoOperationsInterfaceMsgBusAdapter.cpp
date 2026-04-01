@@ -176,6 +176,12 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::HandleClientConnectionRequest(
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoOperationsInterface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbSimpleNoOperationsInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->bPropBool = BackendService->GetPropBool();
@@ -321,6 +327,11 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigBoolSignal(bool bInParamB
 
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTbSimpleNoOperationsInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoOperationsInterface - cannot handle SetPropBool request"));
+		return;
+	}
 	BackendService->SetPropBool(InMessage.bPropBool);
 }
 
@@ -344,6 +355,11 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropBoolChanged(bool bInProp
 
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTbSimpleNoOperationsInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoOperationsInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoOperationsInterface - cannot handle SetPropInt request"));
+		return;
+	}
 	BackendService->SetPropInt(InMessage.PropInt);
 }
 

@@ -182,6 +182,12 @@ void UTbRefIfacesParentIfMsgBusAdapter::HandleClientConnectionRequest(const TSha
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesParentIf - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbRefIfacesParentIfInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->LocalIf = BackendService->GetLocalIf();
@@ -296,6 +302,11 @@ void UTbRefIfacesParentIfMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfMethodRequest(const FTbRefIfacesParentIfLocalIfMethodRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesParentIf - cannot handle LocalIfMethod request"));
+		return;
+	}
 	auto msg = new FTbRefIfacesParentIfLocalIfMethodReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->LocalIfMethod(InMessage.Param);
@@ -312,6 +323,11 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfMethodRequest(const FTbRefIface
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfMethodListRequest(const FTbRefIfacesParentIfLocalIfMethodListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesParentIf - cannot handle LocalIfMethodList request"));
+		return;
+	}
 	auto msg = new FTbRefIfacesParentIfLocalIfMethodListReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->LocalIfMethodList(InMessage.Param);
@@ -328,6 +344,11 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfMethodListRequest(const FTbRefI
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfMethodRequest(const FTbRefIfacesParentIfImportedIfMethodRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesParentIf - cannot handle ImportedIfMethod request"));
+		return;
+	}
 	auto msg = new FTbRefIfacesParentIfImportedIfMethodReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->ImportedIfMethod(InMessage.Param);
@@ -344,6 +365,11 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfMethodRequest(const FTbRefIf
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfMethodListRequest(const FTbRefIfacesParentIfImportedIfMethodListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesParentIf - cannot handle ImportedIfMethodList request"));
+		return;
+	}
 	auto msg = new FTbRefIfacesParentIfImportedIfMethodListReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->ImportedIfMethodList(InMessage.Param);
@@ -428,6 +454,11 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfSignalListSignal(const TArra
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnSetLocalIfRequest(const FTbRefIfacesParentIfSetLocalIfRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesParentIf - cannot handle SetLocalIf request"));
+		return;
+	}
 	BackendService->SetLocalIf(InMessage.LocalIf);
 }
 
@@ -451,6 +482,11 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfChanged(const TScriptInterface<
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnSetLocalIfListRequest(const FTbRefIfacesParentIfSetLocalIfListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesParentIf - cannot handle SetLocalIfList request"));
+		return;
+	}
 	BackendService->SetLocalIfList(InMessage.LocalIfList);
 }
 
@@ -474,6 +510,11 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnLocalIfListChanged(const TArray<TScrip
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnSetImportedIfRequest(const FTbRefIfacesParentIfSetImportedIfRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesParentIf - cannot handle SetImportedIf request"));
+		return;
+	}
 	BackendService->SetImportedIf(InMessage.ImportedIf);
 }
 
@@ -497,6 +538,11 @@ void UTbRefIfacesParentIfMsgBusAdapter::OnImportedIfChanged(const TScriptInterfa
 
 void UTbRefIfacesParentIfMsgBusAdapter::OnSetImportedIfListRequest(const FTbRefIfacesParentIfSetImportedIfListRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesParentIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesParentIf - cannot handle SetImportedIfList request"));
+		return;
+	}
 	BackendService->SetImportedIfList(InMessage.ImportedIfList);
 }
 

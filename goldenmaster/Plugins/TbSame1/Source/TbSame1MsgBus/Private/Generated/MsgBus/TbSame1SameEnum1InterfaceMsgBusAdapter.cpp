@@ -176,6 +176,12 @@ void UTbSame1SameEnum1InterfaceMsgBusAdapter::HandleClientConnectionRequest(cons
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameEnum1InterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSame1SameEnum1Interface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbSame1SameEnum1InterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop1 = BackendService->GetProp1();
@@ -287,6 +293,11 @@ void UTbSame1SameEnum1InterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSame1SameEnum1InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame1SameEnum1InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameEnum1InterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSame1SameEnum1Interface - cannot handle Func1 request"));
+		return;
+	}
 	auto msg = new FTbSame1SameEnum1InterfaceFunc1ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func1(InMessage.Param1);
@@ -320,6 +331,11 @@ void UTbSame1SameEnum1InterfaceMsgBusAdapter::OnSig1Signal(ETbSame1Enum1 InParam
 
 void UTbSame1SameEnum1InterfaceMsgBusAdapter::OnSetProp1Request(const FTbSame1SameEnum1InterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameEnum1InterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSame1SameEnum1Interface - cannot handle SetProp1 request"));
+		return;
+	}
 	BackendService->SetProp1(InMessage.Prop1);
 }
 

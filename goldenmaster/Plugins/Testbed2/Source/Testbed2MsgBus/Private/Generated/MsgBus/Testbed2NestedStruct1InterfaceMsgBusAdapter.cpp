@@ -178,6 +178,12 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::HandleClientConnectionRequest
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct1Interface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTestbed2NestedStruct1InterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop1 = BackendService->GetProp1();
@@ -289,11 +295,21 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFuncNoReturnValueRequest(const FTestbed2NestedStruct1InterfaceFuncNoReturnValueRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct1Interface - cannot handle FuncNoReturnValue request"));
+		return;
+	}
 	BackendService->FuncNoReturnValue(InMessage.Param1);
 }
 
 void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFuncNoParamsRequest(const FTestbed2NestedStruct1InterfaceFuncNoParamsRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct1Interface - cannot handle FuncNoParams request"));
+		return;
+	}
 	auto msg = new FTestbed2NestedStruct1InterfaceFuncNoParamsReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncNoParams();
@@ -310,6 +326,11 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFuncNoParamsRequest(const F
 
 void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnFunc1Request(const FTestbed2NestedStruct1InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct1Interface - cannot handle Func1 request"));
+		return;
+	}
 	auto msg = new FTestbed2NestedStruct1InterfaceFunc1ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func1(InMessage.Param1);
@@ -343,6 +364,11 @@ void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnSig1Signal(const FTestbed2N
 
 void UTestbed2NestedStruct1InterfaceMsgBusAdapter::OnSetProp1Request(const FTestbed2NestedStruct1InterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct1InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct1Interface - cannot handle SetProp1 request"));
+		return;
+	}
 	BackendService->SetProp1(InMessage.Prop1);
 }
 

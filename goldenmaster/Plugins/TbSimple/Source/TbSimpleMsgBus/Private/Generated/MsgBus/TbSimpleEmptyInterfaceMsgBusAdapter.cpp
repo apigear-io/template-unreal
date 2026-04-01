@@ -174,6 +174,12 @@ void UTbSimpleEmptyInterfaceMsgBusAdapter::HandleClientConnectionRequest(const T
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleEmptyInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleEmptyInterface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbSimpleEmptyInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 

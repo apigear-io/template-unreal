@@ -184,6 +184,12 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::HandleClientConnectionRequest(c
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTestbed1StructArrayInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->PropBool = BackendService->GetPropBool();
@@ -299,6 +305,11 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTestbed1StructArrayInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot handle FuncBool request"));
+		return;
+	}
 	auto msg = new FTestbed1StructArrayInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncBool(InMessage.ParamBool);
@@ -315,6 +326,11 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTestbe
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncIntRequest(const FTestbed1StructArrayInterfaceFuncIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot handle FuncInt request"));
+		return;
+	}
 	auto msg = new FTestbed1StructArrayInterfaceFuncIntReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncInt(InMessage.ParamInt);
@@ -331,6 +347,11 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncIntRequest(const FTestbed
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTestbed1StructArrayInterfaceFuncFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot handle FuncFloat request"));
+		return;
+	}
 	auto msg = new FTestbed1StructArrayInterfaceFuncFloatReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncFloat(InMessage.ParamFloat);
@@ -347,6 +368,11 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTestb
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncStringRequest(const FTestbed1StructArrayInterfaceFuncStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot handle FuncString request"));
+		return;
+	}
 	auto msg = new FTestbed1StructArrayInterfaceFuncStringReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncString(InMessage.ParamString);
@@ -363,6 +389,11 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncStringRequest(const FTest
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncEnumRequest(const FTestbed1StructArrayInterfaceFuncEnumRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot handle FuncEnum request"));
+		return;
+	}
 	auto msg = new FTestbed1StructArrayInterfaceFuncEnumReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncEnum(InMessage.ParamEnum);
@@ -464,6 +495,11 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigEnumSignal(const TArray<ET
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTestbed1StructArrayInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot handle SetPropBool request"));
+		return;
+	}
 	BackendService->SetPropBool(InMessage.PropBool);
 }
 
@@ -487,6 +523,11 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged(const TArray<
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTestbed1StructArrayInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot handle SetPropInt request"));
+		return;
+	}
 	BackendService->SetPropInt(InMessage.PropInt);
 }
 
@@ -510,6 +551,11 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged(const TArray<F
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropFloatRequest(const FTestbed1StructArrayInterfaceSetPropFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot handle SetPropFloat request"));
+		return;
+	}
 	BackendService->SetPropFloat(InMessage.PropFloat);
 }
 
@@ -533,6 +579,11 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged(const TArray
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropStringRequest(const FTestbed1StructArrayInterfaceSetPropStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot handle SetPropString request"));
+		return;
+	}
 	BackendService->SetPropString(InMessage.PropString);
 }
 
@@ -556,6 +607,11 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged(const TArra
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropEnumRequest(const FTestbed1StructArrayInterfaceSetPropEnumRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed1StructArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed1StructArrayInterface - cannot handle SetPropEnum request"));
+		return;
+	}
 	BackendService->SetPropEnum(InMessage.PropEnum);
 }
 

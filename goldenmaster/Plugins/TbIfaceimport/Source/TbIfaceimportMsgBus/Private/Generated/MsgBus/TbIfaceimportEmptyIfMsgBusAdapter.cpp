@@ -174,6 +174,12 @@ void UTbIfaceimportEmptyIfMsgBusAdapter::HandleClientConnectionRequest(const TSh
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbIfaceimportEmptyIfMsgBusAdapter, Error, TEXT("No backend service set for TbIfaceimportEmptyIf - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbIfaceimportEmptyIfInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 
