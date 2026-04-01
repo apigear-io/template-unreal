@@ -35,7 +35,6 @@ private:
 	void log(const FString& logMessage);
 
 private:
-	static Tracer* s_instance;
 	std::queue<nlohmann::json> m_queue;
 	bool m_tracingDisabled;
 	bool m_loggingDisabled;

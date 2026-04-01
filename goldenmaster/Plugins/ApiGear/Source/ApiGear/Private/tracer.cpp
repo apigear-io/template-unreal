@@ -10,10 +10,13 @@
 #include "Interfaces/IHttpResponse.h"
 #include "Interfaces/IHttpRequest.h"
 #include "ApiGearSettings.h"
+#include <mutex>
+#include <atomic>
 
 DEFINE_LOG_CATEGORY(LogApiGearTracer);
 
-Tracer* Tracer::s_instance(nullptr);
+static Tracer* s_instance = nullptr;
+static std::once_flag s_onceFlag;
 
 static bool isbusy = false;
 
@@ -21,11 +24,6 @@ Tracer::Tracer()
 	: m_tracingDisabled(true)
 	, m_loggingDisabled(true)
 {
-	if (s_instance)
-	{
-		log("Tracer can only be instantiated once");
-	}
-
 	UApiGearSettings* settings = GetMutableDefault<UApiGearSettings>();
 	m_serverURL = settings->Tracer_URL;
 	m_tracingDisabled = !settings->Tracer_Enabled;
@@ -36,10 +34,10 @@ Tracer::Tracer()
 
 Tracer* Tracer::instance()
 {
-	if (!s_instance)
+	std::call_once(s_onceFlag, []()
 	{
 		s_instance = new Tracer();
-	}
+	});
 	return s_instance;
 }
 
