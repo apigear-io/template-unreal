@@ -115,6 +115,11 @@ nlohmann::json TbRefIfacesSimpleLocalIfOLinkSource::olinkInvoke(const std::strin
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "intMethod")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbRefIfacesSimpleLocalIfOLinkSource, Error, TEXT("olinkInvoke: 'intMethod' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		int32 Param = args.at(0).get<int32>();
 		int32 result = BackendService->IntMethod(Param);
 		return result;

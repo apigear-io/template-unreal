@@ -114,6 +114,11 @@ nlohmann::json TbSame1SameStruct1InterfaceOLinkSource::olinkInvoke(const std::st
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSame1SameStruct1InterfaceOLinkSource, Error, TEXT("olinkInvoke: 'func1' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTbSame1Struct1 Param1 = args.at(0).get<FTbSame1Struct1>();
 		FTbSame1Struct1 result = BackendService->Func1(Param1);
 		return result;

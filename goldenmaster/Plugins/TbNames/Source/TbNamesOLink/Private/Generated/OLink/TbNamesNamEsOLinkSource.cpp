@@ -171,12 +171,22 @@ nlohmann::json TbNamesNamEsOLinkSource::olinkInvoke(const std::string& methodId,
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "SOME_FUNCTION")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbNamesNamEsOLinkSource, Error, TEXT("olinkInvoke: 'SOME_FUNCTION' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		bool bSomeParam = args.at(0).get<bool>();
 		BackendService->SomeFunction(bSomeParam);
 		return nlohmann::json{};
 	}
 	if (path == "Some_Function2")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbNamesNamEsOLinkSource, Error, TEXT("olinkInvoke: 'Some_Function2' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		bool bSomeParam = args.at(0).get<bool>();
 		BackendService->SomeFunction2(bSomeParam);
 		return nlohmann::json{};

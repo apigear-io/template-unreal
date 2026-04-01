@@ -158,24 +158,44 @@ nlohmann::json CounterCounterOLinkSource::olinkInvoke(const std::string& methodI
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "increment")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogCounterCounterOLinkSource, Error, TEXT("olinkInvoke: 'increment' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FVector Vec = args.at(0).get<FVector>();
 		FVector result = BackendService->Increment(Vec);
 		return result;
 	}
 	if (path == "incrementArray")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogCounterCounterOLinkSource, Error, TEXT("olinkInvoke: 'incrementArray' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		TArray<FVector> Vec = args.at(0).get<TArray<FVector>>();
 		TArray<FVector> result = BackendService->IncrementArray(Vec);
 		return result;
 	}
 	if (path == "decrement")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogCounterCounterOLinkSource, Error, TEXT("olinkInvoke: 'decrement' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FCustomTypesVector3D Vec = args.at(0).get<FCustomTypesVector3D>();
 		FCustomTypesVector3D result = BackendService->Decrement(Vec);
 		return result;
 	}
 	if (path == "decrementArray")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogCounterCounterOLinkSource, Error, TEXT("olinkInvoke: 'decrementArray' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		TArray<FCustomTypesVector3D> Vec = args.at(0).get<TArray<FCustomTypesVector3D>>();
 		TArray<FCustomTypesVector3D> result = BackendService->DecrementArray(Vec);
 		return result;

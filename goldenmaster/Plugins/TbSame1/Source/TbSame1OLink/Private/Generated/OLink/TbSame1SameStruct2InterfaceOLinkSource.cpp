@@ -143,12 +143,22 @@ nlohmann::json TbSame1SameStruct2InterfaceOLinkSource::olinkInvoke(const std::st
 	const std::string path = Name::getMemberName(methodId);
 	if (path == "func1")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkSource, Error, TEXT("olinkInvoke: 'func1' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTbSame1Struct1 Param1 = args.at(0).get<FTbSame1Struct1>();
 		FTbSame1Struct1 result = BackendService->Func1(Param1);
 		return result;
 	}
 	if (path == "func2")
 	{
+		if (!args.is_array() || args.size() < 2)
+		{
+			UE_LOG(LogTbSame1SameStruct2InterfaceOLinkSource, Error, TEXT("olinkInvoke: 'func2' expects 2 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		FTbSame1Struct1 Param1 = args.at(0).get<FTbSame1Struct1>();
 		FTbSame1Struct2 Param2 = args.at(1).get<FTbSame1Struct2>();
 		FTbSame1Struct1 result = BackendService->Func2(Param1, Param2);

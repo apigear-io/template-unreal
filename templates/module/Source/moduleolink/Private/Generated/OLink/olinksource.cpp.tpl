@@ -121,6 +121,13 @@ nlohmann::json {{$Class}}::olinkInvoke(const std::string& methodId, const nlohma
 {{- range .Interface.Operations }}
 	if (path == "{{.Name}}")
 	{
+{{- if len .Params }}
+		if (!args.is_array() || args.size() < {{ len .Params }})
+		{
+			UE_LOG(Log{{$Class}}, Error, TEXT("olinkInvoke: '{{.Name}}' expects {{ len .Params }} arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
+{{- end }}
 {{- range  $i, $e := .Params }}
 		{{ueType "" .}} {{ueVar "" .}} = args.at({{ $i }}).get<{{ueReturn "" .}}>();
 {{- end }}

@@ -118,6 +118,11 @@ nlohmann::json TbSimpleNoSignalsInterfaceOLinkSource::olinkInvoke(const std::str
 	}
 	if (path == "funcBool")
 	{
+		if (!args.is_array() || args.size() < 1)
+		{
+			UE_LOG(LogTbSimpleNoSignalsInterfaceOLinkSource, Error, TEXT("olinkInvoke: 'funcBool' expects 1 arg(s), got %d"), args.is_array() ? static_cast<int>(args.size()) : -1);
+			return nlohmann::json();
+		}
 		bool bParamBool = args.at(0).get<bool>();
 		bool result = BackendService->FuncBool(bParamBool);
 		return result;
