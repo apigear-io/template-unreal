@@ -39,6 +39,14 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Initialize(FSubsystemCollect
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbSimpleSimpleArrayInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleSimpleArrayInterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -87,54 +95,90 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::setBackendService(TScriptInt
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigBoolSignal(const TArray<bool>& InParamBool)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigBool(InParamBool);
 	_GetPublisher()->BroadcastSigBoolSignal(InParamBool);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigIntSignal(const TArray<int32>& InParamInt)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt(InParamInt);
 	_GetPublisher()->BroadcastSigIntSignal(InParamInt);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt32Signal(const TArray<int32>& InParamInt32)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt32(InParamInt32);
 	_GetPublisher()->BroadcastSigInt32Signal(InParamInt32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigInt64Signal(const TArray<int64>& InParamInt64)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigInt64(InParamInt64);
 	_GetPublisher()->BroadcastSigInt64Signal(InParamInt64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloatSignal(const TArray<float>& InParamFloat)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat(InParamFloat);
 	_GetPublisher()->BroadcastSigFloatSignal(InParamFloat);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat32Signal(const TArray<float>& InParamFloa32)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat32(InParamFloa32);
 	_GetPublisher()->BroadcastSigFloat32Signal(InParamFloa32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigFloat64Signal(const TArray<double>& InParamFloat64)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigFloat64(InParamFloat64);
 	_GetPublisher()->BroadcastSigFloat64Signal(InParamFloat64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnSigStringSignal(const TArray<FString>& InParamString)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_signalSigString(InParamString);
 	_GetPublisher()->BroadcastSigStringSignal(InParamString);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArray<bool>& InPropBool)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropBool = InPropBool;
 	_GetPublisher()->BroadcastPropBoolChanged(InPropBool);
@@ -142,17 +186,31 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropBoolChanged(const TArr
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropBool() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<bool>();
+	}
 	return BackendService->GetPropBool();
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropBool(const TArray<bool>& InPropBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropBool(InPropBool);
 	BackendService->SetPropBool(InPropBool);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropIntChanged(const TArray<int32>& InPropInt)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
 	_GetPublisher()->BroadcastPropIntChanged(InPropInt);
@@ -160,17 +218,31 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropIntChanged(const TArra
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<int32>();
+	}
 	return BackendService->GetPropInt();
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt(const TArray<int32>& InPropInt)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->SetPropInt(InPropInt);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt32Changed(const TArray<int32>& InPropInt32)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt32 = InPropInt32;
 	_GetPublisher()->BroadcastPropInt32Changed(InPropInt32);
@@ -178,17 +250,31 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt32Changed(const TAr
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt32() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<int32>();
+	}
 	return BackendService->GetPropInt32();
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt32(const TArray<int32>& InPropInt32)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt32(InPropInt32);
 	BackendService->SetPropInt32(InPropInt32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt64Changed(const TArray<int64>& InPropInt64)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt64 = InPropInt64;
 	_GetPublisher()->BroadcastPropInt64Changed(InPropInt64);
@@ -196,17 +282,31 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropInt64Changed(const TAr
 
 TArray<int64> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropInt64() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<int64>();
+	}
 	return BackendService->GetPropInt64();
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropInt64(const TArray<int64>& InPropInt64)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropInt64(InPropInt64);
 	BackendService->SetPropInt64(InPropInt64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloatChanged(const TArray<float>& InPropFloat)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat = InPropFloat;
 	_GetPublisher()->BroadcastPropFloatChanged(InPropFloat);
@@ -214,17 +314,31 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloatChanged(const TAr
 
 TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<float>();
+	}
 	return BackendService->GetPropFloat();
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat(const TArray<float>& InPropFloat)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat(InPropFloat);
 	BackendService->SetPropFloat(InPropFloat);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat32Changed(const TArray<float>& InPropFloat32)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat32 = InPropFloat32;
 	_GetPublisher()->BroadcastPropFloat32Changed(InPropFloat32);
@@ -232,17 +346,31 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat32Changed(const T
 
 TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat32() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<float>();
+	}
 	return BackendService->GetPropFloat32();
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat32(const TArray<float>& InPropFloat32)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat32(InPropFloat32);
 	BackendService->SetPropFloat32(InPropFloat32);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat64Changed(const TArray<double>& InPropFloat64)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropFloat64 = InPropFloat64;
 	_GetPublisher()->BroadcastPropFloat64Changed(InPropFloat64);
@@ -250,17 +378,31 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropFloat64Changed(const T
 
 TArray<double> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropFloat64() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<double>();
+	}
 	return BackendService->GetPropFloat64();
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropFloat64(const TArray<double>& InPropFloat64)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropFloat64(InPropFloat64);
 	BackendService->SetPropFloat64(InPropFloat64);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropStringChanged(const TArray<FString>& InPropString)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropString = InPropString;
 	_GetPublisher()->BroadcastPropStringChanged(InPropString);
@@ -268,17 +410,31 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropStringChanged(const TA
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropString() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FString>();
+	}
 	return BackendService->GetPropString();
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::SetPropString(const TArray<FString>& InPropString)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callSetPropString(InPropString);
 	BackendService->SetPropString(InPropString);
 }
 
 void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropReadOnlyStringChanged(const FString& InPropReadOnlyString)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleSimpleArrayInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropReadOnlyString = InPropReadOnlyString;
 	_GetPublisher()->BroadcastPropReadOnlyStringChanged(InPropReadOnlyString);
@@ -286,53 +442,98 @@ void UTbSimpleSimpleArrayInterfaceLoggingDecorator::OnPropReadOnlyStringChanged(
 
 FString UTbSimpleSimpleArrayInterfaceLoggingDecorator::GetPropReadOnlyString() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FString();
+	}
 	return BackendService->GetPropReadOnlyString();
 }
 
 TArray<bool> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncBool(const TArray<bool>& ParamBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<bool>();
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncBool(ParamBool);
 	return BackendService->FuncBool(ParamBool);
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt(const TArray<int32>& ParamInt)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<int32>();
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt(ParamInt);
 	return BackendService->FuncInt(ParamInt);
 }
 
 TArray<int32> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt32(const TArray<int32>& ParamInt32)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<int32>();
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt32(ParamInt32);
 	return BackendService->FuncInt32(ParamInt32);
 }
 
 TArray<int64> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncInt64(const TArray<int64>& ParamInt64)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<int64>();
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncInt64(ParamInt64);
 	return BackendService->FuncInt64(ParamInt64);
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat(const TArray<float>& ParamFloat)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<float>();
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat(ParamFloat);
 	return BackendService->FuncFloat(ParamFloat);
 }
 
 TArray<float> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat32(const TArray<float>& ParamFloat32)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<float>();
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat32(ParamFloat32);
 	return BackendService->FuncFloat32(ParamFloat32);
 }
 
 TArray<double> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncFloat64(const TArray<double>& ParamFloat)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<double>();
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncFloat64(ParamFloat);
 	return BackendService->FuncFloat64(ParamFloat);
 }
 
 TArray<FString> UTbSimpleSimpleArrayInterfaceLoggingDecorator::FuncString(const TArray<FString>& ParamString)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FString>();
+	}
 	TbSimpleSimpleArrayInterfaceTracer::trace_callFuncString(ParamString);
 	return BackendService->FuncString(ParamString);
 }

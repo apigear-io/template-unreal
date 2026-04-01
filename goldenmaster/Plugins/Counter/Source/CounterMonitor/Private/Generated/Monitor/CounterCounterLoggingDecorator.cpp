@@ -39,6 +39,14 @@ void UCounterCounterLoggingDecorator::Initialize(FSubsystemCollectionBase& Colle
 void UCounterCounterLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UCounterCounterPublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ICounterCounterSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -82,12 +90,20 @@ void UCounterCounterLoggingDecorator::setBackendService(TScriptInterface<ICounte
 
 void UCounterCounterLoggingDecorator::OnValueChangedSignal(const FCustomTypesVector3D& InVector, const FVector& InExternVector, const TArray<FCustomTypesVector3D>& InVectorArray, const TArray<FVector>& InExternVectorArray)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	CounterCounterTracer::trace_signalValueChanged(InVector, InExternVector, InVectorArray, InExternVectorArray);
 	_GetPublisher()->BroadcastValueChangedSignal(InVector, InExternVector, InVectorArray, InExternVectorArray);
 }
 
 void UCounterCounterLoggingDecorator::OnVectorChanged(const FCustomTypesVector3D& InVector)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	Vector = InVector;
 	_GetPublisher()->BroadcastVectorChanged(InVector);
@@ -95,17 +111,31 @@ void UCounterCounterLoggingDecorator::OnVectorChanged(const FCustomTypesVector3D
 
 FCustomTypesVector3D UCounterCounterLoggingDecorator::GetVector() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FCustomTypesVector3D();
+	}
 	return BackendService->GetVector();
 }
 
 void UCounterCounterLoggingDecorator::SetVector(const FCustomTypesVector3D& InVector)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	CounterCounterTracer::trace_callSetVector(InVector);
 	BackendService->SetVector(InVector);
 }
 
 void UCounterCounterLoggingDecorator::OnExternVectorChanged(const FVector& InExternVector)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	ExternVector = InExternVector;
 	_GetPublisher()->BroadcastExternVectorChanged(InExternVector);
@@ -113,17 +143,31 @@ void UCounterCounterLoggingDecorator::OnExternVectorChanged(const FVector& InExt
 
 FVector UCounterCounterLoggingDecorator::GetExternVector() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FVector(0.f, 0.f, 0.f);
+	}
 	return BackendService->GetExternVector();
 }
 
 void UCounterCounterLoggingDecorator::SetExternVector(const FVector& InExternVector)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	CounterCounterTracer::trace_callSetExternVector(InExternVector);
 	BackendService->SetExternVector(InExternVector);
 }
 
 void UCounterCounterLoggingDecorator::OnVectorArrayChanged(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	VectorArray = InVectorArray;
 	_GetPublisher()->BroadcastVectorArrayChanged(InVectorArray);
@@ -131,17 +175,31 @@ void UCounterCounterLoggingDecorator::OnVectorArrayChanged(const TArray<FCustomT
 
 TArray<FCustomTypesVector3D> UCounterCounterLoggingDecorator::GetVectorArray() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FCustomTypesVector3D>();
+	}
 	return BackendService->GetVectorArray();
 }
 
 void UCounterCounterLoggingDecorator::SetVectorArray(const TArray<FCustomTypesVector3D>& InVectorArray)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	CounterCounterTracer::trace_callSetVectorArray(InVectorArray);
 	BackendService->SetVectorArray(InVectorArray);
 }
 
 void UCounterCounterLoggingDecorator::OnExternVectorArrayChanged(const TArray<FVector>& InExternVectorArray)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	CounterCounterTracer::capture_state(BackendService.GetObject(), this);
 	ExternVectorArray = InExternVectorArray;
 	_GetPublisher()->BroadcastExternVectorArrayChanged(InExternVectorArray);
@@ -149,35 +207,65 @@ void UCounterCounterLoggingDecorator::OnExternVectorArrayChanged(const TArray<FV
 
 TArray<FVector> UCounterCounterLoggingDecorator::GetExternVectorArray() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FVector>();
+	}
 	return BackendService->GetExternVectorArray();
 }
 
 void UCounterCounterLoggingDecorator::SetExternVectorArray(const TArray<FVector>& InExternVectorArray)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	CounterCounterTracer::trace_callSetExternVectorArray(InExternVectorArray);
 	BackendService->SetExternVectorArray(InExternVectorArray);
 }
 
 FVector UCounterCounterLoggingDecorator::Increment(const FVector& Vec)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FVector(0.f, 0.f, 0.f);
+	}
 	CounterCounterTracer::trace_callIncrement(Vec);
 	return BackendService->Increment(Vec);
 }
 
 TArray<FVector> UCounterCounterLoggingDecorator::IncrementArray(const TArray<FVector>& Vec)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FVector>();
+	}
 	CounterCounterTracer::trace_callIncrementArray(Vec);
 	return BackendService->IncrementArray(Vec);
 }
 
 FCustomTypesVector3D UCounterCounterLoggingDecorator::Decrement(const FCustomTypesVector3D& Vec)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FCustomTypesVector3D();
+	}
 	CounterCounterTracer::trace_callDecrement(Vec);
 	return BackendService->Decrement(Vec);
 }
 
 TArray<FCustomTypesVector3D> UCounterCounterLoggingDecorator::DecrementArray(const TArray<FCustomTypesVector3D>& Vec)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterLoggingDecorator, Error, TEXT("BackendService not set"));
+		return TArray<FCustomTypesVector3D>();
+	}
 	CounterCounterTracer::trace_callDecrementArray(Vec);
 	return BackendService->DecrementArray(Vec);
 }

@@ -39,6 +39,14 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::Initialize(FSubsystemCollec
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbSimpleNoPropertiesInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoPropertiesInterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -78,24 +86,42 @@ void UTbSimpleNoPropertiesInterfaceLoggingDecorator::setBackendService(TScriptIn
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigVoidSignal()
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigVoid();
 	_GetPublisher()->BroadcastSigVoidSignal();
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::OnSigBoolSignal(bool bInParamBool)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleNoPropertiesInterfaceTracer::trace_signalSigBool(bInParamBool);
 	_GetPublisher()->BroadcastSigBoolSignal(bInParamBool);
 }
 
 void UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncVoid()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleNoPropertiesInterfaceTracer::trace_callFuncVoid();
 	BackendService->FuncVoid();
 }
 
 bool UTbSimpleNoPropertiesInterfaceLoggingDecorator::FuncBool(bool bParamBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return false;
+	}
 	TbSimpleNoPropertiesInterfaceTracer::trace_callFuncBool(bParamBool);
 	return BackendService->FuncBool(bParamBool);
 }

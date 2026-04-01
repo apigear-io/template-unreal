@@ -39,6 +39,14 @@ void UTbRefIfacesSimpleLocalIfLoggingDecorator::Initialize(FSubsystemCollectionB
 void UTbRefIfacesSimpleLocalIfLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbRefIfacesSimpleLocalIfPublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesSimpleLocalIfSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -79,12 +87,20 @@ void UTbRefIfacesSimpleLocalIfLoggingDecorator::setBackendService(TScriptInterfa
 
 void UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntSignalSignal(int32 InParam)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbRefIfacesSimpleLocalIfTracer::trace_signalIntSignal(InParam);
 	_GetPublisher()->BroadcastIntSignalSignal(InParam);
 }
 
 void UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntPropertyChanged(int32 InIntProperty)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbRefIfacesSimpleLocalIfTracer::capture_state(BackendService.GetObject(), this);
 	IntProperty = InIntProperty;
 	_GetPublisher()->BroadcastIntPropertyChanged(InIntProperty);
@@ -92,17 +108,32 @@ void UTbRefIfacesSimpleLocalIfLoggingDecorator::OnIntPropertyChanged(int32 InInt
 
 int32 UTbRefIfacesSimpleLocalIfLoggingDecorator::GetIntProperty() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetIntProperty();
 }
 
 void UTbRefIfacesSimpleLocalIfLoggingDecorator::SetIntProperty(int32 InIntProperty)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbRefIfacesSimpleLocalIfTracer::trace_callSetIntProperty(InIntProperty);
 	BackendService->SetIntProperty(InIntProperty);
 }
 
 int32 UTbRefIfacesSimpleLocalIfLoggingDecorator::IntMethod(int32 Param)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	TbRefIfacesSimpleLocalIfTracer::trace_callIntMethod(Param);
 	return BackendService->IntMethod(Param);
 }

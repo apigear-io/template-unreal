@@ -39,6 +39,14 @@ void UTbSame2SameEnum1InterfaceLoggingDecorator::Initialize(FSubsystemCollection
 void UTbSame2SameEnum1InterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbSame2SameEnum1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame2SameEnum1InterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -79,12 +87,20 @@ void UTbSame2SameEnum1InterfaceLoggingDecorator::setBackendService(TScriptInterf
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::OnSig1Signal(ETbSame2Enum1 InParam1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSame2SameEnum1InterfaceTracer::trace_signalSig1(InParam1);
 	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::OnProp1Changed(ETbSame2Enum1 InProp1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSame2SameEnum1InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
 	_GetPublisher()->BroadcastProp1Changed(InProp1);
@@ -92,17 +108,32 @@ void UTbSame2SameEnum1InterfaceLoggingDecorator::OnProp1Changed(ETbSame2Enum1 In
 
 ETbSame2Enum1 UTbSame2SameEnum1InterfaceLoggingDecorator::GetProp1() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return ETbSame2Enum1::TS2E1_Value1;
+	}
 	return BackendService->GetProp1();
 }
 
 void UTbSame2SameEnum1InterfaceLoggingDecorator::SetProp1(ETbSame2Enum1 InProp1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSame2SameEnum1InterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->SetProp1(InProp1);
 }
 
 ETbSame2Enum1 UTbSame2SameEnum1InterfaceLoggingDecorator::Func1(ETbSame2Enum1 Param1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameEnum1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return ETbSame2Enum1::TS2E1_Value1;
+	}
 	TbSame2SameEnum1InterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Func1(Param1);
 }

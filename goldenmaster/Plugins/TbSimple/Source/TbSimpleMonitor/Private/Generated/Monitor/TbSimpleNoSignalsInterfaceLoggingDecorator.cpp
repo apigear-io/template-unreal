@@ -39,6 +39,14 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::Initialize(FSubsystemCollectio
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbSimpleNoSignalsInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleNoSignalsInterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -80,6 +88,10 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::setBackendService(TScriptInter
 
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInPropBool)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleNoSignalsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	bPropBool = bInPropBool;
 	_GetPublisher()->BroadcastPropBoolChanged(bInPropBool);
@@ -87,17 +99,31 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropBoolChanged(bool bInProp
 
 bool UTbSimpleNoSignalsInterfaceLoggingDecorator::GetPropBool() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return false;
+	}
 	return BackendService->GetPropBool();
 }
 
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::SetPropBool(bool bInPropBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleNoSignalsInterfaceTracer::trace_callSetPropBool(bInPropBool);
 	BackendService->SetPropBool(bInPropBool);
 }
 
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropInt)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleNoSignalsInterfaceTracer::capture_state(BackendService.GetObject(), this);
 	PropInt = InPropInt;
 	_GetPublisher()->BroadcastPropIntChanged(InPropInt);
@@ -105,23 +131,43 @@ void UTbSimpleNoSignalsInterfaceLoggingDecorator::OnPropIntChanged(int32 InPropI
 
 int32 UTbSimpleNoSignalsInterfaceLoggingDecorator::GetPropInt() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return 0;
+	}
 	return BackendService->GetPropInt();
 }
 
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::SetPropInt(int32 InPropInt)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleNoSignalsInterfaceTracer::trace_callSetPropInt(InPropInt);
 	BackendService->SetPropInt(InPropInt);
 }
 
 void UTbSimpleNoSignalsInterfaceLoggingDecorator::FuncVoid()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleNoSignalsInterfaceTracer::trace_callFuncVoid();
 	BackendService->FuncVoid();
 }
 
 bool UTbSimpleNoSignalsInterfaceLoggingDecorator::FuncBool(bool bParamBool)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return false;
+	}
 	TbSimpleNoSignalsInterfaceTracer::trace_callFuncBool(bParamBool);
 	return BackendService->FuncBool(bParamBool);
 }

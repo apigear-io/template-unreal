@@ -39,6 +39,14 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::Initialize(FSubsystemCollecti
 void UTbSame2SameStruct2InterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbSame2SameStruct2InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame2SameStruct2InterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -80,18 +88,30 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::setBackendService(TScriptInte
 
 void UTbSame2SameStruct2InterfaceLoggingDecorator::OnSig1Signal(const FTbSame2Struct1& InParam1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSame2SameStruct2InterfaceTracer::trace_signalSig1(InParam1);
 	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
 void UTbSame2SameStruct2InterfaceLoggingDecorator::OnSig2Signal(const FTbSame2Struct1& InParam1, const FTbSame2Struct2& InParam2)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSame2SameStruct2InterfaceTracer::trace_signalSig2(InParam1, InParam2);
 	_GetPublisher()->BroadcastSig2Signal(InParam1, InParam2);
 }
 
 void UTbSame2SameStruct2InterfaceLoggingDecorator::OnProp1Changed(const FTbSame2Struct2& InProp1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSame2SameStruct2InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
 	_GetPublisher()->BroadcastProp1Changed(InProp1);
@@ -99,17 +119,31 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::OnProp1Changed(const FTbSame2
 
 FTbSame2Struct2 UTbSame2SameStruct2InterfaceLoggingDecorator::GetProp1() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTbSame2Struct2();
+	}
 	return BackendService->GetProp1();
 }
 
 void UTbSame2SameStruct2InterfaceLoggingDecorator::SetProp1(const FTbSame2Struct2& InProp1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSame2SameStruct2InterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->SetProp1(InProp1);
 }
 
 void UTbSame2SameStruct2InterfaceLoggingDecorator::OnProp2Changed(const FTbSame2Struct2& InProp2)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSame2SameStruct2InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop2 = InProp2;
 	_GetPublisher()->BroadcastProp2Changed(InProp2);
@@ -117,23 +151,43 @@ void UTbSame2SameStruct2InterfaceLoggingDecorator::OnProp2Changed(const FTbSame2
 
 FTbSame2Struct2 UTbSame2SameStruct2InterfaceLoggingDecorator::GetProp2() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTbSame2Struct2();
+	}
 	return BackendService->GetProp2();
 }
 
 void UTbSame2SameStruct2InterfaceLoggingDecorator::SetProp2(const FTbSame2Struct2& InProp2)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSame2SameStruct2InterfaceTracer::trace_callSetProp2(InProp2);
 	BackendService->SetProp2(InProp2);
 }
 
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceLoggingDecorator::Func1(const FTbSame2Struct1& Param1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTbSame2Struct1();
+	}
 	TbSame2SameStruct2InterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Func1(Param1);
 }
 
 FTbSame2Struct1 UTbSame2SameStruct2InterfaceLoggingDecorator::Func2(const FTbSame2Struct1& Param1, const FTbSame2Struct2& Param2)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame2SameStruct2InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTbSame2Struct1();
+	}
 	TbSame2SameStruct2InterfaceTracer::trace_callFunc2(Param1, Param2);
 	return BackendService->Func2(Param1, Param2);
 }

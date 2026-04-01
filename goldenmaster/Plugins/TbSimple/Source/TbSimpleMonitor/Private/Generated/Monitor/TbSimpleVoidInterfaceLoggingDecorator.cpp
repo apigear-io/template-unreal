@@ -39,6 +39,14 @@ void UTbSimpleVoidInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBase
 void UTbSimpleVoidInterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbSimpleVoidInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -78,12 +86,21 @@ void UTbSimpleVoidInterfaceLoggingDecorator::setBackendService(TScriptInterface<
 
 void UTbSimpleVoidInterfaceLoggingDecorator::OnSigVoidSignal()
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSimpleVoidInterfaceTracer::trace_signalSigVoid();
 	_GetPublisher()->BroadcastSigVoidSignal();
 }
 
 void UTbSimpleVoidInterfaceLoggingDecorator::FuncVoid()
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleVoidInterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSimpleVoidInterfaceTracer::trace_callFuncVoid();
 	BackendService->FuncVoid();
 }

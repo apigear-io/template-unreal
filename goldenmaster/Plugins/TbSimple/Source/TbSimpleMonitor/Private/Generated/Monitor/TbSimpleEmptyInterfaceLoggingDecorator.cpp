@@ -39,6 +39,14 @@ void UTbSimpleEmptyInterfaceLoggingDecorator::Initialize(FSubsystemCollectionBas
 void UTbSimpleEmptyInterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbSimpleEmptyInterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSimpleEmptyInterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 

@@ -39,6 +39,14 @@ void UTbSame1SameStruct1InterfaceLoggingDecorator::Initialize(FSubsystemCollecti
 void UTbSame1SameStruct1InterfaceLoggingDecorator::Deinitialize()
 {
 	Super::Deinitialize();
+	if (BackendService != nullptr)
+	{
+		UTbSame1SameStruct1InterfacePublisher* BackendPublisher = BackendService->_GetPublisher();
+		if (BackendPublisher)
+		{
+			BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbSame1SameStruct1InterfaceSubscriberInterface>(this));
+		}
+	}
 	BackendService = nullptr;
 }
 
@@ -79,12 +87,20 @@ void UTbSame1SameStruct1InterfaceLoggingDecorator::setBackendService(TScriptInte
 
 void UTbSame1SameStruct1InterfaceLoggingDecorator::OnSig1Signal(const FTbSame1Struct1& InParam1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSame1SameStruct1InterfaceTracer::trace_signalSig1(InParam1);
 	_GetPublisher()->BroadcastSig1Signal(InParam1);
 }
 
 void UTbSame1SameStruct1InterfaceLoggingDecorator::OnProp1Changed(const FTbSame1Struct1& InProp1)
 {
+	if (!BackendService)
+	{
+		return;
+	}
 	TbSame1SameStruct1InterfaceTracer::capture_state(BackendService.GetObject(), this);
 	Prop1 = InProp1;
 	_GetPublisher()->BroadcastProp1Changed(InProp1);
@@ -92,17 +108,32 @@ void UTbSame1SameStruct1InterfaceLoggingDecorator::OnProp1Changed(const FTbSame1
 
 FTbSame1Struct1 UTbSame1SameStruct1InterfaceLoggingDecorator::GetProp1() const
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameStruct1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTbSame1Struct1();
+	}
 	return BackendService->GetProp1();
 }
 
 void UTbSame1SameStruct1InterfaceLoggingDecorator::SetProp1(const FTbSame1Struct1& InProp1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameStruct1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return;
+	}
 	TbSame1SameStruct1InterfaceTracer::trace_callSetProp1(InProp1);
 	BackendService->SetProp1(InProp1);
 }
 
 FTbSame1Struct1 UTbSame1SameStruct1InterfaceLoggingDecorator::Func1(const FTbSame1Struct1& Param1)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameStruct1InterfaceLoggingDecorator, Error, TEXT("BackendService not set"));
+		return FTbSame1Struct1();
+	}
 	TbSame1SameStruct1InterfaceTracer::trace_callFunc1(Param1);
 	return BackendService->Func1(Param1);
 }
