@@ -146,16 +146,28 @@ void UTbRefIfacesParentIfMsgBusAdapter::_setBackendService(TScriptInterface<ITbR
 	{
 		UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 		checkf(BackendPublisher, TEXT("Cannot unsubscribe from delegates from backend service TbRefIfacesParentIf"));
+		if (!BackendPublisher)
+		{
+			return;
+		}
 		BackendPublisher->Unsubscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 	}
 
 	// only set if interface is implemented
 	checkf(InService.GetInterface() != nullptr, TEXT("Cannot set backend service - interface TbRefIfacesParentIf is not fully implemented"));
+	if (InService.GetInterface() == nullptr)
+	{
+		return;
+	}
 
 	// subscribe to new backend
 	BackendService = InService;
 	UTbRefIfacesParentIfPublisher* BackendPublisher = BackendService->_GetPublisher();
 	checkf(BackendPublisher, TEXT("Cannot subscribe to delegates from backend service TbRefIfacesParentIf"));
+	if (!BackendPublisher)
+	{
+		return;
+	}
 	BackendPublisher->Subscribe(TWeakInterfacePtr<ITbRefIfacesParentIfSubscriberInterface>(this));
 }
 
