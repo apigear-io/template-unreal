@@ -18,7 +18,7 @@ DEFINE_LOG_CATEGORY(LogApiGearTracer);
 static Tracer* s_instance = nullptr;
 static std::once_flag s_onceFlag;
 
-static bool isbusy = false;
+static std::atomic<bool> isbusy{false};
 
 Tracer::Tracer()
 	: m_tracingDisabled(true)
