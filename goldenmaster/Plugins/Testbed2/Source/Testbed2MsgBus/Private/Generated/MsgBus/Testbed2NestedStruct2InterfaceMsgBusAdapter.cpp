@@ -178,6 +178,12 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::HandleClientConnectionRequest
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct2Interface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTestbed2NestedStruct2InterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop1 = BackendService->GetProp1();
@@ -290,6 +296,11 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnFunc1Request(const FTestbed2NestedStruct2InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct2Interface - cannot handle Func1 request"));
+		return;
+	}
 	auto msg = new FTestbed2NestedStruct2InterfaceFunc1ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func1(InMessage.Param1);
@@ -306,6 +317,11 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnFunc1Request(const FTestbed
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnFunc2Request(const FTestbed2NestedStruct2InterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct2Interface - cannot handle Func2 request"));
+		return;
+	}
 	auto msg = new FTestbed2NestedStruct2InterfaceFunc2ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func2(InMessage.Param1, InMessage.Param2);
@@ -357,6 +373,11 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSig2Signal(const FTestbed2N
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSetProp1Request(const FTestbed2NestedStruct2InterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct2Interface - cannot handle SetProp1 request"));
+		return;
+	}
 	BackendService->SetProp1(InMessage.Prop1);
 }
 
@@ -380,6 +401,11 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnProp1Changed(const FTestbed
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSetProp2Request(const FTestbed2NestedStruct2InterfaceSetProp2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct2InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct2Interface - cannot handle SetProp2 request"));
+		return;
+	}
 	BackendService->SetProp2(InMessage.Prop2);
 }
 

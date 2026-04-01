@@ -178,6 +178,12 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::HandleClientConnectionRequest(con
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoSignalsInterface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbSimpleNoSignalsInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->bPropBool = BackendService->GetPropBool();
@@ -290,11 +296,21 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnFuncVoidRequest(const FTbSimpleNoSignalsInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoSignalsInterface - cannot handle FuncVoid request"));
+		return;
+	}
 	BackendService->FuncVoid();
 }
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleNoSignalsInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoSignalsInterface - cannot handle FuncBool request"));
+		return;
+	}
 	auto msg = new FTbSimpleNoSignalsInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncBool(InMessage.bParamBool);
@@ -311,6 +327,11 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimple
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTbSimpleNoSignalsInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoSignalsInterface - cannot handle SetPropBool request"));
+		return;
+	}
 	BackendService->SetPropBool(InMessage.bPropBool);
 }
 
@@ -334,6 +355,11 @@ void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnPropBoolChanged(bool bInPropBoo
 
 void UTbSimpleNoSignalsInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTbSimpleNoSignalsInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoSignalsInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoSignalsInterface - cannot handle SetPropInt request"));
+		return;
+	}
 	BackendService->SetPropInt(InMessage.PropInt);
 }
 

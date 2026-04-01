@@ -182,6 +182,12 @@ void UTbEnumEnumInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSha
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbEnumEnumInterface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbEnumEnumInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop0 = BackendService->GetProp0();
@@ -296,6 +302,11 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc0Request(const FTbEnumEnumInterfaceFunc0RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbEnumEnumInterface - cannot handle Func0 request"));
+		return;
+	}
 	auto msg = new FTbEnumEnumInterfaceFunc0ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func0(InMessage.Param0);
@@ -312,6 +323,11 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc0Request(const FTbEnumEnumInterfac
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc1Request(const FTbEnumEnumInterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbEnumEnumInterface - cannot handle Func1 request"));
+		return;
+	}
 	auto msg = new FTbEnumEnumInterfaceFunc1ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func1(InMessage.Param1);
@@ -328,6 +344,11 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc1Request(const FTbEnumEnumInterfac
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc2Request(const FTbEnumEnumInterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbEnumEnumInterface - cannot handle Func2 request"));
+		return;
+	}
 	auto msg = new FTbEnumEnumInterfaceFunc2ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func2(InMessage.Param2);
@@ -344,6 +365,11 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc2Request(const FTbEnumEnumInterfac
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc3Request(const FTbEnumEnumInterfaceFunc3RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbEnumEnumInterface - cannot handle Func3 request"));
+		return;
+	}
 	auto msg = new FTbEnumEnumInterfaceFunc3ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func3(InMessage.Param3);
@@ -428,6 +454,11 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSig3Signal(ETbEnumEnum3 InParam3)
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp0Request(const FTbEnumEnumInterfaceSetProp0RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbEnumEnumInterface - cannot handle SetProp0 request"));
+		return;
+	}
 	BackendService->SetProp0(InMessage.Prop0);
 }
 
@@ -451,6 +482,11 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed(ETbEnumEnum0 InProp0)
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp1Request(const FTbEnumEnumInterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbEnumEnumInterface - cannot handle SetProp1 request"));
+		return;
+	}
 	BackendService->SetProp1(InMessage.Prop1);
 }
 
@@ -474,6 +510,11 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed(ETbEnumEnum1 InProp1)
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp2Request(const FTbEnumEnumInterfaceSetProp2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbEnumEnumInterface - cannot handle SetProp2 request"));
+		return;
+	}
 	BackendService->SetProp2(InMessage.Prop2);
 }
 
@@ -497,6 +538,11 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed(ETbEnumEnum2 InProp2)
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp3Request(const FTbEnumEnumInterfaceSetProp3RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbEnumEnumInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbEnumEnumInterface - cannot handle SetProp3 request"));
+		return;
+	}
 	BackendService->SetProp3(InMessage.Prop3);
 }
 

@@ -176,6 +176,12 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::HandleClientConnectionRequest(
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoPropertiesInterface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbSimpleNoPropertiesInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 
@@ -286,11 +292,21 @@ void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnFuncVoidRequest(const FTbSimpleNoPropertiesInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoPropertiesInterface - cannot handle FuncVoid request"));
+		return;
+	}
 	BackendService->FuncVoid();
 }
 
 void UTbSimpleNoPropertiesInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleNoPropertiesInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleNoPropertiesInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleNoPropertiesInterface - cannot handle FuncBool request"));
+		return;
+	}
 	auto msg = new FTbSimpleNoPropertiesInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncBool(InMessage.bParamBool);

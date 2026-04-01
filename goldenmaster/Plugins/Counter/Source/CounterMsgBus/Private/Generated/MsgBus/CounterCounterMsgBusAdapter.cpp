@@ -182,6 +182,12 @@ void UCounterCounterMsgBusAdapter::HandleClientConnectionRequest(const TSharedRe
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterMsgBusAdapter, Error, TEXT("No backend service set for CounterCounter - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FCounterCounterInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Vector = BackendService->GetVector();
@@ -296,6 +302,11 @@ void UCounterCounterMsgBusAdapter::_UpdateClientsConnected()
 
 void UCounterCounterMsgBusAdapter::OnIncrementRequest(const FCounterCounterIncrementRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterMsgBusAdapter, Error, TEXT("No backend service set for CounterCounter - cannot handle Increment request"));
+		return;
+	}
 	auto msg = new FCounterCounterIncrementReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Increment(InMessage.Vec);
@@ -312,6 +323,11 @@ void UCounterCounterMsgBusAdapter::OnIncrementRequest(const FCounterCounterIncre
 
 void UCounterCounterMsgBusAdapter::OnIncrementArrayRequest(const FCounterCounterIncrementArrayRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterMsgBusAdapter, Error, TEXT("No backend service set for CounterCounter - cannot handle IncrementArray request"));
+		return;
+	}
 	auto msg = new FCounterCounterIncrementArrayReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->IncrementArray(InMessage.Vec);
@@ -328,6 +344,11 @@ void UCounterCounterMsgBusAdapter::OnIncrementArrayRequest(const FCounterCounter
 
 void UCounterCounterMsgBusAdapter::OnDecrementRequest(const FCounterCounterDecrementRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterMsgBusAdapter, Error, TEXT("No backend service set for CounterCounter - cannot handle Decrement request"));
+		return;
+	}
 	auto msg = new FCounterCounterDecrementReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Decrement(InMessage.Vec);
@@ -344,6 +365,11 @@ void UCounterCounterMsgBusAdapter::OnDecrementRequest(const FCounterCounterDecre
 
 void UCounterCounterMsgBusAdapter::OnDecrementArrayRequest(const FCounterCounterDecrementArrayRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterMsgBusAdapter, Error, TEXT("No backend service set for CounterCounter - cannot handle DecrementArray request"));
+		return;
+	}
 	auto msg = new FCounterCounterDecrementArrayReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->DecrementArray(InMessage.Vec);
@@ -380,6 +406,11 @@ void UCounterCounterMsgBusAdapter::OnValueChangedSignal(const FCustomTypesVector
 
 void UCounterCounterMsgBusAdapter::OnSetVectorRequest(const FCounterCounterSetVectorRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterMsgBusAdapter, Error, TEXT("No backend service set for CounterCounter - cannot handle SetVector request"));
+		return;
+	}
 	BackendService->SetVector(InMessage.Vector);
 }
 
@@ -403,6 +434,11 @@ void UCounterCounterMsgBusAdapter::OnVectorChanged(const FCustomTypesVector3D& I
 
 void UCounterCounterMsgBusAdapter::OnSetExternVectorRequest(const FCounterCounterSetExternVectorRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterMsgBusAdapter, Error, TEXT("No backend service set for CounterCounter - cannot handle SetExternVector request"));
+		return;
+	}
 	BackendService->SetExternVector(InMessage.ExternVector);
 }
 
@@ -426,6 +462,11 @@ void UCounterCounterMsgBusAdapter::OnExternVectorChanged(const FVector& InExtern
 
 void UCounterCounterMsgBusAdapter::OnSetVectorArrayRequest(const FCounterCounterSetVectorArrayRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterMsgBusAdapter, Error, TEXT("No backend service set for CounterCounter - cannot handle SetVectorArray request"));
+		return;
+	}
 	BackendService->SetVectorArray(InMessage.VectorArray);
 }
 
@@ -449,6 +490,11 @@ void UCounterCounterMsgBusAdapter::OnVectorArrayChanged(const TArray<FCustomType
 
 void UCounterCounterMsgBusAdapter::OnSetExternVectorArrayRequest(const FCounterCounterSetExternVectorArrayRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogCounterCounterMsgBusAdapter, Error, TEXT("No backend service set for CounterCounter - cannot handle SetExternVectorArray request"));
+		return;
+	}
 	BackendService->SetExternVectorArray(InMessage.ExternVectorArray);
 }
 

@@ -190,6 +190,12 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::HandleClientConnectionRequest(c
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbSimpleSimpleArrayInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->PropBool = BackendService->GetPropBool();
@@ -309,6 +315,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleSimpleArrayInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle FuncBool request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncBool(InMessage.ParamBool);
@@ -325,6 +336,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimp
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncIntRequest(const FTbSimpleSimpleArrayInterfaceFuncIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle FuncInt request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncIntReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncInt(InMessage.ParamInt);
@@ -341,6 +357,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncIntRequest(const FTbSimpl
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncInt32Request(const FTbSimpleSimpleArrayInterfaceFuncInt32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle FuncInt32 request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncInt32ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncInt32(InMessage.ParamInt32);
@@ -357,6 +378,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncInt32Request(const FTbSim
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncInt64Request(const FTbSimpleSimpleArrayInterfaceFuncInt64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle FuncInt64 request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncInt64ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncInt64(InMessage.ParamInt64);
@@ -373,6 +399,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncInt64Request(const FTbSim
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTbSimpleSimpleArrayInterfaceFuncFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle FuncFloat request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncFloatReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncFloat(InMessage.ParamFloat);
@@ -389,6 +420,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTbSim
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncFloat32Request(const FTbSimpleSimpleArrayInterfaceFuncFloat32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle FuncFloat32 request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncFloat32ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncFloat32(InMessage.ParamFloat32);
@@ -405,6 +441,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncFloat32Request(const FTbS
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncFloat64Request(const FTbSimpleSimpleArrayInterfaceFuncFloat64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle FuncFloat64 request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncFloat64ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncFloat64(InMessage.ParamFloat);
@@ -421,6 +462,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncFloat64Request(const FTbS
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnFuncStringRequest(const FTbSimpleSimpleArrayInterfaceFuncStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle FuncString request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncStringReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncString(InMessage.ParamString);
@@ -573,6 +619,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSigStringSignal(const TArray<
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTbSimpleSimpleArrayInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle SetPropBool request"));
+		return;
+	}
 	BackendService->SetPropBool(InMessage.PropBool);
 }
 
@@ -596,6 +647,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropBoolChanged(const TArray<
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTbSimpleSimpleArrayInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle SetPropInt request"));
+		return;
+	}
 	BackendService->SetPropInt(InMessage.PropInt);
 }
 
@@ -619,6 +675,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropIntChanged(const TArray<i
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropInt32Request(const FTbSimpleSimpleArrayInterfaceSetPropInt32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle SetPropInt32 request"));
+		return;
+	}
 	BackendService->SetPropInt32(InMessage.PropInt32);
 }
 
@@ -642,6 +703,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt32Changed(const TArray
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropInt64Request(const FTbSimpleSimpleArrayInterfaceSetPropInt64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle SetPropInt64 request"));
+		return;
+	}
 	BackendService->SetPropInt64(InMessage.PropInt64);
 }
 
@@ -665,6 +731,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropInt64Changed(const TArray
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropFloatRequest(const FTbSimpleSimpleArrayInterfaceSetPropFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle SetPropFloat request"));
+		return;
+	}
 	BackendService->SetPropFloat(InMessage.PropFloat);
 }
 
@@ -688,6 +759,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloatChanged(const TArray
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropFloat32Request(const FTbSimpleSimpleArrayInterfaceSetPropFloat32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle SetPropFloat32 request"));
+		return;
+	}
 	BackendService->SetPropFloat32(InMessage.PropFloat32);
 }
 
@@ -711,6 +787,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat32Changed(const TArr
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropFloat64Request(const FTbSimpleSimpleArrayInterfaceSetPropFloat64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle SetPropFloat64 request"));
+		return;
+	}
 	BackendService->SetPropFloat64(InMessage.PropFloat64);
 }
 
@@ -734,6 +815,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnPropFloat64Changed(const TArr
 
 void UTbSimpleSimpleArrayInterfaceMsgBusAdapter::OnSetPropStringRequest(const FTbSimpleSimpleArrayInterfaceSetPropStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleArrayInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleArrayInterface - cannot handle SetPropString request"));
+		return;
+	}
 	BackendService->SetPropString(InMessage.PropString);
 }
 

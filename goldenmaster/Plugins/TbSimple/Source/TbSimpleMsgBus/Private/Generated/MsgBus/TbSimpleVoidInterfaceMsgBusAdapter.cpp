@@ -175,6 +175,12 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TS
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleVoidInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleVoidInterface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbSimpleVoidInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 
@@ -285,6 +291,11 @@ void UTbSimpleVoidInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSimpleVoidInterfaceMsgBusAdapter::OnFuncVoidRequest(const FTbSimpleVoidInterfaceFuncVoidRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleVoidInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleVoidInterface - cannot handle FuncVoid request"));
+		return;
+	}
 	BackendService->FuncVoid();
 }
 

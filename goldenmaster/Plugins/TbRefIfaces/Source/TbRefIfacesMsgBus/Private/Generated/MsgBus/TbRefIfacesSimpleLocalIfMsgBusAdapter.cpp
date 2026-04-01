@@ -176,6 +176,12 @@ void UTbRefIfacesSimpleLocalIfMsgBusAdapter::HandleClientConnectionRequest(const
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesSimpleLocalIf - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbRefIfacesSimpleLocalIfInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->IntProperty = BackendService->GetIntProperty();
@@ -287,6 +293,11 @@ void UTbRefIfacesSimpleLocalIfMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntMethodRequest(const FTbRefIfacesSimpleLocalIfIntMethodRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesSimpleLocalIf - cannot handle IntMethod request"));
+		return;
+	}
 	auto msg = new FTbRefIfacesSimpleLocalIfIntMethodReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->IntMethod(InMessage.Param);
@@ -320,6 +331,11 @@ void UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnIntSignalSignal(int32 InParam)
 
 void UTbRefIfacesSimpleLocalIfMsgBusAdapter::OnSetIntPropertyRequest(const FTbRefIfacesSimpleLocalIfSetIntPropertyRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbRefIfacesSimpleLocalIfMsgBusAdapter, Error, TEXT("No backend service set for TbRefIfacesSimpleLocalIf - cannot handle SetIntProperty request"));
+		return;
+	}
 	BackendService->SetIntProperty(InMessage.IntProperty);
 }
 

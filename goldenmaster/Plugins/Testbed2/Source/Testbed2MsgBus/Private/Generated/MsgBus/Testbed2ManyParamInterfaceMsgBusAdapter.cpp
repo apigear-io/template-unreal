@@ -182,6 +182,12 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::HandleClientConnectionRequest(con
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2ManyParamInterface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTestbed2ManyParamInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop1 = BackendService->GetProp1();
@@ -296,6 +302,11 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc1Request(const FTestbed2ManyParamInterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2ManyParamInterface - cannot handle Func1 request"));
+		return;
+	}
 	auto msg = new FTestbed2ManyParamInterfaceFunc1ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func1(InMessage.Param1);
@@ -312,6 +323,11 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc1Request(const FTestbed2Man
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc2Request(const FTestbed2ManyParamInterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2ManyParamInterface - cannot handle Func2 request"));
+		return;
+	}
 	auto msg = new FTestbed2ManyParamInterfaceFunc2ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func2(InMessage.Param1, InMessage.Param2);
@@ -328,6 +344,11 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc2Request(const FTestbed2Man
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc3Request(const FTestbed2ManyParamInterfaceFunc3RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2ManyParamInterface - cannot handle Func3 request"));
+		return;
+	}
 	auto msg = new FTestbed2ManyParamInterfaceFunc3ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func3(InMessage.Param1, InMessage.Param2, InMessage.Param3);
@@ -344,6 +365,11 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc3Request(const FTestbed2Man
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc4Request(const FTestbed2ManyParamInterfaceFunc4RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2ManyParamInterface - cannot handle Func4 request"));
+		return;
+	}
 	auto msg = new FTestbed2ManyParamInterfaceFunc4ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func4(InMessage.Param1, InMessage.Param2, InMessage.Param3, InMessage.Param4);
@@ -434,6 +460,11 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig4Signal(int32 InParam1, int3
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp1Request(const FTestbed2ManyParamInterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2ManyParamInterface - cannot handle SetProp1 request"));
+		return;
+	}
 	BackendService->SetProp1(InMessage.Prop1);
 }
 
@@ -457,6 +488,11 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp1Changed(int32 InProp1)
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp2Request(const FTestbed2ManyParamInterfaceSetProp2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2ManyParamInterface - cannot handle SetProp2 request"));
+		return;
+	}
 	BackendService->SetProp2(InMessage.Prop2);
 }
 
@@ -480,6 +516,11 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp2Changed(int32 InProp2)
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp3Request(const FTestbed2ManyParamInterfaceSetProp3RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2ManyParamInterface - cannot handle SetProp3 request"));
+		return;
+	}
 	BackendService->SetProp3(InMessage.Prop3);
 }
 
@@ -503,6 +544,11 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp3Changed(int32 InProp3)
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp4Request(const FTestbed2ManyParamInterfaceSetProp4RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2ManyParamInterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2ManyParamInterface - cannot handle SetProp4 request"));
+		return;
+	}
 	BackendService->SetProp4(InMessage.Prop4);
 }
 

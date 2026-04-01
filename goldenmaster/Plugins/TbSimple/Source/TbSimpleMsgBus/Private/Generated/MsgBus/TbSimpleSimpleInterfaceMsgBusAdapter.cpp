@@ -192,6 +192,12 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::HandleClientConnectionRequest(const 
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbSimpleSimpleInterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->bPropBool = BackendService->GetPropBool();
@@ -310,11 +316,21 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncNoReturnValueRequest(const FTbSimpleSimpleInterfaceFuncNoReturnValueRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle FuncNoReturnValue request"));
+		return;
+	}
 	BackendService->FuncNoReturnValue(InMessage.bParamBool);
 }
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncNoParamsRequest(const FTbSimpleSimpleInterfaceFuncNoParamsRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle FuncNoParams request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleInterfaceFuncNoParamsReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncNoParams();
@@ -331,6 +347,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncNoParamsRequest(const FTbSimpl
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleSimpleInterfaceFuncBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle FuncBool request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleInterfaceFuncBoolReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncBool(InMessage.bParamBool);
@@ -347,6 +368,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncBoolRequest(const FTbSimpleSim
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncIntRequest(const FTbSimpleSimpleInterfaceFuncIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle FuncInt request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleInterfaceFuncIntReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncInt(InMessage.ParamInt);
@@ -363,6 +389,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncIntRequest(const FTbSimpleSimp
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt32Request(const FTbSimpleSimpleInterfaceFuncInt32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle FuncInt32 request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleInterfaceFuncInt32ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncInt32(InMessage.ParamInt32);
@@ -379,6 +410,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt32Request(const FTbSimpleSi
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt64Request(const FTbSimpleSimpleInterfaceFuncInt64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle FuncInt64 request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleInterfaceFuncInt64ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncInt64(InMessage.ParamInt64);
@@ -395,6 +431,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncInt64Request(const FTbSimpleSi
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTbSimpleSimpleInterfaceFuncFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle FuncFloat request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloatReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncFloat(InMessage.ParamFloat);
@@ -411,6 +452,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloatRequest(const FTbSimpleSi
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloat32Request(const FTbSimpleSimpleInterfaceFuncFloat32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle FuncFloat32 request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloat32ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncFloat32(InMessage.ParamFloat32);
@@ -427,6 +473,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloat32Request(const FTbSimple
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloat64Request(const FTbSimpleSimpleInterfaceFuncFloat64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle FuncFloat64 request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloat64ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncFloat64(InMessage.ParamFloat);
@@ -443,6 +494,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncFloat64Request(const FTbSimple
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnFuncStringRequest(const FTbSimpleSimpleInterfaceFuncStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle FuncString request"));
+		return;
+	}
 	auto msg = new FTbSimpleSimpleInterfaceFuncStringReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->FuncString(InMessage.ParamString);
@@ -595,6 +651,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSigStringSignal(const FString& InP
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTbSimpleSimpleInterfaceSetPropBoolRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle SetPropBool request"));
+		return;
+	}
 	BackendService->SetPropBool(InMessage.bPropBool);
 }
 
@@ -618,6 +679,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropBoolChanged(bool bInPropBool)
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTbSimpleSimpleInterfaceSetPropIntRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle SetPropInt request"));
+		return;
+	}
 	BackendService->SetPropInt(InMessage.PropInt);
 }
 
@@ -641,6 +707,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropIntChanged(int32 InPropInt)
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropInt32Request(const FTbSimpleSimpleInterfaceSetPropInt32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle SetPropInt32 request"));
+		return;
+	}
 	BackendService->SetPropInt32(InMessage.PropInt32);
 }
 
@@ -664,6 +735,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt32Changed(int32 InPropInt32
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropInt64Request(const FTbSimpleSimpleInterfaceSetPropInt64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle SetPropInt64 request"));
+		return;
+	}
 	BackendService->SetPropInt64(InMessage.PropInt64);
 }
 
@@ -687,6 +763,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropInt64Changed(int64 InPropInt64
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropFloatRequest(const FTbSimpleSimpleInterfaceSetPropFloatRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle SetPropFloat request"));
+		return;
+	}
 	BackendService->SetPropFloat(InMessage.PropFloat);
 }
 
@@ -710,6 +791,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloatChanged(float InPropFloat
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropFloat32Request(const FTbSimpleSimpleInterfaceSetPropFloat32RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle SetPropFloat32 request"));
+		return;
+	}
 	BackendService->SetPropFloat32(InMessage.PropFloat32);
 }
 
@@ -733,6 +819,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat32Changed(float InPropFlo
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropFloat64Request(const FTbSimpleSimpleInterfaceSetPropFloat64RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle SetPropFloat64 request"));
+		return;
+	}
 	BackendService->SetPropFloat64(InMessage.PropFloat64);
 }
 
@@ -756,6 +847,11 @@ void UTbSimpleSimpleInterfaceMsgBusAdapter::OnPropFloat64Changed(double InPropFl
 
 void UTbSimpleSimpleInterfaceMsgBusAdapter::OnSetPropStringRequest(const FTbSimpleSimpleInterfaceSetPropStringRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSimpleSimpleInterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSimpleSimpleInterface - cannot handle SetPropString request"));
+		return;
+	}
 	BackendService->SetPropString(InMessage.PropString);
 }
 

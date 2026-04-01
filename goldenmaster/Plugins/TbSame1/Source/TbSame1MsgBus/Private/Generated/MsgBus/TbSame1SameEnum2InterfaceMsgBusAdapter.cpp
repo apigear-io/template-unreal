@@ -178,6 +178,12 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::HandleClientConnectionRequest(cons
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameEnum2InterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSame1SameEnum2Interface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbSame1SameEnum2InterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop1 = BackendService->GetProp1();
@@ -290,6 +296,11 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame1SameEnum2InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameEnum2InterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSame1SameEnum2Interface - cannot handle Func1 request"));
+		return;
+	}
 	auto msg = new FTbSame1SameEnum2InterfaceFunc1ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func1(InMessage.Param1);
@@ -306,6 +317,11 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnFunc1Request(const FTbSame1SameE
 
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnFunc2Request(const FTbSame1SameEnum2InterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameEnum2InterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSame1SameEnum2Interface - cannot handle Func2 request"));
+		return;
+	}
 	auto msg = new FTbSame1SameEnum2InterfaceFunc2ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func2(InMessage.Param1, InMessage.Param2);
@@ -357,6 +373,11 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnSig2Signal(ETbSame1Enum1 InParam
 
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnSetProp1Request(const FTbSame1SameEnum2InterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameEnum2InterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSame1SameEnum2Interface - cannot handle SetProp1 request"));
+		return;
+	}
 	BackendService->SetProp1(InMessage.Prop1);
 }
 
@@ -380,6 +401,11 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnProp1Changed(ETbSame1Enum1 InPro
 
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnSetProp2Request(const FTbSame1SameEnum2InterfaceSetProp2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbSame1SameEnum2InterfaceMsgBusAdapter, Error, TEXT("No backend service set for TbSame1SameEnum2Interface - cannot handle SetProp2 request"));
+		return;
+	}
 	BackendService->SetProp2(InMessage.Prop2);
 }
 

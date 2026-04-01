@@ -180,6 +180,12 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::HandleClientConnectionRequest
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct3Interface - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTestbed2NestedStruct3InterfaceInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->Prop1 = BackendService->GetProp1();
@@ -293,6 +299,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::_UpdateClientsConnected()
 
 void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnFunc1Request(const FTestbed2NestedStruct3InterfaceFunc1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct3Interface - cannot handle Func1 request"));
+		return;
+	}
 	auto msg = new FTestbed2NestedStruct3InterfaceFunc1ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func1(InMessage.Param1);
@@ -309,6 +320,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnFunc1Request(const FTestbed
 
 void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnFunc2Request(const FTestbed2NestedStruct3InterfaceFunc2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct3Interface - cannot handle Func2 request"));
+		return;
+	}
 	auto msg = new FTestbed2NestedStruct3InterfaceFunc2ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func2(InMessage.Param1, InMessage.Param2);
@@ -325,6 +341,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnFunc2Request(const FTestbed
 
 void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnFunc3Request(const FTestbed2NestedStruct3InterfaceFunc3RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct3Interface - cannot handle Func3 request"));
+		return;
+	}
 	auto msg = new FTestbed2NestedStruct3InterfaceFunc3ReplyMessage();
 	msg->ResponseId = InMessage.ResponseId;
 	msg->Result = BackendService->Func3(InMessage.Param1, InMessage.Param2, InMessage.Param3);
@@ -395,6 +416,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSig3Signal(const FTestbed2N
 
 void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSetProp1Request(const FTestbed2NestedStruct3InterfaceSetProp1RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct3Interface - cannot handle SetProp1 request"));
+		return;
+	}
 	BackendService->SetProp1(InMessage.Prop1);
 }
 
@@ -418,6 +444,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp1Changed(const FTestbed
 
 void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSetProp2Request(const FTestbed2NestedStruct3InterfaceSetProp2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct3Interface - cannot handle SetProp2 request"));
+		return;
+	}
 	BackendService->SetProp2(InMessage.Prop2);
 }
 
@@ -441,6 +472,11 @@ void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnProp2Changed(const FTestbed
 
 void UTestbed2NestedStruct3InterfaceMsgBusAdapter::OnSetProp3Request(const FTestbed2NestedStruct3InterfaceSetProp3RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTestbed2NestedStruct3InterfaceMsgBusAdapter, Error, TEXT("No backend service set for Testbed2NestedStruct3Interface - cannot handle SetProp3 request"));
+		return;
+	}
 	BackendService->SetProp3(InMessage.Prop3);
 }
 

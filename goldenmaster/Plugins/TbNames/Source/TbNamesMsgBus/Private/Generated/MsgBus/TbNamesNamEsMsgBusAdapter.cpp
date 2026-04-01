@@ -180,6 +180,12 @@ void UTbNamesNamEsMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
 
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusAdapter, Error, TEXT("No backend service set for TbNamesNamEs - cannot send init to client"));
+		return;
+	}
+
 	auto msg = new FTbNamesNamEsInitMessage();
 	msg->_ClientPingIntervalMS = _HeartbeatIntervalMS;
 	msg->bSwitch = BackendService->GetSwitch();
@@ -294,11 +300,21 @@ void UTbNamesNamEsMsgBusAdapter::_UpdateClientsConnected()
 
 void UTbNamesNamEsMsgBusAdapter::OnSomeFunctionRequest(const FTbNamesNamEsSomeFunctionRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusAdapter, Error, TEXT("No backend service set for TbNamesNamEs - cannot handle SomeFunction request"));
+		return;
+	}
 	BackendService->SomeFunction(InMessage.bSomeParam);
 }
 
 void UTbNamesNamEsMsgBusAdapter::OnSomeFunction2Request(const FTbNamesNamEsSomeFunction2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusAdapter, Error, TEXT("No backend service set for TbNamesNamEs - cannot handle SomeFunction2 request"));
+		return;
+	}
 	BackendService->SomeFunction2(InMessage.bSomeParam);
 }
 
@@ -338,6 +354,11 @@ void UTbNamesNamEsMsgBusAdapter::OnSomeSignal2Signal(bool bInSomeParam)
 
 void UTbNamesNamEsMsgBusAdapter::OnSetSwitchRequest(const FTbNamesNamEsSetSwitchRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusAdapter, Error, TEXT("No backend service set for TbNamesNamEs - cannot handle SetSwitch request"));
+		return;
+	}
 	BackendService->SetSwitch(InMessage.bSwitch);
 }
 
@@ -361,6 +382,11 @@ void UTbNamesNamEsMsgBusAdapter::OnSwitchChanged(bool bInSwitch)
 
 void UTbNamesNamEsMsgBusAdapter::OnSetSomePropertyRequest(const FTbNamesNamEsSetSomePropertyRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusAdapter, Error, TEXT("No backend service set for TbNamesNamEs - cannot handle SetSomeProperty request"));
+		return;
+	}
 	BackendService->SetSomeProperty(InMessage.SomeProperty);
 }
 
@@ -384,6 +410,11 @@ void UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged(int32 InSomeProperty)
 
 void UTbNamesNamEsMsgBusAdapter::OnSetSomePoperty2Request(const FTbNamesNamEsSetSomePoperty2RequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusAdapter, Error, TEXT("No backend service set for TbNamesNamEs - cannot handle SetSomePoperty2 request"));
+		return;
+	}
 	BackendService->SetSomePoperty2(InMessage.SomePoperty2);
 }
 
@@ -407,6 +438,11 @@ void UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed(int32 InSomePoperty2)
 
 void UTbNamesNamEsMsgBusAdapter::OnSetEnumPropertyRequest(const FTbNamesNamEsSetEnumPropertyRequestMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& /*Context*/)
 {
+	if (!BackendService)
+	{
+		UE_LOG(LogTbNamesNamEsMsgBusAdapter, Error, TEXT("No backend service set for TbNamesNamEs - cannot handle SetEnumProperty request"));
+		return;
+	}
 	BackendService->SetEnumProperty(InMessage.EnumProperty);
 }
 
