@@ -116,7 +116,6 @@ void UTbIfaceimportEmptyIfMsgBusClient::_Disconnect()
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-
 	TbIfaceimportEmptyIfMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
@@ -195,6 +194,7 @@ void UTbIfaceimportEmptyIfMsgBusClient::_OnHeartbeat()
 			ServiceAddress.Invalidate();
 			_LastHbTimestamp = 0.0;
 			_ConnectionStatusChanged.Broadcast(false);
+			_ConnectionStatusChangedBP.Broadcast(false);
 		}
 	}
 
@@ -270,7 +270,6 @@ void UTbIfaceimportEmptyIfMsgBusClient::OnServiceClosedConnection(const FTbIface
 	{
 		return;
 	}
-
 	_LastHbTimestamp = 0.0;
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);

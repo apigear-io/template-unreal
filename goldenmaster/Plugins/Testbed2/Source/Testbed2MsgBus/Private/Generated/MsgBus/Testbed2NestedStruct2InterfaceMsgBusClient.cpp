@@ -123,7 +123,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusClient::_Disconnect()
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-
+	CancelAllPromises();
 	Testbed2NestedStruct2InterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
@@ -216,9 +216,11 @@ void UTestbed2NestedStruct2InterfaceMsgBusClient::_OnHeartbeat()
 		if (DeltaMS > 2 * _HeartbeatIntervalMS)
 		{
 			// service seems to be dead or not responding - reset connection
+			CancelAllPromises();
 			ServiceAddress.Invalidate();
 			_LastHbTimestamp = 0.0;
 			_ConnectionStatusChanged.Broadcast(false);
+			_ConnectionStatusChangedBP.Broadcast(false);
 		}
 	}
 
@@ -294,7 +296,7 @@ void UTestbed2NestedStruct2InterfaceMsgBusClient::OnServiceClosedConnection(cons
 	{
 		return;
 	}
-
+	CancelAllPromises();
 	_LastHbTimestamp = 0.0;
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
