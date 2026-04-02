@@ -18,25 +18,26 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnSigVoidSignal.Broadcast();
-	for (const TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTbSimpleVoidInterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITbSimpleVoidInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnSigVoidSignal.Broadcast();
+		for (const TWeakInterfacePtr<ITbSimpleVoidInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnSigVoidSignal();
+				if (ITbSimpleVoidInterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnSigVoidSignal();
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTbSimpleVoidInterfacePublisher>(this), BPSubscribersCopy]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnSigVoidSignalBP.Broadcast();
-		}
-
+		WeakPtr.Get()->OnSigVoidSignalBP.Broadcast();
 		for (const TScriptInterface<ITbSimpleVoidInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -46,19 +47,16 @@ void UTbSimpleVoidInterfacePublisher::BroadcastSigVoidSignal()
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
 
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 
