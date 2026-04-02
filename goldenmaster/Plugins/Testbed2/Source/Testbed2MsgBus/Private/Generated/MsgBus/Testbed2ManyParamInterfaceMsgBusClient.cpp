@@ -486,8 +486,7 @@ int32 UTestbed2ManyParamInterfaceMsgBusClient::Func1(int32 InParam1)
 	auto msg = new FTestbed2ManyParamInterfaceFunc1RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param1 = InParam1;
-	TPromise<int32> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<int32>(msg->ResponseId);
 
 	Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceFunc1RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -495,7 +494,7 @@ int32 UTestbed2ManyParamInterfaceMsgBusClient::Func1(int32 InParam1)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed2ManyParamInterfaceMsgBusClient::OnFunc1Reply(const FTestbed2ManyParamInterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -517,8 +516,7 @@ int32 UTestbed2ManyParamInterfaceMsgBusClient::Func2(int32 InParam1, int32 InPar
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param1 = InParam1;
 	msg->Param2 = InParam2;
-	TPromise<int32> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<int32>(msg->ResponseId);
 
 	Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceFunc2RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -526,7 +524,7 @@ int32 UTestbed2ManyParamInterfaceMsgBusClient::Func2(int32 InParam1, int32 InPar
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed2ManyParamInterfaceMsgBusClient::OnFunc2Reply(const FTestbed2ManyParamInterfaceFunc2ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -549,8 +547,7 @@ int32 UTestbed2ManyParamInterfaceMsgBusClient::Func3(int32 InParam1, int32 InPar
 	msg->Param1 = InParam1;
 	msg->Param2 = InParam2;
 	msg->Param3 = InParam3;
-	TPromise<int32> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<int32>(msg->ResponseId);
 
 	Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceFunc3RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -558,7 +555,7 @@ int32 UTestbed2ManyParamInterfaceMsgBusClient::Func3(int32 InParam1, int32 InPar
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed2ManyParamInterfaceMsgBusClient::OnFunc3Reply(const FTestbed2ManyParamInterfaceFunc3ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -582,8 +579,7 @@ int32 UTestbed2ManyParamInterfaceMsgBusClient::Func4(int32 InParam1, int32 InPar
 	msg->Param2 = InParam2;
 	msg->Param3 = InParam3;
 	msg->Param4 = InParam4;
-	TPromise<int32> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<int32>(msg->ResponseId);
 
 	Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceFunc4RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -591,7 +587,7 @@ int32 UTestbed2ManyParamInterfaceMsgBusClient::Func4(int32 InParam1, int32 InPar
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed2ManyParamInterfaceMsgBusClient::OnFunc4Reply(const FTestbed2ManyParamInterfaceFunc4ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -724,33 +720,59 @@ void UTestbed2ManyParamInterfaceMsgBusClient::OnProp4Changed(const FTestbed2Many
 }
 
 template <typename ResultType>
-bool UTestbed2ManyParamInterfaceMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTestbed2ManyParamInterfaceMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTestbed2ManyParamInterfaceMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTestbed2ManyParamInterfaceMsgBusClient::StorePromise<int32>(const FGuid& Id, TPromise<int32>& Promise);
+void UTestbed2ManyParamInterfaceMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<int32>> UTestbed2ManyParamInterfaceMsgBusClient::StorePromise<int32>(const FGuid& Id);
 template bool UTestbed2ManyParamInterfaceMsgBusClient::FulfillPromise<int32>(const FGuid& Id, const int32& Value);

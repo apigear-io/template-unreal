@@ -339,8 +339,7 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceMsgBusClient::Func1(const FTbSame2St
 	auto msg = new FTbSame2SameStruct1InterfaceFunc1RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param1 = InParam1;
-	TPromise<FTbSame2Struct1> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<FTbSame2Struct1>(msg->ResponseId);
 
 	TbSame2SameStruct1InterfaceMsgBusEndpoint->Send<FTbSame2SameStruct1InterfaceFunc1RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -348,7 +347,7 @@ FTbSame2Struct1 UTbSame2SameStruct1InterfaceMsgBusClient::Func1(const FTbSame2St
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSame2SameStruct1InterfaceMsgBusClient::OnFunc1Reply(const FTbSame2SameStruct1InterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -388,33 +387,59 @@ void UTbSame2SameStruct1InterfaceMsgBusClient::OnProp1Changed(const FTbSame2Same
 }
 
 template <typename ResultType>
-bool UTbSame2SameStruct1InterfaceMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTbSame2SameStruct1InterfaceMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTbSame2SameStruct1InterfaceMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTbSame2SameStruct1InterfaceMsgBusClient::StorePromise<FTbSame2Struct1>(const FGuid& Id, TPromise<FTbSame2Struct1>& Promise);
+void UTbSame2SameStruct1InterfaceMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<FTbSame2Struct1>> UTbSame2SameStruct1InterfaceMsgBusClient::StorePromise<FTbSame2Struct1>(const FGuid& Id);
 template bool UTbSame2SameStruct1InterfaceMsgBusClient::FulfillPromise<FTbSame2Struct1>(const FGuid& Id, const FTbSame2Struct1& Value);

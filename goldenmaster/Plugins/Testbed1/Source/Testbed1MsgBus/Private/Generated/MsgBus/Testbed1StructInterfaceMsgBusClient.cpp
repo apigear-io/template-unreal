@@ -486,8 +486,7 @@ FTestbed1StructBool UTestbed1StructInterfaceMsgBusClient::FuncBool(const FTestbe
 	auto msg = new FTestbed1StructInterfaceFuncBoolRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamBool = InParamBool;
-	TPromise<FTestbed1StructBool> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<FTestbed1StructBool>(msg->ResponseId);
 
 	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -495,7 +494,7 @@ FTestbed1StructBool UTestbed1StructInterfaceMsgBusClient::FuncBool(const FTestbe
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed1StructInterfaceMsgBusClient::OnFuncBoolReply(const FTestbed1StructInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -516,8 +515,7 @@ FTestbed1StructInt UTestbed1StructInterfaceMsgBusClient::FuncInt(const FTestbed1
 	auto msg = new FTestbed1StructInterfaceFuncIntRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt = InParamInt;
-	TPromise<FTestbed1StructInt> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<FTestbed1StructInt>(msg->ResponseId);
 
 	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncIntRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -525,7 +523,7 @@ FTestbed1StructInt UTestbed1StructInterfaceMsgBusClient::FuncInt(const FTestbed1
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed1StructInterfaceMsgBusClient::OnFuncIntReply(const FTestbed1StructInterfaceFuncIntReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -546,8 +544,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceMsgBusClient::FuncFloat(const FTest
 	auto msg = new FTestbed1StructInterfaceFuncFloatRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat = InParamFloat;
-	TPromise<FTestbed1StructFloat> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<FTestbed1StructFloat>(msg->ResponseId);
 
 	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncFloatRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -555,7 +552,7 @@ FTestbed1StructFloat UTestbed1StructInterfaceMsgBusClient::FuncFloat(const FTest
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed1StructInterfaceMsgBusClient::OnFuncFloatReply(const FTestbed1StructInterfaceFuncFloatReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -576,8 +573,7 @@ FTestbed1StructString UTestbed1StructInterfaceMsgBusClient::FuncString(const FTe
 	auto msg = new FTestbed1StructInterfaceFuncStringRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamString = InParamString;
-	TPromise<FTestbed1StructString> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<FTestbed1StructString>(msg->ResponseId);
 
 	Testbed1StructInterfaceMsgBusEndpoint->Send<FTestbed1StructInterfaceFuncStringRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -585,7 +581,7 @@ FTestbed1StructString UTestbed1StructInterfaceMsgBusClient::FuncString(const FTe
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed1StructInterfaceMsgBusClient::OnFuncStringReply(const FTestbed1StructInterfaceFuncStringReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -718,39 +714,65 @@ void UTestbed1StructInterfaceMsgBusClient::OnPropStringChanged(const FTestbed1St
 }
 
 template <typename ResultType>
-bool UTestbed1StructInterfaceMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTestbed1StructInterfaceMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTestbed1StructInterfaceMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTestbed1StructInterfaceMsgBusClient::StorePromise<FTestbed1StructBool>(const FGuid& Id, TPromise<FTestbed1StructBool>& Promise);
+void UTestbed1StructInterfaceMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<FTestbed1StructBool>> UTestbed1StructInterfaceMsgBusClient::StorePromise<FTestbed1StructBool>(const FGuid& Id);
 template bool UTestbed1StructInterfaceMsgBusClient::FulfillPromise<FTestbed1StructBool>(const FGuid& Id, const FTestbed1StructBool& Value);
-template bool UTestbed1StructInterfaceMsgBusClient::StorePromise<FTestbed1StructFloat>(const FGuid& Id, TPromise<FTestbed1StructFloat>& Promise);
+template TSharedPtr<TPromise<FTestbed1StructFloat>> UTestbed1StructInterfaceMsgBusClient::StorePromise<FTestbed1StructFloat>(const FGuid& Id);
 template bool UTestbed1StructInterfaceMsgBusClient::FulfillPromise<FTestbed1StructFloat>(const FGuid& Id, const FTestbed1StructFloat& Value);
-template bool UTestbed1StructInterfaceMsgBusClient::StorePromise<FTestbed1StructInt>(const FGuid& Id, TPromise<FTestbed1StructInt>& Promise);
+template TSharedPtr<TPromise<FTestbed1StructInt>> UTestbed1StructInterfaceMsgBusClient::StorePromise<FTestbed1StructInt>(const FGuid& Id);
 template bool UTestbed1StructInterfaceMsgBusClient::FulfillPromise<FTestbed1StructInt>(const FGuid& Id, const FTestbed1StructInt& Value);
-template bool UTestbed1StructInterfaceMsgBusClient::StorePromise<FTestbed1StructString>(const FGuid& Id, TPromise<FTestbed1StructString>& Promise);
+template TSharedPtr<TPromise<FTestbed1StructString>> UTestbed1StructInterfaceMsgBusClient::StorePromise<FTestbed1StructString>(const FGuid& Id);
 template bool UTestbed1StructInterfaceMsgBusClient::FulfillPromise<FTestbed1StructString>(const FGuid& Id, const FTestbed1StructString& Value);

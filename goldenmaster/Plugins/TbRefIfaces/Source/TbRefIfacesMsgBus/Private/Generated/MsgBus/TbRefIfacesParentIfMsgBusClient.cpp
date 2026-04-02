@@ -486,8 +486,7 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfMsgBusC
 	auto msg = new FTbRefIfacesParentIfLocalIfMethodRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param = InParam;
-	TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(msg->ResponseId);
 
 	TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfLocalIfMethodRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -495,7 +494,7 @@ TScriptInterface<ITbRefIfacesSimpleLocalIfInterface> UTbRefIfacesParentIfMsgBusC
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbRefIfacesParentIfMsgBusClient::OnLocalIfMethodReply(const FTbRefIfacesParentIfLocalIfMethodReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -516,8 +515,7 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 	auto msg = new FTbRefIfacesParentIfLocalIfMethodListRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param = InParam;
-	TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>(msg->ResponseId);
 
 	TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfLocalIfMethodListRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -525,7 +523,7 @@ TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>> UTbRefIfacesParentI
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbRefIfacesParentIfMsgBusClient::OnLocalIfMethodListReply(const FTbRefIfacesParentIfLocalIfMethodListReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -546,8 +544,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfMsgBusClien
 	auto msg = new FTbRefIfacesParentIfImportedIfMethodRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param = InParam;
-	TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(msg->ResponseId);
 
 	TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfImportedIfMethodRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -555,7 +552,7 @@ TScriptInterface<ITbIfaceimportEmptyIfInterface> UTbRefIfacesParentIfMsgBusClien
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbRefIfacesParentIfMsgBusClient::OnImportedIfMethodReply(const FTbRefIfacesParentIfImportedIfMethodReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -576,8 +573,7 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfMsg
 	auto msg = new FTbRefIfacesParentIfImportedIfMethodListRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param = InParam;
-	TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(msg->ResponseId);
 
 	TbRefIfacesParentIfMsgBusEndpoint->Send<FTbRefIfacesParentIfImportedIfMethodListRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -585,7 +581,7 @@ TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>> UTbRefIfacesParentIfMsg
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbRefIfacesParentIfMsgBusClient::OnImportedIfMethodListReply(const FTbRefIfacesParentIfImportedIfMethodListReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -718,39 +714,65 @@ void UTbRefIfacesParentIfMsgBusClient::OnImportedIfListChanged(const FTbRefIface
 }
 
 template <typename ResultType>
-bool UTbRefIfacesParentIfMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTbRefIfacesParentIfMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTbRefIfacesParentIfMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTbRefIfacesParentIfMsgBusClient::StorePromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(const FGuid& Id, TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>& Promise);
+void UTbRefIfacesParentIfMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>> UTbRefIfacesParentIfMsgBusClient::StorePromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(const FGuid& Id);
 template bool UTbRefIfacesParentIfMsgBusClient::FulfillPromise<TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>>(const FGuid& Id, const TArray<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Value);
-template bool UTbRefIfacesParentIfMsgBusClient::StorePromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>(const FGuid& Id, TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>& Promise);
+template TSharedPtr<TPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>> UTbRefIfacesParentIfMsgBusClient::StorePromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>(const FGuid& Id);
 template bool UTbRefIfacesParentIfMsgBusClient::FulfillPromise<TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>>(const FGuid& Id, const TArray<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Value);
-template bool UTbRefIfacesParentIfMsgBusClient::StorePromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(const FGuid& Id, TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>& Promise);
+template TSharedPtr<TPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>> UTbRefIfacesParentIfMsgBusClient::StorePromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(const FGuid& Id);
 template bool UTbRefIfacesParentIfMsgBusClient::FulfillPromise<TScriptInterface<ITbIfaceimportEmptyIfInterface>>(const FGuid& Id, const TScriptInterface<ITbIfaceimportEmptyIfInterface>& Value);
-template bool UTbRefIfacesParentIfMsgBusClient::StorePromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(const FGuid& Id, TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>& Promise);
+template TSharedPtr<TPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>> UTbRefIfacesParentIfMsgBusClient::StorePromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(const FGuid& Id);
 template bool UTbRefIfacesParentIfMsgBusClient::FulfillPromise<TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>>(const FGuid& Id, const TScriptInterface<ITbRefIfacesSimpleLocalIfInterface>& Value);

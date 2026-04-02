@@ -406,8 +406,7 @@ bool UTbSimpleNoSignalsInterfaceMsgBusClient::FuncBool(bool bInParamBool)
 	auto msg = new FTbSimpleNoSignalsInterfaceFuncBoolRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->bParamBool = bInParamBool;
-	TPromise<bool> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<bool>(msg->ResponseId);
 
 	TbSimpleNoSignalsInterfaceMsgBusEndpoint->Send<FTbSimpleNoSignalsInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -415,7 +414,7 @@ bool UTbSimpleNoSignalsInterfaceMsgBusClient::FuncBool(bool bInParamBool)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleNoSignalsInterfaceMsgBusClient::OnFuncBoolReply(const FTbSimpleNoSignalsInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -460,33 +459,59 @@ void UTbSimpleNoSignalsInterfaceMsgBusClient::OnPropIntChanged(const FTbSimpleNo
 }
 
 template <typename ResultType>
-bool UTbSimpleNoSignalsInterfaceMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTbSimpleNoSignalsInterfaceMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTbSimpleNoSignalsInterfaceMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTbSimpleNoSignalsInterfaceMsgBusClient::StorePromise<bool>(const FGuid& Id, TPromise<bool>& Promise);
+void UTbSimpleNoSignalsInterfaceMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<bool>> UTbSimpleNoSignalsInterfaceMsgBusClient::StorePromise<bool>(const FGuid& Id);
 template bool UTbSimpleNoSignalsInterfaceMsgBusClient::FulfillPromise<bool>(const FGuid& Id, const bool& Value);

@@ -535,8 +535,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceMsgBusClient::FuncBool(
 	auto msg = new FTestbed1StructArrayInterfaceFuncBoolRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamBool = InParamBool;
-	TPromise<TArray<FTestbed1StructBool>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<FTestbed1StructBool>>(msg->ResponseId);
 
 	Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -544,7 +543,7 @@ TArray<FTestbed1StructBool> UTestbed1StructArrayInterfaceMsgBusClient::FuncBool(
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed1StructArrayInterfaceMsgBusClient::OnFuncBoolReply(const FTestbed1StructArrayInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -565,8 +564,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceMsgBusClient::FuncInt(co
 	auto msg = new FTestbed1StructArrayInterfaceFuncIntRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt = InParamInt;
-	TPromise<TArray<FTestbed1StructInt>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<FTestbed1StructInt>>(msg->ResponseId);
 
 	Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceFuncIntRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -574,7 +572,7 @@ TArray<FTestbed1StructInt> UTestbed1StructArrayInterfaceMsgBusClient::FuncInt(co
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed1StructArrayInterfaceMsgBusClient::OnFuncIntReply(const FTestbed1StructArrayInterfaceFuncIntReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -595,8 +593,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceMsgBusClient::FuncFloa
 	auto msg = new FTestbed1StructArrayInterfaceFuncFloatRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat = InParamFloat;
-	TPromise<TArray<FTestbed1StructFloat>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<FTestbed1StructFloat>>(msg->ResponseId);
 
 	Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceFuncFloatRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -604,7 +601,7 @@ TArray<FTestbed1StructFloat> UTestbed1StructArrayInterfaceMsgBusClient::FuncFloa
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed1StructArrayInterfaceMsgBusClient::OnFuncFloatReply(const FTestbed1StructArrayInterfaceFuncFloatReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -625,8 +622,7 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceMsgBusClient::FuncStr
 	auto msg = new FTestbed1StructArrayInterfaceFuncStringRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamString = InParamString;
-	TPromise<TArray<FTestbed1StructString>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<FTestbed1StructString>>(msg->ResponseId);
 
 	Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceFuncStringRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -634,7 +630,7 @@ TArray<FTestbed1StructString> UTestbed1StructArrayInterfaceMsgBusClient::FuncStr
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed1StructArrayInterfaceMsgBusClient::OnFuncStringReply(const FTestbed1StructArrayInterfaceFuncStringReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -655,8 +651,7 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceMsgBusClient::FuncEnum(const
 	auto msg = new FTestbed1StructArrayInterfaceFuncEnumRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamEnum = InParamEnum;
-	TPromise<TArray<ETestbed1Enum0>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<ETestbed1Enum0>>(msg->ResponseId);
 
 	Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceFuncEnumRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -664,7 +659,7 @@ TArray<ETestbed1Enum0> UTestbed1StructArrayInterfaceMsgBusClient::FuncEnum(const
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed1StructArrayInterfaceMsgBusClient::OnFuncEnumReply(const FTestbed1StructArrayInterfaceFuncEnumReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -828,41 +823,67 @@ void UTestbed1StructArrayInterfaceMsgBusClient::OnPropEnumChanged(const FTestbed
 }
 
 template <typename ResultType>
-bool UTestbed1StructArrayInterfaceMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTestbed1StructArrayInterfaceMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTestbed1StructArrayInterfaceMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<ETestbed1Enum0>>(const FGuid& Id, TPromise<TArray<ETestbed1Enum0>>& Promise);
+void UTestbed1StructArrayInterfaceMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<TArray<ETestbed1Enum0>>> UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<ETestbed1Enum0>>(const FGuid& Id);
 template bool UTestbed1StructArrayInterfaceMsgBusClient::FulfillPromise<TArray<ETestbed1Enum0>>(const FGuid& Id, const TArray<ETestbed1Enum0>& Value);
-template bool UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<FTestbed1StructBool>>(const FGuid& Id, TPromise<TArray<FTestbed1StructBool>>& Promise);
+template TSharedPtr<TPromise<TArray<FTestbed1StructBool>>> UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<FTestbed1StructBool>>(const FGuid& Id);
 template bool UTestbed1StructArrayInterfaceMsgBusClient::FulfillPromise<TArray<FTestbed1StructBool>>(const FGuid& Id, const TArray<FTestbed1StructBool>& Value);
-template bool UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<FTestbed1StructFloat>>(const FGuid& Id, TPromise<TArray<FTestbed1StructFloat>>& Promise);
+template TSharedPtr<TPromise<TArray<FTestbed1StructFloat>>> UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<FTestbed1StructFloat>>(const FGuid& Id);
 template bool UTestbed1StructArrayInterfaceMsgBusClient::FulfillPromise<TArray<FTestbed1StructFloat>>(const FGuid& Id, const TArray<FTestbed1StructFloat>& Value);
-template bool UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<FTestbed1StructInt>>(const FGuid& Id, TPromise<TArray<FTestbed1StructInt>>& Promise);
+template TSharedPtr<TPromise<TArray<FTestbed1StructInt>>> UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<FTestbed1StructInt>>(const FGuid& Id);
 template bool UTestbed1StructArrayInterfaceMsgBusClient::FulfillPromise<TArray<FTestbed1StructInt>>(const FGuid& Id, const TArray<FTestbed1StructInt>& Value);
-template bool UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<FTestbed1StructString>>(const FGuid& Id, TPromise<TArray<FTestbed1StructString>>& Promise);
+template TSharedPtr<TPromise<TArray<FTestbed1StructString>>> UTestbed1StructArrayInterfaceMsgBusClient::StorePromise<TArray<FTestbed1StructString>>(const FGuid& Id);
 template bool UTestbed1StructArrayInterfaceMsgBusClient::FulfillPromise<TArray<FTestbed1StructString>>(const FGuid& Id, const TArray<FTestbed1StructString>& Value);
