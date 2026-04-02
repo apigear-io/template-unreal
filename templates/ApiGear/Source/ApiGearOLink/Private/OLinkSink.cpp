@@ -1,4 +1,5 @@
 #include "OLinkSink.h"
+#include "Misc/ScopeLock.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientregistry.h"
 THIRD_PARTY_INCLUDES_END
@@ -16,82 +17,111 @@ FOLinkSink::FOLinkSink(const std::string& olinkObjectName)
 void FOLinkSink::olinkOnSignal(const std::string& signalId, const nlohmann::json& args)
 {
 	const std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	if (SignalEmittedFunc)
+	FSignalEmittedFunc LocalFunc;
 	{
-		SignalEmittedFunc(MemberName, args);
+		FScopeLock Lock(&CallbackMutex);
+		LocalFunc = SignalEmittedFunc;
+	}
+	if (LocalFunc)
+	{
+		LocalFunc(MemberName, args);
 	}
 }
 
 void FOLinkSink::olinkOnPropertyChanged(const std::string& propertyId, const nlohmann::json& value)
 {
 	const std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(propertyId);
-	if (PropertyChangedFunc)
+	FPropertyChangedFunc LocalFunc;
 	{
-		PropertyChangedFunc({{MemberName, value}});
+		FScopeLock Lock(&CallbackMutex);
+		LocalFunc = PropertyChangedFunc;
+	}
+	if (LocalFunc)
+	{
+		LocalFunc({{MemberName, value}});
 	}
 }
 
 void FOLinkSink::olinkOnInit(const std::string& objectId, const nlohmann::json& props, ApiGear::ObjectLink::IClientNode* node)
 {
 	m_node = node;
-	if (OnInitCallback)
+	FInitializedFromSourceCallback LocalInitFunc;
+	FPropertyChangedFunc LocalPropFunc;
 	{
-		OnInitCallback();
+		FScopeLock Lock(&CallbackMutex);
+		LocalInitFunc = OnInitCallback;
+		LocalPropFunc = PropertyChangedFunc;
 	}
-
-	if (PropertyChangedFunc)
+	if (LocalInitFunc)
 	{
-		PropertyChangedFunc(props);
+		LocalInitFunc();
+	}
+	if (LocalPropFunc)
+	{
+		LocalPropFunc(props);
 	}
 }
 
 void FOLinkSink::olinkOnRelease()
 {
-	if (OnReleaseCallback)
+	FSourceConnectionReleasedCallback LocalFunc;
 	{
-		OnReleaseCallback();
+		FScopeLock Lock(&CallbackMutex);
+		LocalFunc = OnReleaseCallback;
+	}
+	if (LocalFunc)
+	{
+		LocalFunc();
 	}
 	m_node = nullptr;
 }
 
 void FOLinkSink::setOnPropertyChangedCallback(FPropertyChangedFunc func)
 {
+	FScopeLock Lock(&CallbackMutex);
 	PropertyChangedFunc = func;
 }
 
 void FOLinkSink::setOnSignalEmittedCallback(FSignalEmittedFunc func)
 {
+	FScopeLock Lock(&CallbackMutex);
 	SignalEmittedFunc = func;
 }
 
 void FOLinkSink::setOnInitCallback(FInitializedFromSourceCallback func)
 {
+	FScopeLock Lock(&CallbackMutex);
 	OnInitCallback = func;
 }
 
 void FOLinkSink::setOnReleaseCallback(FSourceConnectionReleasedCallback func)
 {
+	FScopeLock Lock(&CallbackMutex);
 	OnReleaseCallback = func;
 }
 
 // reset callbacks
 void FOLinkSink::resetOnInitCallback()
 {
+	FScopeLock Lock(&CallbackMutex);
 	OnInitCallback = nullptr;
 }
 
 void FOLinkSink::resetOnReleaseCallback()
 {
+	FScopeLock Lock(&CallbackMutex);
 	OnReleaseCallback = nullptr;
 }
 
 void FOLinkSink::resetOnPropertyChangedCallback()
 {
+	FScopeLock Lock(&CallbackMutex);
 	PropertyChangedFunc = nullptr;
 }
 
 void FOLinkSink::resetOnSignalEmittedCallback()
 {
+	FScopeLock Lock(&CallbackMutex);
 	SignalEmittedFunc = nullptr;
 }
 
