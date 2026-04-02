@@ -18,25 +18,26 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig1Signal(int32 Param1)
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnSig1Signal.Broadcast(Param1);
-	for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy, Param1]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnSig1Signal.Broadcast(Param1);
+		for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnSig1Signal(Param1);
+				if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnSig1Signal(Param1);
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), BPSubscribersCopy, Param1]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnSig1SignalBP.Broadcast(Param1);
-		}
-
+		WeakPtr.Get()->OnSig1SignalBP.Broadcast(Param1);
 		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -46,19 +47,16 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig1Signal(int32 Param1)
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
 
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 
@@ -76,25 +74,26 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig2Signal(int32 Param1, int
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnSig2Signal.Broadcast(Param1, Param2);
-	for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy, Param1, Param2]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnSig2Signal.Broadcast(Param1, Param2);
+		for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnSig2Signal(Param1, Param2);
+				if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnSig2Signal(Param1, Param2);
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), BPSubscribersCopy, Param1, Param2]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnSig2SignalBP.Broadcast(Param1, Param2);
-		}
-
+		WeakPtr.Get()->OnSig2SignalBP.Broadcast(Param1, Param2);
 		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -104,19 +103,16 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig2Signal(int32 Param1, int
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
 
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 
@@ -134,25 +130,26 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig3Signal(int32 Param1, int
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnSig3Signal.Broadcast(Param1, Param2, Param3);
-	for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy, Param1, Param2, Param3]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnSig3Signal.Broadcast(Param1, Param2, Param3);
+		for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnSig3Signal(Param1, Param2, Param3);
+				if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnSig3Signal(Param1, Param2, Param3);
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), BPSubscribersCopy, Param1, Param2, Param3]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnSig3SignalBP.Broadcast(Param1, Param2, Param3);
-		}
-
+		WeakPtr.Get()->OnSig3SignalBP.Broadcast(Param1, Param2, Param3);
 		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -162,19 +159,16 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig3Signal(int32 Param1, int
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
 
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 
@@ -192,25 +186,26 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig4Signal(int32 Param1, int
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnSig4Signal.Broadcast(Param1, Param2, Param3, Param4);
-	for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy, Param1, Param2, Param3, Param4]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnSig4Signal.Broadcast(Param1, Param2, Param3, Param4);
+		for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnSig4Signal(Param1, Param2, Param3, Param4);
+				if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnSig4Signal(Param1, Param2, Param3, Param4);
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), BPSubscribersCopy, Param1, Param2, Param3, Param4]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnSig4SignalBP.Broadcast(Param1, Param2, Param3, Param4);
-		}
-
+		WeakPtr.Get()->OnSig4SignalBP.Broadcast(Param1, Param2, Param3, Param4);
 		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -220,19 +215,16 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastSig4Signal(int32 Param1, int
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
 
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 
@@ -249,25 +241,26 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayN
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnProp1Changed.Broadcast(InProp1);
-	for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy, InProp1]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnProp1Changed.Broadcast(InProp1);
+		for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnProp1Changed(InProp1);
+				if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnProp1Changed(InProp1);
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), BPSubscribersCopy, InProp1]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnProp1ChangedBP.Broadcast(InProp1);
-		}
-
+		WeakPtr.Get()->OnProp1ChangedBP.Broadcast(InProp1);
 		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -277,18 +270,16 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayN
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
+
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 
@@ -305,25 +296,26 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayN
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnProp2Changed.Broadcast(InProp2);
-	for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy, InProp2]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnProp2Changed.Broadcast(InProp2);
+		for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnProp2Changed(InProp2);
+				if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnProp2Changed(InProp2);
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), BPSubscribersCopy, InProp2]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnProp2ChangedBP.Broadcast(InProp2);
-		}
-
+		WeakPtr.Get()->OnProp2ChangedBP.Broadcast(InProp2);
 		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -333,18 +325,16 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp2Changed(UPARAM(DisplayN
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
+
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 
@@ -361,25 +351,26 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayN
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnProp3Changed.Broadcast(InProp3);
-	for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy, InProp3]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnProp3Changed.Broadcast(InProp3);
+		for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnProp3Changed(InProp3);
+				if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnProp3Changed(InProp3);
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), BPSubscribersCopy, InProp3]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnProp3ChangedBP.Broadcast(InProp3);
-		}
-
+		WeakPtr.Get()->OnProp3ChangedBP.Broadcast(InProp3);
 		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -389,18 +380,16 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp3Changed(UPARAM(DisplayN
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
+
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 
@@ -417,25 +406,26 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp4Changed(UPARAM(DisplayN
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnProp4Changed.Broadcast(InProp4);
-	for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy, InProp4]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnProp4Changed.Broadcast(InProp4);
+		for (const TWeakInterfacePtr<ITestbed2ManyParamInterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnProp4Changed(InProp4);
+				if (ITestbed2ManyParamInterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnProp4Changed(InProp4);
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTestbed2ManyParamInterfacePublisher>(this), BPSubscribersCopy, InProp4]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnProp4ChangedBP.Broadcast(InProp4);
-		}
-
+		WeakPtr.Get()->OnProp4ChangedBP.Broadcast(InProp4);
 		for (const TScriptInterface<ITestbed2ManyParamInterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -445,18 +435,16 @@ void UTestbed2ManyParamInterfacePublisher::BroadcastProp4Changed(UPARAM(DisplayN
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
+
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 

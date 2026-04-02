@@ -18,25 +18,26 @@ void UTbSame1SameEnum1InterfacePublisher::BroadcastSig1Signal(ETbSame1Enum1 Para
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnSig1Signal.Broadcast(Param1);
-	for (const TWeakInterfacePtr<ITbSame1SameEnum1InterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTbSame1SameEnum1InterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy, Param1]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITbSame1SameEnum1InterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnSig1Signal.Broadcast(Param1);
+		for (const TWeakInterfacePtr<ITbSame1SameEnum1InterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnSig1Signal(Param1);
+				if (ITbSame1SameEnum1InterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnSig1Signal(Param1);
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTbSame1SameEnum1InterfacePublisher>(this), BPSubscribersCopy, Param1]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnSig1SignalBP.Broadcast(Param1);
-		}
-
+		WeakPtr.Get()->OnSig1SignalBP.Broadcast(Param1);
 		for (const TScriptInterface<ITbSame1SameEnum1InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -46,19 +47,16 @@ void UTbSame1SameEnum1InterfacePublisher::BroadcastSig1Signal(ETbSame1Enum1 Para
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
 
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 
@@ -75,25 +73,26 @@ void UTbSame1SameEnum1InterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayNa
 		BPSubscribersCopy = BPSubscribers;
 	}
 
-	OnProp1Changed.Broadcast(InProp1);
-	for (const TWeakInterfacePtr<ITbSame1SameEnum1InterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+	auto BroadcastAll = [WeakPtr = TWeakObjectPtr<UTbSame1SameEnum1InterfacePublisher>(this), SubscribersCopy, BPSubscribersCopy, InProp1]()
 	{
-		if (Subscriber.IsValid())
+		if (!WeakPtr.IsValid())
 		{
-			if (ITbSame1SameEnum1InterfaceSubscriberInterface* Iface = Subscriber.Get())
+			return;
+		}
+
+		WeakPtr.Get()->OnProp1Changed.Broadcast(InProp1);
+		for (const TWeakInterfacePtr<ITbSame1SameEnum1InterfaceSubscriberInterface>& Subscriber : SubscribersCopy)
+		{
+			if (Subscriber.IsValid())
 			{
-				Iface->OnProp1Changed(InProp1);
+				if (ITbSame1SameEnum1InterfaceSubscriberInterface* Iface = Subscriber.Get())
+				{
+					Iface->OnProp1Changed(InProp1);
+				}
 			}
 		}
-	}
 
-	auto BroadCastOnGameThread = [WeakPtr = TWeakObjectPtr<UTbSame1SameEnum1InterfacePublisher>(this), BPSubscribersCopy, InProp1]()
-	{
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->OnProp1ChangedBP.Broadcast(InProp1);
-		}
-
+		WeakPtr.Get()->OnProp1ChangedBP.Broadcast(InProp1);
 		for (const TScriptInterface<ITbSame1SameEnum1InterfaceBPSubscriberInterface>& Subscriber : BPSubscribersCopy)
 		{
 			UObject* Obj = Subscriber.GetObject();
@@ -103,18 +102,16 @@ void UTbSame1SameEnum1InterfacePublisher::BroadcastProp1Changed(UPARAM(DisplayNa
 			}
 		}
 
-		if (WeakPtr.IsValid())
-		{
-			WeakPtr.Get()->CleanUpSubscribers();
-		}
+		WeakPtr.Get()->CleanUpSubscribers();
 	};
+
 	if (IsInGameThread())
 	{
-		BroadCastOnGameThread();
+		BroadcastAll();
 	}
 	else
 	{
-		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadCastOnGameThread));
+		AsyncTask(ENamedThreads::GameThread, MoveTemp(BroadcastAll));
 	}
 }
 
