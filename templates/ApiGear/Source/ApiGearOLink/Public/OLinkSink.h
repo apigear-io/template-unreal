@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Templates/Function.h"
+#include "HAL/CriticalSection.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/iclientnode.h"
 #include "olink/iobjectsink.h"
@@ -59,4 +60,6 @@ private:
 
 	// Stores callback executed when sink is unlinked.
 	FSourceConnectionReleasedCallback OnReleaseCallback;
+
+	mutable FCriticalSection CallbackMutex;
 };
