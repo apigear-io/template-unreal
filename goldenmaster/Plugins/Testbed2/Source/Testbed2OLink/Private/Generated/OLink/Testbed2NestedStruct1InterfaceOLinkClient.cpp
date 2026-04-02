@@ -56,26 +56,39 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::Initialize(FSubsystemCollection
 {
 	Super::Initialize(Collection);
 
-	m_sink->setOnInitCallback([this]()
+	TWeakObjectPtr<UTestbed2NestedStruct1InterfaceOLinkClient> weak(this);
+	m_sink->setOnInitCallback([weak]()
 		{
-		_SubscriptionStatusChanged.Broadcast(true);
-		_SubscriptionStatusChangedBP.Broadcast(true);
+		if (auto* self = weak.Get())
+		{
+			self->_SubscriptionStatusChanged.Broadcast(true);
+			self->_SubscriptionStatusChangedBP.Broadcast(true);
+		}
 	});
-	m_sink->setOnReleaseCallback([this]()
+	m_sink->setOnReleaseCallback([weak]()
 		{
-		_SubscriptionStatusChanged.Broadcast(false);
-		_SubscriptionStatusChangedBP.Broadcast(false);
+		if (auto* self = weak.Get())
+		{
+			self->_SubscriptionStatusChanged.Broadcast(false);
+			self->_SubscriptionStatusChangedBP.Broadcast(false);
+		}
 	});
 
-	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
+	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [weak](const nlohmann::json& props)
 	{
-		this->applyState(props);
+		if (auto* self = weak.Get())
+		{
+			self->applyState(props);
+		}
 	};
 	m_sink->setOnPropertyChangedCallback(PropertyChangedFunc);
 
-	FOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
+	FOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [weak](const std::string& signalName, const nlohmann::json& args)
 	{
-		this->emitSignal(signalName, args);
+		if (auto* self = weak.Get())
+		{
+			self->emitSignal(signalName, args);
+		}
 	};
 	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
 
@@ -180,7 +193,7 @@ void UTestbed2NestedStruct1InterfaceOLinkClient::FuncNoReturnValue(const FTestbe
 
 		return;
 	}
-	ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct1InterfaceStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
+	ApiGear::ObjectLink::InvokeReplyFunc GetNestedStruct1InterfaceStateFunc = [](ApiGear::ObjectLink::InvokeReplyArg arg) {};
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "funcNoReturnValue");
 	m_sink->GetNode()->invokeRemote(memberId, {Param1}, GetNestedStruct1InterfaceStateFunc);
 }

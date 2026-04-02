@@ -56,26 +56,39 @@ void UTbNamesNamEsOLinkClient::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
-	m_sink->setOnInitCallback([this]()
+	TWeakObjectPtr<UTbNamesNamEsOLinkClient> weak(this);
+	m_sink->setOnInitCallback([weak]()
 		{
-		_SubscriptionStatusChanged.Broadcast(true);
-		_SubscriptionStatusChangedBP.Broadcast(true);
+		if (auto* self = weak.Get())
+		{
+			self->_SubscriptionStatusChanged.Broadcast(true);
+			self->_SubscriptionStatusChangedBP.Broadcast(true);
+		}
 	});
-	m_sink->setOnReleaseCallback([this]()
+	m_sink->setOnReleaseCallback([weak]()
 		{
-		_SubscriptionStatusChanged.Broadcast(false);
-		_SubscriptionStatusChangedBP.Broadcast(false);
+		if (auto* self = weak.Get())
+		{
+			self->_SubscriptionStatusChanged.Broadcast(false);
+			self->_SubscriptionStatusChangedBP.Broadcast(false);
+		}
 	});
 
-	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [this](const nlohmann::json& props)
+	FOLinkSink::FPropertyChangedFunc PropertyChangedFunc = [weak](const nlohmann::json& props)
 	{
-		this->applyState(props);
+		if (auto* self = weak.Get())
+		{
+			self->applyState(props);
+		}
 	};
 	m_sink->setOnPropertyChangedCallback(PropertyChangedFunc);
 
-	FOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [this](const std::string& signalName, const nlohmann::json& args)
+	FOLinkSink::FSignalEmittedFunc SignalEmittedFunc = [weak](const std::string& signalName, const nlohmann::json& args)
 	{
-		this->emitSignal(signalName, args);
+		if (auto* self = weak.Get())
+		{
+			self->emitSignal(signalName, args);
+		}
 	};
 	m_sink->setOnSignalEmittedCallback(SignalEmittedFunc);
 
@@ -270,7 +283,7 @@ void UTbNamesNamEsOLinkClient::SomeFunction(bool bSomeParam)
 
 		return;
 	}
-	ApiGear::ObjectLink::InvokeReplyFunc GetNamEsStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
+	ApiGear::ObjectLink::InvokeReplyFunc GetNamEsStateFunc = [](ApiGear::ObjectLink::InvokeReplyArg arg) {};
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "SOME_FUNCTION");
 	m_sink->GetNode()->invokeRemote(memberId, {bSomeParam}, GetNamEsStateFunc);
 }
@@ -284,7 +297,7 @@ void UTbNamesNamEsOLinkClient::SomeFunction2(bool bSomeParam)
 
 		return;
 	}
-	ApiGear::ObjectLink::InvokeReplyFunc GetNamEsStateFunc = [this](ApiGear::ObjectLink::InvokeReplyArg arg) {};
+	ApiGear::ObjectLink::InvokeReplyFunc GetNamEsStateFunc = [](ApiGear::ObjectLink::InvokeReplyArg arg) {};
 	static const auto memberId = ApiGear::ObjectLink::Name::createMemberId(m_sink->olinkObjectName(), "Some_Function2");
 	m_sink->GetNode()->invokeRemote(memberId, {bSomeParam}, GetNamEsStateFunc);
 }
