@@ -129,6 +129,9 @@ void {{$Class}}::_Disconnect()
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
+{{- if len .Interface.Operations }}
+	CancelAllPromises();
+{{- end }}
 	{{$Iface}}MsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
@@ -220,9 +223,13 @@ void {{$Class}}::_OnHeartbeat()
 		if (DeltaMS > 2 * _HeartbeatIntervalMS)
 		{
 			// service seems to be dead or not responding - reset connection
+{{- if len .Interface.Operations }}
+			CancelAllPromises();
+{{- end }}
 			ServiceAddress.Invalidate();
 			_LastHbTimestamp = 0.0;
 			_ConnectionStatusChanged.Broadcast(false);
+			_ConnectionStatusChangedBP.Broadcast(false);
 		}
 	}
 
@@ -299,6 +306,9 @@ void {{$Class}}::OnServiceClosedConnection(const F{{$Iface}}ServiceDisconnectMes
 		return;
 	}
 
+{{- if len .Interface.Operations }}
+	CancelAllPromises();
+{{- end }}
 	_LastHbTimestamp = 0.0;
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);

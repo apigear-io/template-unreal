@@ -142,7 +142,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::_Disconnect()
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-
+	CancelAllPromises();
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
@@ -298,9 +298,11 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::_OnHeartbeat()
 		if (DeltaMS > 2 * _HeartbeatIntervalMS)
 		{
 			// service seems to be dead or not responding - reset connection
+			CancelAllPromises();
 			ServiceAddress.Invalidate();
 			_LastHbTimestamp = 0.0;
 			_ConnectionStatusChanged.Broadcast(false);
+			_ConnectionStatusChangedBP.Broadcast(false);
 		}
 	}
 
@@ -376,7 +378,7 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnServiceClosedConnection(const 
 	{
 		return;
 	}
-
+	CancelAllPromises();
 	_LastHbTimestamp = 0.0;
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);

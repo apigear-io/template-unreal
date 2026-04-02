@@ -121,7 +121,6 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::_Disconnect()
 		TArrayBuilder<FMessageAddress>().Add(ServiceAddress),
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
-
 	TbSimpleNoOperationsInterfaceMsgBusEndpoint.Reset();
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
@@ -217,6 +216,7 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::_OnHeartbeat()
 			ServiceAddress.Invalidate();
 			_LastHbTimestamp = 0.0;
 			_ConnectionStatusChanged.Broadcast(false);
+			_ConnectionStatusChangedBP.Broadcast(false);
 		}
 	}
 
@@ -292,7 +292,6 @@ void UTbSimpleNoOperationsInterfaceMsgBusClient::OnServiceClosedConnection(const
 	{
 		return;
 	}
-
 	_LastHbTimestamp = 0.0;
 	ServiceAddress.Invalidate();
 	_ConnectionStatusChanged.Broadcast(false);
