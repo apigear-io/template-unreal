@@ -697,8 +697,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncBool(const TArray<bo
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncBoolRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamBool = InParamBool;
-	TPromise<TArray<bool>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<bool>>(msg->ResponseId);
 
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleArrayInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -706,7 +705,7 @@ TArray<bool> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncBool(const TArray<bo
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnFuncBoolReply(const FTbSimpleSimpleArrayInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -727,8 +726,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncInt(const TArray<in
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncIntRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt = InParamInt;
-	TPromise<TArray<int32>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<int32>>(msg->ResponseId);
 
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleArrayInterfaceFuncIntRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -736,7 +734,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncInt(const TArray<in
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnFuncIntReply(const FTbSimpleSimpleArrayInterfaceFuncIntReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -757,8 +755,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncInt32(const TArray<
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncInt32RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt32 = InParamInt32;
-	TPromise<TArray<int32>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<int32>>(msg->ResponseId);
 
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleArrayInterfaceFuncInt32RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -766,7 +763,7 @@ TArray<int32> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncInt32(const TArray<
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnFuncInt32Reply(const FTbSimpleSimpleArrayInterfaceFuncInt32ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -787,8 +784,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncInt64(const TArray<
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncInt64RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt64 = InParamInt64;
-	TPromise<TArray<int64>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<int64>>(msg->ResponseId);
 
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleArrayInterfaceFuncInt64RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -796,7 +792,7 @@ TArray<int64> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncInt64(const TArray<
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnFuncInt64Reply(const FTbSimpleSimpleArrayInterfaceFuncInt64ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -817,8 +813,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncFloat(const TArray<
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncFloatRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat = InParamFloat;
-	TPromise<TArray<float>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<float>>(msg->ResponseId);
 
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleArrayInterfaceFuncFloatRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -826,7 +821,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncFloat(const TArray<
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnFuncFloatReply(const FTbSimpleSimpleArrayInterfaceFuncFloatReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -847,8 +842,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncFloat32(const TArra
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncFloat32RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat32 = InParamFloat32;
-	TPromise<TArray<float>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<float>>(msg->ResponseId);
 
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleArrayInterfaceFuncFloat32RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -856,7 +850,7 @@ TArray<float> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncFloat32(const TArra
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnFuncFloat32Reply(const FTbSimpleSimpleArrayInterfaceFuncFloat32ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -877,8 +871,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncFloat64(const TArr
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncFloat64RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat = InParamFloat;
-	TPromise<TArray<double>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<double>>(msg->ResponseId);
 
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleArrayInterfaceFuncFloat64RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -886,7 +879,7 @@ TArray<double> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncFloat64(const TArr
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnFuncFloat64Reply(const FTbSimpleSimpleArrayInterfaceFuncFloat64ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -907,8 +900,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncString(const TArr
 	auto msg = new FTbSimpleSimpleArrayInterfaceFuncStringRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamString = InParamString;
-	TPromise<TArray<FString>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<FString>>(msg->ResponseId);
 
 	TbSimpleSimpleArrayInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleArrayInterfaceFuncStringRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -916,7 +908,7 @@ TArray<FString> UTbSimpleSimpleArrayInterfaceMsgBusClient::FuncString(const TArr
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnFuncStringReply(const FTbSimpleSimpleArrayInterfaceFuncStringReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -1191,43 +1183,69 @@ void UTbSimpleSimpleArrayInterfaceMsgBusClient::OnPropReadOnlyStringChanged(cons
 }
 
 template <typename ResultType>
-bool UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTbSimpleSimpleArrayInterfaceMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<FString>>(const FGuid& Id, TPromise<TArray<FString>>& Promise);
+void UTbSimpleSimpleArrayInterfaceMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<TArray<FString>>> UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<FString>>(const FGuid& Id);
 template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::FulfillPromise<TArray<FString>>(const FGuid& Id, const TArray<FString>& Value);
-template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<bool>>(const FGuid& Id, TPromise<TArray<bool>>& Promise);
+template TSharedPtr<TPromise<TArray<bool>>> UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<bool>>(const FGuid& Id);
 template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::FulfillPromise<TArray<bool>>(const FGuid& Id, const TArray<bool>& Value);
-template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<double>>(const FGuid& Id, TPromise<TArray<double>>& Promise);
+template TSharedPtr<TPromise<TArray<double>>> UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<double>>(const FGuid& Id);
 template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::FulfillPromise<TArray<double>>(const FGuid& Id, const TArray<double>& Value);
-template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<float>>(const FGuid& Id, TPromise<TArray<float>>& Promise);
+template TSharedPtr<TPromise<TArray<float>>> UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<float>>(const FGuid& Id);
 template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::FulfillPromise<TArray<float>>(const FGuid& Id, const TArray<float>& Value);
-template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<int32>>(const FGuid& Id, TPromise<TArray<int32>>& Promise);
+template TSharedPtr<TPromise<TArray<int32>>> UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<int32>>(const FGuid& Id);
 template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::FulfillPromise<TArray<int32>>(const FGuid& Id, const TArray<int32>& Value);
-template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<int64>>(const FGuid& Id, TPromise<TArray<int64>>& Promise);
+template TSharedPtr<TPromise<TArray<int64>>> UTbSimpleSimpleArrayInterfaceMsgBusClient::StorePromise<TArray<int64>>(const FGuid& Id);
 template bool UTbSimpleSimpleArrayInterfaceMsgBusClient::FulfillPromise<TArray<int64>>(const FGuid& Id, const TArray<int64>& Value);

@@ -704,8 +704,7 @@ bool UTbSimpleSimpleInterfaceMsgBusClient::FuncNoParams()
 
 	auto msg = new FTbSimpleSimpleInterfaceFuncNoParamsRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
-	TPromise<bool> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<bool>(msg->ResponseId);
 
 	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncNoParamsRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -713,7 +712,7 @@ bool UTbSimpleSimpleInterfaceMsgBusClient::FuncNoParams()
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncNoParamsReply(const FTbSimpleSimpleInterfaceFuncNoParamsReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -734,8 +733,7 @@ bool UTbSimpleSimpleInterfaceMsgBusClient::FuncBool(bool bInParamBool)
 	auto msg = new FTbSimpleSimpleInterfaceFuncBoolRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->bParamBool = bInParamBool;
-	TPromise<bool> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<bool>(msg->ResponseId);
 
 	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncBoolRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -743,7 +741,7 @@ bool UTbSimpleSimpleInterfaceMsgBusClient::FuncBool(bool bInParamBool)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncBoolReply(const FTbSimpleSimpleInterfaceFuncBoolReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -764,8 +762,7 @@ int32 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt(int32 InParamInt)
 	auto msg = new FTbSimpleSimpleInterfaceFuncIntRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt = InParamInt;
-	TPromise<int32> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<int32>(msg->ResponseId);
 
 	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncIntRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -773,7 +770,7 @@ int32 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt(int32 InParamInt)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncIntReply(const FTbSimpleSimpleInterfaceFuncIntReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -794,8 +791,7 @@ int32 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt32(int32 InParamInt32)
 	auto msg = new FTbSimpleSimpleInterfaceFuncInt32RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt32 = InParamInt32;
-	TPromise<int32> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<int32>(msg->ResponseId);
 
 	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncInt32RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -803,7 +799,7 @@ int32 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt32(int32 InParamInt32)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncInt32Reply(const FTbSimpleSimpleInterfaceFuncInt32ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -824,8 +820,7 @@ int64 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt64(int64 InParamInt64)
 	auto msg = new FTbSimpleSimpleInterfaceFuncInt64RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamInt64 = InParamInt64;
-	TPromise<int64> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<int64>(msg->ResponseId);
 
 	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncInt64RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -833,7 +828,7 @@ int64 UTbSimpleSimpleInterfaceMsgBusClient::FuncInt64(int64 InParamInt64)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncInt64Reply(const FTbSimpleSimpleInterfaceFuncInt64ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -854,8 +849,7 @@ float UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat(float InParamFloat)
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloatRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat = InParamFloat;
-	TPromise<float> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<float>(msg->ResponseId);
 
 	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncFloatRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -863,7 +857,7 @@ float UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat(float InParamFloat)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloatReply(const FTbSimpleSimpleInterfaceFuncFloatReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -884,8 +878,7 @@ float UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat32(float InParamFloat32)
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloat32RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat32 = InParamFloat32;
-	TPromise<float> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<float>(msg->ResponseId);
 
 	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncFloat32RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -893,7 +886,7 @@ float UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat32(float InParamFloat32)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloat32Reply(const FTbSimpleSimpleInterfaceFuncFloat32ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -914,8 +907,7 @@ double UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat64(double InParamFloat)
 	auto msg = new FTbSimpleSimpleInterfaceFuncFloat64RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamFloat = InParamFloat;
-	TPromise<double> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<double>(msg->ResponseId);
 
 	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncFloat64RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -923,7 +915,7 @@ double UTbSimpleSimpleInterfaceMsgBusClient::FuncFloat64(double InParamFloat)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncFloat64Reply(const FTbSimpleSimpleInterfaceFuncFloat64ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -944,8 +936,7 @@ FString UTbSimpleSimpleInterfaceMsgBusClient::FuncString(const FString& InParamS
 	auto msg = new FTbSimpleSimpleInterfaceFuncStringRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->ParamString = InParamString;
-	TPromise<FString> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<FString>(msg->ResponseId);
 
 	TbSimpleSimpleInterfaceMsgBusEndpoint->Send<FTbSimpleSimpleInterfaceFuncStringRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -953,7 +944,7 @@ FString UTbSimpleSimpleInterfaceMsgBusClient::FuncString(const FString& InParamS
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSimpleSimpleInterfaceMsgBusClient::OnFuncStringReply(const FTbSimpleSimpleInterfaceFuncStringReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -1210,43 +1201,69 @@ void UTbSimpleSimpleInterfaceMsgBusClient::OnPropStringChanged(const FTbSimpleSi
 }
 
 template <typename ResultType>
-bool UTbSimpleSimpleInterfaceMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTbSimpleSimpleInterfaceMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTbSimpleSimpleInterfaceMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<FString>(const FGuid& Id, TPromise<FString>& Promise);
+void UTbSimpleSimpleInterfaceMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<FString>> UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<FString>(const FGuid& Id);
 template bool UTbSimpleSimpleInterfaceMsgBusClient::FulfillPromise<FString>(const FGuid& Id, const FString& Value);
-template bool UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<bool>(const FGuid& Id, TPromise<bool>& Promise);
+template TSharedPtr<TPromise<bool>> UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<bool>(const FGuid& Id);
 template bool UTbSimpleSimpleInterfaceMsgBusClient::FulfillPromise<bool>(const FGuid& Id, const bool& Value);
-template bool UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<double>(const FGuid& Id, TPromise<double>& Promise);
+template TSharedPtr<TPromise<double>> UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<double>(const FGuid& Id);
 template bool UTbSimpleSimpleInterfaceMsgBusClient::FulfillPromise<double>(const FGuid& Id, const double& Value);
-template bool UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<float>(const FGuid& Id, TPromise<float>& Promise);
+template TSharedPtr<TPromise<float>> UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<float>(const FGuid& Id);
 template bool UTbSimpleSimpleInterfaceMsgBusClient::FulfillPromise<float>(const FGuid& Id, const float& Value);
-template bool UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<int32>(const FGuid& Id, TPromise<int32>& Promise);
+template TSharedPtr<TPromise<int32>> UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<int32>(const FGuid& Id);
 template bool UTbSimpleSimpleInterfaceMsgBusClient::FulfillPromise<int32>(const FGuid& Id, const int32& Value);
-template bool UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<int64>(const FGuid& Id, TPromise<int64>& Promise);
+template TSharedPtr<TPromise<int64>> UTbSimpleSimpleInterfaceMsgBusClient::StorePromise<int64>(const FGuid& Id);
 template bool UTbSimpleSimpleInterfaceMsgBusClient::FulfillPromise<int64>(const FGuid& Id, const int64& Value);

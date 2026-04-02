@@ -339,8 +339,7 @@ int32 UTbRefIfacesSimpleLocalIfMsgBusClient::IntMethod(int32 InParam)
 	auto msg = new FTbRefIfacesSimpleLocalIfIntMethodRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param = InParam;
-	TPromise<int32> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<int32>(msg->ResponseId);
 
 	TbRefIfacesSimpleLocalIfMsgBusEndpoint->Send<FTbRefIfacesSimpleLocalIfIntMethodRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -348,7 +347,7 @@ int32 UTbRefIfacesSimpleLocalIfMsgBusClient::IntMethod(int32 InParam)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbRefIfacesSimpleLocalIfMsgBusClient::OnIntMethodReply(const FTbRefIfacesSimpleLocalIfIntMethodReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -388,33 +387,59 @@ void UTbRefIfacesSimpleLocalIfMsgBusClient::OnIntPropertyChanged(const FTbRefIfa
 }
 
 template <typename ResultType>
-bool UTbRefIfacesSimpleLocalIfMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTbRefIfacesSimpleLocalIfMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTbRefIfacesSimpleLocalIfMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTbRefIfacesSimpleLocalIfMsgBusClient::StorePromise<int32>(const FGuid& Id, TPromise<int32>& Promise);
+void UTbRefIfacesSimpleLocalIfMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<int32>> UTbRefIfacesSimpleLocalIfMsgBusClient::StorePromise<int32>(const FGuid& Id);
 template bool UTbRefIfacesSimpleLocalIfMsgBusClient::FulfillPromise<int32>(const FGuid& Id, const int32& Value);

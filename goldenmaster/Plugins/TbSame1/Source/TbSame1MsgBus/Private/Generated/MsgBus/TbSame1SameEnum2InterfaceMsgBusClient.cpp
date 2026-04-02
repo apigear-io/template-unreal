@@ -388,8 +388,7 @@ ETbSame1Enum1 UTbSame1SameEnum2InterfaceMsgBusClient::Func1(ETbSame1Enum1 InPara
 	auto msg = new FTbSame1SameEnum2InterfaceFunc1RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param1 = InParam1;
-	TPromise<ETbSame1Enum1> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<ETbSame1Enum1>(msg->ResponseId);
 
 	TbSame1SameEnum2InterfaceMsgBusEndpoint->Send<FTbSame1SameEnum2InterfaceFunc1RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -397,7 +396,7 @@ ETbSame1Enum1 UTbSame1SameEnum2InterfaceMsgBusClient::Func1(ETbSame1Enum1 InPara
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSame1SameEnum2InterfaceMsgBusClient::OnFunc1Reply(const FTbSame1SameEnum2InterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -419,8 +418,7 @@ ETbSame1Enum1 UTbSame1SameEnum2InterfaceMsgBusClient::Func2(ETbSame1Enum1 InPara
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param1 = InParam1;
 	msg->Param2 = InParam2;
-	TPromise<ETbSame1Enum1> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<ETbSame1Enum1>(msg->ResponseId);
 
 	TbSame1SameEnum2InterfaceMsgBusEndpoint->Send<FTbSame1SameEnum2InterfaceFunc2RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -428,7 +426,7 @@ ETbSame1Enum1 UTbSame1SameEnum2InterfaceMsgBusClient::Func2(ETbSame1Enum1 InPara
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTbSame1SameEnum2InterfaceMsgBusClient::OnFunc2Reply(const FTbSame1SameEnum2InterfaceFunc2ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -499,33 +497,59 @@ void UTbSame1SameEnum2InterfaceMsgBusClient::OnProp2Changed(const FTbSame1SameEn
 }
 
 template <typename ResultType>
-bool UTbSame1SameEnum2InterfaceMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTbSame1SameEnum2InterfaceMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTbSame1SameEnum2InterfaceMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTbSame1SameEnum2InterfaceMsgBusClient::StorePromise<ETbSame1Enum1>(const FGuid& Id, TPromise<ETbSame1Enum1>& Promise);
+void UTbSame1SameEnum2InterfaceMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<ETbSame1Enum1>> UTbSame1SameEnum2InterfaceMsgBusClient::StorePromise<ETbSame1Enum1>(const FGuid& Id);
 template bool UTbSame1SameEnum2InterfaceMsgBusClient::FulfillPromise<ETbSame1Enum1>(const FGuid& Id, const ETbSame1Enum1& Value);

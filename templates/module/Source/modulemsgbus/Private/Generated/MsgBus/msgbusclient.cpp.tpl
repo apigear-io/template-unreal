@@ -392,8 +392,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 {{- end }}
 
 	{{- if not .Return.IsVoid }}
-	TPromise<{{$returnVal}}> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<{{$returnVal}}>(msg->ResponseId);
 	{{- end }}
 
 	{{$Iface}}MsgBusEndpoint->Send<F{{$Iface}}{{Camel .Name}}RequestMessage>(msg, EMessageFlags::Reliable,
@@ -407,7 +406,7 @@ void {{$Class}}::Set{{Camel .Name}}({{ueParam "In" .}})
 	return;
 {{- else }}
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 {{- end }}
 }
 {{- if not .Return.IsVoid }}
@@ -470,32 +469,58 @@ void {{$Class}}::On{{Camel .Name}}Changed(const F{{$DisplayName}}{{Camel .Name}}
 {{- if len .Interface.Operations }}
 
 template <typename ResultType>
-bool U{{$Iface}}MsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> U{{$Iface}}MsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool U{{$Iface}}MsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
+}
+
+void U{{$Iface}}MsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
 }
 {{- $retTypes := getEmptyStringList}}
 {{- range .Interface.Operations }}
@@ -507,7 +532,7 @@ bool U{{$Iface}}MsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& 
 {{- $retTypes = unique $retTypes }}
 {{- if len $retTypes }}{{- nl }}{{- end }}
 {{- range $retTypes }}
-template bool U{{$Iface}}MsgBusClient::StorePromise<{{ .}}>(const FGuid& Id, TPromise<{{ .}}>& Promise);
+template TSharedPtr<TPromise<{{ .}}>> U{{$Iface}}MsgBusClient::StorePromise<{{ .}}>(const FGuid& Id);
 template bool U{{$Iface}}MsgBusClient::FulfillPromise<{{ .}}>(const FGuid& Id, const {{ .}}& Value);
 {{- end }}
 {{- end }}

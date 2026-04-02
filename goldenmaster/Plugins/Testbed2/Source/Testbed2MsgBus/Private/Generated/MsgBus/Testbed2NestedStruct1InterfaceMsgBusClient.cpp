@@ -361,8 +361,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::FuncNoParams
 
 	auto msg = new FTestbed2NestedStruct1InterfaceFuncNoParamsRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
-	TPromise<FTestbed2NestedStruct1> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<FTestbed2NestedStruct1>(msg->ResponseId);
 
 	Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceFuncNoParamsRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -370,7 +369,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::FuncNoParams
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed2NestedStruct1InterfaceMsgBusClient::OnFuncNoParamsReply(const FTestbed2NestedStruct1InterfaceFuncNoParamsReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -391,8 +390,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::Func1(const 
 	auto msg = new FTestbed2NestedStruct1InterfaceFunc1RequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Param1 = InParam1;
-	TPromise<FTestbed2NestedStruct1> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<FTestbed2NestedStruct1>(msg->ResponseId);
 
 	Testbed2NestedStruct1InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct1InterfaceFunc1RequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -400,7 +398,7 @@ FTestbed2NestedStruct1 UTestbed2NestedStruct1InterfaceMsgBusClient::Func1(const 
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UTestbed2NestedStruct1InterfaceMsgBusClient::OnFunc1Reply(const FTestbed2NestedStruct1InterfaceFunc1ReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -440,33 +438,59 @@ void UTestbed2NestedStruct1InterfaceMsgBusClient::OnProp1Changed(const FTestbed2
 }
 
 template <typename ResultType>
-bool UTestbed2NestedStruct1InterfaceMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UTestbed2NestedStruct1InterfaceMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UTestbed2NestedStruct1InterfaceMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UTestbed2NestedStruct1InterfaceMsgBusClient::StorePromise<FTestbed2NestedStruct1>(const FGuid& Id, TPromise<FTestbed2NestedStruct1>& Promise);
+void UTestbed2NestedStruct1InterfaceMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<FTestbed2NestedStruct1>> UTestbed2NestedStruct1InterfaceMsgBusClient::StorePromise<FTestbed2NestedStruct1>(const FGuid& Id);
 template bool UTestbed2NestedStruct1InterfaceMsgBusClient::FulfillPromise<FTestbed2NestedStruct1>(const FGuid& Id, const FTestbed2NestedStruct1& Value);

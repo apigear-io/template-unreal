@@ -483,8 +483,7 @@ FVector UCounterCounterMsgBusClient::Increment(const FVector& InVec)
 	auto msg = new FCounterCounterIncrementRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Vec = InVec;
-	TPromise<FVector> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<FVector>(msg->ResponseId);
 
 	CounterCounterMsgBusEndpoint->Send<FCounterCounterIncrementRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -492,7 +491,7 @@ FVector UCounterCounterMsgBusClient::Increment(const FVector& InVec)
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UCounterCounterMsgBusClient::OnIncrementReply(const FCounterCounterIncrementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -513,8 +512,7 @@ TArray<FVector> UCounterCounterMsgBusClient::IncrementArray(const TArray<FVector
 	auto msg = new FCounterCounterIncrementArrayRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Vec = InVec;
-	TPromise<TArray<FVector>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<FVector>>(msg->ResponseId);
 
 	CounterCounterMsgBusEndpoint->Send<FCounterCounterIncrementArrayRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -522,7 +520,7 @@ TArray<FVector> UCounterCounterMsgBusClient::IncrementArray(const TArray<FVector
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UCounterCounterMsgBusClient::OnIncrementArrayReply(const FCounterCounterIncrementArrayReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -543,8 +541,7 @@ FCustomTypesVector3D UCounterCounterMsgBusClient::Decrement(const FCustomTypesVe
 	auto msg = new FCounterCounterDecrementRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Vec = InVec;
-	TPromise<FCustomTypesVector3D> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<FCustomTypesVector3D>(msg->ResponseId);
 
 	CounterCounterMsgBusEndpoint->Send<FCounterCounterDecrementRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -552,7 +549,7 @@ FCustomTypesVector3D UCounterCounterMsgBusClient::Decrement(const FCustomTypesVe
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UCounterCounterMsgBusClient::OnDecrementReply(const FCounterCounterDecrementReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -573,8 +570,7 @@ TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::DecrementArray(const T
 	auto msg = new FCounterCounterDecrementArrayRequestMessage();
 	msg->ResponseId = FGuid::NewGuid();
 	msg->Vec = InVec;
-	TPromise<TArray<FCustomTypesVector3D>> Promise;
-	StorePromise(msg->ResponseId, Promise);
+	auto Promise = StorePromise<TArray<FCustomTypesVector3D>>(msg->ResponseId);
 
 	CounterCounterMsgBusEndpoint->Send<FCounterCounterDecrementArrayRequestMessage>(msg, EMessageFlags::Reliable,
 		nullptr,
@@ -582,7 +578,7 @@ TArray<FCustomTypesVector3D> UCounterCounterMsgBusClient::DecrementArray(const T
 		FTimespan::Zero(),
 		FDateTime::MaxValue());
 
-	return Promise.GetFuture().Get();
+	return Promise->GetFuture().Get();
 }
 
 void UCounterCounterMsgBusClient::OnDecrementArrayReply(const FCounterCounterDecrementArrayReplyMessage& InMessage, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
@@ -676,39 +672,65 @@ void UCounterCounterMsgBusClient::OnExternVectorArrayChanged(const FCounterCount
 }
 
 template <typename ResultType>
-bool UCounterCounterMsgBusClient::StorePromise(const FGuid& Id, TPromise<ResultType>& Promise)
+TSharedPtr<TPromise<ResultType>> UCounterCounterMsgBusClient::StorePromise(const FGuid& Id)
 {
+	auto Promise = MakeShared<TPromise<ResultType>>();
 	FScopeLock Lock(&ReplyPromisesMapCS);
-	return ReplyPromisesMap.Add(Id, &Promise) != nullptr;
+	ReplyPromiseFulfillers.Add(Id, [Promise](const void* ValuePtr)
+		{
+		if (ValuePtr)
+		{
+			Promise->SetValue(*static_cast<const ResultType*>(ValuePtr));
+		}
+		else
+		{
+			Promise->SetValue(ResultType{});
+		}
+	});
+	return Promise;
 }
 
 template <typename ResultType>
 bool UCounterCounterMsgBusClient::FulfillPromise(const FGuid& Id, const ResultType& Value)
 {
-	TPromise<ResultType>* PromisePtr = nullptr;
+	TFunction<void(const void*)> Fulfiller;
 
 	{
 		FScopeLock Lock(&ReplyPromisesMapCS);
-		if (auto** Found = ReplyPromisesMap.Find(Id))
+		if (auto* Found = ReplyPromiseFulfillers.Find(Id))
 		{
-			PromisePtr = static_cast<TPromise<ResultType>*>(*Found);
-			ReplyPromisesMap.Remove(Id);
+			Fulfiller = MoveTemp(*Found);
+			ReplyPromiseFulfillers.Remove(Id);
 		}
 	}
 
-	if (PromisePtr)
+	if (Fulfiller)
 	{
-		PromisePtr->SetValue(Value);
+		Fulfiller(&Value);
 		return true;
 	}
 	return false;
 }
 
-template bool UCounterCounterMsgBusClient::StorePromise<FCustomTypesVector3D>(const FGuid& Id, TPromise<FCustomTypesVector3D>& Promise);
+void UCounterCounterMsgBusClient::CancelAllPromises()
+{
+	TArray<TFunction<void(const void*)>> PendingFulfillers;
+	{
+		FScopeLock Lock(&ReplyPromisesMapCS);
+		ReplyPromiseFulfillers.GenerateValueArray(PendingFulfillers);
+		ReplyPromiseFulfillers.Empty();
+	}
+	for (auto& Fulfiller : PendingFulfillers)
+	{
+		Fulfiller(nullptr);
+	}
+}
+
+template TSharedPtr<TPromise<FCustomTypesVector3D>> UCounterCounterMsgBusClient::StorePromise<FCustomTypesVector3D>(const FGuid& Id);
 template bool UCounterCounterMsgBusClient::FulfillPromise<FCustomTypesVector3D>(const FGuid& Id, const FCustomTypesVector3D& Value);
-template bool UCounterCounterMsgBusClient::StorePromise<FVector>(const FGuid& Id, TPromise<FVector>& Promise);
+template TSharedPtr<TPromise<FVector>> UCounterCounterMsgBusClient::StorePromise<FVector>(const FGuid& Id);
 template bool UCounterCounterMsgBusClient::FulfillPromise<FVector>(const FGuid& Id, const FVector& Value);
-template bool UCounterCounterMsgBusClient::StorePromise<TArray<FCustomTypesVector3D>>(const FGuid& Id, TPromise<TArray<FCustomTypesVector3D>>& Promise);
+template TSharedPtr<TPromise<TArray<FCustomTypesVector3D>>> UCounterCounterMsgBusClient::StorePromise<TArray<FCustomTypesVector3D>>(const FGuid& Id);
 template bool UCounterCounterMsgBusClient::FulfillPromise<TArray<FCustomTypesVector3D>>(const FGuid& Id, const TArray<FCustomTypesVector3D>& Value);
-template bool UCounterCounterMsgBusClient::StorePromise<TArray<FVector>>(const FGuid& Id, TPromise<TArray<FVector>>& Promise);
+template TSharedPtr<TPromise<TArray<FVector>>> UCounterCounterMsgBusClient::StorePromise<TArray<FVector>>(const FGuid& Id);
 template bool UCounterCounterMsgBusClient::FulfillPromise<TArray<FVector>>(const FGuid& Id, const TArray<FVector>& Value);

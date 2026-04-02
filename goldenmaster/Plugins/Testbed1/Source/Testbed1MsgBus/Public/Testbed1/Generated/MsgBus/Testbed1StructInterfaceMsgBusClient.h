@@ -170,12 +170,14 @@ private:
 	// member variable to store the last sent data
 	TPimplPtr<Testbed1StructInterfacePropertiesData> _SentData;
 
-	TMap<FGuid, void*> ReplyPromisesMap;
+	TMap<FGuid, TFunction<void(const void*)>> ReplyPromiseFulfillers;
 	FCriticalSection ReplyPromisesMapCS;
 
 	template <typename ResultType>
-	bool StorePromise(const FGuid& Id, TPromise<ResultType>& Promise);
+	TSharedPtr<TPromise<ResultType>> StorePromise(const FGuid& Id);
 
 	template <typename ResultType>
 	bool FulfillPromise(const FGuid& Id, const ResultType& Value);
+
+	void CancelAllPromises();
 };
