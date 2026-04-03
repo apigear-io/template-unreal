@@ -114,9 +114,13 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_StopListening()
 	auto msg = new FTestbed2NestedStruct2InterfaceServiceDisconnectMessage();
 
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+		ConnectedClientsTimestamps.Empty();
+	}
 
-	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2NestedStruct2InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct2InterfaceServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -126,7 +130,6 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_StopListening()
 	}
 
 	Testbed2NestedStruct2InterfaceMsgBusEndpoint.Reset();
-	ConnectedClientsTimestamps.Empty();
 	_UpdateClientsConnected();
 }
 
@@ -183,9 +186,12 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTes
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
 	}
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
@@ -211,7 +217,10 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::HandleClientConnectionRequest
 	}
 
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
-	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	}
 	_UpdateClientsConnected();
 }
 
@@ -244,7 +253,10 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnPing(const FTestbed2NestedS
 	auto msg = new FTestbed2NestedStruct2InterfacePongMessage();
 	msg->Timestamp = InMessage.Timestamp;
 
-	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	}
 
 	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid())
 	{
@@ -258,12 +270,14 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnPing(const FTestbed2NestedS
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnClientDisconnected(const FTestbed2NestedStruct2InterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
+		ConnectedClientsTimestamps.Remove(Context->GetSender());
 	}
-
-	ConnectedClientsTimestamps.Remove(Context->GetSender());
 	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
@@ -279,29 +293,38 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_CheckClientTimeouts()
 	const double CurrentTime = FPlatformTime::Seconds();
 	TArray<FMessageAddress> TimedOutClients;
 
-	for (const auto& ClientPair : ConnectedClientsTimestamps)
 	{
-		const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
-
-		if (DeltaMS > 2 * _HeartbeatIntervalMS)
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		for (const auto& ClientPair : ConnectedClientsTimestamps)
 		{
-			// service seems to be dead or not responding - reset connection
-			TimedOutClients.Add(ClientPair.Key);
+			const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
+
+			if (DeltaMS > 2 * _HeartbeatIntervalMS)
+			{
+				TimedOutClients.Add(ClientPair.Key);
+			}
+		}
+
+		for (const auto& ClientAddress : TimedOutClients)
+		{
+			ConnectedClientsTimestamps.Remove(ClientAddress);
 		}
 	}
 
 	for (const auto& ClientAddress : TimedOutClients)
 	{
 		_OnClientTimeout.Broadcast(ClientAddress.ToString());
-		ConnectedClientsTimestamps.Remove(ClientAddress);
 	}
 	_UpdateClientsConnected();
 }
 
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::_UpdateClientsConnected()
 {
-	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	int32 NumberOfClients;
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		NumberOfClients = ConnectedClientsTimestamps.Num();
+	}
 	_ClientsConnected = NumberOfClients;
 	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
@@ -351,11 +374,14 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnFunc2Request(const FTestbed
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSig1Signal(const FTestbed2NestedStruct1& InParam1)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2NestedStruct2InterfaceSig1SignalMessage();
 	msg->Param1 = InParam1;
-	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2NestedStruct2InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct2InterfaceSig1SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -368,12 +394,15 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSig1Signal(const FTestbed2N
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSig2Signal(const FTestbed2NestedStruct1& InParam1, const FTestbed2NestedStruct2& InParam2)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2NestedStruct2InterfaceSig2SignalMessage();
 	msg->Param1 = InParam1;
 	msg->Param2 = InParam2;
-	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2NestedStruct2InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct2InterfaceSig2SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -396,12 +425,15 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSetProp1Request(const FTest
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnProp1Changed(const FTestbed2NestedStruct1& InProp1)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2NestedStruct2InterfaceProp1ChangedMessage();
 	msg->Prop1 = InProp1;
 
-	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2NestedStruct2InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct2InterfaceProp1ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -424,12 +456,15 @@ void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnSetProp2Request(const FTest
 void UTestbed2NestedStruct2InterfaceMsgBusAdapter::OnProp2Changed(const FTestbed2NestedStruct2& InProp2)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2NestedStruct2InterfaceProp2ChangedMessage();
 	msg->Prop2 = InProp2;
 
-	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2NestedStruct2InterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2NestedStruct2InterfaceMsgBusEndpoint->Send<FTestbed2NestedStruct2InterfaceProp2ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

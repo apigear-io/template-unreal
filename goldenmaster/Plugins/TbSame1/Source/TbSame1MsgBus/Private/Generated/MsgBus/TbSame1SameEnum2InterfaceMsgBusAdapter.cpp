@@ -114,9 +114,13 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::_StopListening()
 	auto msg = new FTbSame1SameEnum2InterfaceServiceDisconnectMessage();
 
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+		ConnectedClientsTimestamps.Empty();
+	}
 
-	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbSame1SameEnum2InterfaceMsgBusEndpoint->Send<FTbSame1SameEnum2InterfaceServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -126,7 +130,6 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::_StopListening()
 	}
 
 	TbSame1SameEnum2InterfaceMsgBusEndpoint.Reset();
-	ConnectedClientsTimestamps.Empty();
 	_UpdateClientsConnected();
 }
 
@@ -183,9 +186,12 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSame1S
 
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
 	}
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
@@ -211,7 +217,10 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::HandleClientConnectionRequest(cons
 	}
 
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
-	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	}
 	_UpdateClientsConnected();
 }
 
@@ -244,7 +253,10 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnPing(const FTbSame1SameEnum2Inte
 	auto msg = new FTbSame1SameEnum2InterfacePongMessage();
 	msg->Timestamp = InMessage.Timestamp;
 
-	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	}
 
 	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid())
 	{
@@ -258,12 +270,14 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnPing(const FTbSame1SameEnum2Inte
 
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnClientDisconnected(const FTbSame1SameEnum2InterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
+		ConnectedClientsTimestamps.Remove(Context->GetSender());
 	}
-
-	ConnectedClientsTimestamps.Remove(Context->GetSender());
 	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
@@ -279,29 +293,38 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::_CheckClientTimeouts()
 	const double CurrentTime = FPlatformTime::Seconds();
 	TArray<FMessageAddress> TimedOutClients;
 
-	for (const auto& ClientPair : ConnectedClientsTimestamps)
 	{
-		const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
-
-		if (DeltaMS > 2 * _HeartbeatIntervalMS)
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		for (const auto& ClientPair : ConnectedClientsTimestamps)
 		{
-			// service seems to be dead or not responding - reset connection
-			TimedOutClients.Add(ClientPair.Key);
+			const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
+
+			if (DeltaMS > 2 * _HeartbeatIntervalMS)
+			{
+				TimedOutClients.Add(ClientPair.Key);
+			}
+		}
+
+		for (const auto& ClientAddress : TimedOutClients)
+		{
+			ConnectedClientsTimestamps.Remove(ClientAddress);
 		}
 	}
 
 	for (const auto& ClientAddress : TimedOutClients)
 	{
 		_OnClientTimeout.Broadcast(ClientAddress.ToString());
-		ConnectedClientsTimestamps.Remove(ClientAddress);
 	}
 	_UpdateClientsConnected();
 }
 
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::_UpdateClientsConnected()
 {
-	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	int32 NumberOfClients;
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		NumberOfClients = ConnectedClientsTimestamps.Num();
+	}
 	_ClientsConnected = NumberOfClients;
 	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
@@ -351,11 +374,14 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnFunc2Request(const FTbSame1SameE
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnSig1Signal(ETbSame1Enum1 InParam1)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbSame1SameEnum2InterfaceSig1SignalMessage();
 	msg->Param1 = InParam1;
-	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbSame1SameEnum2InterfaceMsgBusEndpoint->Send<FTbSame1SameEnum2InterfaceSig1SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -368,12 +394,15 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnSig1Signal(ETbSame1Enum1 InParam
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnSig2Signal(ETbSame1Enum1 InParam1, ETbSame1Enum2 InParam2)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbSame1SameEnum2InterfaceSig2SignalMessage();
 	msg->Param1 = InParam1;
 	msg->Param2 = InParam2;
-	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbSame1SameEnum2InterfaceMsgBusEndpoint->Send<FTbSame1SameEnum2InterfaceSig2SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -396,12 +425,15 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnSetProp1Request(const FTbSame1Sa
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnProp1Changed(ETbSame1Enum1 InProp1)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbSame1SameEnum2InterfaceProp1ChangedMessage();
 	msg->Prop1 = InProp1;
 
-	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbSame1SameEnum2InterfaceMsgBusEndpoint->Send<FTbSame1SameEnum2InterfaceProp1ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -424,12 +456,15 @@ void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnSetProp2Request(const FTbSame1Sa
 void UTbSame1SameEnum2InterfaceMsgBusAdapter::OnProp2Changed(ETbSame1Enum2 InProp2)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbSame1SameEnum2InterfaceProp2ChangedMessage();
 	msg->Prop2 = InProp2;
 
-	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbSame1SameEnum2InterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbSame1SameEnum2InterfaceMsgBusEndpoint->Send<FTbSame1SameEnum2InterfaceProp2ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

@@ -112,9 +112,13 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_StopListening()
 	auto msg = new FTbSimpleNoOperationsInterfaceServiceDisconnectMessage();
 
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+		ConnectedClientsTimestamps.Empty();
+	}
 
-	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbSimpleNoOperationsInterfaceMsgBusEndpoint->Send<FTbSimpleNoOperationsInterfaceServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -124,7 +128,6 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_StopListening()
 	}
 
 	TbSimpleNoOperationsInterfaceMsgBusEndpoint.Reset();
-	ConnectedClientsTimestamps.Empty();
 	_UpdateClientsConnected();
 }
 
@@ -181,9 +184,12 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbSi
 
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
 	}
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
@@ -209,7 +215,10 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::HandleClientConnectionRequest(
 	}
 
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
-	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	}
 	_UpdateClientsConnected();
 }
 
@@ -242,7 +251,10 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPing(const FTbSimpleNoOperat
 	auto msg = new FTbSimpleNoOperationsInterfacePongMessage();
 	msg->Timestamp = InMessage.Timestamp;
 
-	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	}
 
 	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -256,12 +268,14 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPing(const FTbSimpleNoOperat
 
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnClientDisconnected(const FTbSimpleNoOperationsInterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
+		ConnectedClientsTimestamps.Remove(Context->GetSender());
 	}
-
-	ConnectedClientsTimestamps.Remove(Context->GetSender());
 	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
@@ -277,29 +291,38 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_CheckClientTimeouts()
 	const double CurrentTime = FPlatformTime::Seconds();
 	TArray<FMessageAddress> TimedOutClients;
 
-	for (const auto& ClientPair : ConnectedClientsTimestamps)
 	{
-		const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
-
-		if (DeltaMS > 2 * _HeartbeatIntervalMS)
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		for (const auto& ClientPair : ConnectedClientsTimestamps)
 		{
-			// service seems to be dead or not responding - reset connection
-			TimedOutClients.Add(ClientPair.Key);
+			const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
+
+			if (DeltaMS > 2 * _HeartbeatIntervalMS)
+			{
+				TimedOutClients.Add(ClientPair.Key);
+			}
+		}
+
+		for (const auto& ClientAddress : TimedOutClients)
+		{
+			ConnectedClientsTimestamps.Remove(ClientAddress);
 		}
 	}
 
 	for (const auto& ClientAddress : TimedOutClients)
 	{
 		_OnClientTimeout.Broadcast(ClientAddress.ToString());
-		ConnectedClientsTimestamps.Remove(ClientAddress);
 	}
 	_UpdateClientsConnected();
 }
 
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_UpdateClientsConnected()
 {
-	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	int32 NumberOfClients;
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		NumberOfClients = ConnectedClientsTimestamps.Num();
+	}
 	_ClientsConnected = NumberOfClients;
 	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
@@ -307,10 +330,13 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::_UpdateClientsConnected()
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigVoidSignal()
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbSimpleNoOperationsInterfaceSigVoidSignalMessage();
-	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbSimpleNoOperationsInterfaceMsgBusEndpoint->Send<FTbSimpleNoOperationsInterfaceSigVoidSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -323,11 +349,14 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigVoidSignal()
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSigBoolSignal(bool bInParamBool)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbSimpleNoOperationsInterfaceSigBoolSignalMessage();
 	msg->bParamBool = bInParamBool;
-	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbSimpleNoOperationsInterfaceMsgBusEndpoint->Send<FTbSimpleNoOperationsInterfaceSigBoolSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -350,12 +379,15 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTb
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropBoolChanged(bool bInPropBool)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbSimpleNoOperationsInterfacePropBoolChangedMessage();
 	msg->bPropBool = bInPropBool;
 
-	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbSimpleNoOperationsInterfaceMsgBusEndpoint->Send<FTbSimpleNoOperationsInterfacePropBoolChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -378,12 +410,15 @@ void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTbS
 void UTbSimpleNoOperationsInterfaceMsgBusAdapter::OnPropIntChanged(int32 InPropInt)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbSimpleNoOperationsInterfacePropIntChangedMessage();
 	msg->PropInt = InPropInt;
 
-	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbSimpleNoOperationsInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbSimpleNoOperationsInterfaceMsgBusEndpoint->Send<FTbSimpleNoOperationsInterfacePropIntChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

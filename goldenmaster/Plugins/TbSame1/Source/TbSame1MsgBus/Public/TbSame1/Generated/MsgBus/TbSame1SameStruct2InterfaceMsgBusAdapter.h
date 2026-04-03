@@ -125,6 +125,7 @@ private:
 	bool _CheckClientTimeoutsTick(float DeltaTime);
 	void _UpdateClientsConnected();
 	TMap<FMessageAddress, double> ConnectedClientsTimestamps;
+	FCriticalSection ConnectedClientsTimestampsCS;
 #if (ENGINE_MAJOR_VERSION < 5)
 	::FDelegateHandle _HeartbeatTickerHandle;
 #else
