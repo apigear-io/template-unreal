@@ -17,6 +17,7 @@ targets:
       - test-apis/counter.module.yaml
       - test-apis/testbed.ifaceimport.module.yaml
       - test-apis/testbed.refifaces.module.yaml
+      - test-apis/testbed.structarray.module.yaml
     output: ../test/Plugins
     template: ..
     force: true

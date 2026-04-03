@@ -160,5 +160,9 @@ if [ $? -ne 0 ]; then cleanup && exit 1; fi;
 buildUEplugin "$script_path/TbRefIfaces/TbRefIfaces.uplugin" "$script_path/build/TbRefIfaces"
 if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
 
+# Building and testing TbStructArray module
+buildUEplugin "$script_path/TbStructArray/TbStructArray.uplugin" "$script_path/build/TbStructArray"
+if [ $buildresult -ne 0 ]; then cleanup && exit 1; fi;
+
 
 cleanup

@@ -164,6 +164,15 @@ xcopy /E /Y "%script_path%\TbRefIfaces" "%TbRefIfacesPluginTarget_path%\"  >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
+@REM copy TbStructArray plugin to blank project for build and functional testing
+set TbStructArrayPluginTarget_path=%ProjectTarget_path%\Plugins\TbStructArray
+echo TbStructArray plugin from "%script_path%\TbStructArray" to "%TbStructArrayPluginTarget_path%\"
+mkdir %TbStructArrayPluginTarget_path%
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+xcopy /E /Y "%script_path%\TbStructArray" "%TbStructArrayPluginTarget_path%\"  >nul
+if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+
+
 @REM run build and tests
 call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.+.OLink.+.MsgBus."
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
