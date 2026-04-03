@@ -1,0 +1,82 @@
+/**
+Copyright 2021 ApiGear UG
+Copyright 2021 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#pragma once
+#include "TbStructArrayStructArrayFieldInterfaceInterface.h"
+#include "Engine/LatentActionManager.h"
+#include "UObject/Interface.h"
+#include "TbStructArray_data.h"
+#include "TbStructArrayStructArrayFieldInterfaceBPInterface.generated.h"
+
+/**
+ * Interface UTbStructArrayStructArrayFieldInterfaceBPInterface only for Unreal Engine's reflection system
+ */
+UINTERFACE(Blueprintable, MinimalAPI)
+class UTbStructArrayStructArrayFieldInterfaceBPInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+/**
+ * Interface ITbStructArrayStructArrayFieldInterfaceBPInterface
+ */
+class TBSTRUCTARRAYAPI_API ITbStructArrayStructArrayFieldInterfaceBPInterface
+{
+	GENERATED_BODY()
+
+public:
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface")
+	UTbStructArrayStructArrayFieldInterfacePublisher* _GetPublisher();
+	virtual UTbStructArrayStructArrayFieldInterfacePublisher* _GetPublisher_Implementation() = 0;
+
+	// methods
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Operations")
+	FTbStructArrayMixedStruct FuncMixed(const FTbStructArrayMixedStruct& ParamMixed);
+	virtual FTbStructArrayMixedStruct FuncMixed_Implementation(const FTbStructArrayMixedStruct& ParamMixed) = 0;
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Operations")
+	FTbStructArrayStructWithArrayOfStructs FuncStructArray(const FTbStructArrayStructWithArrayOfStructs& ParamPoints);
+	virtual FTbStructArrayStructWithArrayOfStructs FuncStructArray_Implementation(const FTbStructArrayStructWithArrayOfStructs& ParamPoints) = 0;
+
+	// properties
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	FTbStructArrayStructWithArrayOfStructs GetPropStructArray() const;
+	virtual FTbStructArrayStructWithArrayOfStructs GetPropStructArray_Implementation() const = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	void SetPropStructArray(const FTbStructArrayStructWithArrayOfStructs& InPropStructArray);
+	virtual void SetPropStructArray_Implementation(UPARAM(DisplayName = "PropStructArray") const FTbStructArrayStructWithArrayOfStructs& InPropStructArray) = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	FTbStructArrayStructWithArrayOfEnums GetPropEnumArray() const;
+	virtual FTbStructArrayStructWithArrayOfEnums GetPropEnumArray_Implementation() const = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	void SetPropEnumArray(const FTbStructArrayStructWithArrayOfEnums& InPropEnumArray);
+	virtual void SetPropEnumArray_Implementation(UPARAM(DisplayName = "PropEnumArray") const FTbStructArrayStructWithArrayOfEnums& InPropEnumArray) = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	FTbStructArrayStructWithArrayOfInts GetPropIntArray() const;
+	virtual FTbStructArrayStructWithArrayOfInts GetPropIntArray_Implementation() const = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	void SetPropIntArray(const FTbStructArrayStructWithArrayOfInts& InPropIntArray);
+	virtual void SetPropIntArray_Implementation(UPARAM(DisplayName = "PropIntArray") const FTbStructArrayStructWithArrayOfInts& InPropIntArray) = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	FTbStructArrayMixedStruct GetPropMixed() const;
+	virtual FTbStructArrayMixedStruct GetPropMixed_Implementation() const = 0;
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	void SetPropMixed(const FTbStructArrayMixedStruct& InPropMixed);
+	virtual void SetPropMixed_Implementation(UPARAM(DisplayName = "PropMixed") const FTbStructArrayMixedStruct& InPropMixed) = 0;
+};

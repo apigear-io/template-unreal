@@ -1,0 +1,331 @@
+
+/**
+Copyright 2021 ApiGear UG
+Copyright 2021 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Engine/DataTable.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "TbStructArray_data.generated.h"
+
+/**
+ * Enumeration ETbStructArrayTestEnum
+ */
+UENUM(BlueprintType)
+enum class ETbStructArrayTestEnum : uint8
+{
+	TSATE_Value1 = 1 UMETA(Displayname = "value1"),
+	TSATE_Value2 = 2 UMETA(Displayname = "value2"),
+	Unspecified = 0 UMETA(Hidden)
+};
+
+/**
+ * Struct FTbStructArrayPoint
+ */
+USTRUCT(BlueprintType)
+struct TBSTRUCTARRAYAPI_API FTbStructArrayPoint : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	float x{0.0f};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	float y{0.0f};
+
+	/**
+	 * FTbStructArrayPoint to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 *
+	 * @return JSON formatted FString
+	 */
+	FString ToJSON(bool bPrettyPrint = false) const;
+
+	/**
+	 * FTbStructArrayPoint to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 */
+	FString ToString() const;
+
+	/**
+	 * FTbStructArrayPoint to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 *
+	 * @return FString
+	 */
+	explicit operator FString() const;
+
+	bool operator==(const FTbStructArrayPoint& rhs) const;
+	bool operator!=(const FTbStructArrayPoint& rhs) const;
+};
+
+/**
+ * Struct FTbStructArrayStructWithArrayOfStructs
+ */
+USTRUCT(BlueprintType)
+struct TBSTRUCTARRAYAPI_API FTbStructArrayStructWithArrayOfStructs : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	TArray<FTbStructArrayPoint> points{TArray<FTbStructArrayPoint>()};
+
+	/**
+	 * FTbStructArrayStructWithArrayOfStructs to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 *
+	 * @return JSON formatted FString
+	 */
+	FString ToJSON(bool bPrettyPrint = false) const;
+
+	/**
+	 * FTbStructArrayStructWithArrayOfStructs to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 */
+	FString ToString() const;
+
+	/**
+	 * FTbStructArrayStructWithArrayOfStructs to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 *
+	 * @return FString
+	 */
+	explicit operator FString() const;
+
+	bool operator==(const FTbStructArrayStructWithArrayOfStructs& rhs) const;
+	bool operator!=(const FTbStructArrayStructWithArrayOfStructs& rhs) const;
+};
+
+/**
+ * Struct FTbStructArrayStructWithArrayOfEnums
+ */
+USTRUCT(BlueprintType)
+struct TBSTRUCTARRAYAPI_API FTbStructArrayStructWithArrayOfEnums : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	TArray<ETbStructArrayTestEnum> tags{TArray<ETbStructArrayTestEnum>()};
+
+	/**
+	 * FTbStructArrayStructWithArrayOfEnums to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 *
+	 * @return JSON formatted FString
+	 */
+	FString ToJSON(bool bPrettyPrint = false) const;
+
+	/**
+	 * FTbStructArrayStructWithArrayOfEnums to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 */
+	FString ToString() const;
+
+	/**
+	 * FTbStructArrayStructWithArrayOfEnums to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 *
+	 * @return FString
+	 */
+	explicit operator FString() const;
+
+	bool operator==(const FTbStructArrayStructWithArrayOfEnums& rhs) const;
+	bool operator!=(const FTbStructArrayStructWithArrayOfEnums& rhs) const;
+};
+
+/**
+ * Struct FTbStructArrayStructWithArrayOfInts
+ */
+USTRUCT(BlueprintType)
+struct TBSTRUCTARRAYAPI_API FTbStructArrayStructWithArrayOfInts : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	TArray<int32> values{TArray<int32>()};
+
+	/**
+	 * FTbStructArrayStructWithArrayOfInts to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 *
+	 * @return JSON formatted FString
+	 */
+	FString ToJSON(bool bPrettyPrint = false) const;
+
+	/**
+	 * FTbStructArrayStructWithArrayOfInts to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 */
+	FString ToString() const;
+
+	/**
+	 * FTbStructArrayStructWithArrayOfInts to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 *
+	 * @return FString
+	 */
+	explicit operator FString() const;
+
+	bool operator==(const FTbStructArrayStructWithArrayOfInts& rhs) const;
+	bool operator!=(const FTbStructArrayStructWithArrayOfInts& rhs) const;
+};
+
+/**
+ * Struct FTbStructArrayMixedStruct
+ */
+USTRUCT(BlueprintType)
+struct TBSTRUCTARRAYAPI_API FTbStructArrayMixedStruct : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	int32 id{0};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	FString name{FString()};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	FTbStructArrayPoint origin{FTbStructArrayPoint()};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	TArray<FTbStructArrayPoint> points{TArray<FTbStructArrayPoint>()};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	TArray<ETbStructArrayTestEnum> flags{TArray<ETbStructArrayTestEnum>()};
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ApiGear|TbStructArray")
+	TArray<int32> scores{TArray<int32>()};
+
+	/**
+	 * FTbStructArrayMixedStruct to JSON formatted FString
+	 * @param bPrettyPrint Specify whether to use pretty print (e.g., with line endings) or condensed print.
+	 *
+	 * @return JSON formatted FString
+	 */
+	FString ToJSON(bool bPrettyPrint = false) const;
+
+	/**
+	 * FTbStructArrayMixedStruct to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 */
+	FString ToString() const;
+
+	/**
+	 * FTbStructArrayMixedStruct to FString
+	 * WARNING: Do not rely on the format of the string, it may change in the future
+	 *
+	 * @return FString
+	 */
+	explicit operator FString() const;
+
+	bool operator==(const FTbStructArrayMixedStruct& rhs) const;
+	bool operator!=(const FTbStructArrayMixedStruct& rhs) const;
+};
+
+/**
+ * @brief BP Function library for data types
+ */
+UCLASS(meta = (BlueprintThreadSafe))
+class TBSTRUCTARRAYAPI_API UTbStructArrayLibrary : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+
+public:
+	/* Convert from uint8 to ETbStructArrayTestEnum @return true if successful */
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray")
+	static bool toTbStructArrayTestEnum(ETbStructArrayTestEnum& ConvertedEnum, UPARAM(DisplayName = "Value") uint8 InValue);
+
+	/* Returns true if TbStructArrayPoint A is equal to TbStructArrayPoint B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbStructArrayPoint)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbStructArray")
+	static bool EqualEqual_TbStructArrayPointTbStructArrayPoint(FTbStructArrayPoint A, FTbStructArrayPoint B);
+
+	/* Returns true if TbStructArrayPoint A is not equal to TbStructArrayPoint B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbStructArrayPoint)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbStructArray")
+	static bool NotEqual_TbStructArrayPointTbStructArrayPoint(FTbStructArrayPoint A, FTbStructArrayPoint B);
+
+	/** Converts a TbStructArrayPoint to a JSON formatted FString */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbStructArrayPoint)", CompactNodeTitle = "->"), Category = "Utilities|String")
+	static FString Conv_TbStructArrayPointToJSON(UPARAM(DisplayName = "TbStructArrayPoint") const FTbStructArrayPoint& InTbStructArrayPoint);
+
+	/** Converts a TbStructArrayPoint to a string. WARNING: Do not rely on the format of the string, it may change in the future */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (TbStructArrayPoint)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
+	static FString Conv_TbStructArrayPointToString(UPARAM(DisplayName = "TbStructArrayPoint") const FTbStructArrayPoint& InTbStructArrayPoint);
+
+	/* Returns true if TbStructArrayStructWithArrayOfStructs A is equal to TbStructArrayStructWithArrayOfStructs B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbStructArrayStructWithArrayOfStructs)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbStructArray")
+	static bool EqualEqual_TbStructArrayStructWithArrayOfStructsTbStructArrayStructWithArrayOfStructs(FTbStructArrayStructWithArrayOfStructs A, FTbStructArrayStructWithArrayOfStructs B);
+
+	/* Returns true if TbStructArrayStructWithArrayOfStructs A is not equal to TbStructArrayStructWithArrayOfStructs B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbStructArrayStructWithArrayOfStructs)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbStructArray")
+	static bool NotEqual_TbStructArrayStructWithArrayOfStructsTbStructArrayStructWithArrayOfStructs(FTbStructArrayStructWithArrayOfStructs A, FTbStructArrayStructWithArrayOfStructs B);
+
+	/** Converts a TbStructArrayStructWithArrayOfStructs to a JSON formatted FString */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbStructArrayStructWithArrayOfStructs)", CompactNodeTitle = "->"), Category = "Utilities|String")
+	static FString Conv_TbStructArrayStructWithArrayOfStructsToJSON(UPARAM(DisplayName = "TbStructArrayStructWithArrayOfStructs") const FTbStructArrayStructWithArrayOfStructs& InTbStructArrayStructWithArrayOfStructs);
+
+	/** Converts a TbStructArrayStructWithArrayOfStructs to a string. WARNING: Do not rely on the format of the string, it may change in the future */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (TbStructArrayStructWithArrayOfStructs)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
+	static FString Conv_TbStructArrayStructWithArrayOfStructsToString(UPARAM(DisplayName = "TbStructArrayStructWithArrayOfStructs") const FTbStructArrayStructWithArrayOfStructs& InTbStructArrayStructWithArrayOfStructs);
+
+	/* Returns true if TbStructArrayStructWithArrayOfEnums A is equal to TbStructArrayStructWithArrayOfEnums B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbStructArrayStructWithArrayOfEnums)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbStructArray")
+	static bool EqualEqual_TbStructArrayStructWithArrayOfEnumsTbStructArrayStructWithArrayOfEnums(FTbStructArrayStructWithArrayOfEnums A, FTbStructArrayStructWithArrayOfEnums B);
+
+	/* Returns true if TbStructArrayStructWithArrayOfEnums A is not equal to TbStructArrayStructWithArrayOfEnums B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbStructArrayStructWithArrayOfEnums)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbStructArray")
+	static bool NotEqual_TbStructArrayStructWithArrayOfEnumsTbStructArrayStructWithArrayOfEnums(FTbStructArrayStructWithArrayOfEnums A, FTbStructArrayStructWithArrayOfEnums B);
+
+	/** Converts a TbStructArrayStructWithArrayOfEnums to a JSON formatted FString */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbStructArrayStructWithArrayOfEnums)", CompactNodeTitle = "->"), Category = "Utilities|String")
+	static FString Conv_TbStructArrayStructWithArrayOfEnumsToJSON(UPARAM(DisplayName = "TbStructArrayStructWithArrayOfEnums") const FTbStructArrayStructWithArrayOfEnums& InTbStructArrayStructWithArrayOfEnums);
+
+	/** Converts a TbStructArrayStructWithArrayOfEnums to a string. WARNING: Do not rely on the format of the string, it may change in the future */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (TbStructArrayStructWithArrayOfEnums)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
+	static FString Conv_TbStructArrayStructWithArrayOfEnumsToString(UPARAM(DisplayName = "TbStructArrayStructWithArrayOfEnums") const FTbStructArrayStructWithArrayOfEnums& InTbStructArrayStructWithArrayOfEnums);
+
+	/* Returns true if TbStructArrayStructWithArrayOfInts A is equal to TbStructArrayStructWithArrayOfInts B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbStructArrayStructWithArrayOfInts)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbStructArray")
+	static bool EqualEqual_TbStructArrayStructWithArrayOfIntsTbStructArrayStructWithArrayOfInts(FTbStructArrayStructWithArrayOfInts A, FTbStructArrayStructWithArrayOfInts B);
+
+	/* Returns true if TbStructArrayStructWithArrayOfInts A is not equal to TbStructArrayStructWithArrayOfInts B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbStructArrayStructWithArrayOfInts)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbStructArray")
+	static bool NotEqual_TbStructArrayStructWithArrayOfIntsTbStructArrayStructWithArrayOfInts(FTbStructArrayStructWithArrayOfInts A, FTbStructArrayStructWithArrayOfInts B);
+
+	/** Converts a TbStructArrayStructWithArrayOfInts to a JSON formatted FString */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbStructArrayStructWithArrayOfInts)", CompactNodeTitle = "->"), Category = "Utilities|String")
+	static FString Conv_TbStructArrayStructWithArrayOfIntsToJSON(UPARAM(DisplayName = "TbStructArrayStructWithArrayOfInts") const FTbStructArrayStructWithArrayOfInts& InTbStructArrayStructWithArrayOfInts);
+
+	/** Converts a TbStructArrayStructWithArrayOfInts to a string. WARNING: Do not rely on the format of the string, it may change in the future */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (TbStructArrayStructWithArrayOfInts)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
+	static FString Conv_TbStructArrayStructWithArrayOfIntsToString(UPARAM(DisplayName = "TbStructArrayStructWithArrayOfInts") const FTbStructArrayStructWithArrayOfInts& InTbStructArrayStructWithArrayOfInts);
+
+	/* Returns true if TbStructArrayMixedStruct A is equal to TbStructArrayMixedStruct B (A == B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Equal (TbStructArrayMixedStruct)", CompactNodeTitle = "==", Keywords = "== equal"), Category = "ApiGear|TbStructArray")
+	static bool EqualEqual_TbStructArrayMixedStructTbStructArrayMixedStruct(FTbStructArrayMixedStruct A, FTbStructArrayMixedStruct B);
+
+	/* Returns true if TbStructArrayMixedStruct A is not equal to TbStructArrayMixedStruct B (A != B) */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "Not Equal (TbStructArrayMixedStruct)", CompactNodeTitle = "!=", Keywords = "!= not equal"), Category = "ApiGear|TbStructArray")
+	static bool NotEqual_TbStructArrayMixedStructTbStructArrayMixedStruct(FTbStructArrayMixedStruct A, FTbStructArrayMixedStruct B);
+
+	/** Converts a TbStructArrayMixedStruct to a JSON formatted FString */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To JSON (TbStructArrayMixedStruct)", CompactNodeTitle = "->"), Category = "Utilities|String")
+	static FString Conv_TbStructArrayMixedStructToJSON(UPARAM(DisplayName = "TbStructArrayMixedStruct") const FTbStructArrayMixedStruct& InTbStructArrayMixedStruct);
+
+	/** Converts a TbStructArrayMixedStruct to a string. WARNING: Do not rely on the format of the string, it may change in the future */
+	UFUNCTION(BlueprintPure, meta = (DisplayName = "To String (TbStructArrayMixedStruct)", CompactNodeTitle = "->", BlueprintAutocast), Category = "Utilities|String")
+	static FString Conv_TbStructArrayMixedStructToString(UPARAM(DisplayName = "TbStructArrayMixedStruct") const FTbStructArrayMixedStruct& InTbStructArrayMixedStruct);
+};

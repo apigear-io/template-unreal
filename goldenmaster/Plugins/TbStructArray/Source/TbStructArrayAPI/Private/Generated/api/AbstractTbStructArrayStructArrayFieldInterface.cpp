@@ -1,0 +1,187 @@
+/**
+Copyright 2024 ApiGear UG
+Copyright 2024 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#include "TbStructArray/Generated/api/AbstractTbStructArrayStructArrayFieldInterface.h"
+#include "TbStructArrayStructArrayFieldInterfaceLatentAction.h"
+#include "Async/Async.h"
+#include "Engine/Engine.h"
+
+UAbstractTbStructArrayStructArrayFieldInterface::UAbstractTbStructArrayStructArrayFieldInterface()
+{
+	TbStructArrayStructArrayFieldInterfacePublisher = NewObject<UTbStructArrayStructArrayFieldInterfacePublisher>();
+}
+
+UTbStructArrayStructArrayFieldInterfacePublisher* UAbstractTbStructArrayStructArrayFieldInterface::_GetPublisher()
+{
+	if (!TbStructArrayStructArrayFieldInterfacePublisher)
+	{
+		TbStructArrayStructArrayFieldInterfacePublisher = NewObject<UTbStructArrayStructArrayFieldInterfacePublisher>();
+	}
+	return TbStructArrayStructArrayFieldInterfacePublisher;
+}
+
+void UAbstractTbStructArrayStructArrayFieldInterface::AddReferencedObjects(UObject* InThis, FReferenceCollector& Collector)
+{
+	UAbstractTbStructArrayStructArrayFieldInterface* This = CastChecked<UAbstractTbStructArrayStructArrayFieldInterface>(InThis);
+	Collector.AddReferencedObject(This->TbStructArrayStructArrayFieldInterfacePublisher);
+	Super::AddReferencedObjects(InThis, Collector);
+}
+
+FTbStructArrayStructWithArrayOfStructs UAbstractTbStructArrayStructArrayFieldInterface::GetPropStructArray_Private() const
+{
+	return GetPropStructArray();
+};
+
+void UAbstractTbStructArrayStructArrayFieldInterface::SetPropStructArray_Private(const FTbStructArrayStructWithArrayOfStructs& InPropStructArray)
+{
+	SetPropStructArray(InPropStructArray);
+};
+
+FTbStructArrayStructWithArrayOfEnums UAbstractTbStructArrayStructArrayFieldInterface::GetPropEnumArray_Private() const
+{
+	return GetPropEnumArray();
+};
+
+void UAbstractTbStructArrayStructArrayFieldInterface::SetPropEnumArray_Private(const FTbStructArrayStructWithArrayOfEnums& InPropEnumArray)
+{
+	SetPropEnumArray(InPropEnumArray);
+};
+
+FTbStructArrayStructWithArrayOfInts UAbstractTbStructArrayStructArrayFieldInterface::GetPropIntArray_Private() const
+{
+	return GetPropIntArray();
+};
+
+void UAbstractTbStructArrayStructArrayFieldInterface::SetPropIntArray_Private(const FTbStructArrayStructWithArrayOfInts& InPropIntArray)
+{
+	SetPropIntArray(InPropIntArray);
+};
+
+FTbStructArrayMixedStruct UAbstractTbStructArrayStructArrayFieldInterface::GetPropMixed_Private() const
+{
+	return GetPropMixed();
+};
+
+void UAbstractTbStructArrayStructArrayFieldInterface::SetPropMixed_Private(const FTbStructArrayMixedStruct& InPropMixed)
+{
+	SetPropMixed(InPropMixed);
+};
+
+void UAbstractTbStructArrayStructArrayFieldInterface::FuncMixedAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbStructArrayMixedStruct& Result, const FTbStructArrayMixedStruct& ParamMixed)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbStructArrayStructArrayFieldInterfaceLatentAction<FTbStructArrayMixedStruct>* oldRequest = LatentActionManager.FindExistingAction<FTbStructArrayStructArrayFieldInterfaceLatentAction<FTbStructArrayMixedStruct>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		TFuture<FTbStructArrayMixedStruct> Future = FuncMixedAsync(ParamMixed);
+		FTbStructArrayStructArrayFieldInterfaceLatentAction<FTbStructArrayMixedStruct>* CompletionAction = new FTbStructArrayStructArrayFieldInterfaceLatentAction<FTbStructArrayMixedStruct>(LatentInfo, MoveTemp(Future), Result);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+	}
+}
+
+TFuture<FTbStructArrayMixedStruct> UAbstractTbStructArrayStructArrayFieldInterface::FuncMixedAsync(const FTbStructArrayMixedStruct& ParamMixed)
+{
+	TWeakObjectPtr<UAbstractTbStructArrayStructArrayFieldInterface> WeakThis(this);
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamMixed, WeakThis]()
+		{
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncMixed(ParamMixed);
+		}
+		return FTbStructArrayMixedStruct();
+	});
+}
+
+void UAbstractTbStructArrayStructArrayFieldInterface::FuncStructArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbStructArrayStructWithArrayOfStructs& Result, const FTbStructArrayStructWithArrayOfStructs& ParamPoints)
+{
+	if (UWorld* World = GEngine->GetWorldFromContextObjectChecked(WorldContextObject))
+	{
+		FLatentActionManager& LatentActionManager = World->GetLatentActionManager();
+		FTbStructArrayStructArrayFieldInterfaceLatentAction<FTbStructArrayStructWithArrayOfStructs>* oldRequest = LatentActionManager.FindExistingAction<FTbStructArrayStructArrayFieldInterfaceLatentAction<FTbStructArrayStructWithArrayOfStructs>>(LatentInfo.CallbackTarget, LatentInfo.UUID);
+
+		if (oldRequest != nullptr)
+		{
+			// cancel old request
+			oldRequest->Cancel();
+			LatentActionManager.RemoveActionsForObject(LatentInfo.CallbackTarget);
+		}
+
+		TFuture<FTbStructArrayStructWithArrayOfStructs> Future = FuncStructArrayAsync(ParamPoints);
+		FTbStructArrayStructArrayFieldInterfaceLatentAction<FTbStructArrayStructWithArrayOfStructs>* CompletionAction = new FTbStructArrayStructArrayFieldInterfaceLatentAction<FTbStructArrayStructWithArrayOfStructs>(LatentInfo, MoveTemp(Future), Result);
+		LatentActionManager.AddNewAction(LatentInfo.CallbackTarget, LatentInfo.UUID, CompletionAction);
+	}
+}
+
+TFuture<FTbStructArrayStructWithArrayOfStructs> UAbstractTbStructArrayStructArrayFieldInterface::FuncStructArrayAsync(const FTbStructArrayStructWithArrayOfStructs& ParamPoints)
+{
+	TWeakObjectPtr<UAbstractTbStructArrayStructArrayFieldInterface> WeakThis(this);
+	return Async(EAsyncExecution::ThreadPool,
+		[ParamPoints, WeakThis]()
+		{
+		if (auto StrongThis = WeakThis.Get())
+		{
+			return StrongThis->FuncStructArray(ParamPoints);
+		}
+		return FTbStructArrayStructWithArrayOfStructs();
+	});
+}
+
+void UAbstractTbStructArrayStructArrayFieldInterface::Initialize(FSubsystemCollectionBase& Collection)
+{
+	check(!bInitialized);
+	bInitialized = true;
+
+	Super::Initialize(Collection);
+}
+
+void UAbstractTbStructArrayStructArrayFieldInterface::Deinitialize()
+{
+	check(bInitialized);
+	bInitialized = false;
+
+	if (TbStructArrayStructArrayFieldInterfacePublisher)
+	{
+		TbStructArrayStructArrayFieldInterfacePublisher->OnSigMixedSignal.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+		TbStructArrayStructArrayFieldInterfacePublisher->OnSigMixedSignalBP.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+		TbStructArrayStructArrayFieldInterfacePublisher->OnSigStructArraySignal.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+		TbStructArrayStructArrayFieldInterfacePublisher->OnSigStructArraySignalBP.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+
+		TbStructArrayStructArrayFieldInterfacePublisher->OnPropStructArrayChanged.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+		TbStructArrayStructArrayFieldInterfacePublisher->OnPropStructArrayChangedBP.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+		TbStructArrayStructArrayFieldInterfacePublisher->OnPropEnumArrayChanged.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+		TbStructArrayStructArrayFieldInterfacePublisher->OnPropEnumArrayChangedBP.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+		TbStructArrayStructArrayFieldInterfacePublisher->OnPropIntArrayChanged.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+		TbStructArrayStructArrayFieldInterfacePublisher->OnPropIntArrayChangedBP.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+		TbStructArrayStructArrayFieldInterfacePublisher->OnPropMixedChanged.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+		TbStructArrayStructArrayFieldInterfacePublisher->OnPropMixedChangedBP.RemoveAll(TbStructArrayStructArrayFieldInterfacePublisher);
+	}
+
+	Super::Deinitialize();
+}
+
+bool UAbstractTbStructArrayStructArrayFieldInterface::IsInitialized() const
+{
+	return bInitialized;
+}

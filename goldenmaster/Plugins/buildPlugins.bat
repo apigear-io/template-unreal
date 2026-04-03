@@ -129,6 +129,11 @@ call :buildUEplugin "%script_path%\TbRefIfaces\TbRefIfaces.uplugin" , "%script_p
 if !buildresult! GEQ 1 call :cleanup !buildresult!
 if !buildresult! GEQ 1 exit /b !buildresult!
 
+@REM Building and testing TbStructArray module
+call :buildUEplugin "%script_path%\TbStructArray\TbStructArray.uplugin" , "%script_path%build\TbStructArray"
+if !buildresult! GEQ 1 call :cleanup !buildresult!
+if !buildresult! GEQ 1 exit /b !buildresult!
+
 
 call :cleanup 0
 exit /b 0

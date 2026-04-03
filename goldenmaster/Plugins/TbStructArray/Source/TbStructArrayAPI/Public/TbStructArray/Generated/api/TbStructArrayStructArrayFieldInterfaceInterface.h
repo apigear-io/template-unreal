@@ -1,0 +1,231 @@
+/**
+Copyright 2021 ApiGear UG
+Copyright 2021 Epic Games, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+#pragma once
+#include "Async/Future.h"
+#include "Engine/LatentActionManager.h"
+#include "UObject/Interface.h"
+#include "Misc/ScopeRWLock.h"
+#include "UObject/WeakInterfacePtr.h"
+#include "TbStructArray_data.h"
+#include "TbStructArrayStructArrayFieldInterfaceInterface.generated.h"
+
+/**
+ * Declaration for StructArrayFieldInterface
+ */
+// signal delegates
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfaceSigMixedDelegate, const FTbStructArrayMixedStruct& /* ParamMixed */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfaceSigMixedDelegateBP, const FTbStructArrayMixedStruct&, ParamMixed);
+
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfaceSigStructArrayDelegate, const FTbStructArrayStructWithArrayOfStructs& /* ParamPoints */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfaceSigStructArrayDelegateBP, const FTbStructArrayStructWithArrayOfStructs&, ParamPoints);
+
+// property delegates
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfacePropStructArrayChangedDelegate, const FTbStructArrayStructWithArrayOfStructs& /* PropStructArray */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfacePropStructArrayChangedDelegateBP, const FTbStructArrayStructWithArrayOfStructs&, PropStructArray);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfacePropEnumArrayChangedDelegate, const FTbStructArrayStructWithArrayOfEnums& /* PropEnumArray */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfacePropEnumArrayChangedDelegateBP, const FTbStructArrayStructWithArrayOfEnums&, PropEnumArray);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfacePropIntArrayChangedDelegate, const FTbStructArrayStructWithArrayOfInts& /* PropIntArray */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfacePropIntArrayChangedDelegateBP, const FTbStructArrayStructWithArrayOfInts&, PropIntArray);
+DECLARE_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfacePropMixedChangedDelegate, const FTbStructArrayMixedStruct& /* PropMixed */);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTbStructArrayStructArrayFieldInterfacePropMixedChangedDelegateBP, const FTbStructArrayMixedStruct&, PropMixed);
+
+/**
+ * Subscriber interface for TbStructArrayStructArrayFieldInterface events. Intended for Blueprint-only use.
+ * Does contain signal events and property-changed events.
+ * @note Guaranteed to be run from within the GameThread.
+ */
+UINTERFACE(BlueprintType)
+class UTbStructArrayStructArrayFieldInterfaceBPSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSTRUCTARRAYAPI_API ITbStructArrayStructArrayFieldInterfaceBPSubscriberInterface
+{
+	GENERATED_BODY()
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "On SigMixed Signal")
+	void OnSigMixedSignal(const FTbStructArrayMixedStruct& ParamMixed);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "On SigStructArray Signal")
+	void OnSigStructArraySignal(const FTbStructArrayStructWithArrayOfStructs& ParamPoints);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "On Property PropStructArray Changed")
+	void OnPropStructArrayChanged(UPARAM(DisplayName = "PropStructArray") const FTbStructArrayStructWithArrayOfStructs& InPropStructArray);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "On Property PropEnumArray Changed")
+	void OnPropEnumArrayChanged(UPARAM(DisplayName = "PropEnumArray") const FTbStructArrayStructWithArrayOfEnums& InPropEnumArray);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "On Property PropIntArray Changed")
+	void OnPropIntArrayChanged(UPARAM(DisplayName = "PropIntArray") const FTbStructArrayStructWithArrayOfInts& InPropIntArray);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "On Property PropMixed Changed")
+	void OnPropMixedChanged(UPARAM(DisplayName = "PropMixed") const FTbStructArrayMixedStruct& InPropMixed);
+};
+
+/**
+ * Subscriber interface for TbStructArrayStructArrayFieldInterface events. Intended for C++ use.
+ * Does contain signal events and property-changed events.
+ * @note Not guaranteed to be run from within the GameThread - can be on any thread.
+ */
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbStructArrayStructArrayFieldInterfaceSubscriberInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+class TBSTRUCTARRAYAPI_API ITbStructArrayStructArrayFieldInterfaceSubscriberInterface
+{
+	GENERATED_BODY()
+public:
+	virtual void OnSigMixedSignal(const FTbStructArrayMixedStruct& ParamMixed) = 0;
+
+	virtual void OnSigStructArraySignal(const FTbStructArrayStructWithArrayOfStructs& ParamPoints) = 0;
+
+	virtual void OnPropStructArrayChanged(UPARAM(DisplayName = "PropStructArray") const FTbStructArrayStructWithArrayOfStructs& InPropStructArray) = 0;
+
+	virtual void OnPropEnumArrayChanged(UPARAM(DisplayName = "PropEnumArray") const FTbStructArrayStructWithArrayOfEnums& InPropEnumArray) = 0;
+
+	virtual void OnPropIntArrayChanged(UPARAM(DisplayName = "PropIntArray") const FTbStructArrayStructWithArrayOfInts& InPropIntArray) = 0;
+
+	virtual void OnPropMixedChanged(UPARAM(DisplayName = "PropMixed") const FTbStructArrayMixedStruct& InPropMixed) = 0;
+};
+
+/**
+ * Class UTbStructArrayStructArrayFieldInterfaceInterfacePublisher
+ * Contains delegates for properties and signals
+ * this is needed since we cannot declare delegates on an UInterface
+ */
+UCLASS(BlueprintType)
+class TBSTRUCTARRAYAPI_API UTbStructArrayStructArrayFieldInterfacePublisher : public UObject
+{
+	GENERATED_BODY()
+
+public:
+	FTbStructArrayStructArrayFieldInterfaceSigMixedDelegate OnSigMixedSignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "SigMixed Signal")
+	FTbStructArrayStructArrayFieldInterfaceSigMixedDelegateBP OnSigMixedSignalBP;
+	/// C++ wrapper for BP functions to safely call SigMixedSignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "Broadcast SigMixed Signal")
+	void BroadcastSigMixedSignal(const FTbStructArrayMixedStruct& ParamMixed);
+
+	FTbStructArrayStructArrayFieldInterfaceSigStructArrayDelegate OnSigStructArraySignal;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "SigStructArray Signal")
+	FTbStructArrayStructArrayFieldInterfaceSigStructArrayDelegateBP OnSigStructArraySignalBP;
+	/// C++ wrapper for BP functions to safely call SigStructArraySignal.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "Broadcast SigStructArray Signal")
+	void BroadcastSigStructArraySignal(const FTbStructArrayStructWithArrayOfStructs& ParamPoints);
+
+	FTbStructArrayStructArrayFieldInterfacePropStructArrayChangedDelegate OnPropStructArrayChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "Property PropStructArray Changed")
+	FTbStructArrayStructArrayFieldInterfacePropStructArrayChangedDelegateBP OnPropStructArrayChangedBP;
+	/// C++ wrapper for BP functions to safely call OnPropStructArrayChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "Broadcast Property PropStructArray Changed")
+	void BroadcastPropStructArrayChanged(UPARAM(DisplayName = "PropStructArray") const FTbStructArrayStructWithArrayOfStructs& InPropStructArray);
+
+	FTbStructArrayStructArrayFieldInterfacePropEnumArrayChangedDelegate OnPropEnumArrayChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "Property PropEnumArray Changed")
+	FTbStructArrayStructArrayFieldInterfacePropEnumArrayChangedDelegateBP OnPropEnumArrayChangedBP;
+	/// C++ wrapper for BP functions to safely call OnPropEnumArrayChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "Broadcast Property PropEnumArray Changed")
+	void BroadcastPropEnumArrayChanged(UPARAM(DisplayName = "PropEnumArray") const FTbStructArrayStructWithArrayOfEnums& InPropEnumArray);
+
+	FTbStructArrayStructArrayFieldInterfacePropIntArrayChangedDelegate OnPropIntArrayChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "Property PropIntArray Changed")
+	FTbStructArrayStructArrayFieldInterfacePropIntArrayChangedDelegateBP OnPropIntArrayChangedBP;
+	/// C++ wrapper for BP functions to safely call OnPropIntArrayChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "Broadcast Property PropIntArray Changed")
+	void BroadcastPropIntArrayChanged(UPARAM(DisplayName = "PropIntArray") const FTbStructArrayStructWithArrayOfInts& InPropIntArray);
+
+	FTbStructArrayStructArrayFieldInterfacePropMixedChangedDelegate OnPropMixedChanged;
+	UPROPERTY(BlueprintAssignable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "Property PropMixed Changed")
+	FTbStructArrayStructArrayFieldInterfacePropMixedChangedDelegateBP OnPropMixedChangedBP;
+	/// C++ wrapper for BP functions to safely call OnPropMixedChanged.Broadcast
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals", DisplayName = "Broadcast Property PropMixed Changed")
+	void BroadcastPropMixedChanged(UPARAM(DisplayName = "PropMixed") const FTbStructArrayMixedStruct& InPropMixed);
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals")
+	void Subscribe(const TScriptInterface<ITbStructArrayStructArrayFieldInterfaceBPSubscriberInterface>& Subscriber);
+	void Subscribe(const TWeakInterfacePtr<ITbStructArrayStructArrayFieldInterfaceSubscriberInterface>& Subscriber);
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Signals")
+	void Unsubscribe(const TScriptInterface<ITbStructArrayStructArrayFieldInterfaceBPSubscriberInterface>& Subscriber);
+	void Unsubscribe(const TWeakInterfacePtr<ITbStructArrayStructArrayFieldInterfaceSubscriberInterface>& Subscriber);
+
+private:
+	void CleanUpSubscribers();
+
+	TArray<TScriptInterface<ITbStructArrayStructArrayFieldInterfaceBPSubscriberInterface>> BPSubscribers;
+	FRWLock BPSubscribersLock;
+	TArray<TWeakInterfacePtr<ITbStructArrayStructArrayFieldInterfaceSubscriberInterface>> Subscribers;
+	FRWLock SubscribersLock;
+};
+
+/**
+ * Interface UTbStructArrayStructArrayFieldInterfaceInterface only for Unreal Engine's reflection system
+ */
+UINTERFACE(BlueprintType, MinimalAPI, meta = (CannotImplementInterfaceInBlueprint))
+class UTbStructArrayStructArrayFieldInterfaceInterface : public UInterface
+{
+	GENERATED_BODY()
+};
+
+/**
+ * Interface ITbStructArrayStructArrayFieldInterfaceInterface
+ */
+class TBSTRUCTARRAYAPI_API ITbStructArrayStructArrayFieldInterfaceInterface
+{
+	GENERATED_BODY()
+
+public:
+	/// Provides access to the object which holds all the delegates
+	/// this is needed since we cannot declare delegates on an UInterface
+	/// @return object with signals for property state changes or standalone signals
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface")
+	virtual UTbStructArrayStructArrayFieldInterfacePublisher* _GetPublisher() = 0;
+
+	// methods
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void FuncMixedAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbStructArrayMixedStruct& Result, const FTbStructArrayMixedStruct& ParamMixed) = 0;
+	virtual TFuture<FTbStructArrayMixedStruct> FuncMixedAsync(const FTbStructArrayMixedStruct& ParamMixed) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Operations")
+	virtual FTbStructArrayMixedStruct FuncMixed(const FTbStructArrayMixedStruct& ParamMixed) = 0;
+
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Operations", meta = (Latent, LatentInfo = "LatentInfo", HidePin = "WorldContextObject", DefaultToSelf = "WorldContextObject"))
+	virtual void FuncStructArrayAsync(UObject* WorldContextObject, FLatentActionInfo LatentInfo, FTbStructArrayStructWithArrayOfStructs& Result, const FTbStructArrayStructWithArrayOfStructs& ParamPoints) = 0;
+	virtual TFuture<FTbStructArrayStructWithArrayOfStructs> FuncStructArrayAsync(const FTbStructArrayStructWithArrayOfStructs& ParamPoints) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Operations")
+	virtual FTbStructArrayStructWithArrayOfStructs FuncStructArray(const FTbStructArrayStructWithArrayOfStructs& ParamPoints) = 0;
+
+	// properties
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	virtual FTbStructArrayStructWithArrayOfStructs GetPropStructArray() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	virtual void SetPropStructArray(UPARAM(DisplayName = "PropStructArray") const FTbStructArrayStructWithArrayOfStructs& InPropStructArray) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	virtual FTbStructArrayStructWithArrayOfEnums GetPropEnumArray() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	virtual void SetPropEnumArray(UPARAM(DisplayName = "PropEnumArray") const FTbStructArrayStructWithArrayOfEnums& InPropEnumArray) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	virtual FTbStructArrayStructWithArrayOfInts GetPropIntArray() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	virtual void SetPropIntArray(UPARAM(DisplayName = "PropIntArray") const FTbStructArrayStructWithArrayOfInts& InPropIntArray) = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	virtual FTbStructArrayMixedStruct GetPropMixed() const = 0;
+	UFUNCTION(BlueprintCallable, Category = "ApiGear|TbStructArray|StructArrayFieldInterface|Properties")
+	virtual void SetPropMixed(UPARAM(DisplayName = "PropMixed") const FTbStructArrayMixedStruct& InPropMixed) = 0;
+};
