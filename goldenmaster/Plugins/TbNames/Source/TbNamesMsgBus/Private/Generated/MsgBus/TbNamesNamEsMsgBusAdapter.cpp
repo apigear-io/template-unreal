@@ -116,9 +116,13 @@ void UTbNamesNamEsMsgBusAdapter::_StopListening()
 	auto msg = new FTbNamesNamEsServiceDisconnectMessage();
 
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+		ConnectedClientsTimestamps.Empty();
+	}
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -128,7 +132,6 @@ void UTbNamesNamEsMsgBusAdapter::_StopListening()
 	}
 
 	TbNamesNamEsMsgBusEndpoint.Reset();
-	ConnectedClientsTimestamps.Empty();
 	_UpdateClientsConnected();
 }
 
@@ -185,9 +188,12 @@ void UTbNamesNamEsMsgBusAdapter::OnDiscoveryMessage(const FTbNamesNamEsDiscovery
 
 void UTbNamesNamEsMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
 	}
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
@@ -215,7 +221,10 @@ void UTbNamesNamEsMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<
 	}
 
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
-	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	}
 	_UpdateClientsConnected();
 }
 
@@ -248,7 +257,10 @@ void UTbNamesNamEsMsgBusAdapter::OnPing(const FTbNamesNamEsPingMessage& InMessag
 	auto msg = new FTbNamesNamEsPongMessage();
 	msg->Timestamp = InMessage.Timestamp;
 
-	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	}
 
 	if (TbNamesNamEsMsgBusEndpoint.IsValid())
 	{
@@ -262,12 +274,14 @@ void UTbNamesNamEsMsgBusAdapter::OnPing(const FTbNamesNamEsPingMessage& InMessag
 
 void UTbNamesNamEsMsgBusAdapter::OnClientDisconnected(const FTbNamesNamEsClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
+		ConnectedClientsTimestamps.Remove(Context->GetSender());
 	}
-
-	ConnectedClientsTimestamps.Remove(Context->GetSender());
 	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
@@ -283,29 +297,38 @@ void UTbNamesNamEsMsgBusAdapter::_CheckClientTimeouts()
 	const double CurrentTime = FPlatformTime::Seconds();
 	TArray<FMessageAddress> TimedOutClients;
 
-	for (const auto& ClientPair : ConnectedClientsTimestamps)
 	{
-		const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
-
-		if (DeltaMS > 2 * _HeartbeatIntervalMS)
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		for (const auto& ClientPair : ConnectedClientsTimestamps)
 		{
-			// service seems to be dead or not responding - reset connection
-			TimedOutClients.Add(ClientPair.Key);
+			const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
+
+			if (DeltaMS > 2 * _HeartbeatIntervalMS)
+			{
+				TimedOutClients.Add(ClientPair.Key);
+			}
+		}
+
+		for (const auto& ClientAddress : TimedOutClients)
+		{
+			ConnectedClientsTimestamps.Remove(ClientAddress);
 		}
 	}
 
 	for (const auto& ClientAddress : TimedOutClients)
 	{
 		_OnClientTimeout.Broadcast(ClientAddress.ToString());
-		ConnectedClientsTimestamps.Remove(ClientAddress);
 	}
 	_UpdateClientsConnected();
 }
 
 void UTbNamesNamEsMsgBusAdapter::_UpdateClientsConnected()
 {
-	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	int32 NumberOfClients;
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		NumberOfClients = ConnectedClientsTimestamps.Num();
+	}
 	_ClientsConnected = NumberOfClients;
 	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
@@ -333,11 +356,14 @@ void UTbNamesNamEsMsgBusAdapter::OnSomeFunction2Request(const FTbNamesNamEsSomeF
 void UTbNamesNamEsMsgBusAdapter::OnSomeSignalSignal(bool bInSomeParam)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbNamesNamEsSomeSignalSignalMessage();
 	msg->bSomeParam = bInSomeParam;
-	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomeSignalSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -350,11 +376,14 @@ void UTbNamesNamEsMsgBusAdapter::OnSomeSignalSignal(bool bInSomeParam)
 void UTbNamesNamEsMsgBusAdapter::OnSomeSignal2Signal(bool bInSomeParam)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbNamesNamEsSomeSignal2SignalMessage();
 	msg->bSomeParam = bInSomeParam;
-	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomeSignal2SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -377,12 +406,15 @@ void UTbNamesNamEsMsgBusAdapter::OnSetSwitchRequest(const FTbNamesNamEsSetSwitch
 void UTbNamesNamEsMsgBusAdapter::OnSwitchChanged(bool bInSwitch)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbNamesNamEsSwitchChangedMessage();
 	msg->bSwitch = bInSwitch;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSwitchChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -405,12 +437,15 @@ void UTbNamesNamEsMsgBusAdapter::OnSetSomePropertyRequest(const FTbNamesNamEsSet
 void UTbNamesNamEsMsgBusAdapter::OnSomePropertyChanged(int32 InSomeProperty)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbNamesNamEsSomePropertyChangedMessage();
 	msg->SomeProperty = InSomeProperty;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomePropertyChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -433,12 +468,15 @@ void UTbNamesNamEsMsgBusAdapter::OnSetSomePoperty2Request(const FTbNamesNamEsSet
 void UTbNamesNamEsMsgBusAdapter::OnSomePoperty2Changed(int32 InSomePoperty2)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbNamesNamEsSomePoperty2ChangedMessage();
 	msg->SomePoperty2 = InSomePoperty2;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsSomePoperty2ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -461,12 +499,15 @@ void UTbNamesNamEsMsgBusAdapter::OnSetEnumPropertyRequest(const FTbNamesNamEsSet
 void UTbNamesNamEsMsgBusAdapter::OnEnumPropertyChanged(ETbNamesEnum_With_Under_scores InEnumProperty)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbNamesNamEsEnumPropertyChangedMessage();
 	msg->EnumProperty = InEnumProperty;
 
-	if (TbNamesNamEsMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbNamesNamEsMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbNamesNamEsMsgBusEndpoint->Send<FTbNamesNamEsEnumPropertyChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

@@ -118,9 +118,13 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_StopListening()
 	auto msg = new FTbEnumEnumInterfaceServiceDisconnectMessage();
 
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+		ConnectedClientsTimestamps.Empty();
+	}
 
-	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfaceServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -130,7 +134,6 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_StopListening()
 	}
 
 	TbEnumEnumInterfaceMsgBusEndpoint.Reset();
-	ConnectedClientsTimestamps.Empty();
 	_UpdateClientsConnected();
 }
 
@@ -187,9 +190,12 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTbEnumEnumInte
 
 void UTbEnumEnumInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
 	}
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
@@ -217,7 +223,10 @@ void UTbEnumEnumInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSha
 	}
 
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
-	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	}
 	_UpdateClientsConnected();
 }
 
@@ -250,7 +259,10 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnPing(const FTbEnumEnumInterfacePingMes
 	auto msg = new FTbEnumEnumInterfacePongMessage();
 	msg->Timestamp = InMessage.Timestamp;
 
-	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	}
 
 	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -264,12 +276,14 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnPing(const FTbEnumEnumInterfacePingMes
 
 void UTbEnumEnumInterfaceMsgBusAdapter::OnClientDisconnected(const FTbEnumEnumInterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
+		ConnectedClientsTimestamps.Remove(Context->GetSender());
 	}
-
-	ConnectedClientsTimestamps.Remove(Context->GetSender());
 	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
@@ -285,29 +299,38 @@ void UTbEnumEnumInterfaceMsgBusAdapter::_CheckClientTimeouts()
 	const double CurrentTime = FPlatformTime::Seconds();
 	TArray<FMessageAddress> TimedOutClients;
 
-	for (const auto& ClientPair : ConnectedClientsTimestamps)
 	{
-		const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
-
-		if (DeltaMS > 2 * _HeartbeatIntervalMS)
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		for (const auto& ClientPair : ConnectedClientsTimestamps)
 		{
-			// service seems to be dead or not responding - reset connection
-			TimedOutClients.Add(ClientPair.Key);
+			const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
+
+			if (DeltaMS > 2 * _HeartbeatIntervalMS)
+			{
+				TimedOutClients.Add(ClientPair.Key);
+			}
+		}
+
+		for (const auto& ClientAddress : TimedOutClients)
+		{
+			ConnectedClientsTimestamps.Remove(ClientAddress);
 		}
 	}
 
 	for (const auto& ClientAddress : TimedOutClients)
 	{
 		_OnClientTimeout.Broadcast(ClientAddress.ToString());
-		ConnectedClientsTimestamps.Remove(ClientAddress);
 	}
 	_UpdateClientsConnected();
 }
 
 void UTbEnumEnumInterfaceMsgBusAdapter::_UpdateClientsConnected()
 {
-	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	int32 NumberOfClients;
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		NumberOfClients = ConnectedClientsTimestamps.Num();
+	}
 	_ClientsConnected = NumberOfClients;
 	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
@@ -399,11 +422,14 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnFunc3Request(const FTbEnumEnumInterfac
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSig0Signal(ETbEnumEnum0 InParam0)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbEnumEnumInterfaceSig0SignalMessage();
 	msg->Param0 = InParam0;
-	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfaceSig0SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -416,11 +442,14 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSig0Signal(ETbEnumEnum0 InParam0)
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSig1Signal(ETbEnumEnum1 InParam1)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbEnumEnumInterfaceSig1SignalMessage();
 	msg->Param1 = InParam1;
-	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfaceSig1SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -433,11 +462,14 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSig1Signal(ETbEnumEnum1 InParam1)
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSig2Signal(ETbEnumEnum2 InParam2)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbEnumEnumInterfaceSig2SignalMessage();
 	msg->Param2 = InParam2;
-	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfaceSig2SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -450,11 +482,14 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSig2Signal(ETbEnumEnum2 InParam2)
 void UTbEnumEnumInterfaceMsgBusAdapter::OnSig3Signal(ETbEnumEnum3 InParam3)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbEnumEnumInterfaceSig3SignalMessage();
 	msg->Param3 = InParam3;
-	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfaceSig3SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -477,12 +512,15 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp0Request(const FTbEnumEnumInter
 void UTbEnumEnumInterfaceMsgBusAdapter::OnProp0Changed(ETbEnumEnum0 InProp0)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbEnumEnumInterfaceProp0ChangedMessage();
 	msg->Prop0 = InProp0;
 
-	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfaceProp0ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -505,12 +543,15 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp1Request(const FTbEnumEnumInter
 void UTbEnumEnumInterfaceMsgBusAdapter::OnProp1Changed(ETbEnumEnum1 InProp1)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbEnumEnumInterfaceProp1ChangedMessage();
 	msg->Prop1 = InProp1;
 
-	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfaceProp1ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -533,12 +574,15 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp2Request(const FTbEnumEnumInter
 void UTbEnumEnumInterfaceMsgBusAdapter::OnProp2Changed(ETbEnumEnum2 InProp2)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbEnumEnumInterfaceProp2ChangedMessage();
 	msg->Prop2 = InProp2;
 
-	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfaceProp2ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -561,12 +605,15 @@ void UTbEnumEnumInterfaceMsgBusAdapter::OnSetProp3Request(const FTbEnumEnumInter
 void UTbEnumEnumInterfaceMsgBusAdapter::OnProp3Changed(ETbEnumEnum3 InProp3)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTbEnumEnumInterfaceProp3ChangedMessage();
 	msg->Prop3 = InProp3;
 
-	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbEnumEnumInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbEnumEnumInterfaceMsgBusEndpoint->Send<FTbEnumEnumInterfaceProp3ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

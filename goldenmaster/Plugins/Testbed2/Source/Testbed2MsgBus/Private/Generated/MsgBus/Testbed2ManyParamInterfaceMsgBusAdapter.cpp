@@ -118,9 +118,13 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_StopListening()
 	auto msg = new FTestbed2ManyParamInterfaceServiceDisconnectMessage();
 
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+		ConnectedClientsTimestamps.Empty();
+	}
 
-	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -130,7 +134,6 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_StopListening()
 	}
 
 	Testbed2ManyParamInterfaceMsgBusEndpoint.Reset();
-	ConnectedClientsTimestamps.Empty();
 	_UpdateClientsConnected();
 }
 
@@ -187,9 +190,12 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestbed
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
 	}
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
@@ -217,7 +223,10 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::HandleClientConnectionRequest(con
 	}
 
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
-	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	}
 	_UpdateClientsConnected();
 }
 
@@ -250,7 +259,10 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnPing(const FTestbed2ManyParamIn
 	auto msg = new FTestbed2ManyParamInterfacePongMessage();
 	msg->Timestamp = InMessage.Timestamp;
 
-	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	}
 
 	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -264,12 +276,14 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnPing(const FTestbed2ManyParamIn
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnClientDisconnected(const FTestbed2ManyParamInterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
+		ConnectedClientsTimestamps.Remove(Context->GetSender());
 	}
-
-	ConnectedClientsTimestamps.Remove(Context->GetSender());
 	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
@@ -285,29 +299,38 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::_CheckClientTimeouts()
 	const double CurrentTime = FPlatformTime::Seconds();
 	TArray<FMessageAddress> TimedOutClients;
 
-	for (const auto& ClientPair : ConnectedClientsTimestamps)
 	{
-		const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
-
-		if (DeltaMS > 2 * _HeartbeatIntervalMS)
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		for (const auto& ClientPair : ConnectedClientsTimestamps)
 		{
-			// service seems to be dead or not responding - reset connection
-			TimedOutClients.Add(ClientPair.Key);
+			const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
+
+			if (DeltaMS > 2 * _HeartbeatIntervalMS)
+			{
+				TimedOutClients.Add(ClientPair.Key);
+			}
+		}
+
+		for (const auto& ClientAddress : TimedOutClients)
+		{
+			ConnectedClientsTimestamps.Remove(ClientAddress);
 		}
 	}
 
 	for (const auto& ClientAddress : TimedOutClients)
 	{
 		_OnClientTimeout.Broadcast(ClientAddress.ToString());
-		ConnectedClientsTimestamps.Remove(ClientAddress);
 	}
 	_UpdateClientsConnected();
 }
 
 void UTestbed2ManyParamInterfaceMsgBusAdapter::_UpdateClientsConnected()
 {
-	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	int32 NumberOfClients;
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		NumberOfClients = ConnectedClientsTimestamps.Num();
+	}
 	_ClientsConnected = NumberOfClients;
 	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
@@ -399,11 +422,14 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnFunc4Request(const FTestbed2Man
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig1Signal(int32 InParam1)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2ManyParamInterfaceSig1SignalMessage();
 	msg->Param1 = InParam1;
-	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceSig1SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -416,12 +442,15 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig1Signal(int32 InParam1)
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig2Signal(int32 InParam1, int32 InParam2)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2ManyParamInterfaceSig2SignalMessage();
 	msg->Param1 = InParam1;
 	msg->Param2 = InParam2;
-	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceSig2SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -434,13 +463,16 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig2Signal(int32 InParam1, int3
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig3Signal(int32 InParam1, int32 InParam2, int32 InParam3)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2ManyParamInterfaceSig3SignalMessage();
 	msg->Param1 = InParam1;
 	msg->Param2 = InParam2;
 	msg->Param3 = InParam3;
-	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceSig3SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -453,14 +485,17 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig3Signal(int32 InParam1, int3
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSig4Signal(int32 InParam1, int32 InParam2, int32 InParam3, int32 InParam4)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2ManyParamInterfaceSig4SignalMessage();
 	msg->Param1 = InParam1;
 	msg->Param2 = InParam2;
 	msg->Param3 = InParam3;
 	msg->Param4 = InParam4;
-	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceSig4SignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -483,12 +518,15 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp1Request(const FTestbed2
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp1Changed(int32 InProp1)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2ManyParamInterfaceProp1ChangedMessage();
 	msg->Prop1 = InProp1;
 
-	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceProp1ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -511,12 +549,15 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp2Request(const FTestbed2
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp2Changed(int32 InProp2)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2ManyParamInterfaceProp2ChangedMessage();
 	msg->Prop2 = InProp2;
 
-	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceProp2ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -539,12 +580,15 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp3Request(const FTestbed2
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp3Changed(int32 InProp3)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2ManyParamInterfaceProp3ChangedMessage();
 	msg->Prop3 = InProp3;
 
-	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceProp3ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -567,12 +611,15 @@ void UTestbed2ManyParamInterfaceMsgBusAdapter::OnSetProp4Request(const FTestbed2
 void UTestbed2ManyParamInterfaceMsgBusAdapter::OnProp4Changed(int32 InProp4)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed2ManyParamInterfaceProp4ChangedMessage();
 	msg->Prop4 = InProp4;
 
-	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed2ManyParamInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed2ManyParamInterfaceMsgBusEndpoint->Send<FTestbed2ManyParamInterfaceProp4ChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,

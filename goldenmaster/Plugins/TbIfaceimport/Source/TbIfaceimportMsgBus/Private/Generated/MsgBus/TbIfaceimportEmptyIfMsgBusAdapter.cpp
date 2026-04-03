@@ -110,9 +110,13 @@ void UTbIfaceimportEmptyIfMsgBusAdapter::_StopListening()
 	auto msg = new FTbIfaceimportEmptyIfServiceDisconnectMessage();
 
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+		ConnectedClientsTimestamps.Empty();
+	}
 
-	if (TbIfaceimportEmptyIfMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (TbIfaceimportEmptyIfMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		TbIfaceimportEmptyIfMsgBusEndpoint->Send<FTbIfaceimportEmptyIfServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -122,7 +126,6 @@ void UTbIfaceimportEmptyIfMsgBusAdapter::_StopListening()
 	}
 
 	TbIfaceimportEmptyIfMsgBusEndpoint.Reset();
-	ConnectedClientsTimestamps.Empty();
 	_UpdateClientsConnected();
 }
 
@@ -179,9 +182,12 @@ void UTbIfaceimportEmptyIfMsgBusAdapter::OnDiscoveryMessage(const FTbIfaceimport
 
 void UTbIfaceimportEmptyIfMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
 	}
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
@@ -205,7 +211,10 @@ void UTbIfaceimportEmptyIfMsgBusAdapter::HandleClientConnectionRequest(const TSh
 	}
 
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
-	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	}
 	_UpdateClientsConnected();
 }
 
@@ -238,7 +247,10 @@ void UTbIfaceimportEmptyIfMsgBusAdapter::OnPing(const FTbIfaceimportEmptyIfPingM
 	auto msg = new FTbIfaceimportEmptyIfPongMessage();
 	msg->Timestamp = InMessage.Timestamp;
 
-	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	}
 
 	if (TbIfaceimportEmptyIfMsgBusEndpoint.IsValid())
 	{
@@ -252,12 +264,14 @@ void UTbIfaceimportEmptyIfMsgBusAdapter::OnPing(const FTbIfaceimportEmptyIfPingM
 
 void UTbIfaceimportEmptyIfMsgBusAdapter::OnClientDisconnected(const FTbIfaceimportEmptyIfClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
+		ConnectedClientsTimestamps.Remove(Context->GetSender());
 	}
-
-	ConnectedClientsTimestamps.Remove(Context->GetSender());
 	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
@@ -273,29 +287,38 @@ void UTbIfaceimportEmptyIfMsgBusAdapter::_CheckClientTimeouts()
 	const double CurrentTime = FPlatformTime::Seconds();
 	TArray<FMessageAddress> TimedOutClients;
 
-	for (const auto& ClientPair : ConnectedClientsTimestamps)
 	{
-		const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
-
-		if (DeltaMS > 2 * _HeartbeatIntervalMS)
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		for (const auto& ClientPair : ConnectedClientsTimestamps)
 		{
-			// service seems to be dead or not responding - reset connection
-			TimedOutClients.Add(ClientPair.Key);
+			const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
+
+			if (DeltaMS > 2 * _HeartbeatIntervalMS)
+			{
+				TimedOutClients.Add(ClientPair.Key);
+			}
+		}
+
+		for (const auto& ClientAddress : TimedOutClients)
+		{
+			ConnectedClientsTimestamps.Remove(ClientAddress);
 		}
 	}
 
 	for (const auto& ClientAddress : TimedOutClients)
 	{
 		_OnClientTimeout.Broadcast(ClientAddress.ToString());
-		ConnectedClientsTimestamps.Remove(ClientAddress);
 	}
 	_UpdateClientsConnected();
 }
 
 void UTbIfaceimportEmptyIfMsgBusAdapter::_UpdateClientsConnected()
 {
-	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	int32 NumberOfClients;
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		NumberOfClients = ConnectedClientsTimestamps.Num();
+	}
 	_ClientsConnected = NumberOfClients;
 	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }

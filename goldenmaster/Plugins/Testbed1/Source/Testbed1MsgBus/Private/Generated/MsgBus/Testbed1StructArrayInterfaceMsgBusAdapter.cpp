@@ -120,9 +120,13 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_StopListening()
 	auto msg = new FTestbed1StructArrayInterfaceServiceDisconnectMessage();
 
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+		ConnectedClientsTimestamps.Empty();
+	}
 
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceServiceDisconnectMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -132,7 +136,6 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_StopListening()
 	}
 
 	Testbed1StructArrayInterfaceMsgBusEndpoint.Reset();
-	ConnectedClientsTimestamps.Empty();
 	_UpdateClientsConnected();
 }
 
@@ -189,9 +192,12 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnDiscoveryMessage(const FTestb
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::HandleClientConnectionRequest(const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
 	}
 
 	const FMessageAddress& ClientAddress = Context->GetSender();
@@ -220,7 +226,10 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::HandleClientConnectionRequest(c
 	}
 
 	_OnClientConnected.Broadcast(ClientAddress.ToString());
-	ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(ClientAddress, FPlatformTime::Seconds());
+	}
 	_UpdateClientsConnected();
 }
 
@@ -253,7 +262,10 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPing(const FTestbed1StructArr
 	auto msg = new FTestbed1StructArrayInterfacePongMessage();
 	msg->Timestamp = InMessage.Timestamp;
 
-	ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.Add(Context->GetSender(), FPlatformTime::Seconds());
+	}
 
 	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid())
 	{
@@ -267,12 +279,14 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPing(const FTestbed1StructArr
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnClientDisconnected(const FTestbed1StructArrayInterfaceClientDisconnectMessage& /*InMessage*/, const TSharedRef<IMessageContext, ESPMode::ThreadSafe>& Context)
 {
-	if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
 	{
-		return;
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		if (!ConnectedClientsTimestamps.Contains(Context->GetSender()))
+		{
+			return;
+		}
+		ConnectedClientsTimestamps.Remove(Context->GetSender());
 	}
-
-	ConnectedClientsTimestamps.Remove(Context->GetSender());
 	_OnClientDisconnected.Broadcast(Context->GetSender().ToString());
 	_UpdateClientsConnected();
 }
@@ -288,29 +302,38 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::_CheckClientTimeouts()
 	const double CurrentTime = FPlatformTime::Seconds();
 	TArray<FMessageAddress> TimedOutClients;
 
-	for (const auto& ClientPair : ConnectedClientsTimestamps)
 	{
-		const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
-
-		if (DeltaMS > 2 * _HeartbeatIntervalMS)
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		for (const auto& ClientPair : ConnectedClientsTimestamps)
 		{
-			// service seems to be dead or not responding - reset connection
-			TimedOutClients.Add(ClientPair.Key);
+			const double DeltaMS = (CurrentTime - ClientPair.Value) * 1000.0;
+
+			if (DeltaMS > 2 * _HeartbeatIntervalMS)
+			{
+				TimedOutClients.Add(ClientPair.Key);
+			}
+		}
+
+		for (const auto& ClientAddress : TimedOutClients)
+		{
+			ConnectedClientsTimestamps.Remove(ClientAddress);
 		}
 	}
 
 	for (const auto& ClientAddress : TimedOutClients)
 	{
 		_OnClientTimeout.Broadcast(ClientAddress.ToString());
-		ConnectedClientsTimestamps.Remove(ClientAddress);
 	}
 	_UpdateClientsConnected();
 }
 
 void UTestbed1StructArrayInterfaceMsgBusAdapter::_UpdateClientsConnected()
 {
-	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	int32 NumberOfClients;
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		NumberOfClients = ConnectedClientsTimestamps.Num();
+	}
 	_ClientsConnected = NumberOfClients;
 	_OnClientsConnectedCountChanged.Broadcast(_ClientsConnected);
 }
@@ -423,11 +446,14 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnFuncEnumRequest(const FTestbe
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBoolSignal(const TArray<FTestbed1StructBool>& InParamBool)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed1StructArrayInterfaceSigBoolSignalMessage();
 	msg->ParamBool = InParamBool;
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceSigBoolSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -440,11 +466,14 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigBoolSignal(const TArray<FT
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigIntSignal(const TArray<FTestbed1StructInt>& InParamInt)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed1StructArrayInterfaceSigIntSignalMessage();
 	msg->ParamInt = InParamInt;
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceSigIntSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -457,11 +486,14 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigIntSignal(const TArray<FTe
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigFloatSignal(const TArray<FTestbed1StructFloat>& InParamFloat)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed1StructArrayInterfaceSigFloatSignalMessage();
 	msg->ParamFloat = InParamFloat;
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceSigFloatSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -474,11 +506,14 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigFloatSignal(const TArray<F
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigStringSignal(const TArray<FTestbed1StructString>& InParamString)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed1StructArrayInterfaceSigStringSignalMessage();
 	msg->ParamString = InParamString;
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceSigStringSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -491,11 +526,14 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigStringSignal(const TArray<
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSigEnumSignal(const TArray<ETestbed1Enum0>& InParamEnum)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed1StructArrayInterfaceSigEnumSignalMessage();
 	msg->ParamEnum = InParamEnum;
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfaceSigEnumSignalMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -518,12 +556,15 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropBoolRequest(const FTes
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropBoolChanged(const TArray<FTestbed1StructBool>& InPropBool)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed1StructArrayInterfacePropBoolChangedMessage();
 	msg->PropBool = InPropBool;
 
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfacePropBoolChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -546,12 +587,15 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropIntRequest(const FTest
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropIntChanged(const TArray<FTestbed1StructInt>& InPropInt)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed1StructArrayInterfacePropIntChangedMessage();
 	msg->PropInt = InPropInt;
 
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfacePropIntChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -574,12 +618,15 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropFloatRequest(const FTe
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropFloatChanged(const TArray<FTestbed1StructFloat>& InPropFloat)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed1StructArrayInterfacePropFloatChangedMessage();
 	msg->PropFloat = InPropFloat;
 
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfacePropFloatChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -602,12 +649,15 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropStringRequest(const FT
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropStringChanged(const TArray<FTestbed1StructString>& InPropString)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed1StructArrayInterfacePropStringChangedMessage();
 	msg->PropString = InPropString;
 
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfacePropStringChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
@@ -630,12 +680,15 @@ void UTestbed1StructArrayInterfaceMsgBusAdapter::OnSetPropEnumRequest(const FTes
 void UTestbed1StructArrayInterfaceMsgBusAdapter::OnPropEnumChanged(const TArray<ETestbed1Enum0>& InPropEnum)
 {
 	TArray<FMessageAddress> ConnectedClients;
-	int32 NumberOfClients = ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	{
+		FScopeLock Lock(&ConnectedClientsTimestampsCS);
+		ConnectedClientsTimestamps.GetKeys(ConnectedClients);
+	}
 
 	auto msg = new FTestbed1StructArrayInterfacePropEnumChangedMessage();
 	msg->PropEnum = InPropEnum;
 
-	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && NumberOfClients > 0)
+	if (Testbed1StructArrayInterfaceMsgBusEndpoint.IsValid() && ConnectedClients.Num() > 0)
 	{
 		Testbed1StructArrayInterfaceMsgBusEndpoint->Send<FTestbed1StructArrayInterfacePropEnumChangedMessage>(msg, EMessageFlags::Reliable,
 			nullptr,
