@@ -1,7 +1,8 @@
-{{/* Copyright Epic Games, Inc. All Rights Reserved */}}
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $API_MACRO := printf "%s_API" (CAMEL .Module.Name) }}
-{{- $Category := printf "ApiGear%s" $ModuleName -}}
+{{- $Category := printf "ApiGear%s" $ModuleName }}
 #pragma once
 
 #include "{{$ModuleName}}/Generated/api/{{$ModuleName}}_apig.h"

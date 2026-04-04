@@ -1,6 +1,7 @@
-{{/* Copyright Epic Games, Inc. All Rights Reserved */}}
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $API_MACRO := printf "%sAPI_API" (CAMEL .Module.Name) }}
-{{- $ModuleName := Camel .Module.Name -}}
+{{- $ModuleName := Camel .Module.Name }}
 
 #include "{{$ModuleName}}/Generated/api/{{$ModuleName}}.json.adapter.h"
 {{- range .Module.Externs }}

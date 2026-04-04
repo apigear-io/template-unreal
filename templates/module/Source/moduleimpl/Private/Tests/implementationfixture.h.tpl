@@ -1,4 +1,4 @@
-{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
+{{ template "copyright" }}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $DisplayName := printf "%s%s" $ModuleName (Camel .Interface.Name) }}
 {{- $IfaceName := Camel .Interface.Name }}

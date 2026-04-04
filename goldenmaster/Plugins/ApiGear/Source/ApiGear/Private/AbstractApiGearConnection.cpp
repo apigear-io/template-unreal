@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
+
 #include "AbstractApiGearConnection.h"
 
 DEFINE_LOG_CATEGORY(LogApiGearConnection);

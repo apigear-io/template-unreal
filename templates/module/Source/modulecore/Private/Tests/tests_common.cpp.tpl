@@ -1,5 +1,5 @@
-{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
-/**{{ template "copyright" }}*/
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $ModuleName := Camel .Module.Name}}
 #include "{{$ModuleName}}/Tests/{{$ModuleName}}TestsCommon.h"
 #include "{{$ModuleName}}/Generated/api/{{$ModuleName}}_data.h"

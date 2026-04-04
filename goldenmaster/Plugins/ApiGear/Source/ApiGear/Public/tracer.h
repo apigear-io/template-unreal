@@ -1,4 +1,6 @@
-// Copyright Epic Games, Inc. All Rights Reserved
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
+
 #pragma once
 #ifndef JSON_USE_IMPLICIT_CONVERSIONS
 #define JSON_USE_IMPLICIT_CONVERSIONS 0

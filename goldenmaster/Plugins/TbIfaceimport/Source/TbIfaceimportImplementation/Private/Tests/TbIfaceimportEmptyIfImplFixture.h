@@ -1,4 +1,5 @@
-
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
 #pragma once
 
 #include "Engine/GameInstance.h"

@@ -1,4 +1,6 @@
-// Copyright Epic Games, Inc. All Rights Reserved
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
+
 #include "ApiGearSettings.h"
 
 UApiGearSettings::UApiGearSettings(const FObjectInitializer& ObjectInitializer)

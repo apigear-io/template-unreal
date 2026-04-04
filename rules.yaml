@@ -130,6 +130,9 @@ features:
       - match: system
         prefix: "ApiGear/"
         documents:
+          - source: "ApiGear/LICENSE"
+            target: "LICENSE"
+            raw: true
           - source: "ApiGear/Source/ApiGear/apigear.Build.cs"
             target: "Source/ApiGear/apigear.Build.cs"
             raw: true
@@ -325,6 +328,8 @@ features:
       - match: module
         prefix: "{{Camel .Module.Name}}/"
         documents:
+          - source: "module/LICENSE.tpl"
+            target: "LICENSE"
           - source: "module/Config/FilterPlugin.ini"
             target: "Config/FilterPlugin.ini"
             raw: true

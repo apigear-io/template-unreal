@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
+
 #include "OLinkSink.h"
 #include "OLinkSinkFixture.h"
 THIRD_PARTY_INCLUDES_START

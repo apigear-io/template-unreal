@@ -1,9 +1,10 @@
-{{/* Copyright Epic Games, Inc. All Rights Reserved */}}
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $API_MACRO := printf "%s_API" (Camel .Module.Name) }}
-{{- $Category := printf "ApiGear%s" $ModuleName -}}
+{{- $Category := printf "ApiGear%s" $ModuleName }}
 {{- $ModulePath := (path .Module.Name)}}
-{{- $class := printf "%sEditor" $ModuleName -}}
+{{- $class := printf "%sEditor" $ModuleName }}
 namespace UnrealBuildTool.Rules
 {
 	public class {{$class}} : ModuleRules

@@ -1,8 +1,8 @@
-{{/* Copyright Epic Games, Inc. All Rights Reserved */}}
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $ModuleName := Camel .Module.Name}}
-{{- $ConnecitonEnabled := or .Features.stubs .Features.olink -}}
-{{- $Category := printf "ApiGear%s" $ModuleName -}}
-// Copyright Epic Games, Inc. All Rights Reserved
+{{- $ConnecitonEnabled := or .Features.stubs .Features.olink }}
+{{- $Category := printf "ApiGear%s" $ModuleName }}
 #include "{{$ModuleName}}ConnectionSettings.h"
 
 {{- if $.Features.apigear }}

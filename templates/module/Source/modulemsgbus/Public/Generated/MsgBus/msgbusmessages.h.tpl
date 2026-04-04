@@ -1,6 +1,5 @@
-
-{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
-/**{{ template "copyright" }}*/
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $IfaceName := Camel .Interface.Name }}
 {{- $API_MACRO := printf "%sMSGBUS_API" (CAMEL .Module.Name) }}
