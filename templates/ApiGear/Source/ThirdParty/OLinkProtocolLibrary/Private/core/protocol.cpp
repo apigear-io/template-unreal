@@ -23,6 +23,7 @@
 */
 
 #include "protocol.h"
+#include "nothrow.h"
 #include "nlohmann/json.hpp"
 #include <string>
 
@@ -100,57 +101,90 @@ bool Protocol::handleMessage(const nlohmann::json& msg, IProtocolListener& liste
         m_lastError = "message must be array";
         return false;
     }
+    if(msg.size() < 1) {
+        m_lastError = "message array is empty";
+        return false;
+    }
+    if(!msg[0].is_number_integer()) {
+        m_lastError = "message type must be integer";
+        return false;
+    }
+#if OLINK_HAS_EXCEPTIONS
+    try {
+#endif
     const int msgType = msg[0].get<int>();
     switch(msgType) {
     case int(MsgType::Link): {
+        if(msg.size() < 2) { m_lastError = "truncated Link message"; return false; }
+        if(!msg[1].is_string()) { m_lastError = "Link: objectId must be string"; return false; }
         const auto& objectId = msg[1].get<std::string>();
         listener.handleLink(objectId);
         break;
     }
     case int(MsgType::Init): {
+        if(msg.size() < 3) { m_lastError = "truncated Init message"; return false; }
+        if(!msg[1].is_string()) { m_lastError = "Init: objectId must be string"; return false; }
         const auto& objectId = msg[1].get<std::string>();
-        const auto& props = msg[2].get<nlohmann::json>();
+        const auto& props = msg[2];
         listener.handleInit(objectId, props);
         break;
     }
     case int(MsgType::Unlink): {
+        if(msg.size() < 2) { m_lastError = "truncated Unlink message"; return false; }
+        if(!msg[1].is_string()) { m_lastError = "Unlink: objectId must be string"; return false; }
         const auto& objectId = msg[1].get<std::string>();
         listener.handleUnlink(objectId);
         break;
     }
     case int(MsgType::SetProperty): {
+        if(msg.size() < 3) { m_lastError = "truncated SetProperty message"; return false; }
+        if(!msg[1].is_string()) { m_lastError = "SetProperty: propertyId must be string"; return false; }
         const auto& propertyId = msg[1].get<std::string>();
-        const auto& value = msg[2].get<nlohmann::json>();
+        const auto& value = msg[2];
         listener.handleSetProperty(propertyId, value);
         break;
     }
     case int(MsgType::PropertyChange): {
+        if(msg.size() < 3) { m_lastError = "truncated PropertyChange message"; return false; }
+        if(!msg[1].is_string()) { m_lastError = "PropertyChange: propertyId must be string"; return false; }
         const auto& propertyId = msg[1].get<std::string>();
-        const auto& value = msg[2].get<nlohmann::json>();
+        const auto& value = msg[2];
         listener.handlePropertyChange(propertyId, value);
         break;
     }
     case int(MsgType::Invoke): {
+        if(msg.size() < 4) { m_lastError = "truncated Invoke message"; return false; }
+        if(!msg[1].is_number()) { m_lastError = "Invoke: requestId must be number"; return false; }
+        if(!msg[2].is_string()) { m_lastError = "Invoke: methodId must be string"; return false; }
         const auto& id = msg[1].get<unsigned int>();
         const auto& methodId = msg[2].get<std::string>();
-        const auto& args = msg[3].get<nlohmann::json>();
+        const auto& args = msg[3];
         listener.handleInvoke(id, methodId, args);
         break;
     }
     case int(MsgType::InvokeReply): {
+        if(msg.size() < 4) { m_lastError = "truncated InvokeReply message"; return false; }
+        if(!msg[1].is_number()) { m_lastError = "InvokeReply: requestId must be number"; return false; }
+        if(!msg[2].is_string()) { m_lastError = "InvokeReply: methodId must be string"; return false; }
         const auto& id = msg[1].get<unsigned int>();
         const auto& methodId = msg[2].get<std::string>();
-        const auto& value = msg[3].get<nlohmann::json>();
+        const auto& value = msg[3];
         listener.handleInvokeReply(id, methodId, value);
         break;
     }
     case int(MsgType::Signal): {
+        if(msg.size() < 3) { m_lastError = "truncated Signal message"; return false; }
+        if(!msg[1].is_string()) { m_lastError = "Signal: signalId must be string"; return false; }
         const auto& signalId = msg[1].get<std::string>();
-        const auto& args = msg[2].get<nlohmann::json>();
+        const auto& args = msg[2];
         listener.handleSignal(signalId, args);
         break;
     }
     case int(MsgType::Error): {
+        if(msg.size() < 4) { m_lastError = "truncated Error message"; return false; }
+        if(!msg[1].is_number_integer()) { m_lastError = "Error: msgType must be integer"; return false; }
+        if(!msg[2].is_number_integer()) { m_lastError = "Error: requestId must be integer"; return false; }
+        if(!msg[3].is_string()) { m_lastError = "Error: error must be string"; return false; }
         const auto& msgTypeErr = msg[1].get<int>();
         const auto& requestId = msg[2].get<int>();
         const auto& error = msg[3].get<std::string>();
@@ -161,6 +195,12 @@ bool Protocol::handleMessage(const nlohmann::json& msg, IProtocolListener& liste
         m_lastError = "message not supported: " + msg.dump();
         return false;
     }
+#if OLINK_HAS_EXCEPTIONS
+    } catch (const nlohmann::json::exception& e) {
+        m_lastError = std::string("message parse error: ") + e.what();
+        return false;
+    }
+#endif
     return true;
 }
 

@@ -153,6 +153,7 @@ unsigned long RemoteRegistry::registerNode(std::weak_ptr<IRemoteNode> node)
     if (!lockedNode){
         static const std::string invalidNodeLog = "Trying to add node, but it is already gone. Node NOT added.";
         emitLog(LogLevel::Warning, invalidNodeLog);
+        return m_remoteNodesById.getInvalidId();
     }
     return m_remoteNodesById.add(lockedNode);
 }

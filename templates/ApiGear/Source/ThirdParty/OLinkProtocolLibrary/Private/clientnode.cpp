@@ -151,6 +151,22 @@ void ClientNode::handleError(int msgType, int requestId, const std::string& erro
 {
     static const std::string errorLog = "ClientNode.handleError: ";
     emitLog(LogLevel::Info, errorLog, std::to_string(msgType), std::to_string(requestId), error);
+
+    // Clean up pending invoke if the error relates to an invoke operation.
+    if (msgType == static_cast<int>(MsgType::Invoke) || msgType == static_cast<int>(MsgType::InvokeReply)) {
+        std::unique_lock<std::mutex> lock(m_pendingInvokesMutex);
+        auto responseHandler = m_invokesPending.find(static_cast<unsigned int>(requestId));
+        InvokeReplyFunc callback = nullptr;
+        if (responseHandler != m_invokesPending.end()) {
+            callback = responseHandler->second;
+            m_invokesPending.erase(responseHandler);
+        }
+        lock.unlock();
+        if (callback) {
+            const InvokeReplyArg arg{ std::string(), nlohmann::json() };
+            callback(arg);
+        }
+    }
 }
 
 unsigned int ClientNode::nextRequestId()

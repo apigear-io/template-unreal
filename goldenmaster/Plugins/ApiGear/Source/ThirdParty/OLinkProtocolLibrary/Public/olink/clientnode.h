@@ -1,7 +1,7 @@
 #pragma once
-
 #pragma warning(push)
 #pragma warning(disable: 4251)
+
 #include "core/olink_common.h"
 #include "core/types.h"
 #include "iclientnode.h"

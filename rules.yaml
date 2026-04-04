@@ -105,6 +105,9 @@ features:
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/olink_common.h"
             target: "Public/olink/core/olink_common.h"
             raw: true
+          - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/core/nothrow.h"
+            target: "Public/olink/core/nothrow.h"
+            raw: true
           - source: "ApiGear/Source/ThirdParty/OLinkProtocolLibrary/Public/olink/iobjectsink.h"
             target: "Public/olink/iobjectsink.h"
             raw: true
