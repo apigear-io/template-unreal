@@ -1,5 +1,5 @@
-{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
-{{- $ModuleName := Camel .Module.Name -}}
+{{ template "copyright" }}
+{{- $ModuleName := Camel .Module.Name }}
 using UnrealBuildTool;
 using System.IO;
 

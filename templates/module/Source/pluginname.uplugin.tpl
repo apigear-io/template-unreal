@@ -1,4 +1,3 @@
-{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $API_MACRO := printf "%s_API" (CAMEL .Module.Name) }}
 {{- $Category := printf "ApiGear%s" $ModuleName }}
@@ -9,8 +8,8 @@
 	"FriendlyName": "{{$ModuleName}}",
 	"Description": "",
 	"Category": "Other",
-	"CreatedBy": "",
-	"CreatedByURL": "",
+	"CreatedBy": "{{ template "author" . }}",
+	"CreatedByURL": "{{ template "author_url" . }}",
 	"DocsURL": "",
 	"MarketplaceURL": "",
 	"SupportURL": "",

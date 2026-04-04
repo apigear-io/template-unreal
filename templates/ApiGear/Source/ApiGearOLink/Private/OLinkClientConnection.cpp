@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
+
 #include "OLinkClientConnection.h"
 THIRD_PARTY_INCLUDES_START
 #include "olink/clientregistry.h"

@@ -1,7 +1,8 @@
-{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $ModulePath := path .Module.Name}}
-{{- $Category := printf "ApiGear%s" $ModuleName -}}
+{{- $Category := printf "ApiGear%s" $ModuleName }}
 using UnrealBuildTool;
 using System.IO;
 

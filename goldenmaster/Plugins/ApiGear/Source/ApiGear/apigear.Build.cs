@@ -1,4 +1,5 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
 
 using System.IO;
 using UnrealBuildTool;

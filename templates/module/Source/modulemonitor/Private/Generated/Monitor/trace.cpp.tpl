@@ -1,7 +1,8 @@
-{{/* Copyright Epic Games, Inc. All Rights Reserved */}}
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $ModuleName := Camel .Module.Name}}
 {{- $moduleName := .Module.Name}}
-{{- $Category := printf "ApiGear%s" $ModuleName -}}
+{{- $Category := printf "ApiGear%s" $ModuleName }}
 #include "{{$ModuleName}}.trace.h"
 #include "{{$ModuleName}}/Generated/api/{{$ModuleName}}.json.adapter.h"
 {{- range .Module.Imports }}

@@ -134,6 +134,10 @@ FIoWorldMessage TestMsg = createTestFIoWorldMessage();
 TArray<FIoWorldMessage> TestArray = createTestFIoWorldMessageArray();
 ```
 
+### Licensing and Author Metadata
+
+All generated plugins include MIT LICENSE files and SPDX license headers. You can customize author information in `.uplugin` descriptors and copyright notices. See the [licensing and author metadata](licensing.md) guide for details.
+
 Each feature can be selected using the solution file or via the command line tool.
 
 :::note
@@ -152,6 +156,7 @@ This graph shows the folder structure generated for a module with all features e
 📂ue_project/Plugins
  ┣ 📂ApiGear
  ┃ ┣ 📜apigear.uplugin
+ ┃ ┣ 📜LICENSE
  ┃ ┗ 📂Source
  ┃   ┣ 📂ApiGear
  ┃   ┣ 📂ApiGearEditor
@@ -161,6 +166,7 @@ This graph shows the folder structure generated for a module with all features e
  ┃     ┗ 📂OLinkProtocolLibrary
  ┣ 📂IoWorld
  ┃ ┣ 📜IoWorld.uplugin
+ ┃ ┣ 📜LICENSE
  ┃ ┣ 📂Config
  ┃ ┗ 📂Source
  ┃   ┣ 📂IoWorldAPI

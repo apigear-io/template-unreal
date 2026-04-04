@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
+
 #include "OLinkHost.h"
 #include "OLinkCommon.h"
 #include "ApiGearSettings.h"

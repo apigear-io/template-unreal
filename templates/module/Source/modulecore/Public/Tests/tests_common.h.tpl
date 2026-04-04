@@ -1,5 +1,5 @@
-{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
-/**{{ template "copyright" }}*/
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $API_MACRO := printf "%sCORE_API" (CAMEL .Module.Name) }}
 {{- $ModuleName := Camel .Module.Name}}
 #pragma once

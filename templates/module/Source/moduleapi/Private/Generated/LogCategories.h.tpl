@@ -1,7 +1,7 @@
-{{/* Copyright Epic Games, Inc. All Rights Reserved */}}
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $API_MACRO := printf "%sAPI_API" (CAMEL .Module.Name) }}
-{{- $ModuleName := Camel .Module.Name -}}
-// Copyright Epic Games, Inc. All Rights Reserved
+{{- $ModuleName := Camel .Module.Name }}
 #pragma once
 
 #include "Logging/LogMacros.h"

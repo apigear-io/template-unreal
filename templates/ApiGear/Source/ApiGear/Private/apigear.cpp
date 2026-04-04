@@ -1,4 +1,6 @@
-// Copyright Epic Games, Inc. All Rights Reserved
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
+
 #include "apigear.h"
 #include "Modules/ModuleManager.h"
 #include "HttpModule.h"
