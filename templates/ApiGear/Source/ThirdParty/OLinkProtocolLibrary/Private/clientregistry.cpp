@@ -22,8 +22,8 @@ void ClientRegistry::setNode(unsigned long id, const std::string& objectId)
     auto entryForObject = m_entries.find(objectId);
     if (entryForObject == m_entries.end()){
         auto newEntry = SinkToClientEntry();
-        m_entries[objectId] = newEntry;
         newEntry.nodeId = id;
+        m_entries[objectId] = newEntry;
     } else if (entryForObject->second.nodeId == m_clientNodesById.getInvalidId()){
         entryForObject->second.nodeId = id;
     } else if (entryForObject->second.nodeId != id){
@@ -125,6 +125,7 @@ unsigned long ClientRegistry::registerNode(std::weak_ptr<IClientNode> node)
     if (!lockedNode){
         static const std::string invalidNodeLog = "Trying to get node, but it is already gone.";
         emitLog(LogLevel::Warning, invalidNodeLog);
+        return m_clientNodesById.getInvalidId();
     }
     return m_clientNodesById.add(lockedNode);
 }

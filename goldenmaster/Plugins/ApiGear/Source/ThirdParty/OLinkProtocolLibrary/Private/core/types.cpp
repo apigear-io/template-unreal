@@ -71,20 +71,37 @@ void MessageConverter::setMessageFormat(MessageFormat format)
     m_format = format;
 }
 
+void MessageConverter::setMaxMessageSize(size_t size)
+{
+    m_maxMessageSize = size;
+}
+
 nlohmann::json MessageConverter::fromString(const std::string& message)
 {
-    switch(m_format) {
-    case MessageFormat::JSON:
-        return nlohmann::json::parse(message);
-    case MessageFormat::BSON:
-        return nlohmann::json::from_bson(message);
-    case MessageFormat::MSGPACK:
-        return nlohmann::json::from_msgpack(message);
-    case MessageFormat::CBOR:
-        return nlohmann::json::from_cbor(message);
+    if (message.size() > m_maxMessageSize) {
+        return nlohmann::json();
     }
 
-    return nlohmann::json();
+    nlohmann::json result;
+    switch(m_format) {
+    case MessageFormat::JSON:
+        result = nlohmann::json::parse(message, nullptr, false);
+        break;
+    case MessageFormat::BSON:
+        result = nlohmann::json::from_bson(message, true, false);
+        break;
+    case MessageFormat::MSGPACK:
+        result = nlohmann::json::from_msgpack(message, true, false);
+        break;
+    case MessageFormat::CBOR:
+        result = nlohmann::json::from_cbor(message, true, false);
+        break;
+    }
+
+    if (result.is_discarded()) {
+        return nlohmann::json();
+    }
+    return result;
 }
 
 std::string MessageConverter::toString(const nlohmann::json& j)
@@ -137,11 +154,13 @@ std::string toString(MsgType type) {
 // ********************************************************************
 
 void LoggerBase::onLog(WriteLogFunc func){
+    std::unique_lock<std::mutex> lock(m_logMutex);
     m_logFunc = func;
 }
 
 void LoggerBase::setLogLevel(LogLevel level)
 {
+    std::unique_lock<std::mutex> lock(m_logMutex);
     m_Loglevel = level;
 }
 

@@ -22,12 +22,13 @@
 * SOFTWARE.
 */
 #pragma once
-
 #pragma warning(push)
 #pragma warning(disable: 4251)
+
 #include "olink_common.h"
 #include "nlohmann/json.hpp"
 #include <string>
+#include <mutex>
 
 namespace ApiGear { namespace ObjectLink {
 
@@ -116,7 +117,7 @@ public:
     /**
     * Unpacks message received from network according to selected message format.
     * @param message A message received from network.
-    * @return Unpacked message in json format.
+    * @return Unpacked message in json format. Returns empty json on parse error or if message exceeds size limit.
     */
     nlohmann::json fromString(const std::string& message);
     /**
@@ -125,9 +126,17 @@ public:
     * @return message in network message format.
     */
     std::string toString(const nlohmann::json& j);
+    /**
+    * Set the maximum allowed message size in bytes.
+    * Messages exceeding this limit will be rejected and an empty json will be returned.
+    * @param size Maximum message size in bytes. Default is 64MB.
+    */
+    void setMaxMessageSize(size_t size);
 private:
     /**Currently used network message format*/
     MessageFormat m_format;
+    /**Maximum allowed message size in bytes (default 64MB)*/
+    size_t m_maxMessageSize = 64 * 1024 * 1024;
 };
 
 /**
@@ -191,18 +200,20 @@ public:
     template<typename ... Parameters>
     void emitLog(LogLevel logLevel, const Parameters&  ...params)
     {
-        if (m_logFunc && logLevel >= m_Loglevel)
+        WriteLogFunc logFuncCopy;
         {
-            const int size = sizeof...(params);
-            std::string arg_list[size] = { params...};
-            std::string full_message = "";
-            for (const auto& element : arg_list)
-            {
-                full_message += element;
-            }
-
-            m_logFunc(logLevel, full_message);
+            std::unique_lock<std::mutex> lock(m_logMutex);
+            if (!m_logFunc || logLevel < m_Loglevel) return;
+            logFuncCopy = m_logFunc;
         }
+        constexpr std::size_t size = sizeof...(params);
+        std::string arg_list[size] = { params...};
+        std::string full_message = "";
+        for (const auto& element : arg_list)
+        {
+            full_message += element;
+        }
+        logFuncCopy(logLevel, full_message);
     }
 
     /**
@@ -211,15 +222,16 @@ public:
     *        Payload is put at the end of the created log message.
     *        Conversion is performed only if message will be logged:
     *        the log function is set and log level is not lower than a set log level.
-    * @param logMessage a log message to log.
     * Have in mind that this operation has a high cost and should not be use often.
     */
     template<typename ... Parameters>
     void emitLogWithPayload(LogLevel level, const nlohmann::json& payload, const Parameters&  ...params)
     {
-        if (m_logFunc && level >= m_Loglevel) {
-            emitLog(level, params..., payload.dump());
+        {
+            std::unique_lock<std::mutex> lock(m_logMutex);
+            if (!m_logFunc || level < m_Loglevel) return;
         }
+        emitLog(level, params..., payload.dump());
     }
 
     /*
@@ -228,6 +240,8 @@ public:
     */
     void setLogLevel(LogLevel level);
 private:
+    /** Mutex protecting m_logFunc and m_Loglevel */
+    mutable std::mutex m_logMutex;
     /**
     * User provided function that writes a log into user defined endpoint.
     */
