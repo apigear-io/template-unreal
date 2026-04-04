@@ -1,5 +1,5 @@
-{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
-/**{{ template "copyright" }}*/
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 #pragma once
 
 #include "Async/Future.h"

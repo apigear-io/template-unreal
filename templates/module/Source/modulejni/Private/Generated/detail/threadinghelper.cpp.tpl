@@ -1,6 +1,5 @@
-{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
-/**{{ template "copyright" }}*/
-
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 #include "Generated/Detail/{{Camel .Module.Name}}ThreadingHelper.h"
 
 #include "Async/Async.h"

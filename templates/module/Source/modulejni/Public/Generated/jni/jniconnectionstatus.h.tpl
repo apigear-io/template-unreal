@@ -1,3 +1,5 @@
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 #pragma once
 {{- $ModuleName := Camel .Module.Name}}
 {{- $API_MACRO := printf "%sJNI_API" (CAMEL .Module.Name) }}

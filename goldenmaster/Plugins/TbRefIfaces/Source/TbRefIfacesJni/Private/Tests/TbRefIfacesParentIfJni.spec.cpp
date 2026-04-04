@@ -1,5 +1,5 @@
-/**// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
-// SPDX-License-Identifier: MIT*/
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
 
 #include "Misc/AutomationTest.h"
 #if WITH_DEV_AUTOMATION_TESTS

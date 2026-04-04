@@ -1,6 +1,5 @@
-{{- /* Copyright Epic Games, Inc. All Rights Reserved */ -}}
-/**{{ template "copyright" }}*/
-
+{{ template "copyright" }}
+{{ template "generated_warning" }}
 {{- $API_MACRO := printf "%sJNI_API" (CAMEL .Module.Name) }}
 #pragma once
 

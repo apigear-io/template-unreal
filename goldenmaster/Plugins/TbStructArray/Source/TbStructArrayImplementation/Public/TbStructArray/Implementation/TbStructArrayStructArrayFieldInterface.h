@@ -37,4 +37,12 @@ public:
 	FTbStructArrayMixedStruct FuncMixed(const FTbStructArrayMixedStruct& ParamMixed) override;
 
 	FTbStructArrayStructWithArrayOfStructs FuncStructArray(const FTbStructArrayStructWithArrayOfStructs& ParamPoints) override;
+
+protected:
+#if PLATFORM_ANDROID && USE_ANDROID_JNI
+	mutable FRWLock PropStructArrayRWLock;
+	mutable FRWLock PropEnumArrayRWLock;
+	mutable FRWLock PropIntArrayRWLock;
+	mutable FRWLock PropMixedRWLock;
+#endif
 };

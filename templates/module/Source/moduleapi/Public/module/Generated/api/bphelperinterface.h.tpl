@@ -4,7 +4,7 @@
 {{- $hasVoidFunctions := false }}
 {{- range $i, $e := .Interface.Operations }}
 {{- if .Return.IsVoid }}{{- $hasVoidFunctions = true }}{{- end }}
-{{- end -}}
+{{- end }}
 #pragma once
 
 #include "UObject/Interface.h"
