@@ -20,8 +20,17 @@ public class OLinkProtocolLibrary : ModuleRules
 		// Disable nlohmann::json exception handling
 		PublicDefinitions.Add("JSON_NOEXCEPTION=1");
 
-		// OLink library build to export symbols
-		PrivateDefinitions.Add("OLINK_LIBRARY_BUILD=1");
+		// In monolithic builds all modules link into one binary — no dllexport/
+		// dllimport needed. OLINK_STATIC makes OLINK_EXPORT empty on all platforms,
+		// preventing LNK4217/LNK4286 warnings on Windows monolithic builds.
+		if (Target.LinkType == TargetLinkType.Monolithic)
+		{
+			PublicDefinitions.Add("OLINK_STATIC=1");
+		}
+		else
+		{
+			PrivateDefinitions.Add("OLINK_LIBRARY_BUILD=1");
+		}
 
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public"));
 		PublicIncludePaths.Add(Path.Combine(ModuleDirectory, "Public", "olink", "core"));
