@@ -24,7 +24,9 @@
 */
 #pragma once
 
-#ifdef OLINK_LIBRARY_BUILD
+#ifdef OLINK_STATIC
+  #define OLINK_EXPORT
+#elif defined(OLINK_LIBRARY_BUILD)
   #if defined _WIN32 || defined __CYGWIN__
     #ifdef __GNUC__
       #define OLINK_EXPORT __attribute__ ((dllexport))

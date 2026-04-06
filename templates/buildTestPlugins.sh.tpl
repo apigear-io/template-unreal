@@ -59,6 +59,13 @@ buildTestPlugins()
 	buildresult=$?
 }
 
+# compile-only monolithic (Shipping) build to catch export/link issues
+buildMonolithic()
+{
+	"$RunUAT_path" BuildCookRun -installed -project="$1" -nullrhi -NoP4 -build -skipcook -verbose -nodebuginfo -TargetPlatform=Linux -Configuration=Shipping -notools -utf8output -WaitForUATMutex
+	buildresult=$?
+}
+
 #
 # main
 #
@@ -78,3 +85,7 @@ if [ $? -ne 0 ]; then exit 1; fi;
 buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.{{ if .Features.olink_tests -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}{{ if .Features.jni_tests -}}+.Jni.{{ end }}"
 if [ $buildresult -ne 0 ]; then exit 1; fi;
 if [ ! -f $script_path/index.json ]; then echo "WARNING: no test results found"; else grep '"failed": 0' $script_path/index.json > /dev/null; fi
+
+echo "Running monolithic (Shipping) compile check..."
+buildMonolithic "$ProjectTarget_path/TP_Blank.uproject"
+if [ $buildresult -ne 0 ]; then echo "Monolithic (Shipping) build failed"; exit 1; fi;
