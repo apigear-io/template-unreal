@@ -175,8 +175,10 @@ if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 @REM run build and tests
 call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.+.OLink.+.MsgBus.+.Jni."
-if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
-if not exist %script_path%index.json (echo WARNING: no test results found) else findstr /C:"\"failed\": 0" %script_path%index.json >nul
+@REM check test results JSON as source of truth (UAT may return non-zero from
+@REM shutdown ensures unrelated to test outcomes, e.g. UE 5.7 access detector)
+if not exist %script_path%index.json (echo WARNING: no test results found & exit /b 1)
+findstr /C:"\"failed\": 0" %script_path%index.json >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 @REM compile-only monolithic (Shipping) build to catch export/link issues
@@ -190,8 +192,7 @@ exit /b 0
 @REM build UE plugin
 :buildTestPlugins
 (
-	@REM do not use -unattended as this seems to cause some issue when exiting the editor after test run
-	"%RunUAT_path%" BuildCookRun -installed -project="%1" -run -RunAutomationTest="%3" -nullrhi -NoP4 -build -verbose -nodebuginfo -log="%2/RunTests.log" -addcmdline="-ReportExportPath=%2 " -Configuration=Test -notools -utf8output
+	"%RunUAT_path%" BuildCookRun -unattended -installed -project="%1" -run -RunAutomationTest="%3" -nullrhi -NoP4 -build -verbose -nodebuginfo -log="%2/RunTests.log" -addcmdline="-ReportExportPath=%2 " -Configuration=Test -notools -utf8output -WarningsAsErrors
 	set buildresult=!ERRORLEVEL!
 )
 exit /b %ERRORLEVEL%
@@ -199,7 +200,7 @@ exit /b %ERRORLEVEL%
 @REM monolithic (Shipping) compile-only build
 :buildMonolithic
 (
-	"%RunUAT_path%" BuildCookRun -installed -project="%1" -nullrhi -NoP4 -build -skipcook -verbose -nodebuginfo -TargetPlatform=Win64 -Configuration=Shipping -notools -utf8output -WaitForUATMutex
+	"%RunUAT_path%" BuildCookRun -unattended -installed -project="%1" -nullrhi -NoP4 -build -skipcook -verbose -nodebuginfo -TargetPlatform=Win64 -Configuration=Shipping -notools -utf8output -WaitForUATMutex -WarningsAsErrors
 	set buildresult=!ERRORLEVEL!
 )
 exit /b %ERRORLEVEL%

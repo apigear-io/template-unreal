@@ -54,15 +54,14 @@ if [ $? -ne 0 ]; then exit 1; fi;
 # build and test plugins
 buildTestPlugins()
 {
-	# do not use -unattended as this seems to cause some issue when exiting the editor after test run
-	"$RunUAT_path" BuildCookRun -installed -project="$1" -run -RunAutomationTest="$3" -nullrhi -NoP4 -build -verbose -nodebuginfo -log="$2/RunTests.log" -addcmdline="-ReportExportPath=$2 " -Configuration=Test -notools -utf8output
+	"$RunUAT_path" BuildCookRun -unattended -installed -project="$1" -run -RunAutomationTest="$3" -nullrhi -NoP4 -build -verbose -nodebuginfo -log="$2/RunTests.log" -addcmdline="-ReportExportPath=$2 " -Configuration=Test -notools -utf8output -WarningsAsErrors
 	buildresult=$?
 }
 
 # compile-only monolithic (Shipping) build to catch export/link issues
 buildMonolithic()
 {
-	"$RunUAT_path" BuildCookRun -installed -project="$1" -nullrhi -NoP4 -build -skipcook -verbose -nodebuginfo -TargetPlatform=Linux -Configuration=Shipping -notools -utf8output -WaitForUATMutex
+	"$RunUAT_path" BuildCookRun -unattended -installed -project="$1" -nullrhi -NoP4 -build -skipcook -verbose -nodebuginfo -TargetPlatform=Linux -Configuration=Shipping -notools -utf8output -WaitForUATMutex -WarningsAsErrors
 	buildresult=$?
 }
 
@@ -83,8 +82,11 @@ if [ $? -ne 0 ]; then exit 1; fi;
 {{ end }}
 
 buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.{{ if .Features.olink_tests -}}+.OLink.{{ end }}{{ if .Features.msgbus_tests -}}+.MsgBus.{{ end }}{{ if .Features.jni_tests -}}+.Jni.{{ end }}"
-if [ $buildresult -ne 0 ]; then exit 1; fi;
-if [ ! -f $script_path/index.json ]; then echo "WARNING: no test results found"; else grep '"failed": 0' $script_path/index.json > /dev/null; fi
+# check test results JSON as source of truth (UAT may return non-zero from
+# shutdown ensures unrelated to test outcomes, e.g. UE 5.7 access detector)
+if [ ! -f $script_path/index.json ]; then echo "WARNING: no test results found"; exit 1; fi
+grep '"failed": 0' $script_path/index.json > /dev/null
+if [ $? -ne 0 ]; then echo "Test failures detected"; exit 1; fi
 
 echo "Running monolithic (Shipping) compile check..."
 buildMonolithic "$ProjectTarget_path/TP_Blank.uproject"
