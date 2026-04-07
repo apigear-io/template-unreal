@@ -103,5 +103,9 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<UTestbed2ManyParamInterfacePublisher> Testbed2ManyParamInterfacePublisher;
+#else
 	UTestbed2ManyParamInterfacePublisher* Testbed2ManyParamInterfacePublisher;
+#endif
 };

@@ -55,5 +55,9 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<UTbSame1SameStruct1InterfacePublisher> TbSame1SameStruct1InterfacePublisher;
+#else
 	UTbSame1SameStruct1InterfacePublisher* TbSame1SameStruct1InterfacePublisher;
+#endif
 };

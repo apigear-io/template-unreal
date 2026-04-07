@@ -103,5 +103,9 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<UCounterCounterPublisher> CounterCounterPublisher;
+#else
 	UCounterCounterPublisher* CounterCounterPublisher;
+#endif
 };

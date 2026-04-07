@@ -79,6 +79,10 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<U{{$Class}}Publisher> {{$Iface}}Publisher;
+#else
 	U{{$Class}}Publisher* {{$Iface}}Publisher;
+#endif
 };
 {{- end }}

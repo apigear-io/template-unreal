@@ -87,5 +87,9 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<UTestbed2NestedStruct3InterfacePublisher> Testbed2NestedStruct3InterfacePublisher;
+#else
 	UTestbed2NestedStruct3InterfacePublisher* Testbed2NestedStruct3InterfacePublisher;
+#endif
 };

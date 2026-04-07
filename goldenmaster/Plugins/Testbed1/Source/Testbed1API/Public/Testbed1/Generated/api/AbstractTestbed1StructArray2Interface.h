@@ -119,5 +119,9 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<UTestbed1StructArray2InterfacePublisher> Testbed1StructArray2InterfacePublisher;
+#else
 	UTestbed1StructArray2InterfacePublisher* Testbed1StructArray2InterfacePublisher;
+#endif
 };
