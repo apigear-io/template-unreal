@@ -55,5 +55,9 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<UTbRefIfacesSimpleLocalIfPublisher> TbRefIfacesSimpleLocalIfPublisher;
+#else
 	UTbRefIfacesSimpleLocalIfPublisher* TbRefIfacesSimpleLocalIfPublisher;
+#endif
 };

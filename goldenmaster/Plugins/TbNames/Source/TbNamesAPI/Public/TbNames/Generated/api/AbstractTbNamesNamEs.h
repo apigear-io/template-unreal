@@ -91,5 +91,9 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<UTbNamesNamEsPublisher> TbNamesNamEsPublisher;
+#else
 	UTbNamesNamEsPublisher* TbNamesNamEsPublisher;
+#endif
 };

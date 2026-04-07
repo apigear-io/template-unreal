@@ -103,5 +103,9 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<UTbRefIfacesParentIfPublisher> TbRefIfacesParentIfPublisher;
+#else
 	UTbRefIfacesParentIfPublisher* TbRefIfacesParentIfPublisher;
+#endif
 };

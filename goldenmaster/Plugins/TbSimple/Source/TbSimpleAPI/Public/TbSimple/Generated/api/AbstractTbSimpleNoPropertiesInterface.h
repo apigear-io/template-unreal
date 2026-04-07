@@ -47,5 +47,9 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<UTbSimpleNoPropertiesInterfacePublisher> TbSimpleNoPropertiesInterfacePublisher;
+#else
 	UTbSimpleNoPropertiesInterfacePublisher* TbSimpleNoPropertiesInterfacePublisher;
+#endif
 };

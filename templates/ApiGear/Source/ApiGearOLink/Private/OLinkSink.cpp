@@ -20,61 +20,45 @@ FOLinkSink::FOLinkSink(const std::string& olinkObjectName)
 void FOLinkSink::olinkOnSignal(const std::string& signalId, const nlohmann::json& args)
 {
 	const std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(signalId);
-	FSignalEmittedFunc LocalFunc;
+	FScopeLock Lock(&CallbackMutex);
+	if (SignalEmittedFunc)
 	{
-		FScopeLock Lock(&CallbackMutex);
-		LocalFunc = SignalEmittedFunc;
-	}
-	if (LocalFunc)
-	{
-		LocalFunc(MemberName, args);
+		SignalEmittedFunc(MemberName, args);
 	}
 }
 
 void FOLinkSink::olinkOnPropertyChanged(const std::string& propertyId, const nlohmann::json& value)
 {
 	const std::string MemberName = ApiGear::ObjectLink::Name::getMemberName(propertyId);
-	FPropertyChangedFunc LocalFunc;
+	FScopeLock Lock(&CallbackMutex);
+	if (PropertyChangedFunc)
 	{
-		FScopeLock Lock(&CallbackMutex);
-		LocalFunc = PropertyChangedFunc;
-	}
-	if (LocalFunc)
-	{
-		LocalFunc({{MemberName, value}});
+		PropertyChangedFunc({{MemberName, value}});
 	}
 }
 
 void FOLinkSink::olinkOnInit(const std::string& objectId, const nlohmann::json& props, ApiGear::ObjectLink::IClientNode* node)
 {
 	m_node = node;
-	FInitializedFromSourceCallback LocalInitFunc;
-	FPropertyChangedFunc LocalPropFunc;
+	FScopeLock Lock(&CallbackMutex);
+	if (OnInitCallback)
 	{
-		FScopeLock Lock(&CallbackMutex);
-		LocalInitFunc = OnInitCallback;
-		LocalPropFunc = PropertyChangedFunc;
+		OnInitCallback();
 	}
-	if (LocalInitFunc)
+	if (PropertyChangedFunc)
 	{
-		LocalInitFunc();
-	}
-	if (LocalPropFunc)
-	{
-		LocalPropFunc(props);
+		PropertyChangedFunc(props);
 	}
 }
 
 void FOLinkSink::olinkOnRelease()
 {
-	FSourceConnectionReleasedCallback LocalFunc;
 	{
 		FScopeLock Lock(&CallbackMutex);
-		LocalFunc = OnReleaseCallback;
-	}
-	if (LocalFunc)
-	{
-		LocalFunc();
+		if (OnReleaseCallback)
+		{
+			OnReleaseCallback();
+		}
 	}
 	m_node = nullptr;
 }

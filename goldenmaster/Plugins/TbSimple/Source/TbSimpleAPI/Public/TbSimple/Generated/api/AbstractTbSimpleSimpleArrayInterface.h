@@ -175,5 +175,9 @@ protected:
 
 private:
 	// signals
+#if (ENGINE_MAJOR_VERSION >= 5)
+	TObjectPtr<UTbSimpleSimpleArrayInterfacePublisher> TbSimpleSimpleArrayInterfacePublisher;
+#else
 	UTbSimpleSimpleArrayInterfacePublisher* TbSimpleSimpleArrayInterfacePublisher;
+#endif
 };
