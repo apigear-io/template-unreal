@@ -12,7 +12,11 @@
 UTbNamesSettings::UTbNamesSettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 8
+	FCoreDelegates::GetOnPostEngineInit().AddUObject(this, &UTbNamesSettings::ValidateSettingsPostEngineInit);
+#else
 	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UTbNamesSettings::ValidateSettingsPostEngineInit);
+#endif
 }
 
 void UTbNamesSettings::ValidateSettingsPostEngineInit()

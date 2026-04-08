@@ -12,7 +12,11 @@
 UTbEnumSettings::UTbEnumSettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 8
+	FCoreDelegates::GetOnPostEngineInit().AddUObject(this, &UTbEnumSettings::ValidateSettingsPostEngineInit);
+#else
 	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UTbEnumSettings::ValidateSettingsPostEngineInit);
+#endif
 }
 
 void UTbEnumSettings::ValidateSettingsPostEngineInit()

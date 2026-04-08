@@ -12,7 +12,11 @@
 UTbIfaceimportSettings::UTbIfaceimportSettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 8
+	FCoreDelegates::GetOnPostEngineInit().AddUObject(this, &UTbIfaceimportSettings::ValidateSettingsPostEngineInit);
+#else
 	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UTbIfaceimportSettings::ValidateSettingsPostEngineInit);
+#endif
 }
 
 void UTbIfaceimportSettings::ValidateSettingsPostEngineInit()

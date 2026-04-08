@@ -12,7 +12,11 @@
 UCustomTypesSettings::UCustomTypesSettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 8
+	FCoreDelegates::GetOnPostEngineInit().AddUObject(this, &UCustomTypesSettings::ValidateSettingsPostEngineInit);
+#else
 	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UCustomTypesSettings::ValidateSettingsPostEngineInit);
+#endif
 }
 
 void UCustomTypesSettings::ValidateSettingsPostEngineInit()

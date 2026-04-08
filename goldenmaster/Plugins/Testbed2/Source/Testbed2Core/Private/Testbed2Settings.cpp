@@ -12,7 +12,11 @@
 UTestbed2Settings::UTestbed2Settings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 8
+	FCoreDelegates::GetOnPostEngineInit().AddUObject(this, &UTestbed2Settings::ValidateSettingsPostEngineInit);
+#else
 	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UTestbed2Settings::ValidateSettingsPostEngineInit);
+#endif
 }
 
 void UTestbed2Settings::ValidateSettingsPostEngineInit()
