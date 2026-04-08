@@ -12,7 +12,11 @@
 UTbStructArraySettings::UTbStructArraySettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 8
+	FCoreDelegates::GetOnPostEngineInit().AddUObject(this, &UTbStructArraySettings::ValidateSettingsPostEngineInit);
+#else
 	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UTbStructArraySettings::ValidateSettingsPostEngineInit);
+#endif
 }
 
 void UTbStructArraySettings::ValidateSettingsPostEngineInit()

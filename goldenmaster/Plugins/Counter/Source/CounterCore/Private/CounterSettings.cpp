@@ -12,7 +12,11 @@
 UCounterSettings::UCounterSettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 8
+	FCoreDelegates::GetOnPostEngineInit().AddUObject(this, &UCounterSettings::ValidateSettingsPostEngineInit);
+#else
 	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UCounterSettings::ValidateSettingsPostEngineInit);
+#endif
 }
 
 void UCounterSettings::ValidateSettingsPostEngineInit()

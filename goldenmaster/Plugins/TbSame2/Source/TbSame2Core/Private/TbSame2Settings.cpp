@@ -12,7 +12,11 @@
 UTbSame2Settings::UTbSame2Settings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 8
+	FCoreDelegates::GetOnPostEngineInit().AddUObject(this, &UTbSame2Settings::ValidateSettingsPostEngineInit);
+#else
 	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UTbSame2Settings::ValidateSettingsPostEngineInit);
+#endif
 }
 
 void UTbSame2Settings::ValidateSettingsPostEngineInit()

@@ -12,7 +12,11 @@
 UExternTypesSettings::UExternTypesSettings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 8
+	FCoreDelegates::GetOnPostEngineInit().AddUObject(this, &UExternTypesSettings::ValidateSettingsPostEngineInit);
+#else
 	FCoreDelegates::OnPostEngineInit.AddUObject(this, &UExternTypesSettings::ValidateSettingsPostEngineInit);
+#endif
 }
 
 void UExternTypesSettings::ValidateSettingsPostEngineInit()

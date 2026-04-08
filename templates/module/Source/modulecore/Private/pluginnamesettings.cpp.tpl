@@ -19,7 +19,11 @@
 U{{$ModuleName}}Settings::U{{$ModuleName}}Settings(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
 {
+#if ENGINE_MAJOR_VERSION >= 5 && ENGINE_MINOR_VERSION >= 8
+	FCoreDelegates::GetOnPostEngineInit().AddUObject(this, &U{{$ModuleName}}Settings::ValidateSettingsPostEngineInit);
+#else
 	FCoreDelegates::OnPostEngineInit.AddUObject(this, &U{{$ModuleName}}Settings::ValidateSettingsPostEngineInit);
+#endif
 }
 
 void U{{$ModuleName}}Settings::ValidateSettingsPostEngineInit()
