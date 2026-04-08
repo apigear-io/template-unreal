@@ -44,6 +44,10 @@ echo Copy blank project from %UEtemplate_path% to %ProjectTarget_path%\
 xcopy /E /Y "%UEtemplate_path%" "%ProjectTarget_path%\" >nul
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
+@REM strip game module from uproject (not needed for plugin testing,
+@REM avoids module-not-found errors on non-installed engine builds)
+>"%ProjectTarget_path%\TP_Blank.uproject" echo {"FileVersion": 3, "EngineAssociation": ""}
+
 @REM create Plugins folder
 mkdir %ProjectTarget_path%\Plugins
 if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
@@ -192,7 +196,7 @@ exit /b 0
 @REM build UE plugin
 :buildTestPlugins
 (
-	"%RunUAT_path%" BuildCookRun -unattended -installed -project="%1" -run -RunAutomationTest="%3" -nullrhi -NoP4 -build -verbose -nodebuginfo -log="%2/RunTests.log" -addcmdline="-ReportExportPath=%2 " -Configuration=Test -notools -utf8output -WarningsAsErrors
+	"%RunUAT_path%" BuildCookRun -unattended -installed -project="%1" -run -editortest -RunAutomationTest="%3" -nullrhi -NoP4 -build -verbose -nodebuginfo -log="%2/RunTests.log" -addcmdline="-ReportExportPath=%2 " -notools -utf8output -WarningsAsErrors
 	set buildresult=!ERRORLEVEL!
 )
 exit /b %ERRORLEVEL%
