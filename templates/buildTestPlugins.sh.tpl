@@ -47,6 +47,11 @@ if [ $? -ne 0 ]; then exit 1; fi;
 echo Copy blank project from $UEtemplate_path to $script_path
 cp -rf "$UEtemplate_path" "$script_path/build" 1>&-
 if [ $? -ne 0 ]; then exit 1; fi;
+
+# strip game module from uproject (not needed for plugin testing,
+# avoids module-not-found errors on non-installed engine builds)
+echo '{"FileVersion": 3, "EngineAssociation": ""}' > "$ProjectTarget_path/TP_Blank.uproject"
+
 #
 # function implementations
 #
@@ -54,7 +59,7 @@ if [ $? -ne 0 ]; then exit 1; fi;
 # build and test plugins
 buildTestPlugins()
 {
-	"$RunUAT_path" BuildCookRun -unattended -installed -project="$1" -run -RunAutomationTest="$3" -nullrhi -NoP4 -build -verbose -nodebuginfo -log="$2/RunTests.log" -addcmdline="-ReportExportPath=$2 " -Configuration=Test -notools -utf8output -WarningsAsErrors
+	"$RunUAT_path" BuildCookRun -unattended -installed -project="$1" -run -editortest -RunAutomationTest="$3" -nullrhi -NoP4 -build -verbose -nodebuginfo -log="$2/RunTests.log" -addcmdline="-ReportExportPath=$2 " -notools -utf8output -WarningsAsErrors
 	buildresult=$?
 }
 
