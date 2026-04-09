@@ -182,8 +182,14 @@ call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".
 @REM check test results JSON as source of truth (UAT may return non-zero from
 @REM shutdown ensures unrelated to test outcomes, e.g. UE 5.7 access detector)
 if not exist %script_path%index.json (echo WARNING: no test results found & exit /b 1)
-findstr /C:"\"failed\": 0" %script_path%index.json >nul
-if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
+set "failcount="
+for /f "tokens=2 delims=:" %%a in ('findstr /R "failed" "%script_path%index.json"') do set "failcount=%%a"
+set "failcount=!failcount: =!"
+set "failcount=!failcount:,=!"
+if !failcount! GTR 0 (
+	echo ERROR: !failcount! test^(s^) failed
+	exit /b 1
+)
 
 @REM compile-only monolithic (Shipping) build to catch export/link issues
 echo Running monolithic (Shipping) compile check...
