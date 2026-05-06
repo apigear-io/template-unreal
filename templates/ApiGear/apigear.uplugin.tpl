@@ -34,6 +34,11 @@
 			"LoadingPhase": "PreDefault"
 		},
 		{
+			"Name": "ApiGearMQTT",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		},
+		{
 			"Name": "OLinkProtocolLibrary",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
@@ -44,5 +49,12 @@
 			"LoadingPhase" : "Default",
 			"PlatformAllowList" : [ "Win64", "Mac", "Linux" ]
 		}
+{{- if .Features.apigear_mqtt_paho }},
+		{
+			"Name": "ApiGearMQTTPaho",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		}
+{{- end }}
 	]
 }

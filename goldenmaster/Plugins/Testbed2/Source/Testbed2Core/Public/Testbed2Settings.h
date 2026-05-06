@@ -44,6 +44,10 @@ public:
 	static TScriptInterface<ITestbed2NestedStruct2InterfaceInterface> GetITestbed2NestedStruct2InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITestbed2NestedStruct3InterfaceInterface> GetITestbed2NestedStruct3InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
 
+	/** Choose the mqtt connection to use */
+	UPROPERTY(EditAnywhere, config, Category = MQTTConnectionSetup)
+	FString MQTTConnectionIdentifier;
+
 	/** Choose the heartbeat interval in milliseconds for the msgbus connection on the service side.
 	 * On the service side this adjusts the heartbeat between client and service. The clients will receive the value from service.
 	 * On the client side this adjusts how often discovery messages are sent until a service is connected.

@@ -39,4 +39,12 @@ private:
 	TSharedPtr<FText> SelectedDefaultOLinkConnection;
 	TArray<TSharedPtr<FText>> AvailableOLinkConnections;
 {{- end }}
+
+{{- if $.Features.mqtt }}
+
+	void CustomizeMqttDetails(IDetailLayoutBuilder& DetailBuilder);
+	TSharedRef<SWidget> MakeDefaultMqttConnectionSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle);
+	TSharedPtr<FText> SelectedDefaultMqttConnection;
+	TArray<TSharedPtr<FText>> AvailableMqttConnections;
+{{- end }}
 };

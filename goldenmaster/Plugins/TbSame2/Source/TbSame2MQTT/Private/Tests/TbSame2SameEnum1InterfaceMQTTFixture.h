@@ -1,0 +1,54 @@
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
+#pragma once
+
+#include "Misc/AutomationTest.h"
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "CoreMinimal.h"
+#include "Engine/GameInstance.h"
+#include "UObject/Object.h"
+#include "UObject/NoExportTypes.h"
+#include "TbSame2/Generated/api/TbSame2_data.h"
+
+class UTbSame2SameEnum1InterfaceMQTTSpec;
+class ITbSame2SameEnum1InterfaceInterface;
+class UTbSame2SameEnum1InterfaceMQTTAdapter;
+class IApiGearConnection;
+class UApiGearMQTTClient;
+class UApiGearMQTTHost;
+
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbSame2
+{
+namespace SameEnum1Interface
+{
+namespace MQTT
+{
+namespace Tests
+{
+class FTbSame2SameEnum1InterfaceMQTTFixture
+{
+public:
+	FTbSame2SameEnum1InterfaceMQTTFixture();
+	~FTbSame2SameEnum1InterfaceMQTTFixture();
+
+	UGameInstance* GetGameInstance();
+	TScriptInterface<ITbSame2SameEnum1InterfaceInterface> GetImplementation();
+	UApiGearMQTTHost* GetHost();
+	UTbSame2SameEnum1InterfaceMQTTAdapter* GetAdapter();
+	TScriptInterface<IApiGearConnection> Connection;
+
+private:
+	void CleanUp();
+
+	TSoftObjectPtr<UGameInstance> GameInstance;
+	TScriptInterface<ITbSame2SameEnum1InterfaceInterface> testImplementation;
+	TSoftObjectPtr<UApiGearMQTTHost> Host;
+};
+} // namespace Tests
+} // namespace MQTT
+} // namespace SameEnum1Interface
+} // namespace TbSame2
+
+#endif // WITH_DEV_AUTOMATION_TESTS

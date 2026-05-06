@@ -2,3 +2,5 @@
 # do not add files which are needed by the template to lfs
 # currently the code-generator cannot clone files tracked with lfs
 templates/ApiGear/Resources/* !filter !diff !merge
+# keep template partials as LF to avoid injecting \r into generated output
+templates/partials/*.tpl text eol=lf

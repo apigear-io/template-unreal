@@ -136,7 +136,7 @@ mkdir -p "$ProjectTarget_path/Plugins/TbStructArray" && cp -rf "$script_path/TbS
 if [ $? -ne 0 ]; then exit 1; fi;
 
 
-buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.+.OLink.+.MsgBus.+.Jni."
+buildTestPlugins "$ProjectTarget_path/TP_Blank.uproject" "$script_path" ".Impl.+.OLink.+.MsgBus.+.MQTT.+.Jni."
 # check test results JSON as source of truth (UAT may return non-zero from
 # shutdown ensures unrelated to test outcomes, e.g. UE 5.7 access detector)
 if [ ! -f $script_path/index.json ]; then echo "WARNING: no test results found"; exit 1; fi

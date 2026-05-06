@@ -30,6 +30,9 @@ namespace UnrealBuildTool.Rules
 {{- if $.Features.olink }}
 					"ApiGearOLink",
 {{- end }}
+{{- if $.Features.mqtt }}
+					"ApiGearMQTT",
+{{- end }}
 					"InputCore",
 					"PropertyEditor",
 					"Slate",

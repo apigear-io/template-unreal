@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "Testbed1MQTT",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "Testbed1Jni",
 			"Type": "Runtime",
 			"LoadingPhase": "default"

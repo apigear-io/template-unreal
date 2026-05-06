@@ -1,0 +1,54 @@
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
+#pragma once
+
+#include "Misc/AutomationTest.h"
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "CoreMinimal.h"
+#include "Engine/GameInstance.h"
+#include "UObject/Object.h"
+#include "UObject/NoExportTypes.h"
+#include "TbIfaceimport/Generated/api/TbIfaceimport_data.h"
+
+class UTbIfaceimportEmptyIfMQTTSpec;
+class ITbIfaceimportEmptyIfInterface;
+class UTbIfaceimportEmptyIfMQTTAdapter;
+class IApiGearConnection;
+class UApiGearMQTTClient;
+class UApiGearMQTTHost;
+
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace TbIfaceimport
+{
+namespace EmptyIf
+{
+namespace MQTT
+{
+namespace Tests
+{
+class FTbIfaceimportEmptyIfMQTTFixture
+{
+public:
+	FTbIfaceimportEmptyIfMQTTFixture();
+	~FTbIfaceimportEmptyIfMQTTFixture();
+
+	UGameInstance* GetGameInstance();
+	TScriptInterface<ITbIfaceimportEmptyIfInterface> GetImplementation();
+	UApiGearMQTTHost* GetHost();
+	UTbIfaceimportEmptyIfMQTTAdapter* GetAdapter();
+	TScriptInterface<IApiGearConnection> Connection;
+
+private:
+	void CleanUp();
+
+	TSoftObjectPtr<UGameInstance> GameInstance;
+	TScriptInterface<ITbIfaceimportEmptyIfInterface> testImplementation;
+	TSoftObjectPtr<UApiGearMQTTHost> Host;
+};
+} // namespace Tests
+} // namespace MQTT
+} // namespace EmptyIf
+} // namespace TbIfaceimport
+
+#endif // WITH_DEV_AUTOMATION_TESTS

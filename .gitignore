@@ -17,3 +17,8 @@ goldenmaster/TP_Blank/
 # test run results
 goldenmaster/Plugins/index.json
 goldenmaster/Plugins/index.html
+
+# Paho MQTT C library (auto-cloned by PahoMQTTLibrary.Build.cs)
+**/PahoMQTTLibrary/paho.mqtt.c/
+**/PahoMQTTLibrary/Private/paho/
+**/PahoMQTTLibrary/.clone_lock

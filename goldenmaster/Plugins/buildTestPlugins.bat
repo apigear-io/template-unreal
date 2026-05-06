@@ -178,7 +178,7 @@ if %ERRORLEVEL% GEQ 1 exit /b %ERRORLEVEL%
 
 
 @REM run build and tests
-call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.+.OLink.+.MsgBus.+.Jni."
+call :buildTestPlugins "%ProjectTarget_path%/TP_Blank.uproject" %script_path% ".Impl.+.OLink.+.MsgBus.+.MQTT.+.Jni."
 @REM check test results JSON as source of truth (UAT may return non-zero from
 @REM shutdown ensures unrelated to test outcomes, e.g. UE 5.7 access detector)
 if not exist %script_path%index.json (echo WARNING: no test results found & exit /b 1)

@@ -44,6 +44,10 @@ public:
 	static TScriptInterface<ITbSame2SameEnum1InterfaceInterface> GetITbSame2SameEnum1InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
 	static TScriptInterface<ITbSame2SameEnum2InterfaceInterface> GetITbSame2SameEnum2InterfaceInterfaceForLogging(FSubsystemCollectionBase& Collection);
 
+	/** Choose the mqtt connection to use */
+	UPROPERTY(EditAnywhere, config, Category = MQTTConnectionSetup)
+	FString MQTTConnectionIdentifier;
+
 	/** Choose the heartbeat interval in milliseconds for the msgbus connection on the service side.
 	 * On the service side this adjusts the heartbeat between client and service. The clients will receive the value from service.
 	 * On the client side this adjusts how often discovery messages are sent until a service is connected.
