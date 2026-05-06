@@ -131,8 +131,12 @@ These features are generated automatically when required by other features:
 - `apigear` - core ApiGear plugin with connection management, settings, and editor UI
 - `apigear_olink` - OLink protocol support with client/host connections
 - `apigear_olinkproto` - ObjectLink protocol library
-- `apigear_mqtt` - transport-agnostic MQTT layer (`IApiGearMqttClient` strategy seam, `UApiGearMQTTClient`, `UApiGearMQTTHost`, in-process loopback broker for tests)
-- `apigear_mqtt_paho` - production MQTT backend built on the [Eclipse Paho C async client](https://github.com/eclipse-paho/paho.mqtt.c). Bundles the `ThirdParty/PahoMQTTLibrary` module which auto-clones and CMake-builds Paho v1.3.14 on first build (requires `git` and `cmake` on `PATH`).
+- `apigear_mqtt` - transport-agnostic MQTT layer (`IApiGearMqttClient` strategy seam, `UApiGearMQTTClient`, `UApiGearMQTTHost`, in-process loopback broker for tests). Auto-enabled by `mqtt`.
+- `apigear_mqtt_paho` - production MQTT backend built on the [Eclipse Paho C async client](https://github.com/eclipse-paho/paho.mqtt.c). Bundles the `ThirdParty/PahoMQTTLibrary` module which auto-clones and CMake-builds Paho v1.3.14 on first build (requires `git` and `cmake` on `PATH`). Auto-enabled by `mqtt`.
+
+:::note
+You normally only list `mqtt` (and optionally `mqtt_tests`) in your solution's `features:` array — the template's rules pull `apigear_mqtt` and `apigear_mqtt_paho` in automatically. List them explicitly only if you need finer control (for example, generating just the transport-agnostic layer without the Paho backend).
+:::
 
 **Module Settings**: When you enable extended features, the Core module's settings class (`UIoWorldSettings`) gains configuration options accessible in Project Settings:
 
