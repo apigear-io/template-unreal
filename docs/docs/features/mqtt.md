@@ -333,32 +333,45 @@ HelloClient->_SubscriptionStatusChanged.AddLambda([](bool bSubscribed) {
 
 #### Setup Connection
 
+Create an MQTT connection with `MQTTFactory::Create`, inject a concrete `IApiGearMqttClient` (Paho in production), call `Configure` with the broker URL, and register the connection with the connections store:
+
 ```cpp
+#include "ApiGearConnectionsStore.h"
 #include "ApiGearMQTTClient.h"
+#include "PahoMqttClient.h"
 #include "IoWorld/Generated/MQTT/IoWorldHelloMQTTClient.h"
 
-// Create an MQTT connection (the Paho factory is registered under "mqtt")
-UApiGearConnectionsStore* Store = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
+// 1. Create the connection (UApiGearMQTTClient implements IApiGearConnection)
 TScriptInterface<IApiGearConnection> Connection =
-    Store->GetOrCreateConnection(TEXT("mqtt"), TEXT("MyMQTTConnection"));
+    MQTTFactory::Create(GetTransientPackage(), TEXT("MyMQTTConnection"));
 
-// Configure the broker URL (use mqtts:// or ssl:// for TLS)
+// 2. Inject the Paho backend (use mqtts:// or ssl:// in the URL for TLS)
 UApiGearMQTTClient* MQTT = Cast<UApiGearMQTTClient>(Connection.GetObject());
+MQTT->SetMqttImplementation(MakeShared<FPahoMqttClient>());
 MQTT->Configure(TEXT("tcp://localhost:1883"), /*bAutoReconnect*/ true);
 
-// Get the per-interface MQTT client (GameInstance subsystem)
+// 3. Register with the engine-wide connections store so generated clients can find it
+UApiGearConnectionsStore* Store = GEngine->GetEngineSubsystem<UApiGearConnectionsStore>();
+Store->AddConnection(Connection);
+
+// 4. Bind the per-interface MQTT client (GameInstance subsystem)
 UIoWorldHelloMQTTClient* HelloClient = GetGameInstance()->GetSubsystem<UIoWorldHelloMQTTClient>();
 HelloClient->UseConnection(Connection);
 Connection->Connect();
 
-// Use as IIoWorldHelloInterface once subscribed
+// 5. Use as IIoWorldHelloInterface once subscriptions are acknowledged
 HelloClient->_SubscriptionStatusChanged.AddLambda([HelloClient](bool bReady) {
     if (bReady) {
         TScriptInterface<IIoWorldHelloInterface> Hello = HelloClient;
-        Hello->Say(/* ... */, EIoWorldWhen::IWW_Now);
+        FIoWorldMessage Msg;
+        Hello->Say(Msg, EIoWorldWhen::IWW_Now);
     }
 });
 ```
+
+:::note
+`UApiGearConnectionsStore` exposes `GetConnection`, `AddConnection`, and `RegisterConnectionFactory` — there is no combined "get-or-create" helper. Either use `MQTTFactory::Create` directly (as above) or pre-configure the connection in Project Settings and look it up via `Store->GetConnection(Identifier)`.
+:::
 
 #### Using Project Settings
 
