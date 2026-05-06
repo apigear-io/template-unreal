@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbSimpleMQTT",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "TbSimpleJni",
 			"Type": "Runtime",
 			"LoadingPhase": "default"

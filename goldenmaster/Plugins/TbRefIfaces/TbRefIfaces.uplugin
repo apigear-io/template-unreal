@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbRefIfacesMQTT",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "TbRefIfacesJni",
 			"Type": "Runtime",
 			"LoadingPhase": "default"

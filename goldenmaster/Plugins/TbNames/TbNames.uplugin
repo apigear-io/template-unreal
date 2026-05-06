@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbNamesMQTT",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "TbNamesJni",
 			"Type": "Runtime",
 			"LoadingPhase": "default"

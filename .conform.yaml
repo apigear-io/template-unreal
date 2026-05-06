@@ -31,6 +31,7 @@ policies:
           - "core"
           - "olink"
           - "msgbus"
+          - "mqtt"
           - "plugin"
           - "stubs"
           - "monitor"

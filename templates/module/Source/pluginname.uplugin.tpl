@@ -59,6 +59,13 @@
 			"LoadingPhase": "default"
 		},
 {{- end }}
+{{- if and .Features.mqtt (len .Module.Interfaces) }}
+		{
+			"Name": "{{$ModuleName}}MQTT",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+{{- end }}
 {{- if .Features.jni }}
 		{
 			"Name": "{{$ModuleName}}Jni",

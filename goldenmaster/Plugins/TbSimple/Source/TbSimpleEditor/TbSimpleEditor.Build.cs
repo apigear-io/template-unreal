@@ -23,6 +23,7 @@ namespace UnrealBuildTool.Rules
 					// modules below are needed for connection settings
 					"ApiGear",
 					"ApiGearOLink",
+					"ApiGearMQTT",
 					"InputCore",
 					"PropertyEditor",
 					"Slate",

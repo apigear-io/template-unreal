@@ -1,0 +1,351 @@
+// SPDX-FileCopyrightText: Copyright ApiGear UG and Epic Games, Inc.
+// SPDX-License-Identifier: MIT
+
+#include "Misc/AutomationTest.h"
+#if WITH_DEV_AUTOMATION_TESTS
+
+#include "Testbed1/Tests/Testbed1TestsCommon.h"
+#include "Testbed1/Implementation/Testbed1StructArrayInterface.h"
+#include "Testbed1StructArrayInterfaceMQTTFixture.h"
+#include "Testbed1/Generated/MQTT/Testbed1StructArrayInterfaceMQTTClient.h"
+#include "Testbed1/Generated/MQTT/Testbed1StructArrayInterfaceMQTTAdapter.h"
+#include "ApiGearMQTTClient.h"
+
+// nested namespaces do not work with UE4.27 MSVC due to old C++ standard
+namespace Testbed1
+{
+namespace StructArrayInterface
+{
+namespace MQTT
+{
+namespace Tests
+{
+BEGIN_DEFINE_SPEC(UTestbed1StructArrayInterfaceMQTTSpec, "Testbed1.StructArrayInterface.MQTT", Testbed1TestFilterMask);
+
+TUniquePtr<FTestbed1StructArrayInterfaceMQTTFixture> ImplFixture;
+
+END_DEFINE_SPEC(UTestbed1StructArrayInterfaceMQTTSpec);
+
+void UTestbed1StructArrayInterfaceMQTTSpec::Define()
+{
+	LatentBeforeEach([this](const FDoneDelegate& TestDone)
+		{
+		ImplFixture = MakeUnique<FTestbed1StructArrayInterfaceMQTTFixture>();
+		TestTrue("Check for valid ImplFixture", ImplFixture.IsValid());
+
+		TestTrue("Check for valid testImplementation", ImplFixture->GetImplementation().GetInterface() != nullptr);
+
+		// setup client
+		UTestbed1StructArrayInterfaceMQTTClient* MQTTClient = Cast<UTestbed1StructArrayInterfaceMQTTClient>(ImplFixture->GetImplementation().GetObject());
+		TestTrue("Check for valid MQTT client", MQTTClient != nullptr);
+
+		MQTTClient->_SubscriptionStatusChanged.AddLambda([this, TestDone](bool bSubscribed)
+			{
+			if (bSubscribed)
+			{
+				TestDone.Execute();
+			}
+		});
+
+		MQTTClient->UseConnection(ImplFixture->Connection);
+		ImplFixture->Connection->Connect();
+	});
+
+	AfterEach([this]()
+		{
+		if (ImplFixture->Connection && IsValid(ImplFixture->Connection.GetObject()))
+		{
+			ImplFixture->Connection->Disconnect();
+			ImplFixture->Connection.GetObject()->RemoveFromRoot();
+		}
+		ImplFixture.Reset();
+	});
+
+	It("Property.PropBool.Default", [this]()
+		{
+		// Do implement test here
+		TArray<FTestbed1StructBool> TestValue = TArray<FTestbed1StructBool>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+	});
+
+	LatentIt("Property.PropBool.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		TArray<FTestbed1StructBool> TestValue = TArray<FTestbed1StructBool>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+
+		UTestbed1StructArrayInterfacePublisher* Testbed1StructArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArrayInterfacePublisher->OnPropBoolChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructBool>& InPropBool)
+			{
+			TArray<FTestbed1StructBool> TestValue = TArray<FTestbed1StructBool>();
+			// use different test value
+			TestValue = createTestFTestbed1StructBoolArray();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropBool, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropBool(), TestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TestValue = createTestFTestbed1StructBoolArray();
+		ImplFixture->GetImplementation()->SetPropBool(TestValue);
+	});
+
+	It("Property.PropInt.Default", [this]()
+		{
+		// Do implement test here
+		TArray<FTestbed1StructInt> TestValue = TArray<FTestbed1StructInt>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+	});
+
+	LatentIt("Property.PropInt.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		TArray<FTestbed1StructInt> TestValue = TArray<FTestbed1StructInt>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+
+		UTestbed1StructArrayInterfacePublisher* Testbed1StructArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArrayInterfacePublisher->OnPropIntChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructInt>& InPropInt)
+			{
+			TArray<FTestbed1StructInt> TestValue = TArray<FTestbed1StructInt>();
+			// use different test value
+			TestValue = createTestFTestbed1StructIntArray();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropInt, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropInt(), TestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TestValue = createTestFTestbed1StructIntArray();
+		ImplFixture->GetImplementation()->SetPropInt(TestValue);
+	});
+
+	It("Property.PropFloat.Default", [this]()
+		{
+		// Do implement test here
+		TArray<FTestbed1StructFloat> TestValue = TArray<FTestbed1StructFloat>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+	});
+
+	LatentIt("Property.PropFloat.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		TArray<FTestbed1StructFloat> TestValue = TArray<FTestbed1StructFloat>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+
+		UTestbed1StructArrayInterfacePublisher* Testbed1StructArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArrayInterfacePublisher->OnPropFloatChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructFloat>& InPropFloat)
+			{
+			TArray<FTestbed1StructFloat> TestValue = TArray<FTestbed1StructFloat>();
+			// use different test value
+			TestValue = createTestFTestbed1StructFloatArray();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropFloat, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropFloat(), TestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TestValue = createTestFTestbed1StructFloatArray();
+		ImplFixture->GetImplementation()->SetPropFloat(TestValue);
+	});
+
+	It("Property.PropString.Default", [this]()
+		{
+		// Do implement test here
+		TArray<FTestbed1StructString> TestValue = TArray<FTestbed1StructString>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+	});
+
+	LatentIt("Property.PropString.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		TArray<FTestbed1StructString> TestValue = TArray<FTestbed1StructString>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+
+		UTestbed1StructArrayInterfacePublisher* Testbed1StructArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArrayInterfacePublisher->OnPropStringChanged.AddLambda([this, TestDone](const TArray<FTestbed1StructString>& InPropString)
+			{
+			TArray<FTestbed1StructString> TestValue = TArray<FTestbed1StructString>();
+			// use different test value
+			TestValue = createTestFTestbed1StructStringArray();
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropString, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropString(), TestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TestValue = createTestFTestbed1StructStringArray();
+		ImplFixture->GetImplementation()->SetPropString(TestValue);
+	});
+
+	It("Property.PropEnum.Default", [this]()
+		{
+		// Do implement test here
+		TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
+	});
+
+	LatentIt("Property.PropEnum.Change", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>(); // default value
+		TestEqual(TEXT("Getter should return the default value"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
+
+		UTestbed1StructArrayInterfacePublisher* Testbed1StructArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArrayInterfacePublisher->OnPropEnumChanged.AddLambda([this, TestDone](const TArray<ETestbed1Enum0>& InPropEnum)
+			{
+			TArray<ETestbed1Enum0> TestValue = TArray<ETestbed1Enum0>();
+			// use different test value
+			TestValue.Add(ETestbed1Enum0::T1E0_Value1);
+			TestEqual(TEXT("Delegate parameter should be the same value as set by the setter"), InPropEnum, TestValue);
+			TestEqual(TEXT("Getter should return the same value as set by the setter"), ImplFixture->GetImplementation()->GetPropEnum(), TestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TestValue.Add(ETestbed1Enum0::T1E0_Value1);
+		ImplFixture->GetImplementation()->SetPropEnum(TestValue);
+	});
+
+	LatentIt("Operation.FuncBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetImplementation()->FuncBool(TArray<FTestbed1StructBool>());
+			// Verify values here based on service logic
+			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetImplementation()->FuncInt(TArray<FTestbed1StructInt>());
+			// Verify values here based on service logic
+			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetImplementation()->FuncFloat(TArray<FTestbed1StructFloat>());
+			// Verify values here based on service logic
+			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetImplementation()->FuncString(TArray<FTestbed1StructString>());
+			// Verify values here based on service logic
+			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Operation.FuncEnum", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		// Do implement test here
+		AsyncTask(ENamedThreads::AnyThread, [this, TestDone]()
+			{
+			ImplFixture->GetImplementation()->FuncEnum(TArray<ETestbed1Enum0>());
+			// Verify values here based on service logic
+			TestDone.Execute();
+		});
+	});
+
+	LatentIt("Signal.SigBool", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		UTestbed1StructArrayInterfacePublisher* Testbed1StructArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArrayInterfacePublisher->OnSigBoolSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructBool>& InParamBool)
+			{
+			// known test value
+			TArray<FTestbed1StructBool> ParamBoolTestValue = createTestFTestbed1StructBoolArray();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamBool, ParamBoolTestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TArray<FTestbed1StructBool> ParamBoolTestValue = createTestFTestbed1StructBoolArray();
+		Testbed1StructArrayInterfacePublisher->BroadcastSigBoolSignal(ParamBoolTestValue);
+	});
+
+	LatentIt("Signal.SigInt", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		UTestbed1StructArrayInterfacePublisher* Testbed1StructArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArrayInterfacePublisher->OnSigIntSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructInt>& InParamInt)
+			{
+			// known test value
+			TArray<FTestbed1StructInt> ParamIntTestValue = createTestFTestbed1StructIntArray();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamInt, ParamIntTestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TArray<FTestbed1StructInt> ParamIntTestValue = createTestFTestbed1StructIntArray();
+		Testbed1StructArrayInterfacePublisher->BroadcastSigIntSignal(ParamIntTestValue);
+	});
+
+	LatentIt("Signal.SigFloat", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		UTestbed1StructArrayInterfacePublisher* Testbed1StructArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArrayInterfacePublisher->OnSigFloatSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructFloat>& InParamFloat)
+			{
+			// known test value
+			TArray<FTestbed1StructFloat> ParamFloatTestValue = createTestFTestbed1StructFloatArray();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamFloat, ParamFloatTestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TArray<FTestbed1StructFloat> ParamFloatTestValue = createTestFTestbed1StructFloatArray();
+		Testbed1StructArrayInterfacePublisher->BroadcastSigFloatSignal(ParamFloatTestValue);
+	});
+
+	LatentIt("Signal.SigString", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		UTestbed1StructArrayInterfacePublisher* Testbed1StructArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArrayInterfacePublisher->OnSigStringSignal.AddLambda([this, TestDone](const TArray<FTestbed1StructString>& InParamString)
+			{
+			// known test value
+			TArray<FTestbed1StructString> ParamStringTestValue = createTestFTestbed1StructStringArray();
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamString, ParamStringTestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TArray<FTestbed1StructString> ParamStringTestValue = createTestFTestbed1StructStringArray();
+		Testbed1StructArrayInterfacePublisher->BroadcastSigStringSignal(ParamStringTestValue);
+	});
+
+	LatentIt("Signal.SigEnum", EAsyncExecution::ThreadPool, [this](const FDoneDelegate TestDone)
+		{
+		UTestbed1StructArrayInterfacePublisher* Testbed1StructArrayInterfacePublisher = ImplFixture->GetImplementation()->_GetPublisher();
+		Testbed1StructArrayInterfacePublisher->OnSigEnumSignal.AddLambda([this, TestDone](const TArray<ETestbed1Enum0>& InParamEnum)
+			{
+			// known test value
+			TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
+			ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_Value1);
+			TestEqual(TEXT("Parameter should be the same value as sent by the signal"), InParamEnum, ParamEnumTestValue);
+			TestDone.Execute();
+		});
+
+		// use different test value
+		TArray<ETestbed1Enum0> ParamEnumTestValue = TArray<ETestbed1Enum0>(); // default value
+		ParamEnumTestValue.Add(ETestbed1Enum0::T1E0_Value1);
+		Testbed1StructArrayInterfacePublisher->BroadcastSigEnumSignal(ParamEnumTestValue);
+	});
+}
+} // namespace Tests
+} // namespace MQTT
+} // namespace StructArrayInterface
+} // namespace Testbed1
+
+#endif // WITH_DEV_AUTOMATION_TESTS

@@ -33,4 +33,9 @@ private:
 	TSharedRef<SWidget> MakeDefaultOLinkConnectionSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle);
 	TSharedPtr<FText> SelectedDefaultOLinkConnection;
 	TArray<TSharedPtr<FText>> AvailableOLinkConnections;
+
+	void CustomizeMqttDetails(IDetailLayoutBuilder& DetailBuilder);
+	TSharedRef<SWidget> MakeDefaultMqttConnectionSelectorWidget(const TSharedPtr<IPropertyHandle>& PropertyHandle);
+	TSharedPtr<FText> SelectedDefaultMqttConnection;
+	TArray<TSharedPtr<FText>> AvailableMqttConnections;
 };

@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "TbEnumMQTT",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "TbEnumJni",
 			"Type": "Runtime",
 			"LoadingPhase": "default"

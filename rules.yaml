@@ -126,6 +126,7 @@ features:
   - name: apigear
     requires:
       - apigear_olink
+      - apigear_mqtt
     scopes:
       - match: system
         prefix: "ApiGear/"
@@ -447,6 +448,125 @@ features:
             preserve: true
           - source: "module/Source/moduleolink/Private/Tests/olinkfixture.cpp.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}OLinkFixture.cpp"
+            preserve: true
+  - name: apigear_mqtt
+    requires:
+      - apigear
+    scopes:
+      - match: system
+        prefix: "ApiGear/"
+        documents:
+          - source: "ApiGear/Source/ApiGearMQTT/apigearmqtt.Build.cs"
+            target: "Source/ApiGearMQTT/apigearmqtt.Build.cs"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTT/Public/apigearmqtt.h"
+            target: "Source/ApiGearMQTT/Public/apigearmqtt.h"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTT/Private/apigearmqtt.cpp"
+            target: "Source/ApiGearMQTT/Private/apigearmqtt.cpp"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTT/Public/IApiGearMqttClient.h"
+            target: "Source/ApiGearMQTT/Public/IApiGearMqttClient.h"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTT/Private/ApiGearMQTTClient.cpp"
+            target: "Source/ApiGearMQTT/Private/ApiGearMQTTClient.cpp"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTT/Public/ApiGearMQTTClient.h"
+            target: "Source/ApiGearMQTT/Public/ApiGearMQTTClient.h"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTT/Private/ApiGearMQTTHost.cpp"
+            target: "Source/ApiGearMQTT/Private/ApiGearMQTTHost.cpp"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTT/Public/ApiGearMQTTHost.h"
+            target: "Source/ApiGearMQTT/Public/ApiGearMQTTHost.h"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTT/Public/ApiGearMQTTTypes.h"
+            target: "Source/ApiGearMQTT/Public/ApiGearMQTTTypes.h"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTT/Public/MqttLoopbackClient.h"
+            target: "Source/ApiGearMQTT/Public/MqttLoopbackClient.h"
+            raw: true
+  - name: apigear_mqtt_paho
+    requires:
+      - apigear_mqtt
+    scopes:
+      - match: system
+        prefix: "ApiGear/"
+        documents:
+          - source: "ApiGear/Source/ThirdParty/PahoMQTTLibrary/PahoMQTTLibrary.Build.cs"
+            target: "Source/ThirdParty/PahoMQTTLibrary/PahoMQTTLibrary.Build.cs"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTTPaho/ApiGearMQTTPaho.Build.cs"
+            target: "Source/ApiGearMQTTPaho/ApiGearMQTTPaho.Build.cs"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTTPaho/Public/ApiGearMQTTPaho.h"
+            target: "Source/ApiGearMQTTPaho/Public/ApiGearMQTTPaho.h"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTTPaho/Private/ApiGearMQTTPaho.cpp"
+            target: "Source/ApiGearMQTTPaho/Private/ApiGearMQTTPaho.cpp"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTTPaho/Public/PahoMqttClient.h"
+            target: "Source/ApiGearMQTTPaho/Public/PahoMqttClient.h"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTTPaho/Private/PahoMqttClient.cpp"
+            target: "Source/ApiGearMQTTPaho/Private/PahoMqttClient.cpp"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTTPaho/Private/Tests/PahoMqttClientFixture.h"
+            target: "Source/ApiGearMQTTPaho/Private/Tests/PahoMqttClientFixture.h"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTTPaho/Private/Tests/PahoMqttClient.spec.cpp"
+            target: "Source/ApiGearMQTTPaho/Private/Tests/PahoMqttClient.spec.cpp"
+            raw: true
+          - source: "ApiGear/Source/ApiGearMQTTPaho/Private/Tests/PahoMqttClientIntegration.spec.cpp"
+            target: "Source/ApiGearMQTTPaho/Private/Tests/PahoMqttClientIntegration.spec.cpp"
+            raw: true
+  - name: mqtt
+    requires:
+      - api
+      - plugin
+      - apigear_mqtt
+      - apigear_mqtt_paho
+    scopes:
+      - match: module
+        prefix: "{{Camel .Module.Name}}/"
+        documents:
+          - source: "module/Source/moduleapi/Public/module/Generated/api/json.adapter.h.tpl"
+            target: "Source/{{Camel .Module.Name}}API/Public/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.h"
+          - source: "module/Source/moduleapi/Private/Generated/api/json.adapter.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}API/Private/{{Camel .Module.Name}}/Generated/api/{{Camel .Module.Name}}.json.adapter.cpp"
+          - source: "module/Source/modulemqtt/Private/modulemqtt.cpp.tpl"
+            target: "Source/{{Camel .Module.Name}}MQTT/Private/Generated/{{Camel .Module.Name}}MQTT.cpp"
+          - source: "module/Source/modulemqtt/Public/modulemqtt.h.tpl"
+            target: "Source/{{Camel .Module.Name}}MQTT/Public/{{Camel .Module.Name}}/{{Camel .Module.Name}}MQTT.h"
+      - match: interface
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}MQTT/"
+        documents:
+          - source: "module/Source/modulemqtt/modulemqtt.Build.cs.tpl"
+            target: "{{Camel .Module.Name}}MQTT.Build.cs"
+          - source: "module/Source/modulemqtt/Public/Generated/MQTT/mqttclient.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/MQTT/{{Camel .Module.Name}}{{Camel .Interface.Name}}MQTTClient.h"
+          - source: "module/Source/modulemqtt/Private/Generated/MQTT/mqttclient.cpp.tpl"
+            target: "Private/Generated/MQTT/{{Camel .Module.Name}}{{Camel .Interface.Name}}MQTTClient.cpp"
+          - source: "module/Source/modulemqtt/Public/Generated/MQTT/mqttadapter.h.tpl"
+            target: "Public/{{Camel .Module.Name}}/Generated/MQTT/{{Camel .Module.Name}}{{Camel .Interface.Name}}MQTTAdapter.h"
+          - source: "module/Source/modulemqtt/Private/Generated/MQTT/mqttadapter.cpp.tpl"
+            target: "Private/Generated/MQTT/{{Camel .Module.Name}}{{Camel .Interface.Name}}MQTTAdapter.cpp"
+  - name: mqtt_tests
+    requires:
+      - mqtt
+      - stubs
+    scopes:
+      - match: interface
+        prefix: "{{Camel .Module.Name}}/Source/{{Camel .Module.Name}}MQTT/"
+        documents:
+          - source: "module/Source/modulemqtt/Private/Tests/mqtt.spec.cpp.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MQTT.spec.cpp"
+            preserve: true
+          - source: "module/Source/modulemqtt/Private/Tests/mqttfixture.h.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MQTTFixture.h"
+            preserve: true
+          - source: "module/Source/modulemqtt/Private/Tests/mqttfixture.cpp.tpl"
+            target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}MQTTFixture.cpp"
             preserve: true
   - name: msgbus
     requires:

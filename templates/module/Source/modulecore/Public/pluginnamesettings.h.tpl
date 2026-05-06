@@ -54,6 +54,13 @@ public:
 {{- end }}
 {{- end }}
 
+{{- if $.Features.mqtt }}
+
+	/** Choose the mqtt connection to use */
+	UPROPERTY(EditAnywhere, config, Category = MQTTConnectionSetup)
+	FString MQTTConnectionIdentifier;
+{{- end }}
+
 {{- if $.Features.msgbus }}
 
 	/** Choose the heartbeat interval in milliseconds for the msgbus connection on the service side.

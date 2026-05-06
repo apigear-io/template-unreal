@@ -2,8 +2,8 @@
 sidebar_position: 2
 sidebar_label: "Features"
 title: "Unreal Engine Template Features Overview"
-description: "Overview of ApiGear Unreal Engine template features: Core API generation, stub implementations, OLink networking, JNI Android communication, Message Bus IPC, and runtime monitoring."
-keywords: [unreal engine features, olink, message bus, stubs, monitor, jni, android, api generation]
+description: "Overview of ApiGear Unreal Engine template features: Core API generation, stub implementations, OLink networking, MQTT pub/sub, JNI Android communication, Message Bus IPC, and runtime monitoring."
+keywords: [unreal engine features, olink, message bus, mqtt, stubs, monitor, jni, android, api generation]
 ---
 
 import CodeBlock from '@theme/CodeBlock';
@@ -61,6 +61,7 @@ graph TD
         Stubs["Stubs<br/>(Local)"]
         OLink["OLink<br/>(Network)"]
         MsgBus["MsgBus<br/>(IPC)"]
+        MQTT["MQTT<br/>(Pub/Sub)"]
         JNI["JNI<br/>(Android)"]
         Monitor["Monitor<br/>(Decorator)"]
     end
@@ -74,17 +75,20 @@ graph TD
     Interface -->|implemented by| Stubs
     Interface -->|implemented by| OLink
     Interface -->|implemented by| MsgBus
+    Interface -->|implemented by| MQTT
     Interface -->|implemented by| JNI
     Interface -->|implemented by| Monitor
     Monitor -.->|wraps| Stubs
     Monitor -.->|wraps| OLink
     Monitor -.->|wraps| MsgBus
+    Monitor -.->|wraps| MQTT
     Monitor -.->|wraps| JNI
     OLink -.->|uses| ApiGear
+    MQTT -.->|uses| ApiGear
     Monitor -.->|uses| ApiGear
 ```
 
-*Your application programs against the generated API interfaces. Stubs provide local implementations, OLink and MsgBus connect to remote services, JNI bridges to Android services, Monitor wraps any implementation for tracing, and the Infrastructure layer provides settings and connection management.*
+*Your application programs against the generated API interfaces. Stubs provide local implementations, OLink, MsgBus, and MQTT connect to remote services, JNI bridges to Android services, Monitor wraps any implementation for tracing, and the Infrastructure layer provides settings and connection management.*
 
 :::note
 The JNI feature requires the `template-java` `jnibridge` feature for the Java-side bridge code. See [JNI](jni.md) for setup details.
@@ -103,8 +107,9 @@ Extended features add connectivity and monitoring capabilities:
 
 - [olink](olink.md) - provides client and server adapters for the [ObjectLink](/docs/protocols/objectlink/intro) protocol. Use this to connect your Unreal application to remote services or the ApiGear simulation tools.
 - [msgbus](msgbus.md) - provides adapters using Unreal's built-in Message Bus for inter-process communication within the Unreal ecosystem.
+- [mqtt](mqtt.md) - provides client and adapter implementations on top of the [MQTT](https://mqtt.org/) pub/sub protocol. Use this to integrate with IoT brokers, Python or web peers, and many-to-many topologies.
 
-> **Choosing between OLink and Message Bus?** See the [comparison guide](msgbus.md#when-to-use-message-bus-vs-olink) for a detailed breakdown.
+> **Choosing between MQTT, OLink, and Message Bus?** See the [comparison guide](mqtt.md#when-to-use-mqtt-vs-olink-vs-message-bus) for a detailed breakdown.
 
 - [jni](jni.md) - provides JNI adapter and client for bridging Unreal Engine and Android services. Requires the `template-java` `jnibridge` feature for the Java-side code.
 - [monitor](monitor.md) - generates a middleware layer which logs all API events to the [CLI](/docs/cli/intro) or the [Studio](/docs/studio/intro).
@@ -113,6 +118,7 @@ Extended features add connectivity and monitoring capabilities:
 
 - `olink_tests` - test fixtures and specs for OLink client/server functionality.
 - `msgbus_tests` - test fixtures and specs for Message Bus adapters.
+- `mqtt_tests` - test fixtures and specs for MQTT client/adapter functionality (uses an in-process loopback broker).
 - `jni_tests` - test fixtures and specs for JNI adapter/client functionality.
 
 ### Internal Features
@@ -125,6 +131,8 @@ These features are generated automatically when required by other features:
 - `apigear` - core ApiGear plugin with connection management, settings, and editor UI
 - `apigear_olink` - OLink protocol support with client/host connections
 - `apigear_olinkproto` - ObjectLink protocol library
+- `apigear_mqtt` - transport-agnostic MQTT layer (`IApiGearMqttClient` strategy seam, `UApiGearMQTTClient`, `UApiGearMQTTHost`, in-process loopback broker for tests)
+- `apigear_mqtt_paho` - production MQTT backend built on the [Eclipse Paho C async client](https://github.com/eclipse-paho/paho.mqtt.c). Bundles the `ThirdParty/PahoMQTTLibrary` module which auto-clones and CMake-builds Paho v1.3.14 on first build (requires `git` and `cmake` on `PATH`).
 
 **Module Settings**: When you enable extended features, the Core module's settings class (`UIoWorldSettings`) gains configuration options accessible in Project Settings:
 
@@ -133,6 +141,7 @@ These features are generated automatically when required by other features:
 | `TracerServiceIdentifier` | monitor | Select which backend implementation the monitor traces |
 | `OLinkConnectionIdentifier` | olink | Select which OLink connection the client uses |
 | `MsgBusHeartbeatIntervalMS` | msgbus | Configure heartbeat interval for service discovery |
+| `MQTTConnectionIdentifier` | mqtt | Select which MQTT connection (broker URL) the client uses |
 
 **Test Utilities**: The Core module includes test helpers for writing your own automation tests:
 
@@ -169,10 +178,13 @@ This graph shows the folder structure generated for a module with all features e
  ┃ ┗ 📂Source
  ┃   ┣ 📂ApiGear
  ┃   ┣ 📂ApiGearEditor
+ ┃   ┣ 📂ApiGearMQTT
+ ┃   ┣ 📂ApiGearMQTTPaho
  ┃   ┣ 📂ApiGearOLink
  ┃   ┗ 📂ThirdParty
  ┃     ┣ 📂nlohmannJsonLibrary
- ┃     ┗ 📂OLinkProtocolLibrary
+ ┃     ┣ 📂OLinkProtocolLibrary
+ ┃     ┗ 📂PahoMQTTLibrary
  ┣ 📂IoWorld
  ┃ ┣ 📜IoWorld.uplugin
  ┃ ┣ 📜LICENSE
@@ -184,6 +196,7 @@ This graph shows the folder structure generated for a module with all features e
  ┃   ┣ 📂IoWorldImplementation
  ┃   ┣ 📂IoWorldJni
  ┃   ┣ 📂IoWorldMonitor
+ ┃   ┣ 📂IoWorldMQTT
  ┃   ┣ 📂IoWorldMsgBus
  ┃   ┗ 📂IoWorldOLink
 ```

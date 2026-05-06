@@ -48,6 +48,11 @@
 			"LoadingPhase": "default"
 		},
 		{
+			"Name": "CounterMQTT",
+			"Type": "Runtime",
+			"LoadingPhase": "default"
+		},
+		{
 			"Name": "CounterJni",
 			"Type": "Runtime",
 			"LoadingPhase": "default"
