@@ -2,8 +2,8 @@
 
 This is a code generation template for the ApiGear integration suite. It generates an Unreal Engine C++ plugin with full blueprint support based on an object API model and eases the integration of external data into any Unreal Engine project.
 
-Check out the [quick start documentation](https://apigear-io.github.io/template-unreal/quickstart).
-For more details on *ApiGear* please visit [apigear.io](https://apigear.io) or the [*ApiGear* documentation](https://docs.apigear/).
+Check out the [quick start documentation](https://apigear.io/template-unreal/docs/quickstart?current-template=template-unreal).
+For more details on *ApiGear* please visit [apigear.io](https://apigear.io) or the [*ApiGear* documentation](https://apigear.io/docs).
 
 ## Output - Unreal Engine plugin
 
@@ -22,7 +22,7 @@ We aim for full feature parity between usage from within Blueprints or UE C++.
 >
 > In modern architectures these two sides are often distributed in a network. Therefore the plugin can also connect to remote services as a *network client*.
 >
-> Furthermore, the plugin can also be connected as *simulation client* to *ApiGear*s simulation tools. [More information](https://docs.apigear.io/docs/scripting/backends/intro)
+> Furthermore, the plugin can also be connected as *simulation client* to *ApiGear*s simulation tools. [More information](https://apigear.io/docs/scripting/backends/intro)
 ### Compatibility
 
 The generated plugin code is regularly tested in these configurations:
@@ -32,11 +32,12 @@ The generated plugin code is regularly tested in these configurations:
 | Linux    |:heavy_check_mark: (until v2.x)|:heavy_check_mark:| :heavy_check_mark:| :heavy_check_mark:| :heavy_check_mark:| :heavy_check_mark:|
 ## Code Generation Features
 
-The template offers the following feature switches which can be enabled during code generation:
+The [feature overview](https://apigear.io/template-unreal/docs/features) has links to the individual feature documentation. The template offers the following feature switches which can be enabled during code generation:
 * `api`: create interface files and an abstract implementation
 * `stubs`: create a stub implementation in C++ with some test cases
 * `plugin`: create a fully functional plugin with including the stub implementations and tests
 * `monitor`: create a thin decorator class which can be used to log traffic going through API layer
-* `olink`: create the adaption layer for the [OLink](https://docs.apigear.io/docs/protocols/objectlink/intro) protocol. This can be used to connect to the simulation or other technologies like python, pure c++ etc..
+* `olink`: create the adaption layer for the [OLink](https://apigear.io/docs/protocols/objectlink/intro) protocol. This can be used to connect to the simulation or other technologies like python, pure c++ etc.
 * `msgbus`: create the adaption layer for the [UE MsgBus](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Messaging) protocol. This can be used for communication inside the same UE app or between different instances, including across network interfaces.
-* `jni`: create the jni adaption layer for the android messenger communication provided by apigear java template. Please read more on a separate document readme_jni.
+* `mqtt`: create the adaption layer for the [MQTT](https://apigear.io/template-unreal/docs/features/mqtt) protocol. This can be used for communication with other technologies like python, pure c++ etc. By default it uses the [Paho C MQTT](https://github.com/eclipse-paho/paho.mqtt.c) library for communication.
+* `jni`: create the jni adaption layer for the android messenger communication provided by [apigear java template](https://github.com/apigear-io/template-java). Please read the [JNI feature documentation](https://apigear.io/template-unreal/docs/features/jni).
