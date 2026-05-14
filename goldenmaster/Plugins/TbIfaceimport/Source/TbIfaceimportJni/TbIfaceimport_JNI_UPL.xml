@@ -107,6 +107,36 @@ tasks.configureEach { task ->
 
 	<!-- optional additions to the GameActivity class in GameActivity.java -->
 	<gameActivityClassAdditions>
+		<insert>
+			<![CDATA[
+			// TbIfaceimport: bridge the ApiGear BindingLifecycleRegistry SPI
+			// to ASIS's pre-destroy callback registry. Runs once when GameActivity
+			// class is loaded, before any JNI subsystem binds, installing a
+			// coordinator that forwards register/unregister calls into
+			// UnrealSharedInstanceService. This is the only place the generated
+			// code is coupled to ASIS; the SPI in apigear.android.lifecycle stays
+			// host-agnostic and the bridge is emitted only when this consumer
+			// opts in via the asis feature.
+			static
+			{
+				apigear.android.lifecycle.BindingLifecycleRegistry.setCoordinator(
+					new apigear.android.lifecycle.IBindingLifecycleCoordinator()
+					{
+						@Override
+						public void registerCleanup(Runnable cleanup)
+						{
+							com.epicgames.asis.UnrealSharedInstanceService.addPreDestroyCallback(cleanup);
+						}
+
+						@Override
+						public void unregisterCleanup(Runnable cleanup)
+						{
+							com.epicgames.asis.UnrealSharedInstanceService.removePreDestroyCallback(cleanup);
+						}
+					});
+			}
+			]]>
+		</insert>
 	</gameActivityClassAdditions>
 
 

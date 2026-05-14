@@ -680,3 +680,13 @@ features:
           - source: "module/Source/modulejni/Private/Tests/jnifixture.cpp.tpl"
             target: "Private/Tests/{{Camel .Module.Name}}{{Camel .Interface.Name}}JniFixture.cpp"
             preserve: true
+  # Opt-in integration for hosts based on the Epic Games
+  # AndroidSingleInstanceService (ASIS) plugin. Enabling this feature emits
+  # a UPL gameActivityClassAdditions block that wires the apigear binding
+  # lifecycle SPI to ASIS's pre-destroy callback registry, so JNI clients
+  # unbind before the host Service's onDestroy returns and Android does not
+  # report ServiceConnectionLeaked. The feature owns no documents -- it is
+  # a pure marker flag, checked by the jni feature's UPL template.
+  - name: asis
+    requires:
+      - jni
