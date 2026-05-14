@@ -8,6 +8,7 @@
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/CoreDelegates.h"
 
 #include "Generated/Detail/TbRefIfacesMethodHelper.h"
 #include "Generated/Detail/TbRefIfacesCommonJavaConverter.h"
@@ -209,12 +210,29 @@ void UTbRefIfacesParentIfJniClient::Initialize(FSubsystemCollectionBase& Collect
 	jobject localRef = Env->NewObject(Cache->clientClassParentIf, Cache->clientClassParentIfCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
+
+	// Auto-rebind on foreground: ASIS-style hosts may destroy and recreate the
+	// Service that owns the engine without recreating the UE engine itself.
+	// Pre-destroy callbacks unbind the ServiceConnection cleanly, but the engine
+	// resume path doesn't re-trigger _bindToService. Subscribe so that if we
+	// were previously bound (cached m_lastBoundServicePackage) and aren't
+	// currently ready, the binding is restored automatically.
+	m_ForegroundDelegateHandle = FCoreDelegates::ApplicationHasEnteredForegroundDelegate.AddWeakLambda(this, [this]()
+		{
+		if (!b_isReady.load(std::memory_order_acquire) && !m_lastBoundServicePackage.IsEmpty())
+		{
+			UE_LOG(LogTbRefIfacesParentIfClient_JNI, Log,
+				TEXT("Auto-rebinding to %s on foreground"), *m_lastBoundServicePackage);
+			_bindToService(m_lastBoundServicePackage, m_lastConnectionId);
+		}
+	});
 #endif
 }
 
 void UTbRefIfacesParentIfJniClient::Deinitialize()
 {
 	UE_LOG(LogTbRefIfacesParentIfClient_JNI, Verbose, TEXT("deinit"));
+	FCoreDelegates::ApplicationHasEnteredForegroundDelegate.Remove(m_ForegroundDelegateHandle);
 	_unbind();
 	b_isReady.store(false, std::memory_order_release);
 	gUTbRefIfacesParentIfJniClientHandle.store(nullptr, std::memory_order_release);

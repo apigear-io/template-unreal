@@ -9,6 +9,7 @@
 
 #include "Async/Async.h"
 #include "Engine/Engine.h"
+#include "Misc/CoreDelegates.h"
 
 #include "Generated/Detail/TbEnumMethodHelper.h"
 #include "Generated/Detail/TbEnumCommonJavaConverter.h"
@@ -210,12 +211,29 @@ void UTbEnumEnumInterfaceJniClient::Initialize(FSubsystemCollectionBase& Collect
 	jobject localRef = Env->NewObject(Cache->clientClassEnumInterface, Cache->clientClassEnumInterfaceCtor);
 	m_javaJniClientInstance = Env->NewGlobalRef(localRef);
 	FAndroidApplication::GetJavaEnv()->DeleteLocalRef(localRef);
+
+	// Auto-rebind on foreground: ASIS-style hosts may destroy and recreate the
+	// Service that owns the engine without recreating the UE engine itself.
+	// Pre-destroy callbacks unbind the ServiceConnection cleanly, but the engine
+	// resume path doesn't re-trigger _bindToService. Subscribe so that if we
+	// were previously bound (cached m_lastBoundServicePackage) and aren't
+	// currently ready, the binding is restored automatically.
+	m_ForegroundDelegateHandle = FCoreDelegates::ApplicationHasEnteredForegroundDelegate.AddWeakLambda(this, [this]()
+		{
+		if (!b_isReady.load(std::memory_order_acquire) && !m_lastBoundServicePackage.IsEmpty())
+		{
+			UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Log,
+				TEXT("Auto-rebinding to %s on foreground"), *m_lastBoundServicePackage);
+			_bindToService(m_lastBoundServicePackage, m_lastConnectionId);
+		}
+	});
 #endif
 }
 
 void UTbEnumEnumInterfaceJniClient::Deinitialize()
 {
 	UE_LOG(LogTbEnumEnumInterfaceClient_JNI, Verbose, TEXT("deinit"));
+	FCoreDelegates::ApplicationHasEnteredForegroundDelegate.Remove(m_ForegroundDelegateHandle);
 	_unbind();
 	b_isReady.store(false, std::memory_order_release);
 	gUTbEnumEnumInterfaceJniClientHandle.store(nullptr, std::memory_order_release);

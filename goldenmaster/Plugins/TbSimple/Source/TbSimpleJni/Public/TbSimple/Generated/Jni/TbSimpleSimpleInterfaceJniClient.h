@@ -200,6 +200,9 @@ private:
 	std::atomic<bool> b_isReady{false};
 	FString m_lastBoundServicePackage;
 	FString m_lastConnectionId;
+	// Handle for UE foreground delegate subscription. Used to auto-rebind
+	// after the host Service is recreated without an engine tear-down.
+	FDelegateHandle m_ForegroundDelegateHandle;
 #if PLATFORM_ANDROID && USE_ANDROID_JNI
 	jobject m_javaJniClientInstance = nullptr;
 #endif
