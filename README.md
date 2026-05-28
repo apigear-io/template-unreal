@@ -41,3 +41,7 @@ The [feature overview](https://apigear.io/template-unreal/docs/features) has lin
 * `msgbus`: create the adaption layer for the [UE MsgBus](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Messaging) protocol. This can be used for communication inside the same UE app or between different instances, including across network interfaces.
 * `mqtt`: create the adaption layer for the [MQTT](https://apigear.io/template-unreal/docs/features/mqtt) protocol. This can be used for communication with other technologies like python, pure c++ etc. By default it uses the [Paho C MQTT](https://github.com/eclipse-paho/paho.mqtt.c) library for communication.
 * `jni`: create the jni adaption layer for the android messenger communication provided by [apigear java template](https://github.com/apigear-io/template-java). Please read the [JNI feature documentation](https://apigear.io/template-unreal/docs/features/jni).
+
+## License
+
+Licensed under the [MIT License](./LICENSE). See [LICENSE](./LICENSE) for details.
