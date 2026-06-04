@@ -45,19 +45,7 @@ Use **Message Bus** for IPC between Unreal applications.
 
 ## ApiGear MQTT Protocol
 
-The generated code maps interface concepts to MQTT topics using the following convention. For an interface `Hello` in module `io.world`:
-
-| Direction | Topic | Purpose |
-|-----------|-------|---------|
-| Client → Adapter | `io.world/Hello/set/last` | Set property request |
-| Adapter → Client | `io.world/Hello/prop/last` | Property change notification (retained) |
-| Client → Adapter | `io.world/Hello/rpc/say` | Operation invocation |
-| Adapter → Client | `io.world/Hello/rpc/say/{clientId}/result` | Operation reply (per-client) |
-| Adapter → Client | `io.world/Hello/sig/justSaid` | Signal broadcast |
-
-Property notifications are published with `retain=true` so newly subscribing clients receive the current state immediately. Operation replies are routed back to the topic the caller advertised in the MQTT 5 `ResponseTopic` property — typically `…/rpc/{op}/{clientId}/result` — so multiple clients can invoke the same operation concurrently without their replies colliding.
-
-Payloads are JSON-encoded. RPC payloads contain only the operation's args (e.g. `[42]`); correlation rides on the MQTT 5 `CorrelationData` property as opaque bytes that the service echoes back unchanged in the reply. Property values and signal arg arrays are unchanged plain JSON. All subscribe and publish operations use QoS 1 (at-least-once delivery) by default.
+The generated code maps interface concepts to MQTT topics following the shared ApiGear MQTT mapping. The topic structure, JSON payloads, MQTT 5 correlation (`CorrelationData` / `ResponseTopic`), and retained property notifications are documented in **[ApiGear over MQTT](/docs/protocols/mqtt/mapping)**.
 
 ## File overview for module
 
