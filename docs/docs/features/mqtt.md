@@ -37,6 +37,8 @@ Unlike OLink (point-to-point WebSocket) and Message Bus (intra-Unreal IPC), MQTT
 | Retained state | Yes (broker retains last property) | No (live link only) | No (heartbeat-based) |
 | ApiGear Simulation | No | Yes | No |
 
+For the full cross-language transport comparison (including NATS), see [Choosing a transport](/docs/protocols/mapping#choosing-a-transport).
+
 :::tip
 Use **MQTT** when fanning state out to many heterogeneous subscribers or integrating with an existing IoT topology.
 Use **OLink** for direct Unreal-to-service or simulation connections.
